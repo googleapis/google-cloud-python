@@ -2141,7 +2141,7 @@ class AccessConfig(proto.Message):
             The DNS domain name for the public PTR record. You can set
             this field only if the ``setPublicPtr`` field is enabled in
             accessConfig. If this field is unspecified in
-            ipv6AccessConfig, a default PTR record will be createc for
+            ipv6AccessConfig, a default PTR record will be created for
             first IP in associated external IPv6 range.
 
             This field is a member of `oneof`_ ``_public_ptr_domain_name``.
@@ -18373,6 +18373,8 @@ class Commitment(proto.Message):
                 No description available.
             ACCELERATOR_OPTIMIZED_A3 (158574526):
                 No description available.
+            ACCELERATOR_OPTIMIZED_A3_MEGA (156517459):
+                No description available.
             COMPUTE_OPTIMIZED (158349023):
                 No description available.
             COMPUTE_OPTIMIZED_C2D (383246453):
@@ -18409,6 +18411,7 @@ class Commitment(proto.Message):
         UNDEFINED_TYPE = 0
         ACCELERATOR_OPTIMIZED = 280848403
         ACCELERATOR_OPTIMIZED_A3 = 158574526
+        ACCELERATOR_OPTIMIZED_A3_MEGA = 156517459
         COMPUTE_OPTIMIZED = 158349023
         COMPUTE_OPTIMIZED_C2D = 383246453
         COMPUTE_OPTIMIZED_C3 = 428004784
@@ -34285,7 +34288,8 @@ class HTTP2HealthCheck(proto.Message):
             This field is a member of `oneof`_ ``_proxy_header``.
         request_path (str):
             The request path of the HTTP/2 health check
-            request. The default value is /.
+            request. The default value is /. Must comply
+            with RFC3986.
 
             This field is a member of `oneof`_ ``_request_path``.
         response (str):
@@ -34464,7 +34468,8 @@ class HTTPHealthCheck(proto.Message):
             This field is a member of `oneof`_ ``_proxy_header``.
         request_path (str):
             The request path of the HTTP health check
-            request. The default value is /.
+            request. The default value is /. Must comply
+            with RFC3986.
 
             This field is a member of `oneof`_ ``_request_path``.
         response (str):
@@ -34642,7 +34647,8 @@ class HTTPSHealthCheck(proto.Message):
             This field is a member of `oneof`_ ``_proxy_header``.
         request_path (str):
             The request path of the HTTPS health check
-            request. The default value is /.
+            request. The default value is /. Must comply
+            with RFC3986.
 
             This field is a member of `oneof`_ ``_request_path``.
         response (str):
@@ -79738,6 +79744,8 @@ class Quota(proto.Message):
                 No description available.
             URL_MAPS (378660743):
                 No description available.
+            VARIABLE_IPV6_PUBLIC_DELEGATED_PREFIXES (128400161):
+                No description available.
             VPN_GATEWAYS (35620282):
                 No description available.
             VPN_TUNNELS (104327296):
@@ -79906,6 +79914,7 @@ class Quota(proto.Message):
         TPU_LITE_PODSLICE_V5 = 12708294
         TPU_PODSLICE_V4 = 214467530
         URL_MAPS = 378660743
+        VARIABLE_IPV6_PUBLIC_DELEGATED_PREFIXES = 128400161
         VPN_GATEWAYS = 35620282
         VPN_TUNNELS = 104327296
         XPN_SERVICE_PROJECTS = 95191981
@@ -96745,8 +96754,9 @@ class SnapshotSettingsStorageLocationSettings(proto.Message):
     Attributes:
         locations (MutableMapping[str, google.cloud.compute_v1.types.SnapshotSettingsStorageLocationSettingsStorageLocationPreference]):
             When the policy is SPECIFIC_LOCATIONS, snapshots will be
-            stored in the locations listed in this field. Keys are GCS
-            bucket locations.
+            stored in the locations listed in this field. Keys are Cloud
+            Storage bucket locations. Only one location can be
+            specified.
         policy (str):
             The chosen location policy.
             Check the Policy enum for the list of possible
@@ -96766,9 +96776,10 @@ class SnapshotSettingsStorageLocationSettings(proto.Message):
                 originating disk. No additional parameters are
                 needed.
             NEAREST_MULTI_REGION (212467515):
-                Store snapshot to the nearest multi region
-                GCS bucket, relative to the originating disk. No
-                additional parameters are needed.
+                Store snapshot in the nearest multi region
+                Cloud Storage bucket, relative to the
+                originating disk. No additional parameters are
+                needed.
             SPECIFIC_LOCATIONS (280093809):
                 Store snapshot in the specific locations, as specified by
                 the user. The list of regions to store must be defined under
@@ -96803,7 +96814,8 @@ class SnapshotSettingsStorageLocationSettingsStorageLocationPreference(proto.Mes
     Attributes:
         name (str):
             Name of the location. It should be one of the
-            GCS buckets.
+            Cloud Storage buckets. Only one location can be
+            specified.
 
             This field is a member of `oneof`_ ``_name``.
     """
