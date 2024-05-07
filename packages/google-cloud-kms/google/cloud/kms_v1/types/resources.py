@@ -665,6 +665,9 @@ class CryptoKeyVersion(proto.Message):
                 supported for HSM protection level. Other hash functions can
                 also be used:
                 https://cloud.google.com/kms/docs/create-validate-signatures#ecdsa_support_for_other_hash_algorithms
+            EC_SIGN_ED25519 (40):
+                EdDSA on the Curve25519 in pure mode (taking
+                data as input).
             HMAC_SHA256 (32):
                 HMAC-SHA256 signing with a 256 bit key.
             HMAC_SHA1 (33):
@@ -708,6 +711,7 @@ class CryptoKeyVersion(proto.Message):
         EC_SIGN_P256_SHA256 = 12
         EC_SIGN_P384_SHA384 = 13
         EC_SIGN_SECP256K1_SHA256 = 31
+        EC_SIGN_ED25519 = 40
         HMAC_SHA256 = 32
         HMAC_SHA1 = 33
         HMAC_SHA384 = 34
