@@ -29,18 +29,27 @@ __protobuf__ = proto.module(
         "SessionExclusionDuration",
         "EventCriteriaScoping",
         "EventExclusionDuration",
+        "MetricAggregation",
         "MetricType",
+        "RestrictedMetricType",
         "DateRange",
         "Dimension",
         "DimensionExpression",
+        "Metric",
         "FilterExpression",
         "FilterExpressionList",
         "Filter",
         "StringFilter",
         "InListFilter",
         "NumericFilter",
+        "OrderBy",
         "BetweenFilter",
         "NumericValue",
+        "CohortSpec",
+        "Cohort",
+        "CohortsRange",
+        "CohortReportSettings",
+        "ResponseMetaData",
         "DimensionHeader",
         "MetricHeader",
         "Row",
@@ -204,6 +213,28 @@ class EventExclusionDuration(proto.Enum):
     EVENT_EXCLUSION_PERMANENT = 1
 
 
+class MetricAggregation(proto.Enum):
+    r"""Represents aggregation of metrics.
+
+    Values:
+        METRIC_AGGREGATION_UNSPECIFIED (0):
+            Unspecified operator.
+        TOTAL (1):
+            SUM operator.
+        MINIMUM (5):
+            Minimum operator.
+        MAXIMUM (6):
+            Maximum operator.
+        COUNT (4):
+            Count operator.
+    """
+    METRIC_AGGREGATION_UNSPECIFIED = 0
+    TOTAL = 1
+    MINIMUM = 5
+    MAXIMUM = 6
+    COUNT = 4
+
+
 class MetricType(proto.Enum):
     r"""A metric's value type.
 
@@ -258,6 +289,23 @@ class MetricType(proto.Enum):
     TYPE_MILES = 11
     TYPE_METERS = 12
     TYPE_KILOMETERS = 13
+
+
+class RestrictedMetricType(proto.Enum):
+    r"""Categories of data that you may be restricted from viewing on
+    certain GA4 properties.
+
+    Values:
+        RESTRICTED_METRIC_TYPE_UNSPECIFIED (0):
+            Unspecified type.
+        COST_DATA (1):
+            Cost metrics such as ``adCost``.
+        REVENUE_DATA (2):
+            Revenue metrics such as ``purchaseRevenue``.
+    """
+    RESTRICTED_METRIC_TYPE_UNSPECIFIED = 0
+    COST_DATA = 1
+    REVENUE_DATA = 2
 
 
 class DateRange(proto.Message):
@@ -439,6 +487,59 @@ class DimensionExpression(proto.Message):
         number=6,
         oneof="one_expression",
         message=ConcatenateExpression,
+    )
+
+
+class Metric(proto.Message):
+    r"""The quantitative measurements of a report. For example, the metric
+    ``eventCount`` is the total number of events. Requests are allowed
+    up to 10 metrics.
+
+    Attributes:
+        name (str):
+            The name of the metric. See the `API
+            Metrics <https://developers.google.com/analytics/devguides/reporting/data/v1/api-schema#metrics>`__
+            for the list of metric names supported by core reporting
+            methods such as ``runReport`` and ``batchRunReports``. See
+            `Realtime
+            Metrics <https://developers.google.com/analytics/devguides/reporting/data/v1/realtime-api-schema#metrics>`__
+            for the list of metric names supported by the
+            ``runRealtimeReport`` method. See `Funnel
+            Metrics <https://developers.google.com/analytics/devguides/reporting/data/v1/exploration-api-schema#metrics>`__
+            for the list of metric names supported by the
+            ``runFunnelReport`` method.
+
+            If ``expression`` is specified, ``name`` can be any string
+            that you would like within the allowed character set. For
+            example if ``expression`` is ``screenPageViews/sessions``,
+            you could call that metric's name = ``viewsPerSession``.
+            Metric names that you choose must match the regular
+            expression ``^[a-zA-Z0-9_]$``.
+
+            Metrics are referenced by ``name`` in ``metricFilter``,
+            ``orderBys``, and metric ``expression``.
+        expression (str):
+            A mathematical expression for derived metrics. For example,
+            the metric Event count per user is
+            ``eventCount/totalUsers``.
+        invisible (bool):
+            Indicates if a metric is invisible in the report response.
+            If a metric is invisible, the metric will not produce a
+            column in the response, but can be used in ``metricFilter``,
+            ``orderBys``, or a metric ``expression``.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    expression: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    invisible: bool = proto.Field(
+        proto.BOOL,
+        number=3,
     )
 
 
@@ -702,6 +803,109 @@ class NumericFilter(proto.Message):
     )
 
 
+class OrderBy(proto.Message):
+    r"""Order bys define how rows will be sorted in the response. For
+    example, ordering rows by descending event count is one
+    ordering, and ordering rows by the event name string is a
+    different ordering.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        metric (google.analytics.data_v1alpha.types.OrderBy.MetricOrderBy):
+            Sorts results by a metric's values.
+
+            This field is a member of `oneof`_ ``one_order_by``.
+        dimension (google.analytics.data_v1alpha.types.OrderBy.DimensionOrderBy):
+            Sorts results by a dimension's values.
+
+            This field is a member of `oneof`_ ``one_order_by``.
+        desc (bool):
+            If true, sorts by descending order.
+    """
+
+    class MetricOrderBy(proto.Message):
+        r"""Sorts by metric values.
+
+        Attributes:
+            metric_name (str):
+                A metric name in the request to order by.
+        """
+
+        metric_name: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+
+    class DimensionOrderBy(proto.Message):
+        r"""Sorts by dimension values.
+
+        Attributes:
+            dimension_name (str):
+                A dimension name in the request to order by.
+            order_type (google.analytics.data_v1alpha.types.OrderBy.DimensionOrderBy.OrderType):
+                Controls the rule for dimension value
+                ordering.
+        """
+
+        class OrderType(proto.Enum):
+            r"""Rule to order the string dimension values by.
+
+            Values:
+                ORDER_TYPE_UNSPECIFIED (0):
+                    Unspecified.
+                ALPHANUMERIC (1):
+                    Alphanumeric sort by Unicode code point. For
+                    example, "2" < "A" < "X" < "b" < "z".
+                CASE_INSENSITIVE_ALPHANUMERIC (2):
+                    Case insensitive alphanumeric sort by lower
+                    case Unicode code point. For example, "2" < "A"
+                    < "b" < "X" < "z".
+                NUMERIC (3):
+                    Dimension values are converted to numbers before sorting.
+                    For example in NUMERIC sort, "25" < "100", and in
+                    ``ALPHANUMERIC`` sort, "100" < "25". Non-numeric dimension
+                    values all have equal ordering value below all numeric
+                    values.
+            """
+            ORDER_TYPE_UNSPECIFIED = 0
+            ALPHANUMERIC = 1
+            CASE_INSENSITIVE_ALPHANUMERIC = 2
+            NUMERIC = 3
+
+        dimension_name: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        order_type: "OrderBy.DimensionOrderBy.OrderType" = proto.Field(
+            proto.ENUM,
+            number=2,
+            enum="OrderBy.DimensionOrderBy.OrderType",
+        )
+
+    metric: MetricOrderBy = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        oneof="one_order_by",
+        message=MetricOrderBy,
+    )
+    dimension: DimensionOrderBy = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="one_order_by",
+        message=DimensionOrderBy,
+    )
+    desc: bool = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
+
+
 class BetweenFilter(proto.Message):
     r"""To express that the result needs to be between two numbers
     (inclusive).
@@ -755,6 +959,372 @@ class NumericValue(proto.Message):
         proto.DOUBLE,
         number=2,
         oneof="one_value",
+    )
+
+
+class CohortSpec(proto.Message):
+    r"""The specification of cohorts for a cohort report.
+
+    Cohort reports create a time series of user retention for the
+    cohort. For example, you could select the cohort of users that were
+    acquired in the first week of September and follow that cohort for
+    the next six weeks. Selecting the users acquired in the first week
+    of September cohort is specified in the ``cohort`` object. Following
+    that cohort for the next six weeks is specified in the
+    ``cohortsRange`` object.
+
+    For examples, see `Cohort Report
+    Examples <https://developers.google.com/analytics/devguides/reporting/data/v1/advanced#cohort_report_examples>`__.
+
+    The report response could show a weekly time series where say your
+    app has retained 60% of this cohort after three weeks and 25% of
+    this cohort after six weeks. These two percentages can be calculated
+    by the metric ``cohortActiveUsers/cohortTotalUsers`` and will be
+    separate rows in the report.
+
+    Attributes:
+        cohorts (MutableSequence[google.analytics.data_v1alpha.types.Cohort]):
+            Defines the selection criteria to group users
+            into cohorts.
+            Most cohort reports define only a single cohort.
+            If multiple cohorts are specified, each cohort
+            can be recognized in the report by their name.
+        cohorts_range (google.analytics.data_v1alpha.types.CohortsRange):
+            Cohort reports follow cohorts over an
+            extended reporting date range. This range
+            specifies an offset duration to follow the
+            cohorts over.
+        cohort_report_settings (google.analytics.data_v1alpha.types.CohortReportSettings):
+            Optional settings for a cohort report.
+    """
+
+    cohorts: MutableSequence["Cohort"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Cohort",
+    )
+    cohorts_range: "CohortsRange" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="CohortsRange",
+    )
+    cohort_report_settings: "CohortReportSettings" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="CohortReportSettings",
+    )
+
+
+class Cohort(proto.Message):
+    r"""Defines a cohort selection criteria. A cohort is a group of users
+    who share a common characteristic. For example, users with the same
+    ``firstSessionDate`` belong to the same cohort.
+
+    Attributes:
+        name (str):
+            Assigns a name to this cohort. The dimension ``cohort`` is
+            valued to this name in a report response. If set, cannot
+            begin with ``cohort_`` or ``RESERVED_``. If not set, cohorts
+            are named by their zero based index ``cohort_0``,
+            ``cohort_1``, etc.
+        dimension (str):
+            Dimension used by the cohort. Required and only supports
+            ``firstSessionDate``.
+        date_range (google.analytics.data_v1alpha.types.DateRange):
+            The cohort selects users whose first touch date is between
+            start date and end date defined in the ``dateRange``. This
+            ``dateRange`` does not specify the full date range of event
+            data that is present in a cohort report. In a cohort report,
+            this ``dateRange`` is extended by the granularity and offset
+            present in the ``cohortsRange``; event data for the extended
+            reporting date range is present in a cohort report.
+
+            In a cohort request, this ``dateRange`` is required and the
+            ``dateRanges`` in the ``RunReportRequest`` or
+            ``RunPivotReportRequest`` must be unspecified.
+
+            This ``dateRange`` should generally be aligned with the
+            cohort's granularity. If ``CohortsRange`` uses daily
+            granularity, this ``dateRange`` can be a single day. If
+            ``CohortsRange`` uses weekly granularity, this ``dateRange``
+            can be aligned to a week boundary, starting at Sunday and
+            ending Saturday. If ``CohortsRange`` uses monthly
+            granularity, this ``dateRange`` can be aligned to a month,
+            starting at the first and ending on the last day of the
+            month.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    dimension: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    date_range: "DateRange" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="DateRange",
+    )
+
+
+class CohortsRange(proto.Message):
+    r"""Configures the extended reporting date range for a cohort
+    report. Specifies an offset duration to follow the cohorts over.
+
+    Attributes:
+        granularity (google.analytics.data_v1alpha.types.CohortsRange.Granularity):
+            Required. The granularity used to interpret the
+            ``startOffset`` and ``endOffset`` for the extended reporting
+            date range for a cohort report.
+        start_offset (int):
+            ``startOffset`` specifies the start date of the extended
+            reporting date range for a cohort report. ``startOffset`` is
+            commonly set to 0 so that reports contain data from the
+            acquisition of the cohort forward.
+
+            If ``granularity`` is ``DAILY``, the ``startDate`` of the
+            extended reporting date range is ``startDate`` of the cohort
+            plus ``startOffset`` days.
+
+            If ``granularity`` is ``WEEKLY``, the ``startDate`` of the
+            extended reporting date range is ``startDate`` of the cohort
+            plus ``startOffset * 7`` days.
+
+            If ``granularity`` is ``MONTHLY``, the ``startDate`` of the
+            extended reporting date range is ``startDate`` of the cohort
+            plus ``startOffset * 30`` days.
+        end_offset (int):
+            Required. ``endOffset`` specifies the end date of the
+            extended reporting date range for a cohort report.
+            ``endOffset`` can be any positive integer but is commonly
+            set to 5 to 10 so that reports contain data on the cohort
+            for the next several granularity time periods.
+
+            If ``granularity`` is ``DAILY``, the ``endDate`` of the
+            extended reporting date range is ``endDate`` of the cohort
+            plus ``endOffset`` days.
+
+            If ``granularity`` is ``WEEKLY``, the ``endDate`` of the
+            extended reporting date range is ``endDate`` of the cohort
+            plus ``endOffset * 7`` days.
+
+            If ``granularity`` is ``MONTHLY``, the ``endDate`` of the
+            extended reporting date range is ``endDate`` of the cohort
+            plus ``endOffset * 30`` days.
+    """
+
+    class Granularity(proto.Enum):
+        r"""The granularity used to interpret the ``startOffset`` and
+        ``endOffset`` for the extended reporting date range for a cohort
+        report.
+
+        Values:
+            GRANULARITY_UNSPECIFIED (0):
+                Should never be specified.
+            DAILY (1):
+                Daily granularity. Commonly used if the cohort's
+                ``dateRange`` is a single day and the request contains
+                ``cohortNthDay``.
+            WEEKLY (2):
+                Weekly granularity. Commonly used if the cohort's
+                ``dateRange`` is a week in duration (starting on Sunday and
+                ending on Saturday) and the request contains
+                ``cohortNthWeek``.
+            MONTHLY (3):
+                Monthly granularity. Commonly used if the cohort's
+                ``dateRange`` is a month in duration and the request
+                contains ``cohortNthMonth``.
+        """
+        GRANULARITY_UNSPECIFIED = 0
+        DAILY = 1
+        WEEKLY = 2
+        MONTHLY = 3
+
+    granularity: Granularity = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=Granularity,
+    )
+    start_offset: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    end_offset: int = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+
+
+class CohortReportSettings(proto.Message):
+    r"""Optional settings of a cohort report.
+
+    Attributes:
+        accumulate (bool):
+            If true, accumulates the result from first touch day to the
+            end day. Not supported in ``RunReportRequest``.
+    """
+
+    accumulate: bool = proto.Field(
+        proto.BOOL,
+        number=1,
+    )
+
+
+class ResponseMetaData(proto.Message):
+    r"""Response's metadata carrying additional information about the
+    report content.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        data_loss_from_other_row (bool):
+            If true, indicates some buckets of dimension combinations
+            are rolled into "(other)" row. This can happen for high
+            cardinality reports.
+
+            The metadata parameter dataLossFromOtherRow is populated
+            based on the aggregated data table used in the report. The
+            parameter will be accurately populated regardless of the
+            filters and limits in the report.
+
+            For example, the (other) row could be dropped from the
+            report because the request contains a filter on
+            sessionSource = google. This parameter will still be
+            populated if data loss from other row was present in the
+            input aggregate data used to generate this report.
+
+            To learn more, see `About the (other) row and data
+            sampling <https://support.google.com/analytics/answer/13208658#reports>`__.
+        schema_restriction_response (google.analytics.data_v1alpha.types.ResponseMetaData.SchemaRestrictionResponse):
+            Describes the schema restrictions actively enforced in
+            creating this report. To learn more, see `Access and
+            data-restriction
+            management <https://support.google.com/analytics/answer/10851388>`__.
+
+            This field is a member of `oneof`_ ``_schema_restriction_response``.
+        currency_code (str):
+            The currency code used in this report. Intended to be used
+            in formatting currency metrics like ``purchaseRevenue`` for
+            visualization. If currency_code was specified in the
+            request, this response parameter will echo the request
+            parameter; otherwise, this response parameter is the
+            property's current currency_code.
+
+            Currency codes are string encodings of currency types from
+            the ISO 4217 standard
+            (https://en.wikipedia.org/wiki/ISO_4217); for example "USD",
+            "EUR", "JPY". To learn more, see
+            https://support.google.com/analytics/answer/9796179.
+
+            This field is a member of `oneof`_ ``_currency_code``.
+        time_zone (str):
+            The property's current timezone. Intended to be used to
+            interpret time-based dimensions like ``hour`` and
+            ``minute``. Formatted as strings from the IANA Time Zone
+            database (https://www.iana.org/time-zones); for example
+            "America/New_York" or "Asia/Tokyo".
+
+            This field is a member of `oneof`_ ``_time_zone``.
+        empty_reason (str):
+            If empty reason is specified, the report is
+            empty for this reason.
+
+            This field is a member of `oneof`_ ``_empty_reason``.
+        subject_to_thresholding (bool):
+            If ``subjectToThresholding`` is true, this report is subject
+            to thresholding and only returns data that meets the minimum
+            aggregation thresholds. It is possible for a request to be
+            subject to thresholding thresholding and no data is absent
+            from the report, and this happens when all data is above the
+            thresholds. To learn more, see `Data
+            thresholds <https://support.google.com/analytics/answer/9383630>`__
+            and `About Demographics and
+            Interests <https://support.google.com/analytics/answer/2799357>`__.
+
+            This field is a member of `oneof`_ ``_subject_to_thresholding``.
+    """
+
+    class SchemaRestrictionResponse(proto.Message):
+        r"""The schema restrictions actively enforced in creating this report.
+        To learn more, see `Access and data-restriction
+        management <https://support.google.com/analytics/answer/10851388>`__.
+
+        Attributes:
+            active_metric_restrictions (MutableSequence[google.analytics.data_v1alpha.types.ResponseMetaData.SchemaRestrictionResponse.ActiveMetricRestriction]):
+                All restrictions actively enforced in creating the report.
+                For example, ``purchaseRevenue`` always has the restriction
+                type ``REVENUE_DATA``. However, this active response
+                restriction is only populated if the user's custom role
+                disallows access to ``REVENUE_DATA``.
+        """
+
+        class ActiveMetricRestriction(proto.Message):
+            r"""A metric actively restricted in creating the report.
+
+            .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+            Attributes:
+                metric_name (str):
+                    The name of the restricted metric.
+
+                    This field is a member of `oneof`_ ``_metric_name``.
+                restricted_metric_types (MutableSequence[google.analytics.data_v1alpha.types.RestrictedMetricType]):
+                    The reason for this metric's restriction.
+            """
+
+            metric_name: str = proto.Field(
+                proto.STRING,
+                number=1,
+                optional=True,
+            )
+            restricted_metric_types: MutableSequence[
+                "RestrictedMetricType"
+            ] = proto.RepeatedField(
+                proto.ENUM,
+                number=2,
+                enum="RestrictedMetricType",
+            )
+
+        active_metric_restrictions: MutableSequence[
+            "ResponseMetaData.SchemaRestrictionResponse.ActiveMetricRestriction"
+        ] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="ResponseMetaData.SchemaRestrictionResponse.ActiveMetricRestriction",
+        )
+
+    data_loss_from_other_row: bool = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
+    schema_restriction_response: SchemaRestrictionResponse = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        optional=True,
+        message=SchemaRestrictionResponse,
+    )
+    currency_code: str = proto.Field(
+        proto.STRING,
+        number=5,
+        optional=True,
+    )
+    time_zone: str = proto.Field(
+        proto.STRING,
+        number=6,
+        optional=True,
+    )
+    empty_reason: str = proto.Field(
+        proto.STRING,
+        number=7,
+        optional=True,
+    )
+    subject_to_thresholding: bool = proto.Field(
+        proto.BOOL,
+        number=8,
+        optional=True,
     )
 
 
