@@ -46,6 +46,14 @@ __protobuf__ = proto.module(
         "AudienceDimensionValue",
         "RunFunnelReportRequest",
         "RunFunnelReportResponse",
+        "ReportTask",
+        "CreateReportTaskRequest",
+        "ReportTaskMetadata",
+        "QueryReportTaskRequest",
+        "QueryReportTaskResponse",
+        "GetReportTaskRequest",
+        "ListReportTasksRequest",
+        "ListReportTasksResponse",
     },
 )
 
@@ -1128,6 +1136,526 @@ class RunFunnelReportResponse(proto.Message):
     kind: str = proto.Field(
         proto.STRING,
         number=4,
+    )
+
+
+class ReportTask(proto.Message):
+    r"""A specific report task configuration.
+
+    Attributes:
+        name (str):
+            Output only. Identifier. The report task resource name
+            assigned during creation. Format:
+            ``properties/{property}/reportTasks/{report_task}``
+        report_definition (google.analytics.data_v1alpha.types.ReportTask.ReportDefinition):
+            Optional. A report definition to fetch report
+            data, which describes the structure of a report.
+            It typically includes the fields that will be
+            included in the report and the criteria that
+            will be used to filter the data.
+        report_metadata (google.analytics.data_v1alpha.types.ReportTask.ReportMetadata):
+            Output only. The report metadata for a
+            specific report task, which provides information
+            about a report.  It typically includes the
+            following information: the resource name of the
+            report, the state of the report, the timestamp
+            the report was created, etc,
+    """
+
+    class ReportDefinition(proto.Message):
+        r"""The definition of how a report should be run.
+
+        Attributes:
+            dimensions (MutableSequence[google.analytics.data_v1alpha.types.Dimension]):
+                Optional. The dimensions requested and
+                displayed.
+            metrics (MutableSequence[google.analytics.data_v1alpha.types.Metric]):
+                Optional. The metrics requested and
+                displayed.
+            date_ranges (MutableSequence[google.analytics.data_v1alpha.types.DateRange]):
+                Optional. Date ranges of data to read. If multiple date
+                ranges are requested, each response row will contain a zero
+                based date range index. If two date ranges overlap, the
+                event data for the overlapping days is included in the
+                response rows for both date ranges. In a cohort request,
+                this ``dateRanges`` must be unspecified.
+            dimension_filter (google.analytics.data_v1alpha.types.FilterExpression):
+                Optional. Dimension filters let you ask for only specific
+                dimension values in the report. To learn more, see
+                `Fundamentals of Dimension
+                Filters <https://developers.google.com/analytics/devguides/reporting/data/v1/basics#dimension_filters>`__
+                for examples. Metrics cannot be used in this filter.
+            metric_filter (google.analytics.data_v1alpha.types.FilterExpression):
+                Optional. The filter clause of metrics.
+                Applied after aggregating the report's rows,
+                similar to SQL having-clause. Dimensions cannot
+                be used in this filter.
+            offset (int):
+                Optional. The row count of the start row from Google
+                Analytics Storage. The first row is counted as row 0.
+
+                When creating a report task, the ``offset`` and ``limit``
+                parameters define the subset of data rows from Google
+                Analytics storage to be included in the generated report.
+                For example, if there are a total of 300,000 rows in Google
+                Analytics storage, the initial report task may have the
+                first 10,000 rows with a limit of 10,000 and an offset of 0.
+                Subsequently, another report task could cover the next
+                10,000 rows with a limit of 10,000 and an offset of 10,000.
+            limit (int):
+                Optional. The number of rows to return in the Report. If
+                unspecified, 10,000 rows are returned. The API returns a
+                maximum of 250,000 rows per request, no matter how many you
+                ask for. ``limit`` must be positive.
+
+                The API can also return fewer rows than the requested
+                ``limit``, if there aren't as many dimension values as the
+                ``limit``. For instance, there are fewer than 300 possible
+                values for the dimension ``country``, so when reporting on
+                only ``country``, you can't get more than 300 rows, even if
+                you set ``limit`` to a higher value.
+            metric_aggregations (MutableSequence[google.analytics.data_v1alpha.types.MetricAggregation]):
+                Optional. Aggregation of metrics. Aggregated metric values
+                will be shown in rows where the dimension_values are set to
+                "RESERVED_(MetricAggregation)".
+            order_bys (MutableSequence[google.analytics.data_v1alpha.types.OrderBy]):
+                Optional. Specifies how rows are ordered in
+                the response.
+            currency_code (str):
+                Optional. A currency code in ISO4217 format,
+                such as "AED", "USD", "JPY". If the field is
+                empty, the report uses the property's default
+                currency.
+            cohort_spec (google.analytics.data_v1alpha.types.CohortSpec):
+                Optional. Cohort group associated with this
+                request. If there is a cohort group in the
+                request the 'cohort' dimension must be present.
+            keep_empty_rows (bool):
+                Optional. If false or unspecified, each row with all metrics
+                equal to 0 will not be returned. If true, these rows will be
+                returned if they are not separately removed by a filter.
+
+                Regardless of this ``keep_empty_rows`` setting, only data
+                recorded by the Google Analytics (GA4) property can be
+                displayed in a report.
+
+                For example if a property never logs a ``purchase`` event,
+                then a query for the ``eventName`` dimension and
+                ``eventCount`` metric will not have a row containing
+                eventName: "purchase" and eventCount: 0.
+        """
+
+        dimensions: MutableSequence[data.Dimension] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message=data.Dimension,
+        )
+        metrics: MutableSequence[data.Metric] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=3,
+            message=data.Metric,
+        )
+        date_ranges: MutableSequence[data.DateRange] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=4,
+            message=data.DateRange,
+        )
+        dimension_filter: data.FilterExpression = proto.Field(
+            proto.MESSAGE,
+            number=5,
+            message=data.FilterExpression,
+        )
+        metric_filter: data.FilterExpression = proto.Field(
+            proto.MESSAGE,
+            number=6,
+            message=data.FilterExpression,
+        )
+        offset: int = proto.Field(
+            proto.INT64,
+            number=7,
+        )
+        limit: int = proto.Field(
+            proto.INT64,
+            number=8,
+        )
+        metric_aggregations: MutableSequence[
+            data.MetricAggregation
+        ] = proto.RepeatedField(
+            proto.ENUM,
+            number=9,
+            enum=data.MetricAggregation,
+        )
+        order_bys: MutableSequence[data.OrderBy] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=10,
+            message=data.OrderBy,
+        )
+        currency_code: str = proto.Field(
+            proto.STRING,
+            number=11,
+        )
+        cohort_spec: data.CohortSpec = proto.Field(
+            proto.MESSAGE,
+            number=12,
+            message=data.CohortSpec,
+        )
+        keep_empty_rows: bool = proto.Field(
+            proto.BOOL,
+            number=13,
+        )
+
+    class ReportMetadata(proto.Message):
+        r"""The report metadata for a specific report task.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            state (google.analytics.data_v1alpha.types.ReportTask.ReportMetadata.State):
+                Output only. The current state for this
+                report task.
+
+                This field is a member of `oneof`_ ``_state``.
+            begin_creating_time (google.protobuf.timestamp_pb2.Timestamp):
+                Output only. The time when ``CreateReportTask`` was called
+                and the report began the ``CREATING`` state.
+
+                This field is a member of `oneof`_ ``_begin_creating_time``.
+            creation_quota_tokens_charged (int):
+                Output only. The total quota tokens charged during creation
+                of the report. Because this token count is based on activity
+                from the ``CREATING`` state, this tokens charge will be
+                fixed once a report task enters the ``ACTIVE`` or ``FAILED``
+                state.
+            task_row_count (int):
+                Output only. The total number of rows in the report result.
+                This field will be populated when the state is active. You
+                can utilize ``task_row_count`` for pagination within the
+                confines of their existing report.
+
+                This field is a member of `oneof`_ ``_task_row_count``.
+            error_message (str):
+                Output only. Error message is populated if a
+                report task fails during creation.
+
+                This field is a member of `oneof`_ ``_error_message``.
+            total_row_count (int):
+                Output only. The total number of rows in Google Analytics
+                storage. If you want to query additional data rows beyond
+                the current report, they can initiate a new report task
+                based on the ``total_row_count``.
+
+                The ``task_row_count`` represents the number of rows
+                specifically pertaining to the current report, whereas
+                ``total_row_count`` encompasses the total count of rows
+                across all data retrieved from Google Analytics storage.
+
+                For example, suppose the current report's ``task_row_count``
+                is 20, displaying the data from the first 20 rows.
+                Simultaneously, the ``total_row_count`` is 30, indicating
+                the presence of data for all 30 rows. The ``task_row_count``
+                can be utilizated to paginate through the initial 20 rows.
+                To expand the report and include data from all 30 rows, a
+                new report task can be created using the total_row_count to
+                access the full set of 30 rows' worth of data.
+
+                This field is a member of `oneof`_ ``_total_row_count``.
+        """
+
+        class State(proto.Enum):
+            r"""The processing state.
+
+            Values:
+                STATE_UNSPECIFIED (0):
+                    Unspecified state will never be used.
+                CREATING (1):
+                    The report is currently creating and will be
+                    available in the future. Creating occurs
+                    immediately after the CreateReport call.
+                ACTIVE (2):
+                    The report is fully created and ready for
+                    querying.
+                FAILED (3):
+                    The report failed to be created.
+            """
+            STATE_UNSPECIFIED = 0
+            CREATING = 1
+            ACTIVE = 2
+            FAILED = 3
+
+        state: "ReportTask.ReportMetadata.State" = proto.Field(
+            proto.ENUM,
+            number=1,
+            optional=True,
+            enum="ReportTask.ReportMetadata.State",
+        )
+        begin_creating_time: timestamp_pb2.Timestamp = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            optional=True,
+            message=timestamp_pb2.Timestamp,
+        )
+        creation_quota_tokens_charged: int = proto.Field(
+            proto.INT32,
+            number=3,
+        )
+        task_row_count: int = proto.Field(
+            proto.INT32,
+            number=4,
+            optional=True,
+        )
+        error_message: str = proto.Field(
+            proto.STRING,
+            number=5,
+            optional=True,
+        )
+        total_row_count: int = proto.Field(
+            proto.INT32,
+            number=6,
+            optional=True,
+        )
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    report_definition: ReportDefinition = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=ReportDefinition,
+    )
+    report_metadata: ReportMetadata = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=ReportMetadata,
+    )
+
+
+class CreateReportTaskRequest(proto.Message):
+    r"""A request to create a report task.
+
+    Attributes:
+        parent (str):
+            Required. The parent resource where this report task will be
+            created. Format: ``properties/{propertyId}``
+        report_task (google.analytics.data_v1alpha.types.ReportTask):
+            Required. The report task configuration to
+            create.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    report_task: "ReportTask" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="ReportTask",
+    )
+
+
+class ReportTaskMetadata(proto.Message):
+    r"""Represents the metadata of a long-running operation.
+    Currently, this metadata is blank.
+
+    """
+
+
+class QueryReportTaskRequest(proto.Message):
+    r"""A request to fetch the report content for a report task.
+
+    Attributes:
+        name (str):
+            Required. The report source name. Format:
+            ``properties/{property}/reportTasks/{report}``
+        offset (int):
+            Optional. The row count of the start row in the report. The
+            first row is counted as row 0.
+
+            When paging, the first request does not specify offset; or
+            equivalently, sets offset to 0; the first request returns
+            the first ``limit`` of rows. The second request sets offset
+            to the ``limit`` of the first request; the second request
+            returns the second ``limit`` of rows.
+
+            To learn more about this pagination parameter, see
+            `Pagination <https://developers.google.com/analytics/devguides/reporting/data/v1/basics#pagination>`__.
+        limit (int):
+            Optional. The number of rows to return from the report. If
+            unspecified, 10,000 rows are returned. The API returns a
+            maximum of 250,000 rows per request, no matter how many you
+            ask for. ``limit`` must be positive.
+
+            The API can also return fewer rows than the requested
+            ``limit``, if there aren't as many dimension values as the
+            ``limit``. The number of rows available to a
+            QueryReportTaskRequest is further limited by the limit of
+            the associated ReportTask. A query can retrieve at most
+            ReportTask.limit rows. For example, if the ReportTask has a
+            limit of 1,000, then a QueryReportTask request with
+            offset=900 and limit=500 will return at most 100 rows.
+
+            To learn more about this pagination parameter, see
+            `Pagination <https://developers.google.com/analytics/devguides/reporting/data/v1/basics#pagination>`__.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    offset: int = proto.Field(
+        proto.INT64,
+        number=2,
+    )
+    limit: int = proto.Field(
+        proto.INT64,
+        number=3,
+    )
+
+
+class QueryReportTaskResponse(proto.Message):
+    r"""The report content corresponding to a report task.
+
+    Attributes:
+        dimension_headers (MutableSequence[google.analytics.data_v1alpha.types.DimensionHeader]):
+            Describes dimension columns. The number of
+            DimensionHeaders and ordering of
+            DimensionHeaders matches the dimensions present
+            in rows.
+        metric_headers (MutableSequence[google.analytics.data_v1alpha.types.MetricHeader]):
+            Describes metric columns. The number of
+            MetricHeaders and ordering of MetricHeaders
+            matches the metrics present in rows.
+        rows (MutableSequence[google.analytics.data_v1alpha.types.Row]):
+            Rows of dimension value combinations and
+            metric values in the report.
+        totals (MutableSequence[google.analytics.data_v1alpha.types.Row]):
+            If requested, the totaled values of metrics.
+        maximums (MutableSequence[google.analytics.data_v1alpha.types.Row]):
+            If requested, the maximum values of metrics.
+        minimums (MutableSequence[google.analytics.data_v1alpha.types.Row]):
+            If requested, the minimum values of metrics.
+        row_count (int):
+            The total number of rows in the query result.
+        metadata (google.analytics.data_v1alpha.types.ResponseMetaData):
+            Metadata for the report.
+    """
+
+    dimension_headers: MutableSequence[data.DimensionHeader] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=data.DimensionHeader,
+    )
+    metric_headers: MutableSequence[data.MetricHeader] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message=data.MetricHeader,
+    )
+    rows: MutableSequence[data.Row] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message=data.Row,
+    )
+    totals: MutableSequence[data.Row] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=4,
+        message=data.Row,
+    )
+    maximums: MutableSequence[data.Row] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=5,
+        message=data.Row,
+    )
+    minimums: MutableSequence[data.Row] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=6,
+        message=data.Row,
+    )
+    row_count: int = proto.Field(
+        proto.INT32,
+        number=7,
+    )
+    metadata: data.ResponseMetaData = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message=data.ResponseMetaData,
+    )
+
+
+class GetReportTaskRequest(proto.Message):
+    r"""A request to retrieve configuration metadata about a specific
+    report task.
+
+    Attributes:
+        name (str):
+            Required. The report task resource name. Format:
+            ``properties/{property}/reportTasks/{report_task}``
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class ListReportTasksRequest(proto.Message):
+    r"""A request to list all report tasks for a property.
+
+    Attributes:
+        parent (str):
+            Required. All report tasks for this property will be listed
+            in the response. Format: ``properties/{property}``
+        page_size (int):
+            Optional. The maximum number of report tasks
+            to return.
+        page_token (str):
+            Optional. A page token, received from a previous
+            ``ListReportTasks`` call. Provide this to retrieve the
+            subsequent page.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class ListReportTasksResponse(proto.Message):
+    r"""A list of all report tasks for a property.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        report_tasks (MutableSequence[google.analytics.data_v1alpha.types.ReportTask]):
+            Each report task for a property.
+        next_page_token (str):
+            A token, which can be sent as ``page_token`` to retrieve the
+            next page. If this field is omitted, there are no subsequent
+            pages.
+
+            This field is a member of `oneof`_ ``_next_page_token``.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    report_tasks: MutableSequence["ReportTask"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="ReportTask",
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+        optional=True,
     )
 
 
