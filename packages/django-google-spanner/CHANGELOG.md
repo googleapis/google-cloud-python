@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.0.1](https://github.com/googleapis/python-spanner-django/compare/v4.0.0...v4.0.1) (2024-05-07)
+
+
+### Bug Fixes
+
+* Fixing README.rst to fix release failure. ([#885](https://github.com/googleapis/python-spanner-django/issues/885)) ([45a486a](https://github.com/googleapis/python-spanner-django/commit/45a486af392d23224f744b029b1132fed0344be2))
+
 ## [4.0.0](https://github.com/googleapis/python-spanner-django/compare/v3.1.0...v4.0.0) (2024-04-25)
 
 
