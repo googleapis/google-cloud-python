@@ -287,3 +287,131 @@ class ListRecurringAudienceListsAsyncPager:
 
     def __repr__(self) -> str:
         return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListReportTasksPager:
+    """A pager for iterating through ``list_report_tasks`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.analytics.data_v1alpha.types.ListReportTasksResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``report_tasks`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListReportTasks`` requests and continue to iterate
+    through the ``report_tasks`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.analytics.data_v1alpha.types.ListReportTasksResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., analytics_data_api.ListReportTasksResponse],
+        request: analytics_data_api.ListReportTasksRequest,
+        response: analytics_data_api.ListReportTasksResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.analytics.data_v1alpha.types.ListReportTasksRequest):
+                The initial request object.
+            response (google.analytics.data_v1alpha.types.ListReportTasksResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = analytics_data_api.ListReportTasksRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[analytics_data_api.ListReportTasksResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __iter__(self) -> Iterator[analytics_data_api.ReportTask]:
+        for page in self.pages:
+            yield from page.report_tasks
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListReportTasksAsyncPager:
+    """A pager for iterating through ``list_report_tasks`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.analytics.data_v1alpha.types.ListReportTasksResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``report_tasks`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListReportTasks`` requests and continue to iterate
+    through the ``report_tasks`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.analytics.data_v1alpha.types.ListReportTasksResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[analytics_data_api.ListReportTasksResponse]],
+        request: analytics_data_api.ListReportTasksRequest,
+        response: analytics_data_api.ListReportTasksResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.analytics.data_v1alpha.types.ListReportTasksRequest):
+                The initial request object.
+            response (google.analytics.data_v1alpha.types.ListReportTasksResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = analytics_data_api.ListReportTasksRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(self) -> AsyncIterator[analytics_data_api.ListReportTasksResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[analytics_data_api.ReportTask]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.report_tasks:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
