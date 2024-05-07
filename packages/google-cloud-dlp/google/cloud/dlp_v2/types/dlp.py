@@ -51,6 +51,7 @@ __protobuf__ = proto.module(
         "EncryptionStatus",
         "NullPercentageLevel",
         "UniquenessScoreLevel",
+        "ConnectionState",
         "ExcludeInfoTypes",
         "ExcludeByHotword",
         "ExclusionRule",
@@ -183,6 +184,15 @@ __protobuf__ = proto.module(
         "DiscoveryGenerationCadence",
         "DiscoveryTableModifiedCadence",
         "DiscoverySchemaModifiedCadence",
+        "CloudSqlDiscoveryTarget",
+        "DiscoveryCloudSqlFilter",
+        "DatabaseResourceCollection",
+        "DatabaseResourceRegexes",
+        "DatabaseResourceRegex",
+        "AllOtherDatabaseResources",
+        "DatabaseResourceReference",
+        "DiscoveryCloudSqlConditions",
+        "DiscoveryCloudSqlGenerationCadence",
         "DiscoveryStartingLocation",
         "DlpJob",
         "GetDlpJobRequest",
@@ -233,6 +243,19 @@ __protobuf__ = proto.module(
         "GetColumnDataProfileRequest",
         "DataProfilePubSubCondition",
         "DataProfilePubSubMessage",
+        "CreateConnectionRequest",
+        "GetConnectionRequest",
+        "ListConnectionsRequest",
+        "SearchConnectionsRequest",
+        "ListConnectionsResponse",
+        "SearchConnectionsResponse",
+        "UpdateConnectionRequest",
+        "DeleteConnectionRequest",
+        "Connection",
+        "SecretManagerCredential",
+        "CloudSqlIamCredential",
+        "CloudSqlProperties",
+        "DeleteTableDataProfileRequest",
         "DataSourceType",
     },
 )
@@ -621,11 +644,17 @@ class ResourceVisibility(proto.Enum):
             Unused.
         RESOURCE_VISIBILITY_PUBLIC (10):
             Visible to any user.
+        RESOURCE_VISIBILITY_INCONCLUSIVE (15):
+            May contain public items.
+            For example, if a GCS bucket has uniform bucket
+            level access disabled, some objects inside it
+            may be public.
         RESOURCE_VISIBILITY_RESTRICTED (20):
             Visible only to specific users.
     """
     RESOURCE_VISIBILITY_UNSPECIFIED = 0
     RESOURCE_VISIBILITY_PUBLIC = 10
+    RESOURCE_VISIBILITY_INCONCLUSIVE = 15
     RESOURCE_VISIBILITY_RESTRICTED = 20
 
 
@@ -693,6 +722,37 @@ class UniquenessScoreLevel(proto.Enum):
     UNIQUENESS_SCORE_LOW = 1
     UNIQUENESS_SCORE_MEDIUM = 2
     UNIQUENESS_SCORE_HIGH = 3
+
+
+class ConnectionState(proto.Enum):
+    r"""State of the connection.
+    New values may be added over time.
+
+    Values:
+        CONNECTION_STATE_UNSPECIFIED (0):
+            Unused
+        MISSING_CREDENTIALS (1):
+            DLP automatically created this connection
+            during an initial scan, and it is awaiting full
+            configuration by a user.
+        AVAILABLE (2):
+            A configured connection that has not
+            encountered any errors.
+        ERROR (3):
+            A configured connection that encountered
+            errors during its last use. It will not be used
+            again until it is set to AVAILABLE.
+
+            If the resolution requires external action, then
+            a request to set the status to AVAILABLE will
+            mark this connection for use. Otherwise, any
+            changes to the connection properties will
+            automatically mark it as AVAILABLE.
+    """
+    CONNECTION_STATE_UNSPECIFIED = 0
+    MISSING_CREDENTIALS = 1
+    AVAILABLE = 2
+    ERROR = 3
 
 
 class ExcludeInfoTypes(proto.Message):
@@ -2450,6 +2510,10 @@ class InspectDataSourceDetails(proto.Message):
             info_type_stats (MutableSequence[google.cloud.dlp_v2.types.InfoTypeStats]):
                 Statistics of how many instances of each info
                 type were found during inspect job.
+            num_rows_processed (int):
+                Number of rows scanned post sampling and time
+                filtering (Applicable for row based stores such
+                as BigQuery).
             hybrid_stats (google.cloud.dlp_v2.types.HybridInspectStatistics):
                 Statistics related to the processing of
                 hybrid inspect.
@@ -2467,6 +2531,10 @@ class InspectDataSourceDetails(proto.Message):
             proto.MESSAGE,
             number=3,
             message="InfoTypeStats",
+        )
+        num_rows_processed: int = proto.Field(
+            proto.INT64,
+            number=5,
         )
         hybrid_stats: "HybridInspectStatistics" = proto.Field(
             proto.MESSAGE,
@@ -2800,6 +2868,8 @@ class InfoTypeCategory(proto.Message):
                 The infoType is typically used in Italy.
             JAPAN (20):
                 The infoType is typically used in Japan.
+            KAZAKHSTAN (47):
+                The infoType is typically used in Kazakhstan.
             KOREA (21):
                 The infoType is typically used in Korea.
             MEXICO (22):
@@ -2820,6 +2890,8 @@ class InfoTypeCategory(proto.Message):
                 The infoType is typically used in Poland.
             PORTUGAL (28):
                 The infoType is typically used in Portugal.
+            RUSSIA (44):
+                The infoType is typically used in Russia.
             SINGAPORE (29):
                 The infoType is typically used in Singapore.
             SOUTH_AFRICA (30):
@@ -2838,6 +2910,8 @@ class InfoTypeCategory(proto.Message):
                 The infoType is typically used in Thailand.
             TURKEY (35):
                 The infoType is typically used in Turkey.
+            UKRAINE (45):
+                The infoType is typically used in Ukraine.
             UNITED_KINGDOM (36):
                 The infoType is typically used in the United
                 Kingdom.
@@ -2846,6 +2920,8 @@ class InfoTypeCategory(proto.Message):
                 States.
             URUGUAY (38):
                 The infoType is typically used in Uruguay.
+            UZBEKISTAN (46):
+                The infoType is typically used in Uzbekistan.
             VENEZUELA (39):
                 The infoType is typically used in Venezuela.
             INTERNAL (40):
@@ -2874,6 +2950,7 @@ class InfoTypeCategory(proto.Message):
         ISRAEL = 18
         ITALY = 19
         JAPAN = 20
+        KAZAKHSTAN = 47
         KOREA = 21
         MEXICO = 22
         THE_NETHERLANDS = 23
@@ -2883,6 +2960,7 @@ class InfoTypeCategory(proto.Message):
         PERU = 26
         POLAND = 27
         PORTUGAL = 28
+        RUSSIA = 44
         SINGAPORE = 29
         SOUTH_AFRICA = 30
         SPAIN = 31
@@ -2891,9 +2969,11 @@ class InfoTypeCategory(proto.Message):
         TAIWAN = 33
         THAILAND = 34
         TURKEY = 35
+        UKRAINE = 45
         UNITED_KINGDOM = 36
         UNITED_STATES = 37
         URUGUAY = 38
+        UZBEKISTAN = 46
         VENEZUELA = 39
         INTERNAL = 40
 
@@ -6333,7 +6413,7 @@ class Error(proto.Message):
 
 
 class JobTrigger(proto.Message):
-    r"""Contains a configuration to make dlp api calls on a repeating
+    r"""Contains a configuration to make api calls on a repeating
     basis. See
     https://cloud.google.com/sensitive-data-protection/docs/concepts-job-triggers
     to learn more.
@@ -7657,12 +7737,12 @@ class DataProfileAction(proto.Message):
             CHANGED_PROFILE (2):
                 Changed one of the following profile metrics:
 
-                -  Table data risk score
-                -  Table sensitivity score
-                -  Table resource visibility
-                -  Table encryption type
-                -  Table predicted infoTypes
-                -  Table other infoTypes
+                -  Data risk score
+                -  Sensitivity score
+                -  Resource visibility
+                -  Encryption type
+                -  Predicted infoTypes
+                -  Other infoTypes
             SCORE_INCREASED (3):
                 Table data risk score or sensitivity score
                 increased.
@@ -7681,10 +7761,16 @@ class DataProfileAction(proto.Message):
 
         Attributes:
             profile_table (google.cloud.dlp_v2.types.BigQueryTable):
-                Store all table and column profiles in an
-                existing table or a new table in an existing
-                dataset. Each re-generation will result in a new
-                row in BigQuery.
+                Store all table and column profiles in an existing table or
+                a new table in an existing dataset. Each re-generation will
+                result in new rows in BigQuery. Data is inserted using
+                `streaming
+                insert <https://cloud.google.com/blog/products/bigquery/life-of-a-bigquery-streaming-insert>`__
+                and so data may be in the buffer for a period of time after
+                the profile has finished. The Pub/Sub notification is sent
+                before the streaming buffer is guaranteed to be written, so
+                data may not be instantly visible to queries by the time
+                your topic receives the Pub/Sub notification.
         """
 
         profile_table: storage.BigQueryTable = proto.Field(
@@ -7725,7 +7811,7 @@ class DataProfileAction(proto.Message):
                 TABLE_PROFILE (1):
                     The full table data profile.
                 RESOURCE_NAME (2):
-                    The resource name of the table.
+                    The name of the profiled resource.
             """
             DETAIL_LEVEL_UNSPECIFIED = 0
             TABLE_PROFILE = 1
@@ -8089,11 +8175,21 @@ class DiscoveryConfig(proto.Message):
 class DiscoveryTarget(proto.Message):
     r"""Target used to match against for Discovery.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         big_query_target (google.cloud.dlp_v2.types.BigQueryDiscoveryTarget):
             BigQuery target for Discovery. The first
+            target to match a table will be the one applied.
+
+            This field is a member of `oneof`_ ``target``.
+        cloud_sql_target (google.cloud.dlp_v2.types.CloudSqlDiscoveryTarget):
+            Cloud SQL target for Discovery. The first
             target to match a table will be the one applied.
 
             This field is a member of `oneof`_ ``target``.
@@ -8104,6 +8200,12 @@ class DiscoveryTarget(proto.Message):
         number=1,
         oneof="target",
         message="BigQueryDiscoveryTarget",
+    )
+    cloud_sql_target: "CloudSqlDiscoveryTarget" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="target",
+        message="CloudSqlDiscoveryTarget",
     )
 
 
@@ -8397,6 +8499,362 @@ class DiscoverySchemaModifiedCadence(proto.Message):
         enum="BigQuerySchemaModification",
     )
     frequency: "DataProfileUpdateFrequency" = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum="DataProfileUpdateFrequency",
+    )
+
+
+class CloudSqlDiscoveryTarget(proto.Message):
+    r"""Target used to match against for discovery with Cloud SQL
+    tables.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        filter (google.cloud.dlp_v2.types.DiscoveryCloudSqlFilter):
+            Required. The tables the discovery cadence
+            applies to. The first target with a matching
+            filter will be the one to apply to a table.
+        conditions (google.cloud.dlp_v2.types.DiscoveryCloudSqlConditions):
+            In addition to matching the filter, these
+            conditions must be true before a profile is
+            generated.
+        generation_cadence (google.cloud.dlp_v2.types.DiscoveryCloudSqlGenerationCadence):
+            How often and when to update profiles. New
+            tables that match both the filter and conditions
+            are scanned as quickly as possible depending on
+            system capacity.
+
+            This field is a member of `oneof`_ ``cadence``.
+        disabled (google.cloud.dlp_v2.types.Disabled):
+            Disable profiling for database resources that
+            match this filter.
+
+            This field is a member of `oneof`_ ``cadence``.
+    """
+
+    filter: "DiscoveryCloudSqlFilter" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="DiscoveryCloudSqlFilter",
+    )
+    conditions: "DiscoveryCloudSqlConditions" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="DiscoveryCloudSqlConditions",
+    )
+    generation_cadence: "DiscoveryCloudSqlGenerationCadence" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        oneof="cadence",
+        message="DiscoveryCloudSqlGenerationCadence",
+    )
+    disabled: "Disabled" = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        oneof="cadence",
+        message="Disabled",
+    )
+
+
+class DiscoveryCloudSqlFilter(proto.Message):
+    r"""Determines what tables will have profiles generated within an
+    organization or project. Includes the ability to filter by
+    regular expression patterns on project ID, location, instance,
+    database, and database resource name.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        collection (google.cloud.dlp_v2.types.DatabaseResourceCollection):
+            A specific set of database resources for this
+            filter to apply to.
+
+            This field is a member of `oneof`_ ``filter``.
+        others (google.cloud.dlp_v2.types.AllOtherDatabaseResources):
+            Catch-all. This should always be the last
+            target in the list because anything above it
+            will apply first. Should only appear once in a
+            configuration. If none is specified, a default
+            one will be added automatically.
+
+            This field is a member of `oneof`_ ``filter``.
+        database_resource_reference (google.cloud.dlp_v2.types.DatabaseResourceReference):
+            The database resource to scan. Targets
+            including this can only include one target (the
+            target with this database resource reference).
+
+            This field is a member of `oneof`_ ``filter``.
+    """
+
+    collection: "DatabaseResourceCollection" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        oneof="filter",
+        message="DatabaseResourceCollection",
+    )
+    others: "AllOtherDatabaseResources" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="filter",
+        message="AllOtherDatabaseResources",
+    )
+    database_resource_reference: "DatabaseResourceReference" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        oneof="filter",
+        message="DatabaseResourceReference",
+    )
+
+
+class DatabaseResourceCollection(proto.Message):
+    r"""Match database resources using regex filters. Examples of
+    database resources are tables, views, and stored procedures.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        include_regexes (google.cloud.dlp_v2.types.DatabaseResourceRegexes):
+            A collection of regular expressions to match
+            a database resource against.
+
+            This field is a member of `oneof`_ ``pattern``.
+    """
+
+    include_regexes: "DatabaseResourceRegexes" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        oneof="pattern",
+        message="DatabaseResourceRegexes",
+    )
+
+
+class DatabaseResourceRegexes(proto.Message):
+    r"""A collection of regular expressions to determine what
+    database resources to match against.
+
+    Attributes:
+        patterns (MutableSequence[google.cloud.dlp_v2.types.DatabaseResourceRegex]):
+            A group of regular expression patterns to
+            match against one or more database resources.
+            Maximum of 100 entries. The sum of all regular
+            expression's length can't exceed 10 KiB.
+    """
+
+    patterns: MutableSequence["DatabaseResourceRegex"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="DatabaseResourceRegex",
+    )
+
+
+class DatabaseResourceRegex(proto.Message):
+    r"""A pattern to match against one or more database resources. At least
+    one pattern must be specified. Regular expressions use RE2
+    `syntax <https://github.com/google/re2/wiki/Syntax>`__; a guide can
+    be found under the google/re2 repository on GitHub.
+
+    Attributes:
+        project_id_regex (str):
+            For organizations, if unset, will match all
+            projects. Has no effect for Data Profile
+            configurations created within a project.
+        instance_regex (str):
+            Regex to test the instance name against. If
+            empty, all instances match.
+        database_regex (str):
+            Regex to test the database name against. If
+            empty, all databases match.
+        database_resource_name_regex (str):
+            Regex to test the database resource's name
+            against. An example of a database resource name
+            is a table's name. Other database resource names
+            like view names could be included in the future.
+            If empty, all database resources match.
+    """
+
+    project_id_regex: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    instance_regex: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    database_regex: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    database_resource_name_regex: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+
+
+class AllOtherDatabaseResources(proto.Message):
+    r"""Match database resources not covered by any other filter."""
+
+
+class DatabaseResourceReference(proto.Message):
+    r"""Identifies a single database resource, like a table within a
+    database.
+
+    Attributes:
+        project_id (str):
+            Required. If within a project-level config,
+            then this must match the config's project id.
+        instance (str):
+            Required. The instance where this resource is
+            located. For example: Cloud SQL's instance id.
+    """
+
+    project_id: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    instance: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class DiscoveryCloudSqlConditions(proto.Message):
+    r"""Requirements that must be true before a table is profiled for
+    the first time.
+
+    Attributes:
+        database_engines (MutableSequence[google.cloud.dlp_v2.types.DiscoveryCloudSqlConditions.DatabaseEngine]):
+            Optional. Database engines that should be profiled.
+            Optional. Defaults to ALL_SUPPORTED_DATABASE_ENGINES if
+            unspecified.
+        types (MutableSequence[google.cloud.dlp_v2.types.DiscoveryCloudSqlConditions.DatabaseResourceType]):
+            Data profiles will only be generated for the database
+            resource types specified in this field. If not specified,
+            defaults to [DATABASE_RESOURCE_TYPE_ALL_SUPPORTED_TYPES].
+    """
+
+    class DatabaseEngine(proto.Enum):
+        r"""The database engines that should be profiled.
+
+        Values:
+            DATABASE_ENGINE_UNSPECIFIED (0):
+                Unused.
+            ALL_SUPPORTED_DATABASE_ENGINES (1):
+                Include all supported database engines.
+            MYSQL (2):
+                MySql database.
+            POSTGRES (3):
+                PostGres database.
+        """
+        DATABASE_ENGINE_UNSPECIFIED = 0
+        ALL_SUPPORTED_DATABASE_ENGINES = 1
+        MYSQL = 2
+        POSTGRES = 3
+
+    class DatabaseResourceType(proto.Enum):
+        r"""Cloud SQL database resource types. New values can be added at
+        a later time.
+
+        Values:
+            DATABASE_RESOURCE_TYPE_UNSPECIFIED (0):
+                Unused.
+            DATABASE_RESOURCE_TYPE_ALL_SUPPORTED_TYPES (1):
+                Includes database resource types that become
+                supported at a later time.
+            DATABASE_RESOURCE_TYPE_TABLE (2):
+                Tables.
+        """
+        DATABASE_RESOURCE_TYPE_UNSPECIFIED = 0
+        DATABASE_RESOURCE_TYPE_ALL_SUPPORTED_TYPES = 1
+        DATABASE_RESOURCE_TYPE_TABLE = 2
+
+    database_engines: MutableSequence[DatabaseEngine] = proto.RepeatedField(
+        proto.ENUM,
+        number=1,
+        enum=DatabaseEngine,
+    )
+    types: MutableSequence[DatabaseResourceType] = proto.RepeatedField(
+        proto.ENUM,
+        number=3,
+        enum=DatabaseResourceType,
+    )
+
+
+class DiscoveryCloudSqlGenerationCadence(proto.Message):
+    r"""How often existing tables should have their profiles
+    refreshed. New tables are scanned as quickly as possible
+    depending on system capacity.
+
+    Attributes:
+        schema_modified_cadence (google.cloud.dlp_v2.types.DiscoveryCloudSqlGenerationCadence.SchemaModifiedCadence):
+            When to reprofile if the schema has changed.
+        refresh_frequency (google.cloud.dlp_v2.types.DataProfileUpdateFrequency):
+            Data changes (non-schema changes) in Cloud
+            SQL tables can't trigger reprofiling. If you set
+            this field, profiles are refreshed at this
+            frequency regardless of whether the underlying
+            tables have changes. Defaults to never.
+    """
+
+    class SchemaModifiedCadence(proto.Message):
+        r"""How frequency to modify the profile when the table's schema
+        is modified.
+
+        Attributes:
+            types (MutableSequence[google.cloud.dlp_v2.types.DiscoveryCloudSqlGenerationCadence.SchemaModifiedCadence.CloudSqlSchemaModification]):
+                The types of schema modifications to consider. Defaults to
+                NEW_COLUMNS.
+            frequency (google.cloud.dlp_v2.types.DataProfileUpdateFrequency):
+                Frequency to regenerate data profiles when
+                the schema is modified. Defaults to monthly.
+        """
+
+        class CloudSqlSchemaModification(proto.Enum):
+            r"""The type of modification that causes a profile update.
+
+            Values:
+                SQL_SCHEMA_MODIFICATION_UNSPECIFIED (0):
+                    Unused.
+                NEW_COLUMNS (1):
+                    New columns has appeared.
+                REMOVED_COLUMNS (2):
+                    Columns have been removed from the table.
+            """
+            SQL_SCHEMA_MODIFICATION_UNSPECIFIED = 0
+            NEW_COLUMNS = 1
+            REMOVED_COLUMNS = 2
+
+        types: MutableSequence[
+            "DiscoveryCloudSqlGenerationCadence.SchemaModifiedCadence.CloudSqlSchemaModification"
+        ] = proto.RepeatedField(
+            proto.ENUM,
+            number=1,
+            enum="DiscoveryCloudSqlGenerationCadence.SchemaModifiedCadence.CloudSqlSchemaModification",
+        )
+        frequency: "DataProfileUpdateFrequency" = proto.Field(
+            proto.ENUM,
+            number=2,
+            enum="DataProfileUpdateFrequency",
+        )
+
+    schema_modified_cadence: SchemaModifiedCadence = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=SchemaModifiedCadence,
+    )
+    refresh_frequency: "DataProfileUpdateFrequency" = proto.Field(
         proto.ENUM,
         number=2,
         enum="DataProfileUpdateFrequency",
@@ -9671,7 +10129,7 @@ class ListProjectDataProfilesRequest(proto.Message):
 
             Supported fields are:
 
-            -  ``project_id``: GCP project ID
+            -  ``project_id``: Google Cloud project ID
             -  ``sensitivity_level``: How sensitive the data in a
                project is, at most.
             -  ``data_risk_level``: How much risk is associated with
@@ -9786,7 +10244,7 @@ class ListTableDataProfilesRequest(proto.Message):
 
             Supported fields are:
 
-            -  ``project_id``: The GCP project ID.
+            -  ``project_id``: The Google Cloud project ID.
             -  ``dataset_id``: The ID of a BigQuery dataset.
             -  ``table_id``: The ID of a BigQuery table.
             -  ``sensitivity_level``: How sensitive the data in a table
@@ -9814,7 +10272,7 @@ class ListTableDataProfilesRequest(proto.Message):
                ``{field} {operator} {value}``.
             -  Supported fields/values:
 
-               -  ``project_id`` - The GCP project ID.
+               -  ``project_id`` - The Google Cloud project ID.
                -  ``dataset_id`` - The BigQuery dataset ID.
                -  ``table_id`` - The ID of the BigQuery table.
                -  ``sensitivity_level`` - HIGH|MODERATE|LOW
@@ -10570,6 +11028,14 @@ class ColumnDataProfile(proto.Message):
                 Decimal type.
             TYPE_JSON (14):
                 Json type.
+            TYPE_INTERVAL (15):
+                Interval type.
+            TYPE_RANGE_DATE (16):
+                ``Range<Date>`` type.
+            TYPE_RANGE_DATETIME (17):
+                ``Range<Datetime>`` type.
+            TYPE_RANGE_TIMESTAMP (18):
+                ``Range<Timestamp>`` type.
         """
         COLUMN_DATA_TYPE_UNSPECIFIED = 0
         TYPE_INT64 = 1
@@ -10586,6 +11052,10 @@ class ColumnDataProfile(proto.Message):
         TYPE_RECORD = 12
         TYPE_BIGNUMERIC = 13
         TYPE_JSON = 14
+        TYPE_INTERVAL = 15
+        TYPE_RANGE_DATE = 16
+        TYPE_RANGE_DATETIME = 17
+        TYPE_RANGE_TIMESTAMP = 18
 
     class ColumnPolicyState(proto.Enum):
         r"""The possible policy states for a column.
@@ -10873,6 +11343,404 @@ class DataProfilePubSubMessage(proto.Message):
         proto.ENUM,
         number=2,
         enum="DataProfileAction.EventType",
+    )
+
+
+class CreateConnectionRequest(proto.Message):
+    r"""Request message for CreateConnection.
+
+    Attributes:
+        parent (str):
+            Required. Parent resource name in the format:
+            ``projects/{project}/locations/{location}``.
+        connection (google.cloud.dlp_v2.types.Connection):
+            Required. The connection resource.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    connection: "Connection" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="Connection",
+    )
+
+
+class GetConnectionRequest(proto.Message):
+    r"""Request message for GetConnection.
+
+    Attributes:
+        name (str):
+            Required. Resource name in the format:
+            ``projects/{project}/locations/{location}/connections/{connection}``.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class ListConnectionsRequest(proto.Message):
+    r"""Request message for ListConnections.
+
+    Attributes:
+        parent (str):
+            Required. Parent name, for example:
+            ``projects/project-id/locations/global``.
+        page_size (int):
+            Optional. Number of results per page, max
+            1000.
+        page_token (str):
+            Optional. Page token from a previous page to
+            return the next set of results. If set, all
+            other request fields must match the original
+            request.
+        filter (str):
+            Optional. \* Supported fields/values - ``state`` -
+            MISSING|AVAILABLE|ERROR
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+
+
+class SearchConnectionsRequest(proto.Message):
+    r"""Request message for SearchConnections.
+
+    Attributes:
+        parent (str):
+            Required. Parent name, typically an organization, without
+            location. For example: ``organizations/12345678``.
+        page_size (int):
+            Optional. Number of results per page, max
+            1000.
+        page_token (str):
+            Optional. Page token from a previous page to
+            return the next set of results. If set, all
+            other request fields must match the original
+            request.
+        filter (str):
+            Optional. \* Supported fields/values - ``state`` -
+            MISSING|AVAILABLE|ERROR
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+
+
+class ListConnectionsResponse(proto.Message):
+    r"""Response message for ListConnections.
+
+    Attributes:
+        connections (MutableSequence[google.cloud.dlp_v2.types.Connection]):
+            List of connections.
+        next_page_token (str):
+            Token to retrieve the next page of results.
+            An empty value means there are no more results.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    connections: MutableSequence["Connection"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Connection",
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class SearchConnectionsResponse(proto.Message):
+    r"""Response message for SearchConnections.
+
+    Attributes:
+        connections (MutableSequence[google.cloud.dlp_v2.types.Connection]):
+            List of connections that match the search
+            query. Note that only a subset of the fields
+            will be populated, and only "name" is guaranteed
+            to be set. For full details of a Connection,
+            call GetConnection with the name.
+        next_page_token (str):
+            Token to retrieve the next page of results.
+            An empty value means there are no more results.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    connections: MutableSequence["Connection"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Connection",
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class UpdateConnectionRequest(proto.Message):
+    r"""Request message for UpdateConnection.
+
+    Attributes:
+        name (str):
+            Required. Resource name in the format:
+            ``projects/{project}/locations/{location}/connections/{connection}``.
+        connection (google.cloud.dlp_v2.types.Connection):
+            Required. The connection with new values for
+            the relevant fields.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Optional. Mask to control which fields get
+            updated.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    connection: "Connection" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="Connection",
+    )
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=field_mask_pb2.FieldMask,
+    )
+
+
+class DeleteConnectionRequest(proto.Message):
+    r"""Request message for DeleteConnection.
+
+    Attributes:
+        name (str):
+            Required. Resource name of the Connection to be deleted, in
+            the format:
+            ``projects/{project}/locations/{location}/connections/{connection}``.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class Connection(proto.Message):
+    r"""A data connection to allow DLP to profile data in locations
+    that require additional configuration.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        name (str):
+            Output only. Name of the connection:
+            ``projects/{project}/locations/{location}/connections/{name}``.
+        state (google.cloud.dlp_v2.types.ConnectionState):
+            Required. The connection's state in its
+            lifecycle.
+        errors (MutableSequence[google.cloud.dlp_v2.types.Error]):
+            Output only. Set if status == ERROR, to
+            provide additional details. Will store the last
+            10 errors sorted with the most recent first.
+        cloud_sql (google.cloud.dlp_v2.types.CloudSqlProperties):
+            Connect to a Cloud SQL instance.
+
+            This field is a member of `oneof`_ ``properties``.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    state: "ConnectionState" = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum="ConnectionState",
+    )
+    errors: MutableSequence["Error"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message="Error",
+    )
+    cloud_sql: "CloudSqlProperties" = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        oneof="properties",
+        message="CloudSqlProperties",
+    )
+
+
+class SecretManagerCredential(proto.Message):
+    r"""A credential consisting of a username and password, where the
+    password is stored in a Secret Manager resource. Note: Secret
+    Manager `charges
+    apply <https://cloud.google.com/secret-manager/pricing>`__.
+
+    Attributes:
+        username (str):
+            Required. The username.
+        password_secret_version_name (str):
+            Required. The name of the Secret Manager resource that
+            stores the password, in the form
+            ``projects/project-id/secrets/secret-name/versions/version``.
+    """
+
+    username: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    password_secret_version_name: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class CloudSqlIamCredential(proto.Message):
+    r"""Use IAM auth to connect. This requires the Cloud SQL IAM
+    feature to be enabled on the instance, which is not the default
+    for Cloud SQL. See
+    https://cloud.google.com/sql/docs/postgres/authentication and
+    https://cloud.google.com/sql/docs/mysql/authentication.
+
+    """
+
+
+class CloudSqlProperties(proto.Message):
+    r"""Cloud SQL connection properties.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        connection_name (str):
+            Optional. Immutable. The Cloud SQL instance for which the
+            connection is defined. Only one connection per instance is
+            allowed. This can only be set at creation time, and cannot
+            be updated.
+
+            It is an error to use a connection_name from different
+            project or region than the one that holds the connection.
+            For example, a Connection resource for Cloud SQL
+            connection_name ``project-id:us-central1:sql-instance`` must
+            be created under the parent
+            ``projects/project-id/locations/us-central1``
+        username_password (google.cloud.dlp_v2.types.SecretManagerCredential):
+            A username and password stored in Secret
+            Manager.
+
+            This field is a member of `oneof`_ ``credential``.
+        cloud_sql_iam (google.cloud.dlp_v2.types.CloudSqlIamCredential):
+            Built-in IAM authentication (must be
+            configured in Cloud SQL).
+
+            This field is a member of `oneof`_ ``credential``.
+        max_connections (int):
+            Required. DLP will limit its connections to max_connections.
+            Must be 2 or greater.
+        database_engine (google.cloud.dlp_v2.types.CloudSqlProperties.DatabaseEngine):
+            Required. The database engine used by the
+            Cloud SQL instance that this connection
+            configures.
+    """
+
+    class DatabaseEngine(proto.Enum):
+        r"""Database engine of a Cloud SQL instance.
+        New values may be added over time.
+
+        Values:
+            DATABASE_ENGINE_UNKNOWN (0):
+                An engine that is not currently supported by
+                SDP.
+            DATABASE_ENGINE_MYSQL (1):
+                Cloud SQL for MySQL instance.
+            DATABASE_ENGINE_POSTGRES (2):
+                Cloud SQL for Postgres instance.
+        """
+        DATABASE_ENGINE_UNKNOWN = 0
+        DATABASE_ENGINE_MYSQL = 1
+        DATABASE_ENGINE_POSTGRES = 2
+
+    connection_name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    username_password: "SecretManagerCredential" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="credential",
+        message="SecretManagerCredential",
+    )
+    cloud_sql_iam: "CloudSqlIamCredential" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        oneof="credential",
+        message="CloudSqlIamCredential",
+    )
+    max_connections: int = proto.Field(
+        proto.INT32,
+        number=4,
+    )
+    database_engine: DatabaseEngine = proto.Field(
+        proto.ENUM,
+        number=7,
+        enum=DatabaseEngine,
+    )
+
+
+class DeleteTableDataProfileRequest(proto.Message):
+    r"""Request message for DeleteTableProfile.
+
+    Attributes:
+        name (str):
+            Required. Resource name of the table data
+            profile.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
     )
 
 
