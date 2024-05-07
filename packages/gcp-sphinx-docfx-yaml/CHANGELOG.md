@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.2.1](https://github.com/googleapis/sphinx-docfx-yaml/compare/v3.2.0...v3.2.1) (2024-05-07)
+
+
+### Bug Fixes
+
+* Build Markdown relative to input directory ([#380](https://github.com/googleapis/sphinx-docfx-yaml/issues/380)) ([2a4b9fe](https://github.com/googleapis/sphinx-docfx-yaml/commit/2a4b9fe0b3ca94e27a9b1a6e5238711045b372c9))
+* Format enum data into table format ([#376](https://github.com/googleapis/sphinx-docfx-yaml/issues/376)) ([abc9667](https://github.com/googleapis/sphinx-docfx-yaml/commit/abc96675e1cbe3a9175bdf921142b32b16523f28))
+
 ## [3.2.0](https://github.com/googleapis/sphinx-docfx-yaml/compare/v3.1.0...v3.2.0) (2024-05-02)
 
 
