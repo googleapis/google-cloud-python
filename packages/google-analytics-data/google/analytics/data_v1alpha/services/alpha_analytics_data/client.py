@@ -17,6 +17,7 @@ from collections import OrderedDict
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -223,6 +224,25 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
         m = re.match(
             r"^properties/(?P<property>.+?)/recurringAudienceLists/(?P<recurring_audience_list>.+?)$",
             path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def report_task_path(
+        property: str,
+        report_task: str,
+    ) -> str:
+        """Returns a fully-qualified report_task string."""
+        return "properties/{property}/reportTasks/{report_task}".format(
+            property=property,
+            report_task=report_task,
+        )
+
+    @staticmethod
+    def parse_report_task_path(path: str) -> Dict[str, str]:
+        """Parses a report_task path into its component segments."""
+        m = re.match(
+            r"^properties/(?P<property>.+?)/reportTasks/(?P<report_task>.+?)$", path
         )
         return m.groupdict() if m else {}
 
@@ -551,7 +571,13 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, AlphaAnalyticsDataTransport]] = None,
+        transport: Optional[
+            Union[
+                str,
+                AlphaAnalyticsDataTransport,
+                Callable[..., AlphaAnalyticsDataTransport],
+            ]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -563,9 +589,11 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, AlphaAnalyticsDataTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,AlphaAnalyticsDataTransport,Callable[..., AlphaAnalyticsDataTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the AlphaAnalyticsDataTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -674,8 +702,16 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[AlphaAnalyticsDataTransport],
+                Callable[..., AlphaAnalyticsDataTransport],
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., AlphaAnalyticsDataTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -759,10 +795,8 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_data_api.RunFunnelReportRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_data_api.RunFunnelReportRequest):
             request = analytics_data_api.RunFunnelReportRequest(request)
 
@@ -897,8 +931,8 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, audience_list])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -906,10 +940,8 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_data_api.CreateAudienceListRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_data_api.CreateAudienceListRequest):
             request = analytics_data_api.CreateAudienceListRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1031,8 +1063,8 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
                 A list of users in an audience list.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1040,10 +1072,8 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_data_api.QueryAudienceListRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_data_api.QueryAudienceListRequest):
             request = analytics_data_api.QueryAudienceListRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1158,8 +1188,8 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1167,10 +1197,8 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_data_api.SheetExportAudienceListRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_data_api.SheetExportAudienceListRequest):
             request = analytics_data_api.SheetExportAudienceListRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1282,8 +1310,8 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1291,10 +1319,8 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_data_api.GetAudienceListRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_data_api.GetAudienceListRequest):
             request = analytics_data_api.GetAudienceListRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1408,8 +1434,8 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1417,10 +1443,8 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_data_api.ListAudienceListsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_data_api.ListAudienceListsRequest):
             request = analytics_data_api.ListAudienceListsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1562,8 +1586,8 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, recurring_audience_list])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1571,10 +1595,8 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_data_api.CreateRecurringAudienceListRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request, analytics_data_api.CreateRecurringAudienceListRequest
         ):
@@ -1693,8 +1715,8 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1702,10 +1724,8 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_data_api.GetRecurringAudienceListRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_data_api.GetRecurringAudienceListRequest):
             request = analytics_data_api.GetRecurringAudienceListRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1819,8 +1839,8 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1828,10 +1848,8 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_data_api.ListRecurringAudienceListsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request, analytics_data_api.ListRecurringAudienceListsRequest
         ):
@@ -1867,6 +1885,470 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListRecurringAudienceListsPager(
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def create_report_task(
+        self,
+        request: Optional[
+            Union[analytics_data_api.CreateReportTaskRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        report_task: Optional[analytics_data_api.ReportTask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation.Operation:
+        r"""Initiates the creation of a report task. This method
+        quickly returns a report task and initiates a long
+        running asynchronous request to form a customized report
+        of your Google Analytics event data.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.analytics import data_v1alpha
+
+            def sample_create_report_task():
+                # Create a client
+                client = data_v1alpha.AlphaAnalyticsDataClient()
+
+                # Initialize request argument(s)
+                request = data_v1alpha.CreateReportTaskRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                operation = client.create_report_task(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.analytics.data_v1alpha.types.CreateReportTaskRequest, dict]):
+                The request object. A request to create a report task.
+            parent (str):
+                Required. The parent resource where this report task
+                will be created. Format: ``properties/{propertyId}``
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            report_task (google.analytics.data_v1alpha.types.ReportTask):
+                Required. The report task
+                configuration to create.
+
+                This corresponds to the ``report_task`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.analytics.data_v1alpha.types.ReportTask`
+                A specific report task configuration.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, report_task])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, analytics_data_api.CreateReportTaskRequest):
+            request = analytics_data_api.CreateReportTaskRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+            if report_task is not None:
+                request.report_task = report_task
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.create_report_task]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            analytics_data_api.ReportTask,
+            metadata_type=analytics_data_api.ReportTaskMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def query_report_task(
+        self,
+        request: Optional[
+            Union[analytics_data_api.QueryReportTaskRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> analytics_data_api.QueryReportTaskResponse:
+        r"""Retrieves a report task's content. After requesting the
+        ``CreateReportTask``, you are able to retrieve the report
+        content once the report is ACTIVE. This method will return an
+        error if the report task's state is not ``ACTIVE``. A query
+        response will return the tabular row & column values of the
+        report.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.analytics import data_v1alpha
+
+            def sample_query_report_task():
+                # Create a client
+                client = data_v1alpha.AlphaAnalyticsDataClient()
+
+                # Initialize request argument(s)
+                request = data_v1alpha.QueryReportTaskRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.query_report_task(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.analytics.data_v1alpha.types.QueryReportTaskRequest, dict]):
+                The request object. A request to fetch the report content
+                for a report task.
+            name (str):
+                Required. The report source name. Format:
+                ``properties/{property}/reportTasks/{report}``
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.data_v1alpha.types.QueryReportTaskResponse:
+                The report content corresponding to a
+                report task.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, analytics_data_api.QueryReportTaskRequest):
+            request = analytics_data_api.QueryReportTaskRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.query_report_task]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def get_report_task(
+        self,
+        request: Optional[Union[analytics_data_api.GetReportTaskRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> analytics_data_api.ReportTask:
+        r"""Gets report metadata about a specific report task.
+        After creating a report task, use this method to check
+        its processing state or inspect its report definition.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.analytics import data_v1alpha
+
+            def sample_get_report_task():
+                # Create a client
+                client = data_v1alpha.AlphaAnalyticsDataClient()
+
+                # Initialize request argument(s)
+                request = data_v1alpha.GetReportTaskRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_report_task(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.analytics.data_v1alpha.types.GetReportTaskRequest, dict]):
+                The request object. A request to retrieve configuration
+                metadata about a specific report task.
+            name (str):
+                Required. The report task resource name. Format:
+                ``properties/{property}/reportTasks/{report_task}``
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.data_v1alpha.types.ReportTask:
+                A specific report task configuration.
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, analytics_data_api.GetReportTaskRequest):
+            request = analytics_data_api.GetReportTaskRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.get_report_task]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def list_report_tasks(
+        self,
+        request: Optional[
+            Union[analytics_data_api.ListReportTasksRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListReportTasksPager:
+        r"""Lists all report tasks for a property.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.analytics import data_v1alpha
+
+            def sample_list_report_tasks():
+                # Create a client
+                client = data_v1alpha.AlphaAnalyticsDataClient()
+
+                # Initialize request argument(s)
+                request = data_v1alpha.ListReportTasksRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_report_tasks(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
+        Args:
+            request (Union[google.analytics.data_v1alpha.types.ListReportTasksRequest, dict]):
+                The request object. A request to list all report tasks
+                for a property.
+            parent (str):
+                Required. All report tasks for this property will be
+                listed in the response. Format:
+                ``properties/{property}``
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.data_v1alpha.services.alpha_analytics_data.pagers.ListReportTasksPager:
+                A list of all report tasks for a
+                property.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, analytics_data_api.ListReportTasksRequest):
+            request = analytics_data_api.ListReportTasksRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.list_report_tasks]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListReportTasksPager(
             method=rpc,
             request=request,
             response=response,

@@ -18,7 +18,14 @@ from google.shopping.type import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from .types.types import Channel, CustomAttribute, Destination, Price, ReportingContext
+from .types.types import (
+    Channel,
+    CustomAttribute,
+    Destination,
+    Price,
+    ReportingContext,
+    Weight,
+)
 
 __all__ = (
     "Channel",
@@ -26,4 +33,5 @@ __all__ = (
     "Destination",
     "Price",
     "ReportingContext",
+    "Weight",
 )

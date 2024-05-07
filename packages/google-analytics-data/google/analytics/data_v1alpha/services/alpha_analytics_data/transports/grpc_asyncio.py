@@ -16,7 +16,9 @@
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
+from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, grpc_helpers_async, operations_v1
+from google.api_core import retry_async as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
@@ -65,7 +67,6 @@ class AlphaAnalyticsDataGrpcAsyncIOTransport(AlphaAnalyticsDataTransport):
                 the credentials from the environment.
             credentials_file (Optional[str]): A file with credentials that can
                 be loaded with :func:`google.auth.load_credentials_from_file`.
-                This argument is ignored if ``channel`` is provided.
             scopes (Optional[Sequence[str]]): A optional list of scopes needed for this
                 service. These are only used when credentials are not specified and
                 are passed to :func:`google.auth.default`.
@@ -95,7 +96,7 @@ class AlphaAnalyticsDataGrpcAsyncIOTransport(AlphaAnalyticsDataTransport):
         credentials: Optional[ga_credentials.Credentials] = None,
         credentials_file: Optional[str] = None,
         scopes: Optional[Sequence[str]] = None,
-        channel: Optional[aio.Channel] = None,
+        channel: Optional[Union[aio.Channel, Callable[..., aio.Channel]]] = None,
         api_mtls_endpoint: Optional[str] = None,
         client_cert_source: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
         ssl_channel_credentials: Optional[grpc.ChannelCredentials] = None,
@@ -115,15 +116,18 @@ class AlphaAnalyticsDataGrpcAsyncIOTransport(AlphaAnalyticsDataTransport):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-                This argument is ignored if ``channel`` is provided.
+                This argument is ignored if a ``channel`` instance is provided.
             credentials_file (Optional[str]): A file with credentials that can
                 be loaded with :func:`google.auth.load_credentials_from_file`.
-                This argument is ignored if ``channel`` is provided.
+                This argument is ignored if a ``channel`` instance is provided.
             scopes (Optional[Sequence[str]]): A optional list of scopes needed for this
                 service. These are only used when credentials are not specified and
                 are passed to :func:`google.auth.default`.
-            channel (Optional[aio.Channel]): A ``Channel`` instance through
-                which to make calls.
+            channel (Optional[Union[aio.Channel, Callable[..., aio.Channel]]]):
+                A ``Channel`` instance through which to make calls, or a Callable
+                that constructs and returns one. If set to None, ``self.create_channel``
+                is used to create the channel. If a Callable is given, it will be called
+                with the same arguments as used in ``self.create_channel``.
             api_mtls_endpoint (Optional[str]): Deprecated. The mutual TLS endpoint.
                 If provided, it overrides the ``host`` argument and tries to create
                 a mutual TLS channel with client SSL credentials from
@@ -133,11 +137,11 @@ class AlphaAnalyticsDataGrpcAsyncIOTransport(AlphaAnalyticsDataTransport):
                 private key bytes, both in PEM format. It is ignored if
                 ``api_mtls_endpoint`` is None.
             ssl_channel_credentials (grpc.ChannelCredentials): SSL credentials
-                for the grpc channel. It is ignored if ``channel`` is provided.
+                for the grpc channel. It is ignored if a ``channel`` instance is provided.
             client_cert_source_for_mtls (Optional[Callable[[], Tuple[bytes, bytes]]]):
                 A callback to provide client certificate bytes and private key bytes,
                 both in PEM format. It is used to configure a mutual TLS channel. It is
-                ignored if ``channel`` or ``ssl_channel_credentials`` is provided.
+                ignored if a ``channel`` instance or ``ssl_channel_credentials`` is provided.
             quota_project_id (Optional[str]): An optional project to use for billing
                 and quota.
             client_info (google.api_core.gapic_v1.client_info.ClientInfo):
@@ -164,7 +168,7 @@ class AlphaAnalyticsDataGrpcAsyncIOTransport(AlphaAnalyticsDataTransport):
         if client_cert_source:
             warnings.warn("client_cert_source is deprecated", DeprecationWarning)
 
-        if channel:
+        if isinstance(channel, aio.Channel):
             # Ignore credentials if a channel was passed.
             credentials = False
             # If a channel was explicitly provided, set it.
@@ -204,7 +208,9 @@ class AlphaAnalyticsDataGrpcAsyncIOTransport(AlphaAnalyticsDataTransport):
         )
 
         if not self._grpc_channel:
-            self._grpc_channel = type(self).create_channel(
+            # initialize with the provided callable or the default channel
+            channel_init = channel or type(self).create_channel
+            self._grpc_channel = channel_init(
                 self._host,
                 # use the credentials which are saved
                 credentials=self._credentials,
@@ -659,6 +665,202 @@ class AlphaAnalyticsDataGrpcAsyncIOTransport(AlphaAnalyticsDataTransport):
                 response_deserializer=analytics_data_api.ListRecurringAudienceListsResponse.deserialize,
             )
         return self._stubs["list_recurring_audience_lists"]
+
+    @property
+    def create_report_task(
+        self,
+    ) -> Callable[
+        [analytics_data_api.CreateReportTaskRequest],
+        Awaitable[operations_pb2.Operation],
+    ]:
+        r"""Return a callable for the create report task method over gRPC.
+
+        Initiates the creation of a report task. This method
+        quickly returns a report task and initiates a long
+        running asynchronous request to form a customized report
+        of your Google Analytics event data.
+
+        Returns:
+            Callable[[~.CreateReportTaskRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_report_task" not in self._stubs:
+            self._stubs["create_report_task"] = self.grpc_channel.unary_unary(
+                "/google.analytics.data.v1alpha.AlphaAnalyticsData/CreateReportTask",
+                request_serializer=analytics_data_api.CreateReportTaskRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["create_report_task"]
+
+    @property
+    def query_report_task(
+        self,
+    ) -> Callable[
+        [analytics_data_api.QueryReportTaskRequest],
+        Awaitable[analytics_data_api.QueryReportTaskResponse],
+    ]:
+        r"""Return a callable for the query report task method over gRPC.
+
+        Retrieves a report task's content. After requesting the
+        ``CreateReportTask``, you are able to retrieve the report
+        content once the report is ACTIVE. This method will return an
+        error if the report task's state is not ``ACTIVE``. A query
+        response will return the tabular row & column values of the
+        report.
+
+        Returns:
+            Callable[[~.QueryReportTaskRequest],
+                    Awaitable[~.QueryReportTaskResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "query_report_task" not in self._stubs:
+            self._stubs["query_report_task"] = self.grpc_channel.unary_unary(
+                "/google.analytics.data.v1alpha.AlphaAnalyticsData/QueryReportTask",
+                request_serializer=analytics_data_api.QueryReportTaskRequest.serialize,
+                response_deserializer=analytics_data_api.QueryReportTaskResponse.deserialize,
+            )
+        return self._stubs["query_report_task"]
+
+    @property
+    def get_report_task(
+        self,
+    ) -> Callable[
+        [analytics_data_api.GetReportTaskRequest],
+        Awaitable[analytics_data_api.ReportTask],
+    ]:
+        r"""Return a callable for the get report task method over gRPC.
+
+        Gets report metadata about a specific report task.
+        After creating a report task, use this method to check
+        its processing state or inspect its report definition.
+
+        Returns:
+            Callable[[~.GetReportTaskRequest],
+                    Awaitable[~.ReportTask]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_report_task" not in self._stubs:
+            self._stubs["get_report_task"] = self.grpc_channel.unary_unary(
+                "/google.analytics.data.v1alpha.AlphaAnalyticsData/GetReportTask",
+                request_serializer=analytics_data_api.GetReportTaskRequest.serialize,
+                response_deserializer=analytics_data_api.ReportTask.deserialize,
+            )
+        return self._stubs["get_report_task"]
+
+    @property
+    def list_report_tasks(
+        self,
+    ) -> Callable[
+        [analytics_data_api.ListReportTasksRequest],
+        Awaitable[analytics_data_api.ListReportTasksResponse],
+    ]:
+        r"""Return a callable for the list report tasks method over gRPC.
+
+        Lists all report tasks for a property.
+
+        Returns:
+            Callable[[~.ListReportTasksRequest],
+                    Awaitable[~.ListReportTasksResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_report_tasks" not in self._stubs:
+            self._stubs["list_report_tasks"] = self.grpc_channel.unary_unary(
+                "/google.analytics.data.v1alpha.AlphaAnalyticsData/ListReportTasks",
+                request_serializer=analytics_data_api.ListReportTasksRequest.serialize,
+                response_deserializer=analytics_data_api.ListReportTasksResponse.deserialize,
+            )
+        return self._stubs["list_report_tasks"]
+
+    def _prep_wrapped_messages(self, client_info):
+        """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
+        self._wrapped_methods = {
+            self.run_funnel_report: gapic_v1.method_async.wrap_method(
+                self.run_funnel_report,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.create_audience_list: gapic_v1.method_async.wrap_method(
+                self.create_audience_list,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.query_audience_list: gapic_v1.method_async.wrap_method(
+                self.query_audience_list,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.sheet_export_audience_list: gapic_v1.method_async.wrap_method(
+                self.sheet_export_audience_list,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_audience_list: gapic_v1.method_async.wrap_method(
+                self.get_audience_list,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_audience_lists: gapic_v1.method_async.wrap_method(
+                self.list_audience_lists,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_recurring_audience_list: gapic_v1.method_async.wrap_method(
+                self.create_recurring_audience_list,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_recurring_audience_list: gapic_v1.method_async.wrap_method(
+                self.get_recurring_audience_list,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_recurring_audience_lists: gapic_v1.method_async.wrap_method(
+                self.list_recurring_audience_lists,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_report_task: gapic_v1.method_async.wrap_method(
+                self.create_report_task,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.query_report_task: gapic_v1.method_async.wrap_method(
+                self.query_report_task,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_report_task: gapic_v1.method_async.wrap_method(
+                self.get_report_task,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_report_tasks: gapic_v1.method_async.wrap_method(
+                self.list_report_tasks,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+        }
 
     def close(self):
         return self.grpc_channel.close()
