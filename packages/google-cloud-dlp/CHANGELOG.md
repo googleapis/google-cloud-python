@@ -4,6 +4,21 @@
 
 [1]: https://pypi.org/project/google-cloud-dlp/#history
 
+## [3.17.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dlp-v3.16.0...google-cloud-dlp-v3.17.0) (2024-05-07)
+
+
+### Features
+
+* Add field to InspectJobs num_rows_processed for BigQuery inspect jobs ([04a2214](https://github.com/googleapis/google-cloud-python/commit/04a22146ffe290bfb9415d067bb8918103d45438))
+* Add new countries for supported detectors ([04a2214](https://github.com/googleapis/google-cloud-python/commit/04a22146ffe290bfb9415d067bb8918103d45438))
+* add RPCs for deleting TableDataProfiles ([04a2214](https://github.com/googleapis/google-cloud-python/commit/04a22146ffe290bfb9415d067bb8918103d45438))
+* Add RPCs for enabling discovery of Cloud SQL ([04a2214](https://github.com/googleapis/google-cloud-python/commit/04a22146ffe290bfb9415d067bb8918103d45438))
+
+
+### Documentation
+
+* Updated method documentation ([04a2214](https://github.com/googleapis/google-cloud-python/commit/04a22146ffe290bfb9415d067bb8918103d45438))
+
 ## [3.16.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dlp-v3.15.3...google-cloud-dlp-v3.16.0) (2024-03-07)
 
 
