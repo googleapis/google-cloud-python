@@ -2,7 +2,7 @@
 
 .. include:: multiprocessing.rst
 
-This package includes clients for multiple versions of .
+This package includes clients for multiple versions of Vision AI API.
 By default, you will get version ``visionai_v1``.
 
 
@@ -32,3 +32,8 @@ For a list of all ``google-cloud-visionai`` releases:
     :maxdepth: 2
 
     CHANGELOG
+
+.. toctree::
+  :hidden:
+
+  summary_overview.md
