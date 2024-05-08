@@ -1165,6 +1165,9 @@ def test_create_vehicle_empty_call():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_vehicle), "__call__") as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
         client.create_vehicle()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -1189,6 +1192,9 @@ def test_create_vehicle_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_vehicle), "__call__") as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
         client.create_vehicle(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -1196,6 +1202,41 @@ def test_create_vehicle_non_empty_request_with_auto_populated_field():
             parent="parent_value",
             vehicle_id="vehicle_id_value",
         )
+
+
+def test_create_vehicle_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = VehicleServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.create_vehicle in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.create_vehicle] = mock_rpc
+        request = {}
+        client.create_vehicle(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.create_vehicle(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
 
 
 @pytest.mark.asyncio
@@ -1226,6 +1267,52 @@ async def test_create_vehicle_empty_call_async():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == vehicle_api.CreateVehicleRequest()
+
+
+@pytest.mark.asyncio
+async def test_create_vehicle_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = VehicleServiceAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.create_vehicle
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        class AwaitableMock(mock.AsyncMock):
+            def __await__(self):
+                self.await_count += 1
+                return iter([])
+
+        mock_object = AwaitableMock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.create_vehicle
+        ] = mock_object
+
+        request = {}
+        await client.create_vehicle(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_object.call_count == 1
+
+        await client.create_vehicle(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_object.call_count == 2
 
 
 @pytest.mark.asyncio
@@ -1365,6 +1452,9 @@ def test_get_vehicle_empty_call():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_vehicle), "__call__") as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
         client.get_vehicle()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -1388,12 +1478,50 @@ def test_get_vehicle_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_vehicle), "__call__") as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
         client.get_vehicle(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == vehicle_api.GetVehicleRequest(
             name="name_value",
         )
+
+
+def test_get_vehicle_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = VehicleServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.get_vehicle in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.get_vehicle] = mock_rpc
+        request = {}
+        client.get_vehicle(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_vehicle(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
 
 
 @pytest.mark.asyncio
@@ -1424,6 +1552,52 @@ async def test_get_vehicle_empty_call_async():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == vehicle_api.GetVehicleRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_vehicle_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = VehicleServiceAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.get_vehicle
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        class AwaitableMock(mock.AsyncMock):
+            def __await__(self):
+                self.await_count += 1
+                return iter([])
+
+        mock_object = AwaitableMock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.get_vehicle
+        ] = mock_object
+
+        request = {}
+        await client.get_vehicle(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_object.call_count == 1
+
+        await client.get_vehicle(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_object.call_count == 2
 
 
 @pytest.mark.asyncio
@@ -1563,6 +1737,9 @@ def test_update_vehicle_empty_call():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_vehicle), "__call__") as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
         client.update_vehicle()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -1586,12 +1763,50 @@ def test_update_vehicle_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_vehicle), "__call__") as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
         client.update_vehicle(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == vehicle_api.UpdateVehicleRequest(
             name="name_value",
         )
+
+
+def test_update_vehicle_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = VehicleServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.update_vehicle in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.update_vehicle] = mock_rpc
+        request = {}
+        client.update_vehicle(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.update_vehicle(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
 
 
 @pytest.mark.asyncio
@@ -1622,6 +1837,52 @@ async def test_update_vehicle_empty_call_async():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == vehicle_api.UpdateVehicleRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_vehicle_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = VehicleServiceAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.update_vehicle
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        class AwaitableMock(mock.AsyncMock):
+            def __await__(self):
+                self.await_count += 1
+                return iter([])
+
+        mock_object = AwaitableMock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.update_vehicle
+        ] = mock_object
+
+        request = {}
+        await client.update_vehicle(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_object.call_count == 1
+
+        await client.update_vehicle(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_object.call_count == 2
 
 
 @pytest.mark.asyncio
@@ -1704,197 +1965,6 @@ def test_update_vehicle_routing_parameters():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vehicle_api.UpdateVehicleLocationRequest,
-        dict,
-    ],
-)
-def test_update_vehicle_location(request_type, transport: str = "grpc"):
-    client = VehicleServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_vehicle_location), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = fleetengine.VehicleLocation(
-            location_sensor=fleetengine.LocationSensor.GPS,
-            raw_location_sensor=fleetengine.LocationSensor.GPS,
-            supplemental_location_sensor=fleetengine.LocationSensor.GPS,
-            road_snapped=True,
-        )
-        response = client.update_vehicle_location(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        request = vehicle_api.UpdateVehicleLocationRequest()
-        assert args[0] == request
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, fleetengine.VehicleLocation)
-    assert response.location_sensor == fleetengine.LocationSensor.GPS
-    assert response.raw_location_sensor == fleetengine.LocationSensor.GPS
-    assert response.supplemental_location_sensor == fleetengine.LocationSensor.GPS
-    assert response.road_snapped is True
-
-
-def test_update_vehicle_location_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = VehicleServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_vehicle_location), "__call__"
-    ) as call:
-        client.update_vehicle_location()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == vehicle_api.UpdateVehicleLocationRequest()
-
-
-def test_update_vehicle_location_non_empty_request_with_auto_populated_field():
-    # This test is a coverage failsafe to make sure that UUID4 fields are
-    # automatically populated, according to AIP-4235, with non-empty requests.
-    client = VehicleServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Populate all string fields in the request which are not UUID4
-    # since we want to check that UUID4 are populated automatically
-    # if they meet the requirements of AIP 4235.
-    request = vehicle_api.UpdateVehicleLocationRequest(
-        name="name_value",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_vehicle_location), "__call__"
-    ) as call:
-        client.update_vehicle_location(request=request)
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == vehicle_api.UpdateVehicleLocationRequest(
-            name="name_value",
-        )
-
-
-@pytest.mark.asyncio
-async def test_update_vehicle_location_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = VehicleServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_vehicle_location), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            fleetengine.VehicleLocation(
-                location_sensor=fleetengine.LocationSensor.GPS,
-                raw_location_sensor=fleetengine.LocationSensor.GPS,
-                supplemental_location_sensor=fleetengine.LocationSensor.GPS,
-                road_snapped=True,
-            )
-        )
-        response = await client.update_vehicle_location()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == vehicle_api.UpdateVehicleLocationRequest()
-
-
-@pytest.mark.asyncio
-async def test_update_vehicle_location_async(
-    transport: str = "grpc_asyncio",
-    request_type=vehicle_api.UpdateVehicleLocationRequest,
-):
-    client = VehicleServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_vehicle_location), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            fleetengine.VehicleLocation(
-                location_sensor=fleetengine.LocationSensor.GPS,
-                raw_location_sensor=fleetengine.LocationSensor.GPS,
-                supplemental_location_sensor=fleetengine.LocationSensor.GPS,
-                road_snapped=True,
-            )
-        )
-        response = await client.update_vehicle_location(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        request = vehicle_api.UpdateVehicleLocationRequest()
-        assert args[0] == request
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, fleetengine.VehicleLocation)
-    assert response.location_sensor == fleetengine.LocationSensor.GPS
-    assert response.raw_location_sensor == fleetengine.LocationSensor.GPS
-    assert response.supplemental_location_sensor == fleetengine.LocationSensor.GPS
-    assert response.road_snapped is True
-
-
-@pytest.mark.asyncio
-async def test_update_vehicle_location_async_from_dict():
-    await test_update_vehicle_location_async(request_type=dict)
-
-
-def test_update_vehicle_location_routing_parameters():
-    client = VehicleServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = vehicle_api.UpdateVehicleLocationRequest(**{"name": "providers/sample1"})
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_vehicle_location), "__call__"
-    ) as call:
-        call.return_value = fleetengine.VehicleLocation()
-        client.update_vehicle_location(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    _, _, kw = call.mock_calls[0]
-    # This test doesn't assert anything useful.
-    assert kw["metadata"]
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
         vehicle_api.UpdateVehicleAttributesRequest,
         dict,
     ],
@@ -1939,6 +2009,9 @@ def test_update_vehicle_attributes_empty_call():
     with mock.patch.object(
         type(client.transport.update_vehicle_attributes), "__call__"
     ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
         client.update_vehicle_attributes()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -1964,12 +2037,55 @@ def test_update_vehicle_attributes_non_empty_request_with_auto_populated_field()
     with mock.patch.object(
         type(client.transport.update_vehicle_attributes), "__call__"
     ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
         client.update_vehicle_attributes(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == vehicle_api.UpdateVehicleAttributesRequest(
             name="name_value",
         )
+
+
+def test_update_vehicle_attributes_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = VehicleServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.update_vehicle_attributes
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.update_vehicle_attributes
+        ] = mock_rpc
+        request = {}
+        client.update_vehicle_attributes(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.update_vehicle_attributes(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
 
 
 @pytest.mark.asyncio
@@ -1993,6 +2109,52 @@ async def test_update_vehicle_attributes_empty_call_async():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == vehicle_api.UpdateVehicleAttributesRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_vehicle_attributes_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = VehicleServiceAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.update_vehicle_attributes
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        class AwaitableMock(mock.AsyncMock):
+            def __await__(self):
+                self.await_count += 1
+                return iter([])
+
+        mock_object = AwaitableMock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.update_vehicle_attributes
+        ] = mock_object
+
+        request = {}
+        await client.update_vehicle_attributes(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_object.call_count == 1
+
+        await client.update_vehicle_attributes(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_object.call_count == 2
 
 
 @pytest.mark.asyncio
@@ -2110,6 +2272,9 @@ def test_list_vehicles_empty_call():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_vehicles), "__call__") as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
         client.list_vehicles()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -2135,6 +2300,9 @@ def test_list_vehicles_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_vehicles), "__call__") as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
         client.list_vehicles(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -2143,6 +2311,41 @@ def test_list_vehicles_non_empty_request_with_auto_populated_field():
             page_token="page_token_value",
             filter="filter_value",
         )
+
+
+def test_list_vehicles_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = VehicleServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.list_vehicles in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.list_vehicles] = mock_rpc
+        request = {}
+        client.list_vehicles(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.list_vehicles(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
 
 
 @pytest.mark.asyncio
@@ -2167,6 +2370,52 @@ async def test_list_vehicles_empty_call_async():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == vehicle_api.ListVehiclesRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_vehicles_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = VehicleServiceAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.list_vehicles
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        class AwaitableMock(mock.AsyncMock):
+            def __await__(self):
+                self.await_count += 1
+                return iter([])
+
+        mock_object = AwaitableMock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.list_vehicles
+        ] = mock_object
+
+        request = {}
+        await client.list_vehicles(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_object.call_count == 1
+
+        await client.list_vehicles(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_object.call_count == 2
 
 
 @pytest.mark.asyncio
@@ -2464,6 +2713,9 @@ def test_search_vehicles_empty_call():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.search_vehicles), "__call__") as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
         client.search_vehicles()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -2489,6 +2741,9 @@ def test_search_vehicles_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.search_vehicles), "__call__") as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
         client.search_vehicles(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -2497,6 +2752,41 @@ def test_search_vehicles_non_empty_request_with_auto_populated_field():
             trip_id="trip_id_value",
             filter="filter_value",
         )
+
+
+def test_search_vehicles_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = VehicleServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.search_vehicles in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.search_vehicles] = mock_rpc
+        request = {}
+        client.search_vehicles(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.search_vehicles(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
 
 
 @pytest.mark.asyncio
@@ -2518,6 +2808,52 @@ async def test_search_vehicles_empty_call_async():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == vehicle_api.SearchVehiclesRequest()
+
+
+@pytest.mark.asyncio
+async def test_search_vehicles_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = VehicleServiceAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.search_vehicles
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        class AwaitableMock(mock.AsyncMock):
+            def __await__(self):
+                self.await_count += 1
+                return iter([])
+
+        mock_object = AwaitableMock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.search_vehicles
+        ] = mock_object
+
+        request = {}
+        await client.search_vehicles(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_object.call_count == 1
+
+        await client.search_vehicles(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_object.call_count == 2
 
 
 @pytest.mark.asyncio
@@ -2569,177 +2905,6 @@ def test_search_vehicles_routing_parameters():
     with mock.patch.object(type(client.transport.search_vehicles), "__call__") as call:
         call.return_value = vehicle_api.SearchVehiclesResponse()
         client.search_vehicles(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    _, _, kw = call.mock_calls[0]
-    # This test doesn't assert anything useful.
-    assert kw["metadata"]
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        vehicle_api.SearchVehiclesRequest,
-        dict,
-    ],
-)
-def test_search_fuzzed_vehicles(request_type, transport: str = "grpc"):
-    client = VehicleServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.search_fuzzed_vehicles), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = vehicle_api.SearchVehiclesResponse()
-        response = client.search_fuzzed_vehicles(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        request = vehicle_api.SearchVehiclesRequest()
-        assert args[0] == request
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, vehicle_api.SearchVehiclesResponse)
-
-
-def test_search_fuzzed_vehicles_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = VehicleServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.search_fuzzed_vehicles), "__call__"
-    ) as call:
-        client.search_fuzzed_vehicles()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == vehicle_api.SearchVehiclesRequest()
-
-
-def test_search_fuzzed_vehicles_non_empty_request_with_auto_populated_field():
-    # This test is a coverage failsafe to make sure that UUID4 fields are
-    # automatically populated, according to AIP-4235, with non-empty requests.
-    client = VehicleServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Populate all string fields in the request which are not UUID4
-    # since we want to check that UUID4 are populated automatically
-    # if they meet the requirements of AIP 4235.
-    request = vehicle_api.SearchVehiclesRequest(
-        parent="parent_value",
-        trip_id="trip_id_value",
-        filter="filter_value",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.search_fuzzed_vehicles), "__call__"
-    ) as call:
-        client.search_fuzzed_vehicles(request=request)
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == vehicle_api.SearchVehiclesRequest(
-            parent="parent_value",
-            trip_id="trip_id_value",
-            filter="filter_value",
-        )
-
-
-@pytest.mark.asyncio
-async def test_search_fuzzed_vehicles_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = VehicleServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.search_fuzzed_vehicles), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            vehicle_api.SearchVehiclesResponse()
-        )
-        response = await client.search_fuzzed_vehicles()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == vehicle_api.SearchVehiclesRequest()
-
-
-@pytest.mark.asyncio
-async def test_search_fuzzed_vehicles_async(
-    transport: str = "grpc_asyncio", request_type=vehicle_api.SearchVehiclesRequest
-):
-    client = VehicleServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.search_fuzzed_vehicles), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            vehicle_api.SearchVehiclesResponse()
-        )
-        response = await client.search_fuzzed_vehicles(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        request = vehicle_api.SearchVehiclesRequest()
-        assert args[0] == request
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, vehicle_api.SearchVehiclesResponse)
-
-
-@pytest.mark.asyncio
-async def test_search_fuzzed_vehicles_async_from_dict():
-    await test_search_fuzzed_vehicles_async(request_type=dict)
-
-
-def test_search_fuzzed_vehicles_routing_parameters():
-    client = VehicleServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = vehicle_api.SearchVehiclesRequest(**{"parent": "providers/sample1"})
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.search_fuzzed_vehicles), "__call__"
-    ) as call:
-        call.return_value = vehicle_api.SearchVehiclesResponse()
-        client.search_fuzzed_vehicles(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
@@ -2891,11 +3056,9 @@ def test_vehicle_service_base_transport():
         "create_vehicle",
         "get_vehicle",
         "update_vehicle",
-        "update_vehicle_location",
         "update_vehicle_attributes",
         "list_vehicles",
         "search_vehicles",
-        "search_fuzzed_vehicles",
     )
     for method in methods:
         with pytest.raises(NotImplementedError):
