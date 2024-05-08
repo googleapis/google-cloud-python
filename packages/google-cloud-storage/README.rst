@@ -14,6 +14,11 @@ A comprehensive list of changes in each version may be found in the `CHANGELOG`_
 - `Client Library Documentation`_
 - `github.com/googleapis/python-storage`_
 
+Certain control plane and long-running operations for Cloud Storage (including Folder
+and Managed Folder operations) are supported via the `Storage Control Client`_.
+The `Storage Control API`_ creates one space to perform metadata-specific, control plane,
+and long-running operations apart from the Storage API.
+
 Read more about the client libraries for Cloud APIs, including the older
 Google APIs Client Libraries, in `Client Libraries Explained`_.
 
@@ -28,6 +33,8 @@ Google APIs Client Libraries, in `Client Libraries Explained`_.
 .. _Product Documentation:  https://cloud.google.com/storage
 .. _CHANGELOG:  https://github.com/googleapis/python-storage/blob/main/CHANGELOG.md
 .. _github.com/googleapis/python-storage: https://github.com/googleapis/python-storage
+.. _Storage Control Client: https://cloud.google.com/python/docs/reference/google-cloud-storage-control/latest
+.. _Storage Control API: https://cloud.google.com/storage/docs/reference/rpc/google.storage.control.v2
 .. _Client Libraries Explained: https://cloud.google.com/apis/docs/client-libraries-explained
 
 Quick Start
