@@ -32,8 +32,3 @@ For a list of all ``google-cloud-visionai`` releases:
     :maxdepth: 2
 
     CHANGELOG
-
-.. toctree::
-  :hidden:
-
-  summary_overview.md
