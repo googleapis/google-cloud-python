@@ -25,6 +25,11 @@ class PickleIOMixin:
             If the content of the pickle file is a Series and its name attribute is None,
             the name will be set to '0' by default.
 
+        .. note::
+            Data is inlined in the query SQL if it is small enough (roughly 5MB
+            or less in memory). Larger size data is loaded to a BigQuery table
+            instead.
+
         **Examples:**
 
             >>> import bigframes.pandas as bpd

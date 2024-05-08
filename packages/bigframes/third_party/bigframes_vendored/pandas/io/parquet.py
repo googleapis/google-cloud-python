@@ -19,6 +19,11 @@ class ParquetIOMixin:
             Instead, set a serialized index column as the index and sort by
             that in the resulting DataFrame.
 
+        .. note::
+            For non-"bigquery" engine, data is inlined in the query SQL if it is
+            small enough (roughly 5MB or less in memory). Larger size data is
+            loaded to a BigQuery table instead.
+
         **Examples:**
 
             >>> import bigframes.pandas as bpd
