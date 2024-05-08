@@ -155,9 +155,7 @@ def all_clients() -> List[CloudClient]:
         else:
             url = response.links['next']['url']
         headers = {'Authorization': f'token {token}'}
-        params = {'per_page': 100, "q": "python- in:name org:googleapis"}
         response = requests.get(url=url, headers= headers)
-        repositories = response.json().get("items", [])
         if len(response.json()) == 0:
             break
         clients.extend(get_clients_batch_from_response_json(response.json()))
