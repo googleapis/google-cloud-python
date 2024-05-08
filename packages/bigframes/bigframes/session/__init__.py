@@ -20,7 +20,6 @@ import copy
 import datetime
 import logging
 import os
-import re
 import secrets
 import typing
 from typing import (
@@ -86,10 +85,11 @@ import bigframes.core.tree_properties as traversals
 import bigframes.core.tree_properties as tree_properties
 import bigframes.core.utils as utils
 import bigframes.dtypes
+import bigframes.exceptions
 import bigframes.formatting_helpers as formatting_helpers
 from bigframes.functions.remote_function import read_gbq_function as bigframes_rgf
 from bigframes.functions.remote_function import remote_function as bigframes_rf
-import bigframes.session._io.bigquery as bigframes_io
+import bigframes.session._io.bigquery as bf_io_bigquery
 import bigframes.session._io.bigquery.read_gbq_table as bf_read_gbq_table
 import bigframes.session.clients
 import bigframes.version
@@ -145,14 +145,18 @@ INLINABLE_DTYPES: Sequence[bigframes.dtypes.Dtype] = (
 )
 
 
-def _is_query(query_or_table: str) -> bool:
-    """Determine if `query_or_table` is a table ID or a SQL string"""
-    return re.search(r"\s", query_or_table.strip(), re.MULTILINE) is not None
+def _to_index_cols(
+    index_col: Iterable[str] | str | bigframes.enums.DefaultIndexKind = (),
+) -> List[str]:
+    """Convert index_col into a list of column names."""
+    if isinstance(index_col, bigframes.enums.DefaultIndexKind):
+        index_cols: List[str] = []
+    elif isinstance(index_col, str):
+        index_cols = [index_col]
+    else:
+        index_cols = list(index_col)
 
-
-def _is_table_with_wildcard_suffix(query_or_table: str) -> bool:
-    """Determine if `query_or_table` is a table and contains a wildcard suffix."""
-    return not _is_query(query_or_table) and query_or_table.endswith("*")
+    return index_cols
 
 
 class Session(
@@ -181,12 +185,26 @@ class Session(
         if context is None:
             context = bigquery_options.BigQueryOptions()
 
-        # TODO(swast): Get location from the environment.
         if context.location is None:
             self._location = "US"
             warnings.warn(
                 f"No explicit location is set, so using location {self._location} for the session.",
-                stacklevel=2,
+                # User's code
+                # -> get_global_session()
+                # -> connect()
+                # -> Session()
+                #
+                # Note: We could also have:
+                # User's code
+                # -> read_gbq()
+                # -> with_default_session()
+                # -> get_global_session()
+                # -> connect()
+                # -> Session()
+                # but we currently have no way to disambiguate these
+                # situations.
+                stacklevel=4,
+                category=bigframes.exceptions.DefaultLocationWarning,
             )
         else:
             self._location = context.location
@@ -322,13 +340,19 @@ class Session(
             columns = col_order
 
         filters = list(filters)
-        if len(filters) != 0 or _is_table_with_wildcard_suffix(query_or_table):
+        if len(filters) != 0 or bf_io_bigquery.is_table_with_wildcard_suffix(
+            query_or_table
+        ):
             # TODO(b/338111344): This appears to be missing index_cols, which
             # are necessary to be selected.
-            # TODO(b/338039517): Also, need to account for primary keys.
-            query_or_table = self._to_query(query_or_table, columns, filters)
+            # TODO(b/338039517): Refactor this to be called inside both
+            # _read_gbq_query and _read_gbq_table (after detecting primary keys)
+            # so we can make sure index_col/index_cols reflects primary keys.
+            query_or_table = bf_io_bigquery.to_query(
+                query_or_table, _to_index_cols(index_col), columns, filters
+            )
 
-        if _is_query(query_or_table):
+        if bf_io_bigquery.is_query(query_or_table):
             return self._read_gbq_query(
                 query_or_table,
                 index_col=index_col,
@@ -354,85 +378,6 @@ class Session(
                 api_name="read_gbq",
                 use_cache=use_cache if use_cache is not None else True,
             )
-
-    def _to_query(
-        self,
-        query_or_table: str,
-        columns: Iterable[str],
-        filters: third_party_pandas_gbq.FiltersType,
-    ) -> str:
-        """Compile query_or_table with conditions(filters, wildcards) to query."""
-        filters = list(filters)
-        sub_query = (
-            f"({query_or_table})"
-            if _is_query(query_or_table)
-            else f"`{query_or_table}`"
-        )
-
-        # TODO(b/338111344): Generate an index based on DefaultIndexKind if we
-        # don't have index columns specified.
-        select_clause = "SELECT " + (
-            ", ".join(f"`{column}`" for column in columns) if columns else "*"
-        )
-
-        where_clause = ""
-        if filters:
-            valid_operators: Mapping[third_party_pandas_gbq.FilterOps, str] = {
-                "in": "IN",
-                "not in": "NOT IN",
-                "LIKE": "LIKE",
-                "==": "=",
-                ">": ">",
-                "<": "<",
-                ">=": ">=",
-                "<=": "<=",
-                "!=": "!=",
-            }
-
-            # If single layer filter, add another pseudo layer. So the single layer represents "and" logic.
-            if isinstance(filters[0], tuple) and (
-                len(filters[0]) == 0 or not isinstance(list(filters[0])[0], tuple)
-            ):
-                filters = typing.cast(third_party_pandas_gbq.FiltersType, [filters])
-
-            or_expressions = []
-            for group in filters:
-                if not isinstance(group, Iterable):
-                    group = [group]
-
-                and_expressions = []
-                for filter_item in group:
-                    if not isinstance(filter_item, tuple) or (len(filter_item) != 3):
-                        raise ValueError(
-                            f"Filter condition should be a tuple of length 3, {filter_item} is not valid."
-                        )
-
-                    column, operator, value = filter_item
-
-                    if not isinstance(column, str):
-                        raise ValueError(
-                            f"Column name should be a string, but received '{column}' of type {type(column).__name__}."
-                        )
-
-                    if operator not in valid_operators:
-                        raise ValueError(f"Operator {operator} is not valid.")
-
-                    operator_str = valid_operators[operator]
-
-                    if operator_str in ["IN", "NOT IN"]:
-                        value_list = ", ".join([repr(v) for v in value])
-                        expression = f"`{column}` {operator_str} ({value_list})"
-                    else:
-                        expression = f"`{column}` {operator_str} {repr(value)}"
-                    and_expressions.append(expression)
-
-                or_expressions.append(" AND ".join(and_expressions))
-
-            if or_expressions:
-                where_clause = " WHERE " + " OR ".join(or_expressions)
-
-        full_query = f"{select_clause} FROM {sub_query} AS sub{where_clause}"
-        return full_query
 
     def _query_to_destination(
         self,
@@ -610,12 +555,7 @@ class Session(
                 True if use_cache is None else use_cache
             )
 
-        if isinstance(index_col, bigframes.enums.DefaultIndexKind):
-            index_cols = []
-        elif isinstance(index_col, str):
-            index_cols = [index_col]
-        else:
-            index_cols = list(index_col)
+        index_cols = _to_index_cols(index_col)
 
         destination, query_job = self._query_to_destination(
             query,
@@ -682,8 +622,13 @@ class Session(
             columns = col_order
 
         filters = list(filters)
-        if len(filters) != 0 or _is_table_with_wildcard_suffix(query):
-            query = self._to_query(query, columns, filters)
+        if len(filters) != 0 or bf_io_bigquery.is_table_with_wildcard_suffix(query):
+            # TODO(b/338039517): Refactor this to be called inside both
+            # _read_gbq_query and _read_gbq_table (after detecting primary keys)
+            # so we can make sure index_col/index_cols reflects primary keys.
+            query = bf_io_bigquery.to_query(
+                query, _to_index_cols(index_col), columns, filters
+            )
 
             return self._read_gbq_query(
                 query,
@@ -838,12 +783,7 @@ class Session(
         index_col: Iterable[str] | str | bigframes.enums.DefaultIndexKind = (),
         columns: Iterable[str] = (),
     ) -> dataframe.DataFrame:
-        if isinstance(index_col, bigframes.enums.DefaultIndexKind):
-            index_cols = []
-        elif isinstance(index_col, str):
-            index_cols = [index_col]
-        else:
-            index_cols = list(index_col)
+        index_cols = _to_index_cols(index_col)
 
         if not job_config.clustering_fields and index_cols:
             job_config.clustering_fields = index_cols[:_MAX_CLUSTER_COLUMNS]
@@ -1430,7 +1370,7 @@ class Session(
             datetime.datetime.now(datetime.timezone.utc) + constants.DEFAULT_EXPIRATION
         )
 
-        table = bigframes_io.create_temp_table(
+        table = bf_io_bigquery.create_temp_table(
             self,
             expiration,
             schema=schema,

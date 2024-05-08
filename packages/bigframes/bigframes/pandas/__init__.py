@@ -67,6 +67,7 @@ import bigframes.enums
 import bigframes.operations as ops
 import bigframes.series
 import bigframes.session
+import bigframes.session._io.bigquery
 import bigframes.session.clients
 
 
@@ -391,7 +392,7 @@ def _set_default_session_location_if_possible(query):
 
     bqclient = clients_provider.bqclient
 
-    if bigframes.session._is_query(query):
+    if bigframes.session._io.bigquery.is_query(query):
         job = bqclient.query(query, bigquery.QueryJobConfig(dry_run=True))
         options.bigquery.location = job.location
     else:

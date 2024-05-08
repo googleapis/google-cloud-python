@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import datetime
+import re
 from unittest import mock
 import warnings
 
@@ -69,8 +70,12 @@ def test_read_gbq_start_sets_session_location(
     assert not bpd.options.bigquery.location
 
     # Starting user journey with read_gbq* should work for a table in any
-    # location, in this case tokyo
-    df = read_method(query_tokyo)
+    # location, in this case tokyo.
+    with warnings.catch_warnings():
+        # Since the query refers to a specific location, no warning should be
+        # raised.
+        warnings.simplefilter("error", bigframes.exceptions.DefaultLocationWarning)
+        df = read_method(query_tokyo)
     assert df is not None
 
     # Now bigquery options location should be set to tokyo
@@ -146,7 +151,11 @@ def test_read_gbq_after_session_start_must_comply_with_default_location(
 
     # Starting user journey with anything other than read_gbq*, such as
     # read_pandas would bind the session to default location US
-    df = bpd.read_pandas(scalars_pandas_df_index)
+    with pytest.warns(
+        bigframes.exceptions.DefaultLocationWarning,
+        match=re.escape("using location US for the session"),
+    ):
+        df = bpd.read_pandas(scalars_pandas_df_index)
     assert df is not None
 
     # Doing read_gbq* from a table in another location should fail
@@ -262,16 +271,17 @@ def test_read_gbq_must_comply_with_set_location_non_US(
 
 def test_credentials_need_reauthentication(monkeypatch):
     # Use a simple test query to verify that default session works to interact
-    # with BQ
+    # with BQ.
     test_query = "SELECT 1"
-
-    # Confirm that default session has BQ client with valid credentials
-    session = bpd.get_global_session()
-    assert session.bqclient._credentials.valid
 
     # Confirm that default session works as usual
     df = bpd.read_gbq(test_query)
     assert df is not None
+
+    # Call get_global_session() *after* read_gbq so that our location detection
+    # has a chance to work.
+    session = bpd.get_global_session()
+    assert session.bqclient._credentials.valid
 
     with monkeypatch.context() as m:
         # Simulate expired credentials to trigger the credential refresh flow

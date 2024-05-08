@@ -17,6 +17,12 @@
 # NOTE: This module should not depend on any others in the package.
 
 
+# Uses UserWarning for backwards compatibility with warning without a category
+# set.
+class DefaultLocationWarning(UserWarning):
+    """No location was specified, so using a default one."""
+
+
 class UnknownLocationWarning(Warning):
     """The location is set to an unknown value."""
 

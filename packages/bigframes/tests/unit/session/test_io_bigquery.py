@@ -210,3 +210,109 @@ def test_create_temp_table_default_expiration():
 def test_bq_schema_to_sql(schema: Iterable[bigquery.SchemaField], expected: str):
     sql = io_bq.bq_schema_to_sql(schema)
     assert sql == expected
+
+
+@pytest.mark.parametrize(
+    ("query_or_table", "index_cols", "columns", "filters", "expected_output"),
+    [
+        pytest.param(
+            "test_table",
+            [],
+            [],
+            ["date_col", ">", "2022-10-20"],
+            None,
+            marks=pytest.mark.xfail(
+                raises=ValueError,
+            ),
+            id="raise_error",
+        ),
+        pytest.param(
+            "test_table",
+            ["row_index"],
+            ["string_col"],
+            [
+                (("rowindex", "not in", [0, 6]),),
+                (("string_col", "in", ["Hello, World!", "こんにちは"]),),
+            ],
+            (
+                "SELECT `row_index`, `string_col` FROM `test_table` AS sub WHERE "
+                "`rowindex` NOT IN (0, 6) OR `string_col` IN ('Hello, World!', "
+                "'こんにちは')"
+            ),
+            id="table-all_params-filter_or_operation",
+        ),
+        pytest.param(
+            """SELECT
+                rowindex,
+                string_col,
+            FROM `test_table` AS t
+            """,
+            ["rowindex"],
+            ["string_col"],
+            [
+                ("rowindex", "<", 4),
+                ("string_col", "==", "Hello, World!"),
+            ],
+            """SELECT `rowindex`, `string_col` FROM (SELECT
+                rowindex,
+                string_col,
+            FROM `test_table` AS t
+            ) AS sub WHERE `rowindex` < 4 AND `string_col` = 'Hello, World!'""",
+            id="subquery-all_params-filter_and_operation",
+        ),
+        pytest.param(
+            "test_table",
+            [],
+            ["col_a", "col_b"],
+            [],
+            "SELECT `col_a`, `col_b` FROM `test_table` AS sub",
+            id="table-columns",
+        ),
+        pytest.param(
+            "test_table",
+            [],
+            [],
+            [("date_col", ">", "2022-10-20")],
+            "SELECT * FROM `test_table` AS sub WHERE `date_col` > '2022-10-20'",
+            id="table-filter",
+        ),
+        pytest.param(
+            "test_table*",
+            [],
+            [],
+            [],
+            "SELECT * FROM `test_table*` AS sub",
+            id="wildcard-no_params",
+        ),
+        pytest.param(
+            "test_table*",
+            [],
+            [],
+            [("_TABLE_SUFFIX", ">", "2022-10-20")],
+            "SELECT * FROM `test_table*` AS sub WHERE `_TABLE_SUFFIX` > '2022-10-20'",
+            id="wildcard-filter",
+        ),
+    ],
+)
+def test_to_query(query_or_table, index_cols, columns, filters, expected_output):
+    query = io_bq.to_query(
+        query_or_table,
+        index_cols,
+        columns,
+        filters,
+    )
+    assert query == expected_output
+
+
+@pytest.mark.parametrize(
+    ("query_or_table", "filters", "expected_output"),
+    [],
+)
+def test_to_query_with_wildcard_table(query_or_table, filters, expected_output):
+    query = io_bq.to_query(
+        query_or_table,
+        (),  # index_cols
+        (),  # columns
+        filters,
+    )
+    assert query == expected_output

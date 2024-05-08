@@ -18,7 +18,7 @@ import tempfile
 import textwrap
 import time
 import typing
-from typing import List
+from typing import List, Sequence
 
 import google
 import google.cloud.bigquery as bigquery
@@ -338,30 +338,80 @@ def test_read_gbq_table_clustered_with_filter(session: bigframes.Session):
     assert "OLI_TIRS" in sensors.index
 
 
-def test_read_gbq_wildcard(session: bigframes.Session):
-    df = session.read_gbq("bigquery-public-data.noaa_gsod.gsod193*")
-    assert df.shape == (348485, 32)
+_GSOD_ALL_TABLES = "bigquery-public-data.noaa_gsod.gsod*"
+_GSOD_1930S = "bigquery-public-data.noaa_gsod.gsod193*"
 
 
-def test_read_gbq_wildcard_with_filter(session: bigframes.Session):
-    df = session.read_gbq(
-        "bigquery-public-data.noaa_gsod.gsod19*",
-        filters=[("_table_suffix", ">=", "30"), ("_table_suffix", "<=", "39")],  # type: ignore
+@pytest.mark.parametrize(
+    "api_method",
+    # Test that both methods work as there's a risk that read_gbq /
+    # read_gbq_table makes for an infinite loop. Table reads can convert to
+    # queries and read_gbq reads from tables.
+    ["read_gbq", "read_gbq_table"],
+)
+@pytest.mark.parametrize(
+    ("filters", "table_id", "index_col", "columns"),
+    [
+        pytest.param(
+            [("_table_suffix", ">=", "1930"), ("_table_suffix", "<=", "1939")],
+            _GSOD_ALL_TABLES,
+            ["stn", "wban", "year", "mo", "da"],
+            ["temp", "max", "min"],
+            id="all",
+        ),
+        pytest.param(
+            (),  # filters
+            _GSOD_1930S,
+            (),  # index_col
+            ["temp", "max", "min"],
+            id="columns",
+        ),
+        pytest.param(
+            [("_table_suffix", ">=", "1930"), ("_table_suffix", "<=", "1939")],
+            _GSOD_ALL_TABLES,
+            (),  # index_col,
+            (),  # columns
+            id="filters",
+        ),
+        pytest.param(
+            (),  # filters
+            _GSOD_1930S,
+            ["stn", "wban", "year", "mo", "da"],
+            (),  # columns
+            id="index_col",
+        ),
+    ],
+)
+def test_read_gbq_wildcard(
+    session: bigframes.Session,
+    api_method: str,
+    filters,
+    table_id: str,
+    index_col: Sequence[str],
+    columns: Sequence[str],
+):
+    table_metadata = session.bqclient.get_table(table_id)
+    method = getattr(session, api_method)
+    df = method(table_id, filters=filters, index_col=index_col, columns=columns)
+    num_rows, num_columns = df.shape
+
+    if index_col:
+        assert list(df.index.names) == list(index_col)
+    else:
+        assert df.index.name is None
+
+    expected_columns = (
+        columns
+        if columns
+        else [
+            field.name
+            for field in table_metadata.schema
+            if field.name not in index_col and field.name not in columns
+        ]
     )
-    assert df.shape == (348485, 32)
-
-
-def test_read_gbq_table_wildcard(session: bigframes.Session):
-    df = session.read_gbq_table("bigquery-public-data.noaa_gsod.gsod193*")
-    assert df.shape == (348485, 32)
-
-
-def test_read_gbq_table_wildcard_with_filter(session: bigframes.Session):
-    df = session.read_gbq_table(
-        "bigquery-public-data.noaa_gsod.gsod19*",
-        filters=[("_table_suffix", ">=", "30"), ("_table_suffix", "<=", "39")],  # type: ignore
-    )
-    assert df.shape == (348485, 32)
+    assert list(df.columns) == expected_columns
+    assert num_rows > 0
+    assert num_columns == len(expected_columns)
 
 
 @pytest.mark.parametrize(

@@ -19,10 +19,13 @@ from __future__ import annotations
 import datetime
 import itertools
 import os
+import re
 import textwrap
 import types
-from typing import Dict, Iterable, Optional, Sequence, Tuple, Union
+import typing
+from typing import Dict, Iterable, Mapping, Optional, Sequence, Tuple, Union
 
+import bigframes_vendored.pandas.io.gbq as third_party_pandas_gbq
 import google.api_core.exceptions
 import google.cloud.bigquery as bigquery
 
@@ -311,3 +314,95 @@ def create_bq_dataset_reference(
         query_destination.project,
         query_destination.dataset_id,
     )
+
+
+def is_query(query_or_table: str) -> bool:
+    """Determine if `query_or_table` is a table ID or a SQL string"""
+    return re.search(r"\s", query_or_table.strip(), re.MULTILINE) is not None
+
+
+def is_table_with_wildcard_suffix(query_or_table: str) -> bool:
+    """Determine if `query_or_table` is a table and contains a wildcard suffix."""
+    return not is_query(query_or_table) and query_or_table.endswith("*")
+
+
+def to_query(
+    query_or_table: str,
+    index_cols: Iterable[str],
+    columns: Iterable[str],
+    filters: third_party_pandas_gbq.FiltersType,
+) -> str:
+    """Compile query_or_table with conditions(filters, wildcards) to query."""
+    filters = list(filters)
+    sub_query = (
+        f"({query_or_table})" if is_query(query_or_table) else f"`{query_or_table}`"
+    )
+
+    # TODO(b/338111344): Generate an index based on DefaultIndexKind if we
+    # don't have index columns specified.
+    if columns:
+        # We only reduce the selection if columns is set, but we always
+        # want to make sure index_cols is also included.
+        all_columns = itertools.chain(index_cols, columns)
+        select_clause = "SELECT " + ", ".join(f"`{column}`" for column in all_columns)
+    else:
+        select_clause = "SELECT *"
+
+    where_clause = ""
+    if filters:
+        valid_operators: Mapping[third_party_pandas_gbq.FilterOps, str] = {
+            "in": "IN",
+            "not in": "NOT IN",
+            "LIKE": "LIKE",
+            "==": "=",
+            ">": ">",
+            "<": "<",
+            ">=": ">=",
+            "<=": "<=",
+            "!=": "!=",
+        }
+
+        # If single layer filter, add another pseudo layer. So the single layer represents "and" logic.
+        if isinstance(filters[0], tuple) and (
+            len(filters[0]) == 0 or not isinstance(list(filters[0])[0], tuple)
+        ):
+            filters = typing.cast(third_party_pandas_gbq.FiltersType, [filters])
+
+        or_expressions = []
+        for group in filters:
+            if not isinstance(group, Iterable):
+                group = [group]
+
+            and_expressions = []
+            for filter_item in group:
+                if not isinstance(filter_item, tuple) or (len(filter_item) != 3):
+                    raise ValueError(
+                        f"Filter condition should be a tuple of length 3, {filter_item} is not valid."
+                    )
+
+                column, operator, value = filter_item
+
+                if not isinstance(column, str):
+                    raise ValueError(
+                        f"Column name should be a string, but received '{column}' of type {type(column).__name__}."
+                    )
+
+                if operator not in valid_operators:
+                    raise ValueError(f"Operator {operator} is not valid.")
+
+                operator_str = valid_operators[operator]
+
+                if operator_str in ["IN", "NOT IN"]:
+                    value_list = ", ".join([repr(v) for v in value])
+                    expression = f"`{column}` {operator_str} ({value_list})"
+                else:
+                    expression = f"`{column}` {operator_str} {repr(value)}"
+                and_expressions.append(expression)
+
+            or_expressions.append(" AND ".join(and_expressions))
+
+        if or_expressions:
+            where_clause = " WHERE " + " OR ".join(or_expressions)
+
+    full_query = f"{select_clause} FROM {sub_query} AS sub{where_clause}"
+    return full_query
