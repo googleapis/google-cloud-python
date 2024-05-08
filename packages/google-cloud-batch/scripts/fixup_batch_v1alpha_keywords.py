@@ -49,6 +49,7 @@ class batchCallTransformer(cst.CSTTransformer):
         'list_jobs': ('parent', 'filter', 'order_by', 'page_size', 'page_token', ),
         'list_resource_allowances': ('parent', 'page_size', 'page_token', ),
         'list_tasks': ('parent', 'filter', 'order_by', 'page_size', 'page_token', ),
+        'update_job': ('job', 'update_mask', 'request_id', ),
         'update_resource_allowance': ('resource_allowance', 'update_mask', 'request_id', ),
     }
 
