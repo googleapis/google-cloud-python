@@ -33,6 +33,9 @@ jobs:
     # don't run the workflow on forks of googleapis/google-cloud-python
     if: ${{github.repository == 'googleapis/google-cloud-python'}}
     steps:
+      - name: Clear Cache
+        run: |
+          sudo rm -rf /var/cache/apt/archives/*.deb
       - name: Get current date
         id: date
         run: echo "::set-output name=current_date::$(date +'%Y-%m-%d')"
