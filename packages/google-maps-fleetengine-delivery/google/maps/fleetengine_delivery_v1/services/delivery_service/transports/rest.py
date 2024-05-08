@@ -132,14 +132,6 @@ class DeliveryServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
-            def pre_search_tasks(self, request, metadata):
-                logging.log(f"Received request: {request}")
-                return request, metadata
-
-            def post_search_tasks(self, response):
-                logging.log(f"Received response: {response}")
-                return response
-
             def pre_update_delivery_vehicle(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -333,29 +325,6 @@ class DeliveryServiceRestInterceptor:
         self, response: delivery_api.ListTasksResponse
     ) -> delivery_api.ListTasksResponse:
         """Post-rpc interceptor for list_tasks
-
-        Override in a subclass to manipulate the response
-        after it is returned by the DeliveryService server but before
-        it is returned to user code.
-        """
-        return response
-
-    def pre_search_tasks(
-        self,
-        request: delivery_api.SearchTasksRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[delivery_api.SearchTasksRequest, Sequence[Tuple[str, str]]]:
-        """Pre-rpc interceptor for search_tasks
-
-        Override in a subclass to manipulate the request or metadata
-        before they are sent to the DeliveryService server.
-        """
-        return request, metadata
-
-    def post_search_tasks(
-        self, response: delivery_api.SearchTasksResponse
-    ) -> delivery_api.SearchTasksResponse:
-        """Post-rpc interceptor for search_tasks
 
         Override in a subclass to manipulate the response
         after it is returned by the DeliveryService server but before
@@ -1283,97 +1252,6 @@ class DeliveryServiceRestTransport(DeliveryServiceTransport):
             resp = self._interceptor.post_list_tasks(resp)
             return resp
 
-    class _SearchTasks(DeliveryServiceRestStub):
-        def __hash__(self):
-            return hash("SearchTasks")
-
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "trackingId": "",
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
-
-        def __call__(
-            self,
-            request: delivery_api.SearchTasksRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-        ) -> delivery_api.SearchTasksResponse:
-            r"""Call the search tasks method over HTTP.
-
-            Args:
-                request (~.delivery_api.SearchTasksRequest):
-                    The request object. Deprecated: Issue ``GetTaskTrackingInfoRequest``\ s to
-                ``GetTaskTrackingInfo`` instead.
-                retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                    should be retried.
-                timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
-
-            Returns:
-                ~.delivery_api.SearchTasksResponse:
-                    The ``SearchTasks`` response. It contains the set of
-                Tasks that meet the search criteria in the
-                ``SearchTasksRequest``.
-
-            """
-
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=providers/*}/tasks:search",
-                },
-            ]
-            request, metadata = self._interceptor.pre_search_tasks(request, metadata)
-            pb_request = delivery_api.SearchTasksRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
-            )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
-
-            # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
-
-            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-            # subclass.
-            if response.status_code >= 400:
-                raise core_exceptions.from_http_response(response)
-
-            # Return the response
-            resp = delivery_api.SearchTasksResponse()
-            pb_resp = delivery_api.SearchTasksResponse.pb(resp)
-
-            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
-            resp = self._interceptor.post_search_tasks(resp)
-            return resp
-
     class _UpdateDeliveryVehicle(DeliveryServiceRestStub):
         def __hash__(self):
             return hash("UpdateDeliveryVehicle")
@@ -1662,14 +1540,6 @@ class DeliveryServiceRestTransport(DeliveryServiceTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListTasks(self._session, self._host, self._interceptor)  # type: ignore
-
-    @property
-    def search_tasks(
-        self,
-    ) -> Callable[[delivery_api.SearchTasksRequest], delivery_api.SearchTasksResponse]:
-        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
-        # In C++ this would require a dynamic_cast
-        return self._SearchTasks(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def update_delivery_vehicle(
