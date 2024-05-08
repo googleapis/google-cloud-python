@@ -17,6 +17,7 @@ from collections import OrderedDict
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -574,7 +575,11 @@ class DeliveryServiceClient(metaclass=DeliveryServiceClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, DeliveryServiceTransport]] = None,
+        transport: Optional[
+            Union[
+                str, DeliveryServiceTransport, Callable[..., DeliveryServiceTransport]
+            ]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -586,9 +591,11 @@ class DeliveryServiceClient(metaclass=DeliveryServiceClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, DeliveryServiceTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,DeliveryServiceTransport,Callable[..., DeliveryServiceTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the DeliveryServiceTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -697,8 +704,15 @@ class DeliveryServiceClient(metaclass=DeliveryServiceClientMeta):
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[DeliveryServiceTransport], Callable[..., DeliveryServiceTransport]
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., DeliveryServiceTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -815,8 +829,8 @@ class DeliveryServiceClient(metaclass=DeliveryServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, delivery_vehicle, delivery_vehicle_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -824,10 +838,8 @@ class DeliveryServiceClient(metaclass=DeliveryServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a delivery_api.CreateDeliveryVehicleRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, delivery_api.CreateDeliveryVehicleRequest):
             request = delivery_api.CreateDeliveryVehicleRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -940,8 +952,8 @@ class DeliveryServiceClient(metaclass=DeliveryServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -949,10 +961,8 @@ class DeliveryServiceClient(metaclass=DeliveryServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a delivery_api.GetDeliveryVehicleRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, delivery_api.GetDeliveryVehicleRequest):
             request = delivery_api.GetDeliveryVehicleRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1082,8 +1092,8 @@ class DeliveryServiceClient(metaclass=DeliveryServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([delivery_vehicle, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1091,10 +1101,8 @@ class DeliveryServiceClient(metaclass=DeliveryServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a delivery_api.UpdateDeliveryVehicleRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, delivery_api.UpdateDeliveryVehicleRequest):
             request = delivery_api.UpdateDeliveryVehicleRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1191,10 +1199,8 @@ class DeliveryServiceClient(metaclass=DeliveryServiceClientMeta):
                 The BatchCreateTask response message.
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a delivery_api.BatchCreateTasksRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, delivery_api.BatchCreateTasksRequest):
             request = delivery_api.BatchCreateTasksRequest(request)
 
@@ -1349,8 +1355,8 @@ class DeliveryServiceClient(metaclass=DeliveryServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, task, task_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1358,10 +1364,8 @@ class DeliveryServiceClient(metaclass=DeliveryServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a delivery_api.CreateTaskRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, delivery_api.CreateTaskRequest):
             request = delivery_api.CreateTaskRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1479,8 +1483,8 @@ class DeliveryServiceClient(metaclass=DeliveryServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1488,10 +1492,8 @@ class DeliveryServiceClient(metaclass=DeliveryServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a delivery_api.GetTaskRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, delivery_api.GetTaskRequest):
             request = delivery_api.GetTaskRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1523,137 +1525,6 @@ class DeliveryServiceClient(metaclass=DeliveryServiceClientMeta):
             request,
             retry=retry,
             timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    def search_tasks(
-        self,
-        request: Optional[Union[delivery_api.SearchTasksRequest, dict]] = None,
-        *,
-        parent: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> pagers.SearchTasksPager:
-        r"""Deprecated: Use ``GetTaskTrackingInfo`` instead.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.maps import fleetengine_delivery_v1
-
-            def sample_search_tasks():
-                # Create a client
-                client = fleetengine_delivery_v1.DeliveryServiceClient()
-
-                # Initialize request argument(s)
-                request = fleetengine_delivery_v1.SearchTasksRequest(
-                    parent="parent_value",
-                    tracking_id="tracking_id_value",
-                )
-
-                # Make the request
-                page_result = client.search_tasks(request=request)
-
-                # Handle the response
-                for response in page_result:
-                    print(response)
-
-        Args:
-            request (Union[google.maps.fleetengine_delivery_v1.types.SearchTasksRequest, dict]):
-                The request object. Deprecated: Issue ``GetTaskTrackingInfoRequest``\ s to
-                ``GetTaskTrackingInfo`` instead.
-            parent (str):
-                Required. Must be in the format
-                ``providers/{provider}``. The provider must be the
-                Google Cloud Project ID. For example,
-                ``sample-cloud-project``.
-
-                This corresponds to the ``parent`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.maps.fleetengine_delivery_v1.services.delivery_service.pagers.SearchTasksPager:
-                The SearchTasks response. It contains the set of Tasks that meet the search
-                   criteria in the SearchTasksRequest.
-
-                Iterating over this object will yield results and
-                resolve additional pages automatically.
-
-        """
-        warnings.warn(
-            "DeliveryServiceClient.search_tasks is deprecated", DeprecationWarning
-        )
-
-        # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([parent])
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # Minor optimization to avoid making a copy if the user passes
-        # in a delivery_api.SearchTasksRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(request, delivery_api.SearchTasksRequest):
-            request = delivery_api.SearchTasksRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if parent is not None:
-                request.parent = parent
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.search_tasks]
-
-        header_params = {}
-
-        routing_param_regex = re.compile("^(?P<provider_id>providers/[^/]+)$")
-        regex_match = routing_param_regex.match(request.parent)
-        if regex_match and regex_match.group("provider_id"):
-            header_params["provider_id"] = regex_match.group("provider_id")
-
-        if header_params:
-            metadata = tuple(metadata) + (
-                gapic_v1.routing_header.to_grpc_metadata(header_params),
-            )
-
-        # Validate the universe domain.
-        self._validate_universe_domain()
-
-        # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # This method is paged; wrap the response in a pager, which provides
-        # an `__iter__` convenience method.
-        response = pagers.SearchTasksPager(
-            method=rpc,
-            request=request,
-            response=response,
             metadata=metadata,
         )
 
@@ -1767,8 +1638,8 @@ class DeliveryServiceClient(metaclass=DeliveryServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([task, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1776,10 +1647,8 @@ class DeliveryServiceClient(metaclass=DeliveryServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a delivery_api.UpdateTaskRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, delivery_api.UpdateTaskRequest):
             request = delivery_api.UpdateTaskRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1885,8 +1754,8 @@ class DeliveryServiceClient(metaclass=DeliveryServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1894,10 +1763,8 @@ class DeliveryServiceClient(metaclass=DeliveryServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a delivery_api.ListTasksRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, delivery_api.ListTasksRequest):
             request = delivery_api.ListTasksRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2011,8 +1878,8 @@ class DeliveryServiceClient(metaclass=DeliveryServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2020,10 +1887,8 @@ class DeliveryServiceClient(metaclass=DeliveryServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a delivery_api.GetTaskTrackingInfoRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, delivery_api.GetTaskTrackingInfoRequest):
             request = delivery_api.GetTaskTrackingInfoRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2127,8 +1992,8 @@ class DeliveryServiceClient(metaclass=DeliveryServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2136,10 +2001,8 @@ class DeliveryServiceClient(metaclass=DeliveryServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a delivery_api.ListDeliveryVehiclesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, delivery_api.ListDeliveryVehiclesRequest):
             request = delivery_api.ListDeliveryVehiclesRequest(request)
             # If we have keyword arguments corresponding to fields on the

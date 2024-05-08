@@ -33,8 +33,6 @@ from .delivery_api import (
     ListDeliveryVehiclesResponse,
     ListTasksRequest,
     ListTasksResponse,
-    SearchTasksRequest,
-    SearchTasksResponse,
     UpdateDeliveryVehicleRequest,
     UpdateTaskRequest,
 )
@@ -66,8 +64,6 @@ __all__ = (
     "ListDeliveryVehiclesResponse",
     "ListTasksRequest",
     "ListTasksResponse",
-    "SearchTasksRequest",
-    "SearchTasksResponse",
     "UpdateDeliveryVehicleRequest",
     "UpdateTaskRequest",
     "DeliveryVehicle",
