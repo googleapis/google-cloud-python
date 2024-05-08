@@ -44,8 +44,6 @@ from google.maps.fleetengine_delivery_v1.types.delivery_api import (
     ListDeliveryVehiclesResponse,
     ListTasksRequest,
     ListTasksResponse,
-    SearchTasksRequest,
-    SearchTasksResponse,
     UpdateDeliveryVehicleRequest,
     UpdateTaskRequest,
 )
@@ -81,8 +79,6 @@ __all__ = (
     "ListDeliveryVehiclesResponse",
     "ListTasksRequest",
     "ListTasksResponse",
-    "SearchTasksRequest",
-    "SearchTasksResponse",
     "UpdateDeliveryVehicleRequest",
     "UpdateTaskRequest",
     "DeliveryVehicle",

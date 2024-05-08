@@ -47,7 +47,6 @@ class fleetengine_deliveryCallTransformer(cst.CSTTransformer):
         'get_task_tracking_info': ('name', 'header', ),
         'list_delivery_vehicles': ('parent', 'header', 'page_size', 'page_token', 'filter', 'viewport', ),
         'list_tasks': ('parent', 'header', 'page_size', 'page_token', 'filter', ),
-        'search_tasks': ('parent', 'tracking_id', 'header', 'page_size', 'page_token', ),
         'update_delivery_vehicle': ('delivery_vehicle', 'update_mask', 'header', ),
         'update_task': ('task', 'update_mask', 'header', ),
     }
