@@ -15,7 +15,7 @@
 * Add the `bigframes.bigquery` sub-package with a `bigframes.bigquery.array_length` function ([#630](https://github.com/googleapis/python-bigquery-dataframes/issues/630)) ([9963f85](https://github.com/googleapis/python-bigquery-dataframes/commit/9963f85b84c3b3c681447ab79e22ac93ac48349c))
 * Always do a query dry run when `option.repr_mode == "deferred"` ([#652](https://github.com/googleapis/python-bigquery-dataframes/issues/652)) ([651fd7d](https://github.com/googleapis/python-bigquery-dataframes/commit/651fd7daf14273f172c6c55e5d6c374eb590a22d))
 * Custom query labels for compute options ([#638](https://github.com/googleapis/python-bigquery-dataframes/issues/638)) ([f561799](https://github.com/googleapis/python-bigquery-dataframes/commit/f5617994bc136de5caa72719b8c3c297c512cb36))
-* Raise `NoDefaultIndexError` from `read_gbq` on clustered/partitioned tables with no `index_col` or `filters` set ([#631](https://github.com/googleapis/python-bigquery-dataframes/issues/631)) ([73064dd](https://github.com/googleapis/python-bigquery-dataframes/commit/73064dd2aa1ece5de8f5849a0fd337d0ba677404))
+* Warn with `DefaultIndexWarning` from `read_gbq` on clustered/partitioned tables with no `index_col` or `filters` set ([#631](https://github.com/googleapis/python-bigquery-dataframes/issues/631), [#658](https://github.com/googleapis/python-bigquery-dataframes/issues/658)) ([2715d2b](https://github.com/googleapis/python-bigquery-dataframes/commit/2715d2b4a353710175a66a4f6149356f583f2c45), [73064dd](https://github.com/googleapis/python-bigquery-dataframes/commit/73064dd2aa1ece5de8f5849a0fd337d0ba677404))
 * Support `index_col=False` in `read_csv` and `engine="bigquery"` ([73064dd](https://github.com/googleapis/python-bigquery-dataframes/commit/73064dd2aa1ece5de8f5849a0fd337d0ba677404))
 * Support gcf max instance count in `remote_function` ([#657](https://github.com/googleapis/python-bigquery-dataframes/issues/657)) ([36578ab](https://github.com/googleapis/python-bigquery-dataframes/commit/36578ab431119f71dda746de415d0c6417bb4de2))
 
@@ -23,7 +23,6 @@
 ### Bug Fixes
 
 * Don't raise UnknownLocationWarning for US or EU multi-regions ([#653](https://github.com/googleapis/python-bigquery-dataframes/issues/653)) ([8e4616b](https://github.com/googleapis/python-bigquery-dataframes/commit/8e4616b896f4e0d13d8bb0424c89335d3a1fe697))
-* Downgrade NoDefaultIndexError to DefaultIndexWarning ([#658](https://github.com/googleapis/python-bigquery-dataframes/issues/658)) ([2715d2b](https://github.com/googleapis/python-bigquery-dataframes/commit/2715d2b4a353710175a66a4f6149356f583f2c45))
 * Fix bug with na in the column labels in stack ([#659](https://github.com/googleapis/python-bigquery-dataframes/issues/659)) ([4a34293](https://github.com/googleapis/python-bigquery-dataframes/commit/4a342933559fba417fe42e2bd386838defdb2778))
 * Use explicit session in `PaLM2TextGenerator` ([#651](https://github.com/googleapis/python-bigquery-dataframes/issues/651)) ([e4f13c3](https://github.com/googleapis/python-bigquery-dataframes/commit/e4f13c3633b90e32d3171976d8b27ed10049882f))
 
