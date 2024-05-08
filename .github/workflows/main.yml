@@ -34,7 +34,7 @@ jobs:
     permissions:
       pull-requests: write # for googleapis/code-suggester
     name: Update API List PR
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     # don't run the workflow on forks of googleapis/google-cloud-python
     steps:
       - name: Clear Cache
