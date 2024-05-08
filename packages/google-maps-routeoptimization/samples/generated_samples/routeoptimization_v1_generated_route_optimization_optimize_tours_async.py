@@ -15,15 +15,15 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for UpdateVehicleLocation
+# Snippet for OptimizeTours
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
 # To install the latest published package dependency, execute the following:
-#   python3 -m pip install google-maps-fleetengine
+#   python3 -m pip install google-maps-routeoptimization
 
 
-# [START fleetengine_v1_generated_VehicleService_UpdateVehicleLocation_async]
+# [START routeoptimization_v1_generated_RouteOptimization_OptimizeTours_async]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
 # It will require modifications to work:
@@ -31,22 +31,22 @@
 # - It may require specifying regional endpoints when creating the service
 #   client as shown in:
 #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-from google.maps import fleetengine_v1
+from google.maps import routeoptimization_v1
 
 
-async def sample_update_vehicle_location():
+async def sample_optimize_tours():
     # Create a client
-    client = fleetengine_v1.VehicleServiceAsyncClient()
+    client = routeoptimization_v1.RouteOptimizationAsyncClient()
 
     # Initialize request argument(s)
-    request = fleetengine_v1.UpdateVehicleLocationRequest(
-        name="name_value",
+    request = routeoptimization_v1.OptimizeToursRequest(
+        parent="parent_value",
     )
 
     # Make the request
-    response = await client.update_vehicle_location(request=request)
+    response = await client.optimize_tours(request=request)
 
     # Handle the response
     print(response)
 
-# [END fleetengine_v1_generated_VehicleService_UpdateVehicleLocation_async]
+# [END routeoptimization_v1_generated_RouteOptimization_OptimizeTours_async]

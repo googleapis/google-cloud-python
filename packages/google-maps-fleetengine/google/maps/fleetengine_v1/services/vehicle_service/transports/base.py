@@ -25,7 +25,7 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
 from google.maps.fleetengine_v1 import gapic_version as package_version
-from google.maps.fleetengine_v1.types import fleetengine, vehicle_api, vehicles
+from google.maps.fleetengine_v1.types import vehicle_api, vehicles
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
@@ -168,11 +168,6 @@ class VehicleServiceTransport(abc.ABC):
                 default_timeout=15.0,
                 client_info=client_info,
             ),
-            self.update_vehicle_location: gapic_v1.method.wrap_method(
-                self.update_vehicle_location,
-                default_timeout=None,
-                client_info=client_info,
-            ),
             self.update_vehicle_attributes: gapic_v1.method.wrap_method(
                 self.update_vehicle_attributes,
                 default_retry=retries.Retry(
@@ -204,11 +199,6 @@ class VehicleServiceTransport(abc.ABC):
                     deadline=15.0,
                 ),
                 default_timeout=15.0,
-                client_info=client_info,
-            ),
-            self.search_fuzzed_vehicles: gapic_v1.method.wrap_method(
-                self.search_fuzzed_vehicles,
-                default_timeout=None,
                 client_info=client_info,
             ),
         }
@@ -250,15 +240,6 @@ class VehicleServiceTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def update_vehicle_location(
-        self,
-    ) -> Callable[
-        [vehicle_api.UpdateVehicleLocationRequest],
-        Union[fleetengine.VehicleLocation, Awaitable[fleetengine.VehicleLocation]],
-    ]:
-        raise NotImplementedError()
-
-    @property
     def update_vehicle_attributes(
         self,
     ) -> Callable[
@@ -284,18 +265,6 @@ class VehicleServiceTransport(abc.ABC):
 
     @property
     def search_vehicles(
-        self,
-    ) -> Callable[
-        [vehicle_api.SearchVehiclesRequest],
-        Union[
-            vehicle_api.SearchVehiclesResponse,
-            Awaitable[vehicle_api.SearchVehiclesResponse],
-        ],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def search_fuzzed_vehicles(
         self,
     ) -> Callable[
         [vehicle_api.SearchVehiclesRequest],

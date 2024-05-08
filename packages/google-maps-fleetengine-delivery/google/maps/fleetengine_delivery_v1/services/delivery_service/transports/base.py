@@ -215,20 +215,6 @@ class DeliveryServiceTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.search_tasks: gapic_v1.method.wrap_method(
-                self.search_tasks,
-                default_retry=retries.Retry(
-                    initial=1.0,
-                    maximum=10.0,
-                    multiplier=1.3,
-                    predicate=retries.if_exception_type(
-                        core_exceptions.ServiceUnavailable,
-                    ),
-                    deadline=60.0,
-                ),
-                default_timeout=60.0,
-                client_info=client_info,
-            ),
             self.update_task: gapic_v1.method.wrap_method(
                 self.update_task,
                 default_retry=retries.Retry(
@@ -357,18 +343,6 @@ class DeliveryServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [delivery_api.GetTaskRequest], Union[tasks.Task, Awaitable[tasks.Task]]
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def search_tasks(
-        self,
-    ) -> Callable[
-        [delivery_api.SearchTasksRequest],
-        Union[
-            delivery_api.SearchTasksResponse,
-            Awaitable[delivery_api.SearchTasksResponse],
-        ],
     ]:
         raise NotImplementedError()
 
