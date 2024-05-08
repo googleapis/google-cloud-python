@@ -411,7 +411,20 @@ class GbqConnector(object):
         timeout_ms = job_config_dict.get("jobTimeoutMs") or job_config_dict[
             "query"
         ].get("timeoutMs")
-        timeout_ms = int(timeout_ms) if timeout_ms else None
+
+        if timeout_ms:
+            timeout_ms = int(timeout_ms)
+            # Having too small a timeout_ms results in individual
+            # API calls timing out before they can finish.
+            # ~300 milliseconds is rule of thumb for bare minimum
+            # latency from the BigQuery API.
+            minimum_latency = 400
+            if timeout_ms < minimum_latency:
+                raise QueryTimeout(
+                    f"Query timeout must be at least 400 milliseconds: timeout_ms equals {timeout_ms}."
+                )
+        else:
+            timeout_ms = None
 
         self._start_timer()
         job_config = bigquery.QueryJobConfig.from_api_repr(job_config_dict)

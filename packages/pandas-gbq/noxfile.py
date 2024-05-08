@@ -256,6 +256,7 @@ def system(session):
 
     install_systemtest_dependencies(session, "-c", constraints_path)
 
+    # Print out package versions.
     session.run("python", "-m", "pip", "freeze")
 
     # Run py.test against the system tests.
@@ -352,12 +353,15 @@ def prerelease(session):
         "--quiet",
         f"--junitxml=prerelease_unit_{session.python}_sponge_log.xml",
         os.path.join("tests", "unit"),
+        *session.posargs,
     )
+
     session.run(
         "py.test",
         "--quiet",
         f"--junitxml=prerelease_system_{session.python}_sponge_log.xml",
         os.path.join("tests", "system"),
+        *session.posargs,
     )
 
 
@@ -515,7 +519,9 @@ def prerelease_deps(session):
     session.install(*other_deps)
     session.run("python", "-m", "pip", "freeze")
 
-    # Print out prerelease package versions
+    # Print out package versions.
+    session.run("python", "-m", "pip", "freeze")
+
     session.run(
         "python", "-c", "import google.protobuf; print(google.protobuf.__version__)"
     )
