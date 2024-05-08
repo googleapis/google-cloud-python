@@ -39,8 +39,6 @@ __protobuf__ = proto.module(
         "BatchCreateTasksResponse",
         "CreateTaskRequest",
         "GetTaskRequest",
-        "SearchTasksRequest",
-        "SearchTasksResponse",
         "UpdateTaskRequest",
         "ListTasksRequest",
         "ListTasksResponse",
@@ -423,100 +421,6 @@ class GetTaskRequest(proto.Message):
     name: str = proto.Field(
         proto.STRING,
         number=3,
-    )
-
-
-class SearchTasksRequest(proto.Message):
-    r"""Deprecated: Issue ``GetTaskTrackingInfoRequest``\ s to
-    ``GetTaskTrackingInfo`` instead.
-
-    Attributes:
-        header (google.maps.fleetengine_delivery_v1.types.DeliveryRequestHeader):
-            Optional. The standard Delivery API request
-            header.
-        parent (str):
-            Required. Must be in the format ``providers/{provider}``.
-            The provider must be the Google Cloud Project ID. For
-            example, ``sample-cloud-project``.
-        tracking_id (str):
-            Required. The identifier of the set of related Tasks being
-            requested. Tracking IDs are subject to the following
-            restrictions:
-
-            -  Must be a valid Unicode string.
-            -  Limited to a maximum length of 64 characters.
-            -  Normalized according to [Unicode Normalization Form C]
-               (http://www.unicode.org/reports/tr15/).
-            -  May not contain any of the following ASCII characters:
-               '/', ':', '?', ',', or '#'.
-        page_size (int):
-            Optional. The maximum number of Tasks to
-            return. The service may return fewer than this
-            value. If you don't specify this value, then the
-            server determines the number of results to
-            return.
-        page_token (str):
-            Optional. A page token, received from a previous
-            ``SearchTasks`` call. You must provide this value to
-            retrieve the subsequent page.
-
-            When paginating, all other parameters provided to
-            ``SearchTasks`` must match the call that provided the page
-            token.
-    """
-
-    header: mfd_header.DeliveryRequestHeader = proto.Field(
-        proto.MESSAGE,
-        number=1,
-        message=mfd_header.DeliveryRequestHeader,
-    )
-    parent: str = proto.Field(
-        proto.STRING,
-        number=3,
-    )
-    tracking_id: str = proto.Field(
-        proto.STRING,
-        number=4,
-    )
-    page_size: int = proto.Field(
-        proto.INT32,
-        number=5,
-    )
-    page_token: str = proto.Field(
-        proto.STRING,
-        number=6,
-    )
-
-
-class SearchTasksResponse(proto.Message):
-    r"""The ``SearchTasks`` response. It contains the set of Tasks that meet
-    the search criteria in the ``SearchTasksRequest``.
-
-    Attributes:
-        tasks (MutableSequence[google.maps.fleetengine_delivery_v1.types.Task]):
-            The set of Tasks for the requested ``tracking_id``. A
-            successful response can also be empty. An empty response
-            indicates that no Tasks are associated with the supplied
-            ``tracking_id``.
-        next_page_token (str):
-            Pass this token in the ``SearchTasksRequest`` to continue to
-            list results. If all results have been returned, then this
-            field is either an empty string, or it doesn't appear in the
-            response.
-    """
-
-    @property
-    def raw_page(self):
-        return self
-
-    tasks: MutableSequence[mfd_tasks.Task] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=mfd_tasks.Task,
-    )
-    next_page_token: str = proto.Field(
-        proto.STRING,
-        number=2,
     )
 
 

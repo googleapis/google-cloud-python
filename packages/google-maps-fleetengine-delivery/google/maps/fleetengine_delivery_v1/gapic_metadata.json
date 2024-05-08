@@ -50,11 +50,6 @@
                 "list_tasks"
               ]
             },
-            "SearchTasks": {
-              "methods": [
-                "search_tasks"
-              ]
-            },
             "UpdateDeliveryVehicle": {
               "methods": [
                 "update_delivery_vehicle"
@@ -110,11 +105,6 @@
                 "list_tasks"
               ]
             },
-            "SearchTasks": {
-              "methods": [
-                "search_tasks"
-              ]
-            },
             "UpdateDeliveryVehicle": {
               "methods": [
                 "update_delivery_vehicle"
@@ -168,11 +158,6 @@
             "ListTasks": {
               "methods": [
                 "list_tasks"
-              ]
-            },
-            "SearchTasks": {
-              "methods": [
-                "search_tasks"
               ]
             },
             "UpdateDeliveryVehicle": {
