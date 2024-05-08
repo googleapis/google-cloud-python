@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [1.18.0](https://github.com/googleapis/gapic-generator-python/compare/v1.17.1...v1.18.0) (2024-05-08)
+
+
+### Features
+
+* Add support for reading google.api.api_version ([#1999](https://github.com/googleapis/gapic-generator-python/issues/1999)) ([b2486e5](https://github.com/googleapis/gapic-generator-python/commit/b2486e5630312fb01b9eb5ffb09c9f0328fbce20))
+
 ## [1.17.1](https://github.com/googleapis/gapic-generator-python/compare/v1.17.0...v1.17.1) (2024-04-26)
 
 
