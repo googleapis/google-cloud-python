@@ -13,7 +13,7 @@
 # limitations under the License.
 
 
-def test_bigquery_dataframes_load_data_from_csv():
+def test_bigquery_dataframes_load_data_from_csv() -> None:
     # [START bigquery_dataframes_load_data_from_csv]
     import bigframes.pandas as bpd
 

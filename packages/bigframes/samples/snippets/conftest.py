@@ -46,7 +46,7 @@ def project_id(bigquery_client: bigquery.Client) -> str:
 
 
 @pytest.fixture(autouse=True)
-def reset_session():
+def reset_session() -> None:
     """An autouse fixture ensuring each sample runs in a fresh session.
 
     This allows us to have samples that query data in different locations.

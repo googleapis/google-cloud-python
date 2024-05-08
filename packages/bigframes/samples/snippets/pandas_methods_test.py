@@ -13,7 +13,7 @@
 # limitations under the License.
 
 
-def test_bigquery_dataframes_pandas_methods():
+def test_bigquery_dataframes_pandas_methods() -> None:
     # [START bigquery_dataframes_pandas_methods]
     import bigframes.pandas as bpd
 

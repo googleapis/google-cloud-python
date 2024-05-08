@@ -13,7 +13,7 @@
 # limitations under the License.
 
 
-def test_gemini_text_generator_model():
+def test_gemini_text_generator_model() -> None:
     # Determine project id, in this case prefer the one set in the environment
     # variable GOOGLE_CLOUD_PROJECT (if any)
     import os

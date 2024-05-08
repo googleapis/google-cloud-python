@@ -13,7 +13,7 @@
 # limitations under the License.
 
 
-def test_bigquery_dataframes_load_data_from_bigquery_job():
+def test_bigquery_dataframes_load_data_from_bigquery_job() -> None:
     # Determine project id, in this case prefer the one set in the environment
     # variable GOOGLE_CLOUD_PROJECT (if any)
     import os

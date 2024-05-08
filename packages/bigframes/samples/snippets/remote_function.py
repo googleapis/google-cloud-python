@@ -13,7 +13,7 @@
 # limitations under the License.
 
 
-def run_remote_function_and_read_gbq_function(project_id: str):
+def run_remote_function_and_read_gbq_function(project_id: str) -> None:
     your_gcp_project_id = project_id
 
     # [START bigquery_dataframes_remote_function]
@@ -51,7 +51,7 @@ def run_remote_function_and_read_gbq_function(project_id: str):
         str,
         reuse=False,
     )
-    def get_bucket(num):
+    def get_bucket(num: float) -> str:
         if not num:
             return "NA"
         boundary = 4000
@@ -96,7 +96,7 @@ def run_remote_function_and_read_gbq_function(project_id: str):
         reuse=False,
         packages=["cryptography"],
     )
-    def get_hash(input):
+    def get_hash(input: str) -> str:
         from cryptography.fernet import Fernet
 
         # handle missing value

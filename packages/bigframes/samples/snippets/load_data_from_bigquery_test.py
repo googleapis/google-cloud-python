@@ -13,7 +13,7 @@
 # limitations under the License.
 
 
-def test_bigquery_dataframes_load_data_from_bigquery():
+def test_bigquery_dataframes_load_data_from_bigquery() -> None:
     # [START bigquery_dataframes_load_data_from_bigquery]
     # Create a DataFrame from a BigQuery table:
     import bigframes.pandas as bpd

@@ -13,7 +13,7 @@
 # limitations under the License.
 
 
-def test_bigquery_dataframes_set_options():
+def test_bigquery_dataframes_set_options() -> None:
     # Close the session before resetting the options
     import bigframes.pandas as bpd
 

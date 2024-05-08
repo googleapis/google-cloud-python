@@ -13,7 +13,7 @@
 # limitations under the License.
 
 
-def run_quickstart(project_id: str):
+def run_quickstart(project_id: str) -> None:
     import bigframes
 
     session_options = bigframes.BigQueryOptions()

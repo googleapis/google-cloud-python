@@ -13,8 +13,7 @@
 # limitations under the License.
 
 
-def test_create_single_timeseries():
-
+def test_create_single_timeseries() -> None:
     # [START bigquery_dataframes_single_timeseries_forecasting_model_tutorial]
     import bigframes.pandas as bpd
 

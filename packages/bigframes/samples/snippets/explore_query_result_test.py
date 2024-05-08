@@ -13,7 +13,7 @@
 # limitations under the License.
 
 
-def test_bigquery_dataframes_explore_query_result():
+def test_bigquery_dataframes_explore_query_result() -> None:
     import bigframes.pandas as bpd
 
     # [START bigquery_dataframes_explore_query_result]

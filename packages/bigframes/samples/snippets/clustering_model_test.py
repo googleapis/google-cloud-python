@@ -13,7 +13,7 @@
 # limitations under the License.
 
 
-def test_clustering_model():
+def test_clustering_model() -> None:
     # [START bigquery_dataframes_clustering_model]
     from bigframes.ml.cluster import KMeans
     import bigframes.pandas as bpd

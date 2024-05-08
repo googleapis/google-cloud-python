@@ -13,11 +13,13 @@
 # limitations under the License.
 
 
-def test_kmeans_sample(project_id: str, random_model_id_eu: str):
+def test_kmeans_sample(project_id: str, random_model_id_eu: str) -> None:
     your_gcp_project_id = project_id
     your_model_id = random_model_id_eu
     # [START bigquery_dataframes_bqml_kmeans]
     import datetime
+
+    import pandas as pd
 
     import bigframes
     import bigframes.pandas as bpd
@@ -92,7 +94,9 @@ def test_kmeans_sample(project_id: str, random_model_id_eu: str):
     stationstats = merged_df.groupby(["station_name", "isweekday"]).agg(
         {"duration": ["mean", "count"], "distance_from_city_center": "max"}
     )
-    stationstats.columns = ["duration", "num_trips", "distance_from_city_center"]
+    stationstats.columns = pd.Index(
+        ["duration", "num_trips", "distance_from_city_center"]
+    )
     stationstats = stationstats.sort_values(
         by="distance_from_city_center", ascending=True
     ).reset_index()

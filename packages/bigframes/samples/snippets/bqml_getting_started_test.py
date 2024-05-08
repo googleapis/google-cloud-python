@@ -13,7 +13,7 @@
 # limitations under the License.
 
 
-def test_bqml_getting_started(random_model_id):
+def test_bqml_getting_started(random_model_id: str) -> None:
     your_model_id = random_model_id  # for example: bqml_tutorial.sample_model
 
     # [START bigquery_dataframes_bqml_getting_started_tutorial]
