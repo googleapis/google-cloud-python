@@ -32,7 +32,6 @@ jobs:
     name: Update API List PR
     runs-on: ubuntu-latest
     # don't run the workflow on forks of googleapis/google-cloud-python
-    if: ${{github.repository == 'googleapis/google-cloud-python'}}
     steps:
       - name: Clear Cache
         run: |
