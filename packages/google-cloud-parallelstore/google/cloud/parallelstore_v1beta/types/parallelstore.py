@@ -33,6 +33,10 @@ __protobuf__ = proto.module(
         "UpdateInstanceRequest",
         "DeleteInstanceRequest",
         "OperationMetadata",
+        "SourceGcsBucket",
+        "DestinationGcsBucket",
+        "SourceParallelstore",
+        "DestinationParallelstore",
         "ImportDataRequest",
         "ExportDataRequest",
         "ImportDataResponse",
@@ -520,6 +524,68 @@ class OperationMetadata(proto.Message):
     )
 
 
+class SourceGcsBucket(proto.Message):
+    r"""Google Cloud Storage as a source.
+
+    Attributes:
+        uri (str):
+            Required. URI to a Cloud Storage object in format:
+            'gs://<bucket_name>/<path_inside_bucket>'.
+    """
+
+    uri: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class DestinationGcsBucket(proto.Message):
+    r"""Google Cloud Storage as a destination.
+
+    Attributes:
+        uri (str):
+            Required. URI to a Cloud Storage object in format:
+            'gs://<bucket_name>/<path_inside_bucket>'.
+    """
+
+    uri: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class SourceParallelstore(proto.Message):
+    r"""Pa as a source.
+
+    Attributes:
+        path (str):
+            Optional. Root directory path to the
+            Paralellstore filesystem, starting with '/'.
+            Defaults to '/' if unset.
+    """
+
+    path: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class DestinationParallelstore(proto.Message):
+    r"""Parallelstore as a destination.
+
+    Attributes:
+        path (str):
+            Optional. Root directory path to the
+            Paralellstore filesystem, starting with '/'.
+            Defaults to '/' if unset.
+    """
+
+    path: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
 class ImportDataRequest(proto.Message):
     r"""Message representing the request importing data from
     parallelstore to Cloud Storage.
@@ -528,15 +594,12 @@ class ImportDataRequest(proto.Message):
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
-        source_gcs_uri (str):
-            URI to a Cloud Storage object in format:
-            'gs://<bucket_name>/<path_inside_bucket>'.
+        source_gcs_bucket (google.cloud.parallelstore_v1beta.types.SourceGcsBucket):
+            Cloud Storage source.
 
             This field is a member of `oneof`_ ``source``.
-        destination_path (str):
-            Optional. Root directory path to the
-            Paralellstore filesystem, starting with '/'.
-            Sets to '/' if no value is set.
+        destination_parallelstore (google.cloud.parallelstore_v1beta.types.DestinationParallelstore):
+            Parallelstore destination.
 
             This field is a member of `oneof`_ ``destination``.
         name (str):
@@ -563,15 +626,17 @@ class ImportDataRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    source_gcs_uri: str = proto.Field(
-        proto.STRING,
+    source_gcs_bucket: "SourceGcsBucket" = proto.Field(
+        proto.MESSAGE,
         number=2,
         oneof="source",
+        message="SourceGcsBucket",
     )
-    destination_path: str = proto.Field(
-        proto.STRING,
+    destination_parallelstore: "DestinationParallelstore" = proto.Field(
+        proto.MESSAGE,
         number=3,
         oneof="destination",
+        message="DestinationParallelstore",
     )
     name: str = proto.Field(
         proto.STRING,
@@ -591,15 +656,12 @@ class ExportDataRequest(proto.Message):
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
-        source_path (str):
-            Optional. Root directory path to the
-            Paralellstore filesystem, starting with '/'.
-            Sets to '/' if no value is set.
+        source_parallelstore (google.cloud.parallelstore_v1beta.types.SourceParallelstore):
+            Parallelstore source.
 
             This field is a member of `oneof`_ ``source``.
-        destination_gcs_uri (str):
-            URI to a Cloud Storage object in format:
-            'gs://<bucket_name>/<path_inside_bucket>'.
+        destination_gcs_bucket (google.cloud.parallelstore_v1beta.types.DestinationGcsBucket):
+            Cloud Storage destination.
 
             This field is a member of `oneof`_ ``destination``.
         name (str):
@@ -626,15 +688,17 @@ class ExportDataRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    source_path: str = proto.Field(
-        proto.STRING,
+    source_parallelstore: "SourceParallelstore" = proto.Field(
+        proto.MESSAGE,
         number=2,
         oneof="source",
+        message="SourceParallelstore",
     )
-    destination_gcs_uri: str = proto.Field(
-        proto.STRING,
+    destination_gcs_bucket: "DestinationGcsBucket" = proto.Field(
+        proto.MESSAGE,
         number=3,
         oneof="destination",
+        message="DestinationGcsBucket",
     )
     name: str = proto.Field(
         proto.STRING,
