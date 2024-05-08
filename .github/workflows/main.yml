@@ -23,6 +23,8 @@ on:
   workflow_dispatch:
     branches:
       - test-readme-workflow
+  pull_request:
+    branches: [ main ]
 
 permissions:
   contents: read
