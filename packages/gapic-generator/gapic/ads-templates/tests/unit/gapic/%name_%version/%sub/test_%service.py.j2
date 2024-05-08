@@ -1,6 +1,7 @@
 {% extends "_base.py.j2" %}
 
 {% block content %}
+{% import "%namespace/%name/%version/%sub/services/%service/_shared_macros.j2" as shared_macros %}
 
 import os
 {% if api.all_method_settings.values()|map(attribute="auto_populated_fields", default=[])|list %}
@@ -39,6 +40,7 @@ from google.oauth2 import service_account
 from {{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }} import {{ service.client_name }}
 from {{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }} import transports
 
+from google.api_core import api_core_version
 from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
 from google.api_core import grpc_helpers
@@ -69,6 +71,8 @@ from google.iam.v1 import options_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 {% endif %}
 {% endfilter %}
+{{ shared_macros.add_google_api_core_version_header_import(service.version) }}
+
 
 {% with uuid4_re = "[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}" %}
 
@@ -636,6 +640,35 @@ def test_{{ method_name }}(request_type, transport: str = 'grpc'):
     {% endwith %}{# auto_populated_field_sample_value #}
 
 
+{% if service.version %}
+@pytest.mark.parametrize("transport_name", [
+    {% if 'grpc' in opts.transport %}
+    ("grpc"),
+    {% endif %}
+    {% if 'rest' in opts.transport %}
+    ("rest"),
+    {% endif %}
+])
+def test_{{ method_name }}_api_version_header(transport_name):
+    # TODO: Make this test unconditional once the minimum supported version of
+    # google-api-core becomes 2.19.0 or higher.
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 19):
+        client = {{ service.client_name }}(credentials=ga_credentials.AnonymousCredentials(), transport=transport_name)
+        # Mock the actual call within the gRPC stub, and fake the request.
+        with mock.patch.object(
+                type(client.transport.{{ method.transport_safe_name|snake_case }}),
+                '__call__'
+            ) as call:
+                client.{{ method_name }}()
+
+        # Establish that the api version header was sent.
+        _, _, kw = call.mock_calls[0]
+        assert kw['metadata'][0] == (version_header.API_VERSION_METADATA_KEY, "{{ service.version }}")
+    else:
+        pytest.skip("google-api-core>=2.19.0 is required for `google.api_core.version_header`")
+{% endif %}{# service.version #}
+
 {% if not method.client_streaming %}
 def test_{{ method_name }}_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -904,9 +937,9 @@ def test_{{ method_name }}_pager(transport_name: str = "grpc"):
             RuntimeError,
         )
 
-        metadata = ()
+        expected_metadata = ()
         {% if method.field_headers %}
-        metadata = tuple(metadata) + (
+        expected_metadata = tuple(expected_metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 {% for field_header in method.field_headers %}
                 {% if not method.client_streaming %}
@@ -918,7 +951,13 @@ def test_{{ method_name }}_pager(transport_name: str = "grpc"):
         {% endif %}
         pager = client.{{ method_name }}(request={})
 
-        assert pager._metadata == metadata
+        {% if service.version %}
+        if HAS_GOOGLE_API_CORE_VERSION_HEADER:
+            expected_metadata = tuple(expected_metadata) + (
+                version_header.to_api_version_header("{{ service.version }}"),
+            )
+        {% endif %}
+        assert pager._metadata == expected_metadata
 
         results = list(pager)
         assert len(results) == 6

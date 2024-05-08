@@ -2,6 +2,7 @@
 
 {% block content %}
 {% import "%namespace/%name_%version/%sub/services/%service/_client_macros.j2" as macros %}
+{% import "%namespace/%name_%version/%sub/services/%service/_shared_macros.j2" as shared_macros %}
 
 from collections import OrderedDict
 import functools
@@ -24,6 +25,7 @@ from google.api_core import retry_async as retries
 from google.auth import credentials as ga_credentials   # type: ignore
 from google.oauth2 import service_account              # type: ignore
 
+{{ shared_macros.add_google_api_core_version_header_import(service.version) }}
 try:
     OptionalRetry = Union[retries.AsyncRetry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
@@ -54,7 +56,8 @@ from .client import {{ service.client_name }}
 
 {# TODO(yon-mg): handle rest transport async client interaction #}
 class {{ service.async_client_name }}:
-    """{{ service.meta.doc|rst(width=72, indent=4) }}"""
+    """{{ service.meta.doc|rst(width=72, indent=4) }}{% if service.version|length %}
+    This class implements API version {{ service.version }}.{% endif %}"""
 
     _client: {{ service.client_name }}
 
@@ -376,7 +379,8 @@ class {{ service.async_client_name }}:
         )
         {% endif %}
 
-{{ macros.auto_populate_uuid4_fields(api, method) }}
+{{ shared_macros.add_api_version_header_to_metadata(service.version) }}
+{{ shared_macros.auto_populate_uuid4_fields(api, method) }}
 
         # Validate the universe domain.
         self._client._validate_universe_domain()

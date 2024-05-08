@@ -2,6 +2,7 @@
 
 {% block content %}
 {% import "%namespace/%name_%version/%sub/services/%service/_client_macros.j2" as macros %}
+{% import "%namespace/%name_%version/%sub/services/%service/_shared_macros.j2" as shared_macros %}
 
 from collections import OrderedDict
 {% if service.any_extended_operations_methods %}
@@ -30,7 +31,7 @@ from google.auth.transport import mtls                            # type: ignore
 from google.auth.transport.grpc import SslCredentials             # type: ignore
 from google.auth.exceptions import MutualTLSChannelError          # type: ignore
 from google.oauth2 import service_account                         # type: ignore
-
+{{ shared_macros.add_google_api_core_version_header_import(service.version) }}
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
@@ -102,7 +103,8 @@ class {{ service.client_name }}Meta(type):
 
 
 class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
-    """{{ service.meta.doc|rst(width=72, indent=4) }}"""
+    """{{ service.meta.doc|rst(width=72, indent=4) }}{% if service.version|length %}
+    This class implements API version {{ service.version }}.{% endif %}"""
 
     @staticmethod
     def _get_default_mtls_endpoint(api_endpoint):

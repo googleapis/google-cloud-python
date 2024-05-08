@@ -14,7 +14,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  SHOWCASE_VERSION: 0.32.0
+  SHOWCASE_VERSION: 0.35.0
   PROTOC_VERSION: 3.20.2
 
 jobs:

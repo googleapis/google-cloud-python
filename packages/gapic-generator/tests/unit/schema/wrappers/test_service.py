@@ -71,6 +71,16 @@ def test_service_host():
     assert service.host == 'thingdoer.googleapis.com'
 
 
+def test_service_api_version_not_specified():
+    service = make_service(host='thingdoer.googleapis.com')
+    assert not service.version
+
+
+def test_service_api_version_exists():
+    service = make_service(host='thingdoer.googleapis.com', version="goose")
+    assert service.version == "goose"
+
+
 def test_service_no_host():
     service = make_service()
     assert not service.host

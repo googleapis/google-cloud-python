@@ -1,0 +1,70 @@
+{#
+ # Copyright (C) 2024  Google LLC
+ #
+ # Licensed under the Apache License, Version 2.0 (the "License");
+ # you may not use this file except in compliance with the License.
+ # You may obtain a copy of the License at
+ #
+ #     http://www.apache.org/licenses/LICENSE-2.0
+ #
+ # Unless required by applicable law or agreed to in writing, software
+ # distributed under the License is distributed on an "AS IS" BASIS,
+ # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ # See the License for the specific language governing permissions and
+ # limitations under the License.
+#}
+
+{% macro auto_populate_uuid4_fields(api, method) %}
+{#
+    Automatically populate UUID4 fields according to
+    https://google.aip.dev/client-libraries/4235 when the
+    field satisfies either of:
+    - The field supports explicit presence and has not been set by the user.
+    - The field doesn't support explicit presence, and its value is the empty
+      string (i.e. the default value).
+    When using this macro, ensure the calling template generates a line `import uuid`
+#}
+{% with method_settings = api.all_method_settings.get(method.meta.address.proto) %}
+{% if method_settings is not none %}
+{% for auto_populated_field in method_settings.auto_populated_fields %}
+    {% if method.input.fields[auto_populated_field].proto3_optional %}
+        if '{{ auto_populated_field }}' not in request:
+    {% else %}
+        if not request.{{ auto_populated_field }}:
+    {% endif %}
+            request.{{ auto_populated_field }} = str(uuid.uuid4())
+{% endfor %}
+{% endif %}{# if method_settings is not none #}
+{% endwith %}{# method_settings #}
+{% endmacro %}
+
+{% macro add_google_api_core_version_header_import(service_version) %}
+{#
+The `version_header` module was added to `google-api-core`
+in version 2.19.0.
+https://github.com/googleapis/python-api-core/releases/tag/v2.19.0
+The `try/except` below can be removed once the minimum version of
+`google-api-core` is 2.19.0 or newer.
+#}
+{% if service_version %}
+try:
+    from google.api_core import version_header
+    HAS_GOOGLE_API_CORE_VERSION_HEADER = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    HAS_GOOGLE_API_CORE_VERSION_HEADER = False
+{% endif %}{# service_version #}
+{% endmacro %}
+
+{% macro add_api_version_header_to_metadata(service_version) %}
+{#
+    Add API Version to metadata as per https://github.com/aip-dev/google.aip.dev/pull/1331.
+    When using this macro, ensure the calling template also calls macro
+    `add_google_api_core_version_header_import` to add the necessary import statements.
+#}
+    {% if service_version %}
+        if HAS_GOOGLE_API_CORE_VERSION_HEADER:  # pragma: NO COVER
+            metadata = tuple(metadata) + (
+                version_header.to_api_version_header("{{ service_version }}"),
+            )
+    {% endif %}{# service_version #}
+{% endmacro %}

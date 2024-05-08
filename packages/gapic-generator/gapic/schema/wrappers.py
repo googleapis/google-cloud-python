@@ -1735,6 +1735,17 @@ class Service:
         return ''
 
     @property
+    def version(self) -> str:
+        """Return the API version for this service, if specified.
+
+        Returns:
+            str: The API version for this service.
+        """
+        if self.options.Extensions[client_pb2.api_version]:
+            return self.options.Extensions[client_pb2.api_version]
+        return ''
+
+    @property
     def shortname(self) -> str:
         """Return the API short name. DRIFT uses this to identify
         APIs.

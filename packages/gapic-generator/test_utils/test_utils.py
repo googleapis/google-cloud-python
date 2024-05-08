@@ -32,6 +32,7 @@ def make_service(
     visible_resources: typing.Optional[
         typing.Mapping[str, wrappers.CommonResource]
     ] = None,
+    version: str = "",
 ) -> wrappers.Service:
     visible_resources = visible_resources or {}
     # Define a service descriptor, and set a host and oauth scopes if
@@ -40,6 +41,8 @@ def make_service(
     if host:
         service_pb.options.Extensions[client_pb2.default_host] = host
     service_pb.options.Extensions[client_pb2.oauth_scopes] = ','.join(scopes)
+    if version:
+        service_pb.options.Extensions[client_pb2.api_version] = version
 
     # Return a service object to test.
     return wrappers.Service(

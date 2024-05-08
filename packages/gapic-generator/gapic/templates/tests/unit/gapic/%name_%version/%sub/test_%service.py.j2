@@ -2,6 +2,7 @@
 
 {% block content %}
 {% import "tests/unit/gapic/%name_%version/%sub/test_macros.j2" as test_macros %}
+{% import "%namespace/%name_%version/%sub/services/%service/_shared_macros.j2" as shared_macros %}
 
 import os
 {% if api.all_method_settings.values()|map(attribute="auto_populated_fields", default=[])|list %}
@@ -77,7 +78,7 @@ from google.iam.v1 import options_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 {% endif %}
 {% endfilter %}
-
+{{ shared_macros.add_google_api_core_version_header_import(service.version) }}
 
 def client_cert_source_callback():
     return b"cert bytes", b"key bytes"
@@ -177,6 +178,49 @@ def test__get_api_endpoint():
     with pytest.raises(MutualTLSChannelError) as excinfo:
         {{ service.client_name }}._get_api_endpoint(None, mock_client_cert_source, mock_universe, "auto")
     assert str(excinfo.value) == "mTLS is not supported in any universe other than googleapis.com."
+
+{% if service.version %}
+{% for method in service.methods.values() %}{% with method_name = method.name|snake_case %}
+{% for mode in ["", "async"] %}
+{% if mode == "async" %}
+async def test_{{ method_name }}_api_version_header_async(transport_name="grpc"):
+    client = {{ service.async_client_name }}(credentials=ga_credentials.AnonymousCredentials(), transport=transport_name)
+{% else %}
+@pytest.mark.parametrize("transport_name", [
+    {% if 'grpc' in opts.transport %}
+    ("grpc"),
+    {% endif %}
+    {% if 'rest' in opts.transport %}
+    ("rest"),
+    {% endif %}
+])
+def test_{{ method_name }}_api_version_header(transport_name):
+    client = {{ service.client_name }}(credentials=ga_credentials.AnonymousCredentials(), transport=transport_name)
+{% endif %}
+    # TODO: Make this test unconditional once the minimum supported version of
+    # google-api-core becomes 2.19.0 or higher.
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 19):
+        # Mock the actual call within the gRPC stub, and fake the request.
+        with mock.patch.object(
+                type(client.transport.{{ method.transport_safe_name|snake_case }}),
+                '__call__'
+            ) as call:
+            {% if mode == "async" %}
+                await client.{{ method_name }}()
+            {% else %}
+                client.{{ method_name }}()
+            {% endif %}
+
+        # Establish that the api version header was sent.
+        _, _, kw = call.mock_calls[0]
+        assert kw['metadata'][0] == (version_header.API_VERSION_METADATA_KEY, "{{ service.version }}")
+    else:
+        pytest.skip("google-api-core>=2.19.0 is required for `google.api_core.version_header`")
+{% endfor %}{# mode #}
+{% endwith %}
+{% endfor %}
+{% endif %}{# service.version #}
 
 def test__get_universe_domain():
     client_universe_domain = "foo.com"

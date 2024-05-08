@@ -149,6 +149,7 @@ def test__get_api_endpoint():
         MetricsServiceV2Client._get_api_endpoint(None, mock_client_cert_source, mock_universe, "auto")
     assert str(excinfo.value) == "mTLS is not supported in any universe other than googleapis.com."
 
+
 def test__get_universe_domain():
     client_universe_domain = "foo.com"
     universe_domain_env = "bar.com"
@@ -1140,15 +1141,15 @@ def test_list_log_metrics_pager(transport_name: str = "grpc"):
             RuntimeError,
         )
 
-        metadata = ()
-        metadata = tuple(metadata) + (
+        expected_metadata = ()
+        expected_metadata = tuple(expected_metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ('parent', ''),
             )),
         )
         pager = client.list_log_metrics(request={})
 
-        assert pager._metadata == metadata
+        assert pager._metadata == expected_metadata
 
         results = list(pager)
         assert len(results) == 6
