@@ -35,7 +35,6 @@ __protobuf__ = proto.module(
         "CreateVehicleRequest",
         "GetVehicleRequest",
         "UpdateVehicleRequest",
-        "UpdateVehicleLocationRequest",
         "UpdateVehicleAttributesRequest",
         "UpdateVehicleAttributesResponse",
         "SearchVehiclesRequest",
@@ -223,48 +222,6 @@ class UpdateVehicleRequest(proto.Message):
         proto.MESSAGE,
         number=5,
         message=field_mask_pb2.FieldMask,
-    )
-
-
-class UpdateVehicleLocationRequest(proto.Message):
-    r"""``UpdateVehicleLocation`` request message.
-
-    Attributes:
-        header (google.maps.fleetengine_v1.types.RequestHeader):
-            The standard Fleet Engine request header.
-        name (str):
-            Required. Must be in the format
-            ``providers/{provider}/vehicles/{vehicle}``. The {provider}
-            must be the Project ID (for example,
-            ``sample-cloud-project``) of the Google Cloud Project of
-            which the service account making this call is a member.
-        current_location (google.maps.fleetengine_v1.types.VehicleLocation):
-            Required. The vehicle's most recent location. The
-            ``location`` and ``update_time`` subfields are required.
-        current_state (google.maps.fleetengine_v1.types.VehicleState):
-            Set the vehicle's state to either ``ONLINE`` or ``OFFLINE``.
-            If set to ``UNKNOWN_VEHICLE_STATE``, the vehicle's state
-            will not be altered.
-    """
-
-    header: mf_header.RequestHeader = proto.Field(
-        proto.MESSAGE,
-        number=1,
-        message=mf_header.RequestHeader,
-    )
-    name: str = proto.Field(
-        proto.STRING,
-        number=3,
-    )
-    current_location: fleetengine.VehicleLocation = proto.Field(
-        proto.MESSAGE,
-        number=4,
-        message=fleetengine.VehicleLocation,
-    )
-    current_state: mf_vehicles.VehicleState = proto.Field(
-        proto.ENUM,
-        number=5,
-        enum=mf_vehicles.VehicleState,
     )
 
 

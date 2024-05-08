@@ -22,7 +22,7 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 import grpc  # type: ignore
 
-from google.maps.fleetengine_v1.types import fleetengine, vehicle_api, vehicles
+from google.maps.fleetengine_v1.types import vehicle_api, vehicles
 
 from .base import DEFAULT_CLIENT_INFO, VehicleServiceTransport
 
@@ -49,7 +49,7 @@ class VehicleServiceGrpcTransport(VehicleServiceTransport):
         credentials: Optional[ga_credentials.Credentials] = None,
         credentials_file: Optional[str] = None,
         scopes: Optional[Sequence[str]] = None,
-        channel: Optional[grpc.Channel] = None,
+        channel: Optional[Union[grpc.Channel, Callable[..., grpc.Channel]]] = None,
         api_mtls_endpoint: Optional[str] = None,
         client_cert_source: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
         ssl_channel_credentials: Optional[grpc.ChannelCredentials] = None,
@@ -69,14 +69,17 @@ class VehicleServiceGrpcTransport(VehicleServiceTransport):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-                This argument is ignored if ``channel`` is provided.
+                This argument is ignored if a ``channel`` instance is provided.
             credentials_file (Optional[str]): A file with credentials that can
                 be loaded with :func:`google.auth.load_credentials_from_file`.
-                This argument is ignored if ``channel`` is provided.
+                This argument is ignored if a ``channel`` instance is provided.
             scopes (Optional(Sequence[str])): A list of scopes. This argument is
-                ignored if ``channel`` is provided.
-            channel (Optional[grpc.Channel]): A ``Channel`` instance through
-                which to make calls.
+                ignored if a ``channel`` instance is provided.
+            channel (Optional[Union[grpc.Channel, Callable[..., grpc.Channel]]]):
+                A ``Channel`` instance through which to make calls, or a Callable
+                that constructs and returns one. If set to None, ``self.create_channel``
+                is used to create the channel. If a Callable is given, it will be called
+                with the same arguments as used in ``self.create_channel``.
             api_mtls_endpoint (Optional[str]): Deprecated. The mutual TLS endpoint.
                 If provided, it overrides the ``host`` argument and tries to create
                 a mutual TLS channel with client SSL credentials from
@@ -86,11 +89,11 @@ class VehicleServiceGrpcTransport(VehicleServiceTransport):
                 private key bytes, both in PEM format. It is ignored if
                 ``api_mtls_endpoint`` is None.
             ssl_channel_credentials (grpc.ChannelCredentials): SSL credentials
-                for the grpc channel. It is ignored if ``channel`` is provided.
+                for the grpc channel. It is ignored if a ``channel`` instance is provided.
             client_cert_source_for_mtls (Optional[Callable[[], Tuple[bytes, bytes]]]):
                 A callback to provide client certificate bytes and private key bytes,
                 both in PEM format. It is used to configure a mutual TLS channel. It is
-                ignored if ``channel`` or ``ssl_channel_credentials`` is provided.
+                ignored if a ``channel`` instance or ``ssl_channel_credentials`` is provided.
             quota_project_id (Optional[str]): An optional project to use for billing
                 and quota.
             client_info (google.api_core.gapic_v1.client_info.ClientInfo):
@@ -116,7 +119,7 @@ class VehicleServiceGrpcTransport(VehicleServiceTransport):
         if client_cert_source:
             warnings.warn("client_cert_source is deprecated", DeprecationWarning)
 
-        if channel:
+        if isinstance(channel, grpc.Channel):
             # Ignore credentials if a channel was passed.
             credentials = False
             # If a channel was explicitly provided, set it.
@@ -157,7 +160,9 @@ class VehicleServiceGrpcTransport(VehicleServiceTransport):
         )
 
         if not self._grpc_channel:
-            self._grpc_channel = type(self).create_channel(
+            # initialize with the provided callable or the default channel
+            channel_init = channel or type(self).create_channel
+            self._grpc_channel = channel_init(
                 self._host,
                 # use the credentials which are saved
                 credentials=self._credentials,
@@ -354,35 +359,6 @@ class VehicleServiceGrpcTransport(VehicleServiceTransport):
         return self._stubs["update_vehicle"]
 
     @property
-    def update_vehicle_location(
-        self,
-    ) -> Callable[
-        [vehicle_api.UpdateVehicleLocationRequest], fleetengine.VehicleLocation
-    ]:
-        r"""Return a callable for the update vehicle location method over gRPC.
-
-        Deprecated: Use the ``UpdateVehicle`` method instead.
-        UpdateVehicleLocation updates the location of the vehicle.
-
-        Returns:
-            Callable[[~.UpdateVehicleLocationRequest],
-                    ~.VehicleLocation]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "update_vehicle_location" not in self._stubs:
-            self._stubs["update_vehicle_location"] = self.grpc_channel.unary_unary(
-                "/maps.fleetengine.v1.VehicleService/UpdateVehicleLocation",
-                request_serializer=vehicle_api.UpdateVehicleLocationRequest.serialize,
-                response_deserializer=fleetengine.VehicleLocation.deserialize,
-            )
-        return self._stubs["update_vehicle_location"]
-
-    @property
     def update_vehicle_attributes(
         self,
     ) -> Callable[
@@ -471,34 +447,6 @@ class VehicleServiceGrpcTransport(VehicleServiceTransport):
                 response_deserializer=vehicle_api.SearchVehiclesResponse.deserialize,
             )
         return self._stubs["search_vehicles"]
-
-    @property
-    def search_fuzzed_vehicles(
-        self,
-    ) -> Callable[
-        [vehicle_api.SearchVehiclesRequest], vehicle_api.SearchVehiclesResponse
-    ]:
-        r"""Return a callable for the search fuzzed vehicles method over gRPC.
-
-        Deprecated: Use ``SearchVehicles`` instead.
-
-        Returns:
-            Callable[[~.SearchVehiclesRequest],
-                    ~.SearchVehiclesResponse]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "search_fuzzed_vehicles" not in self._stubs:
-            self._stubs["search_fuzzed_vehicles"] = self.grpc_channel.unary_unary(
-                "/maps.fleetengine.v1.VehicleService/SearchFuzzedVehicles",
-                request_serializer=vehicle_api.SearchVehiclesRequest.serialize,
-                response_deserializer=vehicle_api.SearchVehiclesResponse.deserialize,
-            )
-        return self._stubs["search_fuzzed_vehicles"]
 
     def close(self):
         self.grpc_channel.close()

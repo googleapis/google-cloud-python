@@ -17,6 +17,7 @@ from collections import OrderedDict
 import functools
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -27,7 +28,6 @@ from typing import (
     Type,
     Union,
 )
-import warnings
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -45,7 +45,6 @@ except AttributeError:  # pragma: NO COVER
 
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.protobuf import wrappers_pb2  # type: ignore
-from google.type import latlng_pb2  # type: ignore
 
 from google.maps.fleetengine_v1.services.vehicle_service import pagers
 from google.maps.fleetengine_v1.types import fleetengine, vehicle_api, vehicles
@@ -199,7 +198,9 @@ class VehicleServiceAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, VehicleServiceTransport] = "grpc_asyncio",
+        transport: Optional[
+            Union[str, VehicleServiceTransport, Callable[..., VehicleServiceTransport]]
+        ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -211,9 +212,11 @@ class VehicleServiceAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.VehicleServiceTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,VehicleServiceTransport,Callable[..., VehicleServiceTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the VehicleServiceTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -338,24 +341,16 @@ class VehicleServiceAsyncClient:
                 Vehicle metadata.
         """
         # Create or coerce a protobuf request object.
-        request = vehicle_api.CreateVehicleRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vehicle_api.CreateVehicleRequest):
+            request = vehicle_api.CreateVehicleRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_vehicle,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=15.0,
-            ),
-            default_timeout=15.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_vehicle
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -427,24 +422,16 @@ class VehicleServiceAsyncClient:
                 Vehicle metadata.
         """
         # Create or coerce a protobuf request object.
-        request = vehicle_api.GetVehicleRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vehicle_api.GetVehicleRequest):
+            request = vehicle_api.GetVehicleRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_vehicle,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=15.0,
-            ),
-            default_timeout=15.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_vehicle
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -533,112 +520,16 @@ class VehicleServiceAsyncClient:
                 Vehicle metadata.
         """
         # Create or coerce a protobuf request object.
-        request = vehicle_api.UpdateVehicleRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vehicle_api.UpdateVehicleRequest):
+            request = vehicle_api.UpdateVehicleRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_vehicle,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=15.0,
-            ),
-            default_timeout=15.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
-
-        # Validate the universe domain.
-        self._client._validate_universe_domain()
-
-        # Send the request.
-        response = await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    async def update_vehicle_location(
-        self,
-        request: Optional[Union[vehicle_api.UpdateVehicleLocationRequest, dict]] = None,
-        *,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> fleetengine.VehicleLocation:
-        r"""Deprecated: Use the ``UpdateVehicle`` method instead.
-        UpdateVehicleLocation updates the location of the vehicle.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.maps import fleetengine_v1
-
-            async def sample_update_vehicle_location():
-                # Create a client
-                client = fleetengine_v1.VehicleServiceAsyncClient()
-
-                # Initialize request argument(s)
-                request = fleetengine_v1.UpdateVehicleLocationRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                response = await client.update_vehicle_location(request=request)
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Optional[Union[google.maps.fleetengine_v1.types.UpdateVehicleLocationRequest, dict]]):
-                The request object. ``UpdateVehicleLocation`` request message.
-            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.maps.fleetengine_v1.types.VehicleLocation:
-                The location, speed, and heading of a
-                vehicle at a point in time.
-
-        """
-        warnings.warn(
-            "VehicleServiceAsyncClient.update_vehicle_location is deprecated",
-            DeprecationWarning,
-        )
-
-        # Create or coerce a protobuf request object.
-        request = vehicle_api.UpdateVehicleLocationRequest(request)
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_vehicle_location,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_vehicle
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -721,24 +612,16 @@ class VehicleServiceAsyncClient:
                 UpdateVehicleAttributes response message.
         """
         # Create or coerce a protobuf request object.
-        request = vehicle_api.UpdateVehicleAttributesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vehicle_api.UpdateVehicleAttributesRequest):
+            request = vehicle_api.UpdateVehicleAttributesRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_vehicle_attributes,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=15.0,
-            ),
-            default_timeout=15.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_vehicle_attributes
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -817,15 +700,16 @@ class VehicleServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = vehicle_api.ListVehiclesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vehicle_api.ListVehiclesRequest):
+            request = vehicle_api.ListVehiclesRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_vehicles,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_vehicles
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -912,114 +796,16 @@ class VehicleServiceAsyncClient:
                 SearchVehicles response message.
         """
         # Create or coerce a protobuf request object.
-        request = vehicle_api.SearchVehiclesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vehicle_api.SearchVehiclesRequest):
+            request = vehicle_api.SearchVehiclesRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.search_vehicles,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=15.0,
-            ),
-            default_timeout=15.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
-
-        # Validate the universe domain.
-        self._client._validate_universe_domain()
-
-        # Send the request.
-        response = await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    async def search_fuzzed_vehicles(
-        self,
-        request: Optional[Union[vehicle_api.SearchVehiclesRequest, dict]] = None,
-        *,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> vehicle_api.SearchVehiclesResponse:
-        r"""Deprecated: Use ``SearchVehicles`` instead.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.maps import fleetengine_v1
-
-            async def sample_search_fuzzed_vehicles():
-                # Create a client
-                client = fleetengine_v1.VehicleServiceAsyncClient()
-
-                # Initialize request argument(s)
-                request = fleetengine_v1.SearchVehiclesRequest(
-                    parent="parent_value",
-                    pickup_radius_meters=2146,
-                    count=553,
-                    minimum_capacity=1705,
-                    trip_types=['EXCLUSIVE'],
-                    order_by="COST",
-                )
-
-                # Make the request
-                response = await client.search_fuzzed_vehicles(request=request)
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Optional[Union[google.maps.fleetengine_v1.types.SearchVehiclesRequest, dict]]):
-                The request object. ``SearchVehicles`` request message.
-            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.maps.fleetengine_v1.types.SearchVehiclesResponse:
-                SearchVehicles response message.
-        """
-        warnings.warn(
-            "VehicleServiceAsyncClient.search_fuzzed_vehicles is deprecated",
-            DeprecationWarning,
-        )
-
-        # Create or coerce a protobuf request object.
-        request = vehicle_api.SearchVehiclesRequest(request)
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.search_fuzzed_vehicles,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.search_vehicles
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
