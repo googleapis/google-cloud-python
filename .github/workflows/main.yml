@@ -36,7 +36,7 @@ jobs:
     steps:
       - name: Get current date
         id: date
-        run: echo "::set-output name=current_date::$(date +'%Y-%m-%d')"
+        run: echo "current_date=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
       - uses: actions/checkout@v4
         # Use a fetch-depth of 2
         # See https://github.com/googleapis/google-cloud-python/issues/12013
