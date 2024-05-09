@@ -11,6 +11,7 @@ google-cloud-iam==2.12.1
 google-cloud-resource-manager==1.10.3
 google-cloud-storage==2.0.0
 ibis-framework==8.0.0
+jellyfish==0.8.9
 pandas==1.5.0
 pyarrow==8.0.0
 pydata-google-auth==1.8.2

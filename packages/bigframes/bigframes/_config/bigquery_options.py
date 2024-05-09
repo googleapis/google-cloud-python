@@ -21,6 +21,7 @@ import warnings
 
 import google.api_core.exceptions
 import google.auth.credentials
+import jellyfish
 
 import bigframes.constants
 import bigframes.exceptions
@@ -30,7 +31,8 @@ SESSION_STARTED_MESSAGE = (
     "Call bigframes.pandas.close_session() first, if you are using the bigframes.pandas API."
 )
 
-UNKNOWN_LOCATION_MESSAGE = "The location '{location}' is set to an unknown value."
+
+UNKNOWN_LOCATION_MESSAGE = "The location '{location}' is set to an unknown value. Did you mean '{possibility}'?"
 
 
 def _validate_location(value: Optional[str]):
@@ -39,8 +41,13 @@ def _validate_location(value: Optional[str]):
         return
 
     if value not in bigframes.constants.ALL_BIGQUERY_LOCATIONS:
+        location = str(value)
+        possibility = min(
+            bigframes.constants.ALL_BIGQUERY_LOCATIONS,
+            key=lambda item: jellyfish.levenshtein_distance(location, item),
+        )
         warnings.warn(
-            UNKNOWN_LOCATION_MESSAGE.format(location=value),
+            UNKNOWN_LOCATION_MESSAGE.format(location=location, possibility=possibility),
             # There are many layers before we get to (possibly) the user's code:
             # -> bpd.options.bigquery.location = "us-central-1"
             # -> location.setter

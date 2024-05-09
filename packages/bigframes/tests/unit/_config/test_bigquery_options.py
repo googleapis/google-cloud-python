@@ -108,24 +108,25 @@ def test_location_set_to_valid_no_warning(valid_location):
 @pytest.mark.parametrize(
     [
         "invalid_location",
+        "possibility",
     ],
     [
         # Test with common mistakes, see article.
         # https://en.wikipedia.org/wiki/Edit_distance#Formal_definition_and_properties
         # Substitution
-        ("us-wist-3",),
+        ("us-wist3", "us-west3"),
         # Insertion
-        ("us-central-1",),
+        ("us-central-1", "us-central1"),
         # Deletion
-        ("asia-suth2",),
+        ("asia-suth2", "asia-south2"),
     ],
 )
-def test_location_set_to_invalid_warning(invalid_location):
+def test_location_set_to_invalid_warning(invalid_location, possibility):
     options = bigquery_options.BigQueryOptions()
     with pytest.warns(
         bigframes.exceptions.UnknownLocationWarning,
         match=re.escape(
-            f"The location '{invalid_location}' is set to an unknown value."
+            f"The location '{invalid_location}' is set to an unknown value. Did you mean '{possibility}'?"
         ),
     ):
         options.location = invalid_location
