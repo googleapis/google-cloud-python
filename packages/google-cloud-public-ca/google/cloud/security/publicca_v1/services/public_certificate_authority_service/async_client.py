@@ -36,14 +36,14 @@ from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
-from google.cloud.security.publicca_v1beta1 import gapic_version as package_version
+from google.cloud.security.publicca_v1 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.AsyncRetry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
-from google.cloud.security.publicca_v1beta1.types import resources, service
+from google.cloud.security.publicca_v1.types import resources, service
 
 from .client import PublicCertificateAuthorityServiceClient
 from .transports.base import (
@@ -294,7 +294,7 @@ class PublicCertificateAuthorityServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.ExternalAccountKey:
         r"""Creates a new
-        [ExternalAccountKey][google.cloud.security.publicca.v1beta1.ExternalAccountKey]
+        [ExternalAccountKey][google.cloud.security.publicca.v1.ExternalAccountKey]
         bound to the project.
 
         .. code-block:: python
@@ -306,14 +306,14 @@ class PublicCertificateAuthorityServiceAsyncClient:
             # - It may require specifying regional endpoints when creating the service
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud.security import publicca_v1beta1
+            from google.cloud.security import publicca_v1
 
             async def sample_create_external_account_key():
                 # Create a client
-                client = publicca_v1beta1.PublicCertificateAuthorityServiceAsyncClient()
+                client = publicca_v1.PublicCertificateAuthorityServiceAsyncClient()
 
                 # Initialize request argument(s)
-                request = publicca_v1beta1.CreateExternalAccountKeyRequest(
+                request = publicca_v1.CreateExternalAccountKeyRequest(
                     parent="parent_value",
                 )
 
@@ -324,9 +324,9 @@ class PublicCertificateAuthorityServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Optional[Union[google.cloud.security.publicca_v1beta1.types.CreateExternalAccountKeyRequest, dict]]):
+            request (Optional[Union[google.cloud.security.publicca_v1.types.CreateExternalAccountKeyRequest, dict]]):
                 The request object. Creates a new
-                [ExternalAccountKey][google.cloud.security.publicca.v1beta1.ExternalAccountKey]
+                [ExternalAccountKey][google.cloud.security.publicca.v1.ExternalAccountKey]
                 in a given project.
             parent (:class:`str`):
                 Required. The parent resource where this
@@ -337,7 +337,7 @@ class PublicCertificateAuthorityServiceAsyncClient:
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            external_account_key (:class:`google.cloud.security.publicca_v1beta1.types.ExternalAccountKey`):
+            external_account_key (:class:`google.cloud.security.publicca_v1.types.ExternalAccountKey`):
                 Required. The external account key to
                 create. This field only exists to
                 future-proof the API. At present, all
@@ -357,7 +357,7 @@ class PublicCertificateAuthorityServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.security.publicca_v1beta1.types.ExternalAccountKey:
+            google.cloud.security.publicca_v1.types.ExternalAccountKey:
                 A representation of an ExternalAccountKey used for [external account
                    binding](\ https://tools.ietf.org/html/rfc8555#section-7.3.4)
                    within ACME.
