@@ -20,9 +20,6 @@ on:
     # * is a special character in YAML so you have to quote this string
     # Run this Github Action every Tuesday at 7 AM UTC
     - cron:  '0 7 * * 2'
-  workflow_dispatch:
-    branches:
-      - test-readme-workflow
   pull_request:
     branches: [ main ]
 
@@ -34,12 +31,9 @@ jobs:
     permissions:
       pull-requests: write # for googleapis/code-suggester
     name: Update API List PR
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     # don't run the workflow on forks of googleapis/google-cloud-python
     steps:
-      - name: Clear Cache
-        run: |
-          sudo rm -rf /var/cache/apt/archives/*.deb
       - name: Get current date
         id: date
         run: echo "::set-output name=current_date::$(date +'%Y-%m-%d')"
