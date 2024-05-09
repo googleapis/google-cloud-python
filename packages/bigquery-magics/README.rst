@@ -56,10 +56,7 @@ Python >= 3.7
 
 Unsupported Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Python == 2.7, Python == 3.5, Python == 3.6.
-
-The last version of this library compatible with Python 2.7 and 3.5 is
-`google-cloud-bigquery==1.28.0`.
+Python == 3.5, Python == 3.6.
 
 
 Mac/Linux
@@ -82,3 +79,25 @@ Windows
     virtualenv <your-env>
     <your-env>\Scripts\activate
     <your-env>\Scripts\pip.exe install bigquery-magics
+
+Example Usage
+-------------
+
+To use these magics, you must first register them. Run the ``%load_ext bigquery_magics``
+in a Jupyter notebook cell.
+
+.. code-block::
+
+    %load_ext bigquery_magics
+
+Perform a query
+~~~~~~~~~~~~~~~
+
+.. code:: python
+
+    %%bigquery
+    SELECT name, SUM(number) as count
+    FROM 'bigquery-public-data.usa_names.usa_1910_current'
+    GROUP BY name
+    ORDER BY count DESC
+    LIMIT 3

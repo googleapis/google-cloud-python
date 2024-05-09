@@ -6,7 +6,7 @@ in a Jupyter notebook cell.
 
 .. code::
 
-    %load_ext google.cloud.bigquery
+    %load_ext bigquery_magics
 
 This makes the ``%%bigquery`` magic available.
 
