@@ -42,12 +42,12 @@ import pytest
 from requests import PreparedRequest, Request, Response
 from requests.sessions import Session
 
-from google.cloud.security.publicca_v1beta1.services.public_certificate_authority_service import (
+from google.cloud.security.publicca_v1.services.public_certificate_authority_service import (
     PublicCertificateAuthorityServiceAsyncClient,
     PublicCertificateAuthorityServiceClient,
     transports,
 )
-from google.cloud.security.publicca_v1beta1.types import resources, service
+from google.cloud.security.publicca_v1.types import resources, service
 
 
 def client_cert_source_callback():
@@ -1133,7 +1133,7 @@ def test_public_certificate_authority_service_client_client_options_credentials_
 
 def test_public_certificate_authority_service_client_client_options_from_dict():
     with mock.patch(
-        "google.cloud.security.publicca_v1beta1.services.public_certificate_authority_service.transports.PublicCertificateAuthorityServiceGrpcTransport.__init__"
+        "google.cloud.security.publicca_v1.services.public_certificate_authority_service.transports.PublicCertificateAuthorityServiceGrpcTransport.__init__"
     ) as grpc_transport:
         grpc_transport.return_value = None
         client = PublicCertificateAuthorityServiceClient(
@@ -2007,7 +2007,7 @@ def test_create_external_account_key_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/v1beta1/{parent=projects/*/locations/*}/externalAccountKeys"
+            "%s/v1/{parent=projects/*/locations/*}/externalAccountKeys"
             % client.transport._host,
             args[1],
         )
@@ -2166,7 +2166,7 @@ def test_public_certificate_authority_service_base_transport_error():
 def test_public_certificate_authority_service_base_transport():
     # Instantiate the base transport.
     with mock.patch(
-        "google.cloud.security.publicca_v1beta1.services.public_certificate_authority_service.transports.PublicCertificateAuthorityServiceTransport.__init__"
+        "google.cloud.security.publicca_v1.services.public_certificate_authority_service.transports.PublicCertificateAuthorityServiceTransport.__init__"
     ) as Transport:
         Transport.return_value = None
         transport = transports.PublicCertificateAuthorityServiceTransport(
@@ -2197,7 +2197,7 @@ def test_public_certificate_authority_service_base_transport_with_credentials_fi
     with mock.patch.object(
         google.auth, "load_credentials_from_file", autospec=True
     ) as load_creds, mock.patch(
-        "google.cloud.security.publicca_v1beta1.services.public_certificate_authority_service.transports.PublicCertificateAuthorityServiceTransport._prep_wrapped_messages"
+        "google.cloud.security.publicca_v1.services.public_certificate_authority_service.transports.PublicCertificateAuthorityServiceTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
@@ -2216,7 +2216,7 @@ def test_public_certificate_authority_service_base_transport_with_credentials_fi
 def test_public_certificate_authority_service_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
     with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.cloud.security.publicca_v1beta1.services.public_certificate_authority_service.transports.PublicCertificateAuthorityServiceTransport._prep_wrapped_messages"
+        "google.cloud.security.publicca_v1.services.public_certificate_authority_service.transports.PublicCertificateAuthorityServiceTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
