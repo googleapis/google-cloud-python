@@ -13,25 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from google.cloud.security.publicca import gapic_version as package_version
-
-__version__ = package_version.__version__
-
-
-from google.cloud.security.publicca_v1.services.public_certificate_authority_service.async_client import (
-    PublicCertificateAuthorityServiceAsyncClient,
-)
-from google.cloud.security.publicca_v1.services.public_certificate_authority_service.client import (
-    PublicCertificateAuthorityServiceClient,
-)
-from google.cloud.security.publicca_v1.types.resources import ExternalAccountKey
-from google.cloud.security.publicca_v1.types.service import (
-    CreateExternalAccountKeyRequest,
-)
+from .async_client import PublicCertificateAuthorityServiceAsyncClient
+from .client import PublicCertificateAuthorityServiceClient
 
 __all__ = (
     "PublicCertificateAuthorityServiceClient",
     "PublicCertificateAuthorityServiceAsyncClient",
-    "ExternalAccountKey",
-    "CreateExternalAccountKeyRequest",
 )

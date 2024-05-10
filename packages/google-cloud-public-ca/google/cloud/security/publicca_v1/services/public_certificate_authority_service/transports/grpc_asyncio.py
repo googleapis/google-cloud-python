@@ -24,7 +24,7 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
 
-from google.cloud.security.publicca_v1beta1.types import resources, service
+from google.cloud.security.publicca_v1.types import resources, service
 
 from .base import DEFAULT_CLIENT_INFO, PublicCertificateAuthorityServiceTransport
 from .grpc import PublicCertificateAuthorityServiceGrpcTransport
@@ -251,7 +251,7 @@ class PublicCertificateAuthorityServiceGrpcAsyncIOTransport(
         r"""Return a callable for the create external account key method over gRPC.
 
         Creates a new
-        [ExternalAccountKey][google.cloud.security.publicca.v1beta1.ExternalAccountKey]
+        [ExternalAccountKey][google.cloud.security.publicca.v1.ExternalAccountKey]
         bound to the project.
 
         Returns:
@@ -266,7 +266,7 @@ class PublicCertificateAuthorityServiceGrpcAsyncIOTransport(
         # to pass in the functions for each.
         if "create_external_account_key" not in self._stubs:
             self._stubs["create_external_account_key"] = self.grpc_channel.unary_unary(
-                "/google.cloud.security.publicca.v1beta1.PublicCertificateAuthorityService/CreateExternalAccountKey",
+                "/google.cloud.security.publicca.v1.PublicCertificateAuthorityService/CreateExternalAccountKey",
                 request_serializer=service.CreateExternalAccountKeyRequest.serialize,
                 response_deserializer=resources.ExternalAccountKey.deserialize,
             )

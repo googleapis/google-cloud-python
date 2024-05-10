@@ -13,27 +13,24 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api_core import exceptions as core_exceptions
-from google.api_core import gapic_v1, grpc_helpers_async
-from google.api_core import retry_async as retries
+from google.api_core import gapic_v1, grpc_helpers
+import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 import grpc  # type: ignore
-from grpc.experimental import aio  # type: ignore
 
-from google.cloud.security.publicca_v1beta1.types import resources, service
+from google.cloud.security.publicca_v1.types import resources, service
 
 from .base import DEFAULT_CLIENT_INFO, PublicCertificateAuthorityServiceTransport
-from .grpc import PublicCertificateAuthorityServiceGrpcTransport
 
 
-class PublicCertificateAuthorityServiceGrpcAsyncIOTransport(
+class PublicCertificateAuthorityServiceGrpcTransport(
     PublicCertificateAuthorityServiceTransport
 ):
-    """gRPC AsyncIO backend transport for PublicCertificateAuthorityService.
+    """gRPC backend transport for PublicCertificateAuthorityService.
 
     Manages the resources required for ACME `external account
     binding <https://tools.ietf.org/html/rfc8555#section-7.3.4>`__ for
@@ -47,50 +44,7 @@ class PublicCertificateAuthorityServiceGrpcAsyncIOTransport(
     top of HTTP/2); the ``grpcio`` package must be installed.
     """
 
-    _grpc_channel: aio.Channel
-    _stubs: Dict[str, Callable] = {}
-
-    @classmethod
-    def create_channel(
-        cls,
-        host: str = "publicca.googleapis.com",
-        credentials: Optional[ga_credentials.Credentials] = None,
-        credentials_file: Optional[str] = None,
-        scopes: Optional[Sequence[str]] = None,
-        quota_project_id: Optional[str] = None,
-        **kwargs,
-    ) -> aio.Channel:
-        """Create and return a gRPC AsyncIO channel object.
-        Args:
-            host (Optional[str]): The host for the channel to use.
-            credentials (Optional[~.Credentials]): The
-                authorization credentials to attach to requests. These
-                credentials identify this application to the service. If
-                none are specified, the client will attempt to ascertain
-                the credentials from the environment.
-            credentials_file (Optional[str]): A file with credentials that can
-                be loaded with :func:`google.auth.load_credentials_from_file`.
-            scopes (Optional[Sequence[str]]): A optional list of scopes needed for this
-                service. These are only used when credentials are not specified and
-                are passed to :func:`google.auth.default`.
-            quota_project_id (Optional[str]): An optional project to use for billing
-                and quota.
-            kwargs (Optional[dict]): Keyword arguments, which are passed to the
-                channel creation.
-        Returns:
-            aio.Channel: A gRPC AsyncIO channel object.
-        """
-
-        return grpc_helpers_async.create_channel(
-            host,
-            credentials=credentials,
-            credentials_file=credentials_file,
-            quota_project_id=quota_project_id,
-            default_scopes=cls.AUTH_SCOPES,
-            scopes=scopes,
-            default_host=cls.DEFAULT_HOST,
-            **kwargs,
-        )
+    _stubs: Dict[str, Callable]
 
     def __init__(
         self,
@@ -99,7 +53,7 @@ class PublicCertificateAuthorityServiceGrpcAsyncIOTransport(
         credentials: Optional[ga_credentials.Credentials] = None,
         credentials_file: Optional[str] = None,
         scopes: Optional[Sequence[str]] = None,
-        channel: Optional[Union[aio.Channel, Callable[..., aio.Channel]]] = None,
+        channel: Optional[Union[grpc.Channel, Callable[..., grpc.Channel]]] = None,
         api_mtls_endpoint: Optional[str] = None,
         client_cert_source: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
         ssl_channel_credentials: Optional[grpc.ChannelCredentials] = None,
@@ -123,10 +77,9 @@ class PublicCertificateAuthorityServiceGrpcAsyncIOTransport(
             credentials_file (Optional[str]): A file with credentials that can
                 be loaded with :func:`google.auth.load_credentials_from_file`.
                 This argument is ignored if a ``channel`` instance is provided.
-            scopes (Optional[Sequence[str]]): A optional list of scopes needed for this
-                service. These are only used when credentials are not specified and
-                are passed to :func:`google.auth.default`.
-            channel (Optional[Union[aio.Channel, Callable[..., aio.Channel]]]):
+            scopes (Optional(Sequence[str])): A list of scopes. This argument is
+                ignored if a ``channel`` instance is provided.
+            channel (Optional[Union[grpc.Channel, Callable[..., grpc.Channel]]]):
                 A ``Channel`` instance through which to make calls, or a Callable
                 that constructs and returns one. If set to None, ``self.create_channel``
                 is used to create the channel. If a Callable is given, it will be called
@@ -156,7 +109,7 @@ class PublicCertificateAuthorityServiceGrpcAsyncIOTransport(
                 be used for service account credentials.
 
         Raises:
-            google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
+          google.auth.exceptions.MutualTLSChannelError: If mutual TLS transport
               creation failed for any reason.
           google.api_core.exceptions.DuplicateCredentialArgs: If both ``credentials``
               and ``credentials_file`` are passed.
@@ -170,12 +123,13 @@ class PublicCertificateAuthorityServiceGrpcAsyncIOTransport(
         if client_cert_source:
             warnings.warn("client_cert_source is deprecated", DeprecationWarning)
 
-        if isinstance(channel, aio.Channel):
+        if isinstance(channel, grpc.Channel):
             # Ignore credentials if a channel was passed.
             credentials = False
             # If a channel was explicitly provided, set it.
             self._grpc_channel = channel
             self._ssl_channel_credentials = None
+
         else:
             if api_mtls_endpoint:
                 host = api_mtls_endpoint
@@ -231,32 +185,73 @@ class PublicCertificateAuthorityServiceGrpcAsyncIOTransport(
         # Wrap messages. This must be done after self._grpc_channel exists
         self._prep_wrapped_messages(client_info)
 
-    @property
-    def grpc_channel(self) -> aio.Channel:
-        """Create the channel designed to connect to this service.
+    @classmethod
+    def create_channel(
+        cls,
+        host: str = "publicca.googleapis.com",
+        credentials: Optional[ga_credentials.Credentials] = None,
+        credentials_file: Optional[str] = None,
+        scopes: Optional[Sequence[str]] = None,
+        quota_project_id: Optional[str] = None,
+        **kwargs,
+    ) -> grpc.Channel:
+        """Create and return a gRPC channel object.
+        Args:
+            host (Optional[str]): The host for the channel to use.
+            credentials (Optional[~.Credentials]): The
+                authorization credentials to attach to requests. These
+                credentials identify this application to the service. If
+                none are specified, the client will attempt to ascertain
+                the credentials from the environment.
+            credentials_file (Optional[str]): A file with credentials that can
+                be loaded with :func:`google.auth.load_credentials_from_file`.
+                This argument is mutually exclusive with credentials.
+            scopes (Optional[Sequence[str]]): A optional list of scopes needed for this
+                service. These are only used when credentials are not specified and
+                are passed to :func:`google.auth.default`.
+            quota_project_id (Optional[str]): An optional project to use for billing
+                and quota.
+            kwargs (Optional[dict]): Keyword arguments, which are passed to the
+                channel creation.
+        Returns:
+            grpc.Channel: A gRPC channel object.
 
-        This property caches on the instance; repeated calls return
-        the same channel.
+        Raises:
+            google.api_core.exceptions.DuplicateCredentialArgs: If both ``credentials``
+              and ``credentials_file`` are passed.
         """
-        # Return the channel from cache.
+
+        return grpc_helpers.create_channel(
+            host,
+            credentials=credentials,
+            credentials_file=credentials_file,
+            quota_project_id=quota_project_id,
+            default_scopes=cls.AUTH_SCOPES,
+            scopes=scopes,
+            default_host=cls.DEFAULT_HOST,
+            **kwargs,
+        )
+
+    @property
+    def grpc_channel(self) -> grpc.Channel:
+        """Return the channel designed to connect to this service."""
         return self._grpc_channel
 
     @property
     def create_external_account_key(
         self,
     ) -> Callable[
-        [service.CreateExternalAccountKeyRequest],
-        Awaitable[resources.ExternalAccountKey],
+        [service.CreateExternalAccountKeyRequest], resources.ExternalAccountKey
     ]:
         r"""Return a callable for the create external account key method over gRPC.
 
         Creates a new
-        [ExternalAccountKey][google.cloud.security.publicca.v1beta1.ExternalAccountKey]
+        [ExternalAccountKey][google.cloud.security.publicca.v1.ExternalAccountKey]
         bound to the project.
 
         Returns:
             Callable[[~.CreateExternalAccountKeyRequest],
-                    Awaitable[~.ExternalAccountKey]]:
+                    ~.ExternalAccountKey]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -266,24 +261,18 @@ class PublicCertificateAuthorityServiceGrpcAsyncIOTransport(
         # to pass in the functions for each.
         if "create_external_account_key" not in self._stubs:
             self._stubs["create_external_account_key"] = self.grpc_channel.unary_unary(
-                "/google.cloud.security.publicca.v1beta1.PublicCertificateAuthorityService/CreateExternalAccountKey",
+                "/google.cloud.security.publicca.v1.PublicCertificateAuthorityService/CreateExternalAccountKey",
                 request_serializer=service.CreateExternalAccountKeyRequest.serialize,
                 response_deserializer=resources.ExternalAccountKey.deserialize,
             )
         return self._stubs["create_external_account_key"]
 
-    def _prep_wrapped_messages(self, client_info):
-        """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
-        self._wrapped_methods = {
-            self.create_external_account_key: gapic_v1.method_async.wrap_method(
-                self.create_external_account_key,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-        }
-
     def close(self):
-        return self.grpc_channel.close()
+        self.grpc_channel.close()
+
+    @property
+    def kind(self) -> str:
+        return "grpc"
 
 
-__all__ = ("PublicCertificateAuthorityServiceGrpcAsyncIOTransport",)
+__all__ = ("PublicCertificateAuthorityServiceGrpcTransport",)
