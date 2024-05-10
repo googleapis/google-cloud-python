@@ -2,6 +2,17 @@
 
 .. include:: multiprocessing.rst
 
+This package includes clients for multiple versions of Public Certificate Authority.
+By default, you will get version ``publicca_v1``.
+
+
+API Reference
+-------------
+.. toctree::
+    :maxdepth: 2
+
+    publicca_v1/services_
+    publicca_v1/types_
 
 API Reference
 -------------

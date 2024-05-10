@@ -3312,8 +3312,6 @@ def test_import_data_non_empty_request_with_auto_populated_field():
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = parallelstore.ImportDataRequest(
-        source_gcs_uri="source_gcs_uri_value",
-        destination_path="destination_path_value",
         name="name_value",
     )
 
@@ -3326,8 +3324,6 @@ def test_import_data_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == parallelstore.ImportDataRequest(
-            source_gcs_uri="source_gcs_uri_value",
-            destination_path="destination_path_value",
             name="name_value",
         )
 
@@ -3603,8 +3599,6 @@ def test_export_data_non_empty_request_with_auto_populated_field():
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = parallelstore.ExportDataRequest(
-        source_path="source_path_value",
-        destination_gcs_uri="destination_gcs_uri_value",
         name="name_value",
     )
 
@@ -3617,8 +3611,6 @@ def test_export_data_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == parallelstore.ExportDataRequest(
-            source_path="source_path_value",
-            destination_gcs_uri="destination_gcs_uri_value",
             name="name_value",
         )
 
