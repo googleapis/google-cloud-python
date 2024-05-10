@@ -21,6 +21,9 @@ MAX_LABELS_COUNT = 64
 _api_methods: List = []
 _excluded_methods = ["__setattr__", "__getattr__"]
 
+# Stack to track method calls
+_call_stack: List = []
+
 
 def class_logger(decorated_cls):
     """Decorator that adds logging functionality to each method of the class."""
@@ -38,10 +41,17 @@ def method_logger(method, decorated_cls):
         class_name = decorated_cls.__name__  # Access decorated class name
         api_method_name = str(method.__name__)
         full_method_name = f"{class_name.lower()}-{api_method_name}"
-        # Track regular and "dunder" methods
-        if api_method_name.startswith("__") or not api_method_name.startswith("_"):
+
+        # Track directly called methods
+        if len(_call_stack) == 0:
             add_api_method(full_method_name)
-        return method(*args, **kwargs)
+
+        _call_stack.append(full_method_name)
+
+        try:
+            return method(*args, **kwargs)
+        finally:
+            _call_stack.pop()
 
     return wrapper
 

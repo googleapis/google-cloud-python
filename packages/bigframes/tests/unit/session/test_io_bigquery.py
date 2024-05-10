@@ -30,17 +30,13 @@ def test_create_job_configs_labels_is_none():
     labels = io_bq.create_job_configs_labels(
         job_configs_labels=None, api_methods=api_methods
     )
-    expected_dict = {
-        "recent-bigframes-api-0": "agg",
-        "recent-bigframes-api-1": "series-mode",
-    }
+    expected_dict = {"bigframes-api": "agg", "recent-bigframes-api-0": "series-mode"}
     assert labels is not None
     assert labels == expected_dict
 
 
 def test_create_job_configs_labels_length_limit_not_met():
     cur_labels = {
-        "bigframes-api": "read_pandas",
         "source": "bigquery-dataframes-temp",
     }
     api_methods = ["agg", "series-mode"]
@@ -48,20 +44,18 @@ def test_create_job_configs_labels_length_limit_not_met():
         job_configs_labels=cur_labels, api_methods=api_methods
     )
     expected_dict = {
-        "bigframes-api": "read_pandas",
         "source": "bigquery-dataframes-temp",
-        "recent-bigframes-api-0": "agg",
-        "recent-bigframes-api-1": "series-mode",
+        "bigframes-api": "agg",
+        "recent-bigframes-api-0": "series-mode",
     }
     assert labels is not None
-    assert len(labels) == 4
+    assert len(labels) == 3
     assert labels == expected_dict
 
 
 def test_create_job_configs_labels_log_adaptor_call_method_under_length_limit():
     log_adapter.get_and_reset_api_methods()
     cur_labels = {
-        "bigframes-api": "read_pandas",
         "source": "bigquery-dataframes-temp",
     }
     df = bpd.DataFrame(
@@ -76,14 +70,10 @@ def test_create_job_configs_labels_log_adaptor_call_method_under_length_limit():
         job_configs_labels=cur_labels, api_methods=api_methods
     )
     expected_dict = {
-        "bigframes-api": "read_pandas",
         "source": "bigquery-dataframes-temp",
-        "recent-bigframes-api-0": "series-__init__",
-        "recent-bigframes-api-1": "dataframe-max",
-        "recent-bigframes-api-2": "dataframe-__init__",
-        "recent-bigframes-api-3": "dataframe-head",
-        "recent-bigframes-api-4": "dataframe-__init__",
-        "recent-bigframes-api-5": "dataframe-__init__",
+        "bigframes-api": "dataframe-max",
+        "recent-bigframes-api-0": "dataframe-head",
+        "recent-bigframes-api-1": "dataframe-__init__",
     }
     assert labels == expected_dict
 
@@ -94,7 +84,7 @@ def test_create_job_configs_labels_length_limit_met_and_labels_is_none():
         {"col1": [1, 2], "col2": [3, 4]}, session=resources.create_bigquery_session()
     )
     # Test running methods more than the labels' length limit
-    for i in range(66):
+    for i in range(100):
         df.head()
     api_methods = log_adapter._api_methods
 
@@ -112,7 +102,7 @@ def test_create_job_configs_labels_length_limit_met():
         "bigframes-api": "read_pandas",
         "source": "bigquery-dataframes-temp",
     }
-    for i in range(60):
+    for i in range(100):
         key = f"bigframes-api-test-{i}"
         value = f"test{i}"
         cur_labels[key] = value

@@ -112,8 +112,6 @@ def get_table_metadata(
     # atomically.
     table = bqclient.get_table(table_ref)
 
-    # TODO(b/336521938): Refactor to make sure we set the "bigframes-api"
-    # whereever we execute a query.
     job_config = bigquery.QueryJobConfig()
     job_config.labels["bigframes-api"] = api_name
     snapshot_timestamp = list(
@@ -344,8 +342,6 @@ def get_time_travel_datetime_and_table_metadata(
     # atomically.
     table = bqclient.get_table(table_ref)
 
-    # TODO(b/336521938): Refactor to make sure we set the "bigframes-api"
-    # whereever we execute a query.
     job_config = bigquery.QueryJobConfig()
     job_config.labels["bigframes-api"] = api_name
     snapshot_timestamp = list(

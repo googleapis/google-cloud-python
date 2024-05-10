@@ -23,7 +23,7 @@ import re
 import textwrap
 import types
 import typing
-from typing import Dict, Iterable, Mapping, Optional, Sequence, Tuple, Union
+from typing import Dict, Iterable, Mapping, Optional, Tuple, Union
 
 import bigframes_vendored.pandas.io.gbq as third_party_pandas_gbq
 import google.api_core.exceptions
@@ -43,10 +43,14 @@ LOGGING_NAME_ENV_VAR = "BIGFRAMES_PERFORMANCE_LOG_NAME"
 
 def create_job_configs_labels(
     job_configs_labels: Optional[Dict[str, str]],
-    api_methods: Sequence[str],
+    api_methods: typing.List[str],
 ) -> Dict[str, str]:
     if job_configs_labels is None:
         job_configs_labels = {}
+
+    if api_methods:
+        job_configs_labels["bigframes-api"] = api_methods[0]
+        del api_methods[0]
 
     labels = list(
         itertools.chain(
@@ -198,10 +202,11 @@ def start_query_with_client(
     """
     Starts query job and waits for results.
     """
-    api_methods = log_adapter.get_and_reset_api_methods()
-    job_config.labels = create_job_configs_labels(
-        job_configs_labels=job_config.labels, api_methods=api_methods
-    )
+    if not job_config.dry_run:
+        api_methods = log_adapter.get_and_reset_api_methods()
+        job_config.labels = create_job_configs_labels(
+            job_configs_labels=job_config.labels, api_methods=api_methods
+        )
 
     try:
         query_job = bq_client.query(sql, job_config=job_config, timeout=timeout)
