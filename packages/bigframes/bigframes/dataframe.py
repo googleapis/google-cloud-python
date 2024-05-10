@@ -34,6 +34,7 @@ from typing import (
     Tuple,
     Union,
 )
+import warnings
 
 import bigframes_vendored.pandas.core.frame as vendored_pandas_frame
 import bigframes_vendored.pandas.pandas._typing as vendored_pandas_typing
@@ -61,6 +62,7 @@ import bigframes.core.utils as utils
 import bigframes.core.window
 import bigframes.core.window_spec as window_spec
 import bigframes.dtypes
+import bigframes.exceptions
 import bigframes.formatting_helpers as formatter
 import bigframes.operations as ops
 import bigframes.operations.aggregations as agg_ops
@@ -3308,7 +3310,59 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             ops.RemoteFunctionOp(func=func, apply_on_null=(na_action is None))
         )
 
-    def apply(self, func, *, args: typing.Tuple = (), **kwargs):
+    def apply(self, func, *, axis=0, args: typing.Tuple = (), **kwargs):
+        if utils.get_axis_number(axis) == 1:
+            warnings.warn(
+                "axis=1 scenario is in preview.",
+                category=bigframes.exceptions.PreviewWarning,
+            )
+
+            # Early check whether the dataframe dtypes are currently supported
+            # in the remote function
+            # NOTE: Keep in sync with the value converters used in the gcf code
+            # generated in generate_cloud_function_main_code in remote_function.py
+            remote_function_supported_dtypes = (
+                bigframes.dtypes.INT_DTYPE,
+                bigframes.dtypes.FLOAT_DTYPE,
+                bigframes.dtypes.BOOL_DTYPE,
+                bigframes.dtypes.STRING_DTYPE,
+            )
+            supported_dtypes_types = tuple(
+                type(dtype) for dtype in remote_function_supported_dtypes
+            )
+            supported_dtypes_hints = tuple(
+                str(dtype) for dtype in remote_function_supported_dtypes
+            )
+
+            for dtype in self.dtypes:
+                if not isinstance(dtype, supported_dtypes_types):
+                    raise NotImplementedError(
+                        f"DataFrame has a column of dtype '{dtype}' which is not supported with axis=1."
+                        f" Supported dtypes are {supported_dtypes_hints}."
+                    )
+
+            # Check if the function is a remote function
+            if not hasattr(func, "bigframes_remote_function"):
+                raise ValueError("For axis=1 a remote function must be used.")
+
+            # Serialize the rows as json values
+            block = self._get_block()
+            rows_as_json_series = bigframes.series.Series(
+                block._get_rows_as_json_values()
+            )
+
+            # Apply the function
+            result_series = rows_as_json_series._apply_unary_op(
+                ops.RemoteFunctionOp(func=func, apply_on_null=True)
+            )
+            result_series.name = None
+
+            # Return Series with materialized result so that any error in the remote
+            # function is caught early
+            materialized_series = result_series.cache()
+            return materialized_series
+
+        # Per-column apply
         results = {name: func(col, *args, **kwargs) for name, col in self.items()}
         if all(
             [

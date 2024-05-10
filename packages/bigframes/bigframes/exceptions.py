@@ -33,3 +33,7 @@ class CleanupFailedWarning(Warning):
 
 class DefaultIndexWarning(Warning):
     """Default index may cause unexpected costs."""
+
+
+class PreviewWarning(Warning):
+    """The feature is in preview."""

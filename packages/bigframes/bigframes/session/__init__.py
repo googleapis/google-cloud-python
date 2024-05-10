@@ -1417,6 +1417,9 @@ class Session(
         the code samples at: https://cloud.google.com/bigquery/docs/remote-functions#bigquery-dataframes.
 
         .. note::
+            ``input_types=Series`` scenario is in preview.
+
+        .. note::
             Please make sure following is setup before using this API:
 
         1. Have the below APIs enabled for your project:
@@ -1455,8 +1458,9 @@ class Session(
 
         Args:
             input_types (type or sequence(type)):
-                Input data type, or sequence of input data types in the user
-                defined function.
+                For scalar user defined function it should be the input type or
+                sequence of input types. For row processing user defined function,
+                type `Series` should be specified.
             output_type (type):
                 Data type of the output in the user defined function.
             dataset (str, Optional):

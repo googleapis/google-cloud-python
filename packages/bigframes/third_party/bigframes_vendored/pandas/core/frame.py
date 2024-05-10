@@ -4200,12 +4200,16 @@ class DataFrame(generic.NDFrame):
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
-    def apply(self, func, *, args=(), **kwargs):
+    def apply(self, func, *, axis=0, args=(), **kwargs):
         """Apply a function along an axis of the DataFrame.
 
         Objects passed to the function are Series objects whose index is
-        the DataFrame's index (``axis=0``) the final return type
-        is inferred from the return type of the applied function.
+        the DataFrame's index (``axis=0``) or the DataFrame's columns (``axis=1``).
+        The final return type is inferred from the return type of the applied
+        function.
+
+        .. note::
+            ``axis=1`` scenario is in preview.
 
         **Examples:**
 
@@ -4230,9 +4234,28 @@ class DataFrame(generic.NDFrame):
             <BLANKLINE>
             [2 rows x 2 columns]
 
+        You could apply a user defined function to every row of the DataFrame by
+        creating a remote function out of it, and using it with `axis=1`.
+
+            >>> @bpd.remote_function(bpd.Series, int, reuse=False)
+            ... def foo(row):
+            ...     result = 1
+            ...     result += row["col1"]
+            ...     result += row["col2"]*row["col2"]
+            ...     return result
+
+            >>> df.apply(foo, axis=1)
+            0    11
+            1    19
+            dtype: Int64
+
         Args:
             func (function):
                 Function to apply to each column or row.
+            axis ({index (0), columns (1)}):
+                Axis along which the function is applied. Specify 0 or 'index'
+                to apply function to each column. Specify 1 or 'columns' to
+                apply function to each row.
             args (tuple):
                 Positional arguments to pass to `func` in addition to the
                 array/series.

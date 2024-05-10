@@ -25,8 +25,10 @@ import sys
 import tempfile
 import textwrap
 from typing import List, NamedTuple, Optional, Sequence, TYPE_CHECKING, Union
+import warnings
 
 import ibis
+import pandas
 import requests
 
 if TYPE_CHECKING:
@@ -262,7 +264,7 @@ class RemoteFunctionClient:
 
         return udf_code_file_name, udf_bytecode_file_name
 
-    def generate_cloud_function_main_code(self, def_, dir):
+    def generate_cloud_function_main_code(self, def_, dir, is_row_processor=False):
         """Get main.py code for the cloud function for the given user defined function."""
 
         # Pickle the udf with all its dependencies
@@ -285,38 +287,120 @@ class RemoteFunctionClient:
         #   ...
         # }
         # https://cloud.google.com/bigquery/docs/reference/standard-sql/remote-functions#input_format
-        code_template = textwrap.dedent(
-            """\
-        import cloudpickle
-        import functions_framework
-        from flask import jsonify
-        import json
+        code = """\
+import cloudpickle
+import functions_framework
+from flask import jsonify
+import json
+"""
+        if is_row_processor:
+            code += """\
+import ast
+import math
+import pandas as pd
 
-        # original udf code is in {udf_code_file}
-        # serialized udf code is in {udf_bytecode_file}
-        with open("{udf_bytecode_file}", "rb") as f:
-          udf = cloudpickle.load(f)
+def get_pd_series(row):
+    row_json = json.loads(row)
+    col_names = row_json["names"]
+    col_types = row_json["types"]
+    col_values = row_json["values"]
+    index_length = row_json["indexlength"]
+    dtype = row_json["dtype"]
 
-        def {handler_func_name}(request):
-          try:
-            request_json = request.get_json(silent=True)
-            calls = request_json["calls"]
-            replies = []
-            for call in calls:
-              reply = udf(*call)
-              replies.append(reply)
-            return_json = json.dumps({{"replies" : replies}})
-            return return_json
-          except Exception as e:
-            return jsonify( {{ "errorMessage": str(e) }} ), 400
-        """
-        )
+    # At this point we are assuming that col_names, col_types and col_values are
+    # arrays of the same length, representing column names, types and values for
+    # one row of data
 
-        code = code_template.format(
-            udf_code_file=udf_code_file,
-            udf_bytecode_file=udf_bytecode_file,
-            handler_func_name=handler_func_name,
-        )
+    # column names are not necessarily strings
+    # they are serialized as repr(name) at source
+    evaluated_col_names = []
+    for col_name in col_names:
+        try:
+            col_name = ast.literal_eval(col_name)
+        except Exception as ex:
+            raise NameError(f"Failed to evaluate column name from '{col_name}': {ex}")
+        evaluated_col_names.append(col_name)
+    col_names = evaluated_col_names
+
+    # Supported converters for pandas to python types
+    value_converters = {
+        "boolean": lambda val: val == "true",
+        "Int64": int,
+        "Float64": float,
+        "string": str,
+    }
+
+    def convert_value(value, value_type):
+        value_converter = value_converters.get(value_type)
+        if value_converter is None:
+            raise ValueError(f"Don't know how to handle type '{value_type}'")
+        if value is None:
+            return None
+        return value_converter(value)
+
+    index_values = [
+        pd.Series([convert_value(col_values[i], col_types[i])], dtype=col_types[i])[0]
+        for i in range(index_length)
+    ]
+
+    data_col_names = col_names[index_length:]
+    data_col_types = col_types[index_length:]
+    data_col_values = col_values[index_length:]
+    data_col_values = [
+        pd.Series([convert_value(a, data_col_types[i])], dtype=data_col_types[i])[0]
+        for i, a in enumerate(data_col_values)
+    ]
+
+    row_index = index_values[0] if len(index_values) == 1 else tuple(index_values)
+    row_series = pd.Series(data_col_values, index=data_col_names, name=row_index, dtype=dtype)
+    return row_series
+"""
+        code += f"""\
+
+# original udf code is in {udf_code_file}
+# serialized udf code is in {udf_bytecode_file}
+with open("{udf_bytecode_file}", "rb") as f:
+    udf = cloudpickle.load(f)
+
+def {handler_func_name}(request):
+    try:
+        request_json = request.get_json(silent=True)
+        calls = request_json["calls"]
+        replies = []
+        for call in calls:
+"""
+
+        if is_row_processor:
+            code += """\
+            reply = udf(get_pd_series(call[0]))
+            if isinstance(reply, float) and (math.isnan(reply) or math.isinf(reply)):
+                # json serialization of the special float values (nan, inf, -inf)
+                # is not in strict compliance of the JSON specification
+                # https://docs.python.org/3/library/json.html#basic-usage.
+                # Let's convert them to a quoted string representation ("NaN",
+                # "Infinity", "-Infinity" respectively) which is handled by
+                # BigQuery
+                reply = json.dumps(reply)
+            elif pd.isna(reply):
+                # Pandas N/A values are not json serializable, so use a python
+                # equivalent instead
+                reply = None
+            elif hasattr(reply, "item"):
+                # Numpy types are not json serializable, so use its Python
+                # value instead
+                reply = reply.item()
+"""
+        else:
+            code += """\
+            reply = udf(*call)
+"""
+        code += """\
+            replies.append(reply)
+        return_json = json.dumps({"replies" : replies})
+        return return_json
+    except Exception as e:
+        return jsonify( { "errorMessage": str(e) } ), 400
+"""
 
         main_py = os.path.join(dir, "main.py")
         with open(main_py, "w") as f:
@@ -325,11 +409,17 @@ class RemoteFunctionClient:
 
         return handler_func_name
 
-    def generate_cloud_function_code(self, def_, dir, package_requirements=None):
+    def generate_cloud_function_code(
+        self, def_, dir, package_requirements=None, is_row_processor=False
+    ):
         """Generate the cloud function code for a given user defined function."""
 
         # requirements.txt
         requirements = ["cloudpickle >= 2.1.0"]
+        if is_row_processor:
+            # bigframes remote function will send an entire row of data as json,
+            # which would be converted to a pandas series and processed
+            requirements.append(f"pandas=={pandas.__version__}")
         if package_requirements:
             requirements.extend(package_requirements)
         requirements = sorted(requirements)
@@ -338,7 +428,9 @@ class RemoteFunctionClient:
             f.write("\n".join(requirements))
 
         # main.py
-        entry_point = self.generate_cloud_function_main_code(def_, dir)
+        entry_point = self.generate_cloud_function_main_code(
+            def_, dir, is_row_processor
+        )
         return entry_point
 
     def create_cloud_function(
@@ -348,13 +440,14 @@ class RemoteFunctionClient:
         package_requirements=None,
         timeout_seconds=600,
         max_instance_count=None,
+        is_row_processor=False,
     ):
         """Create a cloud function from the given user defined function."""
 
         # Build and deploy folder structure containing cloud function
         with tempfile.TemporaryDirectory() as dir:
             entry_point = self.generate_cloud_function_code(
-                def_, dir, package_requirements
+                def_, dir, package_requirements, is_row_processor
             )
             archive_path = shutil.make_archive(dir, "zip", dir)
 
@@ -474,6 +567,7 @@ class RemoteFunctionClient:
         max_batching_rows,
         cloud_function_timeout,
         cloud_function_max_instance_count,
+        is_row_processor,
     ):
         """Provision a BigQuery remote function."""
         # If reuse of any existing function with the same name (indicated by the
@@ -500,6 +594,7 @@ class RemoteFunctionClient:
                 package_requirements,
                 cloud_function_timeout,
                 cloud_function_max_instance_count,
+                is_row_processor,
             )
         else:
             logger.info(f"Cloud function {cloud_function_name} already exists.")
@@ -700,8 +795,9 @@ def remote_function(
 
     Args:
         input_types (type or sequence(type)):
-            Input data type, or sequence of input data types in the user
-            defined function.
+            For scalar user defined function it should be the input type or
+            sequence of input types. For row processing user defined function,
+            type `Series` should be specified.
         output_type (type):
             Data type of the output in the user defined function.
         session (bigframes.Session, Optional):
@@ -800,9 +896,25 @@ def remote_function(
             function's default setting applies. For more details see
             https://cloud.google.com/functions/docs/configuring/max-instances
     """
-    if isinstance(input_types, type):
+    is_row_processor = False
+
+    import bigframes.series
+
+    if input_types == bigframes.series.Series:
+        warnings.warn(
+            "input_types=Series scenario is in preview.",
+            stacklevel=1,
+            category=bigframes.exceptions.PreviewWarning,
+        )
+
+        # we will model the row as a json serialized string containing the data
+        # and the metadata representing the row
+        input_types = [str]
+        is_row_processor = True
+    elif isinstance(input_types, type):
         input_types = [input_types]
 
+    # Some defaults may be used from the session if not provided otherwise
     import bigframes.pandas as bpd
 
     session = session or bpd.get_global_session()
@@ -928,6 +1040,7 @@ def remote_function(
             max_batching_rows,
             cloud_function_timeout,
             cloud_function_max_instances,
+            is_row_processor,
         )
 
         # TODO: Move ibis logic to compiler step

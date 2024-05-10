@@ -21,11 +21,13 @@ circular dependencies.
 
 from __future__ import annotations
 
+import ast
 import dataclasses
 import functools
 import itertools
 import os
 import random
+import textwrap
 import typing
 from typing import Iterable, List, Literal, Mapping, Optional, Sequence, Tuple, Union
 import warnings
@@ -44,8 +46,8 @@ import bigframes.core.guid as guid
 import bigframes.core.join_def as join_defs
 import bigframes.core.ordering as ordering
 import bigframes.core.schema as bf_schema
+import bigframes.core.sql as sql
 import bigframes.core.tree_properties as tree_properties
-import bigframes.core.utils
 import bigframes.core.utils as utils
 import bigframes.core.window_spec as window_specs
 import bigframes.dtypes
@@ -1437,9 +1439,7 @@ class Block:
         )
 
     def add_prefix(self, prefix: str, axis: str | int | None = None) -> Block:
-        axis_number = bigframes.core.utils.get_axis_number(
-            "rows" if (axis is None) else axis
-        )
+        axis_number = utils.get_axis_number("rows" if (axis is None) else axis)
         if axis_number == 0:
             expr = self._expr
             for index_col in self._index_columns:
@@ -1460,9 +1460,7 @@ class Block:
             return self.rename(columns=lambda label: f"{prefix}{label}")
 
     def add_suffix(self, suffix: str, axis: str | int | None = None) -> Block:
-        axis_number = bigframes.core.utils.get_axis_number(
-            "rows" if (axis is None) else axis
-        )
+        axis_number = utils.get_axis_number("rows" if (axis is None) else axis)
         if axis_number == 0:
             expr = self._expr
             for index_col in self._index_columns:
@@ -2071,6 +2069,95 @@ class Block:
         result = block.get_stat(monotonic_result_id, agg_ops.all_op)
         self._stats_cache[column_name].update({op_name: result})
         return result
+
+    def _get_rows_as_json_values(self) -> Block:
+        # We want to preserve any ordering currently present before turning to
+        # direct SQL manipulation. We will restore the ordering when we rebuild
+        # expression.
+        # TODO(shobs): Replace direct SQL manipulation by structured expression
+        # manipulation
+        ordering_column_name = guid.generate_guid()
+        expr = self.session._cache_with_offsets(self.expr)
+        expr = expr.promote_offsets(ordering_column_name)
+        expr_sql = self.session._to_sql(expr)
+
+        # Names of the columns to serialize for the row.
+        # We will use the repr-eval pattern to serialize a value here and
+        # deserialize in the cloud function. Let's make sure that would work.
+        column_names = []
+        for col in list(self.index_columns) + [col for col in self.column_labels]:
+            serialized_column_name = repr(col)
+            try:
+                ast.literal_eval(serialized_column_name)
+            except Exception:
+                raise NameError(
+                    f"Column name type '{type(col).__name__}' is not supported for row serialization."
+                    " Please consider using a name for which literal_eval(repr(name)) works."
+                )
+
+            column_names.append(serialized_column_name)
+        column_names_csv = sql.csv(column_names, quoted=True)
+
+        # index columns count
+        index_columns_count = len(self.index_columns)
+
+        # column references to form the array of values for the row
+        column_references_csv = sql.csv(
+            [sql.cast_as_string(col) for col in self.expr.column_ids]
+        )
+
+        # types of the columns to serialize for the row
+        column_types = list(self.index.dtypes) + list(self.dtypes)
+        column_types_csv = sql.csv([str(typ) for typ in column_types], quoted=True)
+
+        # row dtype to use for deserializing the row as pandas series
+        pandas_row_dtype = bigframes.dtypes.lcd_type(*column_types)
+        if pandas_row_dtype is None:
+            pandas_row_dtype = "object"
+        pandas_row_dtype = sql.quote(str(pandas_row_dtype))
+
+        # create a json column representing row through SQL manipulation
+        row_json_column_name = guid.generate_guid()
+        select_columns = (
+            [ordering_column_name] + list(self.index_columns) + [row_json_column_name]
+        )
+        select_columns_csv = sql.csv(
+            [sql.column_reference(col) for col in select_columns]
+        )
+        json_sql = f"""\
+With T0 AS (
+{textwrap.indent(expr_sql, "    ")}
+),
+T1 AS (
+    SELECT *,
+           JSON_OBJECT(
+               "names", [{column_names_csv}],
+               "types", [{column_types_csv}],
+               "values", [{column_references_csv}],
+               "indexlength", {index_columns_count},
+               "dtype", {pandas_row_dtype}
+           ) AS {row_json_column_name} FROM T0
+)
+SELECT {select_columns_csv} FROM T1
+"""
+        ibis_table = self.session.ibis_client.sql(json_sql)
+        order_for_ibis_table = ordering.ExpressionOrdering.from_offset_col(
+            ordering_column_name
+        )
+        expr = core.ArrayValue.from_ibis(
+            self.session,
+            ibis_table,
+            [ibis_table[col] for col in select_columns if col != ordering_column_name],
+            hidden_ordering_columns=[ibis_table[ordering_column_name]],
+            ordering=order_for_ibis_table,
+        )
+        block = Block(
+            expr,
+            index_columns=self.index_columns,
+            column_labels=[row_json_column_name],
+            index_labels=self._index_labels,
+        )
+        return block
 
 
 class BlockIndexProperties:
