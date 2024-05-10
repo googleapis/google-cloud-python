@@ -1137,6 +1137,10 @@ class DataQualityScanRuleResult(proto.Message):
         null_row_count (int):
             The number of rows with null values in the
             specified column.
+        assertion_row_count (int):
+            The number of rows returned by the sql
+            statement in the SqlAssertion rule. This field
+            is only valid for SqlAssertion rules.
     """
 
     class RuleType(proto.Enum):
@@ -1169,6 +1173,9 @@ class DataQualityScanRuleResult(proto.Message):
             UNIQUENESS_EXPECTATION (8):
                 Please see
                 https://cloud.google.com/dataplex/docs/reference/rest/v1/DataQualityRule#uniquenessexpectation.
+            SQL_ASSERTION (9):
+                Please see
+                https://cloud.google.com/dataplex/docs/reference/rest/v1/DataQualityRule#sqlAssertion.
         """
         RULE_TYPE_UNSPECIFIED = 0
         NON_NULL_EXPECTATION = 1
@@ -1179,6 +1186,7 @@ class DataQualityScanRuleResult(proto.Message):
         STATISTIC_RANGE_EXPECTATION = 6
         TABLE_CONDITION_EXPECTATION = 7
         UNIQUENESS_EXPECTATION = 8
+        SQL_ASSERTION = 9
 
     class EvaluationType(proto.Enum):
         r"""The evaluation type of the data quality rule.
@@ -1261,6 +1269,10 @@ class DataQualityScanRuleResult(proto.Message):
     null_row_count: int = proto.Field(
         proto.INT64,
         number=12,
+    )
+    assertion_row_count: int = proto.Field(
+        proto.INT64,
+        number=13,
     )
 
 

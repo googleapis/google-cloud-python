@@ -17,6 +17,7 @@ from collections import OrderedDict
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -721,7 +722,11 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, DataplexServiceTransport]] = None,
+        transport: Optional[
+            Union[
+                str, DataplexServiceTransport, Callable[..., DataplexServiceTransport]
+            ]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -733,9 +738,11 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, DataplexServiceTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,DataplexServiceTransport,Callable[..., DataplexServiceTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the DataplexServiceTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -844,8 +851,15 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[DataplexServiceTransport], Callable[..., DataplexServiceTransport]
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., DataplexServiceTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -958,8 +972,8 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, lake, lake_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -967,10 +981,8 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.CreateLakeRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.CreateLakeRequest):
             request = service.CreateLakeRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1095,8 +1107,8 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([lake, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1104,10 +1116,8 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.UpdateLakeRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.UpdateLakeRequest):
             request = service.UpdateLakeRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1226,8 +1236,8 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1235,10 +1245,8 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.DeleteLakeRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.DeleteLakeRequest):
             request = service.DeleteLakeRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1344,8 +1352,8 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1353,10 +1361,8 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.ListLakesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.ListLakesRequest):
             request = service.ListLakesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1471,8 +1477,8 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1480,10 +1486,8 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.GetLakeRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.GetLakeRequest):
             request = service.GetLakeRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1579,8 +1583,8 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1588,10 +1592,8 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.ListLakeActionsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.ListLakeActionsRequest):
             request = service.ListLakeActionsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1732,8 +1734,8 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, zone, zone_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1741,10 +1743,8 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.CreateZoneRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.CreateZoneRequest):
             request = service.CreateZoneRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1867,8 +1867,8 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([zone, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1876,10 +1876,8 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.UpdateZoneRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.UpdateZoneRequest):
             request = service.UpdateZoneRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1998,8 +1996,8 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2007,10 +2005,8 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.DeleteZoneRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.DeleteZoneRequest):
             request = service.DeleteZoneRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2114,8 +2110,8 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2123,10 +2119,8 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.ListZonesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.ListZonesRequest):
             request = service.ListZonesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2233,8 +2227,8 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2242,10 +2236,8 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.GetZoneRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.GetZoneRequest):
             request = service.GetZoneRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2341,8 +2333,8 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2350,10 +2342,8 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.ListZoneActionsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.ListZoneActionsRequest):
             request = service.ListZoneActionsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2487,8 +2477,8 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, asset, asset_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2496,10 +2486,8 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.CreateAssetRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.CreateAssetRequest):
             request = service.CreateAssetRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2618,8 +2606,8 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([asset, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2627,10 +2615,8 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.UpdateAssetRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.UpdateAssetRequest):
             request = service.UpdateAssetRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2750,8 +2736,8 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2759,10 +2745,8 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.DeleteAssetRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.DeleteAssetRequest):
             request = service.DeleteAssetRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2866,8 +2850,8 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2875,10 +2859,8 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.ListAssetsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.ListAssetsRequest):
             request = service.ListAssetsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2980,8 +2962,8 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2989,10 +2971,8 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.GetAssetRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.GetAssetRequest):
             request = service.GetAssetRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3088,8 +3068,8 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3097,10 +3077,8 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.ListAssetActionsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.ListAssetActionsRequest):
             request = service.ListAssetActionsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3228,8 +3206,8 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, task, task_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3237,10 +3215,8 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.CreateTaskRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.CreateTaskRequest):
             request = service.CreateTaskRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3363,8 +3339,8 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([task, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3372,10 +3348,8 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.UpdateTaskRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.UpdateTaskRequest):
             request = service.UpdateTaskRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3493,8 +3467,8 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3502,10 +3476,8 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.DeleteTaskRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.DeleteTaskRequest):
             request = service.DeleteTaskRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3609,8 +3581,8 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3618,10 +3590,8 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.ListTasksRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.ListTasksRequest):
             request = service.ListTasksRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3720,8 +3690,8 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
                 A task represents a user-visible job.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3729,10 +3699,8 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.GetTaskRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.GetTaskRequest):
             request = service.GetTaskRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3828,8 +3796,8 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3837,10 +3805,8 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.ListJobsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.ListJobsRequest):
             request = service.ListJobsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3939,8 +3905,8 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3948,10 +3914,8 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.RunTaskRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.RunTaskRequest):
             request = service.RunTaskRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4043,8 +4007,8 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4052,10 +4016,8 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.GetJobRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.GetJobRequest):
             request = service.GetJobRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4138,8 +4100,8 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4147,10 +4109,8 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.CancelJobRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.CancelJobRequest):
             request = service.CancelJobRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4270,8 +4230,8 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, environment, environment_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4279,10 +4239,8 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.CreateEnvironmentRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.CreateEnvironmentRequest):
             request = service.CreateEnvironmentRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4401,8 +4359,8 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([environment, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4410,10 +4368,8 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.UpdateEnvironmentRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.UpdateEnvironmentRequest):
             request = service.UpdateEnvironmentRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4533,8 +4489,8 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4542,10 +4498,8 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.DeleteEnvironmentRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.DeleteEnvironmentRequest):
             request = service.DeleteEnvironmentRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4649,8 +4603,8 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4658,10 +4612,8 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.ListEnvironmentsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.ListEnvironmentsRequest):
             request = service.ListEnvironmentsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4763,8 +4715,8 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4772,10 +4724,8 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.GetEnvironmentRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.GetEnvironmentRequest):
             request = service.GetEnvironmentRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4871,8 +4821,8 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4880,10 +4830,8 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.ListSessionsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.ListSessionsRequest):
             request = service.ListSessionsRequest(request)
             # If we have keyword arguments corresponding to fields on the

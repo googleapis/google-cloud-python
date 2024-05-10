@@ -766,10 +766,16 @@ class Entry(proto.Message):
             updated.
         aspects (MutableMapping[str, google.cloud.dataplex_v1.types.Aspect]):
             Optional. The Aspects attached to the Entry.
-            The key is either the resource name of the
-            aspect type (if the aspect is attached directly
-            to the entry) or "aspectType@path" if the aspect
-            is attached to an entry's path.
+            The format for the key can be one of the
+            following:
+
+            1. {projectId}.{locationId}.{aspectTypeId} (if
+                the aspect is attached directly to the
+                entry)
+            2.
+                {projectId}.{locationId}.{aspectTypeId}@{path}
+                (if the aspect is attached to an entry's
+                path)
         parent_entry (str):
             Optional. Immutable. The resource name of the
             parent entry.
@@ -1639,14 +1645,17 @@ class ListEntriesRequest(proto.Message):
         filter (str):
             Optional. A filter on the entries to return. Filters are
             case-sensitive. The request can be filtered by the following
-            fields: entry_type, display_name. The comparison operators
-            are =, !=, <, >, <=, >= (strings are compared according to
-            lexical order) The logical operators AND, OR, NOT can be
-            used in the filter. Example filter expressions:
-            "display_name=AnExampleDisplayName"
+            fields: entry_type, entry_source.display_name. The
+            comparison operators are =, !=, <, >, <=, >= (strings are
+            compared according to lexical order) The logical operators
+            AND, OR, NOT can be used in the filter. Wildcard "*" can be
+            used, but for entry_type the full project id or number needs
+            to be provided. Example filter expressions:
+            "entry_source.display_name=AnExampleDisplayName"
             "entry_type=projects/example-project/locations/global/entryTypes/example-entry_type"
-            "entry_type=projects/a\* OR "entry_type=projects/k*" "NOT
-            display_name=AnotherExampleDisplayName".
+            "entry_type=projects/example-project/locations/us/entryTypes/a*
+            OR entry_type=projects/another-project/locations/* " "NOT
+            entry_source.display_name=AnotherExampleDisplayName".
     """
 
     parent: str = proto.Field(
@@ -1836,20 +1845,6 @@ class SearchEntriesResult(proto.Message):
     r"""A single result of a SearchEntries request.
 
     Attributes:
-        entry (str):
-            Resource name of the entry.
-        display_name (str):
-            Display name.
-        entry_type (str):
-            The entry type.
-        modify_time (google.protobuf.timestamp_pb2.Timestamp):
-            The last modification timestamp.
-        fully_qualified_name (str):
-            Fully qualified name.
-        description (str):
-            Entry description.
-        relative_resource (str):
-            Relative resource name.
         linked_resource (str):
             Linked resource name.
         dataplex_entry (google.cloud.dataplex_v1.types.Entry):
@@ -1873,35 +1868,6 @@ class SearchEntriesResult(proto.Message):
             message="Entry",
         )
 
-    entry: str = proto.Field(
-        proto.STRING,
-        number=1,
-    )
-    display_name: str = proto.Field(
-        proto.STRING,
-        number=2,
-    )
-    entry_type: str = proto.Field(
-        proto.STRING,
-        number=3,
-    )
-    modify_time: timestamp_pb2.Timestamp = proto.Field(
-        proto.MESSAGE,
-        number=4,
-        message=timestamp_pb2.Timestamp,
-    )
-    fully_qualified_name: str = proto.Field(
-        proto.STRING,
-        number=5,
-    )
-    description: str = proto.Field(
-        proto.STRING,
-        number=6,
-    )
-    relative_resource: str = proto.Field(
-        proto.STRING,
-        number=7,
-    )
     linked_resource: str = proto.Field(
         proto.STRING,
         number=8,
