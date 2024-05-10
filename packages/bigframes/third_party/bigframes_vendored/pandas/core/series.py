@@ -6,10 +6,12 @@ from __future__ import annotations
 from typing import (
     Hashable,
     IO,
+    List,
     Literal,
     Mapping,
     Optional,
     Sequence,
+    Tuple,
     TYPE_CHECKING,
     Union,
 )
@@ -1934,6 +1936,59 @@ class Series(NDFrame):  # type: ignore[misc]
             Series: Series representing whether each element is between left and
             right (inclusive).
 
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    def case_when(
+        self,
+        caselist: List[Tuple[Series, Series]],
+    ) -> Series:
+        """Replace values where the conditions are True.
+
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> c = bpd.Series([6, 7, 8, 9], name="c")
+            >>> a = bpd.Series([0, 0, 1, 2])
+            >>> b = bpd.Series([0, 3, 4, 5])
+
+            >>> c.case_when(
+            ...     caselist=[
+            ...         (a.gt(0), a),  # condition, replacement
+            ...         (b.gt(0), b),
+            ...     ]
+            ... )
+            0    6
+            1    3
+            2    1
+            3    2
+            Name: c, dtype: Int64
+
+        **See also:**
+
+        - :func:`bigframes.series.Series.mask` : Replace values where the condition is True.
+
+        Args:
+            caselist:
+                A list of tuples of conditions and expected replacements
+                Takes the form:  ``(condition0, replacement0)``,
+                ``(condition1, replacement1)``, ... .
+                ``condition`` should be a 1-D boolean array-like object
+                or a callable. If ``condition`` is a callable,
+                it is computed on the Series
+                and should return a boolean Series or array.
+                The callable must not change the input Series
+                (though pandas doesn`t check it). ``replacement`` should be a
+                1-D array-like object, a scalar or a callable.
+                If ``replacement`` is a callable, it is computed on the Series
+                and should return a scalar or Series. The callable
+                must not change the input Series
+                (though pandas doesn`t check it).
+
+        Returns:
+            bigframes.series.Series
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 

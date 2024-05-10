@@ -16,6 +16,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 import functools
 import io
+import itertools
 import typing
 from typing import Iterable, Sequence
 
@@ -370,14 +371,16 @@ class ArrayValue:
         for col_id, input_ids in unpivot_columns:
             # row explode offset used to choose the input column
             # we use offset instead of label as labels are not necessarily unique
-            cases = tuple(
-                (
-                    ops.eq_op.as_expr(explode_offsets_id, ex.const(i)),
-                    ex.free_var(id_or_null)
-                    if (id_or_null is not None)
-                    else ex.const(None),
+            cases = itertools.chain(
+                *(
+                    (
+                        ops.eq_op.as_expr(explode_offsets_id, ex.const(i)),
+                        ex.free_var(id_or_null)
+                        if (id_or_null is not None)
+                        else ex.const(None),
+                    )
+                    for i, id_or_null in enumerate(input_ids)
                 )
-                for i, id_or_null in enumerate(input_ids)
             )
             col_expr = ops.case_when_op.as_expr(*cases)
             unpivot_exprs.append((col_expr, col_id))

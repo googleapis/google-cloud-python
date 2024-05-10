@@ -15,6 +15,7 @@
 from __future__ import annotations
 
 import typing
+from typing import List, Sequence
 
 import bigframes_vendored.pandas.pandas._typing as vendored_pandas_typing
 import numpy
@@ -205,6 +206,21 @@ class SeriesMethods:
             block, result_id = self._block.project_expr(expr, name)
             return series.Series(block.select_column(result_id))
 
+    def _apply_nary_op(
+        self,
+        op: ops.NaryOp,
+        others: Sequence[typing.Union[series.Series, scalars.Scalar]],
+        ignore_self=False,
+    ):
+        """Applies an n-ary operator to the series and others."""
+        values, block = self._align_n(others, ignore_self=ignore_self)
+        block, result_id = block.apply_nary_op(
+            values,
+            op,
+            self._name,
+        )
+        return series.Series(block.select_column(result_id))
+
     def _apply_binary_aggregation(
         self, other: series.Series, stat: agg_ops.BinaryAggregateOp
     ) -> float:
@@ -226,8 +242,13 @@ class SeriesMethods:
         self,
         others: typing.Sequence[typing.Union[series.Series, scalars.Scalar]],
         how="outer",
+        ignore_self=False,
     ) -> tuple[typing.Sequence[str], blocks.Block]:
-        value_ids = [self._value_column]
+        if ignore_self:
+            value_ids: List[str] = []
+        else:
+            value_ids = [self._value_column]
+
         block = self._block
         for other in others:
             if isinstance(other, series.Series):

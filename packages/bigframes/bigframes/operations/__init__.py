@@ -17,7 +17,7 @@ from __future__ import annotations
 import dataclasses
 import functools
 import typing
-from typing import Tuple, Union
+from typing import Union
 
 import numpy as np
 import pandas as pd
@@ -46,7 +46,7 @@ class RowOp(typing.Protocol):
 
 
 @dataclasses.dataclass(frozen=True)
-class NaryOp:
+class ScalarOp:
     @property
     def name(self) -> str:
         raise NotImplementedError("RowOp abstract base class has no implementation")
@@ -60,10 +60,30 @@ class NaryOp:
         return False
 
 
+@dataclasses.dataclass(frozen=True)
+class NaryOp(ScalarOp):
+    def as_expr(
+        self,
+        *exprs: Union[str | bigframes.core.expression.Expression],
+    ) -> bigframes.core.expression.Expression:
+        import bigframes.core.expression
+
+        # Keep this in sync with output_type and compilers
+        inputs: list[bigframes.core.expression.Expression] = []
+
+        for expr in exprs:
+            inputs.append(_convert_expr_input(expr))
+
+        return bigframes.core.expression.OpExpression(
+            self,
+            tuple(inputs),
+        )
+
+
 # These classes can be used to create simple ops that don't take local parameters
 # All is needed is a unique name, and to register an implementation in ibis_mappings.py
 @dataclasses.dataclass(frozen=True)
-class UnaryOp(NaryOp):
+class UnaryOp(ScalarOp):
     @property
     def arguments(self) -> int:
         return 1
@@ -79,7 +99,7 @@ class UnaryOp(NaryOp):
 
 
 @dataclasses.dataclass(frozen=True)
-class BinaryOp(NaryOp):
+class BinaryOp(ScalarOp):
     @property
     def arguments(self) -> int:
         return 2
@@ -101,7 +121,7 @@ class BinaryOp(NaryOp):
 
 
 @dataclasses.dataclass(frozen=True)
-class TernaryOp(NaryOp):
+class TernaryOp(ScalarOp):
     @property
     def arguments(self) -> int:
         return 3
@@ -653,27 +673,6 @@ class CaseWhenOp(NaryOp):
         return functools.reduce(
             lambda t1, t2: dtypes.coerce_to_common(t1, t2),
             output_expr_types,
-        )
-
-    def as_expr(
-        self,
-        *case_output_pairs: Tuple[
-            Union[str | bigframes.core.expression.Expression],
-            Union[str | bigframes.core.expression.Expression],
-        ],
-    ) -> bigframes.core.expression.Expression:
-        import bigframes.core.expression
-
-        # Keep this in sync with output_type and compilers
-        inputs: list[bigframes.core.expression.Expression] = []
-
-        for case, output in case_output_pairs:
-            inputs.append(_convert_expr_input(case))
-            inputs.append(_convert_expr_input(output))
-
-        return bigframes.core.expression.OpExpression(
-            self,
-            tuple(inputs),
         )
 
 

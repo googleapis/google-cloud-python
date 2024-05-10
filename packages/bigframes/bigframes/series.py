@@ -410,6 +410,25 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
             self._apply_binary_op(right, right_op)
         )
 
+    def case_when(self, caselist) -> Series:
+        return self._apply_nary_op(
+            ops.case_when_op,
+            tuple(
+                itertools.chain(
+                    itertools.chain(*caselist),
+                    # Fallback to current value if no other matches.
+                    (
+                        # We make a Series with a constant value to avoid casts to
+                        # types other than boolean.
+                        Series(True, index=self.index, dtype=pandas.BooleanDtype()),
+                        self,
+                    ),
+                ),
+            ),
+            # Self is already included in "others".
+            ignore_self=True,
+        )
+
     def cumsum(self) -> Series:
         return self._apply_window_op(
             agg_ops.sum_op, bigframes.core.window_spec.WindowSpec(following=0)

@@ -655,6 +655,10 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         html_string += f"[{row_count} rows x {column_count} columns in total]"
         return html_string
 
+    def __delitem__(self, key: str):
+        df = self.drop(columns=[key])
+        self._set_block(df._get_block())
+
     def __setitem__(self, key: str, value: SingleItemValue):
         df = self._assign_single_item(key, value)
         self._set_block(df._get_block())
