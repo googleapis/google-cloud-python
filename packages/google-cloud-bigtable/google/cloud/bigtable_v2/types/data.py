@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2023 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -27,6 +27,7 @@ __protobuf__ = proto.module(
         "Family",
         "Column",
         "Cell",
+        "Value",
         "RowRange",
         "RowSet",
         "ColumnRange",
@@ -161,6 +162,54 @@ class Cell(proto.Message):
     labels: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
+    )
+
+
+class Value(proto.Message):
+    r"""``Value`` represents a dynamically typed value. The typed fields in
+    ``Value`` are used as a transport encoding for the actual value
+    (which may be of a more complex type). See the documentation of the
+    ``Type`` message for more details.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        raw_value (bytes):
+            Represents a raw byte sequence with no type information. The
+            ``type`` field must be omitted.
+
+            This field is a member of `oneof`_ ``kind``.
+        raw_timestamp_micros (int):
+            Represents a raw cell timestamp with no type information.
+            The ``type`` field must be omitted.
+
+            This field is a member of `oneof`_ ``kind``.
+        int_value (int):
+            Represents a typed value transported as an integer. Default
+            type for writes: ``Int64``
+
+            This field is a member of `oneof`_ ``kind``.
+    """
+
+    raw_value: bytes = proto.Field(
+        proto.BYTES,
+        number=8,
+        oneof="kind",
+    )
+    raw_timestamp_micros: int = proto.Field(
+        proto.INT64,
+        number=9,
+        oneof="kind",
+    )
+    int_value: int = proto.Field(
+        proto.INT64,
+        number=6,
+        oneof="kind",
     )
 
 
@@ -854,6 +903,10 @@ class Mutation(proto.Message):
             Set a cell's value.
 
             This field is a member of `oneof`_ ``mutation``.
+        add_to_cell (google.cloud.bigtable_v2.types.Mutation.AddToCell):
+            Incrementally updates an ``Aggregate`` cell.
+
+            This field is a member of `oneof`_ ``mutation``.
         delete_from_column (google.cloud.bigtable_v2.types.Mutation.DeleteFromColumn):
             Deletes cells from a column.
 
@@ -907,6 +960,48 @@ class Mutation(proto.Message):
         value: bytes = proto.Field(
             proto.BYTES,
             number=4,
+        )
+
+    class AddToCell(proto.Message):
+        r"""A Mutation which incrementally updates a cell in an ``Aggregate``
+        family.
+
+        Attributes:
+            family_name (str):
+                The name of the ``Aggregate`` family into which new data
+                should be added. This must be a family with a ``value_type``
+                of ``Aggregate``. Format: ``[-_.a-zA-Z0-9]+``
+            column_qualifier (google.cloud.bigtable_v2.types.Value):
+                The qualifier of the column into which new data should be
+                added. This must be a ``raw_value``.
+            timestamp (google.cloud.bigtable_v2.types.Value):
+                The timestamp of the cell to which new data should be added.
+                This must be a ``raw_timestamp_micros`` that matches the
+                table's ``granularity``.
+            input (google.cloud.bigtable_v2.types.Value):
+                The input value to be accumulated into the specified cell.
+                This must be compatible with the family's
+                ``value_type.input_type``.
+        """
+
+        family_name: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        column_qualifier: "Value" = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message="Value",
+        )
+        timestamp: "Value" = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            message="Value",
+        )
+        input: "Value" = proto.Field(
+            proto.MESSAGE,
+            number=4,
+            message="Value",
         )
 
     class DeleteFromColumn(proto.Message):
@@ -963,6 +1058,12 @@ class Mutation(proto.Message):
         number=1,
         oneof="mutation",
         message=SetCell,
+    )
+    add_to_cell: AddToCell = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        oneof="mutation",
+        message=AddToCell,
     )
     delete_from_column: DeleteFromColumn = proto.Field(
         proto.MESSAGE,

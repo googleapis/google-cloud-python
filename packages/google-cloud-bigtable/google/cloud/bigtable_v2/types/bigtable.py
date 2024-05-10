@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2023 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -58,9 +58,16 @@ class ReadRowsRequest(proto.Message):
 
     Attributes:
         table_name (str):
-            Required. The unique name of the table from which to read.
+            Optional. The unique name of the table from which to read.
+
             Values are of the form
             ``projects/<project>/instances/<instance>/tables/<table>``.
+        authorized_view_name (str):
+            Optional. The unique name of the AuthorizedView from which
+            to read.
+
+            Values are of the form
+            ``projects/<project>/instances/<instance>/tables/<table>/authorizedViews/<authorized_view>``.
         app_profile_id (str):
             This value specifies routing for replication.
             If not specified, the "default" application
@@ -122,6 +129,10 @@ class ReadRowsRequest(proto.Message):
     table_name: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+    authorized_view_name: str = proto.Field(
+        proto.STRING,
+        number=9,
     )
     app_profile_id: str = proto.Field(
         proto.STRING,
@@ -327,9 +338,17 @@ class SampleRowKeysRequest(proto.Message):
 
     Attributes:
         table_name (str):
-            Required. The unique name of the table from which to sample
-            row keys. Values are of the form
+            Optional. The unique name of the table from which to sample
+            row keys.
+
+            Values are of the form
             ``projects/<project>/instances/<instance>/tables/<table>``.
+        authorized_view_name (str):
+            Optional. The unique name of the AuthorizedView from which
+            to sample row keys.
+
+            Values are of the form
+            ``projects/<project>/instances/<instance>/tables/<table>/authorizedViews/<authorized_view>``.
         app_profile_id (str):
             This value specifies routing for replication.
             If not specified, the "default" application
@@ -339,6 +358,10 @@ class SampleRowKeysRequest(proto.Message):
     table_name: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+    authorized_view_name: str = proto.Field(
+        proto.STRING,
+        number=4,
     )
     app_profile_id: str = proto.Field(
         proto.STRING,
@@ -385,9 +408,17 @@ class MutateRowRequest(proto.Message):
 
     Attributes:
         table_name (str):
-            Required. The unique name of the table to which the mutation
-            should be applied. Values are of the form
+            Optional. The unique name of the table to which the mutation
+            should be applied.
+
+            Values are of the form
             ``projects/<project>/instances/<instance>/tables/<table>``.
+        authorized_view_name (str):
+            Optional. The unique name of the AuthorizedView to which the
+            mutation should be applied.
+
+            Values are of the form
+            ``projects/<project>/instances/<instance>/tables/<table>/authorizedViews/<authorized_view>``.
         app_profile_id (str):
             This value specifies routing for replication.
             If not specified, the "default" application
@@ -406,6 +437,10 @@ class MutateRowRequest(proto.Message):
     table_name: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+    authorized_view_name: str = proto.Field(
+        proto.STRING,
+        number=6,
     )
     app_profile_id: str = proto.Field(
         proto.STRING,
@@ -431,8 +466,17 @@ class MutateRowsRequest(proto.Message):
 
     Attributes:
         table_name (str):
-            Required. The unique name of the table to
-            which the mutations should be applied.
+            Optional. The unique name of the table to which the
+            mutations should be applied.
+
+            Values are of the form
+            ``projects/<project>/instances/<instance>/tables/<table>``.
+        authorized_view_name (str):
+            Optional. The unique name of the AuthorizedView to which the
+            mutations should be applied.
+
+            Values are of the form
+            ``projects/<project>/instances/<instance>/tables/<table>/authorizedViews/<authorized_view>``.
         app_profile_id (str):
             This value specifies routing for replication.
             If not specified, the "default" application
@@ -475,6 +519,10 @@ class MutateRowsRequest(proto.Message):
     table_name: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+    authorized_view_name: str = proto.Field(
+        proto.STRING,
+        number=5,
     )
     app_profile_id: str = proto.Field(
         proto.STRING,
@@ -587,10 +635,17 @@ class CheckAndMutateRowRequest(proto.Message):
 
     Attributes:
         table_name (str):
-            Required. The unique name of the table to which the
-            conditional mutation should be applied. Values are of the
-            form
+            Optional. The unique name of the table to which the
+            conditional mutation should be applied.
+
+            Values are of the form
             ``projects/<project>/instances/<instance>/tables/<table>``.
+        authorized_view_name (str):
+            Optional. The unique name of the AuthorizedView to which the
+            conditional mutation should be applied.
+
+            Values are of the form
+            ``projects/<project>/instances/<instance>/tables/<table>/authorizedViews/<authorized_view>``.
         app_profile_id (str):
             This value specifies routing for replication.
             If not specified, the "default" application
@@ -623,6 +678,10 @@ class CheckAndMutateRowRequest(proto.Message):
     table_name: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+    authorized_view_name: str = proto.Field(
+        proto.STRING,
+        number=9,
     )
     app_profile_id: str = proto.Field(
         proto.STRING,
@@ -700,10 +759,17 @@ class ReadModifyWriteRowRequest(proto.Message):
 
     Attributes:
         table_name (str):
-            Required. The unique name of the table to which the
-            read/modify/write rules should be applied. Values are of the
-            form
+            Optional. The unique name of the table to which the
+            read/modify/write rules should be applied.
+
+            Values are of the form
             ``projects/<project>/instances/<instance>/tables/<table>``.
+        authorized_view_name (str):
+            Optional. The unique name of the AuthorizedView to which the
+            read/modify/write rules should be applied.
+
+            Values are of the form
+            ``projects/<project>/instances/<instance>/tables/<table>/authorizedViews/<authorized_view>``.
         app_profile_id (str):
             This value specifies routing for replication.
             If not specified, the "default" application
@@ -722,6 +788,10 @@ class ReadModifyWriteRowRequest(proto.Message):
     table_name: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+    authorized_view_name: str = proto.Field(
+        proto.STRING,
+        number=6,
     )
     app_profile_id: str = proto.Field(
         proto.STRING,

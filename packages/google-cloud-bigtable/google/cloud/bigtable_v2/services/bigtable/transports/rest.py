@@ -490,6 +490,11 @@ class BigtableRestTransport(BigtableTransport):
                     "uri": "/v2/{table_name=projects/*/instances/*/tables/*}:checkAndMutateRow",
                     "body": "*",
                 },
+                {
+                    "method": "post",
+                    "uri": "/v2/{authorized_view_name=projects/*/instances/*/tables/*/authorizedViews/*}:checkAndMutateRow",
+                    "body": "*",
+                },
             ]
             request, metadata = self._interceptor.pre_check_and_mutate_row(
                 request, metadata
@@ -695,6 +700,11 @@ class BigtableRestTransport(BigtableTransport):
                     "uri": "/v2/{table_name=projects/*/instances/*/tables/*}:mutateRow",
                     "body": "*",
                 },
+                {
+                    "method": "post",
+                    "uri": "/v2/{authorized_view_name=projects/*/instances/*/tables/*/authorizedViews/*}:mutateRow",
+                    "body": "*",
+                },
             ]
             request, metadata = self._interceptor.pre_mutate_row(request, metadata)
             pb_request = bigtable.MutateRowRequest.pb(request)
@@ -788,6 +798,11 @@ class BigtableRestTransport(BigtableTransport):
                 {
                     "method": "post",
                     "uri": "/v2/{table_name=projects/*/instances/*/tables/*}:mutateRows",
+                    "body": "*",
+                },
+                {
+                    "method": "post",
+                    "uri": "/v2/{authorized_view_name=projects/*/instances/*/tables/*/authorizedViews/*}:mutateRows",
                     "body": "*",
                 },
             ]
@@ -1078,6 +1093,11 @@ class BigtableRestTransport(BigtableTransport):
                     "uri": "/v2/{table_name=projects/*/instances/*/tables/*}:readModifyWriteRow",
                     "body": "*",
                 },
+                {
+                    "method": "post",
+                    "uri": "/v2/{authorized_view_name=projects/*/instances/*/tables/*/authorizedViews/*}:readModifyWriteRow",
+                    "body": "*",
+                },
             ]
             request, metadata = self._interceptor.pre_read_modify_write_row(
                 request, metadata
@@ -1132,16 +1152,6 @@ class BigtableRestTransport(BigtableTransport):
         def __hash__(self):
             return hash("ReadRows")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
-
         def __call__(
             self,
             request: bigtable.ReadRowsRequest,
@@ -1175,6 +1185,11 @@ class BigtableRestTransport(BigtableTransport):
                     "uri": "/v2/{table_name=projects/*/instances/*/tables/*}:readRows",
                     "body": "*",
                 },
+                {
+                    "method": "post",
+                    "uri": "/v2/{authorized_view_name=projects/*/instances/*/tables/*/authorizedViews/*}:readRows",
+                    "body": "*",
+                },
             ]
             request, metadata = self._interceptor.pre_read_rows(request, metadata)
             pb_request = bigtable.ReadRowsRequest.pb(request)
@@ -1195,7 +1210,6 @@ class BigtableRestTransport(BigtableTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
 
@@ -1223,16 +1237,6 @@ class BigtableRestTransport(BigtableTransport):
     class _SampleRowKeys(BigtableRestStub):
         def __hash__(self):
             return hash("SampleRowKeys")
-
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
 
         def __call__(
             self,
@@ -1266,6 +1270,10 @@ class BigtableRestTransport(BigtableTransport):
                     "method": "get",
                     "uri": "/v2/{table_name=projects/*/instances/*/tables/*}:sampleRowKeys",
                 },
+                {
+                    "method": "get",
+                    "uri": "/v2/{authorized_view_name=projects/*/instances/*/tables/*/authorizedViews/*}:sampleRowKeys",
+                },
             ]
             request, metadata = self._interceptor.pre_sample_row_keys(request, metadata)
             pb_request = bigtable.SampleRowKeysRequest.pb(request)
@@ -1281,7 +1289,6 @@ class BigtableRestTransport(BigtableTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
 

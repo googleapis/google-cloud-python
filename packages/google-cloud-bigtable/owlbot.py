@@ -91,7 +91,7 @@ templated_files = common.py_library(
     microgenerator=True,
     cov_level=99,
     system_test_external_dependencies=[
-        "pytest-asyncio",
+        "pytest-asyncio==0.21.2",
     ],
 )
 
@@ -217,6 +217,54 @@ def mypy(session):
 def lint_setup_py(session):
 ''',
 )
+
+
+# ----------------------------------------------------------------------------
+# Customize gapics to include PooledBigtableGrpcAsyncIOTransport
+# ----------------------------------------------------------------------------
+def insert(file, before_line, insert_line, after_line, escape=None):
+    target = before_line + "\n" + after_line
+    if escape:
+        for c in escape:
+            target = target.replace(c, '\\' + c)
+    replacement = before_line + "\n" + insert_line + "\n" + after_line
+    s.replace(file, target, replacement)
+
+
+insert(
+    "google/cloud/bigtable_v2/services/bigtable/client.py",
+    "from .transports.grpc_asyncio import BigtableGrpcAsyncIOTransport",
+    "from .transports.pooled_grpc_asyncio import PooledBigtableGrpcAsyncIOTransport",
+    "from .transports.rest import BigtableRestTransport"
+)
+insert(
+    "google/cloud/bigtable_v2/services/bigtable/client.py",
+    '    _transport_registry["grpc_asyncio"] = BigtableGrpcAsyncIOTransport',
+    '    _transport_registry["pooled_grpc_asyncio"] = PooledBigtableGrpcAsyncIOTransport',
+    '    _transport_registry["rest"] = BigtableRestTransport',
+    escape='[]"'
+)
+insert(
+    "google/cloud/bigtable_v2/services/bigtable/transports/__init__.py",
+    '_transport_registry["grpc_asyncio"] = BigtableGrpcAsyncIOTransport',
+    '_transport_registry["pooled_grpc_asyncio"] = PooledBigtableGrpcAsyncIOTransport',
+    '_transport_registry["rest"] = BigtableRestTransport',
+    escape='[]"'
+)
+insert(
+    "google/cloud/bigtable_v2/services/bigtable/transports/__init__.py",
+    "from .grpc_asyncio import BigtableGrpcAsyncIOTransport",
+    "from .pooled_grpc_asyncio import PooledBigtableGrpcAsyncIOTransport",
+    "from .rest import BigtableRestTransport"
+)
+insert(
+    "google/cloud/bigtable_v2/services/bigtable/transports/__init__.py",
+    '    "BigtableGrpcAsyncIOTransport",',
+    '    "PooledBigtableGrpcAsyncIOTransport",',
+    '    "BigtableRestTransport",',
+    escape='"'
+)
+
 
 # ----------------------------------------------------------------------------
 # Samples templates
