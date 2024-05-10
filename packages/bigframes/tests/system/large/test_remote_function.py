@@ -21,7 +21,7 @@ import shutil
 import tempfile
 import textwrap
 
-from google.api_core.exceptions import BadRequest, NotFound
+from google.api_core.exceptions import BadRequest, InvalidArgument, NotFound
 from google.cloud import bigquery, storage
 import pandas
 import pytest
@@ -1331,6 +1331,79 @@ def test_remote_function_with_gcf_cmek():
         cleanup_remote_function_assets(
             session.bqclient, session.cloudfunctionsclient, square_num
         )
+
+
+@pytest.mark.flaky(retries=2, delay=120)
+def test_remote_function_via_session_vpc(scalars_dfs):
+    # TODO(shobs): Automate the following set-up during testing in the test project.
+    #
+    # For upfront convenience, the following set up has been statically created
+    # in the project bigfrmames-dev-perf via cloud console:
+    #
+    # 1. Create a vpc connector as per
+    #    https://cloud.google.com/vpc/docs/configure-serverless-vpc-access#gcloud
+    #
+    #    $ gcloud compute networks vpc-access connectors create bigframes-vpc --project=bigframes-dev-perf --region=us-central1 --range 10.8.0.0/28
+    #    Create request issued for: [bigframes-vpc]
+    #    Waiting for operation [projects/bigframes-dev-perf/locations/us-central1/operations/f9f90df6-7cf4-4420-8c2f-b3952775dcfb] to complete...done.
+    #    Created connector [bigframes-vpc].
+    #
+    #    $ gcloud compute networks vpc-access connectors list --project=bigframes-dev-perf --region=us-central1
+    #    CONNECTOR_ID   REGION       NETWORK  IP_CIDR_RANGE  SUBNET  SUBNET_PROJECT  MACHINE_TYPE  MIN_INSTANCES  MAX_INSTANCES  MIN_THROUGHPUT  MAX_THROUGHPUT  STATE
+    #    bigframes-vpc  us-central1  default  10.8.0.0/28                            e2-micro      2              10             200             1000            READY
+
+    project = "bigframes-dev-perf"
+    gcf_vpc_connector = "bigframes-vpc"
+
+    rf_session = bigframes.Session(context=bigframes.BigQueryOptions(project=project))
+
+    try:
+
+        def square_num(x):
+            if x is None:
+                return x
+            return x * x
+
+        square_num_remote = rf_session.remote_function(
+            [int], int, reuse=False, cloud_function_vpc_connector=gcf_vpc_connector
+        )(square_num)
+
+        scalars_df, scalars_pandas_df = scalars_dfs
+
+        bf_int64_col = scalars_df["int64_col"]
+        bf_result_col = bf_int64_col.apply(square_num_remote)
+        bf_result = bf_int64_col.to_frame().assign(result=bf_result_col).to_pandas()
+
+        pd_int64_col = scalars_pandas_df["int64_col"]
+        pd_result_col = pd_int64_col.apply(square_num)
+        pd_result = pd_int64_col.to_frame().assign(result=pd_result_col)
+
+        assert_pandas_df_equal(bf_result, pd_result, check_dtype=False)
+
+        # Assert that the GCF is created with the intended vpc connector
+        gcf = rf_session.cloudfunctionsclient.get_function(
+            name=square_num_remote.bigframes_cloud_function
+        )
+        assert gcf.service_config.vpc_connector == gcf_vpc_connector
+    finally:
+        # clean up the gcp assets created for the remote function
+        cleanup_remote_function_assets(
+            rf_session.bqclient, rf_session.cloudfunctionsclient, square_num_remote
+        )
+
+
+def test_remote_function_via_session_vpc_invalid(session):
+    with pytest.raises(
+        InvalidArgument, match="400.*Serverless VPC Access connector is not found"
+    ):
+
+        @session.remote_function(
+            [int], int, reuse=False, cloud_function_vpc_connector="does-not-exist"
+        )
+        def square_num(x):
+            if x is None:
+                return x
+            return x * x
 
 
 @pytest.mark.parametrize(

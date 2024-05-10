@@ -441,6 +441,7 @@ def {handler_func_name}(request):
         timeout_seconds=600,
         max_instance_count=None,
         is_row_processor=False,
+        vpc_connector=None,
     ):
         """Create a cloud function from the given user defined function."""
 
@@ -519,6 +520,8 @@ def {handler_func_name}(request):
                 function.service_config.timeout_seconds = timeout_seconds
             if max_instance_count is not None:
                 function.service_config.max_instance_count = max_instance_count
+            if vpc_connector is not None:
+                function.service_config.vpc_connector = vpc_connector
             function.service_config.service_account_email = (
                 self._cloud_function_service_account
             )
@@ -568,6 +571,7 @@ def {handler_func_name}(request):
         cloud_function_timeout,
         cloud_function_max_instance_count,
         is_row_processor,
+        cloud_function_vpc_connector,
     ):
         """Provision a BigQuery remote function."""
         # If reuse of any existing function with the same name (indicated by the
@@ -595,6 +599,7 @@ def {handler_func_name}(request):
                 cloud_function_timeout,
                 cloud_function_max_instance_count,
                 is_row_processor,
+                cloud_function_vpc_connector,
             )
         else:
             logger.info(f"Cloud function {cloud_function_name} already exists.")
@@ -750,6 +755,7 @@ def remote_function(
     max_batching_rows: Optional[int] = 1000,
     cloud_function_timeout: Optional[int] = 600,
     cloud_function_max_instances: Optional[int] = None,
+    cloud_function_vpc_connector: Optional[str] = None,
 ):
     """Decorator to turn a user defined function into a BigQuery remote function.
 
@@ -894,7 +900,12 @@ def remote_function(
             control the spike in the billing. Higher setting can help
             support processing larger scale data. When not specified, cloud
             function's default setting applies. For more details see
-            https://cloud.google.com/functions/docs/configuring/max-instances
+            https://cloud.google.com/functions/docs/configuring/max-instances.
+        cloud_function_vpc_connector (str, Optional):
+            The VPC connector you would like to configure for your cloud
+            function. This is useful if your code needs access to data or
+            service(s) that are on a VPC network. See for more details
+            https://cloud.google.com/functions/docs/networking/connecting-vpc.
     """
     is_row_processor = False
 
@@ -1041,6 +1052,7 @@ def remote_function(
             cloud_function_timeout,
             cloud_function_max_instances,
             is_row_processor,
+            cloud_function_vpc_connector,
         )
 
         # TODO: Move ibis logic to compiler step
