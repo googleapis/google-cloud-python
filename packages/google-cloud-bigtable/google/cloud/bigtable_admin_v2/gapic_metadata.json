@@ -354,6 +354,11 @@
                 "copy_backup"
               ]
             },
+            "CreateAuthorizedView": {
+              "methods": [
+                "create_authorized_view"
+              ]
+            },
             "CreateBackup": {
               "methods": [
                 "create_backup"
@@ -367,6 +372,11 @@
             "CreateTableFromSnapshot": {
               "methods": [
                 "create_table_from_snapshot"
+              ]
+            },
+            "DeleteAuthorizedView": {
+              "methods": [
+                "delete_authorized_view"
               ]
             },
             "DeleteBackup": {
@@ -394,6 +404,11 @@
                 "generate_consistency_token"
               ]
             },
+            "GetAuthorizedView": {
+              "methods": [
+                "get_authorized_view"
+              ]
+            },
             "GetBackup": {
               "methods": [
                 "get_backup"
@@ -412,6 +427,11 @@
             "GetTable": {
               "methods": [
                 "get_table"
+              ]
+            },
+            "ListAuthorizedViews": {
+              "methods": [
+                "list_authorized_views"
               ]
             },
             "ListBackups": {
@@ -457,6 +477,11 @@
             "UndeleteTable": {
               "methods": [
                 "undelete_table"
+              ]
+            },
+            "UpdateAuthorizedView": {
+              "methods": [
+                "update_authorized_view"
               ]
             },
             "UpdateBackup": {
@@ -484,6 +509,11 @@
                 "copy_backup"
               ]
             },
+            "CreateAuthorizedView": {
+              "methods": [
+                "create_authorized_view"
+              ]
+            },
             "CreateBackup": {
               "methods": [
                 "create_backup"
@@ -497,6 +527,11 @@
             "CreateTableFromSnapshot": {
               "methods": [
                 "create_table_from_snapshot"
+              ]
+            },
+            "DeleteAuthorizedView": {
+              "methods": [
+                "delete_authorized_view"
               ]
             },
             "DeleteBackup": {
@@ -524,6 +559,11 @@
                 "generate_consistency_token"
               ]
             },
+            "GetAuthorizedView": {
+              "methods": [
+                "get_authorized_view"
+              ]
+            },
             "GetBackup": {
               "methods": [
                 "get_backup"
@@ -542,6 +582,11 @@
             "GetTable": {
               "methods": [
                 "get_table"
+              ]
+            },
+            "ListAuthorizedViews": {
+              "methods": [
+                "list_authorized_views"
               ]
             },
             "ListBackups": {
@@ -587,6 +632,11 @@
             "UndeleteTable": {
               "methods": [
                 "undelete_table"
+              ]
+            },
+            "UpdateAuthorizedView": {
+              "methods": [
+                "update_authorized_view"
               ]
             },
             "UpdateBackup": {
@@ -614,6 +664,11 @@
                 "copy_backup"
               ]
             },
+            "CreateAuthorizedView": {
+              "methods": [
+                "create_authorized_view"
+              ]
+            },
             "CreateBackup": {
               "methods": [
                 "create_backup"
@@ -627,6 +682,11 @@
             "CreateTableFromSnapshot": {
               "methods": [
                 "create_table_from_snapshot"
+              ]
+            },
+            "DeleteAuthorizedView": {
+              "methods": [
+                "delete_authorized_view"
               ]
             },
             "DeleteBackup": {
@@ -654,6 +714,11 @@
                 "generate_consistency_token"
               ]
             },
+            "GetAuthorizedView": {
+              "methods": [
+                "get_authorized_view"
+              ]
+            },
             "GetBackup": {
               "methods": [
                 "get_backup"
@@ -672,6 +737,11 @@
             "GetTable": {
               "methods": [
                 "get_table"
+              ]
+            },
+            "ListAuthorizedViews": {
+              "methods": [
+                "list_authorized_views"
               ]
             },
             "ListBackups": {
@@ -717,6 +787,11 @@
             "UndeleteTable": {
               "methods": [
                 "undelete_table"
+              ]
+            },
+            "UpdateAuthorizedView": {
+              "methods": [
+                "update_authorized_view"
               ]
             },
             "UpdateBackup": {

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2023 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -432,6 +432,11 @@ class AppProfile(proto.Message):
             app profile's traffic from other use cases.
 
             This field is a member of `oneof`_ ``isolation``.
+        data_boost_isolation_read_only (google.cloud.bigtable_admin_v2.types.AppProfile.DataBoostIsolationReadOnly):
+            Specifies that this app profile is intended
+            for read-only usage via the Data Boost feature.
+
+            This field is a member of `oneof`_ ``isolation``.
     """
 
     class Priority(proto.Enum):
@@ -517,6 +522,54 @@ class AppProfile(proto.Message):
             enum="AppProfile.Priority",
         )
 
+    class DataBoostIsolationReadOnly(proto.Message):
+        r"""Data Boost is a serverless compute capability that lets you
+        run high-throughput read jobs on your Bigtable data, without
+        impacting the performance of the clusters that handle your
+        application traffic. Currently, Data Boost exclusively supports
+        read-only use-cases with single-cluster routing.
+
+        Data Boost reads are only guaranteed to see the results of
+        writes that were written at least 30 minutes ago. This means
+        newly written values may not become visible for up to 30m, and
+        also means that old values may remain visible for up to 30m
+        after being deleted or overwritten. To mitigate the staleness of
+        the data, users may either wait 30m, or use CheckConsistency.
+
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            compute_billing_owner (google.cloud.bigtable_admin_v2.types.AppProfile.DataBoostIsolationReadOnly.ComputeBillingOwner):
+                The Compute Billing Owner for this Data Boost
+                App Profile.
+
+                This field is a member of `oneof`_ ``_compute_billing_owner``.
+        """
+
+        class ComputeBillingOwner(proto.Enum):
+            r"""Compute Billing Owner specifies how usage should be accounted
+            when using Data Boost. Compute Billing Owner also configures
+            which Cloud Project is charged for relevant quota.
+
+            Values:
+                COMPUTE_BILLING_OWNER_UNSPECIFIED (0):
+                    Unspecified value.
+                HOST_PAYS (1):
+                    The host Cloud Project containing the
+                    targeted Bigtable Instance / Table pays for
+                    compute.
+            """
+            COMPUTE_BILLING_OWNER_UNSPECIFIED = 0
+            HOST_PAYS = 1
+
+        compute_billing_owner: "AppProfile.DataBoostIsolationReadOnly.ComputeBillingOwner" = proto.Field(
+            proto.ENUM,
+            number=1,
+            optional=True,
+            enum="AppProfile.DataBoostIsolationReadOnly.ComputeBillingOwner",
+        )
+
     name: str = proto.Field(
         proto.STRING,
         number=1,
@@ -552,6 +605,12 @@ class AppProfile(proto.Message):
         number=11,
         oneof="isolation",
         message=StandardIsolation,
+    )
+    data_boost_isolation_read_only: DataBoostIsolationReadOnly = proto.Field(
+        proto.MESSAGE,
+        number=10,
+        oneof="isolation",
+        message=DataBoostIsolationReadOnly,
     )
 
 

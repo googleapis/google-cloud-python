@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2023 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -46,20 +46,27 @@ from .bigtable_table_admin import (
     CheckConsistencyResponse,
     CopyBackupMetadata,
     CopyBackupRequest,
+    CreateAuthorizedViewMetadata,
+    CreateAuthorizedViewRequest,
     CreateBackupMetadata,
     CreateBackupRequest,
     CreateTableFromSnapshotMetadata,
     CreateTableFromSnapshotRequest,
     CreateTableRequest,
+    DataBoostReadLocalWrites,
+    DeleteAuthorizedViewRequest,
     DeleteBackupRequest,
     DeleteSnapshotRequest,
     DeleteTableRequest,
     DropRowRangeRequest,
     GenerateConsistencyTokenRequest,
     GenerateConsistencyTokenResponse,
+    GetAuthorizedViewRequest,
     GetBackupRequest,
     GetSnapshotRequest,
     GetTableRequest,
+    ListAuthorizedViewsRequest,
+    ListAuthorizedViewsResponse,
     ListBackupsRequest,
     ListBackupsResponse,
     ListSnapshotsRequest,
@@ -72,8 +79,11 @@ from .bigtable_table_admin import (
     RestoreTableRequest,
     SnapshotTableMetadata,
     SnapshotTableRequest,
+    StandardReadRemoteWrites,
     UndeleteTableMetadata,
     UndeleteTableRequest,
+    UpdateAuthorizedViewMetadata,
+    UpdateAuthorizedViewRequest,
     UpdateBackupRequest,
     UpdateTableMetadata,
     UpdateTableRequest,
@@ -91,6 +101,7 @@ from .instance import (
     Instance,
 )
 from .table import (
+    AuthorizedView,
     Backup,
     BackupInfo,
     ChangeStreamConfig,
@@ -101,6 +112,9 @@ from .table import (
     Snapshot,
     Table,
     RestoreSourceType,
+)
+from .types import (
+    Type,
 )
 
 __all__ = (
@@ -134,20 +148,27 @@ __all__ = (
     "CheckConsistencyResponse",
     "CopyBackupMetadata",
     "CopyBackupRequest",
+    "CreateAuthorizedViewMetadata",
+    "CreateAuthorizedViewRequest",
     "CreateBackupMetadata",
     "CreateBackupRequest",
     "CreateTableFromSnapshotMetadata",
     "CreateTableFromSnapshotRequest",
     "CreateTableRequest",
+    "DataBoostReadLocalWrites",
+    "DeleteAuthorizedViewRequest",
     "DeleteBackupRequest",
     "DeleteSnapshotRequest",
     "DeleteTableRequest",
     "DropRowRangeRequest",
     "GenerateConsistencyTokenRequest",
     "GenerateConsistencyTokenResponse",
+    "GetAuthorizedViewRequest",
     "GetBackupRequest",
     "GetSnapshotRequest",
     "GetTableRequest",
+    "ListAuthorizedViewsRequest",
+    "ListAuthorizedViewsResponse",
     "ListBackupsRequest",
     "ListBackupsResponse",
     "ListSnapshotsRequest",
@@ -160,8 +181,11 @@ __all__ = (
     "RestoreTableRequest",
     "SnapshotTableMetadata",
     "SnapshotTableRequest",
+    "StandardReadRemoteWrites",
     "UndeleteTableMetadata",
     "UndeleteTableRequest",
+    "UpdateAuthorizedViewMetadata",
+    "UpdateAuthorizedViewRequest",
     "UpdateBackupRequest",
     "UpdateTableMetadata",
     "UpdateTableRequest",
@@ -173,6 +197,7 @@ __all__ = (
     "Cluster",
     "HotTablet",
     "Instance",
+    "AuthorizedView",
     "Backup",
     "BackupInfo",
     "ChangeStreamConfig",
@@ -183,4 +208,5 @@ __all__ = (
     "Snapshot",
     "Table",
     "RestoreSourceType",
+    "Type",
 )

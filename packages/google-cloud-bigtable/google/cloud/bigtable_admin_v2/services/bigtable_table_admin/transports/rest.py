@@ -92,6 +92,14 @@ class BigtableTableAdminRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_create_authorized_view(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_authorized_view(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_create_backup(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -116,6 +124,10 @@ class BigtableTableAdminRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_delete_authorized_view(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
             def pre_delete_backup(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -137,6 +149,14 @@ class BigtableTableAdminRestInterceptor:
                 return request, metadata
 
             def post_generate_consistency_token(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_get_authorized_view(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_authorized_view(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -169,6 +189,14 @@ class BigtableTableAdminRestInterceptor:
                 return request, metadata
 
             def post_get_table(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_list_authorized_views(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_authorized_views(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -244,6 +272,14 @@ class BigtableTableAdminRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_update_authorized_view(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_authorized_view(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_update_backup(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -305,6 +341,31 @@ class BigtableTableAdminRestInterceptor:
         self, response: operations_pb2.Operation
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for copy_backup
+
+        Override in a subclass to manipulate the response
+        after it is returned by the BigtableTableAdmin server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_create_authorized_view(
+        self,
+        request: bigtable_table_admin.CreateAuthorizedViewRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        bigtable_table_admin.CreateAuthorizedViewRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for create_authorized_view
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the BigtableTableAdmin server.
+        """
+        return request, metadata
+
+    def post_create_authorized_view(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for create_authorized_view
 
         Override in a subclass to manipulate the response
         after it is returned by the BigtableTableAdmin server but before
@@ -381,6 +442,20 @@ class BigtableTableAdminRestInterceptor:
         """
         return response
 
+    def pre_delete_authorized_view(
+        self,
+        request: bigtable_table_admin.DeleteAuthorizedViewRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        bigtable_table_admin.DeleteAuthorizedViewRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for delete_authorized_view
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the BigtableTableAdmin server.
+        """
+        return request, metadata
+
     def pre_delete_backup(
         self,
         request: bigtable_table_admin.DeleteBackupRequest,
@@ -447,6 +522,31 @@ class BigtableTableAdminRestInterceptor:
         self, response: bigtable_table_admin.GenerateConsistencyTokenResponse
     ) -> bigtable_table_admin.GenerateConsistencyTokenResponse:
         """Post-rpc interceptor for generate_consistency_token
+
+        Override in a subclass to manipulate the response
+        after it is returned by the BigtableTableAdmin server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get_authorized_view(
+        self,
+        request: bigtable_table_admin.GetAuthorizedViewRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        bigtable_table_admin.GetAuthorizedViewRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for get_authorized_view
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the BigtableTableAdmin server.
+        """
+        return request, metadata
+
+    def post_get_authorized_view(
+        self, response: table.AuthorizedView
+    ) -> table.AuthorizedView:
+        """Post-rpc interceptor for get_authorized_view
 
         Override in a subclass to manipulate the response
         after it is returned by the BigtableTableAdmin server but before
@@ -531,6 +631,31 @@ class BigtableTableAdminRestInterceptor:
 
     def post_get_table(self, response: table.Table) -> table.Table:
         """Post-rpc interceptor for get_table
+
+        Override in a subclass to manipulate the response
+        after it is returned by the BigtableTableAdmin server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_list_authorized_views(
+        self,
+        request: bigtable_table_admin.ListAuthorizedViewsRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        bigtable_table_admin.ListAuthorizedViewsRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for list_authorized_views
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the BigtableTableAdmin server.
+        """
+        return request, metadata
+
+    def post_list_authorized_views(
+        self, response: bigtable_table_admin.ListAuthorizedViewsResponse
+    ) -> bigtable_table_admin.ListAuthorizedViewsResponse:
+        """Post-rpc interceptor for list_authorized_views
 
         Override in a subclass to manipulate the response
         after it is returned by the BigtableTableAdmin server but before
@@ -736,6 +861,31 @@ class BigtableTableAdminRestInterceptor:
         self, response: operations_pb2.Operation
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for undelete_table
+
+        Override in a subclass to manipulate the response
+        after it is returned by the BigtableTableAdmin server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_update_authorized_view(
+        self,
+        request: bigtable_table_admin.UpdateAuthorizedViewRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        bigtable_table_admin.UpdateAuthorizedViewRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for update_authorized_view
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the BigtableTableAdmin server.
+        """
+        return request, metadata
+
+    def post_update_authorized_view(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for update_authorized_view
 
         Override in a subclass to manipulate the response
         after it is returned by the BigtableTableAdmin server but before
@@ -1132,6 +1282,104 @@ class BigtableTableAdminRestTransport(BigtableTableAdminTransport):
             resp = self._interceptor.post_copy_backup(resp)
             return resp
 
+    class _CreateAuthorizedView(BigtableTableAdminRestStub):
+        def __hash__(self):
+            return hash("CreateAuthorizedView")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
+            "authorizedViewId": "",
+        }
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: bigtable_table_admin.CreateAuthorizedViewRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the create authorized view method over HTTP.
+
+            Args:
+                request (~.bigtable_table_admin.CreateAuthorizedViewRequest):
+                    The request object. The request for
+                [CreateAuthorizedView][google.bigtable.admin.v2.BigtableTableAdmin.CreateAuthorizedView]
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v2/{parent=projects/*/instances/*/tables/*}/authorizedViews",
+                    "body": "authorized_view",
+                },
+            ]
+            request, metadata = self._interceptor.pre_create_authorized_view(
+                request, metadata
+            )
+            pb_request = bigtable_table_admin.CreateAuthorizedViewRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"], use_integers_for_enums=True
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_create_authorized_view(resp)
+            return resp
+
     class _CreateBackup(BigtableTableAdminRestStub):
         def __hash__(self):
             return hash("CreateBackup")
@@ -1428,6 +1676,82 @@ class BigtableTableAdminRestTransport(BigtableTableAdminTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_create_table_from_snapshot(resp)
             return resp
+
+    class _DeleteAuthorizedView(BigtableTableAdminRestStub):
+        def __hash__(self):
+            return hash("DeleteAuthorizedView")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: bigtable_table_admin.DeleteAuthorizedViewRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ):
+            r"""Call the delete authorized view method over HTTP.
+
+            Args:
+                request (~.bigtable_table_admin.DeleteAuthorizedViewRequest):
+                    The request object. Request message for
+                [google.bigtable.admin.v2.BigtableTableAdmin.DeleteAuthorizedView][google.bigtable.admin.v2.BigtableTableAdmin.DeleteAuthorizedView]
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "delete",
+                    "uri": "/v2/{name=projects/*/instances/*/tables/*/authorizedViews/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_delete_authorized_view(
+                request, metadata
+            )
+            pb_request = bigtable_table_admin.DeleteAuthorizedViewRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
 
     class _DeleteBackup(BigtableTableAdminRestStub):
         def __hash__(self):
@@ -1837,6 +2161,100 @@ class BigtableTableAdminRestTransport(BigtableTableAdminTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_generate_consistency_token(resp)
+            return resp
+
+    class _GetAuthorizedView(BigtableTableAdminRestStub):
+        def __hash__(self):
+            return hash("GetAuthorizedView")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: bigtable_table_admin.GetAuthorizedViewRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> table.AuthorizedView:
+            r"""Call the get authorized view method over HTTP.
+
+            Args:
+                request (~.bigtable_table_admin.GetAuthorizedViewRequest):
+                    The request object. Request message for
+                [google.bigtable.admin.v2.BigtableTableAdmin.GetAuthorizedView][google.bigtable.admin.v2.BigtableTableAdmin.GetAuthorizedView]
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.table.AuthorizedView:
+                    AuthorizedViews represent subsets of
+                a particular Cloud Bigtable table. Users
+                can configure access to each Authorized
+                View independently from the table and
+                use the existing Data APIs to access the
+                subset of data.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v2/{name=projects/*/instances/*/tables/*/authorizedViews/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_get_authorized_view(
+                request, metadata
+            )
+            pb_request = bigtable_table_admin.GetAuthorizedViewRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = table.AuthorizedView()
+            pb_resp = table.AuthorizedView.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_authorized_view(resp)
             return resp
 
     class _GetBackup(BigtableTableAdminRestStub):
@@ -2291,6 +2709,96 @@ class BigtableTableAdminRestTransport(BigtableTableAdminTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get_table(resp)
+            return resp
+
+    class _ListAuthorizedViews(BigtableTableAdminRestStub):
+        def __hash__(self):
+            return hash("ListAuthorizedViews")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: bigtable_table_admin.ListAuthorizedViewsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> bigtable_table_admin.ListAuthorizedViewsResponse:
+            r"""Call the list authorized views method over HTTP.
+
+            Args:
+                request (~.bigtable_table_admin.ListAuthorizedViewsRequest):
+                    The request object. Request message for
+                [google.bigtable.admin.v2.BigtableTableAdmin.ListAuthorizedViews][google.bigtable.admin.v2.BigtableTableAdmin.ListAuthorizedViews]
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.bigtable_table_admin.ListAuthorizedViewsResponse:
+                    Response message for
+                [google.bigtable.admin.v2.BigtableTableAdmin.ListAuthorizedViews][google.bigtable.admin.v2.BigtableTableAdmin.ListAuthorizedViews]
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v2/{parent=projects/*/instances/*/tables/*}/authorizedViews",
+                },
+            ]
+            request, metadata = self._interceptor.pre_list_authorized_views(
+                request, metadata
+            )
+            pb_request = bigtable_table_admin.ListAuthorizedViewsRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = bigtable_table_admin.ListAuthorizedViewsResponse()
+            pb_resp = bigtable_table_admin.ListAuthorizedViewsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_list_authorized_views(resp)
             return resp
 
     class _ListBackups(BigtableTableAdminRestStub):
@@ -3230,6 +3738,102 @@ class BigtableTableAdminRestTransport(BigtableTableAdminTransport):
             resp = self._interceptor.post_undelete_table(resp)
             return resp
 
+    class _UpdateAuthorizedView(BigtableTableAdminRestStub):
+        def __hash__(self):
+            return hash("UpdateAuthorizedView")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: bigtable_table_admin.UpdateAuthorizedViewRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the update authorized view method over HTTP.
+
+            Args:
+                request (~.bigtable_table_admin.UpdateAuthorizedViewRequest):
+                    The request object. The request for
+                [UpdateAuthorizedView][google.bigtable.admin.v2.BigtableTableAdmin.UpdateAuthorizedView].
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "patch",
+                    "uri": "/v2/{authorized_view.name=projects/*/instances/*/tables/*/authorizedViews/*}",
+                    "body": "authorized_view",
+                },
+            ]
+            request, metadata = self._interceptor.pre_update_authorized_view(
+                request, metadata
+            )
+            pb_request = bigtable_table_admin.UpdateAuthorizedViewRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"], use_integers_for_enums=True
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_update_authorized_view(resp)
+            return resp
+
     class _UpdateBackup(BigtableTableAdminRestStub):
         def __hash__(self):
             return hash("UpdateBackup")
@@ -3441,6 +4045,16 @@ class BigtableTableAdminRestTransport(BigtableTableAdminTransport):
         return self._CopyBackup(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def create_authorized_view(
+        self,
+    ) -> Callable[
+        [bigtable_table_admin.CreateAuthorizedViewRequest], operations_pb2.Operation
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreateAuthorizedView(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def create_backup(
         self,
     ) -> Callable[[bigtable_table_admin.CreateBackupRequest], operations_pb2.Operation]:
@@ -3465,6 +4079,14 @@ class BigtableTableAdminRestTransport(BigtableTableAdminTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateTableFromSnapshot(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def delete_authorized_view(
+        self,
+    ) -> Callable[[bigtable_table_admin.DeleteAuthorizedViewRequest], empty_pb2.Empty]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteAuthorizedView(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def delete_backup(
@@ -3510,6 +4132,16 @@ class BigtableTableAdminRestTransport(BigtableTableAdminTransport):
         return self._GenerateConsistencyToken(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def get_authorized_view(
+        self,
+    ) -> Callable[
+        [bigtable_table_admin.GetAuthorizedViewRequest], table.AuthorizedView
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetAuthorizedView(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def get_backup(
         self,
     ) -> Callable[[bigtable_table_admin.GetBackupRequest], table.Backup]:
@@ -3540,6 +4172,17 @@ class BigtableTableAdminRestTransport(BigtableTableAdminTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetTable(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_authorized_views(
+        self,
+    ) -> Callable[
+        [bigtable_table_admin.ListAuthorizedViewsRequest],
+        bigtable_table_admin.ListAuthorizedViewsResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListAuthorizedViews(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list_backups(
@@ -3628,6 +4271,16 @@ class BigtableTableAdminRestTransport(BigtableTableAdminTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UndeleteTable(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def update_authorized_view(
+        self,
+    ) -> Callable[
+        [bigtable_table_admin.UpdateAuthorizedViewRequest], operations_pb2.Operation
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdateAuthorizedView(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def update_backup(

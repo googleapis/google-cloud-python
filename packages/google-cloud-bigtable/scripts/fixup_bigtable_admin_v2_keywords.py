@@ -1,6 +1,6 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
-# Copyright 2023 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -39,15 +39,17 @@ def partition(
 class bigtable_adminCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-        'check_consistency': ('name', 'consistency_token', ),
+        'check_consistency': ('name', 'consistency_token', 'standard_read_remote_writes', 'data_boost_read_local_writes', ),
         'copy_backup': ('parent', 'backup_id', 'source_backup', 'expire_time', ),
         'create_app_profile': ('parent', 'app_profile_id', 'app_profile', 'ignore_warnings', ),
+        'create_authorized_view': ('parent', 'authorized_view_id', 'authorized_view', ),
         'create_backup': ('parent', 'backup_id', 'backup', ),
         'create_cluster': ('parent', 'cluster_id', 'cluster', ),
         'create_instance': ('parent', 'instance_id', 'instance', 'clusters', ),
         'create_table': ('parent', 'table_id', 'table', 'initial_splits', ),
         'create_table_from_snapshot': ('parent', 'table_id', 'source_snapshot', ),
         'delete_app_profile': ('name', 'ignore_warnings', ),
+        'delete_authorized_view': ('name', 'etag', ),
         'delete_backup': ('name', ),
         'delete_cluster': ('name', ),
         'delete_instance': ('name', ),
@@ -56,6 +58,7 @@ class bigtable_adminCallTransformer(cst.CSTTransformer):
         'drop_row_range': ('name', 'row_key_prefix', 'delete_all_data_from_table', ),
         'generate_consistency_token': ('name', ),
         'get_app_profile': ('name', ),
+        'get_authorized_view': ('name', 'view', ),
         'get_backup': ('name', ),
         'get_cluster': ('name', ),
         'get_iam_policy': ('resource', 'options', ),
@@ -63,6 +66,7 @@ class bigtable_adminCallTransformer(cst.CSTTransformer):
         'get_snapshot': ('name', ),
         'get_table': ('name', 'view', ),
         'list_app_profiles': ('parent', 'page_size', 'page_token', ),
+        'list_authorized_views': ('parent', 'page_size', 'page_token', 'view', ),
         'list_backups': ('parent', 'filter', 'order_by', 'page_size', 'page_token', ),
         'list_clusters': ('parent', 'page_token', ),
         'list_hot_tablets': ('parent', 'start_time', 'end_time', 'page_size', 'page_token', ),
@@ -78,6 +82,7 @@ class bigtable_adminCallTransformer(cst.CSTTransformer):
         'test_iam_permissions': ('resource', 'permissions', ),
         'undelete_table': ('name', ),
         'update_app_profile': ('app_profile', 'update_mask', 'ignore_warnings', ),
+        'update_authorized_view': ('authorized_view', 'update_mask', 'ignore_warnings', ),
         'update_backup': ('backup', 'update_mask', ),
         'update_cluster': ('name', 'location', 'state', 'serve_nodes', 'cluster_config', 'default_storage_type', 'encryption_config', ),
         'update_instance': ('display_name', 'name', 'state', 'type_', 'labels', 'create_time', 'satisfies_pzs', ),

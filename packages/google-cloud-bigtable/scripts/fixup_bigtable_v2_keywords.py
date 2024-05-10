@@ -1,6 +1,6 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
-# Copyright 2023 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -39,15 +39,15 @@ def partition(
 class bigtableCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-        'check_and_mutate_row': ('table_name', 'row_key', 'app_profile_id', 'predicate_filter', 'true_mutations', 'false_mutations', ),
+        'check_and_mutate_row': ('row_key', 'table_name', 'authorized_view_name', 'app_profile_id', 'predicate_filter', 'true_mutations', 'false_mutations', ),
         'generate_initial_change_stream_partitions': ('table_name', 'app_profile_id', ),
-        'mutate_row': ('table_name', 'row_key', 'mutations', 'app_profile_id', ),
-        'mutate_rows': ('table_name', 'entries', 'app_profile_id', ),
+        'mutate_row': ('row_key', 'mutations', 'table_name', 'authorized_view_name', 'app_profile_id', ),
+        'mutate_rows': ('entries', 'table_name', 'authorized_view_name', 'app_profile_id', ),
         'ping_and_warm': ('name', 'app_profile_id', ),
         'read_change_stream': ('table_name', 'app_profile_id', 'partition', 'start_time', 'continuation_tokens', 'end_time', 'heartbeat_duration', ),
-        'read_modify_write_row': ('table_name', 'row_key', 'rules', 'app_profile_id', ),
-        'read_rows': ('table_name', 'app_profile_id', 'rows', 'filter', 'rows_limit', 'request_stats_view', 'reversed', ),
-        'sample_row_keys': ('table_name', 'app_profile_id', ),
+        'read_modify_write_row': ('row_key', 'rules', 'table_name', 'authorized_view_name', 'app_profile_id', ),
+        'read_rows': ('table_name', 'authorized_view_name', 'app_profile_id', 'rows', 'filter', 'rows_limit', 'request_stats_view', 'reversed', ),
+        'sample_row_keys': ('table_name', 'authorized_view_name', 'app_profile_id', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:

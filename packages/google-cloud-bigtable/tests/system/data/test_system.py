@@ -140,7 +140,6 @@ async def _create_row_and_mutation(
     return row_key, mutation
 
 
-@pytest.mark.usefixtures("table")
 @pytest_asyncio.fixture(scope="function")
 async def temp_rows(table):
     builder = TempRowBuilder(table)

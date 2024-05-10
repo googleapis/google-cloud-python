@@ -173,10 +173,13 @@ def test_client_constructor_w_emulator_host():
     from google.cloud.environment_vars import BIGTABLE_EMULATOR
     from google.cloud.bigtable.client import _DEFAULT_BIGTABLE_EMULATOR_CLIENT
     from google.cloud.bigtable.client import _GRPC_CHANNEL_OPTIONS
+    import grpc
 
     emulator_host = "localhost:8081"
     with mock.patch("os.environ", {BIGTABLE_EMULATOR: emulator_host}):
-        with mock.patch("grpc.insecure_channel") as factory:
+        channel = grpc.insecure_channel("no-host")
+        with mock.patch("grpc.insecure_channel", return_value=channel) as factory:
+            factory.return_value = channel
             client = _make_client()
             # don't test local_composite_credentials
             # client._local_composite_credentials = lambda: credentials
@@ -195,10 +198,12 @@ def test_client_constructor_w_emulator_host():
 def test_client_constructor_w_emulator_host_w_project():
     from google.cloud.environment_vars import BIGTABLE_EMULATOR
     from google.cloud.bigtable.client import _GRPC_CHANNEL_OPTIONS
+    import grpc
 
     emulator_host = "localhost:8081"
     with mock.patch("os.environ", {BIGTABLE_EMULATOR: emulator_host}):
-        with mock.patch("grpc.insecure_channel") as factory:
+        channel = grpc.insecure_channel("no-host")
+        with mock.patch("grpc.insecure_channel", return_value=channel) as factory:
             client = _make_client(project=PROJECT)
             # channels are formed when needed, so access a client
             # create a gapic channel
@@ -216,11 +221,13 @@ def test_client_constructor_w_emulator_host_w_credentials():
     from google.cloud.environment_vars import BIGTABLE_EMULATOR
     from google.cloud.bigtable.client import _DEFAULT_BIGTABLE_EMULATOR_CLIENT
     from google.cloud.bigtable.client import _GRPC_CHANNEL_OPTIONS
+    import grpc
 
     emulator_host = "localhost:8081"
     credentials = _make_credentials()
     with mock.patch("os.environ", {BIGTABLE_EMULATOR: emulator_host}):
-        with mock.patch("grpc.insecure_channel") as factory:
+        channel = grpc.insecure_channel("no-host")
+        with mock.patch("grpc.insecure_channel", return_value=channel) as factory:
             client = _make_client(credentials=credentials)
             # channels are formed when needed, so access a client
             # create a gapic channel

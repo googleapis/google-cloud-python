@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2023 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,12 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import functools
 from collections import OrderedDict
 import functools
 import re
 from typing import (
     Dict,
+    Callable,
     Mapping,
     MutableMapping,
     MutableSequence,
@@ -67,6 +67,8 @@ class BigtableAsyncClient:
     _DEFAULT_ENDPOINT_TEMPLATE = BigtableClient._DEFAULT_ENDPOINT_TEMPLATE
     _DEFAULT_UNIVERSE = BigtableClient._DEFAULT_UNIVERSE
 
+    authorized_view_path = staticmethod(BigtableClient.authorized_view_path)
+    parse_authorized_view_path = staticmethod(BigtableClient.parse_authorized_view_path)
     instance_path = staticmethod(BigtableClient.instance_path)
     parse_instance_path = staticmethod(BigtableClient.parse_instance_path)
     table_path = staticmethod(BigtableClient.table_path)
@@ -193,7 +195,9 @@ class BigtableAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, BigtableTransport] = "grpc_asyncio",
+        transport: Optional[
+            Union[str, BigtableTransport, Callable[..., BigtableTransport]]
+        ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -205,9 +209,11 @@ class BigtableAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.BigtableTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,BigtableTransport,Callable[..., BigtableTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the BigtableTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -273,8 +279,10 @@ class BigtableAsyncClient:
                 The request object. Request message for
                 Bigtable.ReadRows.
             table_name (:class:`str`):
-                Required. The unique name of the table from which to
-                read. Values are of the form
+                Optional. The unique name of the table from which to
+                read.
+
+                Values are of the form
                 ``projects/<project>/instances/<instance>/tables/<table>``.
 
                 This corresponds to the ``table_name`` field
@@ -302,8 +310,8 @@ class BigtableAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([table_name, app_profile_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -311,6 +319,8 @@ class BigtableAsyncClient:
                 "the individual field arguments should be set."
             )
 
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, bigtable.ReadRowsRequest):
             request = bigtable.ReadRowsRequest(request)
 
@@ -326,6 +336,7 @@ class BigtableAsyncClient:
         rpc = self._client._transport._wrapped_methods[
             self._client._transport.read_rows
         ]
+
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
@@ -369,8 +380,10 @@ class BigtableAsyncClient:
                 The request object. Request message for
                 Bigtable.SampleRowKeys.
             table_name (:class:`str`):
-                Required. The unique name of the table from which to
-                sample row keys. Values are of the form
+                Optional. The unique name of the table from which to
+                sample row keys.
+
+                Values are of the form
                 ``projects/<project>/instances/<instance>/tables/<table>``.
 
                 This corresponds to the ``table_name`` field
@@ -398,8 +411,8 @@ class BigtableAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([table_name, app_profile_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -407,6 +420,8 @@ class BigtableAsyncClient:
                 "the individual field arguments should be set."
             )
 
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, bigtable.SampleRowKeysRequest):
             request = bigtable.SampleRowKeysRequest(request)
 
@@ -422,6 +437,7 @@ class BigtableAsyncClient:
         rpc = self._client._transport._wrapped_methods[
             self._client._transport.sample_row_keys
         ]
+
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
@@ -464,8 +480,10 @@ class BigtableAsyncClient:
                 The request object. Request message for
                 Bigtable.MutateRow.
             table_name (:class:`str`):
-                Required. The unique name of the table to which the
-                mutation should be applied. Values are of the form
+                Optional. The unique name of the table to which the
+                mutation should be applied.
+
+                Values are of the form
                 ``projects/<project>/instances/<instance>/tables/<table>``.
 
                 This corresponds to the ``table_name`` field
@@ -511,8 +529,8 @@ class BigtableAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([table_name, row_key, mutations, app_profile_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -520,6 +538,8 @@ class BigtableAsyncClient:
                 "the individual field arguments should be set."
             )
 
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, bigtable.MutateRowRequest):
             request = bigtable.MutateRowRequest(request)
 
@@ -582,9 +602,11 @@ class BigtableAsyncClient:
                 The request object. Request message for
                 BigtableService.MutateRows.
             table_name (:class:`str`):
-                Required. The unique name of the
-                table to which the mutations should be
-                applied.
+                Optional. The unique name of the table to which the
+                mutations should be applied.
+
+                Values are of the form
+                ``projects/<project>/instances/<instance>/tables/<table>``.
 
                 This corresponds to the ``table_name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -625,8 +647,8 @@ class BigtableAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([table_name, entries, app_profile_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -634,6 +656,8 @@ class BigtableAsyncClient:
                 "the individual field arguments should be set."
             )
 
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, bigtable.MutateRowsRequest):
             request = bigtable.MutateRowsRequest(request)
 
@@ -696,9 +720,10 @@ class BigtableAsyncClient:
                 The request object. Request message for
                 Bigtable.CheckAndMutateRow.
             table_name (:class:`str`):
-                Required. The unique name of the table to which the
-                conditional mutation should be applied. Values are of
-                the form
+                Optional. The unique name of the table to which the
+                conditional mutation should be applied.
+
+                Values are of the form
                 ``projects/<project>/instances/<instance>/tables/<table>``.
 
                 This corresponds to the ``table_name`` field
@@ -766,8 +791,8 @@ class BigtableAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [
                 table_name,
@@ -784,6 +809,8 @@ class BigtableAsyncClient:
                 "the individual field arguments should be set."
             )
 
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, bigtable.CheckAndMutateRowRequest):
             request = bigtable.CheckAndMutateRowRequest(request)
 
@@ -879,8 +906,8 @@ class BigtableAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, app_profile_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -888,6 +915,8 @@ class BigtableAsyncClient:
                 "the individual field arguments should be set."
             )
 
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, bigtable.PingAndWarmRequest):
             request = bigtable.PingAndWarmRequest(request)
 
@@ -949,9 +978,10 @@ class BigtableAsyncClient:
                 The request object. Request message for
                 Bigtable.ReadModifyWriteRow.
             table_name (:class:`str`):
-                Required. The unique name of the table to which the
-                read/modify/write rules should be applied. Values are of
-                the form
+                Optional. The unique name of the table to which the
+                read/modify/write rules should be applied.
+
+                Values are of the form
                 ``projects/<project>/instances/<instance>/tables/<table>``.
 
                 This corresponds to the ``table_name`` field
@@ -998,8 +1028,8 @@ class BigtableAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([table_name, row_key, rules, app_profile_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1007,6 +1037,8 @@ class BigtableAsyncClient:
                 "the individual field arguments should be set."
             )
 
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, bigtable.ReadModifyWriteRowRequest):
             request = bigtable.ReadModifyWriteRowRequest(request)
 
@@ -1108,8 +1140,8 @@ class BigtableAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([table_name, app_profile_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1117,6 +1149,8 @@ class BigtableAsyncClient:
                 "the individual field arguments should be set."
             )
 
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request, bigtable.GenerateInitialChangeStreamPartitionsRequest
         ):
@@ -1131,11 +1165,9 @@ class BigtableAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.generate_initial_change_stream_partitions,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.generate_initial_change_stream_partitions
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1212,8 +1244,8 @@ class BigtableAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([table_name, app_profile_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1221,6 +1253,8 @@ class BigtableAsyncClient:
                 "the individual field arguments should be set."
             )
 
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, bigtable.ReadChangeStreamRequest):
             request = bigtable.ReadChangeStreamRequest(request)
 
@@ -1233,11 +1267,9 @@ class BigtableAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.read_change_stream,
-            default_timeout=43200.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.read_change_stream
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
