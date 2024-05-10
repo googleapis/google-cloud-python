@@ -17,6 +17,7 @@ from collections import OrderedDict
 import functools
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -227,7 +228,11 @@ class TelcoAutomationAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, TelcoAutomationTransport] = "grpc_asyncio",
+        transport: Optional[
+            Union[
+                str, TelcoAutomationTransport, Callable[..., TelcoAutomationTransport]
+            ]
+        ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -239,9 +244,11 @@ class TelcoAutomationAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.TelcoAutomationTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,TelcoAutomationTransport,Callable[..., TelcoAutomationTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the TelcoAutomationTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -353,8 +360,8 @@ class TelcoAutomationAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -362,7 +369,10 @@ class TelcoAutomationAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = telcoautomation.ListOrchestrationClustersRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, telcoautomation.ListOrchestrationClustersRequest):
+            request = telcoautomation.ListOrchestrationClustersRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -371,11 +381,9 @@ class TelcoAutomationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_orchestration_clusters,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_orchestration_clusters
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -468,8 +476,8 @@ class TelcoAutomationAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -477,7 +485,10 @@ class TelcoAutomationAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = telcoautomation.GetOrchestrationClusterRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, telcoautomation.GetOrchestrationClusterRequest):
+            request = telcoautomation.GetOrchestrationClusterRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -486,20 +497,9 @@ class TelcoAutomationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_orchestration_cluster,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_orchestration_cluster
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -606,8 +606,8 @@ class TelcoAutomationAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [parent, orchestration_cluster, orchestration_cluster_id]
         )
@@ -617,7 +617,10 @@ class TelcoAutomationAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = telcoautomation.CreateOrchestrationClusterRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, telcoautomation.CreateOrchestrationClusterRequest):
+            request = telcoautomation.CreateOrchestrationClusterRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -630,11 +633,9 @@ class TelcoAutomationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_orchestration_cluster,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_orchestration_cluster
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -739,8 +740,8 @@ class TelcoAutomationAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -748,7 +749,10 @@ class TelcoAutomationAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = telcoautomation.DeleteOrchestrationClusterRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, telcoautomation.DeleteOrchestrationClusterRequest):
+            request = telcoautomation.DeleteOrchestrationClusterRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -757,11 +761,9 @@ class TelcoAutomationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_orchestration_cluster,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_orchestration_cluster
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -856,8 +858,8 @@ class TelcoAutomationAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -865,7 +867,10 @@ class TelcoAutomationAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = telcoautomation.ListEdgeSlmsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, telcoautomation.ListEdgeSlmsRequest):
+            request = telcoautomation.ListEdgeSlmsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -874,11 +879,9 @@ class TelcoAutomationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_edge_slms,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_edge_slms
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -970,8 +973,8 @@ class TelcoAutomationAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -979,7 +982,10 @@ class TelcoAutomationAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = telcoautomation.GetEdgeSlmRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, telcoautomation.GetEdgeSlmRequest):
+            request = telcoautomation.GetEdgeSlmRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -988,11 +994,9 @@ class TelcoAutomationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_edge_slm,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_edge_slm
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1096,8 +1100,8 @@ class TelcoAutomationAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, edge_slm, edge_slm_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1105,7 +1109,10 @@ class TelcoAutomationAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = telcoautomation.CreateEdgeSlmRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, telcoautomation.CreateEdgeSlmRequest):
+            request = telcoautomation.CreateEdgeSlmRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1118,11 +1125,9 @@ class TelcoAutomationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_edge_slm,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_edge_slm
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1224,8 +1229,8 @@ class TelcoAutomationAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1233,7 +1238,10 @@ class TelcoAutomationAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = telcoautomation.DeleteEdgeSlmRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, telcoautomation.DeleteEdgeSlmRequest):
+            request = telcoautomation.DeleteEdgeSlmRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1242,11 +1250,9 @@ class TelcoAutomationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_edge_slm,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_edge_slm
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1363,8 +1369,8 @@ class TelcoAutomationAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, blueprint, blueprint_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1372,7 +1378,10 @@ class TelcoAutomationAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = telcoautomation.CreateBlueprintRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, telcoautomation.CreateBlueprintRequest):
+            request = telcoautomation.CreateBlueprintRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1385,11 +1394,9 @@ class TelcoAutomationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_blueprint,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_blueprint
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1491,8 +1498,8 @@ class TelcoAutomationAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([blueprint, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1500,7 +1507,10 @@ class TelcoAutomationAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = telcoautomation.UpdateBlueprintRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, telcoautomation.UpdateBlueprintRequest):
+            request = telcoautomation.UpdateBlueprintRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1511,11 +1521,9 @@ class TelcoAutomationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_blueprint,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_blueprint
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1613,8 +1621,8 @@ class TelcoAutomationAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1622,7 +1630,10 @@ class TelcoAutomationAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = telcoautomation.GetBlueprintRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, telcoautomation.GetBlueprintRequest):
+            request = telcoautomation.GetBlueprintRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1631,11 +1642,9 @@ class TelcoAutomationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_blueprint,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_blueprint
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1710,8 +1719,8 @@ class TelcoAutomationAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1719,7 +1728,10 @@ class TelcoAutomationAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = telcoautomation.DeleteBlueprintRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, telcoautomation.DeleteBlueprintRequest):
+            request = telcoautomation.DeleteBlueprintRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1728,11 +1740,9 @@ class TelcoAutomationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_blueprint,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_blueprint
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1815,8 +1825,8 @@ class TelcoAutomationAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1824,7 +1834,10 @@ class TelcoAutomationAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = telcoautomation.ListBlueprintsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, telcoautomation.ListBlueprintsRequest):
+            request = telcoautomation.ListBlueprintsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1833,20 +1846,9 @@ class TelcoAutomationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_blueprints,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_blueprints
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1949,8 +1951,8 @@ class TelcoAutomationAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1958,7 +1960,10 @@ class TelcoAutomationAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = telcoautomation.ApproveBlueprintRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, telcoautomation.ApproveBlueprintRequest):
+            request = telcoautomation.ApproveBlueprintRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1967,11 +1972,9 @@ class TelcoAutomationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.approve_blueprint,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.approve_blueprint
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2063,8 +2066,8 @@ class TelcoAutomationAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2072,7 +2075,10 @@ class TelcoAutomationAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = telcoautomation.ProposeBlueprintRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, telcoautomation.ProposeBlueprintRequest):
+            request = telcoautomation.ProposeBlueprintRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2081,11 +2087,9 @@ class TelcoAutomationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.propose_blueprint,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.propose_blueprint
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2178,8 +2182,8 @@ class TelcoAutomationAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2187,7 +2191,10 @@ class TelcoAutomationAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = telcoautomation.RejectBlueprintRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, telcoautomation.RejectBlueprintRequest):
+            request = telcoautomation.RejectBlueprintRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2196,11 +2203,9 @@ class TelcoAutomationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.reject_blueprint,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.reject_blueprint
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2287,8 +2292,8 @@ class TelcoAutomationAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2296,7 +2301,10 @@ class TelcoAutomationAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = telcoautomation.ListBlueprintRevisionsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, telcoautomation.ListBlueprintRevisionsRequest):
+            request = telcoautomation.ListBlueprintRevisionsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2305,11 +2313,9 @@ class TelcoAutomationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_blueprint_revisions,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_blueprint_revisions
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2426,8 +2432,8 @@ class TelcoAutomationAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, query])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2435,7 +2441,10 @@ class TelcoAutomationAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = telcoautomation.SearchBlueprintRevisionsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, telcoautomation.SearchBlueprintRevisionsRequest):
+            request = telcoautomation.SearchBlueprintRevisionsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2446,11 +2455,9 @@ class TelcoAutomationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.search_blueprint_revisions,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.search_blueprint_revisions
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2567,8 +2574,8 @@ class TelcoAutomationAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, query])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2576,7 +2583,10 @@ class TelcoAutomationAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = telcoautomation.SearchDeploymentRevisionsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, telcoautomation.SearchDeploymentRevisionsRequest):
+            request = telcoautomation.SearchDeploymentRevisionsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2587,11 +2597,9 @@ class TelcoAutomationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.search_deployment_revisions,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.search_deployment_revisions
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2685,8 +2693,8 @@ class TelcoAutomationAsyncClient:
                 Response object for DiscardBlueprintChanges.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2694,7 +2702,10 @@ class TelcoAutomationAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = telcoautomation.DiscardBlueprintChangesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, telcoautomation.DiscardBlueprintChangesRequest):
+            request = telcoautomation.DiscardBlueprintChangesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2703,11 +2714,9 @@ class TelcoAutomationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.discard_blueprint_changes,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.discard_blueprint_changes
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2796,8 +2805,8 @@ class TelcoAutomationAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2805,7 +2814,10 @@ class TelcoAutomationAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = telcoautomation.ListPublicBlueprintsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, telcoautomation.ListPublicBlueprintsRequest):
+            request = telcoautomation.ListPublicBlueprintsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2814,11 +2826,9 @@ class TelcoAutomationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_public_blueprints,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_public_blueprints
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2918,8 +2928,8 @@ class TelcoAutomationAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2927,7 +2937,10 @@ class TelcoAutomationAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = telcoautomation.GetPublicBlueprintRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, telcoautomation.GetPublicBlueprintRequest):
+            request = telcoautomation.GetPublicBlueprintRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2936,11 +2949,9 @@ class TelcoAutomationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_public_blueprint,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_public_blueprint
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3042,8 +3053,8 @@ class TelcoAutomationAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, deployment, deployment_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3051,7 +3062,10 @@ class TelcoAutomationAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = telcoautomation.CreateDeploymentRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, telcoautomation.CreateDeploymentRequest):
+            request = telcoautomation.CreateDeploymentRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3064,11 +3078,9 @@ class TelcoAutomationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_deployment,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_deployment
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3163,8 +3175,8 @@ class TelcoAutomationAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([deployment, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3172,7 +3184,10 @@ class TelcoAutomationAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = telcoautomation.UpdateDeploymentRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, telcoautomation.UpdateDeploymentRequest):
+            request = telcoautomation.UpdateDeploymentRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3183,11 +3198,9 @@ class TelcoAutomationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_deployment,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_deployment
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3278,8 +3291,8 @@ class TelcoAutomationAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3287,7 +3300,10 @@ class TelcoAutomationAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = telcoautomation.GetDeploymentRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, telcoautomation.GetDeploymentRequest):
+            request = telcoautomation.GetDeploymentRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3296,11 +3312,9 @@ class TelcoAutomationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_deployment,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_deployment
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3374,8 +3388,8 @@ class TelcoAutomationAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3383,7 +3397,10 @@ class TelcoAutomationAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = telcoautomation.RemoveDeploymentRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, telcoautomation.RemoveDeploymentRequest):
+            request = telcoautomation.RemoveDeploymentRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3392,11 +3409,9 @@ class TelcoAutomationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.remove_deployment,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.remove_deployment
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3479,8 +3494,8 @@ class TelcoAutomationAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3488,7 +3503,10 @@ class TelcoAutomationAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = telcoautomation.ListDeploymentsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, telcoautomation.ListDeploymentsRequest):
+            request = telcoautomation.ListDeploymentsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3497,11 +3515,9 @@ class TelcoAutomationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_deployments,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_deployments
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3599,8 +3615,8 @@ class TelcoAutomationAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3608,7 +3624,10 @@ class TelcoAutomationAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = telcoautomation.ListDeploymentRevisionsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, telcoautomation.ListDeploymentRevisionsRequest):
+            request = telcoautomation.ListDeploymentRevisionsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3617,11 +3636,9 @@ class TelcoAutomationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_deployment_revisions,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_deployment_revisions
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3715,8 +3732,8 @@ class TelcoAutomationAsyncClient:
                 Response object for DiscardDeploymentChanges.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3724,7 +3741,10 @@ class TelcoAutomationAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = telcoautomation.DiscardDeploymentChangesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, telcoautomation.DiscardDeploymentChangesRequest):
+            request = telcoautomation.DiscardDeploymentChangesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3733,11 +3753,9 @@ class TelcoAutomationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.discard_deployment_changes,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.discard_deployment_changes
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3825,8 +3843,8 @@ class TelcoAutomationAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3834,7 +3852,10 @@ class TelcoAutomationAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = telcoautomation.ApplyDeploymentRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, telcoautomation.ApplyDeploymentRequest):
+            request = telcoautomation.ApplyDeploymentRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3843,11 +3864,9 @@ class TelcoAutomationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.apply_deployment,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.apply_deployment
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3929,8 +3948,8 @@ class TelcoAutomationAsyncClient:
                 Response object for ComputeDeploymentStatus.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3938,7 +3957,10 @@ class TelcoAutomationAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = telcoautomation.ComputeDeploymentStatusRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, telcoautomation.ComputeDeploymentStatusRequest):
+            request = telcoautomation.ComputeDeploymentStatusRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3947,20 +3969,9 @@ class TelcoAutomationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.compute_deployment_status,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.compute_deployment_status
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4055,8 +4066,8 @@ class TelcoAutomationAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, revision_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4064,7 +4075,10 @@ class TelcoAutomationAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = telcoautomation.RollbackDeploymentRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, telcoautomation.RollbackDeploymentRequest):
+            request = telcoautomation.RollbackDeploymentRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -4075,11 +4089,9 @@ class TelcoAutomationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.rollback_deployment,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.rollback_deployment
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4165,8 +4177,8 @@ class TelcoAutomationAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4174,7 +4186,10 @@ class TelcoAutomationAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = telcoautomation.GetHydratedDeploymentRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, telcoautomation.GetHydratedDeploymentRequest):
+            request = telcoautomation.GetHydratedDeploymentRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -4183,11 +4198,9 @@ class TelcoAutomationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_hydrated_deployment,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_hydrated_deployment
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4275,8 +4288,8 @@ class TelcoAutomationAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4284,7 +4297,10 @@ class TelcoAutomationAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = telcoautomation.ListHydratedDeploymentsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, telcoautomation.ListHydratedDeploymentsRequest):
+            request = telcoautomation.ListHydratedDeploymentsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -4293,11 +4309,9 @@ class TelcoAutomationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_hydrated_deployments,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_hydrated_deployments
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4400,8 +4414,8 @@ class TelcoAutomationAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([hydrated_deployment, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4409,7 +4423,10 @@ class TelcoAutomationAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = telcoautomation.UpdateHydratedDeploymentRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, telcoautomation.UpdateHydratedDeploymentRequest):
+            request = telcoautomation.UpdateHydratedDeploymentRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -4420,11 +4437,9 @@ class TelcoAutomationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_hydrated_deployment,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_hydrated_deployment
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4513,8 +4528,8 @@ class TelcoAutomationAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4522,7 +4537,10 @@ class TelcoAutomationAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = telcoautomation.ApplyHydratedDeploymentRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, telcoautomation.ApplyHydratedDeploymentRequest):
+            request = telcoautomation.ApplyHydratedDeploymentRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -4531,11 +4549,9 @@ class TelcoAutomationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.apply_hydrated_deployment,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.apply_hydrated_deployment
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.

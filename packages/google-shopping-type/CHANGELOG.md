@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.1.6](https://github.com/googleapis/google-cloud-python/compare/google-shopping-type-v0.1.5...google-shopping-type-v0.1.6) (2024-05-07)
+
+
+### Features
+
+* add Weight to common types for Shopping APIs to be used for accounts bundle ([0e5f93b](https://github.com/googleapis/google-cloud-python/commit/0e5f93b64a30a39f2110163d00d4e845e7731cd4))
+
+
+### Documentation
+
+* A comment for field amount_micros in message .google.shopping.type.Price is changed ([0e5f93b](https://github.com/googleapis/google-cloud-python/commit/0e5f93b64a30a39f2110163d00d4e845e7731cd4))
+
 ## [0.1.5](https://github.com/googleapis/google-cloud-python/compare/google-shopping-type-v0.1.4...google-shopping-type-v0.1.5) (2024-03-27)
 
 

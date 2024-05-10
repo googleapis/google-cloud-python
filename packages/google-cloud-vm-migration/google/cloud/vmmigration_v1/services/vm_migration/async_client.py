@@ -17,6 +17,7 @@ from collections import OrderedDict
 import functools
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -228,7 +229,9 @@ class VmMigrationAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, VmMigrationTransport] = "grpc_asyncio",
+        transport: Optional[
+            Union[str, VmMigrationTransport, Callable[..., VmMigrationTransport]]
+        ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -240,9 +243,11 @@ class VmMigrationAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.VmMigrationTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,VmMigrationTransport,Callable[..., VmMigrationTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the VmMigrationTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -352,8 +357,8 @@ class VmMigrationAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -361,7 +366,10 @@ class VmMigrationAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmmigration.ListSourcesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmmigration.ListSourcesRequest):
+            request = vmmigration.ListSourcesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -370,11 +378,9 @@ class VmMigrationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_sources,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_sources
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -466,8 +472,8 @@ class VmMigrationAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -475,7 +481,10 @@ class VmMigrationAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmmigration.GetSourceRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmmigration.GetSourceRequest):
+            request = vmmigration.GetSourceRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -484,11 +493,9 @@ class VmMigrationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_source,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_source
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -588,8 +595,8 @@ class VmMigrationAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, source, source_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -597,7 +604,10 @@ class VmMigrationAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmmigration.CreateSourceRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmmigration.CreateSourceRequest):
+            request = vmmigration.CreateSourceRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -610,11 +620,9 @@ class VmMigrationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_source,
-            default_timeout=900.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_source
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -720,8 +728,8 @@ class VmMigrationAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([source, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -729,7 +737,10 @@ class VmMigrationAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmmigration.UpdateSourceRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmmigration.UpdateSourceRequest):
+            request = vmmigration.UpdateSourceRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -740,11 +751,9 @@ class VmMigrationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_source,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_source
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -849,8 +858,8 @@ class VmMigrationAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -858,7 +867,10 @@ class VmMigrationAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmmigration.DeleteSourceRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmmigration.DeleteSourceRequest):
+            request = vmmigration.DeleteSourceRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -867,11 +879,9 @@ class VmMigrationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_source,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_source
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -966,8 +976,8 @@ class VmMigrationAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([source])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -975,7 +985,10 @@ class VmMigrationAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmmigration.FetchInventoryRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmmigration.FetchInventoryRequest):
+            request = vmmigration.FetchInventoryRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -984,11 +997,9 @@ class VmMigrationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.fetch_inventory,
-            default_timeout=300.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.fetch_inventory
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1078,8 +1089,8 @@ class VmMigrationAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1087,7 +1098,10 @@ class VmMigrationAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmmigration.ListUtilizationReportsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmmigration.ListUtilizationReportsRequest):
+            request = vmmigration.ListUtilizationReportsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1096,11 +1110,9 @@ class VmMigrationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_utilization_reports,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_utilization_reports
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1193,8 +1205,8 @@ class VmMigrationAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1202,7 +1214,10 @@ class VmMigrationAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmmigration.GetUtilizationReportRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmmigration.GetUtilizationReportRequest):
+            request = vmmigration.GetUtilizationReportRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1211,11 +1226,9 @@ class VmMigrationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_utilization_report,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_utilization_report
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1326,8 +1339,8 @@ class VmMigrationAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, utilization_report, utilization_report_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1335,7 +1348,10 @@ class VmMigrationAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmmigration.CreateUtilizationReportRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmmigration.CreateUtilizationReportRequest):
+            request = vmmigration.CreateUtilizationReportRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1348,11 +1364,9 @@ class VmMigrationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_utilization_report,
-            default_timeout=300.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_utilization_report
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1459,8 +1473,8 @@ class VmMigrationAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1468,7 +1482,10 @@ class VmMigrationAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmmigration.DeleteUtilizationReportRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmmigration.DeleteUtilizationReportRequest):
+            request = vmmigration.DeleteUtilizationReportRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1477,11 +1494,9 @@ class VmMigrationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_utilization_report,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_utilization_report
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1579,8 +1594,8 @@ class VmMigrationAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1588,7 +1603,10 @@ class VmMigrationAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmmigration.ListDatacenterConnectorsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmmigration.ListDatacenterConnectorsRequest):
+            request = vmmigration.ListDatacenterConnectorsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1597,11 +1615,9 @@ class VmMigrationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_datacenter_connectors,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_datacenter_connectors
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1700,8 +1716,8 @@ class VmMigrationAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1709,7 +1725,10 @@ class VmMigrationAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmmigration.GetDatacenterConnectorRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmmigration.GetDatacenterConnectorRequest):
+            request = vmmigration.GetDatacenterConnectorRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1718,11 +1737,9 @@ class VmMigrationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_datacenter_connector,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_datacenter_connector
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1833,8 +1850,8 @@ class VmMigrationAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [parent, datacenter_connector, datacenter_connector_id]
         )
@@ -1844,7 +1861,10 @@ class VmMigrationAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmmigration.CreateDatacenterConnectorRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmmigration.CreateDatacenterConnectorRequest):
+            request = vmmigration.CreateDatacenterConnectorRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1857,11 +1877,9 @@ class VmMigrationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_datacenter_connector,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_datacenter_connector
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1968,8 +1986,8 @@ class VmMigrationAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1977,7 +1995,10 @@ class VmMigrationAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmmigration.DeleteDatacenterConnectorRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmmigration.DeleteDatacenterConnectorRequest):
+            request = vmmigration.DeleteDatacenterConnectorRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1986,11 +2007,9 @@ class VmMigrationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_datacenter_connector,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_datacenter_connector
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2081,15 +2100,16 @@ class VmMigrationAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = vmmigration.UpgradeApplianceRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmmigration.UpgradeApplianceRequest):
+            request = vmmigration.UpgradeApplianceRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.upgrade_appliance,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.upgrade_appliance
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2199,8 +2219,8 @@ class VmMigrationAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, migrating_vm, migrating_vm_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2208,7 +2228,10 @@ class VmMigrationAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmmigration.CreateMigratingVmRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmmigration.CreateMigratingVmRequest):
+            request = vmmigration.CreateMigratingVmRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2221,11 +2244,9 @@ class VmMigrationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_migrating_vm,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_migrating_vm
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2321,8 +2342,8 @@ class VmMigrationAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2330,7 +2351,10 @@ class VmMigrationAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmmigration.ListMigratingVmsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmmigration.ListMigratingVmsRequest):
+            request = vmmigration.ListMigratingVmsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2339,11 +2363,9 @@ class VmMigrationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_migrating_vms,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_migrating_vms
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2436,8 +2458,8 @@ class VmMigrationAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2445,7 +2467,10 @@ class VmMigrationAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmmigration.GetMigratingVmRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmmigration.GetMigratingVmRequest):
+            request = vmmigration.GetMigratingVmRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2454,11 +2479,9 @@ class VmMigrationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_migrating_vm,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_migrating_vm
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2556,8 +2579,8 @@ class VmMigrationAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([migrating_vm, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2565,7 +2588,10 @@ class VmMigrationAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmmigration.UpdateMigratingVmRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmmigration.UpdateMigratingVmRequest):
+            request = vmmigration.UpdateMigratingVmRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2576,11 +2602,9 @@ class VmMigrationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_migrating_vm,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_migrating_vm
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2687,8 +2711,8 @@ class VmMigrationAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2696,7 +2720,10 @@ class VmMigrationAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmmigration.DeleteMigratingVmRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmmigration.DeleteMigratingVmRequest):
+            request = vmmigration.DeleteMigratingVmRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2705,11 +2732,9 @@ class VmMigrationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_migrating_vm,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_migrating_vm
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2809,8 +2834,8 @@ class VmMigrationAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([migrating_vm])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2818,7 +2843,10 @@ class VmMigrationAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmmigration.StartMigrationRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmmigration.StartMigrationRequest):
+            request = vmmigration.StartMigrationRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2827,11 +2855,9 @@ class VmMigrationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.start_migration,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.start_migration
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2928,15 +2954,16 @@ class VmMigrationAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = vmmigration.ResumeMigrationRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmmigration.ResumeMigrationRequest):
+            request = vmmigration.ResumeMigrationRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.resume_migration,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.resume_migration
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3031,15 +3058,16 @@ class VmMigrationAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = vmmigration.PauseMigrationRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmmigration.PauseMigrationRequest):
+            request = vmmigration.PauseMigrationRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.pause_migration,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.pause_migration
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3141,8 +3169,8 @@ class VmMigrationAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([migrating_vm])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3150,7 +3178,10 @@ class VmMigrationAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmmigration.FinalizeMigrationRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmmigration.FinalizeMigrationRequest):
+            request = vmmigration.FinalizeMigrationRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3159,11 +3190,9 @@ class VmMigrationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.finalize_migration,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.finalize_migration
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3285,8 +3314,8 @@ class VmMigrationAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, clone_job, clone_job_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3294,7 +3323,10 @@ class VmMigrationAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmmigration.CreateCloneJobRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmmigration.CreateCloneJobRequest):
+            request = vmmigration.CreateCloneJobRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3307,11 +3339,9 @@ class VmMigrationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_clone_job,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_clone_job
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3407,8 +3437,8 @@ class VmMigrationAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3416,7 +3446,10 @@ class VmMigrationAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmmigration.CancelCloneJobRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmmigration.CancelCloneJobRequest):
+            request = vmmigration.CancelCloneJobRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3425,11 +3458,9 @@ class VmMigrationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.cancel_clone_job,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.cancel_clone_job
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3525,8 +3556,8 @@ class VmMigrationAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3534,7 +3565,10 @@ class VmMigrationAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmmigration.ListCloneJobsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmmigration.ListCloneJobsRequest):
+            request = vmmigration.ListCloneJobsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3543,11 +3577,9 @@ class VmMigrationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_clone_jobs,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_clone_jobs
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3649,8 +3681,8 @@ class VmMigrationAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3658,7 +3690,10 @@ class VmMigrationAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmmigration.GetCloneJobRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmmigration.GetCloneJobRequest):
+            request = vmmigration.GetCloneJobRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3667,11 +3702,9 @@ class VmMigrationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_clone_job,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_clone_job
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3775,8 +3808,8 @@ class VmMigrationAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, cutover_job, cutover_job_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3784,7 +3817,10 @@ class VmMigrationAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmmigration.CreateCutoverJobRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmmigration.CreateCutoverJobRequest):
+            request = vmmigration.CreateCutoverJobRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3797,11 +3833,9 @@ class VmMigrationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_cutover_job,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_cutover_job
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3897,8 +3931,8 @@ class VmMigrationAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3906,7 +3940,10 @@ class VmMigrationAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmmigration.CancelCutoverJobRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmmigration.CancelCutoverJobRequest):
+            request = vmmigration.CancelCutoverJobRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3915,11 +3952,9 @@ class VmMigrationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.cancel_cutover_job,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.cancel_cutover_job
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4015,8 +4050,8 @@ class VmMigrationAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4024,7 +4059,10 @@ class VmMigrationAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmmigration.ListCutoverJobsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmmigration.ListCutoverJobsRequest):
+            request = vmmigration.ListCutoverJobsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -4033,11 +4071,9 @@ class VmMigrationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_cutover_jobs,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_cutover_jobs
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4131,8 +4167,8 @@ class VmMigrationAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4140,7 +4176,10 @@ class VmMigrationAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmmigration.GetCutoverJobRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmmigration.GetCutoverJobRequest):
+            request = vmmigration.GetCutoverJobRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -4149,11 +4188,9 @@ class VmMigrationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_cutover_job,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_cutover_job
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4241,8 +4278,8 @@ class VmMigrationAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4250,7 +4287,10 @@ class VmMigrationAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmmigration.ListGroupsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmmigration.ListGroupsRequest):
+            request = vmmigration.ListGroupsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -4259,11 +4299,9 @@ class VmMigrationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_groups,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_groups
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4354,8 +4392,8 @@ class VmMigrationAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4363,7 +4401,10 @@ class VmMigrationAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmmigration.GetGroupRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmmigration.GetGroupRequest):
+            request = vmmigration.GetGroupRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -4372,11 +4413,9 @@ class VmMigrationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_group,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_group
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4476,8 +4515,8 @@ class VmMigrationAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, group, group_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4485,7 +4524,10 @@ class VmMigrationAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmmigration.CreateGroupRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmmigration.CreateGroupRequest):
+            request = vmmigration.CreateGroupRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -4498,11 +4540,9 @@ class VmMigrationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_group,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_group
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4608,8 +4648,8 @@ class VmMigrationAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([group, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4617,7 +4657,10 @@ class VmMigrationAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmmigration.UpdateGroupRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmmigration.UpdateGroupRequest):
+            request = vmmigration.UpdateGroupRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -4628,11 +4671,9 @@ class VmMigrationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_group,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_group
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4737,8 +4778,8 @@ class VmMigrationAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4746,7 +4787,10 @@ class VmMigrationAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmmigration.DeleteGroupRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmmigration.DeleteGroupRequest):
+            request = vmmigration.DeleteGroupRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -4755,11 +4799,9 @@ class VmMigrationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_group,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_group
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4857,8 +4899,8 @@ class VmMigrationAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([group])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4866,7 +4908,10 @@ class VmMigrationAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmmigration.AddGroupMigrationRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmmigration.AddGroupMigrationRequest):
+            request = vmmigration.AddGroupMigrationRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -4875,11 +4920,9 @@ class VmMigrationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.add_group_migration,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.add_group_migration
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4975,8 +5018,8 @@ class VmMigrationAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([group])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4984,7 +5027,10 @@ class VmMigrationAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmmigration.RemoveGroupMigrationRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmmigration.RemoveGroupMigrationRequest):
+            request = vmmigration.RemoveGroupMigrationRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -4993,11 +5039,9 @@ class VmMigrationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.remove_group_migration,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.remove_group_migration
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -5096,8 +5140,8 @@ class VmMigrationAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5105,7 +5149,10 @@ class VmMigrationAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmmigration.ListTargetProjectsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmmigration.ListTargetProjectsRequest):
+            request = vmmigration.ListTargetProjectsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -5114,11 +5161,9 @@ class VmMigrationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_target_projects,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_target_projects
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -5212,8 +5257,8 @@ class VmMigrationAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5221,7 +5266,10 @@ class VmMigrationAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmmigration.GetTargetProjectRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmmigration.GetTargetProjectRequest):
+            request = vmmigration.GetTargetProjectRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -5230,11 +5278,9 @@ class VmMigrationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_target_project,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_target_project
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -5337,8 +5383,8 @@ class VmMigrationAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, target_project, target_project_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5346,7 +5392,10 @@ class VmMigrationAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmmigration.CreateTargetProjectRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmmigration.CreateTargetProjectRequest):
+            request = vmmigration.CreateTargetProjectRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -5359,11 +5408,9 @@ class VmMigrationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_target_project,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_target_project
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -5472,8 +5519,8 @@ class VmMigrationAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([target_project, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5481,7 +5528,10 @@ class VmMigrationAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmmigration.UpdateTargetProjectRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmmigration.UpdateTargetProjectRequest):
+            request = vmmigration.UpdateTargetProjectRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -5492,11 +5542,9 @@ class VmMigrationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_target_project,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_target_project
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -5604,8 +5652,8 @@ class VmMigrationAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5613,7 +5661,10 @@ class VmMigrationAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmmigration.DeleteTargetProjectRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmmigration.DeleteTargetProjectRequest):
+            request = vmmigration.DeleteTargetProjectRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -5622,11 +5673,9 @@ class VmMigrationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_target_project,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_target_project
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -5722,8 +5771,8 @@ class VmMigrationAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5731,7 +5780,10 @@ class VmMigrationAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmmigration.ListReplicationCyclesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmmigration.ListReplicationCyclesRequest):
+            request = vmmigration.ListReplicationCyclesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -5740,11 +5792,9 @@ class VmMigrationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_replication_cycles,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_replication_cycles
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -5837,8 +5887,8 @@ class VmMigrationAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5846,7 +5896,10 @@ class VmMigrationAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmmigration.GetReplicationCycleRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmmigration.GetReplicationCycleRequest):
+            request = vmmigration.GetReplicationCycleRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -5855,11 +5908,9 @@ class VmMigrationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_replication_cycle,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_replication_cycle
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.

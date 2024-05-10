@@ -24,6 +24,7 @@ import proto  # type: ignore
 __protobuf__ = proto.module(
     package="google.cloud.parallelstore.v1beta",
     manifest={
+        "TransferType",
         "Instance",
         "ListInstancesRequest",
         "ListInstancesResponse",
@@ -32,8 +33,36 @@ __protobuf__ = proto.module(
         "UpdateInstanceRequest",
         "DeleteInstanceRequest",
         "OperationMetadata",
+        "SourceGcsBucket",
+        "DestinationGcsBucket",
+        "SourceParallelstore",
+        "DestinationParallelstore",
+        "ImportDataRequest",
+        "ExportDataRequest",
+        "ImportDataResponse",
+        "ImportDataMetadata",
+        "ExportDataResponse",
+        "ExportDataMetadata",
+        "TransferOperationMetadata",
+        "TransferCounters",
     },
 )
+
+
+class TransferType(proto.Enum):
+    r"""Type of transfer that occurred.
+
+    Values:
+        TRANSFER_TYPE_UNSPECIFIED (0):
+            Zero is an illegal value.
+        IMPORT (1):
+            Imports to Parallelstore.
+        EXPORT (2):
+            Exports from Parallelstore.
+    """
+    TRANSFER_TYPE_UNSPECIFIED = 0
+    IMPORT = 1
+    EXPORT = 2
 
 
 class Instance(proto.Message):
@@ -98,12 +127,20 @@ class Instance(proto.Message):
             `VPC network <https://cloud.google.com/vpc/docs/vpc>`__ to
             which the instance is connected.
         reserved_ip_range (str):
-            Optional. Immutable. Contains the id of
+            Optional. Immutable. Contains the id of the
             allocated IP address range associated with the
             private service access connection for example,
             "test-default" associated with IP range
             10.0.0.0/29. If no range id is provided all
             ranges will be considered.
+        effective_reserved_ip_range (str):
+            Output only. Immutable. Contains the id of
+            the allocated IP address range associated with
+            the private service access connection for
+            example, "test-default" associated with IP range
+            10.0.0.0/29. This field is populated by the
+            service and and contains the value currently
+            used by the service.
     """
 
     class State(proto.Enum):
@@ -174,6 +211,10 @@ class Instance(proto.Message):
     reserved_ip_range: str = proto.Field(
         proto.STRING,
         number=12,
+    )
+    effective_reserved_ip_range: str = proto.Field(
+        proto.STRING,
+        number=14,
     )
 
 
@@ -480,6 +521,347 @@ class OperationMetadata(proto.Message):
     api_version: str = proto.Field(
         proto.STRING,
         number=7,
+    )
+
+
+class SourceGcsBucket(proto.Message):
+    r"""Google Cloud Storage as a source.
+
+    Attributes:
+        uri (str):
+            Required. URI to a Cloud Storage object in format:
+            'gs://<bucket_name>/<path_inside_bucket>'.
+    """
+
+    uri: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class DestinationGcsBucket(proto.Message):
+    r"""Google Cloud Storage as a destination.
+
+    Attributes:
+        uri (str):
+            Required. URI to a Cloud Storage object in format:
+            'gs://<bucket_name>/<path_inside_bucket>'.
+    """
+
+    uri: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class SourceParallelstore(proto.Message):
+    r"""Pa as a source.
+
+    Attributes:
+        path (str):
+            Optional. Root directory path to the
+            Paralellstore filesystem, starting with '/'.
+            Defaults to '/' if unset.
+    """
+
+    path: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class DestinationParallelstore(proto.Message):
+    r"""Parallelstore as a destination.
+
+    Attributes:
+        path (str):
+            Optional. Root directory path to the
+            Paralellstore filesystem, starting with '/'.
+            Defaults to '/' if unset.
+    """
+
+    path: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class ImportDataRequest(proto.Message):
+    r"""Message representing the request importing data from
+    parallelstore to Cloud Storage.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        source_gcs_bucket (google.cloud.parallelstore_v1beta.types.SourceGcsBucket):
+            Cloud Storage source.
+
+            This field is a member of `oneof`_ ``source``.
+        destination_parallelstore (google.cloud.parallelstore_v1beta.types.DestinationParallelstore):
+            Parallelstore destination.
+
+            This field is a member of `oneof`_ ``destination``.
+        name (str):
+            Required. Name of the resource.
+        request_id (str):
+            Optional. An optional request ID to identify
+            requests. Specify a unique request ID so that if
+            you must retry your request, the server will
+            know to ignore the request if it has already
+            been completed. The server will guarantee that
+            for at least 60 minutes since the first request.
+
+            For example, consider a situation where you make
+            an initial request and t he request times out.
+            If you make the request again with the same
+            request ID, the server can check if original
+            operation with the same request ID was received,
+            and if so, will ignore the second request. This
+            prevents clients from accidentally creating
+            duplicate commitments.
+
+            The request ID must be a valid UUID with the
+            exception that zero UUID is not supported
+            (00000000-0000-0000-0000-000000000000).
+    """
+
+    source_gcs_bucket: "SourceGcsBucket" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="source",
+        message="SourceGcsBucket",
+    )
+    destination_parallelstore: "DestinationParallelstore" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        oneof="destination",
+        message="DestinationParallelstore",
+    )
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+
+
+class ExportDataRequest(proto.Message):
+    r"""Message representing the request exporting data from Cloud
+    Storage to parallelstore.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        source_parallelstore (google.cloud.parallelstore_v1beta.types.SourceParallelstore):
+            Parallelstore source.
+
+            This field is a member of `oneof`_ ``source``.
+        destination_gcs_bucket (google.cloud.parallelstore_v1beta.types.DestinationGcsBucket):
+            Cloud Storage destination.
+
+            This field is a member of `oneof`_ ``destination``.
+        name (str):
+            Required. Name of the resource.
+        request_id (str):
+            Optional. An optional request ID to identify
+            requests. Specify a unique request ID so that if
+            you must retry your request, the server will
+            know to ignore the request if it has already
+            been completed. The server will guarantee that
+            for at least 60 minutes since the first request.
+
+            For example, consider a situation where you make
+            an initial request and t he request times out.
+            If you make the request again with the same
+            request ID, the server can check if original
+            operation with the same request ID was received,
+            and if so, will ignore the second request. This
+            prevents clients from accidentally creating
+            duplicate commitments.
+
+            The request ID must be a valid UUID with the
+            exception that zero UUID is not supported
+            (00000000-0000-0000-0000-000000000000).
+    """
+
+    source_parallelstore: "SourceParallelstore" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="source",
+        message="SourceParallelstore",
+    )
+    destination_gcs_bucket: "DestinationGcsBucket" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        oneof="destination",
+        message="DestinationGcsBucket",
+    )
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+
+
+class ImportDataResponse(proto.Message):
+    r"""ImportDataResponse is the response returned from ImportData
+    rpc.
+
+    """
+
+
+class ImportDataMetadata(proto.Message):
+    r"""ImportDataMetadata contains import data operation metadata
+
+    Attributes:
+        operation_metadata (google.cloud.parallelstore_v1beta.types.TransferOperationMetadata):
+            Contains the data transfer operation
+            metadata.
+    """
+
+    operation_metadata: "TransferOperationMetadata" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="TransferOperationMetadata",
+    )
+
+
+class ExportDataResponse(proto.Message):
+    r"""ExportDataResponse is the response returned from ExportData
+    rpc
+
+    """
+
+
+class ExportDataMetadata(proto.Message):
+    r"""ExportDataMetadata contains export data operation metadata
+
+    Attributes:
+        operation_metadata (google.cloud.parallelstore_v1beta.types.TransferOperationMetadata):
+            Contains the data transfer operation
+            metadata.
+    """
+
+    operation_metadata: "TransferOperationMetadata" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="TransferOperationMetadata",
+    )
+
+
+class TransferOperationMetadata(proto.Message):
+    r"""Represents the metadata of the long-running operation.
+
+    Attributes:
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. CCFE supplied fields BEGIN
+            The time the operation was created.
+        end_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time the operation finished
+            running.
+        counters (google.cloud.parallelstore_v1beta.types.TransferCounters):
+            Information about the progress of the
+            transfer operation.
+        source (str):
+            Required. The origin of the data transfer.
+        destination (str):
+            Required. The destination of the data
+            transfer.
+        transfer_type (google.cloud.parallelstore_v1beta.types.TransferType):
+            The type of transfer occurring.
+    """
+
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    counters: "TransferCounters" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="TransferCounters",
+    )
+    source: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    destination: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    transfer_type: "TransferType" = proto.Field(
+        proto.ENUM,
+        number=6,
+        enum="TransferType",
+    )
+
+
+class TransferCounters(proto.Message):
+    r"""A collection of counters that report the progress of a
+    transfer operation.
+
+    Attributes:
+        objects_found (int):
+            Objects found in the data source that are
+            scheduled to be transferred, excluding any that
+            are filtered based on object conditions or
+            skipped due to sync.
+        bytes_found (int):
+            Bytes found in the data source that are
+            scheduled to be transferred, excluding any that
+            are filtered based on object conditions or
+            skipped due to sync.
+        objects_skipped (int):
+            Objects in the data source that are not
+            transferred because they already exist in the
+            data destination.
+        bytes_skipped (int):
+            Bytes in the data source that are not
+            transferred because they already exist in the
+            data destination.
+        objects_copied (int):
+            Objects that are copied to the data
+            destination.
+        bytes_copied (int):
+            Bytes that are copied to the data
+            destination.
+    """
+
+    objects_found: int = proto.Field(
+        proto.INT64,
+        number=1,
+    )
+    bytes_found: int = proto.Field(
+        proto.INT64,
+        number=2,
+    )
+    objects_skipped: int = proto.Field(
+        proto.INT64,
+        number=3,
+    )
+    bytes_skipped: int = proto.Field(
+        proto.INT64,
+        number=4,
+    )
+    objects_copied: int = proto.Field(
+        proto.INT64,
+        number=5,
+    )
+    bytes_copied: int = proto.Field(
+        proto.INT64,
+        number=6,
     )
 
 

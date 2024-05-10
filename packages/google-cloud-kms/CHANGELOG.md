@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-kms/#history
 
+## [2.22.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-kms-v2.21.4...google-cloud-kms-v2.22.0) (2024-05-07)
+
+
+### Features
+
+* introduce Long-Running Operations (LRO) for KMS ([18b3c0d](https://github.com/googleapis/google-cloud-python/commit/18b3c0d8ee3c27728648fbd8144134cd7dcebd4f))
+
 ## [2.21.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-kms-v2.21.3...google-cloud-kms-v2.21.4) (2024-04-17)
 
 

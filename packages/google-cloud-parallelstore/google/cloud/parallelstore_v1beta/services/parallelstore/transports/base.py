@@ -153,6 +153,16 @@ class ParallelstoreTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.import_data: gapic_v1.method.wrap_method(
+                self.import_data,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.export_data: gapic_v1.method.wrap_method(
+                self.export_data,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -213,6 +223,24 @@ class ParallelstoreTransport(abc.ABC):
         self,
     ) -> Callable[
         [parallelstore.DeleteInstanceRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def import_data(
+        self,
+    ) -> Callable[
+        [parallelstore.ImportDataRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def export_data(
+        self,
+    ) -> Callable[
+        [parallelstore.ExportDataRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()

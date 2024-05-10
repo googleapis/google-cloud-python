@@ -178,6 +178,26 @@ class AlphaAnalyticsDataTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.create_report_task: gapic_v1.method.wrap_method(
+                self.create_report_task,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.query_report_task: gapic_v1.method.wrap_method(
+                self.query_report_task,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_report_task: gapic_v1.method.wrap_method(
+                self.get_report_task,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_report_tasks: gapic_v1.method.wrap_method(
+                self.list_report_tasks,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -294,6 +314,48 @@ class AlphaAnalyticsDataTransport(abc.ABC):
         Union[
             analytics_data_api.ListRecurringAudienceListsResponse,
             Awaitable[analytics_data_api.ListRecurringAudienceListsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_report_task(
+        self,
+    ) -> Callable[
+        [analytics_data_api.CreateReportTaskRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def query_report_task(
+        self,
+    ) -> Callable[
+        [analytics_data_api.QueryReportTaskRequest],
+        Union[
+            analytics_data_api.QueryReportTaskResponse,
+            Awaitable[analytics_data_api.QueryReportTaskResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_report_task(
+        self,
+    ) -> Callable[
+        [analytics_data_api.GetReportTaskRequest],
+        Union[analytics_data_api.ReportTask, Awaitable[analytics_data_api.ReportTask]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_report_tasks(
+        self,
+    ) -> Callable[
+        [analytics_data_api.ListReportTasksRequest],
+        Union[
+            analytics_data_api.ListReportTasksResponse,
+            Awaitable[analytics_data_api.ListReportTasksResponse],
         ],
     ]:
         raise NotImplementedError()

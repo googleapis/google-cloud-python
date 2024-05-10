@@ -1177,3 +1177,259 @@ class ListColumnDataProfilesAsyncPager:
 
     def __repr__(self) -> str:
         return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListConnectionsPager:
+    """A pager for iterating through ``list_connections`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.dlp_v2.types.ListConnectionsResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``connections`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListConnections`` requests and continue to iterate
+    through the ``connections`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.dlp_v2.types.ListConnectionsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., dlp.ListConnectionsResponse],
+        request: dlp.ListConnectionsRequest,
+        response: dlp.ListConnectionsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.dlp_v2.types.ListConnectionsRequest):
+                The initial request object.
+            response (google.cloud.dlp_v2.types.ListConnectionsResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = dlp.ListConnectionsRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[dlp.ListConnectionsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __iter__(self) -> Iterator[dlp.Connection]:
+        for page in self.pages:
+            yield from page.connections
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListConnectionsAsyncPager:
+    """A pager for iterating through ``list_connections`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.dlp_v2.types.ListConnectionsResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``connections`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListConnections`` requests and continue to iterate
+    through the ``connections`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.dlp_v2.types.ListConnectionsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[dlp.ListConnectionsResponse]],
+        request: dlp.ListConnectionsRequest,
+        response: dlp.ListConnectionsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.dlp_v2.types.ListConnectionsRequest):
+                The initial request object.
+            response (google.cloud.dlp_v2.types.ListConnectionsResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = dlp.ListConnectionsRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(self) -> AsyncIterator[dlp.ListConnectionsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[dlp.Connection]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.connections:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class SearchConnectionsPager:
+    """A pager for iterating through ``search_connections`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.dlp_v2.types.SearchConnectionsResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``connections`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``SearchConnections`` requests and continue to iterate
+    through the ``connections`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.dlp_v2.types.SearchConnectionsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., dlp.SearchConnectionsResponse],
+        request: dlp.SearchConnectionsRequest,
+        response: dlp.SearchConnectionsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.dlp_v2.types.SearchConnectionsRequest):
+                The initial request object.
+            response (google.cloud.dlp_v2.types.SearchConnectionsResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = dlp.SearchConnectionsRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[dlp.SearchConnectionsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __iter__(self) -> Iterator[dlp.Connection]:
+        for page in self.pages:
+            yield from page.connections
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class SearchConnectionsAsyncPager:
+    """A pager for iterating through ``search_connections`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.dlp_v2.types.SearchConnectionsResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``connections`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``SearchConnections`` requests and continue to iterate
+    through the ``connections`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.dlp_v2.types.SearchConnectionsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[dlp.SearchConnectionsResponse]],
+        request: dlp.SearchConnectionsRequest,
+        response: dlp.SearchConnectionsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.dlp_v2.types.SearchConnectionsRequest):
+                The initial request object.
+            response (google.cloud.dlp_v2.types.SearchConnectionsResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = dlp.SearchConnectionsRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(self) -> AsyncIterator[dlp.SearchConnectionsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[dlp.Connection]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.connections:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)

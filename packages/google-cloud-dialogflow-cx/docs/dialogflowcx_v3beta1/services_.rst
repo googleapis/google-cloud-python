@@ -5,6 +5,7 @@ Services for Google Cloud Dialogflowcx v3beta1 API
 
     agents
     changelogs
+    conversation_history
     deployments
     entity_types
     environments

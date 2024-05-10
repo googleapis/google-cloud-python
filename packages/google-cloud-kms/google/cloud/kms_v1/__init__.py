@@ -18,10 +18,27 @@ from google.cloud.kms_v1 import gapic_version as package_version
 __version__ = package_version.__version__
 
 
+from .services.autokey import AutokeyAsyncClient, AutokeyClient
+from .services.autokey_admin import AutokeyAdminAsyncClient, AutokeyAdminClient
 from .services.ekm_service import EkmServiceAsyncClient, EkmServiceClient
 from .services.key_management_service import (
     KeyManagementServiceAsyncClient,
     KeyManagementServiceClient,
+)
+from .types.autokey import (
+    CreateKeyHandleMetadata,
+    CreateKeyHandleRequest,
+    GetKeyHandleRequest,
+    KeyHandle,
+    ListKeyHandlesRequest,
+    ListKeyHandlesResponse,
+)
+from .types.autokey_admin import (
+    AutokeyConfig,
+    GetAutokeyConfigRequest,
+    ShowEffectiveAutokeyConfigRequest,
+    ShowEffectiveAutokeyConfigResponse,
+    UpdateAutokeyConfigRequest,
 )
 from .types.ekm_service import (
     Certificate,
@@ -95,17 +112,24 @@ from .types.service import (
 )
 
 __all__ = (
+    "AutokeyAdminAsyncClient",
+    "AutokeyAsyncClient",
     "EkmServiceAsyncClient",
     "KeyManagementServiceAsyncClient",
     "AsymmetricDecryptRequest",
     "AsymmetricDecryptResponse",
     "AsymmetricSignRequest",
     "AsymmetricSignResponse",
+    "AutokeyAdminClient",
+    "AutokeyClient",
+    "AutokeyConfig",
     "Certificate",
     "CreateCryptoKeyRequest",
     "CreateCryptoKeyVersionRequest",
     "CreateEkmConnectionRequest",
     "CreateImportJobRequest",
+    "CreateKeyHandleMetadata",
+    "CreateKeyHandleRequest",
     "CreateKeyRingRequest",
     "CryptoKey",
     "CryptoKeyVersion",
@@ -122,15 +146,18 @@ __all__ = (
     "ExternalProtectionLevelOptions",
     "GenerateRandomBytesRequest",
     "GenerateRandomBytesResponse",
+    "GetAutokeyConfigRequest",
     "GetCryptoKeyRequest",
     "GetCryptoKeyVersionRequest",
     "GetEkmConfigRequest",
     "GetEkmConnectionRequest",
     "GetImportJobRequest",
+    "GetKeyHandleRequest",
     "GetKeyRingRequest",
     "GetPublicKeyRequest",
     "ImportCryptoKeyVersionRequest",
     "ImportJob",
+    "KeyHandle",
     "KeyManagementServiceClient",
     "KeyOperationAttestation",
     "KeyRing",
@@ -142,6 +169,8 @@ __all__ = (
     "ListEkmConnectionsResponse",
     "ListImportJobsRequest",
     "ListImportJobsResponse",
+    "ListKeyHandlesRequest",
+    "ListKeyHandlesResponse",
     "ListKeyRingsRequest",
     "ListKeyRingsResponse",
     "LocationMetadata",
@@ -156,6 +185,9 @@ __all__ = (
     "RawEncryptRequest",
     "RawEncryptResponse",
     "RestoreCryptoKeyVersionRequest",
+    "ShowEffectiveAutokeyConfigRequest",
+    "ShowEffectiveAutokeyConfigResponse",
+    "UpdateAutokeyConfigRequest",
     "UpdateCryptoKeyPrimaryVersionRequest",
     "UpdateCryptoKeyRequest",
     "UpdateCryptoKeyVersionRequest",

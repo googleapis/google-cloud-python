@@ -17,6 +17,7 @@ from collections import OrderedDict
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -602,7 +603,9 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, ProductSearchTransport]] = None,
+        transport: Optional[
+            Union[str, ProductSearchTransport, Callable[..., ProductSearchTransport]]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -614,9 +617,11 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ProductSearchTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,ProductSearchTransport,Callable[..., ProductSearchTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the ProductSearchTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -725,8 +730,15 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[ProductSearchTransport], Callable[..., ProductSearchTransport]
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., ProductSearchTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -827,8 +839,8 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, product_set, product_set_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -836,10 +848,8 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a product_search_service.CreateProductSetRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, product_search_service.CreateProductSetRequest):
             request = product_search_service.CreateProductSetRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -947,8 +957,8 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -956,10 +966,8 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a product_search_service.ListProductSetsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, product_search_service.ListProductSetsRequest):
             request = product_search_service.ListProductSetsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1071,8 +1079,8 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1080,10 +1088,8 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a product_search_service.GetProductSetRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, product_search_service.GetProductSetRequest):
             request = product_search_service.GetProductSetRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1197,8 +1203,8 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([product_set, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1206,10 +1212,8 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a product_search_service.UpdateProductSetRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, product_search_service.UpdateProductSetRequest):
             request = product_search_service.UpdateProductSetRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1304,8 +1308,8 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1313,10 +1317,8 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a product_search_service.DeleteProductSetRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, product_search_service.DeleteProductSetRequest):
             request = product_search_service.DeleteProductSetRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1433,8 +1435,8 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
                 A Product contains ReferenceImages.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, product, product_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1442,10 +1444,8 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a product_search_service.CreateProductRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, product_search_service.CreateProductRequest):
             request = product_search_service.CreateProductRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1553,8 +1553,8 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1562,10 +1562,8 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a product_search_service.ListProductsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, product_search_service.ListProductsRequest):
             request = product_search_service.ListProductsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1670,8 +1668,8 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
                 A Product contains ReferenceImages.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1679,10 +1677,8 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a product_search_service.GetProductRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, product_search_service.GetProductRequest):
             request = product_search_service.GetProductRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1800,8 +1796,8 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
                 A Product contains ReferenceImages.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([product, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1809,10 +1805,8 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a product_search_service.UpdateProductRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, product_search_service.UpdateProductRequest):
             request = product_search_service.UpdateProductRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1908,8 +1902,8 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1917,10 +1911,8 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a product_search_service.DeleteProductRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, product_search_service.DeleteProductRequest):
             request = product_search_service.DeleteProductRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2059,8 +2051,8 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, reference_image, reference_image_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2068,10 +2060,8 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a product_search_service.CreateReferenceImageRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, product_search_service.CreateReferenceImageRequest):
             request = product_search_service.CreateReferenceImageRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2171,8 +2161,8 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2180,10 +2170,8 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a product_search_service.DeleteReferenceImageRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, product_search_service.DeleteReferenceImageRequest):
             request = product_search_service.DeleteReferenceImageRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2286,8 +2274,8 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2295,10 +2283,8 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a product_search_service.ListReferenceImagesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, product_search_service.ListReferenceImagesRequest):
             request = product_search_service.ListReferenceImagesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2409,8 +2395,8 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2418,10 +2404,8 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a product_search_service.GetReferenceImageRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, product_search_service.GetReferenceImageRequest):
             request = product_search_service.GetReferenceImageRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2530,8 +2514,8 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, product])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2539,10 +2523,8 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a product_search_service.AddProductToProductSetRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request, product_search_service.AddProductToProductSetRequest
         ):
@@ -2646,8 +2628,8 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, product])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2655,10 +2637,8 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a product_search_service.RemoveProductFromProductSetRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request, product_search_service.RemoveProductFromProductSetRequest
         ):
@@ -2770,8 +2750,8 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2779,10 +2759,8 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a product_search_service.ListProductsInProductSetRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request, product_search_service.ListProductsInProductSetRequest
         ):
@@ -2925,8 +2903,8 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, input_config])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2934,10 +2912,8 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a product_search_service.ImportProductSetsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, product_search_service.ImportProductSetsRequest):
             request = product_search_service.ImportProductSetsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3083,8 +3059,8 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3092,10 +3068,8 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a product_search_service.PurgeProductsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, product_search_service.PurgeProductsRequest):
             request = product_search_service.PurgeProductsRequest(request)
             # If we have keyword arguments corresponding to fields on the

@@ -39,8 +39,6 @@ from .types.delivery_api import (
     ListDeliveryVehiclesResponse,
     ListTasksRequest,
     ListTasksResponse,
-    SearchTasksRequest,
-    SearchTasksResponse,
     UpdateDeliveryVehicleRequest,
     UpdateTaskRequest,
 )
@@ -75,8 +73,6 @@ __all__ = (
     "ListTasksRequest",
     "ListTasksResponse",
     "LocationInfo",
-    "SearchTasksRequest",
-    "SearchTasksResponse",
     "Task",
     "TaskAttribute",
     "TaskTrackingInfo",

@@ -633,6 +633,11 @@ class DlpServiceTransport(abc.ABC):
                 default_timeout=300.0,
                 client_info=client_info,
             ),
+            self.delete_table_data_profile: gapic_v1.method.wrap_method(
+                self.delete_table_data_profile,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.hybrid_inspect_dlp_job: gapic_v1.method.wrap_method(
                 self.hybrid_inspect_dlp_job,
                 default_timeout=300.0,
@@ -641,6 +646,36 @@ class DlpServiceTransport(abc.ABC):
             self.finish_dlp_job: gapic_v1.method.wrap_method(
                 self.finish_dlp_job,
                 default_timeout=300.0,
+                client_info=client_info,
+            ),
+            self.create_connection: gapic_v1.method.wrap_method(
+                self.create_connection,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_connection: gapic_v1.method.wrap_method(
+                self.get_connection,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_connections: gapic_v1.method.wrap_method(
+                self.list_connections,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.search_connections: gapic_v1.method.wrap_method(
+                self.search_connections,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_connection: gapic_v1.method.wrap_method(
+                self.delete_connection,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_connection: gapic_v1.method.wrap_method(
+                self.update_connection,
+                default_timeout=None,
                 client_info=client_info,
             ),
         }
@@ -1050,6 +1085,15 @@ class DlpServiceTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def delete_table_data_profile(
+        self,
+    ) -> Callable[
+        [dlp.DeleteTableDataProfileRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def hybrid_inspect_dlp_job(
         self,
     ) -> Callable[
@@ -1063,6 +1107,57 @@ class DlpServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [dlp.FinishDlpJobRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_connection(
+        self,
+    ) -> Callable[
+        [dlp.CreateConnectionRequest], Union[dlp.Connection, Awaitable[dlp.Connection]]
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_connection(
+        self,
+    ) -> Callable[
+        [dlp.GetConnectionRequest], Union[dlp.Connection, Awaitable[dlp.Connection]]
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_connections(
+        self,
+    ) -> Callable[
+        [dlp.ListConnectionsRequest],
+        Union[dlp.ListConnectionsResponse, Awaitable[dlp.ListConnectionsResponse]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def search_connections(
+        self,
+    ) -> Callable[
+        [dlp.SearchConnectionsRequest],
+        Union[dlp.SearchConnectionsResponse, Awaitable[dlp.SearchConnectionsResponse]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_connection(
+        self,
+    ) -> Callable[
+        [dlp.DeleteConnectionRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_connection(
+        self,
+    ) -> Callable[
+        [dlp.UpdateConnectionRequest], Union[dlp.Connection, Awaitable[dlp.Connection]]
     ]:
         raise NotImplementedError()
 

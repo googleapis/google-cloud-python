@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.18.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-deploy-v1.18.0...google-cloud-deploy-v1.18.1) (2024-05-07)
+
+
+### Documentation
+
+* small corrections to Cloud Deploy API documentation ([dbe7988](https://github.com/googleapis/google-cloud-python/commit/dbe798803e57c6eedd1ce1dfb9c16fede488f4a1))
+
 ## [1.18.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-deploy-v1.17.3...google-cloud-deploy-v1.18.0) (2024-04-22)
 
 

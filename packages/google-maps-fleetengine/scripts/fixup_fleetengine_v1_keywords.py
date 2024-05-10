@@ -45,13 +45,11 @@ class fleetengineCallTransformer(cst.CSTTransformer):
         'get_vehicle': ('name', 'header', 'current_route_segment_version', 'waypoints_version', ),
         'list_vehicles': ('parent', 'vehicle_type_categories', 'header', 'page_size', 'page_token', 'minimum_capacity', 'trip_types', 'maximum_staleness', 'required_attributes', 'required_one_of_attributes', 'required_one_of_attribute_sets', 'vehicle_state', 'on_trip_only', 'filter', 'viewport', ),
         'report_billable_trip': ('name', 'country_code', 'platform', 'related_ids', 'solution_type', ),
-        'search_fuzzed_vehicles': ('parent', 'pickup_point', 'pickup_radius_meters', 'count', 'minimum_capacity', 'trip_types', 'vehicle_types', 'order_by', 'header', 'dropoff_point', 'maximum_staleness', 'required_attributes', 'required_one_of_attributes', 'required_one_of_attribute_sets', 'include_back_to_back', 'trip_id', 'current_trips_present', 'filter', ),
         'search_trips': ('parent', 'header', 'vehicle_id', 'active_trips_only', 'page_size', 'page_token', 'minimum_staleness', ),
         'search_vehicles': ('parent', 'pickup_point', 'pickup_radius_meters', 'count', 'minimum_capacity', 'trip_types', 'vehicle_types', 'order_by', 'header', 'dropoff_point', 'maximum_staleness', 'required_attributes', 'required_one_of_attributes', 'required_one_of_attribute_sets', 'include_back_to_back', 'trip_id', 'current_trips_present', 'filter', ),
         'update_trip': ('name', 'trip', 'update_mask', 'header', ),
         'update_vehicle': ('name', 'vehicle', 'update_mask', 'header', ),
         'update_vehicle_attributes': ('name', 'attributes', 'header', ),
-        'update_vehicle_location': ('name', 'current_location', 'header', 'current_state', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:

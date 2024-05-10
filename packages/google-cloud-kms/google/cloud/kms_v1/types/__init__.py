@@ -13,6 +13,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from .autokey import (
+    CreateKeyHandleMetadata,
+    CreateKeyHandleRequest,
+    GetKeyHandleRequest,
+    KeyHandle,
+    ListKeyHandlesRequest,
+    ListKeyHandlesResponse,
+)
+from .autokey_admin import (
+    AutokeyConfig,
+    GetAutokeyConfigRequest,
+    ShowEffectiveAutokeyConfigRequest,
+    ShowEffectiveAutokeyConfigResponse,
+    UpdateAutokeyConfigRequest,
+)
 from .ekm_service import (
     Certificate,
     CreateEkmConnectionRequest,
@@ -85,6 +100,17 @@ from .service import (
 )
 
 __all__ = (
+    "CreateKeyHandleMetadata",
+    "CreateKeyHandleRequest",
+    "GetKeyHandleRequest",
+    "KeyHandle",
+    "ListKeyHandlesRequest",
+    "ListKeyHandlesResponse",
+    "AutokeyConfig",
+    "GetAutokeyConfigRequest",
+    "ShowEffectiveAutokeyConfigRequest",
+    "ShowEffectiveAutokeyConfigResponse",
+    "UpdateAutokeyConfigRequest",
     "Certificate",
     "CreateEkmConnectionRequest",
     "EkmConfig",
