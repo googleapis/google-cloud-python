@@ -40,7 +40,7 @@ from bigframes.core.ordering import (
     OrderingExpression,
 )
 import bigframes.core.schema as schemata
-from bigframes.core.window_spec import WindowSpec
+from bigframes.core.window_spec import RangeWindowBounds, RowsWindowBounds, WindowSpec
 import bigframes.dtypes
 import bigframes.operations.aggregations as agg_ops
 
@@ -735,7 +735,9 @@ class OrderedIR(BaseIbisIR):
         skip_reproject_unsafe: skips the reprojection step, can be used when performing many non-dependent window operations, user responsible for not nesting window expressions, or using outputs as join, filter or aggregation keys before a reprojection
         """
         column = typing.cast(ibis_types.Column, self._get_ibis_column(column_name))
-        window = self._ibis_window_from_spec(window_spec, allow_ties=op.handles_ties)
+        window = self._ibis_window_from_spec(
+            window_spec, require_total_order=op.uses_total_row_ordering
+        )
         bindings = {col: self._get_ibis_column(col) for col in self.column_ids}
 
         window_op = agg_compiler.compile_analytic(
@@ -1162,7 +1164,9 @@ class OrderedIR(BaseIbisIR):
     def _compile_expression(self, expr: ex.Expression):
         return op_compiler.compile_expression(expr, self._ibis_bindings)
 
-    def _ibis_window_from_spec(self, window_spec: WindowSpec, allow_ties: bool = False):
+    def _ibis_window_from_spec(
+        self, window_spec: WindowSpec, require_total_order: bool
+    ):
         group_by: typing.List[ibis_types.Value] = (
             [
                 typing.cast(
@@ -1175,26 +1179,40 @@ class OrderedIR(BaseIbisIR):
         )
         if self._reduced_predicate is not None:
             group_by.append(self._reduced_predicate)
+
+        # Construct ordering. There are basically 3 main cases
+        # 1. Order-independent op (aggregation, cut, rank) with unbound window - no ordering clause needed
+        # 2. Order-independent op (aggregation, cut, rank) with range window - use ordering clause, ties allowed
+        # 3. Order-depedenpent op (navigation functions, array_agg) or rows bounds - use total row order to break ties.
         if window_spec.ordering:
             order_by = _convert_ordering_to_table_values(
                 {**self._column_names, **self._hidden_ordering_column_names},
                 window_spec.ordering,
             )
-            if not allow_ties:
-                # Most operator need an unambiguous ordering, so the table's total ordering is appended
+            if require_total_order or isinstance(window_spec.bounds, RowsWindowBounds):
+                # Some operators need an unambiguous ordering, so the table's total ordering is appended
                 order_by = tuple([*order_by, *self._ibis_order])
-        elif (window_spec.following is not None) or (window_spec.preceding is not None):
+        elif isinstance(window_spec.bounds, RowsWindowBounds):
             # If window spec has following or preceding bounds, we need to apply an unambiguous ordering.
             order_by = tuple(self._ibis_order)
         else:
             # Unbound grouping window. Suitable for aggregations but not for analytic function application.
             order_by = None
-        return ibis.window(
-            preceding=window_spec.preceding,
-            following=window_spec.following,
-            order_by=order_by,
-            group_by=group_by,
-        )
+
+        bounds = window_spec.bounds
+        window = ibis.window(order_by=order_by, group_by=group_by)
+        if bounds is not None:
+            if isinstance(bounds, RangeWindowBounds):
+                window = window.preceding_following(
+                    bounds.preceding, bounds.following, how="range"
+                )
+            if isinstance(bounds, RowsWindowBounds):
+                window = window.preceding_following(
+                    bounds.preceding, bounds.following, how="rows"
+                )
+            else:
+                raise ValueError(f"unrecognized window bounds {bounds}")
+        return window
 
     class Builder:
         def __init__(

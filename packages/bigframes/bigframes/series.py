@@ -431,44 +431,44 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
 
     def cumsum(self) -> Series:
         return self._apply_window_op(
-            agg_ops.sum_op, bigframes.core.window_spec.WindowSpec(following=0)
+            agg_ops.sum_op, bigframes.core.window_spec.cumulative_rows()
         )
 
     def ffill(self, *, limit: typing.Optional[int] = None) -> Series:
-        window = bigframes.core.window_spec.WindowSpec(preceding=limit, following=0)
+        window = bigframes.core.window_spec.rows(preceding=limit, following=0)
         return self._apply_window_op(agg_ops.LastNonNullOp(), window)
 
     pad = ffill
     pad.__doc__ = inspect.getdoc(vendored_pandas_series.Series.ffill)
 
     def bfill(self, *, limit: typing.Optional[int] = None) -> Series:
-        window = bigframes.core.window_spec.WindowSpec(preceding=0, following=limit)
+        window = bigframes.core.window_spec.rows(preceding=0, following=limit)
         return self._apply_window_op(agg_ops.FirstNonNullOp(), window)
 
     def cummax(self) -> Series:
         return self._apply_window_op(
-            agg_ops.max_op, bigframes.core.window_spec.WindowSpec(following=0)
+            agg_ops.max_op, bigframes.core.window_spec.cumulative_rows()
         )
 
     def cummin(self) -> Series:
         return self._apply_window_op(
-            agg_ops.min_op, bigframes.core.window_spec.WindowSpec(following=0)
+            agg_ops.min_op, bigframes.core.window_spec.cumulative_rows()
         )
 
     def cumprod(self) -> Series:
         return self._apply_window_op(
-            agg_ops.product_op, bigframes.core.window_spec.WindowSpec(following=0)
+            agg_ops.product_op, bigframes.core.window_spec.cumulative_rows()
         )
 
     def shift(self, periods: int = 1) -> Series:
-        window = bigframes.core.window_spec.WindowSpec(
+        window = bigframes.core.window_spec.rows(
             preceding=periods if periods > 0 else None,
             following=-periods if periods < 0 else None,
         )
         return self._apply_window_op(agg_ops.ShiftOp(periods), window)
 
     def diff(self, periods: int = 1) -> Series:
-        window = bigframes.core.window_spec.WindowSpec(
+        window = bigframes.core.window_spec.rows(
             preceding=periods if periods > 0 else None,
             following=-periods if periods < 0 else None,
         )
@@ -955,7 +955,7 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         block, max_value_count_col_id = block.apply_window_op(
             value_count_col_id,
             agg_ops.max_op,
-            window_spec=bigframes.core.window_spec.WindowSpec(),
+            window_spec=bigframes.core.window_spec.unbound(),
         )
         block, is_mode_col_id = block.apply_binary_op(
             value_count_col_id,
@@ -1226,7 +1226,7 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
 
     def rolling(self, window: int, min_periods=None) -> bigframes.core.window.Window:
         # To get n size window, need current row and n-1 preceding rows.
-        window_spec = bigframes.core.window_spec.WindowSpec(
+        window_spec = bigframes.core.window_spec.rows(
             preceding=window - 1, following=0, min_periods=min_periods or window
         )
         return bigframes.core.window.Window(
@@ -1234,8 +1234,8 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         )
 
     def expanding(self, min_periods: int = 1) -> bigframes.core.window.Window:
-        window_spec = bigframes.core.window_spec.WindowSpec(
-            following=0, min_periods=min_periods
+        window_spec = bigframes.core.window_spec.cumulative_rows(
+            min_periods=min_periods
         )
         return bigframes.core.window.Window(
             self._block, window_spec, self._block.value_columns, is_series=True

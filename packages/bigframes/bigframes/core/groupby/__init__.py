@@ -28,6 +28,7 @@ import bigframes.core.blocks as blocks
 import bigframes.core.ordering as order
 import bigframes.core.utils as utils
 import bigframes.core.window as windows
+import bigframes.core.window_spec as window_specs
 import bigframes.dataframe as df
 import bigframes.dtypes as dtypes
 import bigframes.operations.aggregations as agg_ops
@@ -217,7 +218,7 @@ class DataFrameGroupBy(vendored_pandas_groupby.DataFrameGroupBy):
         return self._apply_window_op(agg_ops.product_op, numeric_only=True)
 
     def shift(self, periods=1) -> series.Series:
-        window = core.WindowSpec(
+        window = window_specs.rows(
             grouping_keys=tuple(self._by_col_ids),
             preceding=periods if periods > 0 else None,
             following=-periods if periods < 0 else None,
@@ -225,7 +226,7 @@ class DataFrameGroupBy(vendored_pandas_groupby.DataFrameGroupBy):
         return self._apply_window_op(agg_ops.ShiftOp(periods), window=window)
 
     def diff(self, periods=1) -> series.Series:
-        window = core.WindowSpec(
+        window = window_specs.rows(
             grouping_keys=tuple(self._by_col_ids),
             preceding=periods if periods > 0 else None,
             following=-periods if periods < 0 else None,
@@ -234,7 +235,7 @@ class DataFrameGroupBy(vendored_pandas_groupby.DataFrameGroupBy):
 
     def rolling(self, window: int, min_periods=None) -> windows.Window:
         # To get n size window, need current row and n-1 preceding rows.
-        window_spec = core.WindowSpec(
+        window_spec = window_specs.rows(
             grouping_keys=tuple(self._by_col_ids),
             preceding=window - 1,
             following=0,
@@ -248,9 +249,8 @@ class DataFrameGroupBy(vendored_pandas_groupby.DataFrameGroupBy):
         )
 
     def expanding(self, min_periods: int = 1) -> windows.Window:
-        window_spec = core.WindowSpec(
+        window_spec = window_specs.cumulative_rows(
             grouping_keys=tuple(self._by_col_ids),
-            following=0,
             min_periods=min_periods,
         )
         block = self._block.order_by(
@@ -424,8 +424,8 @@ class DataFrameGroupBy(vendored_pandas_groupby.DataFrameGroupBy):
         numeric_only: bool = False,
     ):
         """Apply window op to groupby. Defaults to grouped cumulative window."""
-        window_spec = window or core.WindowSpec(
-            grouping_keys=tuple(self._by_col_ids), following=0
+        window_spec = window or window_specs.cumulative_rows(
+            grouping_keys=tuple(self._by_col_ids)
         )
         columns = self._aggregated_columns(numeric_only=numeric_only)
         block, result_ids = self._block.multi_apply_window_op(
@@ -594,7 +594,7 @@ class SeriesGroupBy(vendored_pandas_groupby.SeriesGroupBy):
 
     def shift(self, periods=1) -> series.Series:
         """Shift index by desired number of periods."""
-        window = core.WindowSpec(
+        window = window_specs.rows(
             grouping_keys=tuple(self._by_col_ids),
             preceding=periods if periods > 0 else None,
             following=-periods if periods < 0 else None,
@@ -602,7 +602,7 @@ class SeriesGroupBy(vendored_pandas_groupby.SeriesGroupBy):
         return self._apply_window_op(agg_ops.ShiftOp(periods), window=window)
 
     def diff(self, periods=1) -> series.Series:
-        window = core.WindowSpec(
+        window = window_specs.rows(
             grouping_keys=tuple(self._by_col_ids),
             preceding=periods if periods > 0 else None,
             following=-periods if periods < 0 else None,
@@ -611,7 +611,7 @@ class SeriesGroupBy(vendored_pandas_groupby.SeriesGroupBy):
 
     def rolling(self, window: int, min_periods=None) -> windows.Window:
         # To get n size window, need current row and n-1 preceding rows.
-        window_spec = core.WindowSpec(
+        window_spec = window_specs.rows(
             grouping_keys=tuple(self._by_col_ids),
             preceding=window - 1,
             following=0,
@@ -629,9 +629,8 @@ class SeriesGroupBy(vendored_pandas_groupby.SeriesGroupBy):
         )
 
     def expanding(self, min_periods: int = 1) -> windows.Window:
-        window_spec = core.WindowSpec(
+        window_spec = window_specs.cumulative_rows(
             grouping_keys=tuple(self._by_col_ids),
-            following=0,
             min_periods=min_periods,
         )
         block = self._block.order_by(
@@ -661,8 +660,8 @@ class SeriesGroupBy(vendored_pandas_groupby.SeriesGroupBy):
         window: typing.Optional[core.WindowSpec] = None,
     ):
         """Apply window op to groupby. Defaults to grouped cumulative window."""
-        window_spec = window or core.WindowSpec(
-            grouping_keys=tuple(self._by_col_ids), following=0
+        window_spec = window or window_specs.cumulative_rows(
+            grouping_keys=tuple(self._by_col_ids)
         )
 
         label = self._value_name if not discard_name else None

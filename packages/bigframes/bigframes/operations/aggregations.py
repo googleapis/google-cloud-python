@@ -34,8 +34,8 @@ class WindowOp:
         return True
 
     @property
-    def handles_ties(self):
-        """Whether the operator can handle ties without nondeterministic output. (eg. rank operator can handle ties but not the count operator)"""
+    def uses_total_row_ordering(self):
+        """Whether the operator needs total row ordering. (eg. lead, lag, array_agg)"""
         return False
 
     @abc.abstractmethod
@@ -232,10 +232,6 @@ class CutOp(UnaryWindowOp):
     def skips_nulls(self):
         return False
 
-    @property
-    def handles_ties(self):
-        return True
-
     def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
         if isinstance(self.bins, int) and (self.labels is False):
             return dtypes.INT_DTYPE
@@ -266,10 +262,6 @@ class QcutOp(UnaryWindowOp):
     @property
     def skips_nulls(self):
         return False
-
-    @property
-    def handles_ties(self):
-        return True
 
     def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
         return signatures.FixedOutputType(
@@ -308,10 +300,6 @@ class RankOp(UnaryWindowOp):
     def skips_nulls(self):
         return False
 
-    @property
-    def handles_ties(self):
-        return True
-
     def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
         return signatures.FixedOutputType(
             dtypes.is_orderable, dtypes.INT_DTYPE, "orderable"
@@ -324,10 +312,6 @@ class DenseRankOp(UnaryWindowOp):
     def skips_nulls(self):
         return False
 
-    @property
-    def handles_ties(self):
-        return True
-
     def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
         return signatures.FixedOutputType(
             dtypes.is_orderable, dtypes.INT_DTYPE, "orderable"
@@ -338,9 +322,17 @@ class DenseRankOp(UnaryWindowOp):
 class FirstOp(UnaryWindowOp):
     name: ClassVar[str] = "first"
 
+    @property
+    def uses_total_row_ordering(self):
+        return True
+
 
 @dataclasses.dataclass(frozen=True)
 class FirstNonNullOp(UnaryWindowOp):
+    @property
+    def uses_total_row_ordering(self):
+        return True
+
     @property
     def skips_nulls(self):
         return False
@@ -350,9 +342,17 @@ class FirstNonNullOp(UnaryWindowOp):
 class LastOp(UnaryWindowOp):
     name: ClassVar[str] = "last"
 
+    @property
+    def uses_total_row_ordering(self):
+        return True
+
 
 @dataclasses.dataclass(frozen=True)
 class LastNonNullOp(UnaryWindowOp):
+    @property
+    def uses_total_row_ordering(self):
+        return True
+
     @property
     def skips_nulls(self):
         return False
@@ -363,6 +363,10 @@ class ShiftOp(UnaryWindowOp):
     periods: int
 
     @property
+    def uses_total_row_ordering(self):
+        return True
+
+    @property
     def skips_nulls(self):
         return False
 
@@ -370,6 +374,10 @@ class ShiftOp(UnaryWindowOp):
 @dataclasses.dataclass(frozen=True)
 class DiffOp(UnaryWindowOp):
     periods: int
+
+    @property
+    def uses_total_row_ordering(self):
+        return True
 
     @property
     def skips_nulls(self):
