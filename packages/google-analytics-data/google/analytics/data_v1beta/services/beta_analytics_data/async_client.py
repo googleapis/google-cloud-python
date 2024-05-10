@@ -17,6 +17,7 @@ from collections import OrderedDict
 import functools
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -203,7 +204,13 @@ class BetaAnalyticsDataAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, BetaAnalyticsDataTransport] = "grpc_asyncio",
+        transport: Optional[
+            Union[
+                str,
+                BetaAnalyticsDataTransport,
+                Callable[..., BetaAnalyticsDataTransport],
+            ]
+        ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -215,9 +222,11 @@ class BetaAnalyticsDataAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.BetaAnalyticsDataTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,BetaAnalyticsDataTransport,Callable[..., BetaAnalyticsDataTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the BetaAnalyticsDataTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -323,15 +332,16 @@ class BetaAnalyticsDataAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = analytics_data_api.RunReportRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, analytics_data_api.RunReportRequest):
+            request = analytics_data_api.RunReportRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.run_report,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.run_report
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -410,15 +420,16 @@ class BetaAnalyticsDataAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = analytics_data_api.RunPivotReportRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, analytics_data_api.RunPivotReportRequest):
+            request = analytics_data_api.RunPivotReportRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.run_pivot_report,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.run_pivot_report
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -495,15 +506,16 @@ class BetaAnalyticsDataAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = analytics_data_api.BatchRunReportsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, analytics_data_api.BatchRunReportsRequest):
+            request = analytics_data_api.BatchRunReportsRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.batch_run_reports,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.batch_run_reports
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -580,15 +592,16 @@ class BetaAnalyticsDataAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = analytics_data_api.BatchRunPivotReportsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, analytics_data_api.BatchRunPivotReportsRequest):
+            request = analytics_data_api.BatchRunPivotReportsRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.batch_run_pivot_reports,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.batch_run_pivot_reports
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -692,8 +705,8 @@ class BetaAnalyticsDataAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -701,7 +714,10 @@ class BetaAnalyticsDataAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = analytics_data_api.GetMetadataRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, analytics_data_api.GetMetadataRequest):
+            request = analytics_data_api.GetMetadataRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -710,11 +726,9 @@ class BetaAnalyticsDataAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_metadata,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_metadata
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -799,15 +813,16 @@ class BetaAnalyticsDataAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = analytics_data_api.RunRealtimeReportRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, analytics_data_api.RunRealtimeReportRequest):
+            request = analytics_data_api.RunRealtimeReportRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.run_realtime_report,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.run_realtime_report
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -899,15 +914,16 @@ class BetaAnalyticsDataAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = analytics_data_api.CheckCompatibilityRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, analytics_data_api.CheckCompatibilityRequest):
+            request = analytics_data_api.CheckCompatibilityRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.check_compatibility,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.check_compatibility
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1038,8 +1054,8 @@ class BetaAnalyticsDataAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, audience_export])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1047,7 +1063,10 @@ class BetaAnalyticsDataAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = analytics_data_api.CreateAudienceExportRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, analytics_data_api.CreateAudienceExportRequest):
+            request = analytics_data_api.CreateAudienceExportRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1058,11 +1077,9 @@ class BetaAnalyticsDataAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_audience_export,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_audience_export
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1175,8 +1192,8 @@ class BetaAnalyticsDataAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1184,7 +1201,10 @@ class BetaAnalyticsDataAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = analytics_data_api.QueryAudienceExportRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, analytics_data_api.QueryAudienceExportRequest):
+            request = analytics_data_api.QueryAudienceExportRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1193,11 +1213,9 @@ class BetaAnalyticsDataAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.query_audience_export,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.query_audience_export
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1299,8 +1317,8 @@ class BetaAnalyticsDataAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1308,7 +1326,10 @@ class BetaAnalyticsDataAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = analytics_data_api.GetAudienceExportRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, analytics_data_api.GetAudienceExportRequest):
+            request = analytics_data_api.GetAudienceExportRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1317,11 +1338,9 @@ class BetaAnalyticsDataAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_audience_export,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_audience_export
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1426,8 +1445,8 @@ class BetaAnalyticsDataAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1435,7 +1454,10 @@ class BetaAnalyticsDataAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = analytics_data_api.ListAudienceExportsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, analytics_data_api.ListAudienceExportsRequest):
+            request = analytics_data_api.ListAudienceExportsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1444,11 +1466,9 @@ class BetaAnalyticsDataAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_audience_exports,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_audience_exports
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.

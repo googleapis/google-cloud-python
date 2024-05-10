@@ -20,6 +20,10 @@ __version__ = package_version.__version__
 
 from .services.agents import AgentsAsyncClient, AgentsClient
 from .services.changelogs import ChangelogsAsyncClient, ChangelogsClient
+from .services.conversation_history import (
+    ConversationHistoryAsyncClient,
+    ConversationHistoryClient,
+)
 from .services.deployments import DeploymentsAsyncClient, DeploymentsClient
 from .services.entity_types import EntityTypesAsyncClient, EntityTypesClient
 from .services.environments import EnvironmentsAsyncClient, EnvironmentsClient
@@ -84,6 +88,13 @@ from .types.changelog import (
     GetChangelogRequest,
     ListChangelogsRequest,
     ListChangelogsResponse,
+)
+from .types.conversation_history import (
+    Conversation,
+    DeleteConversationRequest,
+    GetConversationRequest,
+    ListConversationsRequest,
+    ListConversationsResponse,
 )
 from .types.data_store_connection import (
     DataStoreConnection,
@@ -369,6 +380,7 @@ from .types.webhook import (
     CreateWebhookRequest,
     DeleteWebhookRequest,
     GetWebhookRequest,
+    LanguageInfo,
     ListWebhooksRequest,
     ListWebhooksResponse,
     PageInfo,
@@ -382,6 +394,7 @@ from .types.webhook import (
 __all__ = (
     "AgentsAsyncClient",
     "ChangelogsAsyncClient",
+    "ConversationHistoryAsyncClient",
     "DeploymentsAsyncClient",
     "EntityTypesAsyncClient",
     "EnvironmentsAsyncClient",
@@ -425,6 +438,8 @@ __all__ = (
     "CompareVersionsRequest",
     "CompareVersionsResponse",
     "ContinuousTestResult",
+    "Conversation",
+    "ConversationHistoryClient",
     "ConversationTurn",
     "CreateAgentRequest",
     "CreateEntityTypeRequest",
@@ -449,6 +464,7 @@ __all__ = (
     "DataStoreConnectionSignals",
     "DataStoreType",
     "DeleteAgentRequest",
+    "DeleteConversationRequest",
     "DeleteEntityTypeRequest",
     "DeleteEnvironmentRequest",
     "DeleteExampleRequest",
@@ -517,6 +533,7 @@ __all__ = (
     "GetAgentRequest",
     "GetAgentValidationResultRequest",
     "GetChangelogRequest",
+    "GetConversationRequest",
     "GetDeploymentRequest",
     "GetEntityTypeRequest",
     "GetEnvironmentRequest",
@@ -559,12 +576,15 @@ __all__ = (
     "IntentView",
     "IntentsClient",
     "KnowledgeConnectorSettings",
+    "LanguageInfo",
     "ListAgentsRequest",
     "ListAgentsResponse",
     "ListChangelogsRequest",
     "ListChangelogsResponse",
     "ListContinuousTestResultsRequest",
     "ListContinuousTestResultsResponse",
+    "ListConversationsRequest",
+    "ListConversationsResponse",
     "ListDeploymentsRequest",
     "ListDeploymentsResponse",
     "ListEntityTypesRequest",

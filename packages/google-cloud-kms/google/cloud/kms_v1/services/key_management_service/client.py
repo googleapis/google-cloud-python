@@ -17,6 +17,7 @@ from collections import OrderedDict
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -650,7 +651,13 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, KeyManagementServiceTransport]] = None,
+        transport: Optional[
+            Union[
+                str,
+                KeyManagementServiceTransport,
+                Callable[..., KeyManagementServiceTransport],
+            ]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -662,9 +669,11 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, KeyManagementServiceTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,KeyManagementServiceTransport,Callable[..., KeyManagementServiceTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the KeyManagementServiceTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -773,8 +782,16 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[KeyManagementServiceTransport],
+                Callable[..., KeyManagementServiceTransport],
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., KeyManagementServiceTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -852,8 +869,8 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -861,10 +878,8 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.ListKeyRingsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.ListKeyRingsRequest):
             request = service.ListKeyRingsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -971,8 +986,8 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -980,10 +995,8 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.ListCryptoKeysRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.ListCryptoKeysRequest):
             request = service.ListCryptoKeysRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1091,8 +1104,8 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1100,10 +1113,8 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.ListCryptoKeyVersionsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.ListCryptoKeyVersionsRequest):
             request = service.ListCryptoKeyVersionsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1210,8 +1221,8 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1219,10 +1230,8 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.ListImportJobsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.ListImportJobsRequest):
             request = service.ListImportJobsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1325,8 +1334,8 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1334,10 +1343,8 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.GetKeyRingRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.GetKeyRingRequest):
             request = service.GetKeyRingRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1440,8 +1447,8 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1449,10 +1456,8 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.GetCryptoKeyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.GetCryptoKeyRequest):
             request = service.GetCryptoKeyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1560,8 +1565,8 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1569,10 +1574,8 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.GetCryptoKeyVersionRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.GetCryptoKeyVersionRequest):
             request = service.GetCryptoKeyVersionRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1675,8 +1678,8 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1684,10 +1687,8 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.GetPublicKeyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.GetPublicKeyRequest):
             request = service.GetPublicKeyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1826,8 +1827,8 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1835,10 +1836,8 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.GetImportJobRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.GetImportJobRequest):
             request = service.GetImportJobRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1950,8 +1949,8 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, key_ring_id, key_ring])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1959,10 +1958,8 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.CreateKeyRingRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.CreateKeyRingRequest):
             request = service.CreateKeyRingRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2088,8 +2085,8 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, crypto_key_id, crypto_key])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2097,10 +2094,8 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.CreateCryptoKeyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.CreateCryptoKeyRequest):
             request = service.CreateCryptoKeyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2227,8 +2222,8 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, crypto_key_version])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2236,10 +2231,8 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.CreateCryptoKeyVersionRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.CreateCryptoKeyVersionRequest):
             request = service.CreateCryptoKeyVersionRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2352,10 +2345,8 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.ImportCryptoKeyVersionRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.ImportCryptoKeyVersionRequest):
             request = service.ImportCryptoKeyVersionRequest(request)
 
@@ -2517,8 +2508,8 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, import_job_id, import_job])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2526,10 +2517,8 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.CreateImportJobRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.CreateImportJobRequest):
             request = service.CreateImportJobRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2639,8 +2628,8 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([crypto_key, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2648,10 +2637,8 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.UpdateCryptoKeyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.UpdateCryptoKeyRequest):
             request = service.UpdateCryptoKeyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2781,8 +2768,8 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([crypto_key_version, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2790,10 +2777,8 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.UpdateCryptoKeyVersionRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.UpdateCryptoKeyVersionRequest):
             request = service.UpdateCryptoKeyVersionRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2915,8 +2900,8 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, crypto_key_version_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2924,10 +2909,8 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.UpdateCryptoKeyPrimaryVersionRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.UpdateCryptoKeyPrimaryVersionRequest):
             request = service.UpdateCryptoKeyPrimaryVersionRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3059,8 +3042,8 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3068,10 +3051,8 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.DestroyCryptoKeyVersionRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.DestroyCryptoKeyVersionRequest):
             request = service.DestroyCryptoKeyVersionRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3190,8 +3171,8 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3199,10 +3180,8 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.RestoreCryptoKeyVersionRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.RestoreCryptoKeyVersionRequest):
             request = service.RestoreCryptoKeyVersionRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3329,8 +3308,8 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, plaintext])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3338,10 +3317,8 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.EncryptRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.EncryptRequest):
             request = service.EncryptRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3451,8 +3428,8 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, ciphertext])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3460,10 +3437,8 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.DecryptRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.DecryptRequest):
             request = service.DecryptRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3558,10 +3533,8 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.RawEncryptRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.RawEncryptRequest):
             request = service.RawEncryptRequest(request)
 
@@ -3648,10 +3621,8 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.RawDecryptRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.RawDecryptRequest):
             request = service.RawDecryptRequest(request)
 
@@ -3760,8 +3731,8 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, digest])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3769,10 +3740,8 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.AsymmetricSignRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.AsymmetricSignRequest):
             request = service.AsymmetricSignRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3884,8 +3853,8 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, ciphertext])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3893,10 +3862,8 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.AsymmetricDecryptRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.AsymmetricDecryptRequest):
             request = service.AsymmetricDecryptRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4006,8 +3973,8 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, data])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4015,10 +3982,8 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.MacSignRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.MacSignRequest):
             request = service.MacSignRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4135,8 +4100,8 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, data, mac])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4144,10 +4109,8 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.MacVerifyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.MacVerifyRequest):
             request = service.MacVerifyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4266,8 +4229,8 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([location, length_bytes, protection_level])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4275,10 +4238,8 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.GenerateRandomBytesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.GenerateRandomBytesRequest):
             request = service.GenerateRandomBytesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4326,6 +4287,63 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
             and may cause errors in other clients!
         """
         self.transport.close()
+
+    def get_operation(
+        self,
+        request: Optional[operations_pb2.GetOperationRequest] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operations_pb2.Operation:
+        r"""Gets the latest state of a long-running operation.
+
+        Args:
+            request (:class:`~.operations_pb2.GetOperationRequest`):
+                The request object. Request message for
+                `GetOperation` method.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                    if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        Returns:
+            ~.operations_pb2.Operation:
+                An ``Operation`` object.
+        """
+        # Create or coerce a protobuf request object.
+        # The request isn't a proto-plus wrapped type,
+        # so it must be constructed via keyword expansion.
+        if isinstance(request, dict):
+            request = operations_pb2.GetOperationRequest(**request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method.wrap_method(
+            self._transport.get_operation,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
 
     def get_location(
         self,

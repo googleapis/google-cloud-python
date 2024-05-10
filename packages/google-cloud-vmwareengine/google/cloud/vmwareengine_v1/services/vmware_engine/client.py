@@ -17,6 +17,7 @@ from collections import OrderedDict
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -902,7 +903,9 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, VmwareEngineTransport]] = None,
+        transport: Optional[
+            Union[str, VmwareEngineTransport, Callable[..., VmwareEngineTransport]]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -914,9 +917,11 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, VmwareEngineTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,VmwareEngineTransport,Callable[..., VmwareEngineTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the VmwareEngineTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -1022,8 +1027,15 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[VmwareEngineTransport], Callable[..., VmwareEngineTransport]
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., VmwareEngineTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -1104,8 +1116,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1113,10 +1125,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmwareengine.ListPrivateCloudsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmwareengine.ListPrivateCloudsRequest):
             request = vmwareengine.ListPrivateCloudsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1223,8 +1233,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1232,10 +1242,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmwareengine.GetPrivateCloudRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmwareengine.GetPrivateCloudRequest):
             request = vmwareengine.GetPrivateCloudRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1378,8 +1386,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, private_cloud, private_cloud_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1387,10 +1395,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmwareengine.CreatePrivateCloudRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmwareengine.CreatePrivateCloudRequest):
             request = vmwareengine.CreatePrivateCloudRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1524,8 +1530,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([private_cloud, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1533,10 +1539,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmwareengine.UpdatePrivateCloudRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmwareengine.UpdatePrivateCloudRequest):
             request = vmwareengine.UpdatePrivateCloudRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1669,8 +1673,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1678,10 +1682,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmwareengine.DeletePrivateCloudRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmwareengine.DeletePrivateCloudRequest):
             request = vmwareengine.DeletePrivateCloudRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1797,8 +1799,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1806,10 +1808,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmwareengine.UndeletePrivateCloudRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmwareengine.UndeletePrivateCloudRequest):
             request = vmwareengine.UndeletePrivateCloudRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1918,8 +1918,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1927,10 +1927,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmwareengine.ListClustersRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmwareengine.ListClustersRequest):
             request = vmwareengine.ListClustersRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2034,8 +2032,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 A cluster in a private cloud.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2043,10 +2041,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmwareengine.GetClusterRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmwareengine.GetClusterRequest):
             request = vmwareengine.GetClusterRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2182,8 +2178,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, cluster, cluster_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2191,10 +2187,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmwareengine.CreateClusterRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmwareengine.CreateClusterRequest):
             request = vmwareengine.CreateClusterRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2323,8 +2317,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([cluster, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2332,10 +2326,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmwareengine.UpdateClusterRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmwareengine.UpdateClusterRequest):
             request = vmwareengine.UpdateClusterRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2461,8 +2453,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2470,10 +2462,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmwareengine.DeleteClusterRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmwareengine.DeleteClusterRequest):
             request = vmwareengine.DeleteClusterRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2582,8 +2572,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2591,10 +2581,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmwareengine.ListNodesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmwareengine.ListNodesRequest):
             request = vmwareengine.ListNodesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2695,8 +2683,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 Node in a cluster.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2704,10 +2692,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmwareengine.GetNodeRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmwareengine.GetNodeRequest):
             request = vmwareengine.GetNodeRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2811,8 +2797,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2820,10 +2806,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmwareengine.ListExternalAddressesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmwareengine.ListExternalAddressesRequest):
             request = vmwareengine.ListExternalAddressesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2937,8 +2921,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([network_policy])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2946,10 +2930,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmwareengine.FetchNetworkPolicyExternalAddressesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request, vmwareengine.FetchNetworkPolicyExternalAddressesRequest
         ):
@@ -3062,8 +3044,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3071,10 +3053,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmwareengine.GetExternalAddressRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmwareengine.GetExternalAddressRequest):
             request = vmwareengine.GetExternalAddressRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3211,8 +3191,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, external_address, external_address_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3220,10 +3200,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmwareengine.CreateExternalAddressRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmwareengine.CreateExternalAddressRequest):
             request = vmwareengine.CreateExternalAddressRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3354,8 +3332,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([external_address, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3363,10 +3341,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmwareengine.UpdateExternalAddressRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmwareengine.UpdateExternalAddressRequest):
             request = vmwareengine.UpdateExternalAddressRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3494,8 +3470,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3503,10 +3479,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmwareengine.DeleteExternalAddressRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmwareengine.DeleteExternalAddressRequest):
             request = vmwareengine.DeleteExternalAddressRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3615,8 +3589,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3624,10 +3598,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmwareengine.ListSubnetsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmwareengine.ListSubnetsRequest):
             request = vmwareengine.ListSubnetsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3734,8 +3706,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3743,10 +3715,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmwareengine.GetSubnetRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmwareengine.GetSubnetRequest):
             request = vmwareengine.GetSubnetRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3860,8 +3830,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([subnet, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3869,10 +3839,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmwareengine.UpdateSubnetRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmwareengine.UpdateSubnetRequest):
             request = vmwareengine.UpdateSubnetRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3988,8 +3956,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3997,10 +3965,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmwareengine.ListExternalAccessRulesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmwareengine.ListExternalAccessRulesRequest):
             request = vmwareengine.ListExternalAccessRulesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4110,8 +4076,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4119,10 +4085,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmwareengine.GetExternalAccessRuleRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmwareengine.GetExternalAccessRuleRequest):
             request = vmwareengine.GetExternalAccessRuleRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4260,8 +4224,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [parent, external_access_rule, external_access_rule_id]
         )
@@ -4271,10 +4235,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmwareengine.CreateExternalAccessRuleRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmwareengine.CreateExternalAccessRuleRequest):
             request = vmwareengine.CreateExternalAccessRuleRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4404,8 +4366,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([external_access_rule, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4413,10 +4375,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmwareengine.UpdateExternalAccessRuleRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmwareengine.UpdateExternalAccessRuleRequest):
             request = vmwareengine.UpdateExternalAccessRuleRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4543,8 +4503,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4552,10 +4512,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmwareengine.DeleteExternalAccessRuleRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmwareengine.DeleteExternalAccessRuleRequest):
             request = vmwareengine.DeleteExternalAccessRuleRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4667,8 +4625,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4676,10 +4634,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmwareengine.ListLoggingServersRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmwareengine.ListLoggingServersRequest):
             request = vmwareengine.ListLoggingServersRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4785,8 +4741,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4794,10 +4750,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmwareengine.GetLoggingServerRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmwareengine.GetLoggingServerRequest):
             request = vmwareengine.GetLoggingServerRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4938,8 +4892,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, logging_server, logging_server_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4947,10 +4901,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmwareengine.CreateLoggingServerRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmwareengine.CreateLoggingServerRequest):
             request = vmwareengine.CreateLoggingServerRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -5080,8 +5032,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([logging_server, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5089,10 +5041,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmwareengine.UpdateLoggingServerRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmwareengine.UpdateLoggingServerRequest):
             request = vmwareengine.UpdateLoggingServerRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -5215,8 +5165,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5224,10 +5174,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmwareengine.DeleteLoggingServerRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmwareengine.DeleteLoggingServerRequest):
             request = vmwareengine.DeleteLoggingServerRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -5335,8 +5283,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5344,10 +5292,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmwareengine.ListNodeTypesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmwareengine.ListNodeTypesRequest):
             request = vmwareengine.ListNodeTypesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -5451,8 +5397,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 Describes node type.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5460,10 +5406,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmwareengine.GetNodeTypeRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmwareengine.GetNodeTypeRequest):
             request = vmwareengine.GetNodeTypeRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -5558,8 +5502,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 Credentials for a private cloud.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([private_cloud])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5567,10 +5511,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmwareengine.ShowNsxCredentialsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmwareengine.ShowNsxCredentialsRequest):
             request = vmwareengine.ShowNsxCredentialsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -5669,8 +5611,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 Credentials for a private cloud.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([private_cloud])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5678,10 +5620,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmwareengine.ShowVcenterCredentialsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmwareengine.ShowVcenterCredentialsRequest):
             request = vmwareengine.ShowVcenterCredentialsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -5787,8 +5727,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([private_cloud])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5796,10 +5736,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmwareengine.ResetNsxCredentialsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmwareengine.ResetNsxCredentialsRequest):
             request = vmwareengine.ResetNsxCredentialsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -5915,8 +5853,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([private_cloud])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5924,10 +5862,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmwareengine.ResetVcenterCredentialsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmwareengine.ResetVcenterCredentialsRequest):
             request = vmwareengine.ResetVcenterCredentialsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -6039,8 +5975,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -6048,10 +5984,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmwareengine.GetDnsForwardingRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmwareengine.GetDnsForwardingRequest):
             request = vmwareengine.GetDnsForwardingRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -6171,8 +6105,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([dns_forwarding, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -6180,10 +6114,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmwareengine.UpdateDnsForwardingRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmwareengine.UpdateDnsForwardingRequest):
             request = vmwareengine.UpdateDnsForwardingRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -6294,8 +6226,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 Details of a network peering.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -6303,10 +6235,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmwareengine.GetNetworkPeeringRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmwareengine.GetNetworkPeeringRequest):
             request = vmwareengine.GetNetworkPeeringRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -6408,8 +6338,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -6417,10 +6347,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmwareengine.ListNetworkPeeringsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmwareengine.ListNetworkPeeringsRequest):
             request = vmwareengine.ListNetworkPeeringsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -6572,8 +6500,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, network_peering, network_peering_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -6581,10 +6509,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmwareengine.CreateNetworkPeeringRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmwareengine.CreateNetworkPeeringRequest):
             request = vmwareengine.CreateNetworkPeeringRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -6710,8 +6636,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -6719,10 +6645,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmwareengine.DeleteNetworkPeeringRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmwareengine.DeleteNetworkPeeringRequest):
             request = vmwareengine.DeleteNetworkPeeringRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -6851,8 +6775,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([network_peering, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -6860,10 +6784,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmwareengine.UpdateNetworkPeeringRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmwareengine.UpdateNetworkPeeringRequest):
             request = vmwareengine.UpdateNetworkPeeringRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -6978,8 +6900,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -6987,10 +6909,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmwareengine.ListPeeringRoutesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmwareengine.ListPeeringRoutesRequest):
             request = vmwareengine.ListPeeringRoutesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -7142,8 +7062,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, hcx_activation_key, hcx_activation_key_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -7151,10 +7071,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmwareengine.CreateHcxActivationKeyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmwareengine.CreateHcxActivationKeyRequest):
             request = vmwareengine.CreateHcxActivationKeyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -7271,8 +7189,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -7280,10 +7198,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmwareengine.ListHcxActivationKeysRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmwareengine.ListHcxActivationKeysRequest):
             request = vmwareengine.ListHcxActivationKeysRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -7395,8 +7311,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -7404,10 +7320,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmwareengine.GetHcxActivationKeyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmwareengine.GetHcxActivationKeyRequest):
             request = vmwareengine.GetHcxActivationKeyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -7513,8 +7427,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -7522,10 +7436,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmwareengine.GetNetworkPolicyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmwareengine.GetNetworkPolicyRequest):
             request = vmwareengine.GetNetworkPolicyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -7626,8 +7538,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -7635,10 +7547,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmwareengine.ListNetworkPoliciesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmwareengine.ListNetworkPoliciesRequest):
             request = vmwareengine.ListNetworkPoliciesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -7792,8 +7702,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, network_policy, network_policy_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -7801,10 +7711,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmwareengine.CreateNetworkPolicyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmwareengine.CreateNetworkPolicyRequest):
             request = vmwareengine.CreateNetworkPolicyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -7947,8 +7855,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([network_policy, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -7956,10 +7864,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmwareengine.UpdateNetworkPolicyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmwareengine.UpdateNetworkPolicyRequest):
             request = vmwareengine.UpdateNetworkPolicyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -8084,8 +7990,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -8093,10 +7999,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmwareengine.DeleteNetworkPolicyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmwareengine.DeleteNetworkPolicyRequest):
             request = vmwareengine.DeleteNetworkPolicyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -8208,8 +8112,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -8217,10 +8121,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmwareengine.ListManagementDnsZoneBindingsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmwareengine.ListManagementDnsZoneBindingsRequest):
             request = vmwareengine.ListManagementDnsZoneBindingsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -8338,8 +8240,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -8347,10 +8249,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmwareengine.GetManagementDnsZoneBindingRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmwareengine.GetManagementDnsZoneBindingRequest):
             request = vmwareengine.GetManagementDnsZoneBindingRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -8505,8 +8405,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [parent, management_dns_zone_binding, management_dns_zone_binding_id]
         )
@@ -8516,10 +8416,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmwareengine.CreateManagementDnsZoneBindingRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmwareengine.CreateManagementDnsZoneBindingRequest):
             request = vmwareengine.CreateManagementDnsZoneBindingRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -8658,8 +8556,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([management_dns_zone_binding, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -8667,10 +8565,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmwareengine.UpdateManagementDnsZoneBindingRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmwareengine.UpdateManagementDnsZoneBindingRequest):
             request = vmwareengine.UpdateManagementDnsZoneBindingRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -8805,8 +8701,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -8814,10 +8710,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmwareengine.DeleteManagementDnsZoneBindingRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmwareengine.DeleteManagementDnsZoneBindingRequest):
             request = vmwareengine.DeleteManagementDnsZoneBindingRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -8938,8 +8832,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -8947,10 +8841,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmwareengine.RepairManagementDnsZoneBindingRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmwareengine.RepairManagementDnsZoneBindingRequest):
             request = vmwareengine.RepairManagementDnsZoneBindingRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -9107,8 +8999,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [parent, vmware_engine_network, vmware_engine_network_id]
         )
@@ -9118,10 +9010,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmwareengine.CreateVmwareEngineNetworkRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmwareengine.CreateVmwareEngineNetworkRequest):
             request = vmwareengine.CreateVmwareEngineNetworkRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -9257,8 +9147,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([vmware_engine_network, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -9266,10 +9156,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmwareengine.UpdateVmwareEngineNetworkRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmwareengine.UpdateVmwareEngineNetworkRequest):
             request = vmwareengine.UpdateVmwareEngineNetworkRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -9399,8 +9287,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -9408,10 +9296,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmwareengine.DeleteVmwareEngineNetworkRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmwareengine.DeleteVmwareEngineNetworkRequest):
             request = vmwareengine.DeleteVmwareEngineNetworkRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -9525,8 +9411,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -9534,10 +9420,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmwareengine.GetVmwareEngineNetworkRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmwareengine.GetVmwareEngineNetworkRequest):
             request = vmwareengine.GetVmwareEngineNetworkRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -9642,8 +9526,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -9651,10 +9535,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmwareengine.ListVmwareEngineNetworksRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmwareengine.ListVmwareEngineNetworksRequest):
             request = vmwareengine.ListVmwareEngineNetworksRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -9806,8 +9688,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, private_connection, private_connection_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -9815,10 +9697,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmwareengine.CreatePrivateConnectionRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmwareengine.CreatePrivateConnectionRequest):
             request = vmwareengine.CreatePrivateConnectionRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -9932,8 +9812,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -9941,10 +9821,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmwareengine.GetPrivateConnectionRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmwareengine.GetPrivateConnectionRequest):
             request = vmwareengine.GetPrivateConnectionRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -10047,8 +9925,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -10056,10 +9934,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmwareengine.ListPrivateConnectionsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmwareengine.ListPrivateConnectionsRequest):
             request = vmwareengine.ListPrivateConnectionsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -10189,8 +10065,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([private_connection, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -10198,10 +10074,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmwareengine.UpdatePrivateConnectionRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmwareengine.UpdatePrivateConnectionRequest):
             request = vmwareengine.UpdatePrivateConnectionRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -10330,8 +10204,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -10339,10 +10213,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmwareengine.DeletePrivateConnectionRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmwareengine.DeletePrivateConnectionRequest):
             request = vmwareengine.DeletePrivateConnectionRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -10456,8 +10328,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -10465,10 +10337,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmwareengine.ListPrivateConnectionPeeringRoutesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request, vmwareengine.ListPrivateConnectionPeeringRoutesRequest
         ):
@@ -10608,8 +10478,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, principal])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -10617,10 +10487,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmwareengine.GrantDnsBindPermissionRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmwareengine.GrantDnsBindPermissionRequest):
             request = vmwareengine.GrantDnsBindPermissionRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -10737,8 +10605,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -10746,10 +10614,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmwareengine.GetDnsBindPermissionRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmwareengine.GetDnsBindPermissionRequest):
             request = vmwareengine.GetDnsBindPermissionRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -10876,8 +10742,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, principal])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -10885,10 +10751,8 @@ class VmwareEngineClient(metaclass=VmwareEngineClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmwareengine.RevokeDnsBindPermissionRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmwareengine.RevokeDnsBindPermissionRequest):
             request = vmwareengine.RevokeDnsBindPermissionRequest(request)
             # If we have keyword arguments corresponding to fields on the

@@ -22,6 +22,7 @@ import proto  # type: ignore
 __protobuf__ = proto.module(
     package="google.shopping.type",
     manifest={
+        "Weight",
         "Price",
         "CustomAttribute",
         "Destination",
@@ -29,6 +30,54 @@ __protobuf__ = proto.module(
         "Channel",
     },
 )
+
+
+class Weight(proto.Message):
+    r"""The weight represented as the value in string and the unit.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        amount_micros (int):
+            Required. The weight represented as a number
+            in micros (1 million micros is an equivalent to
+            one's currency standard unit, for example, 1 kg
+            = 1000000 micros).
+            This field can also be set as infinity by
+            setting to -1. This field only support -1 and
+            positive value.
+
+            This field is a member of `oneof`_ ``_amount_micros``.
+        unit (google.shopping.type.types.Weight.WeightUnit):
+            Required. The weight unit.
+            Acceptable values are: kg and lb
+    """
+
+    class WeightUnit(proto.Enum):
+        r"""The weight unit.
+
+        Values:
+            WEIGHT_UNIT_UNSPECIFIED (0):
+                unit unspecified
+            POUND (1):
+                lb unit.
+            KILOGRAM (2):
+                kg unit.
+        """
+        WEIGHT_UNIT_UNSPECIFIED = 0
+        POUND = 1
+        KILOGRAM = 2
+
+    amount_micros: int = proto.Field(
+        proto.INT64,
+        number=1,
+        optional=True,
+    )
+    unit: WeightUnit = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=WeightUnit,
+    )
 
 
 class Price(proto.Message):
@@ -42,9 +91,6 @@ class Price(proto.Message):
             (1 million micros is an equivalent to one's
             currency standard unit, for example, 1 USD =
             1000000 micros).
-            This field can also be set as infinity by
-            setting to -1. This field only support -1 and
-            positive value.
 
             This field is a member of `oneof`_ ``_amount_micros``.
         currency_code (str):

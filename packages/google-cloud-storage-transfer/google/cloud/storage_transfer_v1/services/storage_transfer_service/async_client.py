@@ -17,6 +17,7 @@ from collections import OrderedDict
 import functools
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -209,7 +210,13 @@ class StorageTransferServiceAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, StorageTransferServiceTransport] = "grpc_asyncio",
+        transport: Optional[
+            Union[
+                str,
+                StorageTransferServiceTransport,
+                Callable[..., StorageTransferServiceTransport],
+            ]
+        ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -221,9 +228,11 @@ class StorageTransferServiceAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.StorageTransferServiceTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,StorageTransferServiceTransport,Callable[..., StorageTransferServiceTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the StorageTransferServiceTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -327,15 +336,16 @@ class StorageTransferServiceAsyncClient:
                 Google service account
         """
         # Create or coerce a protobuf request object.
-        request = transfer.GetGoogleServiceAccountRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, transfer.GetGoogleServiceAccountRequest):
+            request = transfer.GetGoogleServiceAccountRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_google_service_account,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_google_service_account
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -411,15 +421,16 @@ class StorageTransferServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = transfer.CreateTransferJobRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, transfer.CreateTransferJobRequest):
+            request = transfer.CreateTransferJobRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_transfer_job,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_transfer_job
+        ]
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -499,15 +510,16 @@ class StorageTransferServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = transfer.UpdateTransferJobRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, transfer.UpdateTransferJobRequest):
+            request = transfer.UpdateTransferJobRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_transfer_job,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_transfer_job
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -583,15 +595,16 @@ class StorageTransferServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = transfer.GetTransferJobRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, transfer.GetTransferJobRequest):
+            request = transfer.GetTransferJobRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_transfer_job,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_transfer_job
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -671,15 +684,16 @@ class StorageTransferServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = transfer.ListTransferJobsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, transfer.ListTransferJobsRequest):
+            request = transfer.ListTransferJobsRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_transfer_jobs,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_transfer_jobs
+        ]
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -748,15 +762,16 @@ class StorageTransferServiceAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        request = transfer.PauseTransferOperationRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, transfer.PauseTransferOperationRequest):
+            request = transfer.PauseTransferOperationRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.pause_transfer_operation,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.pause_transfer_operation
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -819,15 +834,16 @@ class StorageTransferServiceAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        request = transfer.ResumeTransferOperationRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, transfer.ResumeTransferOperationRequest):
+            request = transfer.ResumeTransferOperationRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.resume_transfer_operation,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.resume_transfer_operation
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -916,15 +932,16 @@ class StorageTransferServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = transfer.RunTransferJobRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, transfer.RunTransferJobRequest):
+            request = transfer.RunTransferJobRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.run_transfer_job,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.run_transfer_job
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1000,15 +1017,16 @@ class StorageTransferServiceAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        request = transfer.DeleteTransferJobRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, transfer.DeleteTransferJobRequest):
+            request = transfer.DeleteTransferJobRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_transfer_job,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_transfer_job
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1120,8 +1138,8 @@ class StorageTransferServiceAsyncClient:
                 Represents an On-Premises Agent pool.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project_id, agent_pool, agent_pool_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1129,7 +1147,10 @@ class StorageTransferServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = transfer.CreateAgentPoolRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, transfer.CreateAgentPoolRequest):
+            request = transfer.CreateAgentPoolRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1142,11 +1163,9 @@ class StorageTransferServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_agent_pool,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_agent_pool
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1256,8 +1275,8 @@ class StorageTransferServiceAsyncClient:
                 Represents an On-Premises Agent pool.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([agent_pool, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1265,7 +1284,10 @@ class StorageTransferServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = transfer.UpdateAgentPoolRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, transfer.UpdateAgentPoolRequest):
+            request = transfer.UpdateAgentPoolRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1276,11 +1298,9 @@ class StorageTransferServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_agent_pool,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_agent_pool
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1363,8 +1383,8 @@ class StorageTransferServiceAsyncClient:
                 Represents an On-Premises Agent pool.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1372,7 +1392,10 @@ class StorageTransferServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = transfer.GetAgentPoolRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, transfer.GetAgentPoolRequest):
+            request = transfer.GetAgentPoolRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1381,11 +1404,9 @@ class StorageTransferServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_agent_pool,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_agent_pool
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1471,8 +1492,8 @@ class StorageTransferServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1480,7 +1501,10 @@ class StorageTransferServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = transfer.ListAgentPoolsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, transfer.ListAgentPoolsRequest):
+            request = transfer.ListAgentPoolsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1489,11 +1513,9 @@ class StorageTransferServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_agent_pools,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_agent_pools
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1578,8 +1600,8 @@ class StorageTransferServiceAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1587,7 +1609,10 @@ class StorageTransferServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = transfer.DeleteAgentPoolRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, transfer.DeleteAgentPoolRequest):
+            request = transfer.DeleteAgentPoolRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1596,11 +1621,9 @@ class StorageTransferServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_agent_pool,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_agent_pool
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.

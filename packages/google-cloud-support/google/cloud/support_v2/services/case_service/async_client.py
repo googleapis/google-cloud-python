@@ -17,6 +17,7 @@ from collections import OrderedDict
 import functools
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -196,7 +197,9 @@ class CaseServiceAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, CaseServiceTransport] = "grpc_asyncio",
+        transport: Optional[
+            Union[str, CaseServiceTransport, Callable[..., CaseServiceTransport]]
+        ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -208,9 +211,11 @@ class CaseServiceAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.CaseServiceTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,CaseServiceTransport,Callable[..., CaseServiceTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the CaseServiceTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -313,8 +318,8 @@ class CaseServiceAsyncClient:
                 A support case.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -322,7 +327,10 @@ class CaseServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = case_service.GetCaseRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, case_service.GetCaseRequest):
+            request = case_service.GetCaseRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -331,20 +339,7 @@ class CaseServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_case,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_case]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -436,8 +431,8 @@ class CaseServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -445,7 +440,10 @@ class CaseServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = case_service.ListCasesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, case_service.ListCasesRequest):
+            request = case_service.ListCasesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -454,20 +452,9 @@ class CaseServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_cases,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_cases
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -554,24 +541,16 @@ class CaseServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = case_service.SearchCasesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, case_service.SearchCasesRequest):
+            request = case_service.SearchCasesRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.search_cases,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.search_cases
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -671,8 +650,8 @@ class CaseServiceAsyncClient:
                 A support case.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, case])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -680,7 +659,10 @@ class CaseServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = case_service.CreateCaseRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, case_service.CreateCaseRequest):
+            request = case_service.CreateCaseRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -691,11 +673,9 @@ class CaseServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_case,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_case
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -791,8 +771,8 @@ class CaseServiceAsyncClient:
                 A support case.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([case, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -800,7 +780,10 @@ class CaseServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = case_service.UpdateCaseRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, case_service.UpdateCaseRequest):
+            request = case_service.UpdateCaseRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -811,11 +794,9 @@ class CaseServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_case,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_case
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -897,15 +878,16 @@ class CaseServiceAsyncClient:
                 A support case.
         """
         # Create or coerce a protobuf request object.
-        request = case_service.EscalateCaseRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, case_service.EscalateCaseRequest):
+            request = case_service.EscalateCaseRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.escalate_case,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.escalate_case
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -978,15 +960,16 @@ class CaseServiceAsyncClient:
                 A support case.
         """
         # Create or coerce a protobuf request object.
-        request = case_service.CloseCaseRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, case_service.CloseCaseRequest):
+            request = case_service.CloseCaseRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.close_case,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.close_case
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1070,24 +1053,16 @@ class CaseServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = case_service.SearchCaseClassificationsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, case_service.SearchCaseClassificationsRequest):
+            request = case_service.SearchCaseClassificationsRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.search_case_classifications,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.search_case_classifications
+        ]
 
         # Validate the universe domain.
         self._client._validate_universe_domain()

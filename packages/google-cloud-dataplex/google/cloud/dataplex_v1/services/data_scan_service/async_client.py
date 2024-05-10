@@ -17,6 +17,7 @@ from collections import OrderedDict
 import functools
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -221,7 +222,11 @@ class DataScanServiceAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, DataScanServiceTransport] = "grpc_asyncio",
+        transport: Optional[
+            Union[
+                str, DataScanServiceTransport, Callable[..., DataScanServiceTransport]
+            ]
+        ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -233,9 +238,11 @@ class DataScanServiceAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.DataScanServiceTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,DataScanServiceTransport,Callable[..., DataScanServiceTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the DataScanServiceTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -384,8 +391,8 @@ class DataScanServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, data_scan, data_scan_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -393,7 +400,10 @@ class DataScanServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = datascans.CreateDataScanRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, datascans.CreateDataScanRequest):
+            request = datascans.CreateDataScanRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -406,11 +416,9 @@ class DataScanServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_data_scan,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_data_scan
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -527,8 +535,8 @@ class DataScanServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([data_scan, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -536,7 +544,10 @@ class DataScanServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = datascans.UpdateDataScanRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, datascans.UpdateDataScanRequest):
+            request = datascans.UpdateDataScanRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -547,11 +558,9 @@ class DataScanServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_data_scan,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_data_scan
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -660,8 +669,8 @@ class DataScanServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -669,7 +678,10 @@ class DataScanServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = datascans.DeleteDataScanRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, datascans.DeleteDataScanRequest):
+            request = datascans.DeleteDataScanRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -678,11 +690,9 @@ class DataScanServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_data_scan,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_data_scan
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -785,8 +795,8 @@ class DataScanServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -794,7 +804,10 @@ class DataScanServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = datascans.GetDataScanRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, datascans.GetDataScanRequest):
+            request = datascans.GetDataScanRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -803,11 +816,9 @@ class DataScanServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_data_scan,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_data_scan
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -895,8 +906,8 @@ class DataScanServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -904,7 +915,10 @@ class DataScanServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = datascans.ListDataScansRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, datascans.ListDataScansRequest):
+            request = datascans.ListDataScansRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -913,11 +927,9 @@ class DataScanServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_data_scans,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_data_scans
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1011,8 +1023,8 @@ class DataScanServiceAsyncClient:
                 Run DataScan Response.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1020,7 +1032,10 @@ class DataScanServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = datascans.RunDataScanRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, datascans.RunDataScanRequest):
+            request = datascans.RunDataScanRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1029,11 +1044,9 @@ class DataScanServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.run_data_scan,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.run_data_scan
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1118,8 +1131,8 @@ class DataScanServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1127,7 +1140,10 @@ class DataScanServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = datascans.GetDataScanJobRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, datascans.GetDataScanJobRequest):
+            request = datascans.GetDataScanJobRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1136,11 +1152,9 @@ class DataScanServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_data_scan_job,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_data_scan_job
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1229,8 +1243,8 @@ class DataScanServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1238,7 +1252,10 @@ class DataScanServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = datascans.ListDataScanJobsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, datascans.ListDataScanJobsRequest):
+            request = datascans.ListDataScanJobsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1247,11 +1264,9 @@ class DataScanServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_data_scan_jobs,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_data_scan_jobs
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1350,8 +1365,8 @@ class DataScanServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1359,7 +1374,10 @@ class DataScanServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = datascans.GenerateDataQualityRulesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, datascans.GenerateDataQualityRulesRequest):
+            request = datascans.GenerateDataQualityRulesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1368,11 +1386,9 @@ class DataScanServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.generate_data_quality_rules,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.generate_data_quality_rules
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.

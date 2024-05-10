@@ -17,6 +17,7 @@ from collections import OrderedDict
 import functools
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -260,7 +261,9 @@ class VmwareEngineAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, VmwareEngineTransport] = "grpc_asyncio",
+        transport: Optional[
+            Union[str, VmwareEngineTransport, Callable[..., VmwareEngineTransport]]
+        ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -272,9 +275,11 @@ class VmwareEngineAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.VmwareEngineTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,VmwareEngineTransport,Callable[..., VmwareEngineTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the VmwareEngineTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -387,8 +392,8 @@ class VmwareEngineAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -396,7 +401,10 @@ class VmwareEngineAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmwareengine.ListPrivateCloudsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmwareengine.ListPrivateCloudsRequest):
+            request = vmwareengine.ListPrivateCloudsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -405,20 +413,9 @@ class VmwareEngineAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_private_clouds,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=120.0,
-            ),
-            default_timeout=120.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_private_clouds
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -515,8 +512,8 @@ class VmwareEngineAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -524,7 +521,10 @@ class VmwareEngineAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmwareengine.GetPrivateCloudRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmwareengine.GetPrivateCloudRequest):
+            request = vmwareengine.GetPrivateCloudRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -533,20 +533,9 @@ class VmwareEngineAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_private_cloud,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=120.0,
-            ),
-            default_timeout=120.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_private_cloud
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -679,8 +668,8 @@ class VmwareEngineAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, private_cloud, private_cloud_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -688,7 +677,10 @@ class VmwareEngineAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmwareengine.CreatePrivateCloudRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmwareengine.CreatePrivateCloudRequest):
+            request = vmwareengine.CreatePrivateCloudRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -701,11 +693,9 @@ class VmwareEngineAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_private_cloud,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_private_cloud
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -825,8 +815,8 @@ class VmwareEngineAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([private_cloud, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -834,7 +824,10 @@ class VmwareEngineAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmwareengine.UpdatePrivateCloudRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmwareengine.UpdatePrivateCloudRequest):
+            request = vmwareengine.UpdatePrivateCloudRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -845,11 +838,9 @@ class VmwareEngineAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_private_cloud,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_private_cloud
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -970,8 +961,8 @@ class VmwareEngineAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -979,7 +970,10 @@ class VmwareEngineAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmwareengine.DeletePrivateCloudRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmwareengine.DeletePrivateCloudRequest):
+            request = vmwareengine.DeletePrivateCloudRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -988,11 +982,9 @@ class VmwareEngineAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_private_cloud,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_private_cloud
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1098,8 +1090,8 @@ class VmwareEngineAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1107,7 +1099,10 @@ class VmwareEngineAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmwareengine.UndeletePrivateCloudRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmwareengine.UndeletePrivateCloudRequest):
+            request = vmwareengine.UndeletePrivateCloudRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1116,11 +1111,9 @@ class VmwareEngineAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.undelete_private_cloud,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.undelete_private_cloud
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1219,8 +1212,8 @@ class VmwareEngineAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1228,7 +1221,10 @@ class VmwareEngineAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmwareengine.ListClustersRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmwareengine.ListClustersRequest):
+            request = vmwareengine.ListClustersRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1237,20 +1233,9 @@ class VmwareEngineAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_clusters,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=120.0,
-            ),
-            default_timeout=120.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_clusters
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1344,8 +1329,8 @@ class VmwareEngineAsyncClient:
                 A cluster in a private cloud.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1353,7 +1338,10 @@ class VmwareEngineAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmwareengine.GetClusterRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmwareengine.GetClusterRequest):
+            request = vmwareengine.GetClusterRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1362,20 +1350,9 @@ class VmwareEngineAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_cluster,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=120.0,
-            ),
-            default_timeout=120.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_cluster
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1501,8 +1478,8 @@ class VmwareEngineAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, cluster, cluster_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1510,7 +1487,10 @@ class VmwareEngineAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmwareengine.CreateClusterRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmwareengine.CreateClusterRequest):
+            request = vmwareengine.CreateClusterRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1523,11 +1503,9 @@ class VmwareEngineAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_cluster,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_cluster
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1642,8 +1620,8 @@ class VmwareEngineAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([cluster, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1651,7 +1629,10 @@ class VmwareEngineAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmwareengine.UpdateClusterRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmwareengine.UpdateClusterRequest):
+            request = vmwareengine.UpdateClusterRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1662,11 +1643,9 @@ class VmwareEngineAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_cluster,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_cluster
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1780,8 +1759,8 @@ class VmwareEngineAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1789,7 +1768,10 @@ class VmwareEngineAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmwareengine.DeleteClusterRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmwareengine.DeleteClusterRequest):
+            request = vmwareengine.DeleteClusterRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1798,11 +1780,9 @@ class VmwareEngineAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_cluster,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_cluster
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1901,8 +1881,8 @@ class VmwareEngineAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1910,7 +1890,10 @@ class VmwareEngineAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmwareengine.ListNodesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmwareengine.ListNodesRequest):
+            request = vmwareengine.ListNodesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1919,20 +1902,9 @@ class VmwareEngineAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_nodes,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=120.0,
-            ),
-            default_timeout=120.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_nodes
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2023,8 +1995,8 @@ class VmwareEngineAsyncClient:
                 Node in a cluster.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2032,7 +2004,10 @@ class VmwareEngineAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmwareengine.GetNodeRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmwareengine.GetNodeRequest):
+            request = vmwareengine.GetNodeRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2041,20 +2016,7 @@ class VmwareEngineAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_node,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=120.0,
-            ),
-            default_timeout=120.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_node]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2148,8 +2110,8 @@ class VmwareEngineAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2157,7 +2119,10 @@ class VmwareEngineAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmwareengine.ListExternalAddressesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmwareengine.ListExternalAddressesRequest):
+            request = vmwareengine.ListExternalAddressesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2166,20 +2131,9 @@ class VmwareEngineAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_external_addresses,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=120.0,
-            ),
-            default_timeout=120.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_external_addresses
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2283,8 +2237,8 @@ class VmwareEngineAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([network_policy])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2292,7 +2246,12 @@ class VmwareEngineAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmwareengine.FetchNetworkPolicyExternalAddressesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, vmwareengine.FetchNetworkPolicyExternalAddressesRequest
+        ):
+            request = vmwareengine.FetchNetworkPolicyExternalAddressesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2301,11 +2260,9 @@ class VmwareEngineAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.fetch_network_policy_external_addresses,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.fetch_network_policy_external_addresses
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2404,8 +2361,8 @@ class VmwareEngineAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2413,7 +2370,10 @@ class VmwareEngineAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmwareengine.GetExternalAddressRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmwareengine.GetExternalAddressRequest):
+            request = vmwareengine.GetExternalAddressRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2422,20 +2382,9 @@ class VmwareEngineAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_external_address,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=120.0,
-            ),
-            default_timeout=120.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_external_address
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2562,8 +2511,8 @@ class VmwareEngineAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, external_address, external_address_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2571,7 +2520,10 @@ class VmwareEngineAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmwareengine.CreateExternalAddressRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmwareengine.CreateExternalAddressRequest):
+            request = vmwareengine.CreateExternalAddressRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2584,11 +2536,9 @@ class VmwareEngineAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_external_address,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_external_address
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2705,8 +2655,8 @@ class VmwareEngineAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([external_address, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2714,7 +2664,10 @@ class VmwareEngineAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmwareengine.UpdateExternalAddressRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmwareengine.UpdateExternalAddressRequest):
+            request = vmwareengine.UpdateExternalAddressRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2725,11 +2678,9 @@ class VmwareEngineAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_external_address,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_external_address
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2845,8 +2796,8 @@ class VmwareEngineAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2854,7 +2805,10 @@ class VmwareEngineAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmwareengine.DeleteExternalAddressRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmwareengine.DeleteExternalAddressRequest):
+            request = vmwareengine.DeleteExternalAddressRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2863,11 +2817,9 @@ class VmwareEngineAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_external_address,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_external_address
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2966,8 +2918,8 @@ class VmwareEngineAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2975,7 +2927,10 @@ class VmwareEngineAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmwareengine.ListSubnetsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmwareengine.ListSubnetsRequest):
+            request = vmwareengine.ListSubnetsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2984,20 +2939,9 @@ class VmwareEngineAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_subnets,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=120.0,
-            ),
-            default_timeout=120.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_subnets
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3094,8 +3038,8 @@ class VmwareEngineAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3103,7 +3047,10 @@ class VmwareEngineAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmwareengine.GetSubnetRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmwareengine.GetSubnetRequest):
+            request = vmwareengine.GetSubnetRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3112,20 +3059,9 @@ class VmwareEngineAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_subnet,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=120.0,
-            ),
-            default_timeout=120.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_subnet
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3229,8 +3165,8 @@ class VmwareEngineAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([subnet, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3238,7 +3174,10 @@ class VmwareEngineAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmwareengine.UpdateSubnetRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmwareengine.UpdateSubnetRequest):
+            request = vmwareengine.UpdateSubnetRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3249,11 +3188,9 @@ class VmwareEngineAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_subnet,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_subnet
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3357,8 +3294,8 @@ class VmwareEngineAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3366,7 +3303,10 @@ class VmwareEngineAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmwareengine.ListExternalAccessRulesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmwareengine.ListExternalAccessRulesRequest):
+            request = vmwareengine.ListExternalAccessRulesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3375,20 +3315,9 @@ class VmwareEngineAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_external_access_rules,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=120.0,
-            ),
-            default_timeout=120.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_external_access_rules
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3486,8 +3415,8 @@ class VmwareEngineAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3495,7 +3424,10 @@ class VmwareEngineAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmwareengine.GetExternalAccessRuleRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmwareengine.GetExternalAccessRuleRequest):
+            request = vmwareengine.GetExternalAccessRuleRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3504,20 +3436,9 @@ class VmwareEngineAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_external_access_rule,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=120.0,
-            ),
-            default_timeout=120.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_external_access_rule
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3645,8 +3566,8 @@ class VmwareEngineAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [parent, external_access_rule, external_access_rule_id]
         )
@@ -3656,7 +3577,10 @@ class VmwareEngineAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmwareengine.CreateExternalAccessRuleRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmwareengine.CreateExternalAccessRuleRequest):
+            request = vmwareengine.CreateExternalAccessRuleRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3669,11 +3593,9 @@ class VmwareEngineAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_external_access_rule,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_external_access_rule
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3787,8 +3709,8 @@ class VmwareEngineAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([external_access_rule, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3796,7 +3718,10 @@ class VmwareEngineAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmwareengine.UpdateExternalAccessRuleRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmwareengine.UpdateExternalAccessRuleRequest):
+            request = vmwareengine.UpdateExternalAccessRuleRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3807,11 +3732,9 @@ class VmwareEngineAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_external_access_rule,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_external_access_rule
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3924,8 +3847,8 @@ class VmwareEngineAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3933,7 +3856,10 @@ class VmwareEngineAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmwareengine.DeleteExternalAccessRuleRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmwareengine.DeleteExternalAccessRuleRequest):
+            request = vmwareengine.DeleteExternalAccessRuleRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3942,11 +3868,9 @@ class VmwareEngineAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_external_access_rule,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_external_access_rule
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4046,8 +3970,8 @@ class VmwareEngineAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4055,7 +3979,10 @@ class VmwareEngineAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmwareengine.ListLoggingServersRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmwareengine.ListLoggingServersRequest):
+            request = vmwareengine.ListLoggingServersRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -4064,20 +3991,9 @@ class VmwareEngineAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_logging_servers,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=120.0,
-            ),
-            default_timeout=120.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_logging_servers
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4173,8 +4089,8 @@ class VmwareEngineAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4182,7 +4098,10 @@ class VmwareEngineAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmwareengine.GetLoggingServerRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmwareengine.GetLoggingServerRequest):
+            request = vmwareengine.GetLoggingServerRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -4191,20 +4110,9 @@ class VmwareEngineAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_logging_server,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=120.0,
-            ),
-            default_timeout=120.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_logging_server
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4335,8 +4243,8 @@ class VmwareEngineAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, logging_server, logging_server_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4344,7 +4252,10 @@ class VmwareEngineAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmwareengine.CreateLoggingServerRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmwareengine.CreateLoggingServerRequest):
+            request = vmwareengine.CreateLoggingServerRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -4357,11 +4268,9 @@ class VmwareEngineAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_logging_server,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_logging_server
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4477,8 +4386,8 @@ class VmwareEngineAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([logging_server, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4486,7 +4395,10 @@ class VmwareEngineAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmwareengine.UpdateLoggingServerRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmwareengine.UpdateLoggingServerRequest):
+            request = vmwareengine.UpdateLoggingServerRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -4497,11 +4409,9 @@ class VmwareEngineAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_logging_server,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_logging_server
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4612,8 +4522,8 @@ class VmwareEngineAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4621,7 +4531,10 @@ class VmwareEngineAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmwareengine.DeleteLoggingServerRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmwareengine.DeleteLoggingServerRequest):
+            request = vmwareengine.DeleteLoggingServerRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -4630,11 +4543,9 @@ class VmwareEngineAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_logging_server,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_logging_server
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4732,8 +4643,8 @@ class VmwareEngineAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4741,7 +4652,10 @@ class VmwareEngineAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmwareengine.ListNodeTypesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmwareengine.ListNodeTypesRequest):
+            request = vmwareengine.ListNodeTypesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -4750,20 +4664,9 @@ class VmwareEngineAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_node_types,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=120.0,
-            ),
-            default_timeout=120.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_node_types
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4857,8 +4760,8 @@ class VmwareEngineAsyncClient:
                 Describes node type.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4866,7 +4769,10 @@ class VmwareEngineAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmwareengine.GetNodeTypeRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmwareengine.GetNodeTypeRequest):
+            request = vmwareengine.GetNodeTypeRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -4875,20 +4781,9 @@ class VmwareEngineAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_node_type,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=120.0,
-            ),
-            default_timeout=120.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_node_type
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4973,8 +4868,8 @@ class VmwareEngineAsyncClient:
                 Credentials for a private cloud.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([private_cloud])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4982,7 +4877,10 @@ class VmwareEngineAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmwareengine.ShowNsxCredentialsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmwareengine.ShowNsxCredentialsRequest):
+            request = vmwareengine.ShowNsxCredentialsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -4991,20 +4889,9 @@ class VmwareEngineAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.show_nsx_credentials,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=120.0,
-            ),
-            default_timeout=120.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.show_nsx_credentials
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -5093,8 +4980,8 @@ class VmwareEngineAsyncClient:
                 Credentials for a private cloud.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([private_cloud])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5102,7 +4989,10 @@ class VmwareEngineAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmwareengine.ShowVcenterCredentialsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmwareengine.ShowVcenterCredentialsRequest):
+            request = vmwareengine.ShowVcenterCredentialsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -5111,20 +5001,9 @@ class VmwareEngineAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.show_vcenter_credentials,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=120.0,
-            ),
-            default_timeout=120.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.show_vcenter_credentials
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -5220,8 +5099,8 @@ class VmwareEngineAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([private_cloud])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5229,7 +5108,10 @@ class VmwareEngineAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmwareengine.ResetNsxCredentialsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmwareengine.ResetNsxCredentialsRequest):
+            request = vmwareengine.ResetNsxCredentialsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -5238,11 +5120,9 @@ class VmwareEngineAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.reset_nsx_credentials,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.reset_nsx_credentials
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -5348,8 +5228,8 @@ class VmwareEngineAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([private_cloud])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5357,7 +5237,10 @@ class VmwareEngineAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmwareengine.ResetVcenterCredentialsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmwareengine.ResetVcenterCredentialsRequest):
+            request = vmwareengine.ResetVcenterCredentialsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -5366,11 +5249,9 @@ class VmwareEngineAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.reset_vcenter_credentials,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.reset_vcenter_credentials
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -5470,8 +5351,8 @@ class VmwareEngineAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5479,7 +5360,10 @@ class VmwareEngineAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmwareengine.GetDnsForwardingRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmwareengine.GetDnsForwardingRequest):
+            request = vmwareengine.GetDnsForwardingRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -5488,20 +5372,9 @@ class VmwareEngineAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_dns_forwarding,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=120.0,
-            ),
-            default_timeout=120.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_dns_forwarding
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -5611,8 +5484,8 @@ class VmwareEngineAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([dns_forwarding, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5620,7 +5493,10 @@ class VmwareEngineAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmwareengine.UpdateDnsForwardingRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmwareengine.UpdateDnsForwardingRequest):
+            request = vmwareengine.UpdateDnsForwardingRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -5631,11 +5507,9 @@ class VmwareEngineAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_dns_forwarding,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_dns_forwarding
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -5734,8 +5608,8 @@ class VmwareEngineAsyncClient:
                 Details of a network peering.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5743,7 +5617,10 @@ class VmwareEngineAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmwareengine.GetNetworkPeeringRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmwareengine.GetNetworkPeeringRequest):
+            request = vmwareengine.GetNetworkPeeringRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -5752,20 +5629,9 @@ class VmwareEngineAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_network_peering,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=120.0,
-            ),
-            default_timeout=120.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_network_peering
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -5857,8 +5723,8 @@ class VmwareEngineAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5866,7 +5732,10 @@ class VmwareEngineAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmwareengine.ListNetworkPeeringsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmwareengine.ListNetworkPeeringsRequest):
+            request = vmwareengine.ListNetworkPeeringsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -5875,20 +5744,9 @@ class VmwareEngineAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_network_peerings,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=120.0,
-            ),
-            default_timeout=120.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_network_peerings
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -6030,8 +5888,8 @@ class VmwareEngineAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, network_peering, network_peering_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -6039,7 +5897,10 @@ class VmwareEngineAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmwareengine.CreateNetworkPeeringRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmwareengine.CreateNetworkPeeringRequest):
+            request = vmwareengine.CreateNetworkPeeringRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -6052,11 +5913,9 @@ class VmwareEngineAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_network_peering,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_network_peering
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -6168,8 +6027,8 @@ class VmwareEngineAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -6177,7 +6036,10 @@ class VmwareEngineAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmwareengine.DeleteNetworkPeeringRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmwareengine.DeleteNetworkPeeringRequest):
+            request = vmwareengine.DeleteNetworkPeeringRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -6186,11 +6048,9 @@ class VmwareEngineAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_network_peering,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_network_peering
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -6309,8 +6169,8 @@ class VmwareEngineAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([network_peering, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -6318,7 +6178,10 @@ class VmwareEngineAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmwareengine.UpdateNetworkPeeringRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmwareengine.UpdateNetworkPeeringRequest):
+            request = vmwareengine.UpdateNetworkPeeringRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -6329,11 +6192,9 @@ class VmwareEngineAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_network_peering,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_network_peering
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -6436,8 +6297,8 @@ class VmwareEngineAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -6445,7 +6306,10 @@ class VmwareEngineAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmwareengine.ListPeeringRoutesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmwareengine.ListPeeringRoutesRequest):
+            request = vmwareengine.ListPeeringRoutesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -6454,20 +6318,9 @@ class VmwareEngineAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_peering_routes,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=120.0,
-            ),
-            default_timeout=120.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_peering_routes
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -6609,8 +6462,8 @@ class VmwareEngineAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, hcx_activation_key, hcx_activation_key_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -6618,7 +6471,10 @@ class VmwareEngineAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmwareengine.CreateHcxActivationKeyRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmwareengine.CreateHcxActivationKeyRequest):
+            request = vmwareengine.CreateHcxActivationKeyRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -6631,11 +6487,9 @@ class VmwareEngineAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_hcx_activation_key,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_hcx_activation_key
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -6736,8 +6590,8 @@ class VmwareEngineAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -6745,7 +6599,10 @@ class VmwareEngineAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmwareengine.ListHcxActivationKeysRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmwareengine.ListHcxActivationKeysRequest):
+            request = vmwareengine.ListHcxActivationKeysRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -6754,20 +6611,9 @@ class VmwareEngineAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_hcx_activation_keys,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=120.0,
-            ),
-            default_timeout=120.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_hcx_activation_keys
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -6869,8 +6715,8 @@ class VmwareEngineAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -6878,7 +6724,10 @@ class VmwareEngineAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmwareengine.GetHcxActivationKeyRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmwareengine.GetHcxActivationKeyRequest):
+            request = vmwareengine.GetHcxActivationKeyRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -6887,20 +6736,9 @@ class VmwareEngineAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_hcx_activation_key,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=120.0,
-            ),
-            default_timeout=120.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_hcx_activation_key
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -6996,8 +6834,8 @@ class VmwareEngineAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -7005,7 +6843,10 @@ class VmwareEngineAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmwareengine.GetNetworkPolicyRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmwareengine.GetNetworkPolicyRequest):
+            request = vmwareengine.GetNetworkPolicyRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -7014,20 +6855,9 @@ class VmwareEngineAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_network_policy,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=120.0,
-            ),
-            default_timeout=120.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_network_policy
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -7118,8 +6948,8 @@ class VmwareEngineAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -7127,7 +6957,10 @@ class VmwareEngineAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmwareengine.ListNetworkPoliciesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmwareengine.ListNetworkPoliciesRequest):
+            request = vmwareengine.ListNetworkPoliciesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -7136,20 +6969,9 @@ class VmwareEngineAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_network_policies,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=120.0,
-            ),
-            default_timeout=120.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_network_policies
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -7293,8 +7115,8 @@ class VmwareEngineAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, network_policy, network_policy_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -7302,7 +7124,10 @@ class VmwareEngineAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmwareengine.CreateNetworkPolicyRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmwareengine.CreateNetworkPolicyRequest):
+            request = vmwareengine.CreateNetworkPolicyRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -7315,11 +7140,9 @@ class VmwareEngineAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_network_policy,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_network_policy
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -7448,8 +7271,8 @@ class VmwareEngineAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([network_policy, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -7457,7 +7280,10 @@ class VmwareEngineAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmwareengine.UpdateNetworkPolicyRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmwareengine.UpdateNetworkPolicyRequest):
+            request = vmwareengine.UpdateNetworkPolicyRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -7468,11 +7294,9 @@ class VmwareEngineAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_network_policy,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_network_policy
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -7585,8 +7409,8 @@ class VmwareEngineAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -7594,7 +7418,10 @@ class VmwareEngineAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmwareengine.DeleteNetworkPolicyRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmwareengine.DeleteNetworkPolicyRequest):
+            request = vmwareengine.DeleteNetworkPolicyRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -7603,11 +7430,9 @@ class VmwareEngineAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_network_policy,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_network_policy
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -7709,8 +7534,8 @@ class VmwareEngineAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -7718,7 +7543,10 @@ class VmwareEngineAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmwareengine.ListManagementDnsZoneBindingsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmwareengine.ListManagementDnsZoneBindingsRequest):
+            request = vmwareengine.ListManagementDnsZoneBindingsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -7727,20 +7555,9 @@ class VmwareEngineAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_management_dns_zone_bindings,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=120.0,
-            ),
-            default_timeout=120.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_management_dns_zone_bindings
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -7846,8 +7663,8 @@ class VmwareEngineAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -7855,7 +7672,10 @@ class VmwareEngineAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmwareengine.GetManagementDnsZoneBindingRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmwareengine.GetManagementDnsZoneBindingRequest):
+            request = vmwareengine.GetManagementDnsZoneBindingRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -7864,20 +7684,9 @@ class VmwareEngineAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_management_dns_zone_binding,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=120.0,
-            ),
-            default_timeout=120.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_management_dns_zone_binding
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -8020,8 +7829,8 @@ class VmwareEngineAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [parent, management_dns_zone_binding, management_dns_zone_binding_id]
         )
@@ -8031,7 +7840,10 @@ class VmwareEngineAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmwareengine.CreateManagementDnsZoneBindingRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmwareengine.CreateManagementDnsZoneBindingRequest):
+            request = vmwareengine.CreateManagementDnsZoneBindingRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -8044,11 +7856,9 @@ class VmwareEngineAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_management_dns_zone_binding,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_management_dns_zone_binding
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -8171,8 +7981,8 @@ class VmwareEngineAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([management_dns_zone_binding, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -8180,7 +7990,10 @@ class VmwareEngineAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmwareengine.UpdateManagementDnsZoneBindingRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmwareengine.UpdateManagementDnsZoneBindingRequest):
+            request = vmwareengine.UpdateManagementDnsZoneBindingRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -8191,11 +8004,9 @@ class VmwareEngineAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_management_dns_zone_binding,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_management_dns_zone_binding
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -8316,8 +8127,8 @@ class VmwareEngineAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -8325,7 +8136,10 @@ class VmwareEngineAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmwareengine.DeleteManagementDnsZoneBindingRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmwareengine.DeleteManagementDnsZoneBindingRequest):
+            request = vmwareengine.DeleteManagementDnsZoneBindingRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -8334,11 +8148,9 @@ class VmwareEngineAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_management_dns_zone_binding,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_management_dns_zone_binding
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -8447,8 +8259,8 @@ class VmwareEngineAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -8456,7 +8268,10 @@ class VmwareEngineAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmwareengine.RepairManagementDnsZoneBindingRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmwareengine.RepairManagementDnsZoneBindingRequest):
+            request = vmwareengine.RepairManagementDnsZoneBindingRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -8465,11 +8280,9 @@ class VmwareEngineAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.repair_management_dns_zone_binding,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.repair_management_dns_zone_binding
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -8614,8 +8427,8 @@ class VmwareEngineAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [parent, vmware_engine_network, vmware_engine_network_id]
         )
@@ -8625,7 +8438,10 @@ class VmwareEngineAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmwareengine.CreateVmwareEngineNetworkRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmwareengine.CreateVmwareEngineNetworkRequest):
+            request = vmwareengine.CreateVmwareEngineNetworkRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -8638,11 +8454,9 @@ class VmwareEngineAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_vmware_engine_network,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_vmware_engine_network
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -8762,8 +8576,8 @@ class VmwareEngineAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([vmware_engine_network, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -8771,7 +8585,10 @@ class VmwareEngineAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmwareengine.UpdateVmwareEngineNetworkRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmwareengine.UpdateVmwareEngineNetworkRequest):
+            request = vmwareengine.UpdateVmwareEngineNetworkRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -8782,11 +8599,9 @@ class VmwareEngineAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_vmware_engine_network,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_vmware_engine_network
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -8902,8 +8717,8 @@ class VmwareEngineAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -8911,7 +8726,10 @@ class VmwareEngineAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmwareengine.DeleteVmwareEngineNetworkRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmwareengine.DeleteVmwareEngineNetworkRequest):
+            request = vmwareengine.DeleteVmwareEngineNetworkRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -8920,11 +8738,9 @@ class VmwareEngineAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_vmware_engine_network,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_vmware_engine_network
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -9026,8 +8842,8 @@ class VmwareEngineAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -9035,7 +8851,10 @@ class VmwareEngineAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmwareengine.GetVmwareEngineNetworkRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmwareengine.GetVmwareEngineNetworkRequest):
+            request = vmwareengine.GetVmwareEngineNetworkRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -9044,20 +8863,9 @@ class VmwareEngineAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_vmware_engine_network,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=120.0,
-            ),
-            default_timeout=120.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_vmware_engine_network
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -9150,8 +8958,8 @@ class VmwareEngineAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -9159,7 +8967,10 @@ class VmwareEngineAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmwareengine.ListVmwareEngineNetworksRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmwareengine.ListVmwareEngineNetworksRequest):
+            request = vmwareengine.ListVmwareEngineNetworksRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -9168,20 +8979,9 @@ class VmwareEngineAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_vmware_engine_networks,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=120.0,
-            ),
-            default_timeout=120.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_vmware_engine_networks
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -9321,8 +9121,8 @@ class VmwareEngineAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, private_connection, private_connection_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -9330,7 +9130,10 @@ class VmwareEngineAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmwareengine.CreatePrivateConnectionRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmwareengine.CreatePrivateConnectionRequest):
+            request = vmwareengine.CreatePrivateConnectionRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -9343,11 +9146,9 @@ class VmwareEngineAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_private_connection,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_private_connection
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -9445,8 +9246,8 @@ class VmwareEngineAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -9454,7 +9255,10 @@ class VmwareEngineAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmwareengine.GetPrivateConnectionRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmwareengine.GetPrivateConnectionRequest):
+            request = vmwareengine.GetPrivateConnectionRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -9463,20 +9267,9 @@ class VmwareEngineAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_private_connection,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=120.0,
-            ),
-            default_timeout=120.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_private_connection
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -9569,8 +9362,8 @@ class VmwareEngineAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -9578,7 +9371,10 @@ class VmwareEngineAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmwareengine.ListPrivateConnectionsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmwareengine.ListPrivateConnectionsRequest):
+            request = vmwareengine.ListPrivateConnectionsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -9587,20 +9383,9 @@ class VmwareEngineAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_private_connections,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=120.0,
-            ),
-            default_timeout=120.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_private_connections
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -9720,8 +9505,8 @@ class VmwareEngineAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([private_connection, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -9729,7 +9514,10 @@ class VmwareEngineAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmwareengine.UpdatePrivateConnectionRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmwareengine.UpdatePrivateConnectionRequest):
+            request = vmwareengine.UpdatePrivateConnectionRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -9740,11 +9528,9 @@ class VmwareEngineAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_private_connection,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_private_connection
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -9859,8 +9645,8 @@ class VmwareEngineAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -9868,7 +9654,10 @@ class VmwareEngineAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmwareengine.DeletePrivateConnectionRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmwareengine.DeletePrivateConnectionRequest):
+            request = vmwareengine.DeletePrivateConnectionRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -9877,11 +9666,9 @@ class VmwareEngineAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_private_connection,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_private_connection
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -9983,8 +9770,8 @@ class VmwareEngineAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -9992,7 +9779,12 @@ class VmwareEngineAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmwareengine.ListPrivateConnectionPeeringRoutesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, vmwareengine.ListPrivateConnectionPeeringRoutesRequest
+        ):
+            request = vmwareengine.ListPrivateConnectionPeeringRoutesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -10001,20 +9793,9 @@ class VmwareEngineAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_private_connection_peering_routes,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=120.0,
-            ),
-            default_timeout=120.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_private_connection_peering_routes
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -10140,8 +9921,8 @@ class VmwareEngineAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, principal])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -10149,7 +9930,10 @@ class VmwareEngineAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmwareengine.GrantDnsBindPermissionRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmwareengine.GrantDnsBindPermissionRequest):
+            request = vmwareengine.GrantDnsBindPermissionRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -10160,11 +9944,9 @@ class VmwareEngineAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.grant_dns_bind_permission,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.grant_dns_bind_permission
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -10267,8 +10049,8 @@ class VmwareEngineAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -10276,7 +10058,10 @@ class VmwareEngineAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmwareengine.GetDnsBindPermissionRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmwareengine.GetDnsBindPermissionRequest):
+            request = vmwareengine.GetDnsBindPermissionRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -10285,20 +10070,9 @@ class VmwareEngineAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_dns_bind_permission,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=120.0,
-            ),
-            default_timeout=120.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_dns_bind_permission
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -10415,8 +10189,8 @@ class VmwareEngineAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, principal])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -10424,7 +10198,10 @@ class VmwareEngineAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vmwareengine.RevokeDnsBindPermissionRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vmwareengine.RevokeDnsBindPermissionRequest):
+            request = vmwareengine.RevokeDnsBindPermissionRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -10435,11 +10212,9 @@ class VmwareEngineAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.revoke_dns_bind_permission,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.revoke_dns_bind_permission
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.

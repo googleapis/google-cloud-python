@@ -34,6 +34,7 @@ from .types.batch import (
     ListTasksRequest,
     ListTasksResponse,
     OperationMetadata,
+    UpdateJobRequest,
     UpdateResourceAllowanceRequest,
 )
 from .types.job import (
@@ -113,6 +114,7 @@ __all__ = (
     "TaskResourceUsage",
     "TaskSpec",
     "TaskStatus",
+    "UpdateJobRequest",
     "UpdateResourceAllowanceRequest",
     "UsageResourceAllowance",
     "UsageResourceAllowanceSpec",

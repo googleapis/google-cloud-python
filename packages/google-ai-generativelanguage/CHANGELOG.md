@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.3](https://github.com/googleapis/google-cloud-python/compare/google-ai-generativelanguage-v0.6.2...google-ai-generativelanguage-v0.6.3) (2024-05-07)
+
+
+### Features
+
+* [google-ai-generativelanguage] Add FileState to File ([#12660](https://github.com/googleapis/google-cloud-python/issues/12660)) ([88848eb](https://github.com/googleapis/google-cloud-python/commit/88848eb17a536e5e69fe4f7098604741bb621549))
+
 ## [0.6.2](https://github.com/googleapis/google-cloud-python/compare/google-ai-generativelanguage-v0.6.1...google-ai-generativelanguage-v0.6.2) (2024-04-15)
 
 

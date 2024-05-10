@@ -382,6 +382,11 @@ class DataQualityRuleResult(proto.Message):
             rule.
             This field is only valid for row-level type
             rules.
+        assertion_row_count (int):
+            Output only. The number of rows returned by
+            the sql statement in the SqlAssertion rule.
+
+            This field is only valid for SqlAssertion rules.
     """
 
     rule: "DataQualityRule" = proto.Field(
@@ -412,6 +417,10 @@ class DataQualityRuleResult(proto.Message):
     failing_rows_query: str = proto.Field(
         proto.STRING,
         number=10,
+    )
+    assertion_row_count: int = proto.Field(
+        proto.INT64,
+        number=11,
     )
 
 
@@ -521,6 +530,11 @@ class DataQualityRule(proto.Message):
         table_condition_expectation (google.cloud.dataplex_v1.types.DataQualityRule.TableConditionExpectation):
             Aggregate rule which evaluates whether the
             provided expression is true for a table.
+
+            This field is a member of `oneof`_ ``rule_type``.
+        sql_assertion (google.cloud.dataplex_v1.types.DataQualityRule.SqlAssertion):
+            Aggregate rule which evaluates the number of
+            rows returned for the provided statement.
 
             This field is a member of `oneof`_ ``rule_type``.
         column (str):
@@ -755,6 +769,29 @@ class DataQualityRule(proto.Message):
             number=1,
         )
 
+    class SqlAssertion(proto.Message):
+        r"""Queries for rows returned by the provided SQL statement. If any rows
+        are are returned, this rule fails.
+
+        The SQL statement needs to use BigQuery standard SQL syntax, and
+        must not contain any semicolons.
+
+        ${data()} can be used to reference the rows being evaluated, i.e.
+        the table after all additional filters (row filters, incremental
+        data filters, sampling) are applied.
+
+        Example: SELECT \* FROM ${data()} WHERE price < 0
+
+        Attributes:
+            sql_statement (str):
+                Optional. The SQL statement.
+        """
+
+        sql_statement: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+
     range_expectation: RangeExpectation = proto.Field(
         proto.MESSAGE,
         number=1,
@@ -802,6 +839,12 @@ class DataQualityRule(proto.Message):
         number=201,
         oneof="rule_type",
         message=TableConditionExpectation,
+    )
+    sql_assertion: SqlAssertion = proto.Field(
+        proto.MESSAGE,
+        number=202,
+        oneof="rule_type",
+        message=SqlAssertion,
     )
     column: str = proto.Field(
         proto.STRING,

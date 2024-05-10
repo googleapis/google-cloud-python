@@ -17,6 +17,7 @@ from collections import OrderedDict
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -593,7 +594,11 @@ class MetadataServiceClient(metaclass=MetadataServiceClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, MetadataServiceTransport]] = None,
+        transport: Optional[
+            Union[
+                str, MetadataServiceTransport, Callable[..., MetadataServiceTransport]
+            ]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -605,9 +610,11 @@ class MetadataServiceClient(metaclass=MetadataServiceClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, MetadataServiceTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,MetadataServiceTransport,Callable[..., MetadataServiceTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the MetadataServiceTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -716,8 +723,15 @@ class MetadataServiceClient(metaclass=MetadataServiceClientMeta):
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[MetadataServiceTransport], Callable[..., MetadataServiceTransport]
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., MetadataServiceTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -805,8 +819,8 @@ class MetadataServiceClient(metaclass=MetadataServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, entity])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -814,10 +828,8 @@ class MetadataServiceClient(metaclass=MetadataServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a metadata_.CreateEntityRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, metadata_.CreateEntityRequest):
             request = metadata_.CreateEntityRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -919,10 +931,8 @@ class MetadataServiceClient(metaclass=MetadataServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a metadata_.UpdateEntityRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, metadata_.UpdateEntityRequest):
             request = metadata_.UpdateEntityRequest(request)
 
@@ -1004,8 +1014,8 @@ class MetadataServiceClient(metaclass=MetadataServiceClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1013,10 +1023,8 @@ class MetadataServiceClient(metaclass=MetadataServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a metadata_.DeleteEntityRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, metadata_.DeleteEntityRequest):
             request = metadata_.DeleteEntityRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1105,8 +1113,8 @@ class MetadataServiceClient(metaclass=MetadataServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1114,10 +1122,8 @@ class MetadataServiceClient(metaclass=MetadataServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a metadata_.GetEntityRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, metadata_.GetEntityRequest):
             request = metadata_.GetEntityRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1214,8 +1220,8 @@ class MetadataServiceClient(metaclass=MetadataServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1223,10 +1229,8 @@ class MetadataServiceClient(metaclass=MetadataServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a metadata_.ListEntitiesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, metadata_.ListEntitiesRequest):
             request = metadata_.ListEntitiesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1338,8 +1342,8 @@ class MetadataServiceClient(metaclass=MetadataServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, partition])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1347,10 +1351,8 @@ class MetadataServiceClient(metaclass=MetadataServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a metadata_.CreatePartitionRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, metadata_.CreatePartitionRequest):
             request = metadata_.CreatePartitionRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1438,8 +1440,8 @@ class MetadataServiceClient(metaclass=MetadataServiceClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1447,10 +1449,8 @@ class MetadataServiceClient(metaclass=MetadataServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a metadata_.DeletePartitionRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, metadata_.DeletePartitionRequest):
             request = metadata_.DeletePartitionRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1542,8 +1542,8 @@ class MetadataServiceClient(metaclass=MetadataServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1551,10 +1551,8 @@ class MetadataServiceClient(metaclass=MetadataServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a metadata_.GetPartitionRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, metadata_.GetPartitionRequest):
             request = metadata_.GetPartitionRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1650,8 +1648,8 @@ class MetadataServiceClient(metaclass=MetadataServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1659,10 +1657,8 @@ class MetadataServiceClient(metaclass=MetadataServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a metadata_.ListPartitionsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, metadata_.ListPartitionsRequest):
             request = metadata_.ListPartitionsRequest(request)
             # If we have keyword arguments corresponding to fields on the

@@ -17,6 +17,7 @@ from collections import OrderedDict
 import functools
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -81,6 +82,8 @@ class DlpServiceAsyncClient:
     parse_column_data_profile_path = staticmethod(
         DlpServiceClient.parse_column_data_profile_path
     )
+    connection_path = staticmethod(DlpServiceClient.connection_path)
+    parse_connection_path = staticmethod(DlpServiceClient.parse_connection_path)
     deidentify_template_path = staticmethod(DlpServiceClient.deidentify_template_path)
     parse_deidentify_template_path = staticmethod(
         DlpServiceClient.parse_deidentify_template_path
@@ -237,7 +240,9 @@ class DlpServiceAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, DlpServiceTransport] = "grpc_asyncio",
+        transport: Optional[
+            Union[str, DlpServiceTransport, Callable[..., DlpServiceTransport]]
+        ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -249,9 +254,11 @@ class DlpServiceAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.DlpServiceTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,DlpServiceTransport,Callable[..., DlpServiceTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the DlpServiceTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -357,25 +364,16 @@ class DlpServiceAsyncClient:
                 Results of inspecting an item.
         """
         # Create or coerce a protobuf request object.
-        request = dlp.InspectContentRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dlp.InspectContentRequest):
+            request = dlp.InspectContentRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.inspect_content,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=300.0,
-            ),
-            default_timeout=300.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.inspect_content
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -457,25 +455,16 @@ class DlpServiceAsyncClient:
                 Results of redacting an image.
         """
         # Create or coerce a protobuf request object.
-        request = dlp.RedactImageRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dlp.RedactImageRequest):
+            request = dlp.RedactImageRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.redact_image,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=300.0,
-            ),
-            default_timeout=300.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.redact_image
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -557,25 +546,16 @@ class DlpServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = dlp.DeidentifyContentRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dlp.DeidentifyContentRequest):
+            request = dlp.DeidentifyContentRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.deidentify_content,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=300.0,
-            ),
-            default_timeout=300.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.deidentify_content
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -649,25 +629,16 @@ class DlpServiceAsyncClient:
                 Results of re-identifying an item.
         """
         # Create or coerce a protobuf request object.
-        request = dlp.ReidentifyContentRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dlp.ReidentifyContentRequest):
+            request = dlp.ReidentifyContentRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.reidentify_content,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=300.0,
-            ),
-            default_timeout=300.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.reidentify_content
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -756,8 +727,8 @@ class DlpServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -765,7 +736,10 @@ class DlpServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = dlp.ListInfoTypesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dlp.ListInfoTypesRequest):
+            request = dlp.ListInfoTypesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -774,21 +748,9 @@ class DlpServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_info_types,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=300.0,
-            ),
-            default_timeout=300.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_info_types
+        ]
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -904,8 +866,8 @@ class DlpServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, inspect_template])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -913,7 +875,10 @@ class DlpServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = dlp.CreateInspectTemplateRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dlp.CreateInspectTemplateRequest):
+            request = dlp.CreateInspectTemplateRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -924,11 +889,9 @@ class DlpServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_inspect_template,
-            default_timeout=300.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_inspect_template
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1035,8 +998,8 @@ class DlpServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, inspect_template, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1044,7 +1007,10 @@ class DlpServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = dlp.UpdateInspectTemplateRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dlp.UpdateInspectTemplateRequest):
+            request = dlp.UpdateInspectTemplateRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1057,11 +1023,9 @@ class DlpServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_inspect_template,
-            default_timeout=300.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_inspect_template
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1154,8 +1118,8 @@ class DlpServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1163,7 +1127,10 @@ class DlpServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = dlp.GetInspectTemplateRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dlp.GetInspectTemplateRequest):
+            request = dlp.GetInspectTemplateRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1172,21 +1139,9 @@ class DlpServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_inspect_template,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=300.0,
-            ),
-            default_timeout=300.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_inspect_template
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1298,8 +1253,8 @@ class DlpServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1307,7 +1262,10 @@ class DlpServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = dlp.ListInspectTemplatesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dlp.ListInspectTemplatesRequest):
+            request = dlp.ListInspectTemplatesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1316,21 +1274,9 @@ class DlpServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_inspect_templates,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=300.0,
-            ),
-            default_timeout=300.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_inspect_templates
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1418,8 +1364,8 @@ class DlpServiceAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1427,7 +1373,10 @@ class DlpServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = dlp.DeleteInspectTemplateRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dlp.DeleteInspectTemplateRequest):
+            request = dlp.DeleteInspectTemplateRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1436,21 +1385,9 @@ class DlpServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_inspect_template,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=300.0,
-            ),
-            default_timeout=300.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_inspect_template
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1567,8 +1504,8 @@ class DlpServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, deidentify_template])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1576,7 +1513,10 @@ class DlpServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = dlp.CreateDeidentifyTemplateRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dlp.CreateDeidentifyTemplateRequest):
+            request = dlp.CreateDeidentifyTemplateRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1587,11 +1527,9 @@ class DlpServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_deidentify_template,
-            default_timeout=300.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_deidentify_template
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1696,8 +1634,8 @@ class DlpServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, deidentify_template, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1705,7 +1643,10 @@ class DlpServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = dlp.UpdateDeidentifyTemplateRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dlp.UpdateDeidentifyTemplateRequest):
+            request = dlp.UpdateDeidentifyTemplateRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1718,11 +1659,9 @@ class DlpServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_deidentify_template,
-            default_timeout=300.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_deidentify_template
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1813,8 +1752,8 @@ class DlpServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1822,7 +1761,10 @@ class DlpServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = dlp.GetDeidentifyTemplateRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dlp.GetDeidentifyTemplateRequest):
+            request = dlp.GetDeidentifyTemplateRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1831,21 +1773,9 @@ class DlpServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_deidentify_template,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=300.0,
-            ),
-            default_timeout=300.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_deidentify_template
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1957,8 +1887,8 @@ class DlpServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1966,7 +1896,10 @@ class DlpServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = dlp.ListDeidentifyTemplatesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dlp.ListDeidentifyTemplatesRequest):
+            request = dlp.ListDeidentifyTemplatesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1975,21 +1908,9 @@ class DlpServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_deidentify_templates,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=300.0,
-            ),
-            default_timeout=300.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_deidentify_templates
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2077,8 +1998,8 @@ class DlpServiceAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2086,7 +2007,10 @@ class DlpServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = dlp.DeleteDeidentifyTemplateRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dlp.DeleteDeidentifyTemplateRequest):
+            request = dlp.DeleteDeidentifyTemplateRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2095,21 +2019,9 @@ class DlpServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_deidentify_template,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=300.0,
-            ),
-            default_timeout=300.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_deidentify_template
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2214,15 +2126,15 @@ class DlpServiceAsyncClient:
 
         Returns:
             google.cloud.dlp_v2.types.JobTrigger:
-                Contains a configuration to make dlp
-                api calls on a repeating basis. See
+                Contains a configuration to make api
+                calls on a repeating basis. See
                 https://cloud.google.com/sensitive-data-protection/docs/concepts-job-triggers
                 to learn more.
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, job_trigger])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2230,7 +2142,10 @@ class DlpServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = dlp.CreateJobTriggerRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dlp.CreateJobTriggerRequest):
+            request = dlp.CreateJobTriggerRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2241,11 +2156,9 @@ class DlpServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_job_trigger,
-            default_timeout=300.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_job_trigger
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2340,15 +2253,15 @@ class DlpServiceAsyncClient:
 
         Returns:
             google.cloud.dlp_v2.types.JobTrigger:
-                Contains a configuration to make dlp
-                api calls on a repeating basis. See
+                Contains a configuration to make api
+                calls on a repeating basis. See
                 https://cloud.google.com/sensitive-data-protection/docs/concepts-job-triggers
                 to learn more.
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, job_trigger, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2356,7 +2269,10 @@ class DlpServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = dlp.UpdateJobTriggerRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dlp.UpdateJobTriggerRequest):
+            request = dlp.UpdateJobTriggerRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2369,11 +2285,9 @@ class DlpServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_job_trigger,
-            default_timeout=300.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_job_trigger
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2460,8 +2374,8 @@ class DlpServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2469,7 +2383,10 @@ class DlpServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = dlp.HybridInspectJobTriggerRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dlp.HybridInspectJobTriggerRequest):
+            request = dlp.HybridInspectJobTriggerRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2478,11 +2395,9 @@ class DlpServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.hybrid_inspect_job_trigger,
-            default_timeout=300.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.hybrid_inspect_job_trigger
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2563,15 +2478,15 @@ class DlpServiceAsyncClient:
 
         Returns:
             google.cloud.dlp_v2.types.JobTrigger:
-                Contains a configuration to make dlp
-                api calls on a repeating basis. See
+                Contains a configuration to make api
+                calls on a repeating basis. See
                 https://cloud.google.com/sensitive-data-protection/docs/concepts-job-triggers
                 to learn more.
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2579,7 +2494,10 @@ class DlpServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = dlp.GetJobTriggerRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dlp.GetJobTriggerRequest):
+            request = dlp.GetJobTriggerRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2588,21 +2506,9 @@ class DlpServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_job_trigger,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=300.0,
-            ),
-            default_timeout=300.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_job_trigger
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2708,8 +2614,8 @@ class DlpServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2717,7 +2623,10 @@ class DlpServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = dlp.ListJobTriggersRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dlp.ListJobTriggersRequest):
+            request = dlp.ListJobTriggersRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2726,21 +2635,9 @@ class DlpServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_job_triggers,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=300.0,
-            ),
-            default_timeout=300.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_job_triggers
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2826,8 +2723,8 @@ class DlpServiceAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2835,7 +2732,10 @@ class DlpServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = dlp.DeleteJobTriggerRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dlp.DeleteJobTriggerRequest):
+            request = dlp.DeleteJobTriggerRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2844,21 +2744,9 @@ class DlpServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_job_trigger,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=300.0,
-            ),
-            default_timeout=300.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_job_trigger
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2932,15 +2820,16 @@ class DlpServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = dlp.ActivateJobTriggerRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dlp.ActivateJobTriggerRequest):
+            request = dlp.ActivateJobTriggerRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.activate_job_trigger,
-            default_timeout=300.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.activate_job_trigger
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3052,8 +2941,8 @@ class DlpServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, discovery_config])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3061,7 +2950,10 @@ class DlpServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = dlp.CreateDiscoveryConfigRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dlp.CreateDiscoveryConfigRequest):
+            request = dlp.CreateDiscoveryConfigRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3072,11 +2964,9 @@ class DlpServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_discovery_config,
-            default_timeout=300.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_discovery_config
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3183,8 +3073,8 @@ class DlpServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, discovery_config, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3192,7 +3082,10 @@ class DlpServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = dlp.UpdateDiscoveryConfigRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dlp.UpdateDiscoveryConfigRequest):
+            request = dlp.UpdateDiscoveryConfigRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3205,11 +3098,9 @@ class DlpServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_discovery_config,
-            default_timeout=300.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_discovery_config
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3298,8 +3189,8 @@ class DlpServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3307,7 +3198,10 @@ class DlpServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = dlp.GetDiscoveryConfigRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dlp.GetDiscoveryConfigRequest):
+            request = dlp.GetDiscoveryConfigRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3316,21 +3210,9 @@ class DlpServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_discovery_config,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=300.0,
-            ),
-            default_timeout=300.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_discovery_config
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3428,8 +3310,8 @@ class DlpServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3437,7 +3319,10 @@ class DlpServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = dlp.ListDiscoveryConfigsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dlp.ListDiscoveryConfigsRequest):
+            request = dlp.ListDiscoveryConfigsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3446,21 +3331,9 @@ class DlpServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_discovery_configs,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=300.0,
-            ),
-            default_timeout=300.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_discovery_configs
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3544,8 +3417,8 @@ class DlpServiceAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3553,7 +3426,10 @@ class DlpServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = dlp.DeleteDiscoveryConfigRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dlp.DeleteDiscoveryConfigRequest):
+            request = dlp.DeleteDiscoveryConfigRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3562,21 +3438,9 @@ class DlpServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_discovery_config,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=300.0,
-            ),
-            default_timeout=300.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_discovery_config
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3703,8 +3567,8 @@ class DlpServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, inspect_job, risk_job])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3712,7 +3576,10 @@ class DlpServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = dlp.CreateDlpJobRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dlp.CreateDlpJobRequest):
+            request = dlp.CreateDlpJobRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3725,11 +3592,9 @@ class DlpServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_dlp_job,
-            default_timeout=300.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_dlp_job
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3838,8 +3703,8 @@ class DlpServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3847,7 +3712,10 @@ class DlpServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = dlp.ListDlpJobsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dlp.ListDlpJobsRequest):
+            request = dlp.ListDlpJobsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3856,21 +3724,9 @@ class DlpServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_dlp_jobs,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=300.0,
-            ),
-            default_timeout=300.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_dlp_jobs
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3966,8 +3822,8 @@ class DlpServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3975,7 +3831,10 @@ class DlpServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = dlp.GetDlpJobRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dlp.GetDlpJobRequest):
+            request = dlp.GetDlpJobRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3984,21 +3843,9 @@ class DlpServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_dlp_job,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=300.0,
-            ),
-            default_timeout=300.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_dlp_job
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4079,8 +3926,8 @@ class DlpServiceAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4088,7 +3935,10 @@ class DlpServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = dlp.DeleteDlpJobRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dlp.DeleteDlpJobRequest):
+            request = dlp.DeleteDlpJobRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -4097,21 +3947,9 @@ class DlpServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_dlp_job,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=300.0,
-            ),
-            default_timeout=300.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_dlp_job
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4181,15 +4019,16 @@ class DlpServiceAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        request = dlp.CancelDlpJobRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dlp.CancelDlpJobRequest):
+            request = dlp.CancelDlpJobRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.cancel_dlp_job,
-            default_timeout=300.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.cancel_dlp_job
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4303,8 +4142,8 @@ class DlpServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, config])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4312,7 +4151,10 @@ class DlpServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = dlp.CreateStoredInfoTypeRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dlp.CreateStoredInfoTypeRequest):
+            request = dlp.CreateStoredInfoTypeRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -4323,11 +4165,9 @@ class DlpServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_stored_info_type,
-            default_timeout=300.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_stored_info_type
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4435,8 +4275,8 @@ class DlpServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, config, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4444,7 +4284,10 @@ class DlpServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = dlp.UpdateStoredInfoTypeRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dlp.UpdateStoredInfoTypeRequest):
+            request = dlp.UpdateStoredInfoTypeRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -4457,11 +4300,9 @@ class DlpServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_stored_info_type,
-            default_timeout=300.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_stored_info_type
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4550,8 +4391,8 @@ class DlpServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4559,7 +4400,10 @@ class DlpServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = dlp.GetStoredInfoTypeRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dlp.GetStoredInfoTypeRequest):
+            request = dlp.GetStoredInfoTypeRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -4568,21 +4412,9 @@ class DlpServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_stored_info_type,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=300.0,
-            ),
-            default_timeout=300.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_stored_info_type
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4690,8 +4522,8 @@ class DlpServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4699,7 +4531,10 @@ class DlpServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = dlp.ListStoredInfoTypesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dlp.ListStoredInfoTypesRequest):
+            request = dlp.ListStoredInfoTypesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -4708,21 +4543,9 @@ class DlpServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_stored_info_types,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=300.0,
-            ),
-            default_timeout=300.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_stored_info_types
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4810,8 +4633,8 @@ class DlpServiceAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4819,7 +4642,10 @@ class DlpServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = dlp.DeleteStoredInfoTypeRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dlp.DeleteStoredInfoTypeRequest):
+            request = dlp.DeleteStoredInfoTypeRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -4828,21 +4654,9 @@ class DlpServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_stored_info_type,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=300.0,
-            ),
-            default_timeout=300.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_stored_info_type
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4870,7 +4684,7 @@ class DlpServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListProjectDataProfilesAsyncPager:
-        r"""Lists data profiles for an organization.
+        r"""Lists project data profiles for an organization.
 
         .. code-block:: python
 
@@ -4925,8 +4739,8 @@ class DlpServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4934,7 +4748,10 @@ class DlpServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = dlp.ListProjectDataProfilesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dlp.ListProjectDataProfilesRequest):
+            request = dlp.ListProjectDataProfilesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -4943,21 +4760,9 @@ class DlpServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_project_data_profiles,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=300.0,
-            ),
-            default_timeout=300.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_project_data_profiles
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4997,7 +4802,7 @@ class DlpServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListTableDataProfilesAsyncPager:
-        r"""Lists data profiles for an organization.
+        r"""Lists table data profiles for an organization.
 
         .. code-block:: python
 
@@ -5055,8 +4860,8 @@ class DlpServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5064,7 +4869,10 @@ class DlpServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = dlp.ListTableDataProfilesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dlp.ListTableDataProfilesRequest):
+            request = dlp.ListTableDataProfilesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -5073,21 +4881,9 @@ class DlpServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_table_data_profiles,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=300.0,
-            ),
-            default_timeout=300.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_table_data_profiles
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -5127,7 +4923,7 @@ class DlpServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListColumnDataProfilesAsyncPager:
-        r"""Lists data profiles for an organization.
+        r"""Lists column data profiles for an organization.
 
         .. code-block:: python
 
@@ -5185,8 +4981,8 @@ class DlpServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5194,7 +4990,10 @@ class DlpServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = dlp.ListColumnDataProfilesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dlp.ListColumnDataProfilesRequest):
+            request = dlp.ListColumnDataProfilesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -5203,21 +5002,9 @@ class DlpServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_column_data_profiles,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=300.0,
-            ),
-            default_timeout=300.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_column_data_profiles
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -5310,8 +5097,8 @@ class DlpServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5319,7 +5106,10 @@ class DlpServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = dlp.GetProjectDataProfileRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dlp.GetProjectDataProfileRequest):
+            request = dlp.GetProjectDataProfileRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -5328,21 +5118,9 @@ class DlpServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_project_data_profile,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=300.0,
-            ),
-            default_timeout=300.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_project_data_profile
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -5422,8 +5200,8 @@ class DlpServiceAsyncClient:
                 The profile for a scanned table.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5431,7 +5209,10 @@ class DlpServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = dlp.GetTableDataProfileRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dlp.GetTableDataProfileRequest):
+            request = dlp.GetTableDataProfileRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -5440,21 +5221,9 @@ class DlpServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_table_data_profile,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=300.0,
-            ),
-            default_timeout=300.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_table_data_profile
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -5536,8 +5305,8 @@ class DlpServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5545,7 +5314,10 @@ class DlpServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = dlp.GetColumnDataProfileRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dlp.GetColumnDataProfileRequest):
+            request = dlp.GetColumnDataProfileRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -5554,21 +5326,9 @@ class DlpServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_column_data_profile,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=300.0,
-            ),
-            default_timeout=300.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_column_data_profile
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -5589,6 +5349,102 @@ class DlpServiceAsyncClient:
 
         # Done; return the response.
         return response
+
+    async def delete_table_data_profile(
+        self,
+        request: Optional[Union[dlp.DeleteTableDataProfileRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> None:
+        r"""Delete a TableDataProfile. Will not prevent the
+        profile from being regenerated if the table is still
+        included in a discovery configuration.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dlp_v2
+
+            async def sample_delete_table_data_profile():
+                # Create a client
+                client = dlp_v2.DlpServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = dlp_v2.DeleteTableDataProfileRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                await client.delete_table_data_profile(request=request)
+
+        Args:
+            request (Optional[Union[google.cloud.dlp_v2.types.DeleteTableDataProfileRequest, dict]]):
+                The request object. Request message for
+                DeleteTableProfile.
+            name (:class:`str`):
+                Required. Resource name of the table
+                data profile.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dlp.DeleteTableDataProfileRequest):
+            request = dlp.DeleteTableDataProfileRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_table_data_profile
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
     async def hybrid_inspect_dlp_job(
         self,
@@ -5654,8 +5510,8 @@ class DlpServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5663,7 +5519,10 @@ class DlpServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = dlp.HybridInspectDlpJobRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dlp.HybridInspectDlpJobRequest):
+            request = dlp.HybridInspectDlpJobRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -5672,11 +5531,9 @@ class DlpServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.hybrid_inspect_dlp_job,
-            default_timeout=300.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.hybrid_inspect_dlp_job
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -5744,15 +5601,16 @@ class DlpServiceAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        request = dlp.FinishDlpJobRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dlp.FinishDlpJobRequest):
+            request = dlp.FinishDlpJobRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.finish_dlp_job,
-            default_timeout=300.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.finish_dlp_job
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -5770,6 +5628,680 @@ class DlpServiceAsyncClient:
             timeout=timeout,
             metadata=metadata,
         )
+
+    async def create_connection(
+        self,
+        request: Optional[Union[dlp.CreateConnectionRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        connection: Optional[dlp.Connection] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> dlp.Connection:
+        r"""Create a Connection to an external data source.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dlp_v2
+
+            async def sample_create_connection():
+                # Create a client
+                client = dlp_v2.DlpServiceAsyncClient()
+
+                # Initialize request argument(s)
+                connection = dlp_v2.Connection()
+                connection.cloud_sql.username_password.username = "username_value"
+                connection.cloud_sql.username_password.password_secret_version_name = "password_secret_version_name_value"
+                connection.cloud_sql.max_connections = 1608
+                connection.cloud_sql.database_engine = "DATABASE_ENGINE_POSTGRES"
+                connection.state = "ERROR"
+
+                request = dlp_v2.CreateConnectionRequest(
+                    parent="parent_value",
+                    connection=connection,
+                )
+
+                # Make the request
+                response = await client.create_connection(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.dlp_v2.types.CreateConnectionRequest, dict]]):
+                The request object. Request message for CreateConnection.
+            parent (:class:`str`):
+                Required. Parent resource name in the format:
+                ``projects/{project}/locations/{location}``.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            connection (:class:`google.cloud.dlp_v2.types.Connection`):
+                Required. The connection resource.
+                This corresponds to the ``connection`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.dlp_v2.types.Connection:
+                A data connection to allow DLP to
+                profile data in locations that require
+                additional configuration.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, connection])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dlp.CreateConnectionRequest):
+            request = dlp.CreateConnectionRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+        if connection is not None:
+            request.connection = connection
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_connection
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def get_connection(
+        self,
+        request: Optional[Union[dlp.GetConnectionRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> dlp.Connection:
+        r"""Get a Connection by name.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dlp_v2
+
+            async def sample_get_connection():
+                # Create a client
+                client = dlp_v2.DlpServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = dlp_v2.GetConnectionRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.get_connection(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.dlp_v2.types.GetConnectionRequest, dict]]):
+                The request object. Request message for GetConnection.
+            name (:class:`str`):
+                Required. Resource name in the format:
+                ``projects/{project}/locations/{location}/connections/{connection}``.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.dlp_v2.types.Connection:
+                A data connection to allow DLP to
+                profile data in locations that require
+                additional configuration.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dlp.GetConnectionRequest):
+            request = dlp.GetConnectionRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_connection
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def list_connections(
+        self,
+        request: Optional[Union[dlp.ListConnectionsRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListConnectionsAsyncPager:
+        r"""Lists Connections in a parent.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dlp_v2
+
+            async def sample_list_connections():
+                # Create a client
+                client = dlp_v2.DlpServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = dlp_v2.ListConnectionsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_connections(request=request)
+
+                # Handle the response
+                async for response in page_result:
+                    print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.dlp_v2.types.ListConnectionsRequest, dict]]):
+                The request object. Request message for ListConnections.
+            parent (:class:`str`):
+                Required. Parent name, for example:
+                ``projects/project-id/locations/global``.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.dlp_v2.services.dlp_service.pagers.ListConnectionsAsyncPager:
+                Response message for ListConnections.
+
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dlp.ListConnectionsRequest):
+            request = dlp.ListConnectionsRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_connections
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.ListConnectionsAsyncPager(
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def search_connections(
+        self,
+        request: Optional[Union[dlp.SearchConnectionsRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.SearchConnectionsAsyncPager:
+        r"""Searches for Connections in a parent.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dlp_v2
+
+            async def sample_search_connections():
+                # Create a client
+                client = dlp_v2.DlpServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = dlp_v2.SearchConnectionsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.search_connections(request=request)
+
+                # Handle the response
+                async for response in page_result:
+                    print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.dlp_v2.types.SearchConnectionsRequest, dict]]):
+                The request object. Request message for
+                SearchConnections.
+            parent (:class:`str`):
+                Required. Parent name, typically an organization,
+                without location. For example:
+                ``organizations/12345678``.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.dlp_v2.services.dlp_service.pagers.SearchConnectionsAsyncPager:
+                Response message for
+                SearchConnections.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dlp.SearchConnectionsRequest):
+            request = dlp.SearchConnectionsRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.search_connections
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.SearchConnectionsAsyncPager(
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def delete_connection(
+        self,
+        request: Optional[Union[dlp.DeleteConnectionRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> None:
+        r"""Delete a Connection.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dlp_v2
+
+            async def sample_delete_connection():
+                # Create a client
+                client = dlp_v2.DlpServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = dlp_v2.DeleteConnectionRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                await client.delete_connection(request=request)
+
+        Args:
+            request (Optional[Union[google.cloud.dlp_v2.types.DeleteConnectionRequest, dict]]):
+                The request object. Request message for DeleteConnection.
+            name (:class:`str`):
+                Required. Resource name of the Connection to be deleted,
+                in the format:
+                ``projects/{project}/locations/{location}/connections/{connection}``.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dlp.DeleteConnectionRequest):
+            request = dlp.DeleteConnectionRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_connection
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+    async def update_connection(
+        self,
+        request: Optional[Union[dlp.UpdateConnectionRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> dlp.Connection:
+        r"""Update a Connection.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dlp_v2
+
+            async def sample_update_connection():
+                # Create a client
+                client = dlp_v2.DlpServiceAsyncClient()
+
+                # Initialize request argument(s)
+                connection = dlp_v2.Connection()
+                connection.cloud_sql.username_password.username = "username_value"
+                connection.cloud_sql.username_password.password_secret_version_name = "password_secret_version_name_value"
+                connection.cloud_sql.max_connections = 1608
+                connection.cloud_sql.database_engine = "DATABASE_ENGINE_POSTGRES"
+                connection.state = "ERROR"
+
+                request = dlp_v2.UpdateConnectionRequest(
+                    name="name_value",
+                    connection=connection,
+                )
+
+                # Make the request
+                response = await client.update_connection(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.dlp_v2.types.UpdateConnectionRequest, dict]]):
+                The request object. Request message for UpdateConnection.
+            name (:class:`str`):
+                Required. Resource name in the format:
+                ``projects/{project}/locations/{location}/connections/{connection}``.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.dlp_v2.types.Connection:
+                A data connection to allow DLP to
+                profile data in locations that require
+                additional configuration.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dlp.UpdateConnectionRequest):
+            request = dlp.UpdateConnectionRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_connection
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
 
     async def __aenter__(self) -> "DlpServiceAsyncClient":
         return self

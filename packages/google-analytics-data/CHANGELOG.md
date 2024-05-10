@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.18.8](https://github.com/googleapis/google-cloud-python/compare/google-analytics-data-v0.18.7...google-analytics-data-v0.18.8) (2024-05-07)
+
+
+### Features
+
+* add `CreateReportTask`, `QueryReportTask`, `GetReportTask`, `ListReportTasks` methods to the Data API v1alpha ([dbca741](https://github.com/googleapis/google-cloud-python/commit/dbca741598cb110e852b317c80481f0ea239fd3e))
+* add `ReportTask`, `Metric`, `OrderBy`, `Cohort`, `CohortsRange`, `CohortReportSettings`, `ResponseMetaData`, `MetricAggregation`, `RestrictedMetricType` types to the Data API v1alpha ([dbca741](https://github.com/googleapis/google-cloud-python/commit/dbca741598cb110e852b317c80481f0ea239fd3e))
+
 ## [0.18.7](https://github.com/googleapis/google-cloud-python/compare/google-analytics-data-v0.18.6...google-analytics-data-v0.18.7) (2024-03-05)
 
 

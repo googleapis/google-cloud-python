@@ -61,7 +61,7 @@ class DlpServiceGrpcTransport(DlpServiceTransport):
         credentials: Optional[ga_credentials.Credentials] = None,
         credentials_file: Optional[str] = None,
         scopes: Optional[Sequence[str]] = None,
-        channel: Optional[grpc.Channel] = None,
+        channel: Optional[Union[grpc.Channel, Callable[..., grpc.Channel]]] = None,
         api_mtls_endpoint: Optional[str] = None,
         client_cert_source: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
         ssl_channel_credentials: Optional[grpc.ChannelCredentials] = None,
@@ -81,14 +81,17 @@ class DlpServiceGrpcTransport(DlpServiceTransport):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-                This argument is ignored if ``channel`` is provided.
+                This argument is ignored if a ``channel`` instance is provided.
             credentials_file (Optional[str]): A file with credentials that can
                 be loaded with :func:`google.auth.load_credentials_from_file`.
-                This argument is ignored if ``channel`` is provided.
+                This argument is ignored if a ``channel`` instance is provided.
             scopes (Optional(Sequence[str])): A list of scopes. This argument is
-                ignored if ``channel`` is provided.
-            channel (Optional[grpc.Channel]): A ``Channel`` instance through
-                which to make calls.
+                ignored if a ``channel`` instance is provided.
+            channel (Optional[Union[grpc.Channel, Callable[..., grpc.Channel]]]):
+                A ``Channel`` instance through which to make calls, or a Callable
+                that constructs and returns one. If set to None, ``self.create_channel``
+                is used to create the channel. If a Callable is given, it will be called
+                with the same arguments as used in ``self.create_channel``.
             api_mtls_endpoint (Optional[str]): Deprecated. The mutual TLS endpoint.
                 If provided, it overrides the ``host`` argument and tries to create
                 a mutual TLS channel with client SSL credentials from
@@ -98,11 +101,11 @@ class DlpServiceGrpcTransport(DlpServiceTransport):
                 private key bytes, both in PEM format. It is ignored if
                 ``api_mtls_endpoint`` is None.
             ssl_channel_credentials (grpc.ChannelCredentials): SSL credentials
-                for the grpc channel. It is ignored if ``channel`` is provided.
+                for the grpc channel. It is ignored if a ``channel`` instance is provided.
             client_cert_source_for_mtls (Optional[Callable[[], Tuple[bytes, bytes]]]):
                 A callback to provide client certificate bytes and private key bytes,
                 both in PEM format. It is used to configure a mutual TLS channel. It is
-                ignored if ``channel`` or ``ssl_channel_credentials`` is provided.
+                ignored if a ``channel`` instance or ``ssl_channel_credentials`` is provided.
             quota_project_id (Optional[str]): An optional project to use for billing
                 and quota.
             client_info (google.api_core.gapic_v1.client_info.ClientInfo):
@@ -128,7 +131,7 @@ class DlpServiceGrpcTransport(DlpServiceTransport):
         if client_cert_source:
             warnings.warn("client_cert_source is deprecated", DeprecationWarning)
 
-        if channel:
+        if isinstance(channel, grpc.Channel):
             # Ignore credentials if a channel was passed.
             credentials = False
             # If a channel was explicitly provided, set it.
@@ -169,7 +172,9 @@ class DlpServiceGrpcTransport(DlpServiceTransport):
         )
 
         if not self._grpc_channel:
-            self._grpc_channel = type(self).create_channel(
+            # initialize with the provided callable or the default channel
+            channel_init = channel or type(self).create_channel
+            self._grpc_channel = channel_init(
                 self._host,
                 # use the credentials which are saved
                 credentials=self._credentials,
@@ -1341,7 +1346,7 @@ class DlpServiceGrpcTransport(DlpServiceTransport):
     ]:
         r"""Return a callable for the list project data profiles method over gRPC.
 
-        Lists data profiles for an organization.
+        Lists project data profiles for an organization.
 
         Returns:
             Callable[[~.ListProjectDataProfilesRequest],
@@ -1369,7 +1374,7 @@ class DlpServiceGrpcTransport(DlpServiceTransport):
     ]:
         r"""Return a callable for the list table data profiles method over gRPC.
 
-        Lists data profiles for an organization.
+        Lists table data profiles for an organization.
 
         Returns:
             Callable[[~.ListTableDataProfilesRequest],
@@ -1397,7 +1402,7 @@ class DlpServiceGrpcTransport(DlpServiceTransport):
     ]:
         r"""Return a callable for the list column data profiles method over gRPC.
 
-        Lists data profiles for an organization.
+        Lists column data profiles for an organization.
 
         Returns:
             Callable[[~.ListColumnDataProfilesRequest],
@@ -1496,6 +1501,34 @@ class DlpServiceGrpcTransport(DlpServiceTransport):
         return self._stubs["get_column_data_profile"]
 
     @property
+    def delete_table_data_profile(
+        self,
+    ) -> Callable[[dlp.DeleteTableDataProfileRequest], empty_pb2.Empty]:
+        r"""Return a callable for the delete table data profile method over gRPC.
+
+        Delete a TableDataProfile. Will not prevent the
+        profile from being regenerated if the table is still
+        included in a discovery configuration.
+
+        Returns:
+            Callable[[~.DeleteTableDataProfileRequest],
+                    ~.Empty]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_table_data_profile" not in self._stubs:
+            self._stubs["delete_table_data_profile"] = self.grpc_channel.unary_unary(
+                "/google.privacy.dlp.v2.DlpService/DeleteTableDataProfile",
+                request_serializer=dlp.DeleteTableDataProfileRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
+            )
+        return self._stubs["delete_table_data_profile"]
+
+    @property
     def hybrid_inspect_dlp_job(
         self,
     ) -> Callable[[dlp.HybridInspectDlpJobRequest], dlp.HybridInspectResponse]:
@@ -1548,6 +1581,160 @@ class DlpServiceGrpcTransport(DlpServiceTransport):
                 response_deserializer=empty_pb2.Empty.FromString,
             )
         return self._stubs["finish_dlp_job"]
+
+    @property
+    def create_connection(
+        self,
+    ) -> Callable[[dlp.CreateConnectionRequest], dlp.Connection]:
+        r"""Return a callable for the create connection method over gRPC.
+
+        Create a Connection to an external data source.
+
+        Returns:
+            Callable[[~.CreateConnectionRequest],
+                    ~.Connection]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_connection" not in self._stubs:
+            self._stubs["create_connection"] = self.grpc_channel.unary_unary(
+                "/google.privacy.dlp.v2.DlpService/CreateConnection",
+                request_serializer=dlp.CreateConnectionRequest.serialize,
+                response_deserializer=dlp.Connection.deserialize,
+            )
+        return self._stubs["create_connection"]
+
+    @property
+    def get_connection(self) -> Callable[[dlp.GetConnectionRequest], dlp.Connection]:
+        r"""Return a callable for the get connection method over gRPC.
+
+        Get a Connection by name.
+
+        Returns:
+            Callable[[~.GetConnectionRequest],
+                    ~.Connection]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_connection" not in self._stubs:
+            self._stubs["get_connection"] = self.grpc_channel.unary_unary(
+                "/google.privacy.dlp.v2.DlpService/GetConnection",
+                request_serializer=dlp.GetConnectionRequest.serialize,
+                response_deserializer=dlp.Connection.deserialize,
+            )
+        return self._stubs["get_connection"]
+
+    @property
+    def list_connections(
+        self,
+    ) -> Callable[[dlp.ListConnectionsRequest], dlp.ListConnectionsResponse]:
+        r"""Return a callable for the list connections method over gRPC.
+
+        Lists Connections in a parent.
+
+        Returns:
+            Callable[[~.ListConnectionsRequest],
+                    ~.ListConnectionsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_connections" not in self._stubs:
+            self._stubs["list_connections"] = self.grpc_channel.unary_unary(
+                "/google.privacy.dlp.v2.DlpService/ListConnections",
+                request_serializer=dlp.ListConnectionsRequest.serialize,
+                response_deserializer=dlp.ListConnectionsResponse.deserialize,
+            )
+        return self._stubs["list_connections"]
+
+    @property
+    def search_connections(
+        self,
+    ) -> Callable[[dlp.SearchConnectionsRequest], dlp.SearchConnectionsResponse]:
+        r"""Return a callable for the search connections method over gRPC.
+
+        Searches for Connections in a parent.
+
+        Returns:
+            Callable[[~.SearchConnectionsRequest],
+                    ~.SearchConnectionsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "search_connections" not in self._stubs:
+            self._stubs["search_connections"] = self.grpc_channel.unary_unary(
+                "/google.privacy.dlp.v2.DlpService/SearchConnections",
+                request_serializer=dlp.SearchConnectionsRequest.serialize,
+                response_deserializer=dlp.SearchConnectionsResponse.deserialize,
+            )
+        return self._stubs["search_connections"]
+
+    @property
+    def delete_connection(
+        self,
+    ) -> Callable[[dlp.DeleteConnectionRequest], empty_pb2.Empty]:
+        r"""Return a callable for the delete connection method over gRPC.
+
+        Delete a Connection.
+
+        Returns:
+            Callable[[~.DeleteConnectionRequest],
+                    ~.Empty]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_connection" not in self._stubs:
+            self._stubs["delete_connection"] = self.grpc_channel.unary_unary(
+                "/google.privacy.dlp.v2.DlpService/DeleteConnection",
+                request_serializer=dlp.DeleteConnectionRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
+            )
+        return self._stubs["delete_connection"]
+
+    @property
+    def update_connection(
+        self,
+    ) -> Callable[[dlp.UpdateConnectionRequest], dlp.Connection]:
+        r"""Return a callable for the update connection method over gRPC.
+
+        Update a Connection.
+
+        Returns:
+            Callable[[~.UpdateConnectionRequest],
+                    ~.Connection]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_connection" not in self._stubs:
+            self._stubs["update_connection"] = self.grpc_channel.unary_unary(
+                "/google.privacy.dlp.v2.DlpService/UpdateConnection",
+                request_serializer=dlp.UpdateConnectionRequest.serialize,
+                response_deserializer=dlp.Connection.deserialize,
+            )
+        return self._stubs["update_connection"]
 
     def close(self):
         self.grpc_channel.close()
