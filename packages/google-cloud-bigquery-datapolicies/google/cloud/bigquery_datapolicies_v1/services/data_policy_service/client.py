@@ -17,6 +17,7 @@ from collections import OrderedDict
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -537,7 +538,13 @@ class DataPolicyServiceClient(metaclass=DataPolicyServiceClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, DataPolicyServiceTransport]] = None,
+        transport: Optional[
+            Union[
+                str,
+                DataPolicyServiceTransport,
+                Callable[..., DataPolicyServiceTransport],
+            ]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -549,9 +556,11 @@ class DataPolicyServiceClient(metaclass=DataPolicyServiceClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, DataPolicyServiceTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,DataPolicyServiceTransport,Callable[..., DataPolicyServiceTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the DataPolicyServiceTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -660,8 +669,16 @@ class DataPolicyServiceClient(metaclass=DataPolicyServiceClientMeta):
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[DataPolicyServiceTransport],
+                Callable[..., DataPolicyServiceTransport],
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., DataPolicyServiceTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -749,8 +766,8 @@ class DataPolicyServiceClient(metaclass=DataPolicyServiceClientMeta):
                 Represents the label-policy binding.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, data_policy])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -758,10 +775,8 @@ class DataPolicyServiceClient(metaclass=DataPolicyServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a datapolicy.CreateDataPolicyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, datapolicy.CreateDataPolicyRequest):
             request = datapolicy.CreateDataPolicyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -877,8 +892,8 @@ class DataPolicyServiceClient(metaclass=DataPolicyServiceClientMeta):
                 Represents the label-policy binding.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([data_policy, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -886,10 +901,8 @@ class DataPolicyServiceClient(metaclass=DataPolicyServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a datapolicy.UpdateDataPolicyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, datapolicy.UpdateDataPolicyRequest):
             request = datapolicy.UpdateDataPolicyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -993,8 +1006,8 @@ class DataPolicyServiceClient(metaclass=DataPolicyServiceClientMeta):
                 Represents the label-policy binding.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, new_data_policy_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1002,10 +1015,8 @@ class DataPolicyServiceClient(metaclass=DataPolicyServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a datapolicy.RenameDataPolicyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, datapolicy.RenameDataPolicyRequest):
             request = datapolicy.RenameDataPolicyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1093,8 +1104,8 @@ class DataPolicyServiceClient(metaclass=DataPolicyServiceClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1102,10 +1113,8 @@ class DataPolicyServiceClient(metaclass=DataPolicyServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a datapolicy.DeleteDataPolicyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, datapolicy.DeleteDataPolicyRequest):
             request = datapolicy.DeleteDataPolicyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1194,8 +1203,8 @@ class DataPolicyServiceClient(metaclass=DataPolicyServiceClientMeta):
                 Represents the label-policy binding.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1203,10 +1212,8 @@ class DataPolicyServiceClient(metaclass=DataPolicyServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a datapolicy.GetDataPolicyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, datapolicy.GetDataPolicyRequest):
             request = datapolicy.GetDataPolicyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1305,8 +1312,8 @@ class DataPolicyServiceClient(metaclass=DataPolicyServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1314,10 +1321,8 @@ class DataPolicyServiceClient(metaclass=DataPolicyServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a datapolicy.ListDataPoliciesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, datapolicy.ListDataPoliciesRequest):
             request = datapolicy.ListDataPoliciesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1440,8 +1445,8 @@ class DataPolicyServiceClient(metaclass=DataPolicyServiceClientMeta):
         """
         # Create or coerce a protobuf request object.
         if isinstance(request, dict):
-            # The request isn't a proto-plus wrapped type,
-            # so it must be constructed via keyword expansion.
+            # - The request isn't a proto-plus wrapped type,
+            #   so it must be constructed via keyword expansion.
             request = iam_policy_pb2.GetIamPolicyRequest(**request)
         elif not request:
             # Null request, just make one.
@@ -1553,8 +1558,8 @@ class DataPolicyServiceClient(metaclass=DataPolicyServiceClientMeta):
         """
         # Create or coerce a protobuf request object.
         if isinstance(request, dict):
-            # The request isn't a proto-plus wrapped type,
-            # so it must be constructed via keyword expansion.
+            # - The request isn't a proto-plus wrapped type,
+            #   so it must be constructed via keyword expansion.
             request = iam_policy_pb2.SetIamPolicyRequest(**request)
         elif not request:
             # Null request, just make one.
@@ -1638,8 +1643,8 @@ class DataPolicyServiceClient(metaclass=DataPolicyServiceClientMeta):
         """
         # Create or coerce a protobuf request object.
         if isinstance(request, dict):
-            # The request isn't a proto-plus wrapped type,
-            # so it must be constructed via keyword expansion.
+            # - The request isn't a proto-plus wrapped type,
+            #   so it must be constructed via keyword expansion.
             request = iam_policy_pb2.TestIamPermissionsRequest(**request)
         elif not request:
             # Null request, just make one.

@@ -17,6 +17,7 @@ from collections import OrderedDict
 import functools
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -215,7 +216,13 @@ class AnalyticsHubServiceAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, AnalyticsHubServiceTransport] = "grpc_asyncio",
+        transport: Optional[
+            Union[
+                str,
+                AnalyticsHubServiceTransport,
+                Callable[..., AnalyticsHubServiceTransport],
+            ]
+        ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -227,9 +234,11 @@ class AnalyticsHubServiceAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.AnalyticsHubServiceTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,AnalyticsHubServiceTransport,Callable[..., AnalyticsHubServiceTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the AnalyticsHubServiceTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -339,8 +348,8 @@ class AnalyticsHubServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -348,7 +357,10 @@ class AnalyticsHubServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = dataexchange.ListDataExchangesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dataexchange.ListDataExchangesRequest):
+            request = dataexchange.ListDataExchangesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -357,11 +369,9 @@ class AnalyticsHubServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_data_exchanges,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_data_exchanges
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -462,8 +472,8 @@ class AnalyticsHubServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([organization])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -471,7 +481,10 @@ class AnalyticsHubServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = dataexchange.ListOrgDataExchangesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dataexchange.ListOrgDataExchangesRequest):
+            request = dataexchange.ListOrgDataExchangesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -480,11 +493,9 @@ class AnalyticsHubServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_org_data_exchanges,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_org_data_exchanges
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -580,8 +591,8 @@ class AnalyticsHubServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -589,7 +600,10 @@ class AnalyticsHubServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = dataexchange.GetDataExchangeRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dataexchange.GetDataExchangeRequest):
+            request = dataexchange.GetDataExchangeRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -598,11 +612,9 @@ class AnalyticsHubServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_data_exchange,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_data_exchange
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -700,8 +712,8 @@ class AnalyticsHubServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, data_exchange])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -709,7 +721,10 @@ class AnalyticsHubServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = dataexchange.CreateDataExchangeRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dataexchange.CreateDataExchangeRequest):
+            request = dataexchange.CreateDataExchangeRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -720,11 +735,9 @@ class AnalyticsHubServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_data_exchange,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_data_exchange
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -822,8 +835,8 @@ class AnalyticsHubServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([data_exchange, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -831,7 +844,10 @@ class AnalyticsHubServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = dataexchange.UpdateDataExchangeRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dataexchange.UpdateDataExchangeRequest):
+            request = dataexchange.UpdateDataExchangeRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -842,11 +858,9 @@ class AnalyticsHubServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_data_exchange,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_data_exchange
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -922,8 +936,8 @@ class AnalyticsHubServiceAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -931,7 +945,10 @@ class AnalyticsHubServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = dataexchange.DeleteDataExchangeRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dataexchange.DeleteDataExchangeRequest):
+            request = dataexchange.DeleteDataExchangeRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -940,11 +957,9 @@ class AnalyticsHubServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_data_exchange,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_data_exchange
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1028,8 +1043,8 @@ class AnalyticsHubServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1037,7 +1052,10 @@ class AnalyticsHubServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = dataexchange.ListListingsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dataexchange.ListListingsRequest):
+            request = dataexchange.ListListingsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1046,11 +1064,9 @@ class AnalyticsHubServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_listings,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_listings
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1145,8 +1161,8 @@ class AnalyticsHubServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1154,7 +1170,10 @@ class AnalyticsHubServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = dataexchange.GetListingRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dataexchange.GetListingRequest):
+            request = dataexchange.GetListingRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1163,11 +1182,9 @@ class AnalyticsHubServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_listing,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_listing
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1264,8 +1281,8 @@ class AnalyticsHubServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, listing])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1273,7 +1290,10 @@ class AnalyticsHubServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = dataexchange.CreateListingRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dataexchange.CreateListingRequest):
+            request = dataexchange.CreateListingRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1284,11 +1304,9 @@ class AnalyticsHubServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_listing,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_listing
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1385,8 +1403,8 @@ class AnalyticsHubServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([listing, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1394,7 +1412,10 @@ class AnalyticsHubServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = dataexchange.UpdateListingRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dataexchange.UpdateListingRequest):
+            request = dataexchange.UpdateListingRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1405,11 +1426,9 @@ class AnalyticsHubServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_listing,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_listing
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1484,8 +1503,8 @@ class AnalyticsHubServiceAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1493,7 +1512,10 @@ class AnalyticsHubServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = dataexchange.DeleteListingRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dataexchange.DeleteListingRequest):
+            request = dataexchange.DeleteListingRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1502,11 +1524,9 @@ class AnalyticsHubServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_listing,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_listing
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1598,8 +1618,8 @@ class AnalyticsHubServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1607,7 +1627,10 @@ class AnalyticsHubServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = dataexchange.SubscribeListingRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dataexchange.SubscribeListingRequest):
+            request = dataexchange.SubscribeListingRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1616,11 +1639,9 @@ class AnalyticsHubServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.subscribe_listing,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.subscribe_listing
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1723,8 +1744,8 @@ class AnalyticsHubServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # The request isn't a proto-plus wrapped type,
-        # so it must be constructed via keyword expansion.
+        # - The request isn't a proto-plus wrapped type,
+        #   so it must be constructed via keyword expansion.
         if isinstance(request, dict):
             request = iam_policy_pb2.GetIamPolicyRequest(**request)
         elif not request:
@@ -1732,11 +1753,9 @@ class AnalyticsHubServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_iam_policy,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_iam_policy
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1839,8 +1858,8 @@ class AnalyticsHubServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # The request isn't a proto-plus wrapped type,
-        # so it must be constructed via keyword expansion.
+        # - The request isn't a proto-plus wrapped type,
+        #   so it must be constructed via keyword expansion.
         if isinstance(request, dict):
             request = iam_policy_pb2.SetIamPolicyRequest(**request)
         elif not request:
@@ -1848,11 +1867,9 @@ class AnalyticsHubServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.set_iam_policy,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.set_iam_policy
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1926,8 +1943,8 @@ class AnalyticsHubServiceAsyncClient:
                 Response message for TestIamPermissions method.
         """
         # Create or coerce a protobuf request object.
-        # The request isn't a proto-plus wrapped type,
-        # so it must be constructed via keyword expansion.
+        # - The request isn't a proto-plus wrapped type,
+        #   so it must be constructed via keyword expansion.
         if isinstance(request, dict):
             request = iam_policy_pb2.TestIamPermissionsRequest(**request)
         elif not request:
@@ -1935,11 +1952,9 @@ class AnalyticsHubServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.test_iam_permissions,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.test_iam_permissions
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
