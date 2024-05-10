@@ -60,6 +60,11 @@
                 "list_tasks"
               ]
             },
+            "UpdateJob": {
+              "methods": [
+                "update_job"
+              ]
+            },
             "UpdateResourceAllowance": {
               "methods": [
                 "update_resource_allowance"
@@ -120,6 +125,11 @@
                 "list_tasks"
               ]
             },
+            "UpdateJob": {
+              "methods": [
+                "update_job"
+              ]
+            },
             "UpdateResourceAllowance": {
               "methods": [
                 "update_resource_allowance"
@@ -178,6 +188,11 @@
             "ListTasks": {
               "methods": [
                 "list_tasks"
+              ]
+            },
+            "UpdateJob": {
+              "methods": [
+                "update_job"
               ]
             },
             "UpdateResourceAllowance": {

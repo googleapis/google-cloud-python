@@ -18,14 +18,14 @@ from google.cloud.security.publicca import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.security.publicca_v1beta1.services.public_certificate_authority_service.async_client import (
+from google.cloud.security.publicca_v1.services.public_certificate_authority_service.async_client import (
     PublicCertificateAuthorityServiceAsyncClient,
 )
-from google.cloud.security.publicca_v1beta1.services.public_certificate_authority_service.client import (
+from google.cloud.security.publicca_v1.services.public_certificate_authority_service.client import (
     PublicCertificateAuthorityServiceClient,
 )
-from google.cloud.security.publicca_v1beta1.types.resources import ExternalAccountKey
-from google.cloud.security.publicca_v1beta1.types.service import (
+from google.cloud.security.publicca_v1.types.resources import ExternalAccountKey
+from google.cloud.security.publicca_v1.types.service import (
     CreateExternalAccountKeyRequest,
 )
 

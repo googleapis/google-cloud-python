@@ -33,6 +33,7 @@ __protobuf__ = proto.module(
         "CreateJobRequest",
         "GetJobRequest",
         "DeleteJobRequest",
+        "UpdateJobRequest",
         "ListJobsRequest",
         "ListJobsResponse",
         "ListTasksRequest",
@@ -166,6 +167,57 @@ class DeleteJobRequest(proto.Message):
     request_id: str = proto.Field(
         proto.STRING,
         number=4,
+    )
+
+
+class UpdateJobRequest(proto.Message):
+    r"""UpdateJob Request.
+
+    Attributes:
+        job (google.cloud.batch_v1alpha.types.Job):
+            Required. The Job to update. Only fields specified in
+            ``update_mask`` are updated.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Required. Mask of fields to update.
+
+            UpdateJob request now only supports update on ``task_count``
+            field in a job's first task group. Other fields will be
+            ignored.
+        request_id (str):
+            Optional. An optional request ID to identify
+            requests. Specify a unique request ID so that if
+            you must retry your request, the server will
+            know to ignore the request if it has already
+            been completed. The server will guarantee that
+            for at least 60 minutes after the first request.
+
+            For example, consider a situation where you make
+            an initial request and the request times out. If
+            you make the request again with the same request
+            ID, the server can check if original operation
+            with the same request ID was received, and if
+            so, will ignore the second request. This
+            prevents clients from accidentally creating
+            duplicate commitments.
+
+            The request ID must be a valid UUID with the
+            exception that zero UUID is not supported
+            (00000000-0000-0000-0000-000000000000).
+    """
+
+    job: gcb_job.Job = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=gcb_job.Job,
+    )
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=3,
     )
 
 

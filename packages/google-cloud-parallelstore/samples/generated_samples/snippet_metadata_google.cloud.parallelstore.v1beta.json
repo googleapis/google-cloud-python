@@ -8,7 +8,7 @@
     ],
     "language": "PYTHON",
     "name": "google-cloud-parallelstore",
-    "version": "0.1.2"
+    "version": "0.1.0"
   },
   "snippets": [
     {
@@ -394,12 +394,12 @@
       "regionTag": "parallelstore_v1beta_generated_Parallelstore_ExportData_async",
       "segments": [
         {
-          "end": 57,
+          "end": 59,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 57,
+          "end": 59,
           "start": 27,
           "type": "SHORT"
         },
@@ -409,18 +409,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 47,
+          "end": 49,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 54,
-          "start": 48,
+          "end": 56,
+          "start": 50,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 58,
-          "start": 55,
+          "end": 60,
+          "start": 57,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -470,12 +470,12 @@
       "regionTag": "parallelstore_v1beta_generated_Parallelstore_ExportData_sync",
       "segments": [
         {
-          "end": 57,
+          "end": 59,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 57,
+          "end": 59,
           "start": 27,
           "type": "SHORT"
         },
@@ -485,18 +485,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 47,
+          "end": 49,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 54,
-          "start": 48,
+          "end": 56,
+          "start": 50,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 58,
-          "start": 55,
+          "end": 60,
+          "start": 57,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -708,12 +708,12 @@
       "regionTag": "parallelstore_v1beta_generated_Parallelstore_ImportData_async",
       "segments": [
         {
-          "end": 57,
+          "end": 59,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 57,
+          "end": 59,
           "start": 27,
           "type": "SHORT"
         },
@@ -723,18 +723,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 47,
+          "end": 49,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 54,
-          "start": 48,
+          "end": 56,
+          "start": 50,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 58,
-          "start": 55,
+          "end": 60,
+          "start": 57,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -784,12 +784,12 @@
       "regionTag": "parallelstore_v1beta_generated_Parallelstore_ImportData_sync",
       "segments": [
         {
-          "end": 57,
+          "end": 59,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 57,
+          "end": 59,
           "start": 27,
           "type": "SHORT"
         },
@@ -799,18 +799,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 47,
+          "end": 49,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 54,
-          "start": 48,
+          "end": 56,
+          "start": 50,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 58,
-          "start": 55,
+          "end": 60,
+          "start": 57,
           "type": "RESPONSE_HANDLING"
         }
       ],
