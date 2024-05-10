@@ -2275,6 +2275,394 @@ async def test_delete_job_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
+        batch.UpdateJobRequest,
+        dict,
+    ],
+)
+def test_update_job(request_type, transport: str = "grpc"):
+    client = BatchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_job), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = gcb_job.Job(
+            name="name_value",
+            uid="uid_value",
+            priority=898,
+            scheduling_policy=gcb_job.Job.SchedulingPolicy.AS_SOON_AS_POSSIBLE,
+        )
+        response = client.update_job(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = batch.UpdateJobRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gcb_job.Job)
+    assert response.name == "name_value"
+    assert response.uid == "uid_value"
+    assert response.priority == 898
+    assert (
+        response.scheduling_policy == gcb_job.Job.SchedulingPolicy.AS_SOON_AS_POSSIBLE
+    )
+
+
+def test_update_job_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = BatchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_job), "__call__") as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.update_job()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == batch.UpdateJobRequest()
+
+
+def test_update_job_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = BatchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = batch.UpdateJobRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_job), "__call__") as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.update_job(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == batch.UpdateJobRequest()
+
+
+def test_update_job_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = BatchServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.update_job in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.update_job] = mock_rpc
+        request = {}
+        client.update_job(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.update_job(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_update_job_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = BatchServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_job), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcb_job.Job(
+                name="name_value",
+                uid="uid_value",
+                priority=898,
+                scheduling_policy=gcb_job.Job.SchedulingPolicy.AS_SOON_AS_POSSIBLE,
+            )
+        )
+        response = await client.update_job()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == batch.UpdateJobRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_job_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = BatchServiceAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.update_job
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        class AwaitableMock(mock.AsyncMock):
+            def __await__(self):
+                self.await_count += 1
+                return iter([])
+
+        mock_object = AwaitableMock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.update_job
+        ] = mock_object
+
+        request = {}
+        await client.update_job(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_object.call_count == 1
+
+        await client.update_job(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_object.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_update_job_async(
+    transport: str = "grpc_asyncio", request_type=batch.UpdateJobRequest
+):
+    client = BatchServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_job), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcb_job.Job(
+                name="name_value",
+                uid="uid_value",
+                priority=898,
+                scheduling_policy=gcb_job.Job.SchedulingPolicy.AS_SOON_AS_POSSIBLE,
+            )
+        )
+        response = await client.update_job(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = batch.UpdateJobRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gcb_job.Job)
+    assert response.name == "name_value"
+    assert response.uid == "uid_value"
+    assert response.priority == 898
+    assert (
+        response.scheduling_policy == gcb_job.Job.SchedulingPolicy.AS_SOON_AS_POSSIBLE
+    )
+
+
+@pytest.mark.asyncio
+async def test_update_job_async_from_dict():
+    await test_update_job_async(request_type=dict)
+
+
+def test_update_job_field_headers():
+    client = BatchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = batch.UpdateJobRequest()
+
+    request.job.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_job), "__call__") as call:
+        call.return_value = gcb_job.Job()
+        client.update_job(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "job.name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_update_job_field_headers_async():
+    client = BatchServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = batch.UpdateJobRequest()
+
+    request.job.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_job), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(gcb_job.Job())
+        await client.update_job(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "job.name=name_value",
+    ) in kw["metadata"]
+
+
+def test_update_job_flattened():
+    client = BatchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_job), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = gcb_job.Job()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.update_job(
+            job=gcb_job.Job(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].job
+        mock_val = gcb_job.Job(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+def test_update_job_flattened_error():
+    client = BatchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_job(
+            batch.UpdateJobRequest(),
+            job=gcb_job.Job(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_job_flattened_async():
+    client = BatchServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_job), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = gcb_job.Job()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(gcb_job.Job())
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.update_job(
+            job=gcb_job.Job(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].job
+        mock_val = gcb_job.Job(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_update_job_flattened_error_async():
+    client = BatchServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.update_job(
+            batch.UpdateJobRequest(),
+            job=gcb_job.Job(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         batch.ListJobsRequest,
         dict,
     ],
@@ -7168,6 +7556,594 @@ def test_delete_job_rest_error():
 @pytest.mark.parametrize(
     "request_type",
     [
+        batch.UpdateJobRequest,
+        dict,
+    ],
+)
+def test_update_job_rest(request_type):
+    client = BatchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"job": {"name": "projects/sample1/locations/sample2/jobs/sample3"}}
+    request_init["job"] = {
+        "name": "projects/sample1/locations/sample2/jobs/sample3",
+        "uid": "uid_value",
+        "priority": 898,
+        "task_groups": [
+            {
+                "name": "name_value",
+                "task_spec": {
+                    "runnables": [
+                        {
+                            "container": {
+                                "image_uri": "image_uri_value",
+                                "commands": ["commands_value1", "commands_value2"],
+                                "entrypoint": "entrypoint_value",
+                                "volumes": ["volumes_value1", "volumes_value2"],
+                                "options": "options_value",
+                                "block_external_network": True,
+                                "username": "username_value",
+                                "password": "password_value",
+                                "enable_image_streaming": True,
+                            },
+                            "script": {"path": "path_value", "text": "text_value"},
+                            "barrier": {"name": "name_value"},
+                            "display_name": "display_name_value",
+                            "ignore_exit_status": True,
+                            "background": True,
+                            "always_run": True,
+                            "environment": {
+                                "variables": {},
+                                "secret_variables": {},
+                                "encrypted_variables": {
+                                    "key_name": "key_name_value",
+                                    "cipher_text": "cipher_text_value",
+                                },
+                            },
+                            "timeout": {"seconds": 751, "nanos": 543},
+                            "labels": {},
+                        }
+                    ],
+                    "compute_resource": {
+                        "cpu_milli": 958,
+                        "memory_mib": 1072,
+                        "gpu_count": 980,
+                        "boot_disk_mib": 1365,
+                    },
+                    "max_run_duration": {},
+                    "max_retry_count": 1635,
+                    "lifecycle_policies": [
+                        {"action": 1, "action_condition": {"exit_codes": [1064, 1065]}}
+                    ],
+                    "environments": {},
+                    "volumes": [
+                        {
+                            "nfs": {
+                                "server": "server_value",
+                                "remote_path": "remote_path_value",
+                            },
+                            "pd": {
+                                "disk": "disk_value",
+                                "device": "device_value",
+                                "existing": True,
+                            },
+                            "gcs": {"remote_path": "remote_path_value"},
+                            "device_name": "device_name_value",
+                            "mount_path": "mount_path_value",
+                            "mount_options": [
+                                "mount_options_value1",
+                                "mount_options_value2",
+                            ],
+                        }
+                    ],
+                    "environment": {},
+                },
+                "task_count": 1083,
+                "parallelism": 1174,
+                "scheduling_policy": 1,
+                "allocation_policy": {
+                    "location": {
+                        "allowed_locations": [
+                            "allowed_locations_value1",
+                            "allowed_locations_value2",
+                        ],
+                        "denied_locations": [
+                            "denied_locations_value1",
+                            "denied_locations_value2",
+                        ],
+                    },
+                    "instance": {
+                        "allowed_machine_types": [
+                            "allowed_machine_types_value1",
+                            "allowed_machine_types_value2",
+                        ],
+                        "machine_type": "machine_type_value",
+                        "min_cpu_platform": "min_cpu_platform_value",
+                        "provisioning_model": 1,
+                        "accelerators": [
+                            {
+                                "type_": "type__value",
+                                "count": 553,
+                                "install_gpu_drivers": True,
+                                "driver_version": "driver_version_value",
+                            }
+                        ],
+                        "boot_disk": {
+                            "image": "image_value",
+                            "snapshot": "snapshot_value",
+                            "type_": "type__value",
+                            "size_gb": 739,
+                            "disk_interface": "disk_interface_value",
+                        },
+                        "disks": [
+                            {
+                                "new_disk": {},
+                                "existing_disk": "existing_disk_value",
+                                "device_name": "device_name_value",
+                            }
+                        ],
+                        "reservation": "reservation_value",
+                    },
+                    "instances": [
+                        {
+                            "policy": {},
+                            "instance_template": "instance_template_value",
+                            "install_gpu_drivers": True,
+                        }
+                    ],
+                    "instance_templates": [
+                        "instance_templates_value1",
+                        "instance_templates_value2",
+                    ],
+                    "provisioning_models": [1],
+                    "service_account_email": "service_account_email_value",
+                    "service_account": {
+                        "email": "email_value",
+                        "scopes": ["scopes_value1", "scopes_value2"],
+                    },
+                    "labels": {},
+                    "network": {
+                        "network_interfaces": [
+                            {
+                                "network": "network_value",
+                                "subnetwork": "subnetwork_value",
+                                "no_external_ip_address": True,
+                            }
+                        ]
+                    },
+                    "placement": {
+                        "collocation": "collocation_value",
+                        "max_distance": 1264,
+                    },
+                    "tags": ["tags_value1", "tags_value2"],
+                },
+                "labels": {},
+                "task_environments": {},
+                "task_count_per_node": 2022,
+                "require_hosts_file": True,
+                "permissive_ssh": True,
+                "run_as_non_root": True,
+                "service_account": {},
+            }
+        ],
+        "scheduling_policy": 1,
+        "dependencies": [{"items": {}}],
+        "allocation_policy": {},
+        "labels": {},
+        "status": {
+            "state": 1,
+            "status_events": [
+                {
+                    "type_": "type__value",
+                    "description": "description_value",
+                    "event_time": {"seconds": 751, "nanos": 543},
+                    "task_execution": {
+                        "exit_code": 948,
+                        "stderr_snippet": "stderr_snippet_value",
+                    },
+                    "task_state": 1,
+                }
+            ],
+            "task_groups": {},
+            "run_duration": {},
+            "resource_usage": {"core_hours": 0.1081},
+        },
+        "notification": {
+            "pubsub_topic": "pubsub_topic_value",
+            "message": {"type_": 1, "new_job_state": 1, "new_task_state": 1},
+        },
+        "create_time": {},
+        "update_time": {},
+        "logs_policy": {
+            "destination": 1,
+            "logs_path": "logs_path_value",
+            "cloud_logging_option": {"use_generic_task_monitored_resource": True},
+        },
+        "notifications": {},
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = batch.UpdateJobRequest.meta.fields["job"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["job"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["job"][field])):
+                    del request_init["job"][field][i][subfield]
+            else:
+                del request_init["job"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gcb_job.Job(
+            name="name_value",
+            uid="uid_value",
+            priority=898,
+            scheduling_policy=gcb_job.Job.SchedulingPolicy.AS_SOON_AS_POSSIBLE,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = gcb_job.Job.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_job(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gcb_job.Job)
+    assert response.name == "name_value"
+    assert response.uid == "uid_value"
+    assert response.priority == 898
+    assert (
+        response.scheduling_policy == gcb_job.Job.SchedulingPolicy.AS_SOON_AS_POSSIBLE
+    )
+
+
+def test_update_job_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = BatchServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.update_job in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.update_job] = mock_rpc
+
+        request = {}
+        client.update_job(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.update_job(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_update_job_rest_required_fields(request_type=batch.UpdateJobRequest):
+    transport_class = transports.BatchServiceRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_job._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_job._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "request_id",
+            "update_mask",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = BatchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = gcb_job.Job()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = gcb_job.Job.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_job(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_job_rest_unset_required_fields():
+    transport = transports.BatchServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_job._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "requestId",
+                "updateMask",
+            )
+        )
+        & set(
+            (
+                "job",
+                "updateMask",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_job_rest_interceptors(null_interceptor):
+    transport = transports.BatchServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BatchServiceRestInterceptor(),
+    )
+    client = BatchServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.BatchServiceRestInterceptor, "post_update_job"
+    ) as post, mock.patch.object(
+        transports.BatchServiceRestInterceptor, "pre_update_job"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = batch.UpdateJobRequest.pb(batch.UpdateJobRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = gcb_job.Job.to_json(gcb_job.Job())
+
+        request = batch.UpdateJobRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = gcb_job.Job()
+
+        client.update_job(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_job_rest_bad_request(
+    transport: str = "rest", request_type=batch.UpdateJobRequest
+):
+    client = BatchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"job": {"name": "projects/sample1/locations/sample2/jobs/sample3"}}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_job(request)
+
+
+def test_update_job_rest_flattened():
+    client = BatchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gcb_job.Job()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "job": {"name": "projects/sample1/locations/sample2/jobs/sample3"}
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            job=gcb_job.Job(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = gcb_job.Job.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_job(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{job.name=projects/*/locations/*/jobs/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_job_rest_flattened_error(transport: str = "rest"):
+    client = BatchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_job(
+            batch.UpdateJobRequest(),
+            job=gcb_job.Job(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_job_rest_error():
+    client = BatchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         batch.ListJobsRequest,
         dict,
     ],
@@ -10173,6 +11149,7 @@ def test_batch_service_base_transport():
         "create_job",
         "get_job",
         "delete_job",
+        "update_job",
         "list_jobs",
         "get_task",
         "list_tasks",
@@ -10472,6 +11449,9 @@ def test_batch_service_client_transport_session_collision(transport_name):
     assert session1 != session2
     session1 = client1.transport.delete_job._session
     session2 = client2.transport.delete_job._session
+    assert session1 != session2
+    session1 = client1.transport.update_job._session
+    session2 = client2.transport.update_job._session
     assert session1 != session2
     session1 = client1.transport.list_jobs._session
     session2 = client2.transport.list_jobs._session
