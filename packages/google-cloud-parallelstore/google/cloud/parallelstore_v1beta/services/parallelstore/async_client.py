@@ -960,9 +960,11 @@ class ParallelstoreAsyncClient:
                 client = parallelstore_v1beta.ParallelstoreAsyncClient()
 
                 # Initialize request argument(s)
+                source_gcs_bucket = parallelstore_v1beta.SourceGcsBucket()
+                source_gcs_bucket.uri = "uri_value"
+
                 request = parallelstore_v1beta.ImportDataRequest(
-                    source_gcs_uri="source_gcs_uri_value",
-                    destination_path="destination_path_value",
+                    source_gcs_bucket=source_gcs_bucket,
                     name="name_value",
                 )
 
@@ -1064,9 +1066,11 @@ class ParallelstoreAsyncClient:
                 client = parallelstore_v1beta.ParallelstoreAsyncClient()
 
                 # Initialize request argument(s)
+                destination_gcs_bucket = parallelstore_v1beta.DestinationGcsBucket()
+                destination_gcs_bucket.uri = "uri_value"
+
                 request = parallelstore_v1beta.ExportDataRequest(
-                    source_path="source_path_value",
-                    destination_gcs_uri="destination_gcs_uri_value",
+                    destination_gcs_bucket=destination_gcs_bucket,
                     name="name_value",
                 )
 

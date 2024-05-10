@@ -13,4 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-__version__ = "0.0.0"  # {x-release-please-version}
+from .resources import ExternalAccountKey
+from .service import CreateExternalAccountKeyRequest
+
+__all__ = (
+    "ExternalAccountKey",
+    "CreateExternalAccountKeyRequest",
+)

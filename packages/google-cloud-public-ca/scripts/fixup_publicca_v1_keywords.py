@@ -36,16 +36,10 @@ def partition(
     return results[1], results[0]
 
 
-class parallelstoreCallTransformer(cst.CSTTransformer):
+class publiccaCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-        'create_instance': ('parent', 'instance_id', 'instance', 'request_id', ),
-        'delete_instance': ('name', 'request_id', ),
-        'export_data': ('name', 'source_parallelstore', 'destination_gcs_bucket', 'request_id', ),
-        'get_instance': ('name', ),
-        'import_data': ('name', 'source_gcs_bucket', 'destination_parallelstore', 'request_id', ),
-        'list_instances': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
-        'update_instance': ('update_mask', 'instance', 'request_id', ),
+        'create_external_account_key': ('parent', 'external_account_key', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
@@ -94,7 +88,7 @@ def fix_files(
     in_dir: pathlib.Path,
     out_dir: pathlib.Path,
     *,
-    transformer=parallelstoreCallTransformer(),
+    transformer=publiccaCallTransformer(),
 ):
     """Duplicate the input dir to the output dir, fixing file method calls.
 
@@ -127,7 +121,7 @@ def fix_files(
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
-        description="""Fix up source that uses the parallelstore client library.
+        description="""Fix up source that uses the publicca client library.
 
 The existing sources are NOT overwritten but are copied to output_dir with changes made.
 

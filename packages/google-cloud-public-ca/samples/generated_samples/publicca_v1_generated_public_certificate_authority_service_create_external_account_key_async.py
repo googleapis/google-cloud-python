@@ -15,15 +15,15 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for ImportData
+# Snippet for CreateExternalAccountKey
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
 # To install the latest published package dependency, execute the following:
-#   python3 -m pip install google-cloud-parallelstore
+#   python3 -m pip install google-cloud-security-publicca
 
 
-# [START parallelstore_v1beta_generated_Parallelstore_ImportData_async]
+# [START publicca_v1_generated_PublicCertificateAuthorityService_CreateExternalAccountKey_async]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
 # It will require modifications to work:
@@ -31,30 +31,22 @@
 # - It may require specifying regional endpoints when creating the service
 #   client as shown in:
 #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-from google.cloud import parallelstore_v1beta
+from google.cloud.security import publicca_v1
 
 
-async def sample_import_data():
+async def sample_create_external_account_key():
     # Create a client
-    client = parallelstore_v1beta.ParallelstoreAsyncClient()
+    client = publicca_v1.PublicCertificateAuthorityServiceAsyncClient()
 
     # Initialize request argument(s)
-    source_gcs_bucket = parallelstore_v1beta.SourceGcsBucket()
-    source_gcs_bucket.uri = "uri_value"
-
-    request = parallelstore_v1beta.ImportDataRequest(
-        source_gcs_bucket=source_gcs_bucket,
-        name="name_value",
+    request = publicca_v1.CreateExternalAccountKeyRequest(
+        parent="parent_value",
     )
 
     # Make the request
-    operation = client.import_data(request=request)
-
-    print("Waiting for operation to complete...")
-
-    response = (await operation).result()
+    response = await client.create_external_account_key(request=request)
 
     # Handle the response
     print(response)
 
-# [END parallelstore_v1beta_generated_Parallelstore_ImportData_async]
+# [END publicca_v1_generated_PublicCertificateAuthorityService_CreateExternalAccountKey_async]
