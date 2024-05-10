@@ -328,16 +328,14 @@ class VehicleStop(proto.Message):
             Required. The location of the stop. Note that the locations
             in the ``Task``\ s might not exactly match this location,
             but will be within a short distance of it. This field won't
-            be populated in the response of either a ``GetTask``, or a
-            ``SearchTasks`` call.
+            be populated in the response of a ``GetTask`` call.
         tasks (MutableSequence[google.maps.fleetengine_delivery_v1.types.VehicleStop.TaskInfo]):
             The list of ``Task``\ s to be performed at this stop. This
-            field won't be populated in the response of either a
-            ``GetTask`` or ``SearchTasks`` call.
+            field won't be populated in the response of a ``GetTask``
+            call.
         state (google.maps.fleetengine_delivery_v1.types.VehicleStop.State):
             The state of the ``VehicleStop``. This field won't be
-            populated in the response of either a ``GetTask``, or a
-            ``SearchTasks`` call.
+            populated in the response of a ``GetTask`` call.
     """
 
     class State(proto.Enum):
@@ -366,8 +364,8 @@ class VehicleStop(proto.Message):
         Attributes:
             task_id (str):
                 The Task ID. This field won't be populated in the response
-                of either a ``GetTask``, or a ``SearchTasks`` call. Task IDs
-                are subject to the following restrictions:
+                of a ``GetTask`` call. Task IDs are subject to the following
+                restrictions:
 
                 -  Must be a valid Unicode string.
                 -  Limited to a maximum length of 64 characters.
