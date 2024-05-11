@@ -2,6 +2,10 @@ on:
   pull_request:
     branches:
       - main
+  # Trigger workflow on GitHub merge queue events
+  # See https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository
+  merge_group:
+    types: [checks_requested]
 name: docs
 
 permissions:
