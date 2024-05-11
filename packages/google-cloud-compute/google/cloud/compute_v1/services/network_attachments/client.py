@@ -18,6 +18,7 @@ import functools
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -506,7 +507,13 @@ class NetworkAttachmentsClient(metaclass=NetworkAttachmentsClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, NetworkAttachmentsTransport]] = None,
+        transport: Optional[
+            Union[
+                str,
+                NetworkAttachmentsTransport,
+                Callable[..., NetworkAttachmentsTransport],
+            ]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -518,9 +525,11 @@ class NetworkAttachmentsClient(metaclass=NetworkAttachmentsClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, NetworkAttachmentsTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,NetworkAttachmentsTransport,Callable[..., NetworkAttachmentsTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the NetworkAttachmentsTransport constructor.
+                If set to None, a transport is chosen automatically.
                 NOTE: "rest" transport functionality is currently in a
                 beta state (preview). We welcome your feedback via an
                 issue in this library's source repository.
@@ -632,8 +641,16 @@ class NetworkAttachmentsClient(metaclass=NetworkAttachmentsClientMeta):
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[NetworkAttachmentsTransport],
+                Callable[..., NetworkAttachmentsTransport],
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., NetworkAttachmentsTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -714,8 +731,8 @@ class NetworkAttachmentsClient(metaclass=NetworkAttachmentsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -723,10 +740,8 @@ class NetworkAttachmentsClient(metaclass=NetworkAttachmentsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.AggregatedListNetworkAttachmentsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.AggregatedListNetworkAttachmentsRequest):
             request = compute.AggregatedListNetworkAttachmentsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -844,8 +859,8 @@ class NetworkAttachmentsClient(metaclass=NetworkAttachmentsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, region, network_attachment])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -853,10 +868,8 @@ class NetworkAttachmentsClient(metaclass=NetworkAttachmentsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.DeleteNetworkAttachmentRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.DeleteNetworkAttachmentRequest):
             request = compute.DeleteNetworkAttachmentRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -975,8 +988,8 @@ class NetworkAttachmentsClient(metaclass=NetworkAttachmentsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, region, network_attachment])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -984,10 +997,8 @@ class NetworkAttachmentsClient(metaclass=NetworkAttachmentsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.DeleteNetworkAttachmentRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.DeleteNetworkAttachmentRequest):
             request = compute.DeleteNetworkAttachmentRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1131,8 +1142,8 @@ class NetworkAttachmentsClient(metaclass=NetworkAttachmentsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, region, network_attachment])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1140,10 +1151,8 @@ class NetworkAttachmentsClient(metaclass=NetworkAttachmentsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.GetNetworkAttachmentRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.GetNetworkAttachmentRequest):
             request = compute.GetNetworkAttachmentRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1286,8 +1295,8 @@ class NetworkAttachmentsClient(metaclass=NetworkAttachmentsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, region, resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1295,10 +1304,8 @@ class NetworkAttachmentsClient(metaclass=NetworkAttachmentsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.GetIamPolicyNetworkAttachmentRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.GetIamPolicyNetworkAttachmentRequest):
             request = compute.GetIamPolicyNetworkAttachmentRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1415,8 +1422,8 @@ class NetworkAttachmentsClient(metaclass=NetworkAttachmentsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, region, network_attachment_resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1424,10 +1431,8 @@ class NetworkAttachmentsClient(metaclass=NetworkAttachmentsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.InsertNetworkAttachmentRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.InsertNetworkAttachmentRequest):
             request = compute.InsertNetworkAttachmentRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1543,8 +1548,8 @@ class NetworkAttachmentsClient(metaclass=NetworkAttachmentsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, region, network_attachment_resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1552,10 +1557,8 @@ class NetworkAttachmentsClient(metaclass=NetworkAttachmentsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.InsertNetworkAttachmentRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.InsertNetworkAttachmentRequest):
             request = compute.InsertNetworkAttachmentRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1691,8 +1694,8 @@ class NetworkAttachmentsClient(metaclass=NetworkAttachmentsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, region])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1700,10 +1703,8 @@ class NetworkAttachmentsClient(metaclass=NetworkAttachmentsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.ListNetworkAttachmentsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.ListNetworkAttachmentsRequest):
             request = compute.ListNetworkAttachmentsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1836,8 +1837,8 @@ class NetworkAttachmentsClient(metaclass=NetworkAttachmentsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, region, network_attachment, network_attachment_resource]
         )
@@ -1847,10 +1848,8 @@ class NetworkAttachmentsClient(metaclass=NetworkAttachmentsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.PatchNetworkAttachmentRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.PatchNetworkAttachmentRequest):
             request = compute.PatchNetworkAttachmentRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1979,8 +1978,8 @@ class NetworkAttachmentsClient(metaclass=NetworkAttachmentsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, region, network_attachment, network_attachment_resource]
         )
@@ -1990,10 +1989,8 @@ class NetworkAttachmentsClient(metaclass=NetworkAttachmentsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.PatchNetworkAttachmentRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.PatchNetworkAttachmentRequest):
             request = compute.PatchNetworkAttachmentRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2171,8 +2168,8 @@ class NetworkAttachmentsClient(metaclass=NetworkAttachmentsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, region, resource, region_set_policy_request_resource]
         )
@@ -2182,10 +2179,8 @@ class NetworkAttachmentsClient(metaclass=NetworkAttachmentsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.SetIamPolicyNetworkAttachmentRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.SetIamPolicyNetworkAttachmentRequest):
             request = compute.SetIamPolicyNetworkAttachmentRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2318,8 +2313,8 @@ class NetworkAttachmentsClient(metaclass=NetworkAttachmentsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, region, resource, test_permissions_request_resource]
         )
@@ -2329,10 +2324,8 @@ class NetworkAttachmentsClient(metaclass=NetworkAttachmentsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.TestIamPermissionsNetworkAttachmentRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.TestIamPermissionsNetworkAttachmentRequest):
             request = compute.TestIamPermissionsNetworkAttachmentRequest(request)
             # If we have keyword arguments corresponding to fields on the

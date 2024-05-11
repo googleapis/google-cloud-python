@@ -18,6 +18,7 @@ import functools
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -504,7 +505,9 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, TargetPoolsTransport]] = None,
+        transport: Optional[
+            Union[str, TargetPoolsTransport, Callable[..., TargetPoolsTransport]]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -516,9 +519,11 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, TargetPoolsTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,TargetPoolsTransport,Callable[..., TargetPoolsTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the TargetPoolsTransport constructor.
+                If set to None, a transport is chosen automatically.
                 NOTE: "rest" transport functionality is currently in a
                 beta state (preview). We welcome your feedback via an
                 issue in this library's source repository.
@@ -627,8 +632,15 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[TargetPoolsTransport], Callable[..., TargetPoolsTransport]
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., TargetPoolsTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -726,8 +738,8 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [
                 project,
@@ -742,10 +754,8 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.AddHealthCheckTargetPoolRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.AddHealthCheckTargetPoolRequest):
             request = compute.AddHealthCheckTargetPoolRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -877,8 +887,8 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [
                 project,
@@ -893,10 +903,8 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.AddHealthCheckTargetPoolRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.AddHealthCheckTargetPoolRequest):
             request = compute.AddHealthCheckTargetPoolRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1053,8 +1061,8 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, region, target_pool, target_pools_add_instance_request_resource]
         )
@@ -1064,10 +1072,8 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.AddInstanceTargetPoolRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.AddInstanceTargetPoolRequest):
             request = compute.AddInstanceTargetPoolRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1199,8 +1205,8 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, region, target_pool, target_pools_add_instance_request_resource]
         )
@@ -1210,10 +1216,8 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.AddInstanceTargetPoolRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.AddInstanceTargetPoolRequest):
             request = compute.AddInstanceTargetPoolRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1348,8 +1352,8 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1357,10 +1361,8 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.AggregatedListTargetPoolsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.AggregatedListTargetPoolsRequest):
             request = compute.AggregatedListTargetPoolsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1479,8 +1481,8 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, region, target_pool])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1488,10 +1490,8 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.DeleteTargetPoolRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.DeleteTargetPoolRequest):
             request = compute.DeleteTargetPoolRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1611,8 +1611,8 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, region, target_pool])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1620,10 +1620,8 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.DeleteTargetPoolRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.DeleteTargetPoolRequest):
             request = compute.DeleteTargetPoolRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1774,8 +1772,8 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, region, target_pool])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1783,10 +1781,8 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.GetTargetPoolRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.GetTargetPoolRequest):
             request = compute.GetTargetPoolRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1912,8 +1908,8 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, region, target_pool, instance_reference_resource]
         )
@@ -1923,10 +1919,8 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.GetHealthTargetPoolRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.GetHealthTargetPoolRequest):
             request = compute.GetHealthTargetPoolRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2046,8 +2040,8 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, region, target_pool_resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2055,10 +2049,8 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.InsertTargetPoolRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.InsertTargetPoolRequest):
             request = compute.InsertTargetPoolRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2175,8 +2167,8 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, region, target_pool_resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2184,10 +2176,8 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.InsertTargetPoolRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.InsertTargetPoolRequest):
             request = compute.InsertTargetPoolRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2327,8 +2317,8 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, region])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2336,10 +2326,8 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.ListTargetPoolsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.ListTargetPoolsRequest):
             request = compute.ListTargetPoolsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2473,8 +2461,8 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [
                 project,
@@ -2489,10 +2477,8 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.RemoveHealthCheckTargetPoolRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.RemoveHealthCheckTargetPoolRequest):
             request = compute.RemoveHealthCheckTargetPoolRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2624,8 +2610,8 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [
                 project,
@@ -2640,10 +2626,8 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.RemoveHealthCheckTargetPoolRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.RemoveHealthCheckTargetPoolRequest):
             request = compute.RemoveHealthCheckTargetPoolRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2800,8 +2784,8 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [
                 project,
@@ -2816,10 +2800,8 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.RemoveInstanceTargetPoolRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.RemoveInstanceTargetPoolRequest):
             request = compute.RemoveInstanceTargetPoolRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2951,8 +2933,8 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [
                 project,
@@ -2967,10 +2949,8 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.RemoveInstanceTargetPoolRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.RemoveInstanceTargetPoolRequest):
             request = compute.RemoveInstanceTargetPoolRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3125,8 +3105,8 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, region, target_pool, target_reference_resource]
         )
@@ -3136,10 +3116,8 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.SetBackupTargetPoolRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.SetBackupTargetPoolRequest):
             request = compute.SetBackupTargetPoolRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3267,8 +3245,8 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, region, target_pool, target_reference_resource]
         )
@@ -3278,10 +3256,8 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.SetBackupTargetPoolRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.SetBackupTargetPoolRequest):
             request = compute.SetBackupTargetPoolRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3441,8 +3417,8 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, region, target_pool, security_policy_reference_resource]
         )
@@ -3452,10 +3428,8 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.SetSecurityPolicyTargetPoolRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.SetSecurityPolicyTargetPoolRequest):
             request = compute.SetSecurityPolicyTargetPoolRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3592,8 +3566,8 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, region, target_pool, security_policy_reference_resource]
         )
@@ -3603,10 +3577,8 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.SetSecurityPolicyTargetPoolRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.SetSecurityPolicyTargetPoolRequest):
             request = compute.SetSecurityPolicyTargetPoolRequest(request)
             # If we have keyword arguments corresponding to fields on the

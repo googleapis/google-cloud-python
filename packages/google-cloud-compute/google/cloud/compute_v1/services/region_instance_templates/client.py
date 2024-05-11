@@ -18,6 +18,7 @@ import functools
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -508,7 +509,13 @@ class RegionInstanceTemplatesClient(metaclass=RegionInstanceTemplatesClientMeta)
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, RegionInstanceTemplatesTransport]] = None,
+        transport: Optional[
+            Union[
+                str,
+                RegionInstanceTemplatesTransport,
+                Callable[..., RegionInstanceTemplatesTransport],
+            ]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -520,9 +527,11 @@ class RegionInstanceTemplatesClient(metaclass=RegionInstanceTemplatesClientMeta)
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, RegionInstanceTemplatesTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,RegionInstanceTemplatesTransport,Callable[..., RegionInstanceTemplatesTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the RegionInstanceTemplatesTransport constructor.
+                If set to None, a transport is chosen automatically.
                 NOTE: "rest" transport functionality is currently in a
                 beta state (preview). We welcome your feedback via an
                 issue in this library's source repository.
@@ -636,8 +645,16 @@ class RegionInstanceTemplatesClient(metaclass=RegionInstanceTemplatesClientMeta)
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[RegionInstanceTemplatesTransport],
+                Callable[..., RegionInstanceTemplatesTransport],
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., RegionInstanceTemplatesTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -730,8 +747,8 @@ class RegionInstanceTemplatesClient(metaclass=RegionInstanceTemplatesClientMeta)
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, region, instance_template])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -739,10 +756,8 @@ class RegionInstanceTemplatesClient(metaclass=RegionInstanceTemplatesClientMeta)
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.DeleteRegionInstanceTemplateRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.DeleteRegionInstanceTemplateRequest):
             request = compute.DeleteRegionInstanceTemplateRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -865,8 +880,8 @@ class RegionInstanceTemplatesClient(metaclass=RegionInstanceTemplatesClientMeta)
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, region, instance_template])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -874,10 +889,8 @@ class RegionInstanceTemplatesClient(metaclass=RegionInstanceTemplatesClientMeta)
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.DeleteRegionInstanceTemplateRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.DeleteRegionInstanceTemplateRequest):
             request = compute.DeleteRegionInstanceTemplateRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1031,8 +1044,8 @@ class RegionInstanceTemplatesClient(metaclass=RegionInstanceTemplatesClientMeta)
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, region, instance_template])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1040,10 +1053,8 @@ class RegionInstanceTemplatesClient(metaclass=RegionInstanceTemplatesClientMeta)
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.GetRegionInstanceTemplateRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.GetRegionInstanceTemplateRequest):
             request = compute.GetRegionInstanceTemplateRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1164,8 +1175,8 @@ class RegionInstanceTemplatesClient(metaclass=RegionInstanceTemplatesClientMeta)
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, region, instance_template_resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1173,10 +1184,8 @@ class RegionInstanceTemplatesClient(metaclass=RegionInstanceTemplatesClientMeta)
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.InsertRegionInstanceTemplateRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.InsertRegionInstanceTemplateRequest):
             request = compute.InsertRegionInstanceTemplateRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1296,8 +1305,8 @@ class RegionInstanceTemplatesClient(metaclass=RegionInstanceTemplatesClientMeta)
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, region, instance_template_resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1305,10 +1314,8 @@ class RegionInstanceTemplatesClient(metaclass=RegionInstanceTemplatesClientMeta)
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.InsertRegionInstanceTemplateRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.InsertRegionInstanceTemplateRequest):
             request = compute.InsertRegionInstanceTemplateRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1450,8 +1457,8 @@ class RegionInstanceTemplatesClient(metaclass=RegionInstanceTemplatesClientMeta)
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, region])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1459,10 +1466,8 @@ class RegionInstanceTemplatesClient(metaclass=RegionInstanceTemplatesClientMeta)
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.ListRegionInstanceTemplatesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.ListRegionInstanceTemplatesRequest):
             request = compute.ListRegionInstanceTemplatesRequest(request)
             # If we have keyword arguments corresponding to fields on the
