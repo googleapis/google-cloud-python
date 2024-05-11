@@ -17,6 +17,7 @@ from collections import OrderedDict
 import functools
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -206,7 +207,11 @@ class NotebookServiceAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, NotebookServiceTransport] = "grpc_asyncio",
+        transport: Optional[
+            Union[
+                str, NotebookServiceTransport, Callable[..., NotebookServiceTransport]
+            ]
+        ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -218,9 +223,11 @@ class NotebookServiceAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.NotebookServiceTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,NotebookServiceTransport,Callable[..., NotebookServiceTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the NotebookServiceTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -321,15 +328,16 @@ class NotebookServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = service.ListInstancesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.ListInstancesRequest):
+            request = service.ListInstancesRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_instances,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_instances
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -413,15 +421,16 @@ class NotebookServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = service.GetInstanceRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.GetInstanceRequest):
+            request = service.GetInstanceRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_instance,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_instance
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -511,15 +520,16 @@ class NotebookServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = service.CreateInstanceRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.CreateInstanceRequest):
+            request = service.CreateInstanceRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_instance,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_instance
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -615,15 +625,16 @@ class NotebookServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = service.RegisterInstanceRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.RegisterInstanceRequest):
+            request = service.RegisterInstanceRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.register_instance,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.register_instance
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -715,15 +726,16 @@ class NotebookServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = service.SetInstanceAcceleratorRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.SetInstanceAcceleratorRequest):
+            request = service.SetInstanceAcceleratorRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.set_instance_accelerator,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.set_instance_accelerator
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -814,15 +826,16 @@ class NotebookServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = service.SetInstanceMachineTypeRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.SetInstanceMachineTypeRequest):
+            request = service.SetInstanceMachineTypeRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.set_instance_machine_type,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.set_instance_machine_type
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -911,15 +924,16 @@ class NotebookServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = service.SetInstanceLabelsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.SetInstanceLabelsRequest):
+            request = service.SetInstanceLabelsRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.set_instance_labels,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.set_instance_labels
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1016,15 +1030,16 @@ class NotebookServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = service.DeleteInstanceRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.DeleteInstanceRequest):
+            request = service.DeleteInstanceRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_instance,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_instance
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1114,15 +1129,16 @@ class NotebookServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = service.StartInstanceRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.StartInstanceRequest):
+            request = service.StartInstanceRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.start_instance,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.start_instance
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1212,15 +1228,16 @@ class NotebookServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = service.StopInstanceRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.StopInstanceRequest):
+            request = service.StopInstanceRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.stop_instance,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.stop_instance
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1310,15 +1327,16 @@ class NotebookServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = service.ResetInstanceRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.ResetInstanceRequest):
+            request = service.ResetInstanceRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.reset_instance,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.reset_instance
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1413,15 +1431,16 @@ class NotebookServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = service.ReportInstanceInfoRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.ReportInstanceInfoRequest):
+            request = service.ReportInstanceInfoRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.report_instance_info,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.report_instance_info
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1510,15 +1529,16 @@ class NotebookServiceAsyncClient:
         )
 
         # Create or coerce a protobuf request object.
-        request = service.IsInstanceUpgradeableRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.IsInstanceUpgradeableRequest):
+            request = service.IsInstanceUpgradeableRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.is_instance_upgradeable,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.is_instance_upgradeable
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1608,15 +1628,16 @@ class NotebookServiceAsyncClient:
         )
 
         # Create or coerce a protobuf request object.
-        request = service.UpgradeInstanceRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.UpgradeInstanceRequest):
+            request = service.UpgradeInstanceRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.upgrade_instance,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.upgrade_instance
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1715,15 +1736,16 @@ class NotebookServiceAsyncClient:
         )
 
         # Create or coerce a protobuf request object.
-        request = service.UpgradeInstanceInternalRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.UpgradeInstanceInternalRequest):
+            request = service.UpgradeInstanceInternalRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.upgrade_instance_internal,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.upgrade_instance_internal
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1809,15 +1831,16 @@ class NotebookServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = service.ListEnvironmentsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.ListEnvironmentsRequest):
+            request = service.ListEnvironmentsRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_environments,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_environments
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1902,15 +1925,16 @@ class NotebookServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = service.GetEnvironmentRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.GetEnvironmentRequest):
+            request = service.GetEnvironmentRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_environment,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_environment
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1997,15 +2021,16 @@ class NotebookServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = service.CreateEnvironmentRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.CreateEnvironmentRequest):
+            request = service.CreateEnvironmentRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_environment,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_environment
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2102,15 +2127,16 @@ class NotebookServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = service.DeleteEnvironmentRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.DeleteEnvironmentRequest):
+            request = service.DeleteEnvironmentRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_environment,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_environment
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.

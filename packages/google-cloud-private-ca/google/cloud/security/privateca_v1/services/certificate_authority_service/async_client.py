@@ -17,6 +17,7 @@ from collections import OrderedDict
 import functools
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -243,7 +244,13 @@ class CertificateAuthorityServiceAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, CertificateAuthorityServiceTransport] = "grpc_asyncio",
+        transport: Optional[
+            Union[
+                str,
+                CertificateAuthorityServiceTransport,
+                Callable[..., CertificateAuthorityServiceTransport],
+            ]
+        ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -255,9 +262,11 @@ class CertificateAuthorityServiceAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.CertificateAuthorityServiceTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,CertificateAuthorityServiceTransport,Callable[..., CertificateAuthorityServiceTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the CertificateAuthorityServiceTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -394,8 +403,8 @@ class CertificateAuthorityServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, certificate, certificate_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -403,7 +412,10 @@ class CertificateAuthorityServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.CreateCertificateRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.CreateCertificateRequest):
+            request = service.CreateCertificateRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -416,11 +428,9 @@ class CertificateAuthorityServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_certificate,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_certificate
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -508,8 +518,8 @@ class CertificateAuthorityServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -517,7 +527,10 @@ class CertificateAuthorityServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.GetCertificateRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.GetCertificateRequest):
+            request = service.GetCertificateRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -526,11 +539,9 @@ class CertificateAuthorityServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_certificate,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_certificate
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -620,8 +631,8 @@ class CertificateAuthorityServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -629,7 +640,10 @@ class CertificateAuthorityServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.ListCertificatesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.ListCertificatesRequest):
+            request = service.ListCertificatesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -638,11 +652,9 @@ class CertificateAuthorityServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_certificates,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_certificates
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -739,8 +751,8 @@ class CertificateAuthorityServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -748,7 +760,10 @@ class CertificateAuthorityServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.RevokeCertificateRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.RevokeCertificateRequest):
+            request = service.RevokeCertificateRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -757,11 +772,9 @@ class CertificateAuthorityServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.revoke_certificate,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.revoke_certificate
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -861,8 +874,8 @@ class CertificateAuthorityServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([certificate, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -870,7 +883,10 @@ class CertificateAuthorityServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.UpdateCertificateRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.UpdateCertificateRequest):
+            request = service.UpdateCertificateRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -881,11 +897,9 @@ class CertificateAuthorityServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_certificate,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_certificate
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -998,8 +1012,8 @@ class CertificateAuthorityServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1007,7 +1021,10 @@ class CertificateAuthorityServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.ActivateCertificateAuthorityRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.ActivateCertificateAuthorityRequest):
+            request = service.ActivateCertificateAuthorityRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1016,11 +1033,9 @@ class CertificateAuthorityServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.activate_certificate_authority,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.activate_certificate_authority
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1151,8 +1166,8 @@ class CertificateAuthorityServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [parent, certificate_authority, certificate_authority_id]
         )
@@ -1162,7 +1177,10 @@ class CertificateAuthorityServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.CreateCertificateAuthorityRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.CreateCertificateAuthorityRequest):
+            request = service.CreateCertificateAuthorityRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1175,11 +1193,9 @@ class CertificateAuthorityServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_certificate_authority,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_certificate_authority
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1285,8 +1301,8 @@ class CertificateAuthorityServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1294,7 +1310,10 @@ class CertificateAuthorityServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.DisableCertificateAuthorityRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.DisableCertificateAuthorityRequest):
+            request = service.DisableCertificateAuthorityRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1303,11 +1322,9 @@ class CertificateAuthorityServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.disable_certificate_authority,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.disable_certificate_authority
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1413,8 +1430,8 @@ class CertificateAuthorityServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1422,7 +1439,10 @@ class CertificateAuthorityServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.EnableCertificateAuthorityRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.EnableCertificateAuthorityRequest):
+            request = service.EnableCertificateAuthorityRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1431,11 +1451,9 @@ class CertificateAuthorityServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.enable_certificate_authority,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.enable_certificate_authority
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1540,8 +1558,8 @@ class CertificateAuthorityServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1549,7 +1567,10 @@ class CertificateAuthorityServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.FetchCertificateAuthorityCsrRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.FetchCertificateAuthorityCsrRequest):
+            request = service.FetchCertificateAuthorityCsrRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1558,11 +1579,9 @@ class CertificateAuthorityServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.fetch_certificate_authority_csr,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.fetch_certificate_authority_csr
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1653,8 +1672,8 @@ class CertificateAuthorityServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1662,7 +1681,10 @@ class CertificateAuthorityServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.GetCertificateAuthorityRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.GetCertificateAuthorityRequest):
+            request = service.GetCertificateAuthorityRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1671,11 +1693,9 @@ class CertificateAuthorityServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_certificate_authority,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_certificate_authority
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1768,8 +1788,8 @@ class CertificateAuthorityServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1777,7 +1797,10 @@ class CertificateAuthorityServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.ListCertificateAuthoritiesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.ListCertificateAuthoritiesRequest):
+            request = service.ListCertificateAuthoritiesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1786,11 +1809,9 @@ class CertificateAuthorityServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_certificate_authorities,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_certificate_authorities
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1898,8 +1919,8 @@ class CertificateAuthorityServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1907,7 +1928,10 @@ class CertificateAuthorityServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.UndeleteCertificateAuthorityRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.UndeleteCertificateAuthorityRequest):
+            request = service.UndeleteCertificateAuthorityRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1916,11 +1940,9 @@ class CertificateAuthorityServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.undelete_certificate_authority,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.undelete_certificate_authority
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2026,8 +2048,8 @@ class CertificateAuthorityServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2035,7 +2057,10 @@ class CertificateAuthorityServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.DeleteCertificateAuthorityRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.DeleteCertificateAuthorityRequest):
+            request = service.DeleteCertificateAuthorityRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2044,11 +2069,9 @@ class CertificateAuthorityServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_certificate_authority,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_certificate_authority
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2165,8 +2188,8 @@ class CertificateAuthorityServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([certificate_authority, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2174,7 +2197,10 @@ class CertificateAuthorityServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.UpdateCertificateAuthorityRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.UpdateCertificateAuthorityRequest):
+            request = service.UpdateCertificateAuthorityRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2185,11 +2211,9 @@ class CertificateAuthorityServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_certificate_authority,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_certificate_authority
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2319,8 +2343,8 @@ class CertificateAuthorityServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, ca_pool, ca_pool_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2328,7 +2352,10 @@ class CertificateAuthorityServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.CreateCaPoolRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.CreateCaPoolRequest):
+            request = service.CreateCaPoolRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2341,11 +2368,9 @@ class CertificateAuthorityServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_ca_pool,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_ca_pool
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2461,8 +2486,8 @@ class CertificateAuthorityServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([ca_pool, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2470,7 +2495,10 @@ class CertificateAuthorityServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.UpdateCaPoolRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.UpdateCaPoolRequest):
+            request = service.UpdateCaPoolRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2481,11 +2509,9 @@ class CertificateAuthorityServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_ca_pool,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_ca_pool
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2588,8 +2614,8 @@ class CertificateAuthorityServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2597,7 +2623,10 @@ class CertificateAuthorityServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.GetCaPoolRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.GetCaPoolRequest):
+            request = service.GetCaPoolRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2606,11 +2635,9 @@ class CertificateAuthorityServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_ca_pool,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_ca_pool
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2699,8 +2726,8 @@ class CertificateAuthorityServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2708,7 +2735,10 @@ class CertificateAuthorityServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.ListCaPoolsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.ListCaPoolsRequest):
+            request = service.ListCaPoolsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2717,11 +2747,9 @@ class CertificateAuthorityServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_ca_pools,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_ca_pools
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2828,8 +2856,8 @@ class CertificateAuthorityServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2837,7 +2865,10 @@ class CertificateAuthorityServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.DeleteCaPoolRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.DeleteCaPoolRequest):
+            request = service.DeleteCaPoolRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2846,11 +2877,9 @@ class CertificateAuthorityServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_ca_pool,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_ca_pool
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2945,8 +2974,8 @@ class CertificateAuthorityServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([ca_pool])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2954,7 +2983,10 @@ class CertificateAuthorityServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.FetchCaCertsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.FetchCaCertsRequest):
+            request = service.FetchCaCertsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2963,11 +2995,9 @@ class CertificateAuthorityServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.fetch_ca_certs,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.fetch_ca_certs
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3059,8 +3089,8 @@ class CertificateAuthorityServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3068,7 +3098,10 @@ class CertificateAuthorityServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.GetCertificateRevocationListRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.GetCertificateRevocationListRequest):
+            request = service.GetCertificateRevocationListRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3077,11 +3110,9 @@ class CertificateAuthorityServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_certificate_revocation_list,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_certificate_revocation_list
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3174,8 +3205,8 @@ class CertificateAuthorityServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3183,7 +3214,10 @@ class CertificateAuthorityServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.ListCertificateRevocationListsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.ListCertificateRevocationListsRequest):
+            request = service.ListCertificateRevocationListsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3192,11 +3226,9 @@ class CertificateAuthorityServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_certificate_revocation_lists,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_certificate_revocation_lists
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3310,8 +3342,8 @@ class CertificateAuthorityServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([certificate_revocation_list, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3319,7 +3351,10 @@ class CertificateAuthorityServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.UpdateCertificateRevocationListRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.UpdateCertificateRevocationListRequest):
+            request = service.UpdateCertificateRevocationListRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3330,11 +3365,9 @@ class CertificateAuthorityServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_certificate_revocation_list,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_certificate_revocation_list
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3462,8 +3495,8 @@ class CertificateAuthorityServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [parent, certificate_template, certificate_template_id]
         )
@@ -3473,7 +3506,10 @@ class CertificateAuthorityServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.CreateCertificateTemplateRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.CreateCertificateTemplateRequest):
+            request = service.CreateCertificateTemplateRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3486,11 +3522,9 @@ class CertificateAuthorityServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_certificate_template,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_certificate_template
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3598,8 +3632,8 @@ class CertificateAuthorityServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3607,7 +3641,10 @@ class CertificateAuthorityServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.DeleteCertificateTemplateRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.DeleteCertificateTemplateRequest):
+            request = service.DeleteCertificateTemplateRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3616,11 +3653,9 @@ class CertificateAuthorityServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_certificate_template,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_certificate_template
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3717,8 +3752,8 @@ class CertificateAuthorityServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3726,7 +3761,10 @@ class CertificateAuthorityServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.GetCertificateTemplateRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.GetCertificateTemplateRequest):
+            request = service.GetCertificateTemplateRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3735,11 +3773,9 @@ class CertificateAuthorityServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_certificate_template,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_certificate_template
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3829,8 +3865,8 @@ class CertificateAuthorityServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3838,7 +3874,10 @@ class CertificateAuthorityServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.ListCertificateTemplatesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.ListCertificateTemplatesRequest):
+            request = service.ListCertificateTemplatesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3847,11 +3886,9 @@ class CertificateAuthorityServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_certificate_templates,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_certificate_templates
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3960,8 +3997,8 @@ class CertificateAuthorityServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([certificate_template, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3969,7 +4006,10 @@ class CertificateAuthorityServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.UpdateCertificateTemplateRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.UpdateCertificateTemplateRequest):
+            request = service.UpdateCertificateTemplateRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3980,11 +4020,9 @@ class CertificateAuthorityServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_certificate_template,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_certificate_template
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.

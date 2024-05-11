@@ -17,6 +17,7 @@ from collections import OrderedDict
 import functools
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -219,7 +220,13 @@ class PredictionApiKeyRegistryAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, PredictionApiKeyRegistryTransport] = "grpc_asyncio",
+        transport: Optional[
+            Union[
+                str,
+                PredictionApiKeyRegistryTransport,
+                Callable[..., PredictionApiKeyRegistryTransport],
+            ]
+        ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -231,9 +238,11 @@ class PredictionApiKeyRegistryAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.PredictionApiKeyRegistryTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,PredictionApiKeyRegistryTransport,Callable[..., PredictionApiKeyRegistryTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the PredictionApiKeyRegistryTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -351,8 +360,8 @@ class PredictionApiKeyRegistryAsyncClient:
                 Registered Api Key.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, prediction_api_key_registration])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -360,9 +369,15 @@ class PredictionApiKeyRegistryAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = prediction_apikey_registry_service.CreatePredictionApiKeyRegistrationRequest(
-            request
-        )
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request,
+            prediction_apikey_registry_service.CreatePredictionApiKeyRegistrationRequest,
+        ):
+            request = prediction_apikey_registry_service.CreatePredictionApiKeyRegistrationRequest(
+                request
+            )
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -373,21 +388,9 @@ class PredictionApiKeyRegistryAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_prediction_api_key_registration,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=600.0,
-            ),
-            default_timeout=600.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_prediction_api_key_registration
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -480,8 +483,8 @@ class PredictionApiKeyRegistryAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -489,11 +492,15 @@ class PredictionApiKeyRegistryAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = (
-            prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsRequest(
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request,
+            prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsRequest,
+        ):
+            request = prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsRequest(
                 request
             )
-        )
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -502,21 +509,9 @@ class PredictionApiKeyRegistryAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_prediction_api_key_registrations,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=600.0,
-            ),
-            default_timeout=600.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_prediction_api_key_registrations
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -605,8 +600,8 @@ class PredictionApiKeyRegistryAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -614,9 +609,15 @@ class PredictionApiKeyRegistryAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = prediction_apikey_registry_service.DeletePredictionApiKeyRegistrationRequest(
-            request
-        )
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request,
+            prediction_apikey_registry_service.DeletePredictionApiKeyRegistrationRequest,
+        ):
+            request = prediction_apikey_registry_service.DeletePredictionApiKeyRegistrationRequest(
+                request
+            )
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -625,21 +626,9 @@ class PredictionApiKeyRegistryAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_prediction_api_key_registration,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=600.0,
-            ),
-            default_timeout=600.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_prediction_api_key_registration
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
