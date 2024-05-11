@@ -18,6 +18,7 @@ import functools
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -504,7 +505,9 @@ class RegionUrlMapsClient(metaclass=RegionUrlMapsClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, RegionUrlMapsTransport]] = None,
+        transport: Optional[
+            Union[str, RegionUrlMapsTransport, Callable[..., RegionUrlMapsTransport]]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -516,9 +519,11 @@ class RegionUrlMapsClient(metaclass=RegionUrlMapsClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, RegionUrlMapsTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,RegionUrlMapsTransport,Callable[..., RegionUrlMapsTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the RegionUrlMapsTransport constructor.
+                If set to None, a transport is chosen automatically.
                 NOTE: "rest" transport functionality is currently in a
                 beta state (preview). We welcome your feedback via an
                 issue in this library's source repository.
@@ -630,8 +635,15 @@ class RegionUrlMapsClient(metaclass=RegionUrlMapsClientMeta):
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[RegionUrlMapsTransport], Callable[..., RegionUrlMapsTransport]
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., RegionUrlMapsTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -721,8 +733,8 @@ class RegionUrlMapsClient(metaclass=RegionUrlMapsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, region, url_map])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -730,10 +742,8 @@ class RegionUrlMapsClient(metaclass=RegionUrlMapsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.DeleteRegionUrlMapRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.DeleteRegionUrlMapRequest):
             request = compute.DeleteRegionUrlMapRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -853,8 +863,8 @@ class RegionUrlMapsClient(metaclass=RegionUrlMapsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, region, url_map])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -862,10 +872,8 @@ class RegionUrlMapsClient(metaclass=RegionUrlMapsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.DeleteRegionUrlMapRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.DeleteRegionUrlMapRequest):
             request = compute.DeleteRegionUrlMapRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1033,8 +1041,8 @@ class RegionUrlMapsClient(metaclass=RegionUrlMapsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, region, url_map])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1042,10 +1050,8 @@ class RegionUrlMapsClient(metaclass=RegionUrlMapsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.GetRegionUrlMapRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.GetRegionUrlMapRequest):
             request = compute.GetRegionUrlMapRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1163,8 +1169,8 @@ class RegionUrlMapsClient(metaclass=RegionUrlMapsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, region, url_map_resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1172,10 +1178,8 @@ class RegionUrlMapsClient(metaclass=RegionUrlMapsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.InsertRegionUrlMapRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.InsertRegionUrlMapRequest):
             request = compute.InsertRegionUrlMapRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1292,8 +1296,8 @@ class RegionUrlMapsClient(metaclass=RegionUrlMapsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, region, url_map_resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1301,10 +1305,8 @@ class RegionUrlMapsClient(metaclass=RegionUrlMapsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.InsertRegionUrlMapRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.InsertRegionUrlMapRequest):
             request = compute.InsertRegionUrlMapRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1444,8 +1446,8 @@ class RegionUrlMapsClient(metaclass=RegionUrlMapsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, region])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1453,10 +1455,8 @@ class RegionUrlMapsClient(metaclass=RegionUrlMapsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.ListRegionUrlMapsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.ListRegionUrlMapsRequest):
             request = compute.ListRegionUrlMapsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1589,8 +1589,8 @@ class RegionUrlMapsClient(metaclass=RegionUrlMapsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, region, url_map, url_map_resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1598,10 +1598,8 @@ class RegionUrlMapsClient(metaclass=RegionUrlMapsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.PatchRegionUrlMapRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.PatchRegionUrlMapRequest):
             request = compute.PatchRegionUrlMapRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1730,8 +1728,8 @@ class RegionUrlMapsClient(metaclass=RegionUrlMapsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, region, url_map, url_map_resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1739,10 +1737,8 @@ class RegionUrlMapsClient(metaclass=RegionUrlMapsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.PatchRegionUrlMapRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.PatchRegionUrlMapRequest):
             request = compute.PatchRegionUrlMapRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1896,8 +1892,8 @@ class RegionUrlMapsClient(metaclass=RegionUrlMapsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, region, url_map, url_map_resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1905,10 +1901,8 @@ class RegionUrlMapsClient(metaclass=RegionUrlMapsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.UpdateRegionUrlMapRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.UpdateRegionUrlMapRequest):
             request = compute.UpdateRegionUrlMapRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2037,8 +2031,8 @@ class RegionUrlMapsClient(metaclass=RegionUrlMapsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, region, url_map, url_map_resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2046,10 +2040,8 @@ class RegionUrlMapsClient(metaclass=RegionUrlMapsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.UpdateRegionUrlMapRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.UpdateRegionUrlMapRequest):
             request = compute.UpdateRegionUrlMapRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2204,8 +2196,8 @@ class RegionUrlMapsClient(metaclass=RegionUrlMapsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, region, url_map, region_url_maps_validate_request_resource]
         )
@@ -2215,10 +2207,8 @@ class RegionUrlMapsClient(metaclass=RegionUrlMapsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.ValidateRegionUrlMapRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.ValidateRegionUrlMapRequest):
             request = compute.ValidateRegionUrlMapRequest(request)
             # If we have keyword arguments corresponding to fields on the

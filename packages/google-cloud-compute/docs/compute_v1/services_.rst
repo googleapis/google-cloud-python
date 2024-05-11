@@ -23,9 +23,11 @@ Services for Google Cloud Compute v1 API
     health_checks
     image_family_views
     images
+    instance_group_manager_resize_requests
     instance_group_managers
     instance_groups
     instances
+    instance_settings_service
     instance_templates
     instant_snapshots
     interconnect_attachments
@@ -83,6 +85,8 @@ Services for Google Cloud Compute v1 API
     snapshot_settings_service
     ssl_certificates
     ssl_policies
+    storage_pools
+    storage_pool_types
     subnetworks
     target_grpc_proxies
     target_http_proxies

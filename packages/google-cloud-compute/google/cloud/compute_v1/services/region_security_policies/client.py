@@ -18,6 +18,7 @@ import functools
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -508,7 +509,13 @@ class RegionSecurityPoliciesClient(metaclass=RegionSecurityPoliciesClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, RegionSecurityPoliciesTransport]] = None,
+        transport: Optional[
+            Union[
+                str,
+                RegionSecurityPoliciesTransport,
+                Callable[..., RegionSecurityPoliciesTransport],
+            ]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -520,9 +527,11 @@ class RegionSecurityPoliciesClient(metaclass=RegionSecurityPoliciesClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, RegionSecurityPoliciesTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,RegionSecurityPoliciesTransport,Callable[..., RegionSecurityPoliciesTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the RegionSecurityPoliciesTransport constructor.
+                If set to None, a transport is chosen automatically.
                 NOTE: "rest" transport functionality is currently in a
                 beta state (preview). We welcome your feedback via an
                 issue in this library's source repository.
@@ -634,8 +643,16 @@ class RegionSecurityPoliciesClient(metaclass=RegionSecurityPoliciesClientMeta):
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[RegionSecurityPoliciesTransport],
+                Callable[..., RegionSecurityPoliciesTransport],
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., RegionSecurityPoliciesTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -733,8 +750,8 @@ class RegionSecurityPoliciesClient(metaclass=RegionSecurityPoliciesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, region, security_policy, security_policy_rule_resource]
         )
@@ -744,10 +761,8 @@ class RegionSecurityPoliciesClient(metaclass=RegionSecurityPoliciesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.AddRuleRegionSecurityPolicyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.AddRuleRegionSecurityPolicyRequest):
             request = compute.AddRuleRegionSecurityPolicyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -877,8 +892,8 @@ class RegionSecurityPoliciesClient(metaclass=RegionSecurityPoliciesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, region, security_policy, security_policy_rule_resource]
         )
@@ -888,10 +903,8 @@ class RegionSecurityPoliciesClient(metaclass=RegionSecurityPoliciesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.AddRuleRegionSecurityPolicyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.AddRuleRegionSecurityPolicyRequest):
             request = compute.AddRuleRegionSecurityPolicyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1040,8 +1053,8 @@ class RegionSecurityPoliciesClient(metaclass=RegionSecurityPoliciesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, region, security_policy])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1049,10 +1062,8 @@ class RegionSecurityPoliciesClient(metaclass=RegionSecurityPoliciesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.DeleteRegionSecurityPolicyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.DeleteRegionSecurityPolicyRequest):
             request = compute.DeleteRegionSecurityPolicyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1174,8 +1185,8 @@ class RegionSecurityPoliciesClient(metaclass=RegionSecurityPoliciesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, region, security_policy])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1183,10 +1194,8 @@ class RegionSecurityPoliciesClient(metaclass=RegionSecurityPoliciesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.DeleteRegionSecurityPolicyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.DeleteRegionSecurityPolicyRequest):
             request = compute.DeleteRegionSecurityPolicyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1334,8 +1343,8 @@ class RegionSecurityPoliciesClient(metaclass=RegionSecurityPoliciesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, region, security_policy])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1343,10 +1352,8 @@ class RegionSecurityPoliciesClient(metaclass=RegionSecurityPoliciesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.GetRegionSecurityPolicyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.GetRegionSecurityPolicyRequest):
             request = compute.GetRegionSecurityPolicyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1470,8 +1477,8 @@ class RegionSecurityPoliciesClient(metaclass=RegionSecurityPoliciesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, region, security_policy])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1479,10 +1486,8 @@ class RegionSecurityPoliciesClient(metaclass=RegionSecurityPoliciesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.GetRuleRegionSecurityPolicyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.GetRuleRegionSecurityPolicyRequest):
             request = compute.GetRuleRegionSecurityPolicyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1602,8 +1607,8 @@ class RegionSecurityPoliciesClient(metaclass=RegionSecurityPoliciesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, region, security_policy_resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1611,10 +1616,8 @@ class RegionSecurityPoliciesClient(metaclass=RegionSecurityPoliciesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.InsertRegionSecurityPolicyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.InsertRegionSecurityPolicyRequest):
             request = compute.InsertRegionSecurityPolicyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1733,8 +1736,8 @@ class RegionSecurityPoliciesClient(metaclass=RegionSecurityPoliciesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, region, security_policy_resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1742,10 +1745,8 @@ class RegionSecurityPoliciesClient(metaclass=RegionSecurityPoliciesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.InsertRegionSecurityPolicyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.InsertRegionSecurityPolicyRequest):
             request = compute.InsertRegionSecurityPolicyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1885,8 +1886,8 @@ class RegionSecurityPoliciesClient(metaclass=RegionSecurityPoliciesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, region])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1894,10 +1895,8 @@ class RegionSecurityPoliciesClient(metaclass=RegionSecurityPoliciesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.ListRegionSecurityPoliciesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.ListRegionSecurityPoliciesRequest):
             request = compute.ListRegionSecurityPoliciesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2034,8 +2033,8 @@ class RegionSecurityPoliciesClient(metaclass=RegionSecurityPoliciesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, region, security_policy, security_policy_resource]
         )
@@ -2045,10 +2044,8 @@ class RegionSecurityPoliciesClient(metaclass=RegionSecurityPoliciesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.PatchRegionSecurityPolicyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.PatchRegionSecurityPolicyRequest):
             request = compute.PatchRegionSecurityPolicyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2181,8 +2178,8 @@ class RegionSecurityPoliciesClient(metaclass=RegionSecurityPoliciesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, region, security_policy, security_policy_resource]
         )
@@ -2192,10 +2189,8 @@ class RegionSecurityPoliciesClient(metaclass=RegionSecurityPoliciesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.PatchRegionSecurityPolicyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.PatchRegionSecurityPolicyRequest):
             request = compute.PatchRegionSecurityPolicyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2352,8 +2347,8 @@ class RegionSecurityPoliciesClient(metaclass=RegionSecurityPoliciesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, region, security_policy, security_policy_rule_resource]
         )
@@ -2363,10 +2358,8 @@ class RegionSecurityPoliciesClient(metaclass=RegionSecurityPoliciesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.PatchRuleRegionSecurityPolicyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.PatchRuleRegionSecurityPolicyRequest):
             request = compute.PatchRuleRegionSecurityPolicyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2498,8 +2491,8 @@ class RegionSecurityPoliciesClient(metaclass=RegionSecurityPoliciesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, region, security_policy, security_policy_rule_resource]
         )
@@ -2509,10 +2502,8 @@ class RegionSecurityPoliciesClient(metaclass=RegionSecurityPoliciesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.PatchRuleRegionSecurityPolicyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.PatchRuleRegionSecurityPolicyRequest):
             request = compute.PatchRuleRegionSecurityPolicyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2661,8 +2652,8 @@ class RegionSecurityPoliciesClient(metaclass=RegionSecurityPoliciesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, region, security_policy])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2670,10 +2661,8 @@ class RegionSecurityPoliciesClient(metaclass=RegionSecurityPoliciesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.RemoveRuleRegionSecurityPolicyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.RemoveRuleRegionSecurityPolicyRequest):
             request = compute.RemoveRuleRegionSecurityPolicyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2795,8 +2784,8 @@ class RegionSecurityPoliciesClient(metaclass=RegionSecurityPoliciesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, region, security_policy])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2804,10 +2793,8 @@ class RegionSecurityPoliciesClient(metaclass=RegionSecurityPoliciesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.RemoveRuleRegionSecurityPolicyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.RemoveRuleRegionSecurityPolicyRequest):
             request = compute.RemoveRuleRegionSecurityPolicyRequest(request)
             # If we have keyword arguments corresponding to fields on the

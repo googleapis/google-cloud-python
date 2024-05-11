@@ -18,6 +18,7 @@ import functools
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -506,7 +507,11 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, FirewallPoliciesTransport]] = None,
+        transport: Optional[
+            Union[
+                str, FirewallPoliciesTransport, Callable[..., FirewallPoliciesTransport]
+            ]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -518,9 +523,11 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, FirewallPoliciesTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,FirewallPoliciesTransport,Callable[..., FirewallPoliciesTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the FirewallPoliciesTransport constructor.
+                If set to None, a transport is chosen automatically.
                 NOTE: "rest" transport functionality is currently in a
                 beta state (preview). We welcome your feedback via an
                 issue in this library's source repository.
@@ -632,8 +639,16 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[FirewallPoliciesTransport],
+                Callable[..., FirewallPoliciesTransport],
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., FirewallPoliciesTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -718,8 +733,8 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [firewall_policy, firewall_policy_association_resource]
         )
@@ -729,10 +744,8 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.AddAssociationFirewallPolicyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.AddAssociationFirewallPolicyRequest):
             request = compute.AddAssociationFirewallPolicyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -843,8 +856,8 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [firewall_policy, firewall_policy_association_resource]
         )
@@ -854,10 +867,8 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.AddAssociationFirewallPolicyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.AddAssociationFirewallPolicyRequest):
             request = compute.AddAssociationFirewallPolicyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -986,8 +997,8 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([firewall_policy, firewall_policy_rule_resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -995,10 +1006,8 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.AddRuleFirewallPolicyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.AddRuleFirewallPolicyRequest):
             request = compute.AddRuleFirewallPolicyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1102,8 +1111,8 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([firewall_policy, firewall_policy_rule_resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1111,10 +1120,8 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.AddRuleFirewallPolicyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.AddRuleFirewallPolicyRequest):
             request = compute.AddRuleFirewallPolicyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1235,8 +1242,8 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([firewall_policy])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1244,10 +1251,8 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.CloneRulesFirewallPolicyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.CloneRulesFirewallPolicyRequest):
             request = compute.CloneRulesFirewallPolicyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1343,8 +1348,8 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([firewall_policy])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1352,10 +1357,8 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.CloneRulesFirewallPolicyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.CloneRulesFirewallPolicyRequest):
             request = compute.CloneRulesFirewallPolicyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1474,8 +1477,8 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([firewall_policy])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1483,10 +1486,8 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.DeleteFirewallPolicyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.DeleteFirewallPolicyRequest):
             request = compute.DeleteFirewallPolicyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1582,8 +1583,8 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([firewall_policy])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1591,10 +1592,8 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.DeleteFirewallPolicyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.DeleteFirewallPolicyRequest):
             request = compute.DeleteFirewallPolicyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1711,8 +1710,8 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([firewall_policy])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1720,10 +1719,8 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.GetFirewallPolicyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.GetFirewallPolicyRequest):
             request = compute.GetFirewallPolicyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1819,8 +1816,8 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([firewall_policy])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1828,10 +1825,8 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.GetAssociationFirewallPolicyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.GetAssociationFirewallPolicyRequest):
             request = compute.GetAssociationFirewallPolicyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1950,8 +1945,8 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1959,10 +1954,8 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.GetIamPolicyFirewallPolicyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.GetIamPolicyFirewallPolicyRequest):
             request = compute.GetIamPolicyFirewallPolicyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2058,8 +2051,8 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([firewall_policy])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2067,10 +2060,8 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.GetRuleFirewallPolicyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.GetRuleFirewallPolicyRequest):
             request = compute.GetRuleFirewallPolicyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2175,8 +2166,8 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent_id, firewall_policy_resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2184,10 +2175,8 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.InsertFirewallPolicyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.InsertFirewallPolicyRequest):
             request = compute.InsertFirewallPolicyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2286,8 +2275,8 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent_id, firewall_policy_resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2295,10 +2284,8 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.InsertFirewallPolicyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.InsertFirewallPolicyRequest):
             request = compute.InsertFirewallPolicyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2406,10 +2393,8 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.ListFirewallPoliciesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.ListFirewallPoliciesRequest):
             request = compute.ListFirewallPoliciesRequest(request)
 
@@ -2494,10 +2479,8 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.ListAssociationsFirewallPolicyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.ListAssociationsFirewallPolicyRequest):
             request = compute.ListAssociationsFirewallPolicyRequest(request)
 
@@ -2592,8 +2575,8 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([firewall_policy, parent_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2601,10 +2584,8 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.MoveFirewallPolicyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.MoveFirewallPolicyRequest):
             request = compute.MoveFirewallPolicyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2713,8 +2694,8 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([firewall_policy, parent_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2722,10 +2703,8 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.MoveFirewallPolicyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.MoveFirewallPolicyRequest):
             request = compute.MoveFirewallPolicyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2854,8 +2833,8 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([firewall_policy, firewall_policy_resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2863,10 +2842,8 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.PatchFirewallPolicyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.PatchFirewallPolicyRequest):
             request = compute.PatchFirewallPolicyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2971,8 +2948,8 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([firewall_policy, firewall_policy_resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2980,10 +2957,8 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.PatchFirewallPolicyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.PatchFirewallPolicyRequest):
             request = compute.PatchFirewallPolicyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3110,8 +3085,8 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([firewall_policy, firewall_policy_rule_resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3119,10 +3094,8 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.PatchRuleFirewallPolicyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.PatchRuleFirewallPolicyRequest):
             request = compute.PatchRuleFirewallPolicyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3226,8 +3199,8 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([firewall_policy, firewall_policy_rule_resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3235,10 +3208,8 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.PatchRuleFirewallPolicyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.PatchRuleFirewallPolicyRequest):
             request = compute.PatchRuleFirewallPolicyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3362,8 +3333,8 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([firewall_policy])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3371,10 +3342,8 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.RemoveAssociationFirewallPolicyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.RemoveAssociationFirewallPolicyRequest):
             request = compute.RemoveAssociationFirewallPolicyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3473,8 +3442,8 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([firewall_policy])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3482,10 +3451,8 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.RemoveAssociationFirewallPolicyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.RemoveAssociationFirewallPolicyRequest):
             request = compute.RemoveAssociationFirewallPolicyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3604,8 +3571,8 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([firewall_policy])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3613,10 +3580,8 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.RemoveRuleFirewallPolicyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.RemoveRuleFirewallPolicyRequest):
             request = compute.RemoveRuleFirewallPolicyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3712,8 +3677,8 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([firewall_policy])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3721,10 +3686,8 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.RemoveRuleFirewallPolicyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.RemoveRuleFirewallPolicyRequest):
             request = compute.RemoveRuleFirewallPolicyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3874,8 +3837,8 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [resource, global_organization_set_policy_request_resource]
         )
@@ -3885,10 +3848,8 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.SetIamPolicyFirewallPolicyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.SetIamPolicyFirewallPolicyRequest):
             request = compute.SetIamPolicyFirewallPolicyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3995,8 +3956,8 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([resource, test_permissions_request_resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4004,10 +3965,8 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.TestIamPermissionsFirewallPolicyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.TestIamPermissionsFirewallPolicyRequest):
             request = compute.TestIamPermissionsFirewallPolicyRequest(request)
             # If we have keyword arguments corresponding to fields on the

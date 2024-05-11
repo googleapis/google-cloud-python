@@ -18,6 +18,7 @@ import functools
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -507,7 +508,13 @@ class SnapshotSettingsServiceClient(metaclass=SnapshotSettingsServiceClientMeta)
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, SnapshotSettingsServiceTransport]] = None,
+        transport: Optional[
+            Union[
+                str,
+                SnapshotSettingsServiceTransport,
+                Callable[..., SnapshotSettingsServiceTransport],
+            ]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -519,9 +526,11 @@ class SnapshotSettingsServiceClient(metaclass=SnapshotSettingsServiceClientMeta)
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, SnapshotSettingsServiceTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,SnapshotSettingsServiceTransport,Callable[..., SnapshotSettingsServiceTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the SnapshotSettingsServiceTransport constructor.
+                If set to None, a transport is chosen automatically.
                 NOTE: "rest" transport functionality is currently in a
                 beta state (preview). We welcome your feedback via an
                 issue in this library's source repository.
@@ -635,8 +644,16 @@ class SnapshotSettingsServiceClient(metaclass=SnapshotSettingsServiceClientMeta)
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[SnapshotSettingsServiceTransport],
+                Callable[..., SnapshotSettingsServiceTransport],
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., SnapshotSettingsServiceTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -706,8 +723,8 @@ class SnapshotSettingsServiceClient(metaclass=SnapshotSettingsServiceClientMeta)
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -715,10 +732,8 @@ class SnapshotSettingsServiceClient(metaclass=SnapshotSettingsServiceClientMeta)
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.GetSnapshotSettingRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.GetSnapshotSettingRequest):
             request = compute.GetSnapshotSettingRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -816,8 +831,8 @@ class SnapshotSettingsServiceClient(metaclass=SnapshotSettingsServiceClientMeta)
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, snapshot_settings_resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -825,10 +840,8 @@ class SnapshotSettingsServiceClient(metaclass=SnapshotSettingsServiceClientMeta)
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.PatchSnapshotSettingRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.PatchSnapshotSettingRequest):
             request = compute.PatchSnapshotSettingRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -928,8 +941,8 @@ class SnapshotSettingsServiceClient(metaclass=SnapshotSettingsServiceClientMeta)
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, snapshot_settings_resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -937,10 +950,8 @@ class SnapshotSettingsServiceClient(metaclass=SnapshotSettingsServiceClientMeta)
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.PatchSnapshotSettingRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.PatchSnapshotSettingRequest):
             request = compute.PatchSnapshotSettingRequest(request)
             # If we have keyword arguments corresponding to fields on the

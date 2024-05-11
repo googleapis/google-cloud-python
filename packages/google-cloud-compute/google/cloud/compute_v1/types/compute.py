@@ -89,6 +89,8 @@ __protobuf__ = proto.module(
         "AggregatedListServiceAttachmentsRequest",
         "AggregatedListSslCertificatesRequest",
         "AggregatedListSslPoliciesRequest",
+        "AggregatedListStoragePoolTypesRequest",
+        "AggregatedListStoragePoolsRequest",
         "AggregatedListSubnetworksRequest",
         "AggregatedListTargetHttpProxiesRequest",
         "AggregatedListTargetHttpsProxiesRequest",
@@ -172,6 +174,7 @@ __protobuf__ = proto.module(
         "BulkInsertRegionInstanceRequest",
         "CacheInvalidationRule",
         "CacheKeyPolicy",
+        "CancelInstanceGroupManagerResizeRequestRequest",
         "CircuitBreakers",
         "CloneRulesFirewallPolicyRequest",
         "CloneRulesNetworkFirewallPolicyRequest",
@@ -214,6 +217,7 @@ __protobuf__ = proto.module(
         "DeleteHealthCheckRequest",
         "DeleteImageRequest",
         "DeleteInstanceGroupManagerRequest",
+        "DeleteInstanceGroupManagerResizeRequestRequest",
         "DeleteInstanceGroupRequest",
         "DeleteInstanceRequest",
         "DeleteInstanceTemplateRequest",
@@ -268,6 +272,7 @@ __protobuf__ = proto.module(
         "DeleteSnapshotRequest",
         "DeleteSslCertificateRequest",
         "DeleteSslPolicyRequest",
+        "DeleteStoragePoolRequest",
         "DeleteSubnetworkRequest",
         "DeleteTargetGrpcProxyRequest",
         "DeleteTargetHttpProxyRequest",
@@ -400,12 +405,15 @@ __protobuf__ = proto.module(
         "GetIamPolicyResourcePolicyRequest",
         "GetIamPolicyServiceAttachmentRequest",
         "GetIamPolicySnapshotRequest",
+        "GetIamPolicyStoragePoolRequest",
         "GetIamPolicySubnetworkRequest",
         "GetImageFamilyViewRequest",
         "GetImageRequest",
         "GetInstanceGroupManagerRequest",
+        "GetInstanceGroupManagerResizeRequestRequest",
         "GetInstanceGroupRequest",
         "GetInstanceRequest",
+        "GetInstanceSettingRequest",
         "GetInstanceTemplateRequest",
         "GetInstantSnapshotRequest",
         "GetInterconnectAttachmentRequest",
@@ -474,6 +482,8 @@ __protobuf__ = proto.module(
         "GetSslCertificateRequest",
         "GetSslPolicyRequest",
         "GetStatusVpnGatewayRequest",
+        "GetStoragePoolRequest",
+        "GetStoragePoolTypeRequest",
         "GetSubnetworkRequest",
         "GetTargetGrpcProxyRequest",
         "GetTargetHttpProxyRequest",
@@ -549,6 +559,7 @@ __protobuf__ = proto.module(
         "InsertHealthCheckRequest",
         "InsertImageRequest",
         "InsertInstanceGroupManagerRequest",
+        "InsertInstanceGroupManagerResizeRequestRequest",
         "InsertInstanceGroupRequest",
         "InsertInstanceRequest",
         "InsertInstanceTemplateRequest",
@@ -595,6 +606,7 @@ __protobuf__ = proto.module(
         "InsertSnapshotRequest",
         "InsertSslCertificateRequest",
         "InsertSslPolicyRequest",
+        "InsertStoragePoolRequest",
         "InsertSubnetworkRequest",
         "InsertTargetGrpcProxyRequest",
         "InsertTargetHttpProxyRequest",
@@ -621,6 +633,10 @@ __protobuf__ = proto.module(
         "InstanceGroupManagerAutoHealingPolicy",
         "InstanceGroupManagerInstanceLifecyclePolicy",
         "InstanceGroupManagerList",
+        "InstanceGroupManagerResizeRequest",
+        "InstanceGroupManagerResizeRequestStatus",
+        "InstanceGroupManagerResizeRequestStatusLastAttempt",
+        "InstanceGroupManagerResizeRequestsListResponse",
         "InstanceGroupManagerStatus",
         "InstanceGroupManagerStatusAllInstancesConfig",
         "InstanceGroupManagerStatusStateful",
@@ -658,6 +674,8 @@ __protobuf__ = proto.module(
         "InstanceProperties",
         "InstancePropertiesPatch",
         "InstanceReference",
+        "InstanceSettings",
+        "InstanceSettingsMetadata",
         "InstanceTemplate",
         "InstanceTemplateAggregatedList",
         "InstanceTemplateList",
@@ -733,6 +751,7 @@ __protobuf__ = proto.module(
         "ListBackendServicesRequest",
         "ListDiskTypesRequest",
         "ListDisksRequest",
+        "ListDisksStoragePoolsRequest",
         "ListErrorsInstanceGroupManagersRequest",
         "ListErrorsRegionInstanceGroupManagersRequest",
         "ListExternalVpnGatewaysRequest",
@@ -747,6 +766,7 @@ __protobuf__ = proto.module(
         "ListGlobalPublicDelegatedPrefixesRequest",
         "ListHealthChecksRequest",
         "ListImagesRequest",
+        "ListInstanceGroupManagerResizeRequestsRequest",
         "ListInstanceGroupManagersRequest",
         "ListInstanceGroupsRequest",
         "ListInstanceTemplatesRequest",
@@ -815,6 +835,8 @@ __protobuf__ = proto.module(
         "ListSnapshotsRequest",
         "ListSslCertificatesRequest",
         "ListSslPoliciesRequest",
+        "ListStoragePoolTypesRequest",
+        "ListStoragePoolsRequest",
         "ListSubnetworksRequest",
         "ListTargetGrpcProxiesRequest",
         "ListTargetHttpProxiesRequest",
@@ -907,6 +929,7 @@ __protobuf__ = proto.module(
         "NodeGroupsAddNodesRequest",
         "NodeGroupsDeleteNodesRequest",
         "NodeGroupsListNodes",
+        "NodeGroupsPerformMaintenanceRequest",
         "NodeGroupsScopedList",
         "NodeGroupsSetNodeTemplateRequest",
         "NodeGroupsSimulateMaintenanceEventRequest",
@@ -949,6 +972,7 @@ __protobuf__ = proto.module(
         "PatchHealthCheckRequest",
         "PatchImageRequest",
         "PatchInstanceGroupManagerRequest",
+        "PatchInstanceSettingRequest",
         "PatchInterconnectAttachmentRequest",
         "PatchInterconnectRequest",
         "PatchNetworkAttachmentRequest",
@@ -991,6 +1015,7 @@ __protobuf__ = proto.module(
         "PathRule",
         "PerInstanceConfig",
         "PerformMaintenanceInstanceRequest",
+        "PerformMaintenanceNodeGroupRequest",
         "Policy",
         "PreconfiguredWafSet",
         "PreservedState",
@@ -1015,6 +1040,7 @@ __protobuf__ = proto.module(
         "PublicDelegatedPrefixesScopedList",
         "Quota",
         "QuotaExceededInfo",
+        "QuotaStatusWarning",
         "RawDisk",
         "RecreateInstancesInstanceGroupManagerRequest",
         "RecreateInstancesRegionInstanceGroupManagerRequest",
@@ -1217,6 +1243,7 @@ __protobuf__ = proto.module(
         "SetIamPolicyResourcePolicyRequest",
         "SetIamPolicyServiceAttachmentRequest",
         "SetIamPolicySnapshotRequest",
+        "SetIamPolicyStoragePoolRequest",
         "SetIamPolicySubnetworkRequest",
         "SetInstanceTemplateInstanceGroupManagerRequest",
         "SetInstanceTemplateRegionInstanceGroupManagerRequest",
@@ -1316,6 +1343,17 @@ __protobuf__ = proto.module(
         "StopGroupAsyncReplicationDiskRequest",
         "StopGroupAsyncReplicationRegionDiskRequest",
         "StopInstanceRequest",
+        "StoragePool",
+        "StoragePoolAggregatedList",
+        "StoragePoolDisk",
+        "StoragePoolList",
+        "StoragePoolListDisks",
+        "StoragePoolResourceStatus",
+        "StoragePoolType",
+        "StoragePoolTypeAggregatedList",
+        "StoragePoolTypeList",
+        "StoragePoolTypesScopedList",
+        "StoragePoolsScopedList",
         "Subnetwork",
         "SubnetworkAggregatedList",
         "SubnetworkList",
@@ -1399,6 +1437,7 @@ __protobuf__ = proto.module(
         "TestIamPermissionsResourcePolicyRequest",
         "TestIamPermissionsServiceAttachmentRequest",
         "TestIamPermissionsSnapshotRequest",
+        "TestIamPermissionsStoragePoolRequest",
         "TestIamPermissionsSubnetworkRequest",
         "TestIamPermissionsVpnGatewayRequest",
         "TestPermissionsRequest",
@@ -1427,6 +1466,7 @@ __protobuf__ = proto.module(
         "UpdateReservationRequest",
         "UpdateRouterRequest",
         "UpdateShieldedInstanceConfigInstanceRequest",
+        "UpdateStoragePoolRequest",
         "UpdateUrlMapRequest",
         "UrlMap",
         "UrlMapList",
@@ -2099,7 +2139,7 @@ class AccessConfig(proto.Message):
             The DNS domain name for the public PTR record. You can set
             this field only if the ``setPublicPtr`` field is enabled in
             accessConfig. If this field is unspecified in
-            ipv6AccessConfig, a default PTR record will be createc for
+            ipv6AccessConfig, a default PTR record will be created for
             first IP in associated external IPv6 range.
 
             This field is a member of `oneof`_ ``_public_ptr_domain_name``.
@@ -9017,6 +9057,314 @@ class AggregatedListSslPoliciesRequest(proto.Message):
     )
 
 
+class AggregatedListStoragePoolTypesRequest(proto.Message):
+    r"""A request message for StoragePoolTypes.AggregatedList. See
+    the method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        filter (str):
+            A filter expression that filters resources listed in the
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
+            fields. For example, you could specify
+            ``scheduling.automaticRestart = false`` to include instances
+            only if they are not scheduled for automatic restarts. You
+            can use filtering on nested fields to filter based on
+            resource labels. To filter on multiple expressions, provide
+            each separate expression within parentheses. For example:
+            ``(scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake")``
+            By default, each expression is an ``AND`` expression.
+            However, you can include ``AND`` and ``OR`` expressions
+            explicitly. For example:
+            ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
+
+            This field is a member of `oneof`_ ``_filter``.
+        include_all_scopes (bool):
+            Indicates whether every visible scope for
+            each scope type (zone, region, global) should be
+            included in the response. For new resource types
+            added after this field, the flag has no effect
+            as new resource types will always include every
+            visible scope for each scope type in response.
+            For resource types which predate this field, if
+            this flag is omitted or false, only scopes of
+            the scope types where the resource type is
+            expected to be found will be included.
+
+            This field is a member of `oneof`_ ``_include_all_scopes``.
+        max_results (int):
+            The maximum number of results per page that should be
+            returned. If the number of available results is larger than
+            ``maxResults``, Compute Engine returns a ``nextPageToken``
+            that can be used to get the next page of results in
+            subsequent list requests. Acceptable values are ``0`` to
+            ``500``, inclusive. (Default: ``500``)
+
+            This field is a member of `oneof`_ ``_max_results``.
+        order_by (str):
+            Sorts list results by a certain order. By default, results
+            are returned in alphanumerical order based on the resource
+            name. You can also sort results in descending order based on
+            the creation timestamp using
+            ``orderBy="creationTimestamp desc"``. This sorts results
+            based on the ``creationTimestamp`` field in reverse
+            chronological order (newest result first). Use this to sort
+            resources like operations so that the newest operation is
+            returned first. Currently, only sorting by ``name`` or
+            ``creationTimestamp desc`` is supported.
+
+            This field is a member of `oneof`_ ``_order_by``.
+        page_token (str):
+            Specifies a page token to use. Set ``pageToken`` to the
+            ``nextPageToken`` returned by a previous list request to get
+            the next page of results.
+
+            This field is a member of `oneof`_ ``_page_token``.
+        project (str):
+            Project ID for this request.
+        return_partial_success (bool):
+            Opt-in for partial success behavior which
+            provides partial results in case of failure. The
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
+
+            This field is a member of `oneof`_ ``_return_partial_success``.
+        service_project_number (int):
+            The Shared VPC service project id or service
+            project number for which aggregated list request
+            is invoked for subnetworks list-usable api.
+
+            This field is a member of `oneof`_ ``_service_project_number``.
+    """
+
+    filter: str = proto.Field(
+        proto.STRING,
+        number=336120696,
+        optional=True,
+    )
+    include_all_scopes: bool = proto.Field(
+        proto.BOOL,
+        number=391327988,
+        optional=True,
+    )
+    max_results: int = proto.Field(
+        proto.UINT32,
+        number=54715419,
+        optional=True,
+    )
+    order_by: str = proto.Field(
+        proto.STRING,
+        number=160562920,
+        optional=True,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=19994697,
+        optional=True,
+    )
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    return_partial_success: bool = proto.Field(
+        proto.BOOL,
+        number=517198390,
+        optional=True,
+    )
+    service_project_number: int = proto.Field(
+        proto.INT64,
+        number=316757497,
+        optional=True,
+    )
+
+
+class AggregatedListStoragePoolsRequest(proto.Message):
+    r"""A request message for StoragePools.AggregatedList. See the
+    method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        filter (str):
+            A filter expression that filters resources listed in the
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
+            fields. For example, you could specify
+            ``scheduling.automaticRestart = false`` to include instances
+            only if they are not scheduled for automatic restarts. You
+            can use filtering on nested fields to filter based on
+            resource labels. To filter on multiple expressions, provide
+            each separate expression within parentheses. For example:
+            ``(scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake")``
+            By default, each expression is an ``AND`` expression.
+            However, you can include ``AND`` and ``OR`` expressions
+            explicitly. For example:
+            ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
+
+            This field is a member of `oneof`_ ``_filter``.
+        include_all_scopes (bool):
+            Indicates whether every visible scope for
+            each scope type (zone, region, global) should be
+            included in the response. For new resource types
+            added after this field, the flag has no effect
+            as new resource types will always include every
+            visible scope for each scope type in response.
+            For resource types which predate this field, if
+            this flag is omitted or false, only scopes of
+            the scope types where the resource type is
+            expected to be found will be included.
+
+            This field is a member of `oneof`_ ``_include_all_scopes``.
+        max_results (int):
+            The maximum number of results per page that should be
+            returned. If the number of available results is larger than
+            ``maxResults``, Compute Engine returns a ``nextPageToken``
+            that can be used to get the next page of results in
+            subsequent list requests. Acceptable values are ``0`` to
+            ``500``, inclusive. (Default: ``500``)
+
+            This field is a member of `oneof`_ ``_max_results``.
+        order_by (str):
+            Sorts list results by a certain order. By default, results
+            are returned in alphanumerical order based on the resource
+            name. You can also sort results in descending order based on
+            the creation timestamp using
+            ``orderBy="creationTimestamp desc"``. This sorts results
+            based on the ``creationTimestamp`` field in reverse
+            chronological order (newest result first). Use this to sort
+            resources like operations so that the newest operation is
+            returned first. Currently, only sorting by ``name`` or
+            ``creationTimestamp desc`` is supported.
+
+            This field is a member of `oneof`_ ``_order_by``.
+        page_token (str):
+            Specifies a page token to use. Set ``pageToken`` to the
+            ``nextPageToken`` returned by a previous list request to get
+            the next page of results.
+
+            This field is a member of `oneof`_ ``_page_token``.
+        project (str):
+            Project ID for this request.
+        return_partial_success (bool):
+            Opt-in for partial success behavior which
+            provides partial results in case of failure. The
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
+
+            This field is a member of `oneof`_ ``_return_partial_success``.
+        service_project_number (int):
+            The Shared VPC service project id or service
+            project number for which aggregated list request
+            is invoked for subnetworks list-usable api.
+
+            This field is a member of `oneof`_ ``_service_project_number``.
+    """
+
+    filter: str = proto.Field(
+        proto.STRING,
+        number=336120696,
+        optional=True,
+    )
+    include_all_scopes: bool = proto.Field(
+        proto.BOOL,
+        number=391327988,
+        optional=True,
+    )
+    max_results: int = proto.Field(
+        proto.UINT32,
+        number=54715419,
+        optional=True,
+    )
+    order_by: str = proto.Field(
+        proto.STRING,
+        number=160562920,
+        optional=True,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=19994697,
+        optional=True,
+    )
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    return_partial_success: bool = proto.Field(
+        proto.BOOL,
+        number=517198390,
+        optional=True,
+    )
+    service_project_number: int = proto.Field(
+        proto.INT64,
+        number=316757497,
+        optional=True,
+    )
+
+
 class AggregatedListSubnetworksRequest(proto.Message):
     r"""A request message for Subnetworks.AggregatedList. See the
     method description for details.
@@ -10905,7 +11253,7 @@ class AllocationSpecificSKUAllocationReservedInstanceProperties(proto.Message):
 
 class AllocationSpecificSKUReservation(proto.Message):
     r"""This reservation type allows to pre allocate specific
-    instance configuration. Next ID: 6
+    instance configuration.
 
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
@@ -11962,6 +12310,17 @@ class AttachedDiskInitializeParams(proto.Message):
             source snapshot.
 
             This field is a member of `oneof`_ ``_source_snapshot_encryption_key``.
+        storage_pool (str):
+            The storage pool in which the new disk is
+            created. You can provide this as a partial or
+            full URL to the resource. For example, the
+            following are valid values: -
+            https://www.googleapis.com/compute/v1/projects/project/zones/zone
+            /storagePools/storagePool -
+            projects/project/zones/zone/storagePools/storagePool
+            - zones/zone/storagePools/storagePool
+
+            This field is a member of `oneof`_ ``_storage_pool``.
     """
 
     class Architecture(proto.Enum):
@@ -12096,6 +12455,11 @@ class AttachedDiskInitializeParams(proto.Message):
         number=303679322,
         optional=True,
         message="CustomerEncryptionKey",
+    )
+    storage_pool: str = proto.Field(
+        proto.STRING,
+        number=360473440,
+        optional=True,
     )
 
 
@@ -17523,6 +17887,72 @@ class CacheKeyPolicy(proto.Message):
     )
 
 
+class CancelInstanceGroupManagerResizeRequestRequest(proto.Message):
+    r"""A request message for
+    InstanceGroupManagerResizeRequests.Cancel. See the method
+    description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        instance_group_manager (str):
+            The name of the managed instance group. The
+            name should conform to RFC1035 or be a resource
+            ID.
+        project (str):
+            Project ID for this request.
+        request_id (str):
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. For example, consider a situation
+            where you make an initial request and the
+            request times out. If you make the request again
+            with the same request ID, the server can check
+            if original operation with the same request ID
+            was received, and if so, will ignore the second
+            request. This prevents clients from accidentally
+            creating duplicate commitments. The request ID
+            must be a valid UUID with the exception that
+            zero UUID is not supported (
+            00000000-0000-0000-0000-000000000000).
+
+            This field is a member of `oneof`_ ``_request_id``.
+        resize_request (str):
+            The name of the resize request to cancel. The
+            name should conform to RFC1035 or be a resource
+            ID.
+        zone (str):
+            The name of the zone where the managed
+            instance group is located. The name should
+            conform to RFC1035.
+    """
+
+    instance_group_manager: str = proto.Field(
+        proto.STRING,
+        number=249363395,
+    )
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=37109963,
+        optional=True,
+    )
+    resize_request: str = proto.Field(
+        proto.STRING,
+        number=216941060,
+    )
+    zone: str = proto.Field(
+        proto.STRING,
+        number=3744684,
+    )
+
+
 class CircuitBreakers(proto.Message):
     r"""Settings controlling the volume of requests, connections and
     retries to this backend service.
@@ -18006,6 +18436,8 @@ class Commitment(proto.Message):
                 No description available.
             ACCELERATOR_OPTIMIZED_A3 (158574526):
                 No description available.
+            ACCELERATOR_OPTIMIZED_A3_MEGA (156517459):
+                No description available.
             COMPUTE_OPTIMIZED (158349023):
                 No description available.
             COMPUTE_OPTIMIZED_C2D (383246453):
@@ -18024,6 +18456,8 @@ class Commitment(proto.Message):
                 No description available.
             GENERAL_PURPOSE_N2D (232471400):
                 No description available.
+            GENERAL_PURPOSE_N4 (301912158):
+                No description available.
             GENERAL_PURPOSE_T2D (232477166):
                 No description available.
             GRAPHICS_OPTIMIZED (68500563):
@@ -18040,6 +18474,7 @@ class Commitment(proto.Message):
         UNDEFINED_TYPE = 0
         ACCELERATOR_OPTIMIZED = 280848403
         ACCELERATOR_OPTIMIZED_A3 = 158574526
+        ACCELERATOR_OPTIMIZED_A3_MEGA = 156517459
         COMPUTE_OPTIMIZED = 158349023
         COMPUTE_OPTIMIZED_C2D = 383246453
         COMPUTE_OPTIMIZED_C3 = 428004784
@@ -18049,6 +18484,7 @@ class Commitment(proto.Message):
         GENERAL_PURPOSE_E2 = 301911877
         GENERAL_PURPOSE_N2 = 301912156
         GENERAL_PURPOSE_N2D = 232471400
+        GENERAL_PURPOSE_N4 = 301912158
         GENERAL_PURPOSE_T2D = 232477166
         GRAPHICS_OPTIMIZED = 68500563
         MEMORY_OPTIMIZED = 281753417
@@ -18672,21 +19108,20 @@ class CorsPolicy(proto.Message):
             Access-Control-Allow-Methods header.
         allow_origin_regexes (MutableSequence[str]):
             Specifies a regular expression that matches allowed origins.
-            For more information about the regular expression syntax,
-            see Syntax. An origin is allowed if it matches either an
-            item in allowOrigins or an item in allowOriginRegexes.
-            Regular expressions can only be used when the
-            loadBalancingScheme is set to INTERNAL_SELF_MANAGED.
+            For more information, see regular expression syntax . An
+            origin is allowed if it matches either an item in
+            allowOrigins or an item in allowOriginRegexes. Regular
+            expressions can only be used when the loadBalancingScheme is
+            set to INTERNAL_SELF_MANAGED.
         allow_origins (MutableSequence[str]):
             Specifies the list of origins that is allowed
             to do CORS requests. An origin is allowed if it
             matches either an item in allowOrigins or an
             item in allowOriginRegexes.
         disabled (bool):
-            If true, the setting specifies the CORS
-            policy is disabled. The default value of false,
-            which indicates that the CORS policy is in
-            effect.
+            If true, disables the CORS policy. The
+            default value is false, which indicates that the
+            CORS policy is in effect.
 
             This field is a member of `oneof`_ ``_disabled``.
         expose_headers (MutableSequence[str]):
@@ -20055,6 +20490,72 @@ class DeleteInstanceGroupManagerRequest(proto.Message):
         proto.STRING,
         number=37109963,
         optional=True,
+    )
+    zone: str = proto.Field(
+        proto.STRING,
+        number=3744684,
+    )
+
+
+class DeleteInstanceGroupManagerResizeRequestRequest(proto.Message):
+    r"""A request message for
+    InstanceGroupManagerResizeRequests.Delete. See the method
+    description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        instance_group_manager (str):
+            The name of the managed instance group. The
+            name should conform to RFC1035 or be a resource
+            ID.
+        project (str):
+            Project ID for this request.
+        request_id (str):
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. For example, consider a situation
+            where you make an initial request and the
+            request times out. If you make the request again
+            with the same request ID, the server can check
+            if original operation with the same request ID
+            was received, and if so, will ignore the second
+            request. This prevents clients from accidentally
+            creating duplicate commitments. The request ID
+            must be a valid UUID with the exception that
+            zero UUID is not supported (
+            00000000-0000-0000-0000-000000000000).
+
+            This field is a member of `oneof`_ ``_request_id``.
+        resize_request (str):
+            The name of the resize request to delete. The
+            name should conform to RFC1035 or be a resource
+            ID.
+        zone (str):
+            The name of the zone where the managed
+            instance group is located. The name should
+            conform to RFC1035.
+    """
+
+    instance_group_manager: str = proto.Field(
+        proto.STRING,
+        number=249363395,
+    )
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=37109963,
+        optional=True,
+    )
+    resize_request: str = proto.Field(
+        proto.STRING,
+        number=216941060,
     )
     zone: str = proto.Field(
         proto.STRING,
@@ -22794,6 +23295,59 @@ class DeleteSslPolicyRequest(proto.Message):
     )
 
 
+class DeleteStoragePoolRequest(proto.Message):
+    r"""A request message for StoragePools.Delete. See the method
+    description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        project (str):
+            Project ID for this request.
+        request_id (str):
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. For example, consider a situation
+            where you make an initial request and the
+            request times out. If you make the request again
+            with the same request ID, the server can check
+            if original operation with the same request ID
+            was received, and if so, will ignore the second
+            request. This prevents clients from accidentally
+            creating duplicate commitments. The request ID
+            must be a valid UUID with the exception that
+            zero UUID is not supported (
+            00000000-0000-0000-0000-000000000000).
+
+            This field is a member of `oneof`_ ``_request_id``.
+        storage_pool (str):
+            Name of the storage pool to delete.
+        zone (str):
+            The name of the zone for this request.
+    """
+
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=37109963,
+        optional=True,
+    )
+    storage_pool: str = proto.Field(
+        proto.STRING,
+        number=360473440,
+    )
+    zone: str = proto.Field(
+        proto.STRING,
+        number=3744684,
+    )
+
+
 class DeleteSubnetworkRequest(proto.Message):
     r"""A request message for Subnetworks.Delete. See the method
     description for details.
@@ -24314,6 +24868,17 @@ class Disk(proto.Message):
             Status enum for the list of possible values.
 
             This field is a member of `oneof`_ ``_status``.
+        storage_pool (str):
+            The storage pool in which the new disk is
+            created. You can provide this as a partial or
+            full URL to the resource. For example, the
+            following are valid values: -
+            https://www.googleapis.com/compute/v1/projects/project/zones/zone
+            /storagePools/storagePool -
+            projects/project/zones/zone/storagePools/storagePool
+            - zones/zone/storagePools/storagePool
+
+            This field is a member of `oneof`_ ``_storage_pool``.
         type_ (str):
             URL of the disk type resource describing
             which disk type to use to create the disk.
@@ -24375,6 +24940,9 @@ class Disk(proto.Message):
                 Disk is ready for use.
             RESTORING (404263851):
                 Source data is being copied into the disk.
+            UNAVAILABLE (413756464):
+                Disk is currently unavailable and cannot be
+                accessed, attached or detached.
         """
         UNDEFINED_STATUS = 0
         CREATING = 455564985
@@ -24382,6 +24950,7 @@ class Disk(proto.Message):
         FAILED = 455706685
         READY = 77848963
         RESTORING = 404263851
+        UNAVAILABLE = 413756464
 
     architecture: str = proto.Field(
         proto.STRING,
@@ -24611,6 +25180,11 @@ class Disk(proto.Message):
     status: str = proto.Field(
         proto.STRING,
         number=181260274,
+        optional=True,
+    )
+    storage_pool: str = proto.Field(
+        proto.STRING,
+        number=360473440,
         optional=True,
     )
     type_: str = proto.Field(
@@ -25836,8 +26410,7 @@ class EnableXpnResourceProjectRequest(proto.Message):
 
 
 class Error(proto.Message):
-    r"""[Output Only] If errors are generated during processing of the
-    operation, this field will be populated.
+    r"""Errors that prevented the ResizeRequest to be fulfilled.
 
     Attributes:
         errors (MutableSequence[google.cloud.compute_v1.types.Errors]):
@@ -25928,15 +26501,17 @@ class ErrorInfo(proto.Message):
 
             This field is a member of `oneof`_ ``_domain``.
         metadatas (MutableMapping[str, str]):
-            Additional structured details about this error. Keys should
-            match `[a-zA-Z0-9-_]` and be limited to 64 characters in
-            length. When identifying the current value of an exceeded
-            limit, the units should be contained in the key, not the
-            value. For example, rather than {"instanceLimit":
+            Additional structured details about this
+            error. Keys must match /a-z+/ but should ideally
+            be lowerCamelCase. Also they must be limited to
+            64 characters in length. When identifying the
+            current value of an exceeded limit, the units
+            should be contained in the key, not the value.
+            For example, rather than {"instanceLimit":
             "100/request"}, should be returned as,
-            {"instanceLimitPerRequest": "100"}, if the client exceeds
-            the number of instances that can be created in a single
-            (batch) request.
+            {"instanceLimitPerRequest": "100"}, if the
+            client exceeds the number of instances that can
+            be created in a single (batch) request.
         reason (str):
             The reason of the error. This is a constant value that
             identifies the proximate cause of the error. Error reasons
@@ -28020,6 +28595,18 @@ class ForwardingRule(proto.Message):
             identifier is defined by the server.
 
             This field is a member of `oneof`_ ``_id``.
+        ip_collection (str):
+            Resource reference of a PublicDelegatedPrefix. The PDP must
+            be a sub-PDP in EXTERNAL_IPV6_FORWARDING_RULE_CREATION mode.
+            Use one of the following formats to specify a sub-PDP when
+            creating an IPv6 NetLB forwarding rule using BYOIP: Full
+            resource URL, as in
+            https://www.googleapis.com/compute/v1/projects/project_id/regions/region
+            /publicDelegatedPrefixes/sub-pdp-name Partial URL, as in: -
+            projects/project_id/regions/region/publicDelegatedPrefixes/sub-pdp-name
+            - regions/region/publicDelegatedPrefixes/sub-pdp-name
+
+            This field is a member of `oneof`_ ``_ip_collection``.
         ip_version (str):
             The IP Version that will be used by this
             forwarding rule. Valid options are IPV4 or IPV6.
@@ -28472,6 +29059,11 @@ class ForwardingRule(proto.Message):
     id: int = proto.Field(
         proto.UINT64,
         number=3355,
+        optional=True,
+    )
+    ip_collection: str = proto.Field(
+        proto.STRING,
+        number=176818358,
         optional=True,
     )
     ip_version: str = proto.Field(
@@ -30565,6 +31157,45 @@ class GetIamPolicySnapshotRequest(proto.Message):
     )
 
 
+class GetIamPolicyStoragePoolRequest(proto.Message):
+    r"""A request message for StoragePools.GetIamPolicy. See the
+    method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        options_requested_policy_version (int):
+            Requested IAM Policy version.
+
+            This field is a member of `oneof`_ ``_options_requested_policy_version``.
+        project (str):
+            Project ID for this request.
+        resource (str):
+            Name or id of the resource for this request.
+        zone (str):
+            The name of the zone for this request.
+    """
+
+    options_requested_policy_version: int = proto.Field(
+        proto.INT32,
+        number=499220029,
+        optional=True,
+    )
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    resource: str = proto.Field(
+        proto.STRING,
+        number=195806222,
+    )
+    zone: str = proto.Field(
+        proto.STRING,
+        number=3744684,
+    )
+
+
 class GetIamPolicySubnetworkRequest(proto.Message):
     r"""A request message for Subnetworks.GetIamPolicy. See the
     method description for details.
@@ -30680,6 +31311,44 @@ class GetInstanceGroupManagerRequest(proto.Message):
     )
 
 
+class GetInstanceGroupManagerResizeRequestRequest(proto.Message):
+    r"""A request message for InstanceGroupManagerResizeRequests.Get.
+    See the method description for details.
+
+    Attributes:
+        instance_group_manager (str):
+            The name of the managed instance group. Name
+            should conform to RFC1035 or be a resource ID.
+        project (str):
+            Project ID for this request.
+        resize_request (str):
+            The name of the resize request. Name should
+            conform to RFC1035 or be a resource ID.
+        zone (str):
+            Name of the
+            href="/compute/docs/regions-zones/#available">zone
+            scoping this request. Name should conform to
+            RFC1035.
+    """
+
+    instance_group_manager: str = proto.Field(
+        proto.STRING,
+        number=249363395,
+    )
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    resize_request: str = proto.Field(
+        proto.STRING,
+        number=216941060,
+    )
+    zone: str = proto.Field(
+        proto.STRING,
+        number=3744684,
+    )
+
+
 class GetInstanceGroupRequest(proto.Message):
     r"""A request message for InstanceGroups.Get. See the method
     description for details.
@@ -30725,6 +31394,27 @@ class GetInstanceRequest(proto.Message):
         proto.STRING,
         number=18257045,
     )
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    zone: str = proto.Field(
+        proto.STRING,
+        number=3744684,
+    )
+
+
+class GetInstanceSettingRequest(proto.Message):
+    r"""A request message for InstanceSettingsService.Get. See the
+    method description for details.
+
+    Attributes:
+        project (str):
+            Project ID for this request.
+        zone (str):
+            Name of the zone for this request.
+    """
+
     project: str = proto.Field(
         proto.STRING,
         number=227560217,
@@ -32700,6 +33390,60 @@ class GetStatusVpnGatewayRequest(proto.Message):
     )
 
 
+class GetStoragePoolRequest(proto.Message):
+    r"""A request message for StoragePools.Get. See the method
+    description for details.
+
+    Attributes:
+        project (str):
+            Project ID for this request.
+        storage_pool (str):
+            Name of the storage pool to return.
+        zone (str):
+            The name of the zone for this request.
+    """
+
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    storage_pool: str = proto.Field(
+        proto.STRING,
+        number=360473440,
+    )
+    zone: str = proto.Field(
+        proto.STRING,
+        number=3744684,
+    )
+
+
+class GetStoragePoolTypeRequest(proto.Message):
+    r"""A request message for StoragePoolTypes.Get. See the method
+    description for details.
+
+    Attributes:
+        project (str):
+            Project ID for this request.
+        storage_pool_type (str):
+            Name of the storage pool type to return.
+        zone (str):
+            The name of the zone for this request.
+    """
+
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    storage_pool_type: str = proto.Field(
+        proto.STRING,
+        number=285999289,
+    )
+    zone: str = proto.Field(
+        proto.STRING,
+        number=3744684,
+    )
+
+
 class GetSubnetworkRequest(proto.Message):
     r"""A request message for Subnetworks.Get. See the method
     description for details.
@@ -33508,7 +34252,7 @@ class GuestOsFeature(proto.Message):
             commas to separate values. Set to one or more of the
             following values: - VIRTIO_SCSI_MULTIQUEUE - WINDOWS -
             MULTI_IP_SUBNET - UEFI_COMPATIBLE - GVNIC - SEV_CAPABLE -
-            SUSPEND_RESUME_COMPATIBLE - SEV_LIVE_MIGRATABLE -
+            SUSPEND_RESUME_COMPATIBLE - SEV_LIVE_MIGRATABLE_V2 -
             SEV_SNP_CAPABLE - TDX_CAPABLE - IDPF For more information,
             see Enabling guest operating system features. Check the Type
             enum for the list of possible values.
@@ -33521,8 +34265,8 @@ class GuestOsFeature(proto.Message):
         separate values. Set to one or more of the following values: -
         VIRTIO_SCSI_MULTIQUEUE - WINDOWS - MULTI_IP_SUBNET - UEFI_COMPATIBLE
         - GVNIC - SEV_CAPABLE - SUSPEND_RESUME_COMPATIBLE -
-        SEV_LIVE_MIGRATABLE - SEV_SNP_CAPABLE - TDX_CAPABLE - IDPF For more
-        information, see Enabling guest operating system features.
+        SEV_LIVE_MIGRATABLE_V2 - SEV_SNP_CAPABLE - TDX_CAPABLE - IDPF For
+        more information, see Enabling guest operating system features.
 
         Values:
             UNDEFINED_TYPE (0):
@@ -33637,7 +34381,8 @@ class HTTP2HealthCheck(proto.Message):
             This field is a member of `oneof`_ ``_proxy_header``.
         request_path (str):
             The request path of the HTTP/2 health check
-            request. The default value is /.
+            request. The default value is /. Must comply
+            with RFC3986.
 
             This field is a member of `oneof`_ ``_request_path``.
         response (str):
@@ -33817,7 +34562,8 @@ class HTTPHealthCheck(proto.Message):
             This field is a member of `oneof`_ ``_proxy_header``.
         request_path (str):
             The request path of the HTTP health check
-            request. The default value is /.
+            request. The default value is /. Must comply
+            with RFC3986.
 
             This field is a member of `oneof`_ ``_request_path``.
         response (str):
@@ -33996,7 +34742,8 @@ class HTTPSHealthCheck(proto.Message):
             This field is a member of `oneof`_ ``_proxy_header``.
         request_path (str):
             The request path of the HTTPS health check
-            request. The default value is /.
+            request. The default value is /. Must comply
+            with RFC3986.
 
             This field is a member of `oneof`_ ``_request_path``.
         response (str):
@@ -37688,6 +38435,72 @@ class InsertInstanceGroupManagerRequest(proto.Message):
     )
 
 
+class InsertInstanceGroupManagerResizeRequestRequest(proto.Message):
+    r"""A request message for
+    InstanceGroupManagerResizeRequests.Insert. See the method
+    description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        instance_group_manager (str):
+            The name of the managed instance group to
+            which the resize request will be added. Name
+            should conform to RFC1035 or be a resource ID.
+        instance_group_manager_resize_request_resource (google.cloud.compute_v1.types.InstanceGroupManagerResizeRequest):
+            The body resource for this request
+        project (str):
+            Project ID for this request.
+        request_id (str):
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. For example, consider a situation
+            where you make an initial request and the
+            request times out. If you make the request again
+            with the same request ID, the server can check
+            if original operation with the same request ID
+            was received, and if so, will ignore the second
+            request. This prevents clients from accidentally
+            creating duplicate commitments. The request ID
+            must be a valid UUID with the exception that
+            zero UUID is not supported (
+            00000000-0000-0000-0000-000000000000).
+
+            This field is a member of `oneof`_ ``_request_id``.
+        zone (str):
+            The name of the zone where the managed
+            instance group is located and where the resize
+            request will be created. Name should conform to
+            RFC1035.
+    """
+
+    instance_group_manager: str = proto.Field(
+        proto.STRING,
+        number=249363395,
+    )
+    instance_group_manager_resize_request_resource: "InstanceGroupManagerResizeRequest" = proto.Field(
+        proto.MESSAGE,
+        number=468541293,
+        message="InstanceGroupManagerResizeRequest",
+    )
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=37109963,
+        optional=True,
+    )
+    zone: str = proto.Field(
+        proto.STRING,
+        number=3744684,
+    )
+
+
 class InsertInstanceGroupRequest(proto.Message):
     r"""A request message for InstanceGroups.Insert. See the method
     description for details.
@@ -40182,6 +40995,60 @@ class InsertSslPolicyRequest(proto.Message):
         proto.MESSAGE,
         number=274891848,
         message="SslPolicy",
+    )
+
+
+class InsertStoragePoolRequest(proto.Message):
+    r"""A request message for StoragePools.Insert. See the method
+    description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        project (str):
+            Project ID for this request.
+        request_id (str):
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. For example, consider a situation
+            where you make an initial request and the
+            request times out. If you make the request again
+            with the same request ID, the server can check
+            if original operation with the same request ID
+            was received, and if so, will ignore the second
+            request. This prevents clients from accidentally
+            creating duplicate commitments. The request ID
+            must be a valid UUID with the exception that
+            zero UUID is not supported (
+            00000000-0000-0000-0000-000000000000).
+
+            This field is a member of `oneof`_ ``_request_id``.
+        storage_pool_resource (google.cloud.compute_v1.types.StoragePool):
+            The body resource for this request
+        zone (str):
+            The name of the zone for this request.
+    """
+
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=37109963,
+        optional=True,
+    )
+    storage_pool_resource: "StoragePool" = proto.Field(
+        proto.MESSAGE,
+        number=157179405,
+        message="StoragePool",
+    )
+    zone: str = proto.Field(
+        proto.STRING,
+        number=3744684,
     )
 
 
@@ -42726,6 +43593,319 @@ class InstanceGroupManagerList(proto.Message):
     )
 
 
+class InstanceGroupManagerResizeRequest(proto.Message):
+    r"""InstanceGroupManagerResizeRequest represents a request to
+    create a number of VMs: either immediately or by queuing the
+    request for the specified time. This resize request is nested
+    under InstanceGroupManager and the VMs created by this request
+    are added to the owning InstanceGroupManager.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        creation_timestamp (str):
+            [Output Only] The creation timestamp for this resize request
+            in RFC3339 text format.
+
+            This field is a member of `oneof`_ ``_creation_timestamp``.
+        description (str):
+            An optional description of this resource.
+
+            This field is a member of `oneof`_ ``_description``.
+        id (int):
+            [Output Only] A unique identifier for this resource type.
+            The server generates this identifier.
+
+            This field is a member of `oneof`_ ``_id``.
+        kind (str):
+            [Output Only] The resource type, which is always
+            compute#instanceGroupManagerResizeRequest for resize
+            requests.
+
+            This field is a member of `oneof`_ ``_kind``.
+        name (str):
+            The name of this resize request. The name
+            must be 1-63 characters long, and comply with
+            RFC1035.
+
+            This field is a member of `oneof`_ ``_name``.
+        requested_run_duration (google.cloud.compute_v1.types.Duration):
+            Requested run duration for instances that
+            will be created by this request. At the end of
+            the run duration instance will be deleted.
+
+            This field is a member of `oneof`_ ``_requested_run_duration``.
+        resize_by (int):
+            The number of instances to be created by this
+            resize request. The group's target size will be
+            increased by this number.
+
+            This field is a member of `oneof`_ ``_resize_by``.
+        self_link (str):
+            [Output Only] The URL for this resize request. The server
+            defines this URL.
+
+            This field is a member of `oneof`_ ``_self_link``.
+        self_link_with_id (str):
+            [Output Only] Server-defined URL for this resource with the
+            resource id.
+
+            This field is a member of `oneof`_ ``_self_link_with_id``.
+        state (str):
+            [Output only] Current state of the request. Check the State
+            enum for the list of possible values.
+
+            This field is a member of `oneof`_ ``_state``.
+        status (google.cloud.compute_v1.types.InstanceGroupManagerResizeRequestStatus):
+            [Output only] Status of the request.
+
+            This field is a member of `oneof`_ ``_status``.
+        zone (str):
+            [Output Only] The URL of a zone where the resize request is
+            located. Populated only for zonal resize requests.
+
+            This field is a member of `oneof`_ ``_zone``.
+    """
+
+    class State(proto.Enum):
+        r"""[Output only] Current state of the request.
+
+        Values:
+            UNDEFINED_STATE (0):
+                A value indicating that the enum field is not
+                set.
+            ACCEPTED (246714279):
+                The request was created successfully and was
+                accepted for provisioning when the capacity
+                becomes available.
+            CANCELLED (41957681):
+                The request is cancelled.
+            CREATING (455564985):
+                Resize request is being created and may still
+                fail creation.
+            FAILED (455706685):
+                The request failed before or during
+                provisioning. If the request fails during
+                provisioning, any VMs that were created during
+                provisioning are rolled back and removed from
+                the MIG.
+            STATE_UNSPECIFIED (470755401):
+                Default value. This value should never be
+                returned.
+            SUCCEEDED (511103553):
+                The request succeeded.
+        """
+        UNDEFINED_STATE = 0
+        ACCEPTED = 246714279
+        CANCELLED = 41957681
+        CREATING = 455564985
+        FAILED = 455706685
+        STATE_UNSPECIFIED = 470755401
+        SUCCEEDED = 511103553
+
+    creation_timestamp: str = proto.Field(
+        proto.STRING,
+        number=30525366,
+        optional=True,
+    )
+    description: str = proto.Field(
+        proto.STRING,
+        number=422937596,
+        optional=True,
+    )
+    id: int = proto.Field(
+        proto.UINT64,
+        number=3355,
+        optional=True,
+    )
+    kind: str = proto.Field(
+        proto.STRING,
+        number=3292052,
+        optional=True,
+    )
+    name: str = proto.Field(
+        proto.STRING,
+        number=3373707,
+        optional=True,
+    )
+    requested_run_duration: "Duration" = proto.Field(
+        proto.MESSAGE,
+        number=232146425,
+        optional=True,
+        message="Duration",
+    )
+    resize_by: int = proto.Field(
+        proto.INT32,
+        number=533735362,
+        optional=True,
+    )
+    self_link: str = proto.Field(
+        proto.STRING,
+        number=456214797,
+        optional=True,
+    )
+    self_link_with_id: str = proto.Field(
+        proto.STRING,
+        number=44520962,
+        optional=True,
+    )
+    state: str = proto.Field(
+        proto.STRING,
+        number=109757585,
+        optional=True,
+    )
+    status: "InstanceGroupManagerResizeRequestStatus" = proto.Field(
+        proto.MESSAGE,
+        number=181260274,
+        optional=True,
+        message="InstanceGroupManagerResizeRequestStatus",
+    )
+    zone: str = proto.Field(
+        proto.STRING,
+        number=3744684,
+        optional=True,
+    )
+
+
+class InstanceGroupManagerResizeRequestStatus(proto.Message):
+    r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        error (google.cloud.compute_v1.types.Error):
+            [Output only] Fatal errors encountered during the queueing
+            or provisioning phases of the ResizeRequest that caused the
+            transition to the FAILED state. Contrary to the last_attempt
+            errors, this field is final and errors are never removed
+            from here, as the ResizeRequest is not going to retry.
+
+            This field is a member of `oneof`_ ``_error``.
+        last_attempt (google.cloud.compute_v1.types.InstanceGroupManagerResizeRequestStatusLastAttempt):
+            [Output only] Information about the last attempt to fulfill
+            the request. The value is temporary since the ResizeRequest
+            can retry, as long as it's still active and the last attempt
+            value can either be cleared or replaced with a different
+            error. Since ResizeRequest retries infrequently, the value
+            may be stale and no longer show an active problem. The value
+            is cleared when ResizeRequest transitions to the final state
+            (becomes inactive). If the final state is FAILED the error
+            describing it will be storred in the "error" field only.
+
+            This field is a member of `oneof`_ ``_last_attempt``.
+    """
+
+    error: "Error" = proto.Field(
+        proto.MESSAGE,
+        number=96784904,
+        optional=True,
+        message="Error",
+    )
+    last_attempt: "InstanceGroupManagerResizeRequestStatusLastAttempt" = proto.Field(
+        proto.MESSAGE,
+        number=434771492,
+        optional=True,
+        message="InstanceGroupManagerResizeRequestStatusLastAttempt",
+    )
+
+
+class InstanceGroupManagerResizeRequestStatusLastAttempt(proto.Message):
+    r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        error (google.cloud.compute_v1.types.Error):
+            Errors that prevented the ResizeRequest to be
+            fulfilled.
+
+            This field is a member of `oneof`_ ``_error``.
+    """
+
+    error: "Error" = proto.Field(
+        proto.MESSAGE,
+        number=96784904,
+        optional=True,
+        message="Error",
+    )
+
+
+class InstanceGroupManagerResizeRequestsListResponse(proto.Message):
+    r"""[Output Only] A list of resize requests.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        id (str):
+            [Output Only] Unique identifier for the resource; defined by
+            the server.
+
+            This field is a member of `oneof`_ ``_id``.
+        items (MutableSequence[google.cloud.compute_v1.types.InstanceGroupManagerResizeRequest]):
+            A list of resize request resources.
+        kind (str):
+            [Output Only] Type of the resource. Always
+            compute#instanceGroupManagerResizeRequestList for a list of
+            resize requests.
+
+            This field is a member of `oneof`_ ``_kind``.
+        next_page_token (str):
+            [Output Only] This token allows you to get the next page of
+            results for list requests. If the number of results is
+            larger than maxResults, use the nextPageToken as a value for
+            the query parameter pageToken in the next list request.
+            Subsequent list requests will have their own nextPageToken
+            to continue paging through the results.
+
+            This field is a member of `oneof`_ ``_next_page_token``.
+        self_link (str):
+            [Output Only] Server-defined URL for this resource.
+
+            This field is a member of `oneof`_ ``_self_link``.
+        warning (google.cloud.compute_v1.types.Warning):
+            [Output Only] Informational warning message.
+
+            This field is a member of `oneof`_ ``_warning``.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    id: str = proto.Field(
+        proto.STRING,
+        number=3355,
+        optional=True,
+    )
+    items: MutableSequence["InstanceGroupManagerResizeRequest"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=100526016,
+        message="InstanceGroupManagerResizeRequest",
+    )
+    kind: str = proto.Field(
+        proto.STRING,
+        number=3292052,
+        optional=True,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=79797525,
+        optional=True,
+    )
+    self_link: str = proto.Field(
+        proto.STRING,
+        number=456214797,
+        optional=True,
+    )
+    warning: "Warning" = proto.Field(
+        proto.MESSAGE,
+        number=50704284,
+        optional=True,
+        message="Warning",
+    )
+
+
 class InstanceGroupManagerStatus(proto.Message):
     r"""
 
@@ -42843,7 +44023,7 @@ class InstanceGroupManagerStatusStateful(proto.Message):
             This field is a member of `oneof`_ ``_has_stateful_config``.
         per_instance_configs (google.cloud.compute_v1.types.InstanceGroupManagerStatusStatefulPerInstanceConfigs):
             [Output Only] Status of per-instance configurations on the
-            instance.
+            instances.
 
             This field is a member of `oneof`_ ``_per_instance_configs``.
     """
@@ -44662,6 +45842,101 @@ class InstanceReference(proto.Message):
     )
 
 
+class InstanceSettings(proto.Message):
+    r"""Represents a Instance Settings resource. You can use instance
+    settings to configure default settings for Compute Engine VM
+    instances. For example, you can use it to configure default
+    machine type of Compute Engine VM instances.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        fingerprint (str):
+            Specifies a fingerprint for instance
+            settings, which is essentially a hash of the
+            instance settings resource's contents and used
+            for optimistic locking. The fingerprint is
+            initially generated by Compute Engine and
+            changes after every request to modify or update
+            the instance settings resource. You must always
+            provide an up-to-date fingerprint hash in order
+            to update or change the resource, otherwise the
+            request will fail with error 412
+            conditionNotMet. To see the latest fingerprint,
+            make a get() request to retrieve the resource.
+
+            This field is a member of `oneof`_ ``_fingerprint``.
+        kind (str):
+            [Output Only] Type of the resource. Always
+            compute#instance_settings for instance settings.
+
+            This field is a member of `oneof`_ ``_kind``.
+        metadata (google.cloud.compute_v1.types.InstanceSettingsMetadata):
+            The metadata key/value pairs assigned to all
+            the instances in the corresponding scope.
+
+            This field is a member of `oneof`_ ``_metadata``.
+        zone (str):
+            [Output Only] URL of the zone where the resource resides You
+            must specify this field as part of the HTTP request URL. It
+            is not settable as a field in the request body.
+
+            This field is a member of `oneof`_ ``_zone``.
+    """
+
+    fingerprint: str = proto.Field(
+        proto.STRING,
+        number=234678500,
+        optional=True,
+    )
+    kind: str = proto.Field(
+        proto.STRING,
+        number=3292052,
+        optional=True,
+    )
+    metadata: "InstanceSettingsMetadata" = proto.Field(
+        proto.MESSAGE,
+        number=86866735,
+        optional=True,
+        message="InstanceSettingsMetadata",
+    )
+    zone: str = proto.Field(
+        proto.STRING,
+        number=3744684,
+        optional=True,
+    )
+
+
+class InstanceSettingsMetadata(proto.Message):
+    r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        items (MutableMapping[str, str]):
+            A metadata key/value items map. The total
+            size of all keys and values must be less than
+            512KB.
+        kind (str):
+            [Output Only] Type of the resource. Always compute#metadata
+            for metadata.
+
+            This field is a member of `oneof`_ ``_kind``.
+    """
+
+    items: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=100526016,
+    )
+    kind: str = proto.Field(
+        proto.STRING,
+        number=3292052,
+        optional=True,
+    )
+
+
 class InstanceTemplate(proto.Message):
     r"""Represents an Instance Template resource. Google Compute Engine has
     two Instance Template resources: \*
@@ -45140,15 +46415,17 @@ class InstancesGetEffectiveFirewallsResponseEffectiveFirewallPolicy(proto.Messag
             This field is a member of `oneof`_ ``_short_name``.
         type_ (str):
             [Output Only] The type of the firewall policy. Can be one of
-            HIERARCHY, NETWORK, NETWORK_REGIONAL. Check the Type enum
-            for the list of possible values.
+            HIERARCHY, NETWORK, NETWORK_REGIONAL, SYSTEM_GLOBAL,
+            SYSTEM_REGIONAL. Check the Type enum for the list of
+            possible values.
 
             This field is a member of `oneof`_ ``_type``.
     """
 
     class Type(proto.Enum):
         r"""[Output Only] The type of the firewall policy. Can be one of
-        HIERARCHY, NETWORK, NETWORK_REGIONAL.
+        HIERARCHY, NETWORK, NETWORK_REGIONAL, SYSTEM_GLOBAL,
+        SYSTEM_REGIONAL.
 
         Values:
             UNDEFINED_TYPE (0):
@@ -45610,12 +46887,16 @@ class InstantSnapshot(proto.Message):
             READY (77848963):
                 InstantSnapshot has been created
                 successfully.
+            UNAVAILABLE (413756464):
+                InstantSnapshot is currently unavailable and
+                cannot be used for Disk restoration
         """
         UNDEFINED_STATUS = 0
         CREATING = 455564985
         DELETING = 528602024
         FAILED = 455706685
         READY = 77848963
+        UNAVAILABLE = 413756464
 
     architecture: str = proto.Field(
         proto.STRING,
@@ -49277,16 +50558,16 @@ class InterconnectRemoteLocationConstraints(proto.Message):
             [Output Only] Port pair remote location constraints, which
             can take one of the following values:
             PORT_PAIR_UNCONSTRAINED_REMOTE_LOCATION,
-            PORT_PAIR_MATCHING_REMOTE_LOCATION. GCP's API refers only to
-            individual ports, but the UI uses this field when ordering a
-            pair of ports, to prevent users from accidentally ordering
-            something that is incompatible with their cloud provider.
-            Specifically, when ordering a redundant pair of Cross-Cloud
-            Interconnect ports, and one of them uses a remote location
-            with portPairMatchingRemoteLocation set to matching, the UI
-            requires that both ports use the same remote location. Check
-            the PortPairRemoteLocation enum for the list of possible
-            values.
+            PORT_PAIR_MATCHING_REMOTE_LOCATION. Google Cloud API refers
+            only to individual ports, but the UI uses this field when
+            ordering a pair of ports, to prevent users from accidentally
+            ordering something that is incompatible with their cloud
+            provider. Specifically, when ordering a redundant pair of
+            Cross-Cloud Interconnect ports, and one of them uses a
+            remote location with portPairMatchingRemoteLocation set to
+            matching, the UI requires that both ports use the same
+            remote location. Check the PortPairRemoteLocation enum for
+            the list of possible values.
 
             This field is a member of `oneof`_ ``_port_pair_remote_location``.
         port_pair_vlan (str):
@@ -49313,7 +50594,7 @@ class InterconnectRemoteLocationConstraints(proto.Message):
         r"""[Output Only] Port pair remote location constraints, which can take
         one of the following values:
         PORT_PAIR_UNCONSTRAINED_REMOTE_LOCATION,
-        PORT_PAIR_MATCHING_REMOTE_LOCATION. GCP's API refers only to
+        PORT_PAIR_MATCHING_REMOTE_LOCATION. Google Cloud API refers only to
         individual ports, but the UI uses this field when ordering a pair of
         ports, to prevent users from accidentally ordering something that is
         incompatible with their cloud provider. Specifically, when ordering
@@ -51235,6 +52516,143 @@ class ListDisksRequest(proto.Message):
     )
 
 
+class ListDisksStoragePoolsRequest(proto.Message):
+    r"""A request message for StoragePools.ListDisks. See the method
+    description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        filter (str):
+            A filter expression that filters resources listed in the
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
+            fields. For example, you could specify
+            ``scheduling.automaticRestart = false`` to include instances
+            only if they are not scheduled for automatic restarts. You
+            can use filtering on nested fields to filter based on
+            resource labels. To filter on multiple expressions, provide
+            each separate expression within parentheses. For example:
+            ``(scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake")``
+            By default, each expression is an ``AND`` expression.
+            However, you can include ``AND`` and ``OR`` expressions
+            explicitly. For example:
+            ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
+
+            This field is a member of `oneof`_ ``_filter``.
+        max_results (int):
+            The maximum number of results per page that should be
+            returned. If the number of available results is larger than
+            ``maxResults``, Compute Engine returns a ``nextPageToken``
+            that can be used to get the next page of results in
+            subsequent list requests. Acceptable values are ``0`` to
+            ``500``, inclusive. (Default: ``500``)
+
+            This field is a member of `oneof`_ ``_max_results``.
+        order_by (str):
+            Sorts list results by a certain order. By default, results
+            are returned in alphanumerical order based on the resource
+            name. You can also sort results in descending order based on
+            the creation timestamp using
+            ``orderBy="creationTimestamp desc"``. This sorts results
+            based on the ``creationTimestamp`` field in reverse
+            chronological order (newest result first). Use this to sort
+            resources like operations so that the newest operation is
+            returned first. Currently, only sorting by ``name`` or
+            ``creationTimestamp desc`` is supported.
+
+            This field is a member of `oneof`_ ``_order_by``.
+        page_token (str):
+            Specifies a page token to use. Set ``pageToken`` to the
+            ``nextPageToken`` returned by a previous list request to get
+            the next page of results.
+
+            This field is a member of `oneof`_ ``_page_token``.
+        project (str):
+            Project ID for this request.
+        return_partial_success (bool):
+            Opt-in for partial success behavior which
+            provides partial results in case of failure. The
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
+
+            This field is a member of `oneof`_ ``_return_partial_success``.
+        storage_pool (str):
+            Name of the storage pool to list disks of.
+        zone (str):
+            The name of the zone for this request.
+    """
+
+    filter: str = proto.Field(
+        proto.STRING,
+        number=336120696,
+        optional=True,
+    )
+    max_results: int = proto.Field(
+        proto.UINT32,
+        number=54715419,
+        optional=True,
+    )
+    order_by: str = proto.Field(
+        proto.STRING,
+        number=160562920,
+        optional=True,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=19994697,
+        optional=True,
+    )
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    return_partial_success: bool = proto.Field(
+        proto.BOOL,
+        number=517198390,
+        optional=True,
+    )
+    storage_pool: str = proto.Field(
+        proto.STRING,
+        number=360473440,
+    )
+    zone: str = proto.Field(
+        proto.STRING,
+        number=3744684,
+    )
+
+
 class ListErrorsInstanceGroupManagersRequest(proto.Message):
     r"""A request message for InstanceGroupManagers.ListErrors. See
     the method description for details.
@@ -53030,6 +54448,147 @@ class ListImagesRequest(proto.Message):
         proto.BOOL,
         number=517198390,
         optional=True,
+    )
+
+
+class ListInstanceGroupManagerResizeRequestsRequest(proto.Message):
+    r"""A request message for
+    InstanceGroupManagerResizeRequests.List. See the method
+    description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        filter (str):
+            A filter expression that filters resources listed in the
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
+            fields. For example, you could specify
+            ``scheduling.automaticRestart = false`` to include instances
+            only if they are not scheduled for automatic restarts. You
+            can use filtering on nested fields to filter based on
+            resource labels. To filter on multiple expressions, provide
+            each separate expression within parentheses. For example:
+            ``(scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake")``
+            By default, each expression is an ``AND`` expression.
+            However, you can include ``AND`` and ``OR`` expressions
+            explicitly. For example:
+            ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
+
+            This field is a member of `oneof`_ ``_filter``.
+        instance_group_manager (str):
+            The name of the managed instance group. The
+            name should conform to RFC1035.
+        max_results (int):
+            The maximum number of results per page that should be
+            returned. If the number of available results is larger than
+            ``maxResults``, Compute Engine returns a ``nextPageToken``
+            that can be used to get the next page of results in
+            subsequent list requests. Acceptable values are ``0`` to
+            ``500``, inclusive. (Default: ``500``)
+
+            This field is a member of `oneof`_ ``_max_results``.
+        order_by (str):
+            Sorts list results by a certain order. By default, results
+            are returned in alphanumerical order based on the resource
+            name. You can also sort results in descending order based on
+            the creation timestamp using
+            ``orderBy="creationTimestamp desc"``. This sorts results
+            based on the ``creationTimestamp`` field in reverse
+            chronological order (newest result first). Use this to sort
+            resources like operations so that the newest operation is
+            returned first. Currently, only sorting by ``name`` or
+            ``creationTimestamp desc`` is supported.
+
+            This field is a member of `oneof`_ ``_order_by``.
+        page_token (str):
+            Specifies a page token to use. Set ``pageToken`` to the
+            ``nextPageToken`` returned by a previous list request to get
+            the next page of results.
+
+            This field is a member of `oneof`_ ``_page_token``.
+        project (str):
+            Project ID for this request.
+        return_partial_success (bool):
+            Opt-in for partial success behavior which
+            provides partial results in case of failure. The
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
+
+            This field is a member of `oneof`_ ``_return_partial_success``.
+        zone (str):
+            The name of the zone where the managed
+            instance group is located. The name should
+            conform to RFC1035.
+    """
+
+    filter: str = proto.Field(
+        proto.STRING,
+        number=336120696,
+        optional=True,
+    )
+    instance_group_manager: str = proto.Field(
+        proto.STRING,
+        number=249363395,
+    )
+    max_results: int = proto.Field(
+        proto.UINT32,
+        number=54715419,
+        optional=True,
+    )
+    order_by: str = proto.Field(
+        proto.STRING,
+        number=160562920,
+        optional=True,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=19994697,
+        optional=True,
+    )
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    return_partial_success: bool = proto.Field(
+        proto.BOOL,
+        number=517198390,
+        optional=True,
+    )
+    zone: str = proto.Field(
+        proto.STRING,
+        number=3744684,
     )
 
 
@@ -62013,6 +63572,268 @@ class ListSslPoliciesRequest(proto.Message):
     )
 
 
+class ListStoragePoolTypesRequest(proto.Message):
+    r"""A request message for StoragePoolTypes.List. See the method
+    description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        filter (str):
+            A filter expression that filters resources listed in the
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
+            fields. For example, you could specify
+            ``scheduling.automaticRestart = false`` to include instances
+            only if they are not scheduled for automatic restarts. You
+            can use filtering on nested fields to filter based on
+            resource labels. To filter on multiple expressions, provide
+            each separate expression within parentheses. For example:
+            ``(scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake")``
+            By default, each expression is an ``AND`` expression.
+            However, you can include ``AND`` and ``OR`` expressions
+            explicitly. For example:
+            ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
+
+            This field is a member of `oneof`_ ``_filter``.
+        max_results (int):
+            The maximum number of results per page that should be
+            returned. If the number of available results is larger than
+            ``maxResults``, Compute Engine returns a ``nextPageToken``
+            that can be used to get the next page of results in
+            subsequent list requests. Acceptable values are ``0`` to
+            ``500``, inclusive. (Default: ``500``)
+
+            This field is a member of `oneof`_ ``_max_results``.
+        order_by (str):
+            Sorts list results by a certain order. By default, results
+            are returned in alphanumerical order based on the resource
+            name. You can also sort results in descending order based on
+            the creation timestamp using
+            ``orderBy="creationTimestamp desc"``. This sorts results
+            based on the ``creationTimestamp`` field in reverse
+            chronological order (newest result first). Use this to sort
+            resources like operations so that the newest operation is
+            returned first. Currently, only sorting by ``name`` or
+            ``creationTimestamp desc`` is supported.
+
+            This field is a member of `oneof`_ ``_order_by``.
+        page_token (str):
+            Specifies a page token to use. Set ``pageToken`` to the
+            ``nextPageToken`` returned by a previous list request to get
+            the next page of results.
+
+            This field is a member of `oneof`_ ``_page_token``.
+        project (str):
+            Project ID for this request.
+        return_partial_success (bool):
+            Opt-in for partial success behavior which
+            provides partial results in case of failure. The
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
+
+            This field is a member of `oneof`_ ``_return_partial_success``.
+        zone (str):
+            The name of the zone for this request.
+    """
+
+    filter: str = proto.Field(
+        proto.STRING,
+        number=336120696,
+        optional=True,
+    )
+    max_results: int = proto.Field(
+        proto.UINT32,
+        number=54715419,
+        optional=True,
+    )
+    order_by: str = proto.Field(
+        proto.STRING,
+        number=160562920,
+        optional=True,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=19994697,
+        optional=True,
+    )
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    return_partial_success: bool = proto.Field(
+        proto.BOOL,
+        number=517198390,
+        optional=True,
+    )
+    zone: str = proto.Field(
+        proto.STRING,
+        number=3744684,
+    )
+
+
+class ListStoragePoolsRequest(proto.Message):
+    r"""A request message for StoragePools.List. See the method
+    description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        filter (str):
+            A filter expression that filters resources listed in the
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
+            fields. For example, you could specify
+            ``scheduling.automaticRestart = false`` to include instances
+            only if they are not scheduled for automatic restarts. You
+            can use filtering on nested fields to filter based on
+            resource labels. To filter on multiple expressions, provide
+            each separate expression within parentheses. For example:
+            ``(scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake")``
+            By default, each expression is an ``AND`` expression.
+            However, you can include ``AND`` and ``OR`` expressions
+            explicitly. For example:
+            ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
+
+            This field is a member of `oneof`_ ``_filter``.
+        max_results (int):
+            The maximum number of results per page that should be
+            returned. If the number of available results is larger than
+            ``maxResults``, Compute Engine returns a ``nextPageToken``
+            that can be used to get the next page of results in
+            subsequent list requests. Acceptable values are ``0`` to
+            ``500``, inclusive. (Default: ``500``)
+
+            This field is a member of `oneof`_ ``_max_results``.
+        order_by (str):
+            Sorts list results by a certain order. By default, results
+            are returned in alphanumerical order based on the resource
+            name. You can also sort results in descending order based on
+            the creation timestamp using
+            ``orderBy="creationTimestamp desc"``. This sorts results
+            based on the ``creationTimestamp`` field in reverse
+            chronological order (newest result first). Use this to sort
+            resources like operations so that the newest operation is
+            returned first. Currently, only sorting by ``name`` or
+            ``creationTimestamp desc`` is supported.
+
+            This field is a member of `oneof`_ ``_order_by``.
+        page_token (str):
+            Specifies a page token to use. Set ``pageToken`` to the
+            ``nextPageToken`` returned by a previous list request to get
+            the next page of results.
+
+            This field is a member of `oneof`_ ``_page_token``.
+        project (str):
+            Project ID for this request.
+        return_partial_success (bool):
+            Opt-in for partial success behavior which
+            provides partial results in case of failure. The
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
+
+            This field is a member of `oneof`_ ``_return_partial_success``.
+        zone (str):
+            The name of the zone for this request.
+    """
+
+    filter: str = proto.Field(
+        proto.STRING,
+        number=336120696,
+        optional=True,
+    )
+    max_results: int = proto.Field(
+        proto.UINT32,
+        number=54715419,
+        optional=True,
+    )
+    order_by: str = proto.Field(
+        proto.STRING,
+        number=160562920,
+        optional=True,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=19994697,
+        optional=True,
+    )
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    return_partial_success: bool = proto.Field(
+        proto.BOOL,
+        number=517198390,
+        optional=True,
+    )
+    zone: str = proto.Field(
+        proto.STRING,
+        number=3744684,
+    )
+
+
 class ListSubnetworksRequest(proto.Message):
     r"""A request message for Subnetworks.List. See the method
     description for details.
@@ -67517,9 +69338,9 @@ class NetworkEndpointGroup(proto.Message):
             Type of network endpoints in this network endpoint group.
             Can be one of GCE_VM_IP, GCE_VM_IP_PORT,
             NON_GCP_PRIVATE_IP_PORT, INTERNET_FQDN_PORT,
-            INTERNET_IP_PORT, SERVERLESS, PRIVATE_SERVICE_CONNECT. Check
-            the NetworkEndpointType enum for the list of possible
-            values.
+            INTERNET_IP_PORT, SERVERLESS, PRIVATE_SERVICE_CONNECT,
+            GCE_VM_IP_PORTMAP. Check the NetworkEndpointType enum for
+            the list of possible values.
 
             This field is a member of `oneof`_ ``_network_endpoint_type``.
         psc_data (google.cloud.compute_v1.types.NetworkEndpointGroupPscData):
@@ -67562,7 +69383,7 @@ class NetworkEndpointGroup(proto.Message):
         r"""Type of network endpoints in this network endpoint group. Can be one
         of GCE_VM_IP, GCE_VM_IP_PORT, NON_GCP_PRIVATE_IP_PORT,
         INTERNET_FQDN_PORT, INTERNET_IP_PORT, SERVERLESS,
-        PRIVATE_SERVICE_CONNECT.
+        PRIVATE_SERVICE_CONNECT, GCE_VM_IP_PORTMAP.
 
         Values:
             UNDEFINED_NETWORK_ENDPOINT_TYPE (0):
@@ -69207,6 +71028,13 @@ class NodeGroup(proto.Message):
             NodeTemplate.
 
             This field is a member of `oneof`_ ``_location_hint``.
+        maintenance_interval (str):
+            Specifies the frequency of planned maintenance events. The
+            accepted values are: ``AS_NEEDED`` and ``RECURRENT``. Check
+            the MaintenanceInterval enum for the list of possible
+            values.
+
+            This field is a member of `oneof`_ ``_maintenance_interval``.
         maintenance_policy (str):
             Specifies how to handle instances when a node in the group
             undergoes maintenance. Set to one of: DEFAULT,
@@ -69258,6 +71086,34 @@ class NodeGroup(proto.Message):
 
             This field is a member of `oneof`_ ``_zone``.
     """
+
+    class MaintenanceInterval(proto.Enum):
+        r"""Specifies the frequency of planned maintenance events. The accepted
+        values are: ``AS_NEEDED`` and ``RECURRENT``.
+
+        Values:
+            UNDEFINED_MAINTENANCE_INTERVAL (0):
+                A value indicating that the enum field is not
+                set.
+            AS_NEEDED (500724834):
+                VMs are eligible to receive infrastructure
+                and hypervisor updates as they become available.
+                This may result in more maintenance operations
+                (live migrations or terminations) for the VM
+                than the PERIODIC and RECURRENT options.
+            RECURRENT (194244550):
+                VMs receive infrastructure and hypervisor updates on a
+                periodic basis, minimizing the number of maintenance
+                operations (live migrations or terminations) on an
+                individual VM. This may mean a VM will take longer to
+                receive an update than if it was configured for AS_NEEDED.
+                Security updates will still be applied as soon as they are
+                available. RECURRENT is used for GEN3 and Slice of Hardware
+                VMs.
+        """
+        UNDEFINED_MAINTENANCE_INTERVAL = 0
+        AS_NEEDED = 500724834
+        RECURRENT = 194244550
 
     class MaintenancePolicy(proto.Enum):
         r"""Specifies how to handle instances when a node in the group undergoes
@@ -69352,6 +71208,11 @@ class NodeGroup(proto.Message):
     location_hint: str = proto.Field(
         proto.STRING,
         number=350519505,
+        optional=True,
+    )
+    maintenance_interval: str = proto.Field(
+        proto.STRING,
+        number=403368049,
         optional=True,
     )
     maintenance_policy: str = proto.Field(
@@ -69717,6 +71578,11 @@ class NodeGroupNode(proto.Message):
             node.
 
             This field is a member of `oneof`_ ``_total_resources``.
+        upcoming_maintenance (google.cloud.compute_v1.types.UpcomingMaintenance):
+            [Output Only] The information about an upcoming maintenance
+            event.
+
+            This field is a member of `oneof`_ ``_upcoming_maintenance``.
     """
 
     class CpuOvercommitType(proto.Enum):
@@ -69832,6 +71698,12 @@ class NodeGroupNode(proto.Message):
         optional=True,
         message="InstanceConsumptionInfo",
     )
+    upcoming_maintenance: "UpcomingMaintenance" = proto.Field(
+        proto.MESSAGE,
+        number=227348592,
+        optional=True,
+        message="UpcomingMaintenance",
+    )
 
 
 class NodeGroupsAddNodesRequest(proto.Message):
@@ -69940,6 +71812,32 @@ class NodeGroupsListNodes(proto.Message):
         number=50704284,
         optional=True,
         message="Warning",
+    )
+
+
+class NodeGroupsPerformMaintenanceRequest(proto.Message):
+    r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        nodes (MutableSequence[str]):
+            [Required] List of nodes affected by the call.
+        start_time (str):
+            The start time of the schedule. The timestamp
+            is an RFC3339 string.
+
+            This field is a member of `oneof`_ ``_start_time``.
+    """
+
+    nodes: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=104993457,
+    )
+    start_time: str = proto.Field(
+        proto.STRING,
+        number=37467274,
+        optional=True,
     )
 
 
@@ -71852,7 +73750,7 @@ class PacketMirroring(proto.Message):
             This field is a member of `oneof`_ ``_enable``.
         filter (google.cloud.compute_v1.types.PacketMirroringFilter):
             Filter for mirrored traffic. If unspecified,
-            all traffic is mirrored.
+            all IPv4 traffic is mirrored.
 
             This field is a member of `oneof`_ ``_filter``.
         id (int):
@@ -72097,15 +73995,14 @@ class PacketMirroringFilter(proto.Message):
             mirrored.
         cidr_ranges (MutableSequence[str]):
             One or more IPv4 or IPv6 CIDR ranges that
-            apply as filter on the source (ingress) or
+            apply as filters on the source (ingress) or
             destination (egress) IP in the IP header. If no
             ranges are specified, all IPv4 traffic that
             matches the specified IPProtocols is mirrored.
             If neither cidrRanges nor IPProtocols is
             specified, all IPv4 traffic is mirrored. To
             mirror all IPv4 and IPv6 traffic, use
-            "0.0.0.0/0,::/0". Note: Support for IPv6 traffic
-            is in preview.
+            "0.0.0.0/0,::/0".
         direction (str):
             Direction of traffic to mirror, either
             INGRESS, EGRESS, or BOTH. The default is BOTH.
@@ -73022,6 +74919,71 @@ class PatchInstanceGroupManagerRequest(proto.Message):
     request_id: str = proto.Field(
         proto.STRING,
         number=37109963,
+        optional=True,
+    )
+    zone: str = proto.Field(
+        proto.STRING,
+        number=3744684,
+    )
+
+
+class PatchInstanceSettingRequest(proto.Message):
+    r"""A request message for InstanceSettingsService.Patch. See the
+    method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        instance_settings_resource (google.cloud.compute_v1.types.InstanceSettings):
+            The body resource for this request
+        project (str):
+            Project ID for this request.
+        request_id (str):
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. For example, consider a situation
+            where you make an initial request and the
+            request times out. If you make the request again
+            with the same request ID, the server can check
+            if original operation with the same request ID
+            was received, and if so, will ignore the second
+            request. This prevents clients from accidentally
+            creating duplicate commitments. The request ID
+            must be a valid UUID with the exception that
+            zero UUID is not supported (
+            00000000-0000-0000-0000-000000000000).
+
+            This field is a member of `oneof`_ ``_request_id``.
+        update_mask (str):
+            update_mask indicates fields to be updated as part of this
+            request.
+
+            This field is a member of `oneof`_ ``_update_mask``.
+        zone (str):
+            The zone scoping this request. It should
+            conform to RFC1035.
+    """
+
+    instance_settings_resource: "InstanceSettings" = proto.Field(
+        proto.MESSAGE,
+        number=290689920,
+        message="InstanceSettings",
+    )
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=37109963,
+        optional=True,
+    )
+    update_mask: str = proto.Field(
+        proto.STRING,
+        number=500079778,
         optional=True,
     )
     zone: str = proto.Field(
@@ -75361,11 +77323,13 @@ class PathMatcher(proto.Message):
             weightedBackendServices, defaultService must not
             be set. Conversely if defaultService is set,
             defaultRouteAction cannot contain any
-            weightedBackendServices. Only one of
-            defaultRouteAction or defaultUrlRedirect must be
-            set. URL maps for classic Application Load
-            Balancers only support the urlRewrite action
-            within a path matcher's defaultRouteAction.
+            weightedBackendServices. If defaultRouteAction
+            is specified, don't set defaultUrlRedirect. If
+            defaultRouteAction.weightedBackendServices is
+            specified, don't set defaultService. URL maps
+            for classic Application Load Balancers only
+            support the urlRewrite action within a path
+            matcher's defaultRouteAction.
 
             This field is a member of `oneof`_ ``_default_route_action``.
         default_service (str):
@@ -75383,9 +77347,9 @@ class PathMatcher(proto.Message):
             specified, defaultRouteAction cannot contain any
             weightedBackendServices. Conversely, if defaultRouteAction
             specifies any weightedBackendServices, defaultService must
-            not be specified. Only one of defaultService,
-            defaultUrlRedirect , or
-            defaultRouteAction.weightedBackendService must be set.
+            not be specified. If defaultService is specified, then set
+            either defaultUrlRedirect or
+            defaultRouteAction.weightedBackendService. Don't set both.
             Authorization requires one or more of the following Google
             IAM permissions on the specified resource default_service: -
             compute.backendBuckets.use - compute.backendServices.use
@@ -75395,10 +77359,10 @@ class PathMatcher(proto.Message):
             When none of the specified pathRules or
             routeRules match, the request is redirected to a
             URL specified by defaultUrlRedirect. If
-            defaultUrlRedirect is specified, defaultService
-            or defaultRouteAction must not be set. Not
-            supported when the URL map is bound to a target
-            gRPC proxy.
+            defaultUrlRedirect is specified, then set either
+            defaultService or defaultRouteAction. Don't set
+            both. Not supported when the URL map is bound to
+            a target gRPC proxy.
 
             This field is a member of `oneof`_ ``_default_url_redirect``.
         description (str):
@@ -75712,6 +77676,66 @@ class PerformMaintenanceInstanceRequest(proto.Message):
     instance: str = proto.Field(
         proto.STRING,
         number=18257045,
+    )
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=37109963,
+        optional=True,
+    )
+    zone: str = proto.Field(
+        proto.STRING,
+        number=3744684,
+    )
+
+
+class PerformMaintenanceNodeGroupRequest(proto.Message):
+    r"""A request message for NodeGroups.PerformMaintenance. See the
+    method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        node_group (str):
+            Name of the node group scoping this request.
+        node_groups_perform_maintenance_request_resource (google.cloud.compute_v1.types.NodeGroupsPerformMaintenanceRequest):
+            The body resource for this request
+        project (str):
+            Project ID for this request.
+        request_id (str):
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. For example, consider a situation
+            where you make an initial request and the
+            request times out. If you make the request again
+            with the same request ID, the server can check
+            if original operation with the same request ID
+            was received, and if so, will ignore the second
+            request. This prevents clients from accidentally
+            creating duplicate commitments. The request ID
+            must be a valid UUID with the exception that
+            zero UUID is not supported (
+            00000000-0000-0000-0000-000000000000).
+
+            This field is a member of `oneof`_ ``_request_id``.
+        zone (str):
+            The name of the zone for this request.
+    """
+
+    node_group: str = proto.Field(
+        proto.STRING,
+        number=469958146,
+    )
+    node_groups_perform_maintenance_request_resource: "NodeGroupsPerformMaintenanceRequest" = proto.Field(
+        proto.MESSAGE,
+        number=185310294,
+        message="NodeGroupsPerformMaintenanceRequest",
     )
     project: str = proto.Field(
         proto.STRING,
@@ -77014,6 +79038,14 @@ class PublicDelegatedPrefix(proto.Message):
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
+        allocatable_prefix_length (int):
+            The allocatable prefix length supported by
+            this public delegated prefix. This field is
+            optional and cannot be set for prefixes in
+            DELEGATION mode. It cannot be set for IPv4
+            prefixes either, and it always defaults to 32.
+
+            This field is a member of `oneof`_ ``_allocatable_prefix_length``.
         byoip_api_version (str):
             [Output Only] The version of BYOIP API. Check the
             ByoipApiVersion enum for the list of possible values.
@@ -77061,6 +79093,12 @@ class PublicDelegatedPrefix(proto.Message):
             compute#publicDelegatedPrefix for public delegated prefixes.
 
             This field is a member of `oneof`_ ``_kind``.
+        mode (str):
+            The public delegated prefix mode for IPv6
+            only. Check the Mode enum for the list of
+            possible values.
+
+            This field is a member of `oneof`_ ``_mode``.
         name (str):
             Name of the resource. Provided by the client when the
             resource is created. The name must be 1-63 characters long,
@@ -77127,6 +79165,26 @@ class PublicDelegatedPrefix(proto.Message):
         V1 = 2715
         V2 = 2716
 
+    class Mode(proto.Enum):
+        r"""The public delegated prefix mode for IPv6 only.
+
+        Values:
+            UNDEFINED_MODE (0):
+                A value indicating that the enum field is not
+                set.
+            DELEGATION (264149288):
+                The public delegated prefix is used for
+                further sub-delegation only. Such prefixes
+                cannot set allocatablePrefixLength.
+            EXTERNAL_IPV6_FORWARDING_RULE_CREATION (398684356):
+                The public delegated prefix is used for
+                creating forwarding rules only. Such prefixes
+                cannot set publicDelegatedSubPrefixes.
+        """
+        UNDEFINED_MODE = 0
+        DELEGATION = 264149288
+        EXTERNAL_IPV6_FORWARDING_RULE_CREATION = 398684356
+
     class Status(proto.Enum):
         r"""[Output Only] The status of the public delegated prefix, which can
         be one of following values: - ``INITIALIZING`` The public delegated
@@ -77166,6 +79224,11 @@ class PublicDelegatedPrefix(proto.Message):
         INITIALIZING = 306588749
         READY_TO_ANNOUNCE = 64641265
 
+    allocatable_prefix_length: int = proto.Field(
+        proto.INT32,
+        number=38427446,
+        optional=True,
+    )
     byoip_api_version: str = proto.Field(
         proto.STRING,
         number=162683283,
@@ -77204,6 +79267,11 @@ class PublicDelegatedPrefix(proto.Message):
     kind: str = proto.Field(
         proto.STRING,
         number=3292052,
+        optional=True,
+    )
+    mode: str = proto.Field(
+        proto.STRING,
+        number=3357091,
         optional=True,
     )
     name: str = proto.Field(
@@ -77404,6 +79472,11 @@ class PublicDelegatedPrefixPublicDelegatedSubPrefix(proto.Message):
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
+        allocatable_prefix_length (int):
+            The allocatable prefix length supported by
+            this PublicDelegatedSubPrefix.
+
+            This field is a member of `oneof`_ ``_allocatable_prefix_length``.
         delegatee_project (str):
             Name of the project scoping this
             PublicDelegatedSubPrefix.
@@ -77425,6 +79498,12 @@ class PublicDelegatedPrefixPublicDelegatedSubPrefix(proto.Message):
             Address resources in the delegatee project.
 
             This field is a member of `oneof`_ ``_is_address``.
+        mode (str):
+            The PublicDelegatedSubPrefix mode for IPv6
+            only. Check the Mode enum for the list of
+            possible values.
+
+            This field is a member of `oneof`_ ``_mode``.
         name (str):
             The name of the sub public delegated prefix.
 
@@ -77440,6 +79519,26 @@ class PublicDelegatedPrefixPublicDelegatedSubPrefix(proto.Message):
 
             This field is a member of `oneof`_ ``_status``.
     """
+
+    class Mode(proto.Enum):
+        r"""The PublicDelegatedSubPrefix mode for IPv6 only.
+
+        Values:
+            UNDEFINED_MODE (0):
+                A value indicating that the enum field is not
+                set.
+            DELEGATION (264149288):
+                The public delegated prefix is used for
+                further sub-delegation only. Such prefixes
+                cannot set allocatablePrefixLength.
+            EXTERNAL_IPV6_FORWARDING_RULE_CREATION (398684356):
+                The public delegated prefix is used for
+                creating forwarding rules only. Such prefixes
+                cannot set publicDelegatedSubPrefixes.
+        """
+        UNDEFINED_MODE = 0
+        DELEGATION = 264149288
+        EXTERNAL_IPV6_FORWARDING_RULE_CREATION = 398684356
 
     class Status(proto.Enum):
         r"""[Output Only] The status of the sub public delegated prefix.
@@ -77457,6 +79556,11 @@ class PublicDelegatedPrefixPublicDelegatedSubPrefix(proto.Message):
         ACTIVE = 314733318
         INACTIVE = 270421099
 
+    allocatable_prefix_length: int = proto.Field(
+        proto.INT32,
+        number=38427446,
+        optional=True,
+    )
     delegatee_project: str = proto.Field(
         proto.STRING,
         number=414860634,
@@ -77475,6 +79579,11 @@ class PublicDelegatedPrefixPublicDelegatedSubPrefix(proto.Message):
     is_address: bool = proto.Field(
         proto.BOOL,
         number=352617951,
+        optional=True,
+    )
+    mode: str = proto.Field(
+        proto.STRING,
+        number=3357091,
         optional=True,
     )
     name: str = proto.Field(
@@ -77660,6 +79769,12 @@ class Quota(proto.Message):
                 No description available.
             GPUS_ALL_REGIONS (39387177):
                 No description available.
+            HDB_TOTAL_GB (319316271):
+                No description available.
+            HDB_TOTAL_IOPS (309720317):
+                No description available.
+            HDB_TOTAL_THROUGHPUT (20981374):
+                No description available.
             HEALTH_CHECKS (289347502):
                 No description available.
             IMAGES (15562360):
@@ -77806,6 +79921,8 @@ class Quota(proto.Message):
                 No description available.
             REGIONAL_INTERNAL_MANAGED_BACKEND_SERVICES (96282539):
                 No description available.
+            REGIONAL_INTERNAL_TRAFFIC_DIRECTOR_BACKEND_SERVICES (483162968):
+                No description available.
             RESERVATIONS (32644647):
                 No description available.
             RESOURCE_POLICIES (83955297):
@@ -77834,6 +79951,8 @@ class Quota(proto.Message):
             SSD_TOTAL_GB (161732561):
                 No description available.
             SSL_CERTIFICATES (378372399):
+                No description available.
+            SSL_POLICIES (523254339):
                 No description available.
             STATIC_ADDRESSES (93624049):
                 No description available.
@@ -77868,6 +79987,8 @@ class Quota(proto.Message):
             TPU_PODSLICE_V4 (214467530):
                 No description available.
             URL_MAPS (378660743):
+                No description available.
+            VARIABLE_IPV6_PUBLIC_DELEGATED_PREFIXES (128400161):
                 No description available.
             VPN_GATEWAYS (35620282):
                 No description available.
@@ -77928,6 +80049,9 @@ class Quota(proto.Message):
         GLOBAL_INTERNAL_MANAGED_BACKEND_SERVICES = 256608303
         GLOBAL_INTERNAL_TRAFFIC_DIRECTOR_BACKEND_SERVICES = 323514196
         GPUS_ALL_REGIONS = 39387177
+        HDB_TOTAL_GB = 319316271
+        HDB_TOTAL_IOPS = 309720317
+        HDB_TOTAL_THROUGHPUT = 20981374
         HEALTH_CHECKS = 289347502
         IMAGES = 15562360
         INSTANCES = 131337822
@@ -78001,6 +80125,7 @@ class Quota(proto.Message):
         REGIONAL_INSTANCE_GROUP_MANAGERS = 37543696
         REGIONAL_INTERNAL_LB_BACKEND_SERVICES = 137983760
         REGIONAL_INTERNAL_MANAGED_BACKEND_SERVICES = 96282539
+        REGIONAL_INTERNAL_TRAFFIC_DIRECTOR_BACKEND_SERVICES = 483162968
         RESERVATIONS = 32644647
         RESOURCE_POLICIES = 83955297
         ROUTERS = 493018666
@@ -78015,6 +80140,7 @@ class Quota(proto.Message):
         SNAPSHOTS = 343405327
         SSD_TOTAL_GB = 161732561
         SSL_CERTIFICATES = 378372399
+        SSL_POLICIES = 523254339
         STATIC_ADDRESSES = 93624049
         STATIC_BYOIP_ADDRESSES = 275809649
         STATIC_EXTERNAL_IPV6_ADDRESS_RANGES = 472346774
@@ -78032,6 +80158,7 @@ class Quota(proto.Message):
         TPU_LITE_PODSLICE_V5 = 12708294
         TPU_PODSLICE_V4 = 214467530
         URL_MAPS = 378660743
+        VARIABLE_IPV6_PUBLIC_DELEGATED_PREFIXES = 128400161
         VPN_GATEWAYS = 35620282
         VPN_TUNNELS = 104327296
         XPN_SERVICE_PROJECTS = 95191981
@@ -78141,6 +80268,177 @@ class QuotaExceededInfo(proto.Message):
     rollout_status: str = proto.Field(
         proto.STRING,
         number=476426816,
+        optional=True,
+    )
+
+
+class QuotaStatusWarning(proto.Message):
+    r"""[Output Only] Warning of fetching the ``quotas`` field for this
+    region. This field is populated only if fetching of the ``quotas``
+    field fails.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        code (str):
+            [Output Only] A warning code, if applicable. For example,
+            Compute Engine returns NO_RESULTS_ON_PAGE if there are no
+            results in the response. Check the Code enum for the list of
+            possible values.
+
+            This field is a member of `oneof`_ ``_code``.
+        data (MutableSequence[google.cloud.compute_v1.types.Data]):
+            [Output Only] Metadata about this warning in key: value
+            format. For example: "data": [ { "key": "scope", "value":
+            "zones/us-east1-d" }
+        message (str):
+            [Output Only] A human-readable description of the warning
+            code.
+
+            This field is a member of `oneof`_ ``_message``.
+    """
+
+    class Code(proto.Enum):
+        r"""[Output Only] A warning code, if applicable. For example, Compute
+        Engine returns NO_RESULTS_ON_PAGE if there are no results in the
+        response.
+
+        Values:
+            UNDEFINED_CODE (0):
+                A value indicating that the enum field is not
+                set.
+            CLEANUP_FAILED (150308440):
+                Warning about failed cleanup of transient
+                changes made by a failed operation.
+            DEPRECATED_RESOURCE_USED (391835586):
+                A link to a deprecated resource was created.
+            DEPRECATED_TYPE_USED (346526230):
+                When deploying and at least one of the
+                resources has a type marked as deprecated
+            DISK_SIZE_LARGER_THAN_IMAGE_SIZE (369442967):
+                The user created a boot disk that is larger
+                than image size.
+            EXPERIMENTAL_TYPE_USED (451954443):
+                When deploying and at least one of the
+                resources has a type marked as experimental
+            EXTERNAL_API_WARNING (175546307):
+                Warning that is present in an external api
+                call
+            FIELD_VALUE_OVERRIDEN (329669423):
+                Warning that value of a field has been
+                overridden. Deprecated unused field.
+            INJECTED_KERNELS_DEPRECATED (417377419):
+                The operation involved use of an injected
+                kernel, which is deprecated.
+            INVALID_HEALTH_CHECK_FOR_DYNAMIC_WIEGHTED_LB (401542606):
+                A WEIGHTED_MAGLEV backend service is associated with a
+                health check that is not of type HTTP/HTTPS/HTTP2.
+            LARGE_DEPLOYMENT_WARNING (481440678):
+                When deploying a deployment with a
+                exceedingly large number of resources
+            LIST_OVERHEAD_QUOTA_EXCEED (47618117):
+                Resource can't be retrieved due to list
+                overhead quota exceed which captures the amount
+                of resources filtered out by user-defined list
+                filter.
+            MISSING_TYPE_DEPENDENCY (344505463):
+                A resource depends on a missing type
+            NEXT_HOP_ADDRESS_NOT_ASSIGNED (324964999):
+                The route's nextHopIp address is not assigned
+                to an instance on the network.
+            NEXT_HOP_CANNOT_IP_FORWARD (383382887):
+                The route's next hop instance cannot ip
+                forward.
+            NEXT_HOP_INSTANCE_HAS_NO_IPV6_INTERFACE (146748434):
+                The route's nextHopInstance URL refers to an
+                instance that does not have an ipv6 interface on
+                the same network as the route.
+            NEXT_HOP_INSTANCE_NOT_FOUND (464250446):
+                The route's nextHopInstance URL refers to an
+                instance that does not exist.
+            NEXT_HOP_INSTANCE_NOT_ON_NETWORK (243758146):
+                The route's nextHopInstance URL refers to an
+                instance that is not on the same network as the
+                route.
+            NEXT_HOP_NOT_RUNNING (417081265):
+                The route's next hop instance does not have a
+                status of RUNNING.
+            NOT_CRITICAL_ERROR (105763924):
+                Error which is not critical. We decided to
+                continue the process despite the mentioned
+                error.
+            NO_RESULTS_ON_PAGE (30036744):
+                No results are present on a particular list
+                page.
+            PARTIAL_SUCCESS (39966469):
+                Success is reported, but some results may be
+                missing due to errors
+            REQUIRED_TOS_AGREEMENT (3745539):
+                The user attempted to use a resource that
+                requires a TOS they have not accepted.
+            RESOURCE_IN_USE_BY_OTHER_RESOURCE_WARNING (496728641):
+                Warning that a resource is in use.
+            RESOURCE_NOT_DELETED (168598460):
+                One or more of the resources set to
+                auto-delete could not be deleted because they
+                were in use.
+            SCHEMA_VALIDATION_IGNORED (275245642):
+                When a resource schema validation is ignored.
+            SINGLE_INSTANCE_PROPERTY_TEMPLATE (268305617):
+                Instance template used in instance group
+                manager is valid as such, but its application
+                does not make a lot of sense, because it allows
+                only single instance in instance group.
+            UNDECLARED_PROPERTIES (390513439):
+                When undeclared properties in the schema are
+                present
+            UNREACHABLE (13328052):
+                A given scope cannot be reached.
+        """
+        UNDEFINED_CODE = 0
+        CLEANUP_FAILED = 150308440
+        DEPRECATED_RESOURCE_USED = 391835586
+        DEPRECATED_TYPE_USED = 346526230
+        DISK_SIZE_LARGER_THAN_IMAGE_SIZE = 369442967
+        EXPERIMENTAL_TYPE_USED = 451954443
+        EXTERNAL_API_WARNING = 175546307
+        FIELD_VALUE_OVERRIDEN = 329669423
+        INJECTED_KERNELS_DEPRECATED = 417377419
+        INVALID_HEALTH_CHECK_FOR_DYNAMIC_WIEGHTED_LB = 401542606
+        LARGE_DEPLOYMENT_WARNING = 481440678
+        LIST_OVERHEAD_QUOTA_EXCEED = 47618117
+        MISSING_TYPE_DEPENDENCY = 344505463
+        NEXT_HOP_ADDRESS_NOT_ASSIGNED = 324964999
+        NEXT_HOP_CANNOT_IP_FORWARD = 383382887
+        NEXT_HOP_INSTANCE_HAS_NO_IPV6_INTERFACE = 146748434
+        NEXT_HOP_INSTANCE_NOT_FOUND = 464250446
+        NEXT_HOP_INSTANCE_NOT_ON_NETWORK = 243758146
+        NEXT_HOP_NOT_RUNNING = 417081265
+        NOT_CRITICAL_ERROR = 105763924
+        NO_RESULTS_ON_PAGE = 30036744
+        PARTIAL_SUCCESS = 39966469
+        REQUIRED_TOS_AGREEMENT = 3745539
+        RESOURCE_IN_USE_BY_OTHER_RESOURCE_WARNING = 496728641
+        RESOURCE_NOT_DELETED = 168598460
+        SCHEMA_VALIDATION_IGNORED = 275245642
+        SINGLE_INSTANCE_PROPERTY_TEMPLATE = 268305617
+        UNDECLARED_PROPERTIES = 390513439
+        UNREACHABLE = 13328052
+
+    code: str = proto.Field(
+        proto.STRING,
+        number=3059181,
+        optional=True,
+    )
+    data: MutableSequence["Data"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3076010,
+        message="Data",
+    )
+    message: str = proto.Field(
+        proto.STRING,
+        number=418054151,
         optional=True,
     )
 
@@ -78422,6 +80720,12 @@ class Region(proto.Message):
             [Output Only] Name of the resource.
 
             This field is a member of `oneof`_ ``_name``.
+        quota_status_warning (google.cloud.compute_v1.types.QuotaStatusWarning):
+            [Output Only] Warning of fetching the ``quotas`` field for
+            this region. This field is populated only if fetching of the
+            ``quotas`` field fails.
+
+            This field is a member of `oneof`_ ``_quota_status_warning``.
         quotas (MutableSequence[google.cloud.compute_v1.types.Quota]):
             [Output Only] Quotas assigned to this region.
         self_link (str):
@@ -78488,6 +80792,12 @@ class Region(proto.Message):
         proto.STRING,
         number=3373707,
         optional=True,
+    )
+    quota_status_warning: "QuotaStatusWarning" = proto.Field(
+        proto.MESSAGE,
+        number=302941430,
+        optional=True,
+        message="QuotaStatusWarning",
     )
     quotas: MutableSequence["Quota"] = proto.RepeatedField(
         proto.MESSAGE,
@@ -79653,15 +81963,17 @@ class RegionNetworkFirewallPoliciesGetEffectiveFirewallsResponseEffectiveFirewal
             The rules that apply to the network.
         type_ (str):
             [Output Only] The type of the firewall policy. Can be one of
-            HIERARCHY, NETWORK, NETWORK_REGIONAL. Check the Type enum
-            for the list of possible values.
+            HIERARCHY, NETWORK, NETWORK_REGIONAL, SYSTEM_GLOBAL,
+            SYSTEM_REGIONAL. Check the Type enum for the list of
+            possible values.
 
             This field is a member of `oneof`_ ``_type``.
     """
 
     class Type(proto.Enum):
         r"""[Output Only] The type of the firewall policy. Can be one of
-        HIERARCHY, NETWORK, NETWORK_REGIONAL.
+        HIERARCHY, NETWORK, NETWORK_REGIONAL, SYSTEM_GLOBAL,
+        SYSTEM_REGIONAL.
 
         Values:
             UNDEFINED_TYPE (0):
@@ -81971,8 +84283,7 @@ class ResourcePolicyDiskConsistencyGroupPolicy(proto.Message):
 
 class ResourcePolicyGroupPlacementPolicy(proto.Message):
     r"""A GroupPlacementPolicy specifies resource placement
-    configuration. It specifies the failure bucket separation as
-    well as network locality
+    configuration. It specifies the failure bucket separation
 
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
@@ -83435,6 +85746,16 @@ class RouterBgp(proto.Message):
             router will have the same local ASN.
 
             This field is a member of `oneof`_ ``_asn``.
+        identifier_range (str):
+            Explicitly specifies a range of valid BGP
+            Identifiers for this Router. It is provided as a
+            link-local IPv4 range (from 169.254.0.0/16), of
+            size at least /30, even if the BGP sessions are
+            over IPv6. It must not overlap with any IPv4 BGP
+            session ranges. Other vendors commonly call this
+            "router ID".
+
+            This field is a member of `oneof`_ ``_identifier_range``.
         keepalive_interval (int):
             The interval in seconds between BGP keepalive
             messages that are sent to the peer. Hold time is
@@ -83502,6 +85823,11 @@ class RouterBgp(proto.Message):
     asn: int = proto.Field(
         proto.UINT32,
         number=96892,
+        optional=True,
+    )
+    identifier_range: str = proto.Field(
+        proto.STRING,
+        number=501573159,
         optional=True,
     )
     keepalive_interval: int = proto.Field(
@@ -83573,11 +85899,30 @@ class RouterBgpPeer(proto.Message):
             Enable enum for the list of possible values.
 
             This field is a member of `oneof`_ ``_enable``.
+        enable_ipv4 (bool):
+            Enable IPv4 traffic over BGP Peer. It is
+            enabled by default if the peerIpAddress is
+            version 4.
+
+            This field is a member of `oneof`_ ``_enable_ipv4``.
         enable_ipv6 (bool):
-            Enable IPv6 traffic over BGP Peer. If not
-            specified, it is disabled by default.
+            Enable IPv6 traffic over BGP Peer. It is
+            enabled by default if the peerIpAddress is
+            version 6.
 
             This field is a member of `oneof`_ ``_enable_ipv6``.
+        export_policies (MutableSequence[str]):
+            List of export policies applied to this peer, in the order
+            they must be evaluated. The name must correspond to an
+            existing policy that has ROUTE_POLICY_TYPE_EXPORT type. Note
+            that Route Policies are currently available in preview.
+            Please use Beta API to use Route Policies.
+        import_policies (MutableSequence[str]):
+            List of import policies applied to this peer, in the order
+            they must be evaluated. The name must correspond to an
+            existing policy that has ROUTE_POLICY_TYPE_IMPORT type. Note
+            that Route Policies are currently available in preview.
+            Please use Beta API to use Route Policies.
         interface_name (str):
             Name of the interface the BGP peer is
             associated with.
@@ -83585,9 +85930,14 @@ class RouterBgpPeer(proto.Message):
             This field is a member of `oneof`_ ``_interface_name``.
         ip_address (str):
             IP address of the interface inside Google
-            Cloud Platform. Only IPv4 is supported.
+            Cloud Platform.
 
             This field is a member of `oneof`_ ``_ip_address``.
+        ipv4_nexthop_address (str):
+            IPv4 address of the interface inside Google
+            Cloud Platform.
+
+            This field is a member of `oneof`_ ``_ipv4_nexthop_address``.
         ipv6_nexthop_address (str):
             IPv6 address of the interface inside Google
             Cloud Platform.
@@ -83630,9 +85980,14 @@ class RouterBgpPeer(proto.Message):
             This field is a member of `oneof`_ ``_peer_asn``.
         peer_ip_address (str):
             IP address of the BGP interface outside
-            Google Cloud Platform. Only IPv4 is supported.
+            Google Cloud Platform.
 
             This field is a member of `oneof`_ ``_peer_ip_address``.
+        peer_ipv4_nexthop_address (str):
+            IPv4 address of the BGP interface outside
+            Google Cloud Platform.
+
+            This field is a member of `oneof`_ ``_peer_ipv4_nexthop_address``.
         peer_ipv6_nexthop_address (str):
             IPv6 address of the BGP interface outside
             Google Cloud Platform.
@@ -83777,10 +86132,23 @@ class RouterBgpPeer(proto.Message):
         number=311764355,
         optional=True,
     )
+    enable_ipv4: bool = proto.Field(
+        proto.BOOL,
+        number=181467937,
+        optional=True,
+    )
     enable_ipv6: bool = proto.Field(
         proto.BOOL,
         number=181467939,
         optional=True,
+    )
+    export_policies: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=134084987,
+    )
+    import_policies: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=451147946,
     )
     interface_name: str = proto.Field(
         proto.STRING,
@@ -83790,6 +86158,11 @@ class RouterBgpPeer(proto.Message):
     ip_address: str = proto.Field(
         proto.STRING,
         number=406272220,
+        optional=True,
+    )
+    ipv4_nexthop_address: str = proto.Field(
+        proto.STRING,
+        number=5703377,
         optional=True,
     )
     ipv6_nexthop_address: str = proto.Field(
@@ -83820,6 +86193,11 @@ class RouterBgpPeer(proto.Message):
     peer_ip_address: str = proto.Field(
         proto.STRING,
         number=207735769,
+        optional=True,
+    )
+    peer_ipv4_nexthop_address: str = proto.Field(
+        proto.STRING,
+        number=469221774,
         optional=True,
     )
     peer_ipv6_nexthop_address: str = proto.Field(
@@ -83957,15 +86335,29 @@ class RouterInterface(proto.Message):
 
     Attributes:
         ip_range (str):
-            IP address and range of the interface. The IP
-            range must be in the RFC3927 link-local IP
-            address space. The value must be a
-            CIDR-formatted string, for example:
-            169.254.0.1/30. NOTE: Do not truncate the
-            address as it represents the IP address of the
-            interface.
+            IP address and range of the interface. - For
+            Internet Protocol version 4 (IPv4), the IP range
+            must be in the RFC3927 link-local IP address
+            space. The value must be a CIDR-formatted
+            string, for example, 169.254.0.1/30. Note: Do
+            not truncate the IP address, as it represents
+            the IP address of the interface. - For Internet
+            Protocol version 6 (IPv6), the value must be a
+            unique local address (ULA) range from
+            fdff:1::/64 with a mask length of 126 or less.
+            This value should be a CIDR-formatted string,
+            for example, fc00:0:1:1::1/112. Within the
+            router's VPC, this IPv6 prefix will be reserved
+            exclusively for this connection and cannot be
+            used for any other purpose.
 
             This field is a member of `oneof`_ ``_ip_range``.
+        ip_version (str):
+            IP version of this interface.
+            Check the IpVersion enum for the list of
+            possible values.
+
+            This field is a member of `oneof`_ ``_ip_version``.
         linked_interconnect_attachment (str):
             URI of the linked Interconnect attachment. It
             must be in the same region as the router. Each
@@ -84041,6 +86433,22 @@ class RouterInterface(proto.Message):
             This field is a member of `oneof`_ ``_subnetwork``.
     """
 
+    class IpVersion(proto.Enum):
+        r"""IP version of this interface.
+
+        Values:
+            UNDEFINED_IP_VERSION (0):
+                A value indicating that the enum field is not
+                set.
+            IPV4 (2254341):
+                No description available.
+            IPV6 (2254343):
+                No description available.
+        """
+        UNDEFINED_IP_VERSION = 0
+        IPV4 = 2254341
+        IPV6 = 2254343
+
     class ManagementType(proto.Enum):
         r"""[Output Only] The resource that configures and manages this
         interface. - MANAGED_BY_USER is the default value and can be managed
@@ -84073,6 +86481,11 @@ class RouterInterface(proto.Message):
     ip_range: str = proto.Field(
         proto.STRING,
         number=145092645,
+        optional=True,
+    )
+    ip_version: str = proto.Field(
+        proto.STRING,
+        number=294959552,
         optional=True,
     )
     linked_interconnect_attachment: str = proto.Field(
@@ -84887,15 +87300,26 @@ class RouterStatusBgpPeerStatus(proto.Message):
         bfd_status (google.cloud.compute_v1.types.BfdStatus):
 
             This field is a member of `oneof`_ ``_bfd_status``.
+        enable_ipv4 (bool):
+            Enable IPv4 traffic over BGP Peer. It is
+            enabled by default if the peerIpAddress is
+            version 4.
+
+            This field is a member of `oneof`_ ``_enable_ipv4``.
         enable_ipv6 (bool):
-            Enable IPv6 traffic over BGP Peer. If not
-            specified, it is disabled by default.
+            Enable IPv6 traffic over BGP Peer. It is
+            enabled by default if the peerIpAddress is
+            version 6.
 
             This field is a member of `oneof`_ ``_enable_ipv6``.
         ip_address (str):
             IP address of the local BGP interface.
 
             This field is a member of `oneof`_ ``_ip_address``.
+        ipv4_nexthop_address (str):
+            IPv4 address of the local BGP interface.
+
+            This field is a member of `oneof`_ ``_ipv4_nexthop_address``.
         ipv6_nexthop_address (str):
             IPv6 address of the local BGP interface.
 
@@ -84924,6 +87348,10 @@ class RouterStatusBgpPeerStatus(proto.Message):
             IP address of the remote BGP interface.
 
             This field is a member of `oneof`_ ``_peer_ip_address``.
+        peer_ipv4_nexthop_address (str):
+            IPv4 address of the remote BGP interface.
+
+            This field is a member of `oneof`_ ``_peer_ipv4_nexthop_address``.
         peer_ipv6_nexthop_address (str):
             IPv6 address of the remote BGP interface.
 
@@ -84992,6 +87420,12 @@ class RouterStatusBgpPeerStatus(proto.Message):
             UNDEFINED_STATUS_REASON (0):
                 A value indicating that the enum field is not
                 set.
+            IPV4_PEER_ON_IPV6_ONLY_CONNECTION (435936662):
+                BGP peer disabled because it requires IPv4
+                but the underlying connection is IPv6-only.
+            IPV6_PEER_ON_IPV4_ONLY_CONNECTION (436304082):
+                BGP peer disabled because it requires IPv6
+                but the underlying connection is IPv4-only.
             MD5_AUTH_INTERNAL_PROBLEM (140462259):
                 Indicates internal problems with
                 configuration of MD5 authentication. This
@@ -85001,6 +87435,8 @@ class RouterStatusBgpPeerStatus(proto.Message):
                 No description available.
         """
         UNDEFINED_STATUS_REASON = 0
+        IPV4_PEER_ON_IPV6_ONLY_CONNECTION = 435936662
+        IPV6_PEER_ON_IPV4_ONLY_CONNECTION = 436304082
         MD5_AUTH_INTERNAL_PROBLEM = 140462259
         STATUS_REASON_UNSPECIFIED = 394331913
 
@@ -85015,6 +87451,11 @@ class RouterStatusBgpPeerStatus(proto.Message):
         optional=True,
         message="BfdStatus",
     )
+    enable_ipv4: bool = proto.Field(
+        proto.BOOL,
+        number=181467937,
+        optional=True,
+    )
     enable_ipv6: bool = proto.Field(
         proto.BOOL,
         number=181467939,
@@ -85023,6 +87464,11 @@ class RouterStatusBgpPeerStatus(proto.Message):
     ip_address: str = proto.Field(
         proto.STRING,
         number=406272220,
+        optional=True,
+    )
+    ipv4_nexthop_address: str = proto.Field(
+        proto.STRING,
+        number=5703377,
         optional=True,
     )
     ipv6_nexthop_address: str = proto.Field(
@@ -85053,6 +87499,11 @@ class RouterStatusBgpPeerStatus(proto.Message):
     peer_ip_address: str = proto.Field(
         proto.STRING,
         number=207735769,
+        optional=True,
+    )
+    peer_ipv4_nexthop_address: str = proto.Field(
+        proto.STRING,
+        number=469221774,
         optional=True,
     )
     peer_ipv6_nexthop_address: str = proto.Field(
@@ -88541,12 +90992,25 @@ class ServiceAttachment(proto.Message):
 
             This field is a member of `oneof`_ ``_connection_preference``.
         consumer_accept_lists (MutableSequence[google.cloud.compute_v1.types.ServiceAttachmentConsumerProjectLimit]):
-            Projects that are allowed to connect to this
-            service attachment.
+            Specifies which consumer projects or networks
+            are allowed to connect to the service
+            attachment. Each project or network has a
+            connection limit. A given service attachment can
+            manage connections at either the project or
+            network level. Therefore, both the accept and
+            reject lists for a given service attachment must
+            contain either only projects or only networks.
         consumer_reject_lists (MutableSequence[str]):
-            Projects that are not allowed to connect to
-            this service attachment. The project can be
-            specified using its id or number.
+            Specifies a list of projects or networks that
+            are not allowed to connect to this service
+            attachment. The project can be specified using
+            its project ID or project number and the network
+            can be specified using its URL. A given service
+            attachment can manage connections at either the
+            project or network level. Therefore, both the
+            reject and accept lists for a given service
+            attachment must contain either only projects or
+            only networks.
         creation_timestamp (str):
             [Output Only] Creation timestamp in RFC3339 text format.
 
@@ -90543,6 +93007,40 @@ class SetIamPolicySnapshotRequest(proto.Message):
     resource: str = proto.Field(
         proto.STRING,
         number=195806222,
+    )
+
+
+class SetIamPolicyStoragePoolRequest(proto.Message):
+    r"""A request message for StoragePools.SetIamPolicy. See the
+    method description for details.
+
+    Attributes:
+        project (str):
+            Project ID for this request.
+        resource (str):
+            Name or id of the resource for this request.
+        zone (str):
+            The name of the zone for this request.
+        zone_set_policy_request_resource (google.cloud.compute_v1.types.ZoneSetPolicyRequest):
+            The body resource for this request
+    """
+
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    resource: str = proto.Field(
+        proto.STRING,
+        number=195806222,
+    )
+    zone: str = proto.Field(
+        proto.STRING,
+        number=3744684,
+    )
+    zone_set_policy_request_resource: "ZoneSetPolicyRequest" = proto.Field(
+        proto.MESSAGE,
+        number=382082107,
+        message="ZoneSetPolicyRequest",
     )
 
 
@@ -94606,8 +97104,9 @@ class SnapshotSettingsStorageLocationSettings(proto.Message):
     Attributes:
         locations (MutableMapping[str, google.cloud.compute_v1.types.SnapshotSettingsStorageLocationSettingsStorageLocationPreference]):
             When the policy is SPECIFIC_LOCATIONS, snapshots will be
-            stored in the locations listed in this field. Keys are GCS
-            bucket locations.
+            stored in the locations listed in this field. Keys are Cloud
+            Storage bucket locations. Only one location can be
+            specified.
         policy (str):
             The chosen location policy.
             Check the Policy enum for the list of possible
@@ -94628,9 +97127,10 @@ class SnapshotSettingsStorageLocationSettings(proto.Message):
                 originating disk. No additional parameters are
                 needed.
             NEAREST_MULTI_REGION (212467515):
-                Store snapshot to the nearest multi region
-                GCS bucket, relative to the originating disk. No
-                additional parameters are needed.
+                Store snapshot in the nearest multi region
+                Cloud Storage bucket, relative to the
+                originating disk. No additional parameters are
+                needed.
             SPECIFIC_LOCATIONS (280093809):
                 Store snapshot in the specific locations, as specified by
                 the user. The list of regions to store must be defined under
@@ -94667,7 +97167,8 @@ class SnapshotSettingsStorageLocationSettingsStorageLocationPreference(proto.Mes
     Attributes:
         name (str):
             Name of the location. It should be one of the
-            GCS buckets.
+            Cloud Storage buckets. Only one location can be
+            specified.
 
             This field is a member of `oneof`_ ``_name``.
     """
@@ -96593,6 +99094,1181 @@ class StopInstanceRequest(proto.Message):
     zone: str = proto.Field(
         proto.STRING,
         number=3744684,
+    )
+
+
+class StoragePool(proto.Message):
+    r"""Represents a zonal storage pool resource.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        capacity_provisioning_type (str):
+            Provisioning type of the byte capacity of the
+            pool. Check the CapacityProvisioningType enum
+            for the list of possible values.
+
+            This field is a member of `oneof`_ ``_capacity_provisioning_type``.
+        creation_timestamp (str):
+            [Output Only] Creation timestamp in RFC3339 text format.
+
+            This field is a member of `oneof`_ ``_creation_timestamp``.
+        description (str):
+            An optional description of this resource.
+            Provide this property when you create the
+            resource.
+
+            This field is a member of `oneof`_ ``_description``.
+        id (int):
+            [Output Only] The unique identifier for the resource. This
+            identifier is defined by the server.
+
+            This field is a member of `oneof`_ ``_id``.
+        kind (str):
+            [Output Only] Type of the resource. Always
+            compute#storagePool for storage pools.
+
+            This field is a member of `oneof`_ ``_kind``.
+        label_fingerprint (str):
+            A fingerprint for the labels being applied to
+            this storage pool, which is essentially a hash
+            of the labels set used for optimistic locking.
+            The fingerprint is initially generated by
+            Compute Engine and changes after every request
+            to modify or update labels. You must always
+            provide an up-to-date fingerprint hash in order
+            to update or change labels, otherwise the
+            request will fail with error 412
+            conditionNotMet. To see the latest fingerprint,
+            make a get() request to retrieve a storage pool.
+
+            This field is a member of `oneof`_ ``_label_fingerprint``.
+        labels (MutableMapping[str, str]):
+            Labels to apply to this storage pool. These
+            can be later modified by the setLabels method.
+        name (str):
+            Name of the resource. Provided by the client when the
+            resource is created. The name must be 1-63 characters long,
+            and comply with RFC1035. Specifically, the name must be 1-63
+            characters long and match the regular expression
+            ``[a-z]([-a-z0-9]*[a-z0-9])?`` which means the first
+            character must be a lowercase letter, and all following
+            characters must be a dash, lowercase letter, or digit,
+            except the last character, which cannot be a dash.
+
+            This field is a member of `oneof`_ ``_name``.
+        performance_provisioning_type (str):
+            Provisioning type of the performance-related
+            parameters of the pool, such as throughput and
+            IOPS. Check the PerformanceProvisioningType enum
+            for the list of possible values.
+
+            This field is a member of `oneof`_ ``_performance_provisioning_type``.
+        pool_provisioned_capacity_gb (int):
+            Size, in GiB, of the storage pool.
+
+            This field is a member of `oneof`_ ``_pool_provisioned_capacity_gb``.
+        pool_provisioned_iops (int):
+            Provisioned IOPS of the storage pool. Only
+            relevant if the storage pool type is
+            hyperdisk-balanced.
+
+            This field is a member of `oneof`_ ``_pool_provisioned_iops``.
+        pool_provisioned_throughput (int):
+            Provisioned throughput of the storage pool.
+            Only relevant if the storage pool type is
+            hyperdisk-balanced or hyperdisk-throughput.
+
+            This field is a member of `oneof`_ ``_pool_provisioned_throughput``.
+        resource_status (google.cloud.compute_v1.types.StoragePoolResourceStatus):
+            [Output Only] Status information for the storage pool
+            resource.
+
+            This field is a member of `oneof`_ ``_resource_status``.
+        self_link (str):
+            [Output Only] Server-defined fully-qualified URL for this
+            resource.
+
+            This field is a member of `oneof`_ ``_self_link``.
+        self_link_with_id (str):
+            [Output Only] Server-defined URL for this resource's
+            resource id.
+
+            This field is a member of `oneof`_ ``_self_link_with_id``.
+        state (str):
+            [Output Only] The status of storage pool creation. -
+            CREATING: Storage pool is provisioning. storagePool. -
+            FAILED: Storage pool creation failed. - READY: Storage pool
+            is ready for use. - DELETING: Storage pool is deleting.
+            Check the State enum for the list of possible values.
+
+            This field is a member of `oneof`_ ``_state``.
+        status (google.cloud.compute_v1.types.StoragePoolResourceStatus):
+            [Output Only] Status information for the storage pool
+            resource.
+
+            This field is a member of `oneof`_ ``_status``.
+        storage_pool_type (str):
+            Type of the storage pool.
+
+            This field is a member of `oneof`_ ``_storage_pool_type``.
+        zone (str):
+            [Output Only] URL of the zone where the storage pool
+            resides. You must specify this field as part of the HTTP
+            request URL. It is not settable as a field in the request
+            body.
+
+            This field is a member of `oneof`_ ``_zone``.
+    """
+
+    class CapacityProvisioningType(proto.Enum):
+        r"""Provisioning type of the byte capacity of the pool.
+        Additional supported values which may be not listed in the enum
+        directly due to technical reasons:
+
+        ADVANCED
+        STANDARD
+        UNSPECIFIED
+
+        Values:
+            UNDEFINED_CAPACITY_PROVISIONING_TYPE (0):
+                A value indicating that the enum field is not
+                set.
+        """
+        UNDEFINED_CAPACITY_PROVISIONING_TYPE = 0
+
+    class PerformanceProvisioningType(proto.Enum):
+        r"""Provisioning type of the performance-related parameters of
+        the pool, such as throughput and IOPS. Additional supported
+        values which may be not listed in the enum directly due to
+        technical reasons:
+
+        ADVANCED
+        STANDARD
+        UNSPECIFIED
+
+        Values:
+            UNDEFINED_PERFORMANCE_PROVISIONING_TYPE (0):
+                A value indicating that the enum field is not
+                set.
+        """
+        UNDEFINED_PERFORMANCE_PROVISIONING_TYPE = 0
+
+    class State(proto.Enum):
+        r"""[Output Only] The status of storage pool creation. - CREATING:
+        Storage pool is provisioning. storagePool. - FAILED: Storage pool
+        creation failed. - READY: Storage pool is ready for use. - DELETING:
+        Storage pool is deleting.
+
+        Values:
+            UNDEFINED_STATE (0):
+                A value indicating that the enum field is not
+                set.
+            CREATING (455564985):
+                StoragePool is provisioning
+            DELETING (528602024):
+                StoragePool is deleting.
+            FAILED (455706685):
+                StoragePool creation failed.
+            READY (77848963):
+                StoragePool is ready for use.
+        """
+        UNDEFINED_STATE = 0
+        CREATING = 455564985
+        DELETING = 528602024
+        FAILED = 455706685
+        READY = 77848963
+
+    capacity_provisioning_type: str = proto.Field(
+        proto.STRING,
+        number=251610375,
+        optional=True,
+    )
+    creation_timestamp: str = proto.Field(
+        proto.STRING,
+        number=30525366,
+        optional=True,
+    )
+    description: str = proto.Field(
+        proto.STRING,
+        number=422937596,
+        optional=True,
+    )
+    id: int = proto.Field(
+        proto.UINT64,
+        number=3355,
+        optional=True,
+    )
+    kind: str = proto.Field(
+        proto.STRING,
+        number=3292052,
+        optional=True,
+    )
+    label_fingerprint: str = proto.Field(
+        proto.STRING,
+        number=178124825,
+        optional=True,
+    )
+    labels: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=500195327,
+    )
+    name: str = proto.Field(
+        proto.STRING,
+        number=3373707,
+        optional=True,
+    )
+    performance_provisioning_type: str = proto.Field(
+        proto.STRING,
+        number=468553469,
+        optional=True,
+    )
+    pool_provisioned_capacity_gb: int = proto.Field(
+        proto.INT64,
+        number=478537682,
+        optional=True,
+    )
+    pool_provisioned_iops: int = proto.Field(
+        proto.INT64,
+        number=112092311,
+        optional=True,
+    )
+    pool_provisioned_throughput: int = proto.Field(
+        proto.INT64,
+        number=169215640,
+        optional=True,
+    )
+    resource_status: "StoragePoolResourceStatus" = proto.Field(
+        proto.MESSAGE,
+        number=249429315,
+        optional=True,
+        message="StoragePoolResourceStatus",
+    )
+    self_link: str = proto.Field(
+        proto.STRING,
+        number=456214797,
+        optional=True,
+    )
+    self_link_with_id: str = proto.Field(
+        proto.STRING,
+        number=44520962,
+        optional=True,
+    )
+    state: str = proto.Field(
+        proto.STRING,
+        number=109757585,
+        optional=True,
+    )
+    status: "StoragePoolResourceStatus" = proto.Field(
+        proto.MESSAGE,
+        number=181260274,
+        optional=True,
+        message="StoragePoolResourceStatus",
+    )
+    storage_pool_type: str = proto.Field(
+        proto.STRING,
+        number=285999289,
+        optional=True,
+    )
+    zone: str = proto.Field(
+        proto.STRING,
+        number=3744684,
+        optional=True,
+    )
+
+
+class StoragePoolAggregatedList(proto.Message):
+    r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        etag (str):
+
+            This field is a member of `oneof`_ ``_etag``.
+        id (str):
+            [Output Only] Unique identifier for the resource; defined by
+            the server.
+
+            This field is a member of `oneof`_ ``_id``.
+        items (MutableMapping[str, google.cloud.compute_v1.types.StoragePoolsScopedList]):
+            A list of StoragePoolsScopedList resources.
+        kind (str):
+            [Output Only] Type of resource. Always
+            compute#storagePoolAggregatedList for aggregated lists of
+            storage pools.
+
+            This field is a member of `oneof`_ ``_kind``.
+        next_page_token (str):
+            [Output Only] This token allows you to get the next page of
+            results for list requests. If the number of results is
+            larger than maxResults, use the nextPageToken as a value for
+            the query parameter pageToken in the next list request.
+            Subsequent list requests will have their own nextPageToken
+            to continue paging through the results.
+
+            This field is a member of `oneof`_ ``_next_page_token``.
+        self_link (str):
+            [Output Only] Server-defined URL for this resource.
+
+            This field is a member of `oneof`_ ``_self_link``.
+        unreachables (MutableSequence[str]):
+            [Output Only] Unreachable resources.
+        warning (google.cloud.compute_v1.types.Warning):
+            [Output Only] Informational warning message.
+
+            This field is a member of `oneof`_ ``_warning``.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    etag: str = proto.Field(
+        proto.STRING,
+        number=3123477,
+        optional=True,
+    )
+    id: str = proto.Field(
+        proto.STRING,
+        number=3355,
+        optional=True,
+    )
+    items: MutableMapping[str, "StoragePoolsScopedList"] = proto.MapField(
+        proto.STRING,
+        proto.MESSAGE,
+        number=100526016,
+        message="StoragePoolsScopedList",
+    )
+    kind: str = proto.Field(
+        proto.STRING,
+        number=3292052,
+        optional=True,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=79797525,
+        optional=True,
+    )
+    self_link: str = proto.Field(
+        proto.STRING,
+        number=456214797,
+        optional=True,
+    )
+    unreachables: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=243372063,
+    )
+    warning: "Warning" = proto.Field(
+        proto.MESSAGE,
+        number=50704284,
+        optional=True,
+        message="Warning",
+    )
+
+
+class StoragePoolDisk(proto.Message):
+    r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        attached_instances (MutableSequence[str]):
+            [Output Only] Instances this disk is attached to.
+        creation_timestamp (str):
+            [Output Only] Creation timestamp in RFC3339 text format.
+
+            This field is a member of `oneof`_ ``_creation_timestamp``.
+        disk (str):
+            [Output Only] The URL of the disk.
+
+            This field is a member of `oneof`_ ``_disk``.
+        name (str):
+            [Output Only] The name of the disk.
+
+            This field is a member of `oneof`_ ``_name``.
+        provisioned_iops (int):
+            [Output Only] The number of IOPS provisioned for the disk.
+
+            This field is a member of `oneof`_ ``_provisioned_iops``.
+        provisioned_throughput (int):
+            [Output Only] The throughput provisioned for the disk.
+
+            This field is a member of `oneof`_ ``_provisioned_throughput``.
+        resource_policies (MutableSequence[str]):
+            [Output Only] Resource policies applied to disk for
+            automatic snapshot creations.
+        size_gb (int):
+            [Output Only] The disk size, in GB.
+
+            This field is a member of `oneof`_ ``_size_gb``.
+        status (str):
+            [Output Only] The disk status. Check the Status enum for the
+            list of possible values.
+
+            This field is a member of `oneof`_ ``_status``.
+        type_ (str):
+            [Output Only] The disk type.
+
+            This field is a member of `oneof`_ ``_type``.
+        used_bytes (int):
+            [Output Only] Amount of disk space used.
+
+            This field is a member of `oneof`_ ``_used_bytes``.
+    """
+
+    class Status(proto.Enum):
+        r"""[Output Only] The disk status.
+
+        Values:
+            UNDEFINED_STATUS (0):
+                A value indicating that the enum field is not
+                set.
+            CREATING (455564985):
+                Disk is provisioning
+            DELETING (528602024):
+                Disk is deleting.
+            FAILED (455706685):
+                Disk creation failed.
+            READY (77848963):
+                Disk is ready for use.
+            RESTORING (404263851):
+                Source data is being copied into the disk.
+            UNAVAILABLE (413756464):
+                Disk is currently unavailable and cannot be
+                accessed, attached or detached.
+        """
+        UNDEFINED_STATUS = 0
+        CREATING = 455564985
+        DELETING = 528602024
+        FAILED = 455706685
+        READY = 77848963
+        RESTORING = 404263851
+        UNAVAILABLE = 413756464
+
+    attached_instances: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=65255843,
+    )
+    creation_timestamp: str = proto.Field(
+        proto.STRING,
+        number=30525366,
+        optional=True,
+    )
+    disk: str = proto.Field(
+        proto.STRING,
+        number=3083677,
+        optional=True,
+    )
+    name: str = proto.Field(
+        proto.STRING,
+        number=3373707,
+        optional=True,
+    )
+    provisioned_iops: int = proto.Field(
+        proto.INT64,
+        number=186769108,
+        optional=True,
+    )
+    provisioned_throughput: int = proto.Field(
+        proto.INT64,
+        number=526524181,
+        optional=True,
+    )
+    resource_policies: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=22220385,
+    )
+    size_gb: int = proto.Field(
+        proto.INT64,
+        number=494929369,
+        optional=True,
+    )
+    status: str = proto.Field(
+        proto.STRING,
+        number=181260274,
+        optional=True,
+    )
+    type_: str = proto.Field(
+        proto.STRING,
+        number=3575610,
+        optional=True,
+    )
+    used_bytes: int = proto.Field(
+        proto.INT64,
+        number=231640425,
+        optional=True,
+    )
+
+
+class StoragePoolList(proto.Message):
+    r"""A list of StoragePool resources.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        etag (str):
+
+            This field is a member of `oneof`_ ``_etag``.
+        id (str):
+            [Output Only] Unique identifier for the resource; defined by
+            the server.
+
+            This field is a member of `oneof`_ ``_id``.
+        items (MutableSequence[google.cloud.compute_v1.types.StoragePool]):
+            A list of StoragePool resources.
+        kind (str):
+            [Output Only] Type of resource. Always
+            compute#storagePoolList for lists of storagePools.
+
+            This field is a member of `oneof`_ ``_kind``.
+        next_page_token (str):
+            [Output Only] This token allows you to get the next page of
+            results for list requests. If the number of results is
+            larger than maxResults, use the nextPageToken as a value for
+            the query parameter pageToken in the next list request.
+            Subsequent list requests will have their own nextPageToken
+            to continue paging through the results.
+
+            This field is a member of `oneof`_ ``_next_page_token``.
+        self_link (str):
+            [Output Only] Server-defined URL for this resource.
+
+            This field is a member of `oneof`_ ``_self_link``.
+        unreachables (MutableSequence[str]):
+            [Output Only] Unreachable resources. end_interface:
+            MixerListResponseWithEtagBuilder
+        warning (google.cloud.compute_v1.types.Warning):
+            [Output Only] Informational warning message.
+
+            This field is a member of `oneof`_ ``_warning``.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    etag: str = proto.Field(
+        proto.STRING,
+        number=3123477,
+        optional=True,
+    )
+    id: str = proto.Field(
+        proto.STRING,
+        number=3355,
+        optional=True,
+    )
+    items: MutableSequence["StoragePool"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=100526016,
+        message="StoragePool",
+    )
+    kind: str = proto.Field(
+        proto.STRING,
+        number=3292052,
+        optional=True,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=79797525,
+        optional=True,
+    )
+    self_link: str = proto.Field(
+        proto.STRING,
+        number=456214797,
+        optional=True,
+    )
+    unreachables: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=243372063,
+    )
+    warning: "Warning" = proto.Field(
+        proto.MESSAGE,
+        number=50704284,
+        optional=True,
+        message="Warning",
+    )
+
+
+class StoragePoolListDisks(proto.Message):
+    r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        etag (str):
+
+            This field is a member of `oneof`_ ``_etag``.
+        id (str):
+            [Output Only] Unique identifier for the resource; defined by
+            the server.
+
+            This field is a member of `oneof`_ ``_id``.
+        items (MutableSequence[google.cloud.compute_v1.types.StoragePoolDisk]):
+            A list of StoragePoolDisk resources.
+        kind (str):
+            [Output Only] Type of resource. Always
+            compute#storagePoolListDisks for lists of disks in a
+            storagePool.
+
+            This field is a member of `oneof`_ ``_kind``.
+        next_page_token (str):
+            [Output Only] This token allows you to get the next page of
+            results for list requests. If the number of results is
+            larger than maxResults, use the nextPageToken as a value for
+            the query parameter pageToken in the next list request.
+            Subsequent list requests will have their own nextPageToken
+            to continue paging through the results.
+
+            This field is a member of `oneof`_ ``_next_page_token``.
+        self_link (str):
+            [Output Only] Server-defined URL for this resource.
+
+            This field is a member of `oneof`_ ``_self_link``.
+        unreachables (MutableSequence[str]):
+            [Output Only] Unreachable resources. end_interface:
+            MixerListResponseWithEtagBuilder
+        warning (google.cloud.compute_v1.types.Warning):
+            [Output Only] Informational warning message.
+
+            This field is a member of `oneof`_ ``_warning``.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    etag: str = proto.Field(
+        proto.STRING,
+        number=3123477,
+        optional=True,
+    )
+    id: str = proto.Field(
+        proto.STRING,
+        number=3355,
+        optional=True,
+    )
+    items: MutableSequence["StoragePoolDisk"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=100526016,
+        message="StoragePoolDisk",
+    )
+    kind: str = proto.Field(
+        proto.STRING,
+        number=3292052,
+        optional=True,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=79797525,
+        optional=True,
+    )
+    self_link: str = proto.Field(
+        proto.STRING,
+        number=456214797,
+        optional=True,
+    )
+    unreachables: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=243372063,
+    )
+    warning: "Warning" = proto.Field(
+        proto.MESSAGE,
+        number=50704284,
+        optional=True,
+        message="Warning",
+    )
+
+
+class StoragePoolResourceStatus(proto.Message):
+    r"""[Output Only] Contains output only fields.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        disk_count (int):
+            [Output Only] Number of disks used.
+
+            This field is a member of `oneof`_ ``_disk_count``.
+        last_resize_timestamp (str):
+            [Output Only] Timestamp of the last successful resize in
+            RFC3339 text format.
+
+            This field is a member of `oneof`_ ``_last_resize_timestamp``.
+        max_total_provisioned_disk_capacity_gb (int):
+            [Output Only] Maximum allowed aggregate disk size in
+            gigabytes.
+
+            This field is a member of `oneof`_ ``_max_total_provisioned_disk_capacity_gb``.
+        pool_used_capacity_bytes (int):
+            [Output Only] Space used by data stored in disks within the
+            storage pool (in bytes). This will reflect the total number
+            of bytes written to the disks in the pool, in contrast to
+            the capacity of those disks.
+
+            This field is a member of `oneof`_ ``_pool_used_capacity_bytes``.
+        pool_used_iops (int):
+            Sum of all the disks' provisioned IOPS, minus
+            some amount that is allowed per disk that is not
+            counted towards pool's IOPS capacity.
+
+            This field is a member of `oneof`_ ``_pool_used_iops``.
+        pool_used_throughput (int):
+            [Output Only] Sum of all the disks' provisioned throughput
+            in MB/s.
+
+            This field is a member of `oneof`_ ``_pool_used_throughput``.
+        pool_user_written_bytes (int):
+            [Output Only] Amount of data written into the pool, before
+            it is compacted.
+
+            This field is a member of `oneof`_ ``_pool_user_written_bytes``.
+        total_provisioned_disk_capacity_gb (int):
+            [Output Only] Sum of all the capacity provisioned in disks
+            in this storage pool. A disk's provisioned capacity is the
+            same as its total capacity.
+
+            This field is a member of `oneof`_ ``_total_provisioned_disk_capacity_gb``.
+        total_provisioned_disk_iops (int):
+            [Output Only] Sum of all the disks' provisioned IOPS.
+
+            This field is a member of `oneof`_ ``_total_provisioned_disk_iops``.
+        total_provisioned_disk_throughput (int):
+            [Output Only] Sum of all the disks' provisioned throughput
+            in MB/s, minus some amount that is allowed per disk that is
+            not counted towards pool's throughput capacity.
+
+            This field is a member of `oneof`_ ``_total_provisioned_disk_throughput``.
+    """
+
+    disk_count: int = proto.Field(
+        proto.INT64,
+        number=182933485,
+        optional=True,
+    )
+    last_resize_timestamp: str = proto.Field(
+        proto.STRING,
+        number=500825556,
+        optional=True,
+    )
+    max_total_provisioned_disk_capacity_gb: int = proto.Field(
+        proto.INT64,
+        number=165818207,
+        optional=True,
+    )
+    pool_used_capacity_bytes: int = proto.Field(
+        proto.INT64,
+        number=510407877,
+        optional=True,
+    )
+    pool_used_iops: int = proto.Field(
+        proto.INT64,
+        number=99558536,
+        optional=True,
+    )
+    pool_used_throughput: int = proto.Field(
+        proto.INT64,
+        number=206130633,
+        optional=True,
+    )
+    pool_user_written_bytes: int = proto.Field(
+        proto.INT64,
+        number=228964050,
+        optional=True,
+    )
+    total_provisioned_disk_capacity_gb: int = proto.Field(
+        proto.INT64,
+        number=520930980,
+        optional=True,
+    )
+    total_provisioned_disk_iops: int = proto.Field(
+        proto.INT64,
+        number=32812549,
+        optional=True,
+    )
+    total_provisioned_disk_throughput: int = proto.Field(
+        proto.INT64,
+        number=447677830,
+        optional=True,
+    )
+
+
+class StoragePoolType(proto.Message):
+    r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        creation_timestamp (str):
+            [Output Only] Creation timestamp in RFC3339 text format.
+
+            This field is a member of `oneof`_ ``_creation_timestamp``.
+        deprecated (google.cloud.compute_v1.types.DeprecationStatus):
+            [Output Only] The deprecation status associated with this
+            storage pool type.
+
+            This field is a member of `oneof`_ ``_deprecated``.
+        description (str):
+            [Output Only] An optional description of this resource.
+
+            This field is a member of `oneof`_ ``_description``.
+        id (int):
+            [Output Only] The unique identifier for the resource. This
+            identifier is defined by the server.
+
+            This field is a member of `oneof`_ ``_id``.
+        kind (str):
+            [Output Only] Type of the resource. Always
+            compute#storagePoolType for storage pool types.
+
+            This field is a member of `oneof`_ ``_kind``.
+        max_pool_provisioned_capacity_gb (int):
+            [Output Only] Maximum storage pool size in GB.
+
+            This field is a member of `oneof`_ ``_max_pool_provisioned_capacity_gb``.
+        max_pool_provisioned_iops (int):
+            [Output Only] Maximum provisioned IOPS.
+
+            This field is a member of `oneof`_ ``_max_pool_provisioned_iops``.
+        max_pool_provisioned_throughput (int):
+            [Output Only] Maximum provisioned throughput.
+
+            This field is a member of `oneof`_ ``_max_pool_provisioned_throughput``.
+        min_pool_provisioned_capacity_gb (int):
+            [Output Only] Minimum storage pool size in GB.
+
+            This field is a member of `oneof`_ ``_min_pool_provisioned_capacity_gb``.
+        min_pool_provisioned_iops (int):
+            [Output Only] Minimum provisioned IOPS.
+
+            This field is a member of `oneof`_ ``_min_pool_provisioned_iops``.
+        min_pool_provisioned_throughput (int):
+            [Output Only] Minimum provisioned throughput.
+
+            This field is a member of `oneof`_ ``_min_pool_provisioned_throughput``.
+        min_size_gb (int):
+            [Deprecated] This field is deprecated. Use
+            minPoolProvisionedCapacityGb instead.
+
+            This field is a member of `oneof`_ ``_min_size_gb``.
+        name (str):
+            [Output Only] Name of the resource.
+
+            This field is a member of `oneof`_ ``_name``.
+        self_link (str):
+            [Output Only] Server-defined URL for the resource.
+
+            This field is a member of `oneof`_ ``_self_link``.
+        self_link_with_id (str):
+            [Output Only] Server-defined URL for this resource with the
+            resource id.
+
+            This field is a member of `oneof`_ ``_self_link_with_id``.
+        supported_disk_types (MutableSequence[str]):
+            [Output Only] The list of disk types supported in this
+            storage pool type.
+        zone (str):
+            [Output Only] URL of the zone where the storage pool type
+            resides. You must specify this field as part of the HTTP
+            request URL. It is not settable as a field in the request
+            body.
+
+            This field is a member of `oneof`_ ``_zone``.
+    """
+
+    creation_timestamp: str = proto.Field(
+        proto.STRING,
+        number=30525366,
+        optional=True,
+    )
+    deprecated: "DeprecationStatus" = proto.Field(
+        proto.MESSAGE,
+        number=515138995,
+        optional=True,
+        message="DeprecationStatus",
+    )
+    description: str = proto.Field(
+        proto.STRING,
+        number=422937596,
+        optional=True,
+    )
+    id: int = proto.Field(
+        proto.UINT64,
+        number=3355,
+        optional=True,
+    )
+    kind: str = proto.Field(
+        proto.STRING,
+        number=3292052,
+        optional=True,
+    )
+    max_pool_provisioned_capacity_gb: int = proto.Field(
+        proto.INT64,
+        number=182139085,
+        optional=True,
+    )
+    max_pool_provisioned_iops: int = proto.Field(
+        proto.INT64,
+        number=515270652,
+        optional=True,
+    )
+    max_pool_provisioned_throughput: int = proto.Field(
+        proto.INT64,
+        number=228928061,
+        optional=True,
+    )
+    min_pool_provisioned_capacity_gb: int = proto.Field(
+        proto.INT64,
+        number=191022751,
+        optional=True,
+    )
+    min_pool_provisioned_iops: int = proto.Field(
+        proto.INT64,
+        number=416473706,
+        optional=True,
+    )
+    min_pool_provisioned_throughput: int = proto.Field(
+        proto.INT64,
+        number=367761963,
+        optional=True,
+    )
+    min_size_gb: int = proto.Field(
+        proto.INT64,
+        number=385278188,
+        optional=True,
+    )
+    name: str = proto.Field(
+        proto.STRING,
+        number=3373707,
+        optional=True,
+    )
+    self_link: str = proto.Field(
+        proto.STRING,
+        number=456214797,
+        optional=True,
+    )
+    self_link_with_id: str = proto.Field(
+        proto.STRING,
+        number=44520962,
+        optional=True,
+    )
+    supported_disk_types: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=150587272,
+    )
+    zone: str = proto.Field(
+        proto.STRING,
+        number=3744684,
+        optional=True,
+    )
+
+
+class StoragePoolTypeAggregatedList(proto.Message):
+    r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        id (str):
+            [Output Only] Unique identifier for the resource; defined by
+            the server.
+
+            This field is a member of `oneof`_ ``_id``.
+        items (MutableMapping[str, google.cloud.compute_v1.types.StoragePoolTypesScopedList]):
+            A list of StoragePoolTypesScopedList
+            resources.
+        kind (str):
+            [Output Only] Type of resource. Always
+            compute#storagePoolTypeAggregatedList .
+
+            This field is a member of `oneof`_ ``_kind``.
+        next_page_token (str):
+            [Output Only] This token allows you to get the next page of
+            results for list requests. If the number of results is
+            larger than maxResults, use the nextPageToken as a value for
+            the query parameter pageToken in the next list request.
+            Subsequent list requests will have their own nextPageToken
+            to continue paging through the results.
+
+            This field is a member of `oneof`_ ``_next_page_token``.
+        self_link (str):
+            [Output Only] Server-defined URL for this resource.
+
+            This field is a member of `oneof`_ ``_self_link``.
+        warning (google.cloud.compute_v1.types.Warning):
+            [Output Only] Informational warning message.
+
+            This field is a member of `oneof`_ ``_warning``.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    id: str = proto.Field(
+        proto.STRING,
+        number=3355,
+        optional=True,
+    )
+    items: MutableMapping[str, "StoragePoolTypesScopedList"] = proto.MapField(
+        proto.STRING,
+        proto.MESSAGE,
+        number=100526016,
+        message="StoragePoolTypesScopedList",
+    )
+    kind: str = proto.Field(
+        proto.STRING,
+        number=3292052,
+        optional=True,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=79797525,
+        optional=True,
+    )
+    self_link: str = proto.Field(
+        proto.STRING,
+        number=456214797,
+        optional=True,
+    )
+    warning: "Warning" = proto.Field(
+        proto.MESSAGE,
+        number=50704284,
+        optional=True,
+        message="Warning",
+    )
+
+
+class StoragePoolTypeList(proto.Message):
+    r"""Contains a list of storage pool types.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        id (str):
+            [Output Only] Unique identifier for the resource; defined by
+            the server.
+
+            This field is a member of `oneof`_ ``_id``.
+        items (MutableSequence[google.cloud.compute_v1.types.StoragePoolType]):
+            A list of StoragePoolType resources.
+        kind (str):
+            [Output Only] Type of resource. Always
+            compute#storagePoolTypeList for storage pool types.
+
+            This field is a member of `oneof`_ ``_kind``.
+        next_page_token (str):
+            [Output Only] This token allows you to get the next page of
+            results for list requests. If the number of results is
+            larger than maxResults, use the nextPageToken as a value for
+            the query parameter pageToken in the next list request.
+            Subsequent list requests will have their own nextPageToken
+            to continue paging through the results.
+
+            This field is a member of `oneof`_ ``_next_page_token``.
+        self_link (str):
+            [Output Only] Server-defined URL for this resource.
+
+            This field is a member of `oneof`_ ``_self_link``.
+        warning (google.cloud.compute_v1.types.Warning):
+            [Output Only] Informational warning message.
+
+            This field is a member of `oneof`_ ``_warning``.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    id: str = proto.Field(
+        proto.STRING,
+        number=3355,
+        optional=True,
+    )
+    items: MutableSequence["StoragePoolType"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=100526016,
+        message="StoragePoolType",
+    )
+    kind: str = proto.Field(
+        proto.STRING,
+        number=3292052,
+        optional=True,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=79797525,
+        optional=True,
+    )
+    self_link: str = proto.Field(
+        proto.STRING,
+        number=456214797,
+        optional=True,
+    )
+    warning: "Warning" = proto.Field(
+        proto.MESSAGE,
+        number=50704284,
+        optional=True,
+        message="Warning",
+    )
+
+
+class StoragePoolTypesScopedList(proto.Message):
+    r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        storage_pool_types (MutableSequence[google.cloud.compute_v1.types.StoragePoolType]):
+            [Output Only] A list of storage pool types contained in this
+            scope.
+        warning (google.cloud.compute_v1.types.Warning):
+            [Output Only] Informational warning which replaces the list
+            of storage pool types when the list is empty.
+
+            This field is a member of `oneof`_ ``_warning``.
+    """
+
+    storage_pool_types: MutableSequence["StoragePoolType"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=276043482,
+        message="StoragePoolType",
+    )
+    warning: "Warning" = proto.Field(
+        proto.MESSAGE,
+        number=50704284,
+        optional=True,
+        message="Warning",
+    )
+
+
+class StoragePoolsScopedList(proto.Message):
+    r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        storage_pools (MutableSequence[google.cloud.compute_v1.types.StoragePool]):
+            [Output Only] A list of storage pool contained in this
+            scope.
+        warning (google.cloud.compute_v1.types.Warning):
+            [Output Only] Informational warning which replaces the list
+            of storage pool when the list is empty.
+
+            This field is a member of `oneof`_ ``_warning``.
+    """
+
+    storage_pools: MutableSequence["StoragePool"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=437258515,
+        message="StoragePool",
+    )
+    warning: "Warning" = proto.Field(
+        proto.MESSAGE,
+        number=50704284,
+        optional=True,
+        message="Warning",
     )
 
 
@@ -101890,6 +105566,40 @@ class TestIamPermissionsSnapshotRequest(proto.Message):
     )
 
 
+class TestIamPermissionsStoragePoolRequest(proto.Message):
+    r"""A request message for StoragePools.TestIamPermissions. See
+    the method description for details.
+
+    Attributes:
+        project (str):
+            Project ID for this request.
+        resource (str):
+            Name or id of the resource for this request.
+        test_permissions_request_resource (google.cloud.compute_v1.types.TestPermissionsRequest):
+            The body resource for this request
+        zone (str):
+            The name of the zone for this request.
+    """
+
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    resource: str = proto.Field(
+        proto.STRING,
+        number=195806222,
+    )
+    test_permissions_request_resource: "TestPermissionsRequest" = proto.Field(
+        proto.MESSAGE,
+        number=439214758,
+        message="TestPermissionsRequest",
+    )
+    zone: str = proto.Field(
+        proto.STRING,
+        number=3744684,
+    )
+
+
 class TestIamPermissionsSubnetworkRequest(proto.Message):
     r"""A request message for Subnetworks.TestIamPermissions. See the
     method description for details.
@@ -103573,6 +107283,76 @@ class UpdateShieldedInstanceConfigInstanceRequest(proto.Message):
     )
 
 
+class UpdateStoragePoolRequest(proto.Message):
+    r"""A request message for StoragePools.Update. See the method
+    description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        project (str):
+            Project ID for this request.
+        request_id (str):
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. For example, consider a situation
+            where you make an initial request and the
+            request times out. If you make the request again
+            with the same request ID, the server can check
+            if original operation with the same request ID
+            was received, and if so, will ignore the second
+            request. This prevents clients from accidentally
+            creating duplicate commitments. The request ID
+            must be a valid UUID with the exception that
+            zero UUID is not supported (
+            00000000-0000-0000-0000-000000000000).
+
+            This field is a member of `oneof`_ ``_request_id``.
+        storage_pool (str):
+            The storagePool name for this request.
+        storage_pool_resource (google.cloud.compute_v1.types.StoragePool):
+            The body resource for this request
+        update_mask (str):
+            update_mask indicates fields to be updated as part of this
+            request.
+
+            This field is a member of `oneof`_ ``_update_mask``.
+        zone (str):
+            The name of the zone for this request.
+    """
+
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=37109963,
+        optional=True,
+    )
+    storage_pool: str = proto.Field(
+        proto.STRING,
+        number=360473440,
+    )
+    storage_pool_resource: "StoragePool" = proto.Field(
+        proto.MESSAGE,
+        number=157179405,
+        message="StoragePool",
+    )
+    update_mask: str = proto.Field(
+        proto.STRING,
+        number=500079778,
+        optional=True,
+    )
+    zone: str = proto.Field(
+        proto.STRING,
+        number=3744684,
+    )
+
+
 class UpdateUrlMapRequest(proto.Message):
     r"""A request message for UrlMaps.Update. See the method
     description for details.
@@ -103688,10 +107468,10 @@ class UrlMap(proto.Message):
             cannot contain any weightedBackendServices.
             Conversely, if routeAction specifies any
             weightedBackendServices, service must not be
-            specified. Only one of defaultService,
-            defaultUrlRedirect , or
-            defaultRouteAction.weightedBackendService must
-            be set. defaultService has no effect when the
+            specified. If defaultService is specified, then
+            set either defaultUrlRedirect , or
+            defaultRouteAction.weightedBackendService Don't
+            set both. defaultService has no effect when the
             URL map is bound to a target gRPC proxy that has
             the validateForProxyless field set to true.
 
