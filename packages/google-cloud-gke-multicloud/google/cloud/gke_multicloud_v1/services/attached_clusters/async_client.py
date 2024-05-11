@@ -17,6 +17,7 @@ from collections import OrderedDict
 import functools
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -216,7 +217,11 @@ class AttachedClustersAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, AttachedClustersTransport] = "grpc_asyncio",
+        transport: Optional[
+            Union[
+                str, AttachedClustersTransport, Callable[..., AttachedClustersTransport]
+            ]
+        ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -228,9 +233,11 @@ class AttachedClustersAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.AttachedClustersTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,AttachedClustersTransport,Callable[..., AttachedClustersTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the AttachedClustersTransport constructor.
+                If set to None, a transport is chosen automatically.
                 NOTE: "rest" transport functionality is currently in a
                 beta state (preview). We welcome your feedback via an
                 issue in this library's source repository.
@@ -394,8 +401,8 @@ class AttachedClustersAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, attached_cluster, attached_cluster_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -403,7 +410,10 @@ class AttachedClustersAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = attached_service.CreateAttachedClusterRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, attached_service.CreateAttachedClusterRequest):
+            request = attached_service.CreateAttachedClusterRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -416,11 +426,9 @@ class AttachedClustersAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_attached_cluster,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_attached_cluster
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -549,8 +557,8 @@ class AttachedClustersAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([attached_cluster, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -558,7 +566,10 @@ class AttachedClustersAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = attached_service.UpdateAttachedClusterRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, attached_service.UpdateAttachedClusterRequest):
+            request = attached_service.UpdateAttachedClusterRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -569,11 +580,9 @@ class AttachedClustersAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_attached_cluster,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_attached_cluster
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -704,8 +713,8 @@ class AttachedClustersAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, fleet_membership])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -713,7 +722,10 @@ class AttachedClustersAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = attached_service.ImportAttachedClusterRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, attached_service.ImportAttachedClusterRequest):
+            request = attached_service.ImportAttachedClusterRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -724,11 +736,9 @@ class AttachedClustersAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.import_attached_cluster,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.import_attached_cluster
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -832,8 +842,8 @@ class AttachedClustersAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -841,7 +851,10 @@ class AttachedClustersAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = attached_service.GetAttachedClusterRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, attached_service.GetAttachedClusterRequest):
+            request = attached_service.GetAttachedClusterRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -850,20 +863,9 @@ class AttachedClustersAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_attached_cluster,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_attached_cluster
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -964,8 +966,8 @@ class AttachedClustersAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -973,7 +975,10 @@ class AttachedClustersAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = attached_service.ListAttachedClustersRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, attached_service.ListAttachedClustersRequest):
+            request = attached_service.ListAttachedClustersRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -982,20 +987,9 @@ class AttachedClustersAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_attached_clusters,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_attached_clusters
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1118,8 +1112,8 @@ class AttachedClustersAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1127,7 +1121,10 @@ class AttachedClustersAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = attached_service.DeleteAttachedClusterRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, attached_service.DeleteAttachedClusterRequest):
+            request = attached_service.DeleteAttachedClusterRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1136,11 +1133,9 @@ class AttachedClustersAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_attached_cluster,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_attached_cluster
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1243,8 +1238,8 @@ class AttachedClustersAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1252,7 +1247,10 @@ class AttachedClustersAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = attached_service.GetAttachedServerConfigRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, attached_service.GetAttachedServerConfigRequest):
+            request = attached_service.GetAttachedServerConfigRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1261,20 +1259,9 @@ class AttachedClustersAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_attached_server_config,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_attached_server_config
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1395,8 +1382,8 @@ class AttachedClustersAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, attached_cluster_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1404,9 +1391,14 @@ class AttachedClustersAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = attached_service.GenerateAttachedClusterInstallManifestRequest(
-            request
-        )
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, attached_service.GenerateAttachedClusterInstallManifestRequest
+        ):
+            request = attached_service.GenerateAttachedClusterInstallManifestRequest(
+                request
+            )
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1417,20 +1409,9 @@ class AttachedClustersAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.generate_attached_cluster_install_manifest,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.generate_attached_cluster_install_manifest
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1507,24 +1488,18 @@ class AttachedClustersAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = attached_service.GenerateAttachedClusterAgentTokenRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, attached_service.GenerateAttachedClusterAgentTokenRequest
+        ):
+            request = attached_service.GenerateAttachedClusterAgentTokenRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.generate_attached_cluster_agent_token,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.generate_attached_cluster_agent_token
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.

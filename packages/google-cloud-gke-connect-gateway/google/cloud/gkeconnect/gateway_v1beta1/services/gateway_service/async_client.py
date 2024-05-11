@@ -17,6 +17,7 @@ from collections import OrderedDict
 import functools
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -198,7 +199,9 @@ class GatewayServiceAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, GatewayServiceTransport] = "grpc_asyncio",
+        transport: Optional[
+            Union[str, GatewayServiceTransport, Callable[..., GatewayServiceTransport]]
+        ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -210,9 +213,11 @@ class GatewayServiceAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.GatewayServiceTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,GatewayServiceTransport,Callable[..., GatewayServiceTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the GatewayServiceTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -401,8 +406,8 @@ class GatewayServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # The request isn't a proto-plus wrapped type,
-        # so it must be constructed via keyword expansion.
+        # - The request isn't a proto-plus wrapped type,
+        #   so it must be constructed via keyword expansion.
         if isinstance(request, dict):
             request = httpbody_pb2.HttpBody(**request)
         elif not request:
@@ -410,11 +415,9 @@ class GatewayServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_resource,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_resource
+        ]
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -575,8 +578,8 @@ class GatewayServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # The request isn't a proto-plus wrapped type,
-        # so it must be constructed via keyword expansion.
+        # - The request isn't a proto-plus wrapped type,
+        #   so it must be constructed via keyword expansion.
         if isinstance(request, dict):
             request = httpbody_pb2.HttpBody(**request)
         elif not request:
@@ -584,11 +587,9 @@ class GatewayServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.post_resource,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.post_resource
+        ]
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -749,8 +750,8 @@ class GatewayServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # The request isn't a proto-plus wrapped type,
-        # so it must be constructed via keyword expansion.
+        # - The request isn't a proto-plus wrapped type,
+        #   so it must be constructed via keyword expansion.
         if isinstance(request, dict):
             request = httpbody_pb2.HttpBody(**request)
         elif not request:
@@ -758,11 +759,9 @@ class GatewayServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_resource,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_resource
+        ]
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -923,8 +922,8 @@ class GatewayServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # The request isn't a proto-plus wrapped type,
-        # so it must be constructed via keyword expansion.
+        # - The request isn't a proto-plus wrapped type,
+        #   so it must be constructed via keyword expansion.
         if isinstance(request, dict):
             request = httpbody_pb2.HttpBody(**request)
         elif not request:
@@ -932,11 +931,9 @@ class GatewayServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.put_resource,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.put_resource
+        ]
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1097,8 +1094,8 @@ class GatewayServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # The request isn't a proto-plus wrapped type,
-        # so it must be constructed via keyword expansion.
+        # - The request isn't a proto-plus wrapped type,
+        #   so it must be constructed via keyword expansion.
         if isinstance(request, dict):
             request = httpbody_pb2.HttpBody(**request)
         elif not request:
@@ -1106,11 +1103,9 @@ class GatewayServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.patch_resource,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.patch_resource
+        ]
 
         # Validate the universe domain.
         self._client._validate_universe_domain()

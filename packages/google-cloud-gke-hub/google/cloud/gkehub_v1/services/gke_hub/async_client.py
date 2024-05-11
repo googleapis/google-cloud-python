@@ -17,6 +17,7 @@ from collections import OrderedDict
 import functools
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -209,7 +210,9 @@ class GkeHubAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, GkeHubTransport] = "grpc_asyncio",
+        transport: Optional[
+            Union[str, GkeHubTransport, Callable[..., GkeHubTransport]]
+        ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -221,9 +224,11 @@ class GkeHubAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.GkeHubTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,GkeHubTransport,Callable[..., GkeHubTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the GkeHubTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -332,8 +337,8 @@ class GkeHubAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -341,7 +346,10 @@ class GkeHubAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.ListMembershipsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.ListMembershipsRequest):
+            request = service.ListMembershipsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -350,11 +358,9 @@ class GkeHubAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_memberships,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_memberships
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -448,8 +454,8 @@ class GkeHubAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -457,7 +463,10 @@ class GkeHubAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.ListFeaturesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.ListFeaturesRequest):
+            request = service.ListFeaturesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -466,11 +475,9 @@ class GkeHubAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_features,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_features
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -561,8 +568,8 @@ class GkeHubAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -570,7 +577,10 @@ class GkeHubAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.GetMembershipRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.GetMembershipRequest):
+            request = service.GetMembershipRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -579,11 +589,9 @@ class GkeHubAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_membership,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_membership
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -664,8 +672,8 @@ class GkeHubAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -673,7 +681,10 @@ class GkeHubAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.GetFeatureRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.GetFeatureRequest):
+            request = service.GetFeatureRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -682,11 +693,9 @@ class GkeHubAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_feature,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_feature
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -806,8 +815,8 @@ class GkeHubAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, resource, membership_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -815,7 +824,10 @@ class GkeHubAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.CreateMembershipRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.CreateMembershipRequest):
+            request = service.CreateMembershipRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -828,11 +840,9 @@ class GkeHubAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_membership,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_membership
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -941,8 +951,8 @@ class GkeHubAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, resource, feature_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -950,7 +960,10 @@ class GkeHubAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.CreateFeatureRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.CreateFeatureRequest):
+            request = service.CreateFeatureRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -963,11 +976,9 @@ class GkeHubAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_feature,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_feature
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1076,8 +1087,8 @@ class GkeHubAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1085,7 +1096,10 @@ class GkeHubAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.DeleteMembershipRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.DeleteMembershipRequest):
+            request = service.DeleteMembershipRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1094,11 +1108,9 @@ class GkeHubAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_membership,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_membership
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1201,8 +1213,8 @@ class GkeHubAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1210,7 +1222,10 @@ class GkeHubAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.DeleteFeatureRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.DeleteFeatureRequest):
+            request = service.DeleteFeatureRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1219,11 +1234,9 @@ class GkeHubAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_feature,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_feature
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1341,8 +1354,8 @@ class GkeHubAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, resource, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1350,7 +1363,10 @@ class GkeHubAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.UpdateMembershipRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.UpdateMembershipRequest):
+            request = service.UpdateMembershipRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1363,11 +1379,9 @@ class GkeHubAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_membership,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_membership
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1484,8 +1498,8 @@ class GkeHubAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, resource, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1493,7 +1507,10 @@ class GkeHubAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.UpdateFeatureRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.UpdateFeatureRequest):
+            request = service.UpdateFeatureRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1506,11 +1523,9 @@ class GkeHubAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_feature,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_feature
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1597,15 +1612,16 @@ class GkeHubAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = service.GenerateConnectManifestRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.GenerateConnectManifestRequest):
+            request = service.GenerateConnectManifestRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.generate_connect_manifest,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.generate_connect_manifest
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.

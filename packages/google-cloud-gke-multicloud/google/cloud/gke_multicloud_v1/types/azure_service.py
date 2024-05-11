@@ -293,6 +293,12 @@ class DeleteAzureClusterRequest(proto.Message):
             If the provided etag does not match the current etag of the
             cluster, the request will fail and an ABORTED error will be
             returned.
+        ignore_errors (bool):
+            Optional. If set to true, the deletion of
+            [AzureCluster][google.cloud.gkemulticloud.v1.AzureCluster]
+            resource will succeed even if errors occur during deleting
+            in cluster resources. Using this parameter may result in
+            orphaned resources in the cluster.
     """
 
     name: str = proto.Field(
@@ -310,6 +316,10 @@ class DeleteAzureClusterRequest(proto.Message):
     etag: str = proto.Field(
         proto.STRING,
         number=4,
+    )
+    ignore_errors: bool = proto.Field(
+        proto.BOOL,
+        number=5,
     )
 
 
@@ -545,6 +555,12 @@ class DeleteAzureNodePoolRequest(proto.Message):
             If the provided ETag does not match the current etag of the
             node pool, the request will fail and an ABORTED error will
             be returned.
+        ignore_errors (bool):
+            Optional. If set to true, the deletion of
+            [AzureNodePool][google.cloud.gkemulticloud.v1.AzureNodePool]
+            resource will succeed even if errors occur during deleting
+            in node pool resources. Using this parameter may result in
+            orphaned resources in the node pool.
     """
 
     name: str = proto.Field(
@@ -562,6 +578,10 @@ class DeleteAzureNodePoolRequest(proto.Message):
     etag: str = proto.Field(
         proto.STRING,
         number=4,
+    )
+    ignore_errors: bool = proto.Field(
+        proto.BOOL,
+        number=5,
     )
 
 
@@ -592,10 +612,9 @@ class GetAzureJsonWebKeysRequest(proto.Message):
 
     Attributes:
         azure_cluster (str):
-            Required. The AzureCluster, which owns the
-            JsonWebKeys. Format:
-
-            projects/<project-id>/locations/<region>/azureClusters/<cluster-id>
+            Required. The AzureCluster, which owns the JsonWebKeys.
+            Format:
+            ``projects/<project-id>/locations/<region>/azureClusters/<cluster-id>``
     """
 
     azure_cluster: str = proto.Field(
