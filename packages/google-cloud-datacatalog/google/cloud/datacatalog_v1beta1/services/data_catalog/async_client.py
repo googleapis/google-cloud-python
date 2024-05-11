@@ -17,6 +17,7 @@ from collections import OrderedDict
 import functools
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -223,7 +224,9 @@ class DataCatalogAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, DataCatalogTransport] = "grpc_asyncio",
+        transport: Optional[
+            Union[str, DataCatalogTransport, Callable[..., DataCatalogTransport]]
+        ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -235,9 +238,11 @@ class DataCatalogAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.DataCatalogTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,DataCatalogTransport,Callable[..., DataCatalogTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the DataCatalogTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -384,8 +389,8 @@ class DataCatalogAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([scope, query])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -393,7 +398,10 @@ class DataCatalogAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = datacatalog.SearchCatalogRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, datacatalog.SearchCatalogRequest):
+            request = datacatalog.SearchCatalogRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -404,11 +412,9 @@ class DataCatalogAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.search_catalog,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.search_catalog
+        ]
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -530,8 +536,8 @@ class DataCatalogAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, entry_group_id, entry_group])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -539,7 +545,10 @@ class DataCatalogAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = datacatalog.CreateEntryGroupRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, datacatalog.CreateEntryGroupRequest):
+            request = datacatalog.CreateEntryGroupRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -552,11 +561,9 @@ class DataCatalogAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_entry_group,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_entry_group
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -658,8 +665,8 @@ class DataCatalogAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([entry_group, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -667,7 +674,10 @@ class DataCatalogAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = datacatalog.UpdateEntryGroupRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, datacatalog.UpdateEntryGroupRequest):
+            request = datacatalog.UpdateEntryGroupRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -678,11 +688,9 @@ class DataCatalogAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_entry_group,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_entry_group
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -778,8 +786,8 @@ class DataCatalogAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, read_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -787,7 +795,10 @@ class DataCatalogAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = datacatalog.GetEntryGroupRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, datacatalog.GetEntryGroupRequest):
+            request = datacatalog.GetEntryGroupRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -798,11 +809,9 @@ class DataCatalogAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_entry_group,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_entry_group
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -881,8 +890,8 @@ class DataCatalogAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -890,7 +899,10 @@ class DataCatalogAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = datacatalog.DeleteEntryGroupRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, datacatalog.DeleteEntryGroupRequest):
+            request = datacatalog.DeleteEntryGroupRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -899,11 +911,9 @@ class DataCatalogAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_entry_group,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_entry_group
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -990,8 +1000,8 @@ class DataCatalogAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -999,7 +1009,10 @@ class DataCatalogAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = datacatalog.ListEntryGroupsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, datacatalog.ListEntryGroupsRequest):
+            request = datacatalog.ListEntryGroupsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1008,11 +1021,9 @@ class DataCatalogAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_entry_groups,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_entry_groups
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1149,8 +1160,8 @@ class DataCatalogAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, entry_id, entry])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1158,7 +1169,10 @@ class DataCatalogAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = datacatalog.CreateEntryRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, datacatalog.CreateEntryRequest):
+            request = datacatalog.CreateEntryRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1171,11 +1185,9 @@ class DataCatalogAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_entry,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_entry
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1313,8 +1325,8 @@ class DataCatalogAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([entry, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1322,7 +1334,10 @@ class DataCatalogAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = datacatalog.UpdateEntryRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, datacatalog.UpdateEntryRequest):
+            request = datacatalog.UpdateEntryRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1333,11 +1348,9 @@ class DataCatalogAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_entry,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_entry
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1420,8 +1433,8 @@ class DataCatalogAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1429,7 +1442,10 @@ class DataCatalogAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = datacatalog.DeleteEntryRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, datacatalog.DeleteEntryRequest):
+            request = datacatalog.DeleteEntryRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1438,11 +1454,9 @@ class DataCatalogAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_entry,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_entry
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1533,8 +1547,8 @@ class DataCatalogAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1542,7 +1556,10 @@ class DataCatalogAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = datacatalog.GetEntryRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, datacatalog.GetEntryRequest):
+            request = datacatalog.GetEntryRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1551,11 +1568,9 @@ class DataCatalogAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_entry,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_entry
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1643,15 +1658,16 @@ class DataCatalogAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = datacatalog.LookupEntryRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, datacatalog.LookupEntryRequest):
+            request = datacatalog.LookupEntryRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.lookup_entry,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.lookup_entry
+        ]
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1734,8 +1750,8 @@ class DataCatalogAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1743,7 +1759,10 @@ class DataCatalogAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = datacatalog.ListEntriesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, datacatalog.ListEntriesRequest):
+            request = datacatalog.ListEntriesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1752,11 +1771,9 @@ class DataCatalogAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_entries,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_entries
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1879,8 +1896,8 @@ class DataCatalogAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, tag_template_id, tag_template])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1888,7 +1905,10 @@ class DataCatalogAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = datacatalog.CreateTagTemplateRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, datacatalog.CreateTagTemplateRequest):
+            request = datacatalog.CreateTagTemplateRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1901,11 +1921,9 @@ class DataCatalogAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_tag_template,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_tag_template
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1996,8 +2014,8 @@ class DataCatalogAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2005,7 +2023,10 @@ class DataCatalogAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = datacatalog.GetTagTemplateRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, datacatalog.GetTagTemplateRequest):
+            request = datacatalog.GetTagTemplateRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2014,11 +2035,9 @@ class DataCatalogAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_tag_template,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_tag_template
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2129,8 +2148,8 @@ class DataCatalogAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([tag_template, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2138,7 +2157,10 @@ class DataCatalogAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = datacatalog.UpdateTagTemplateRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, datacatalog.UpdateTagTemplateRequest):
+            request = datacatalog.UpdateTagTemplateRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2149,11 +2171,9 @@ class DataCatalogAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_tag_template,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_tag_template
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2246,8 +2266,8 @@ class DataCatalogAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, force])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2255,7 +2275,10 @@ class DataCatalogAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = datacatalog.DeleteTagTemplateRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, datacatalog.DeleteTagTemplateRequest):
+            request = datacatalog.DeleteTagTemplateRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2266,11 +2289,9 @@ class DataCatalogAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_tag_template,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_tag_template
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2386,8 +2407,8 @@ class DataCatalogAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, tag_template_field_id, tag_template_field])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2395,7 +2416,10 @@ class DataCatalogAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = datacatalog.CreateTagTemplateFieldRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, datacatalog.CreateTagTemplateFieldRequest):
+            request = datacatalog.CreateTagTemplateFieldRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2408,11 +2432,9 @@ class DataCatalogAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_tag_template_field,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_tag_template_field
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2537,8 +2559,8 @@ class DataCatalogAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, tag_template_field, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2546,7 +2568,10 @@ class DataCatalogAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = datacatalog.UpdateTagTemplateFieldRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, datacatalog.UpdateTagTemplateFieldRequest):
+            request = datacatalog.UpdateTagTemplateFieldRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2559,11 +2584,9 @@ class DataCatalogAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_tag_template_field,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_tag_template_field
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2662,8 +2685,8 @@ class DataCatalogAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, new_tag_template_field_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2671,7 +2694,10 @@ class DataCatalogAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = datacatalog.RenameTagTemplateFieldRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, datacatalog.RenameTagTemplateFieldRequest):
+            request = datacatalog.RenameTagTemplateFieldRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2682,11 +2708,9 @@ class DataCatalogAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.rename_tag_template_field,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.rename_tag_template_field
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2784,8 +2808,8 @@ class DataCatalogAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, new_enum_value_display_name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2793,7 +2817,10 @@ class DataCatalogAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = datacatalog.RenameTagTemplateFieldEnumValueRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, datacatalog.RenameTagTemplateFieldEnumValueRequest):
+            request = datacatalog.RenameTagTemplateFieldEnumValueRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2804,11 +2831,9 @@ class DataCatalogAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.rename_tag_template_field_enum_value,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.rename_tag_template_field_enum_value
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2902,8 +2927,8 @@ class DataCatalogAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, force])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2911,7 +2936,10 @@ class DataCatalogAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = datacatalog.DeleteTagTemplateFieldRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, datacatalog.DeleteTagTemplateFieldRequest):
+            request = datacatalog.DeleteTagTemplateFieldRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2922,11 +2950,9 @@ class DataCatalogAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_tag_template_field,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_tag_template_field
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3034,8 +3060,8 @@ class DataCatalogAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, tag])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3043,7 +3069,10 @@ class DataCatalogAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = datacatalog.CreateTagRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, datacatalog.CreateTagRequest):
+            request = datacatalog.CreateTagRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3054,11 +3083,9 @@ class DataCatalogAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_tag,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_tag
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3168,8 +3195,8 @@ class DataCatalogAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([tag, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3177,7 +3204,10 @@ class DataCatalogAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = datacatalog.UpdateTagRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, datacatalog.UpdateTagRequest):
+            request = datacatalog.UpdateTagRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3188,11 +3218,9 @@ class DataCatalogAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_tag,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_tag
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3267,8 +3295,8 @@ class DataCatalogAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3276,7 +3304,10 @@ class DataCatalogAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = datacatalog.DeleteTagRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, datacatalog.DeleteTagRequest):
+            request = datacatalog.DeleteTagRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3285,11 +3316,9 @@ class DataCatalogAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_tag,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_tag
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3383,8 +3412,8 @@ class DataCatalogAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3392,7 +3421,10 @@ class DataCatalogAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = datacatalog.ListTagsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, datacatalog.ListTagsRequest):
+            request = datacatalog.ListTagsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3401,11 +3433,9 @@ class DataCatalogAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_tags,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_tags
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3543,8 +3573,8 @@ class DataCatalogAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3552,8 +3582,8 @@ class DataCatalogAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        # The request isn't a proto-plus wrapped type,
-        # so it must be constructed via keyword expansion.
+        # - The request isn't a proto-plus wrapped type,
+        #   so it must be constructed via keyword expansion.
         if isinstance(request, dict):
             request = iam_policy_pb2.SetIamPolicyRequest(**request)
         elif not request:
@@ -3561,11 +3591,9 @@ class DataCatalogAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.set_iam_policy,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.set_iam_policy
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3698,8 +3726,8 @@ class DataCatalogAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3707,8 +3735,8 @@ class DataCatalogAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        # The request isn't a proto-plus wrapped type,
-        # so it must be constructed via keyword expansion.
+        # - The request isn't a proto-plus wrapped type,
+        #   so it must be constructed via keyword expansion.
         if isinstance(request, dict):
             request = iam_policy_pb2.GetIamPolicyRequest(**request)
         elif not request:
@@ -3716,11 +3744,9 @@ class DataCatalogAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_iam_policy,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_iam_policy
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3807,8 +3833,8 @@ class DataCatalogAsyncClient:
                 Response message for TestIamPermissions method.
         """
         # Create or coerce a protobuf request object.
-        # The request isn't a proto-plus wrapped type,
-        # so it must be constructed via keyword expansion.
+        # - The request isn't a proto-plus wrapped type,
+        #   so it must be constructed via keyword expansion.
         if isinstance(request, dict):
             request = iam_policy_pb2.TestIamPermissionsRequest(**request)
         elif not request:
@@ -3816,11 +3842,9 @@ class DataCatalogAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.test_iam_permissions,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.test_iam_permissions
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.

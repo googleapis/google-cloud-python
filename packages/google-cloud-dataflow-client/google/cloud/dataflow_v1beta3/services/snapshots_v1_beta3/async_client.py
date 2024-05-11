@@ -17,6 +17,7 @@ from collections import OrderedDict
 import functools
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -196,7 +197,11 @@ class SnapshotsV1Beta3AsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, SnapshotsV1Beta3Transport] = "grpc_asyncio",
+        transport: Optional[
+            Union[
+                str, SnapshotsV1Beta3Transport, Callable[..., SnapshotsV1Beta3Transport]
+            ]
+        ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -208,9 +213,11 @@ class SnapshotsV1Beta3AsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.SnapshotsV1Beta3Transport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,SnapshotsV1Beta3Transport,Callable[..., SnapshotsV1Beta3Transport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the SnapshotsV1Beta3Transport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -304,15 +311,16 @@ class SnapshotsV1Beta3AsyncClient:
                 Represents a snapshot of a job.
         """
         # Create or coerce a protobuf request object.
-        request = snapshots.GetSnapshotRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, snapshots.GetSnapshotRequest):
+            request = snapshots.GetSnapshotRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_snapshot,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_snapshot
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -389,15 +397,16 @@ class SnapshotsV1Beta3AsyncClient:
                 Response from deleting a snapshot.
         """
         # Create or coerce a protobuf request object.
-        request = snapshots.DeleteSnapshotRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, snapshots.DeleteSnapshotRequest):
+            request = snapshots.DeleteSnapshotRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_snapshot,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_snapshot
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -474,15 +483,16 @@ class SnapshotsV1Beta3AsyncClient:
                 List of snapshots.
         """
         # Create or coerce a protobuf request object.
-        request = snapshots.ListSnapshotsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, snapshots.ListSnapshotsRequest):
+            request = snapshots.ListSnapshotsRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_snapshots,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_snapshots
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.

@@ -17,6 +17,7 @@ from collections import OrderedDict
 import functools
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -210,7 +211,9 @@ class DataformAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, DataformTransport] = "grpc_asyncio",
+        transport: Optional[
+            Union[str, DataformTransport, Callable[..., DataformTransport]]
+        ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -222,9 +225,11 @@ class DataformAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.DataformTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,DataformTransport,Callable[..., DataformTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the DataformTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -331,8 +336,8 @@ class DataformAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -340,7 +345,10 @@ class DataformAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = dataform.ListRepositoriesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dataform.ListRepositoriesRequest):
+            request = dataform.ListRepositoriesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -349,11 +357,9 @@ class DataformAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_repositories,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_repositories
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -440,8 +446,8 @@ class DataformAsyncClient:
                 Represents a Dataform Git repository.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -449,7 +455,10 @@ class DataformAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = dataform.GetRepositoryRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dataform.GetRepositoryRequest):
+            request = dataform.GetRepositoryRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -458,11 +467,9 @@ class DataformAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_repository,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_repository
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -561,8 +568,8 @@ class DataformAsyncClient:
                 Represents a Dataform Git repository.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, repository, repository_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -570,7 +577,10 @@ class DataformAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = dataform.CreateRepositoryRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dataform.CreateRepositoryRequest):
+            request = dataform.CreateRepositoryRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -583,11 +593,9 @@ class DataformAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_repository,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_repository
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -673,8 +681,8 @@ class DataformAsyncClient:
                 Represents a Dataform Git repository.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([repository, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -682,7 +690,10 @@ class DataformAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = dataform.UpdateRepositoryRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dataform.UpdateRepositoryRequest):
+            request = dataform.UpdateRepositoryRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -693,11 +704,9 @@ class DataformAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_repository,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_repository
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -770,8 +779,8 @@ class DataformAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -779,7 +788,10 @@ class DataformAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = dataform.DeleteRepositoryRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dataform.DeleteRepositoryRequest):
+            request = dataform.DeleteRepositoryRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -788,11 +800,9 @@ class DataformAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_repository,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_repository
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -860,15 +870,16 @@ class DataformAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        request = dataform.CommitRepositoryChangesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dataform.CommitRepositoryChangesRequest):
+            request = dataform.CommitRepositoryChangesRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.commit_repository_changes,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.commit_repository_changes
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -940,15 +951,16 @@ class DataformAsyncClient:
                 ReadRepositoryFile response message.
         """
         # Create or coerce a protobuf request object.
-        request = dataform.ReadRepositoryFileRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dataform.ReadRepositoryFileRequest):
+            request = dataform.ReadRepositoryFileRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.read_repository_file,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.read_repository_file
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1029,15 +1041,16 @@ class DataformAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = dataform.QueryRepositoryDirectoryContentsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dataform.QueryRepositoryDirectoryContentsRequest):
+            request = dataform.QueryRepositoryDirectoryContentsRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.query_repository_directory_contents,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.query_repository_directory_contents
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1124,15 +1137,16 @@ class DataformAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = dataform.FetchRepositoryHistoryRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dataform.FetchRepositoryHistoryRequest):
+            request = dataform.FetchRepositoryHistoryRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.fetch_repository_history,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.fetch_repository_history
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1215,15 +1229,16 @@ class DataformAsyncClient:
                 ComputeRepositoryAccessTokenStatus response message.
         """
         # Create or coerce a protobuf request object.
-        request = dataform.ComputeRepositoryAccessTokenStatusRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dataform.ComputeRepositoryAccessTokenStatusRequest):
+            request = dataform.ComputeRepositoryAccessTokenStatusRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.compute_repository_access_token_status,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.compute_repository_access_token_status
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1295,15 +1310,16 @@ class DataformAsyncClient:
                 FetchRemoteBranches response message.
         """
         # Create or coerce a protobuf request object.
-        request = dataform.FetchRemoteBranchesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dataform.FetchRemoteBranchesRequest):
+            request = dataform.FetchRemoteBranchesRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.fetch_remote_branches,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.fetch_remote_branches
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1389,8 +1405,8 @@ class DataformAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1398,7 +1414,10 @@ class DataformAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = dataform.ListWorkspacesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dataform.ListWorkspacesRequest):
+            request = dataform.ListWorkspacesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1407,11 +1426,9 @@ class DataformAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_workspaces,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_workspaces
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1498,8 +1515,8 @@ class DataformAsyncClient:
                 Represents a Dataform Git workspace.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1507,7 +1524,10 @@ class DataformAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = dataform.GetWorkspaceRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dataform.GetWorkspaceRequest):
+            request = dataform.GetWorkspaceRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1516,11 +1536,9 @@ class DataformAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_workspace,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_workspace
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1618,8 +1636,8 @@ class DataformAsyncClient:
                 Represents a Dataform Git workspace.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, workspace, workspace_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1627,7 +1645,10 @@ class DataformAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = dataform.CreateWorkspaceRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dataform.CreateWorkspaceRequest):
+            request = dataform.CreateWorkspaceRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1640,11 +1661,9 @@ class DataformAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_workspace,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_workspace
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1717,8 +1736,8 @@ class DataformAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1726,7 +1745,10 @@ class DataformAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = dataform.DeleteWorkspaceRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dataform.DeleteWorkspaceRequest):
+            request = dataform.DeleteWorkspaceRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1735,11 +1757,9 @@ class DataformAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_workspace,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_workspace
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1809,15 +1829,16 @@ class DataformAsyncClient:
                 InstallNpmPackages response message.
         """
         # Create or coerce a protobuf request object.
-        request = dataform.InstallNpmPackagesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dataform.InstallNpmPackagesRequest):
+            request = dataform.InstallNpmPackagesRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.install_npm_packages,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.install_npm_packages
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1890,15 +1911,16 @@ class DataformAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        request = dataform.PullGitCommitsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dataform.PullGitCommitsRequest):
+            request = dataform.PullGitCommitsRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.pull_git_commits,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.pull_git_commits
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1961,15 +1983,16 @@ class DataformAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        request = dataform.PushGitCommitsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dataform.PushGitCommitsRequest):
+            request = dataform.PushGitCommitsRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.push_git_commits,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.push_git_commits
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2038,15 +2061,16 @@ class DataformAsyncClient:
                 FetchFileGitStatuses response message.
         """
         # Create or coerce a protobuf request object.
-        request = dataform.FetchFileGitStatusesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dataform.FetchFileGitStatusesRequest):
+            request = dataform.FetchFileGitStatusesRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.fetch_file_git_statuses,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.fetch_file_git_statuses
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2118,15 +2142,16 @@ class DataformAsyncClient:
                 FetchGitAheadBehind response message.
         """
         # Create or coerce a protobuf request object.
-        request = dataform.FetchGitAheadBehindRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dataform.FetchGitAheadBehindRequest):
+            request = dataform.FetchGitAheadBehindRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.fetch_git_ahead_behind,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.fetch_git_ahead_behind
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2197,15 +2222,16 @@ class DataformAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        request = dataform.CommitWorkspaceChangesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dataform.CommitWorkspaceChangesRequest):
+            request = dataform.CommitWorkspaceChangesRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.commit_workspace_changes,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.commit_workspace_changes
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2268,15 +2294,16 @@ class DataformAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        request = dataform.ResetWorkspaceChangesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dataform.ResetWorkspaceChangesRequest):
+            request = dataform.ResetWorkspaceChangesRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.reset_workspace_changes,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.reset_workspace_changes
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2347,15 +2374,16 @@ class DataformAsyncClient:
                 FetchFileDiff response message.
         """
         # Create or coerce a protobuf request object.
-        request = dataform.FetchFileDiffRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dataform.FetchFileDiffRequest):
+            request = dataform.FetchFileDiffRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.fetch_file_diff,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.fetch_file_diff
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2434,15 +2462,16 @@ class DataformAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = dataform.QueryDirectoryContentsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dataform.QueryDirectoryContentsRequest):
+            request = dataform.QueryDirectoryContentsRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.query_directory_contents,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.query_directory_contents
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2526,15 +2555,16 @@ class DataformAsyncClient:
                 MakeDirectory response message.
         """
         # Create or coerce a protobuf request object.
-        request = dataform.MakeDirectoryRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dataform.MakeDirectoryRequest):
+            request = dataform.MakeDirectoryRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.make_directory,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.make_directory
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2603,15 +2633,16 @@ class DataformAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        request = dataform.RemoveDirectoryRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dataform.RemoveDirectoryRequest):
+            request = dataform.RemoveDirectoryRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.remove_directory,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.remove_directory
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2685,15 +2716,16 @@ class DataformAsyncClient:
                 MoveDirectory response message.
         """
         # Create or coerce a protobuf request object.
-        request = dataform.MoveDirectoryRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dataform.MoveDirectoryRequest):
+            request = dataform.MoveDirectoryRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.move_directory,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.move_directory
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2768,15 +2800,16 @@ class DataformAsyncClient:
                 ReadFile response message.
         """
         # Create or coerce a protobuf request object.
-        request = dataform.ReadFileRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dataform.ReadFileRequest):
+            request = dataform.ReadFileRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.read_file,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.read_file
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2844,15 +2877,16 @@ class DataformAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        request = dataform.RemoveFileRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dataform.RemoveFileRequest):
+            request = dataform.RemoveFileRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.remove_file,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.remove_file
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2925,15 +2959,16 @@ class DataformAsyncClient:
                 MoveFile response message.
         """
         # Create or coerce a protobuf request object.
-        request = dataform.MoveFileRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dataform.MoveFileRequest):
+            request = dataform.MoveFileRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.move_file,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.move_file
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3009,15 +3044,16 @@ class DataformAsyncClient:
                 WriteFile response message.
         """
         # Create or coerce a protobuf request object.
-        request = dataform.WriteFileRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dataform.WriteFileRequest):
+            request = dataform.WriteFileRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.write_file,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.write_file
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3105,8 +3141,8 @@ class DataformAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3114,7 +3150,10 @@ class DataformAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = dataform.ListReleaseConfigsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dataform.ListReleaseConfigsRequest):
+            request = dataform.ListReleaseConfigsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3123,11 +3162,9 @@ class DataformAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_release_configs,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_release_configs
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3216,8 +3253,8 @@ class DataformAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3225,7 +3262,10 @@ class DataformAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = dataform.GetReleaseConfigRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dataform.GetReleaseConfigRequest):
+            request = dataform.GetReleaseConfigRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3234,11 +3274,9 @@ class DataformAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_release_config,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_release_config
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3344,8 +3382,8 @@ class DataformAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, release_config, release_config_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3353,7 +3391,10 @@ class DataformAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = dataform.CreateReleaseConfigRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dataform.CreateReleaseConfigRequest):
+            request = dataform.CreateReleaseConfigRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3366,11 +3407,9 @@ class DataformAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_release_config,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_release_config
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3464,8 +3503,8 @@ class DataformAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([release_config, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3473,7 +3512,10 @@ class DataformAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = dataform.UpdateReleaseConfigRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dataform.UpdateReleaseConfigRequest):
+            request = dataform.UpdateReleaseConfigRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3484,11 +3526,9 @@ class DataformAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_release_config,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_release_config
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3561,8 +3601,8 @@ class DataformAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3570,7 +3610,10 @@ class DataformAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = dataform.DeleteReleaseConfigRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dataform.DeleteReleaseConfigRequest):
+            request = dataform.DeleteReleaseConfigRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3579,11 +3622,9 @@ class DataformAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_release_config,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_release_config
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3666,8 +3707,8 @@ class DataformAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3675,7 +3716,10 @@ class DataformAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = dataform.ListCompilationResultsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dataform.ListCompilationResultsRequest):
+            request = dataform.ListCompilationResultsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3684,11 +3728,9 @@ class DataformAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_compilation_results,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_compilation_results
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3779,8 +3821,8 @@ class DataformAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3788,7 +3830,10 @@ class DataformAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = dataform.GetCompilationResultRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dataform.GetCompilationResultRequest):
+            request = dataform.GetCompilationResultRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3797,11 +3842,9 @@ class DataformAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_compilation_result,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_compilation_result
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3897,8 +3940,8 @@ class DataformAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, compilation_result])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3906,7 +3949,10 @@ class DataformAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = dataform.CreateCompilationResultRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dataform.CreateCompilationResultRequest):
+            request = dataform.CreateCompilationResultRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3917,11 +3963,9 @@ class DataformAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_compilation_result,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_compilation_result
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4001,15 +4045,16 @@ class DataformAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = dataform.QueryCompilationResultActionsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dataform.QueryCompilationResultActionsRequest):
+            request = dataform.QueryCompilationResultActionsRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.query_compilation_result_actions,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.query_compilation_result_actions
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4104,8 +4149,8 @@ class DataformAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4113,7 +4158,10 @@ class DataformAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = dataform.ListWorkflowConfigsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dataform.ListWorkflowConfigsRequest):
+            request = dataform.ListWorkflowConfigsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -4122,11 +4170,9 @@ class DataformAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_workflow_configs,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_workflow_configs
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4215,8 +4261,8 @@ class DataformAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4224,7 +4270,10 @@ class DataformAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = dataform.GetWorkflowConfigRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dataform.GetWorkflowConfigRequest):
+            request = dataform.GetWorkflowConfigRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -4233,11 +4282,9 @@ class DataformAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_workflow_config,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_workflow_config
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4343,8 +4390,8 @@ class DataformAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, workflow_config, workflow_config_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4352,7 +4399,10 @@ class DataformAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = dataform.CreateWorkflowConfigRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dataform.CreateWorkflowConfigRequest):
+            request = dataform.CreateWorkflowConfigRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -4365,11 +4415,9 @@ class DataformAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_workflow_config,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_workflow_config
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4463,8 +4511,8 @@ class DataformAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([workflow_config, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4472,7 +4520,10 @@ class DataformAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = dataform.UpdateWorkflowConfigRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dataform.UpdateWorkflowConfigRequest):
+            request = dataform.UpdateWorkflowConfigRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -4483,11 +4534,9 @@ class DataformAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_workflow_config,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_workflow_config
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4560,8 +4609,8 @@ class DataformAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4569,7 +4618,10 @@ class DataformAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = dataform.DeleteWorkflowConfigRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dataform.DeleteWorkflowConfigRequest):
+            request = dataform.DeleteWorkflowConfigRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -4578,11 +4630,9 @@ class DataformAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_workflow_config,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_workflow_config
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4665,8 +4715,8 @@ class DataformAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4674,7 +4724,10 @@ class DataformAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = dataform.ListWorkflowInvocationsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dataform.ListWorkflowInvocationsRequest):
+            request = dataform.ListWorkflowInvocationsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -4683,11 +4736,9 @@ class DataformAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_workflow_invocations,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_workflow_invocations
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4778,8 +4829,8 @@ class DataformAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4787,7 +4838,10 @@ class DataformAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = dataform.GetWorkflowInvocationRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dataform.GetWorkflowInvocationRequest):
+            request = dataform.GetWorkflowInvocationRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -4796,11 +4850,9 @@ class DataformAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_workflow_invocation,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_workflow_invocation
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4896,8 +4948,8 @@ class DataformAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, workflow_invocation])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4905,7 +4957,10 @@ class DataformAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = dataform.CreateWorkflowInvocationRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dataform.CreateWorkflowInvocationRequest):
+            request = dataform.CreateWorkflowInvocationRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -4916,11 +4971,9 @@ class DataformAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_workflow_invocation,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_workflow_invocation
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4993,8 +5046,8 @@ class DataformAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5002,7 +5055,10 @@ class DataformAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = dataform.DeleteWorkflowInvocationRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dataform.DeleteWorkflowInvocationRequest):
+            request = dataform.DeleteWorkflowInvocationRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -5011,11 +5067,9 @@ class DataformAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_workflow_invocation,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_workflow_invocation
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -5078,15 +5132,16 @@ class DataformAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        request = dataform.CancelWorkflowInvocationRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dataform.CancelWorkflowInvocationRequest):
+            request = dataform.CancelWorkflowInvocationRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.cancel_workflow_invocation,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.cancel_workflow_invocation
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -5163,15 +5218,16 @@ class DataformAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = dataform.QueryWorkflowInvocationActionsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dataform.QueryWorkflowInvocationActionsRequest):
+            request = dataform.QueryWorkflowInvocationActionsRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.query_workflow_invocation_actions,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.query_workflow_invocation_actions
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.

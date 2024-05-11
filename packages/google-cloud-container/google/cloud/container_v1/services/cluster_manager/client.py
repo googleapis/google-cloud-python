@@ -17,6 +17,7 @@ from collections import OrderedDict
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -524,7 +525,9 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, ClusterManagerTransport]] = None,
+        transport: Optional[
+            Union[str, ClusterManagerTransport, Callable[..., ClusterManagerTransport]]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -536,9 +539,11 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ClusterManagerTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,ClusterManagerTransport,Callable[..., ClusterManagerTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the ClusterManagerTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -647,8 +652,15 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[ClusterManagerTransport], Callable[..., ClusterManagerTransport]
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., ClusterManagerTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -744,8 +756,8 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project_id, zone, parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -753,10 +765,8 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cluster_service.ListClustersRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cluster_service.ListClustersRequest):
             request = cluster_service.ListClustersRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -882,8 +892,8 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 A Google Kubernetes Engine cluster.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project_id, zone, cluster_id, name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -891,10 +901,8 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cluster_service.GetClusterRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cluster_service.GetClusterRequest):
             request = cluster_service.GetClusterRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1036,8 +1044,8 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project_id, zone, cluster, parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1045,10 +1053,8 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cluster_service.CreateClusterRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cluster_service.CreateClusterRequest):
             request = cluster_service.CreateClusterRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1188,8 +1194,8 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project_id, zone, cluster_id, update, name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1197,10 +1203,8 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cluster_service.UpdateClusterRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cluster_service.UpdateClusterRequest):
             request = cluster_service.UpdateClusterRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1297,10 +1301,8 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cluster_service.UpdateNodePoolRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cluster_service.UpdateNodePoolRequest):
             request = cluster_service.UpdateNodePoolRequest(request)
 
@@ -1385,10 +1387,8 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cluster_service.SetNodePoolAutoscalingRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cluster_service.SetNodePoolAutoscalingRequest):
             request = cluster_service.SetNodePoolAutoscalingRequest(request)
 
@@ -1533,8 +1533,8 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project_id, zone, cluster_id, logging_service, name]
         )
@@ -1544,10 +1544,8 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cluster_service.SetLoggingServiceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cluster_service.SetLoggingServiceRequest):
             request = cluster_service.SetLoggingServiceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1706,8 +1704,8 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project_id, zone, cluster_id, monitoring_service, name]
         )
@@ -1717,10 +1715,8 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cluster_service.SetMonitoringServiceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cluster_service.SetMonitoringServiceRequest):
             request = cluster_service.SetMonitoringServiceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1863,8 +1859,8 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project_id, zone, cluster_id, addons_config, name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1872,10 +1868,8 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cluster_service.SetAddonsConfigRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cluster_service.SetAddonsConfigRequest):
             request = cluster_service.SetAddonsConfigRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2031,8 +2025,8 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         )
 
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project_id, zone, cluster_id, locations, name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2040,10 +2034,8 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cluster_service.SetLocationsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cluster_service.SetLocationsRequest):
             request = cluster_service.SetLocationsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2201,8 +2193,8 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project_id, zone, cluster_id, master_version, name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2210,10 +2202,8 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cluster_service.UpdateMasterRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cluster_service.UpdateMasterRequest):
             request = cluster_service.UpdateMasterRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2311,10 +2301,8 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cluster_service.SetMasterAuthRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cluster_service.SetMasterAuthRequest):
             request = cluster_service.SetMasterAuthRequest(request)
 
@@ -2445,8 +2433,8 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project_id, zone, cluster_id, name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2454,10 +2442,8 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cluster_service.DeleteClusterRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cluster_service.DeleteClusterRequest):
             request = cluster_service.DeleteClusterRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2570,8 +2556,8 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project_id, zone])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2579,10 +2565,8 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cluster_service.ListOperationsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cluster_service.ListOperationsRequest):
             request = cluster_service.ListOperationsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2709,8 +2693,8 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project_id, zone, operation_id, name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2718,10 +2702,8 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cluster_service.GetOperationRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cluster_service.GetOperationRequest):
             request = cluster_service.GetOperationRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2841,8 +2823,8 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project_id, zone, operation_id, name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2850,10 +2832,8 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cluster_service.CancelOperationRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cluster_service.CancelOperationRequest):
             request = cluster_service.CancelOperationRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2970,8 +2950,8 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project_id, zone, name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2979,10 +2959,8 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cluster_service.GetServerConfigRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cluster_service.GetServerConfigRequest):
             request = cluster_service.GetServerConfigRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3075,10 +3053,8 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cluster_service.GetJSONWebKeysRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cluster_service.GetJSONWebKeysRequest):
             request = cluster_service.GetJSONWebKeysRequest(request)
 
@@ -3197,8 +3173,8 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project_id, zone, cluster_id, parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3206,10 +3182,8 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cluster_service.ListNodePoolsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cluster_service.ListNodePoolsRequest):
             request = cluster_service.ListNodePoolsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3355,8 +3329,8 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project_id, zone, cluster_id, node_pool_id, name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3364,10 +3338,8 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cluster_service.GetNodePoolRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cluster_service.GetNodePoolRequest):
             request = cluster_service.GetNodePoolRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3506,8 +3478,8 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project_id, zone, cluster_id, node_pool, parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3515,10 +3487,8 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cluster_service.CreateNodePoolRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cluster_service.CreateNodePoolRequest):
             request = cluster_service.CreateNodePoolRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3661,8 +3631,8 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project_id, zone, cluster_id, node_pool_id, name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3670,10 +3640,8 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cluster_service.DeleteNodePoolRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cluster_service.DeleteNodePoolRequest):
             request = cluster_service.DeleteNodePoolRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3760,10 +3728,8 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cluster_service.CompleteNodePoolUpgradeRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cluster_service.CompleteNodePoolUpgradeRequest):
             request = cluster_service.CompleteNodePoolUpgradeRequest(request)
 
@@ -3902,8 +3868,8 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project_id, zone, cluster_id, node_pool_id, name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3911,10 +3877,8 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cluster_service.RollbackNodePoolUpgradeRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cluster_service.RollbackNodePoolUpgradeRequest):
             request = cluster_service.RollbackNodePoolUpgradeRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4013,10 +3977,8 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cluster_service.SetNodePoolManagementRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cluster_service.SetNodePoolManagementRequest):
             request = cluster_service.SetNodePoolManagementRequest(request)
 
@@ -4102,10 +4064,8 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cluster_service.SetLabelsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cluster_service.SetLabelsRequest):
             request = cluster_service.SetLabelsRequest(request)
 
@@ -4238,8 +4198,8 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project_id, zone, cluster_id, enabled, name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4247,10 +4207,8 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cluster_service.SetLegacyAbacRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cluster_service.SetLegacyAbacRequest):
             request = cluster_service.SetLegacyAbacRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4385,8 +4343,8 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project_id, zone, cluster_id, name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4394,10 +4352,8 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cluster_service.StartIPRotationRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cluster_service.StartIPRotationRequest):
             request = cluster_service.StartIPRotationRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4530,8 +4486,8 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project_id, zone, cluster_id, name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4539,10 +4495,8 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cluster_service.CompleteIPRotationRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cluster_service.CompleteIPRotationRequest):
             request = cluster_service.CompleteIPRotationRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4638,10 +4592,8 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cluster_service.SetNodePoolSizeRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cluster_service.SetNodePoolSizeRequest):
             request = cluster_service.SetNodePoolSizeRequest(request)
 
@@ -4771,8 +4723,8 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project_id, zone, cluster_id, network_policy, name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4780,10 +4732,8 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cluster_service.SetNetworkPolicyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cluster_service.SetNetworkPolicyRequest):
             request = cluster_service.SetNetworkPolicyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4926,8 +4876,8 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project_id, zone, cluster_id, maintenance_policy, name]
         )
@@ -4937,10 +4887,8 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cluster_service.SetMaintenancePolicyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cluster_service.SetMaintenancePolicyRequest):
             request = cluster_service.SetMaintenancePolicyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -5042,10 +4990,8 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cluster_service.ListUsableSubnetworksRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cluster_service.ListUsableSubnetworksRequest):
             request = cluster_service.ListUsableSubnetworksRequest(request)
 
@@ -5138,10 +5084,8 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cluster_service.CheckAutopilotCompatibilityRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cluster_service.CheckAutopilotCompatibilityRequest):
             request = cluster_service.CheckAutopilotCompatibilityRequest(request)
 

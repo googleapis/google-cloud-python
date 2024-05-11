@@ -17,6 +17,7 @@ from collections import OrderedDict
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -666,7 +667,9 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, DataCatalogTransport]] = None,
+        transport: Optional[
+            Union[str, DataCatalogTransport, Callable[..., DataCatalogTransport]]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -678,9 +681,11 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, DataCatalogTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,DataCatalogTransport,Callable[..., DataCatalogTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the DataCatalogTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -786,8 +791,15 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[DataCatalogTransport], Callable[..., DataCatalogTransport]
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., DataCatalogTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -902,8 +914,8 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([scope, query])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -911,10 +923,8 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a datacatalog.SearchCatalogRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, datacatalog.SearchCatalogRequest):
             request = datacatalog.SearchCatalogRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1048,8 +1058,8 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, entry_group_id, entry_group])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1057,10 +1067,8 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a datacatalog.CreateEntryGroupRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, datacatalog.CreateEntryGroupRequest):
             request = datacatalog.CreateEntryGroupRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1176,8 +1184,8 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([entry_group, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1185,10 +1193,8 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a datacatalog.UpdateEntryGroupRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, datacatalog.UpdateEntryGroupRequest):
             request = datacatalog.UpdateEntryGroupRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1296,8 +1302,8 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, read_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1305,10 +1311,8 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a datacatalog.GetEntryGroupRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, datacatalog.GetEntryGroupRequest):
             request = datacatalog.GetEntryGroupRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1399,8 +1403,8 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1408,10 +1412,8 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a datacatalog.DeleteEntryGroupRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, datacatalog.DeleteEntryGroupRequest):
             request = datacatalog.DeleteEntryGroupRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1508,8 +1510,8 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1517,10 +1519,8 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a datacatalog.ListEntryGroupsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, datacatalog.ListEntryGroupsRequest):
             request = datacatalog.ListEntryGroupsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1667,8 +1667,8 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, entry_id, entry])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1676,10 +1676,8 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a datacatalog.CreateEntryRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, datacatalog.CreateEntryRequest):
             request = datacatalog.CreateEntryRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1831,8 +1829,8 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([entry, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1840,10 +1838,8 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a datacatalog.UpdateEntryRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, datacatalog.UpdateEntryRequest):
             request = datacatalog.UpdateEntryRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1938,8 +1934,8 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1947,10 +1943,8 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a datacatalog.DeleteEntryRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, datacatalog.DeleteEntryRequest):
             request = datacatalog.DeleteEntryRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2051,8 +2045,8 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2060,10 +2054,8 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a datacatalog.GetEntryRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, datacatalog.GetEntryRequest):
             request = datacatalog.GetEntryRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2161,10 +2153,8 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a datacatalog.LookupEntryRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, datacatalog.LookupEntryRequest):
             request = datacatalog.LookupEntryRequest(request)
 
@@ -2253,8 +2243,8 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2262,10 +2252,8 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a datacatalog.ListEntriesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, datacatalog.ListEntriesRequest):
             request = datacatalog.ListEntriesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2398,8 +2386,8 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, tag_template_id, tag_template])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2407,10 +2395,8 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a datacatalog.CreateTagTemplateRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, datacatalog.CreateTagTemplateRequest):
             request = datacatalog.CreateTagTemplateRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2515,8 +2501,8 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2524,10 +2510,8 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a datacatalog.GetTagTemplateRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, datacatalog.GetTagTemplateRequest):
             request = datacatalog.GetTagTemplateRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2648,8 +2632,8 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([tag_template, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2657,10 +2641,8 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a datacatalog.UpdateTagTemplateRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, datacatalog.UpdateTagTemplateRequest):
             request = datacatalog.UpdateTagTemplateRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2765,8 +2747,8 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, force])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2774,10 +2756,8 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a datacatalog.DeleteTagTemplateRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, datacatalog.DeleteTagTemplateRequest):
             request = datacatalog.DeleteTagTemplateRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2905,8 +2885,8 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, tag_template_field_id, tag_template_field])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2914,10 +2894,8 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a datacatalog.CreateTagTemplateFieldRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, datacatalog.CreateTagTemplateFieldRequest):
             request = datacatalog.CreateTagTemplateFieldRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3058,8 +3036,8 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, tag_template_field, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3067,10 +3045,8 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a datacatalog.UpdateTagTemplateFieldRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, datacatalog.UpdateTagTemplateFieldRequest):
             request = datacatalog.UpdateTagTemplateFieldRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3185,8 +3161,8 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, new_tag_template_field_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3194,10 +3170,8 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a datacatalog.RenameTagTemplateFieldRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, datacatalog.RenameTagTemplateFieldRequest):
             request = datacatalog.RenameTagTemplateFieldRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3309,8 +3283,8 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, new_enum_value_display_name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3318,10 +3292,8 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a datacatalog.RenameTagTemplateFieldEnumValueRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, datacatalog.RenameTagTemplateFieldEnumValueRequest):
             request = datacatalog.RenameTagTemplateFieldEnumValueRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3429,8 +3401,8 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, force])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3438,10 +3410,8 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a datacatalog.DeleteTagTemplateFieldRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, datacatalog.DeleteTagTemplateFieldRequest):
             request = datacatalog.DeleteTagTemplateFieldRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3563,8 +3533,8 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, tag])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3572,10 +3542,8 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a datacatalog.CreateTagRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, datacatalog.CreateTagRequest):
             request = datacatalog.CreateTagRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3697,8 +3665,8 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([tag, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3706,10 +3674,8 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a datacatalog.UpdateTagRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, datacatalog.UpdateTagRequest):
             request = datacatalog.UpdateTagRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3796,8 +3762,8 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3805,10 +3771,8 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a datacatalog.DeleteTagRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, datacatalog.DeleteTagRequest):
             request = datacatalog.DeleteTagRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3912,8 +3876,8 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3921,10 +3885,8 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a datacatalog.ListTagsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, datacatalog.ListTagsRequest):
             request = datacatalog.ListTagsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4072,8 +4034,8 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4082,8 +4044,8 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
             )
 
         if isinstance(request, dict):
-            # The request isn't a proto-plus wrapped type,
-            # so it must be constructed via keyword expansion.
+            # - The request isn't a proto-plus wrapped type,
+            #   so it must be constructed via keyword expansion.
             request = iam_policy_pb2.SetIamPolicyRequest(**request)
         elif not request:
             # Null request, just make one.
@@ -4226,8 +4188,8 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4236,8 +4198,8 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
             )
 
         if isinstance(request, dict):
-            # The request isn't a proto-plus wrapped type,
-            # so it must be constructed via keyword expansion.
+            # - The request isn't a proto-plus wrapped type,
+            #   so it must be constructed via keyword expansion.
             request = iam_policy_pb2.GetIamPolicyRequest(**request)
         elif not request:
             # Null request, just make one.
@@ -4335,8 +4297,8 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         """
         # Create or coerce a protobuf request object.
         if isinstance(request, dict):
-            # The request isn't a proto-plus wrapped type,
-            # so it must be constructed via keyword expansion.
+            # - The request isn't a proto-plus wrapped type,
+            #   so it must be constructed via keyword expansion.
             request = iam_policy_pb2.TestIamPermissionsRequest(**request)
         elif not request:
             # Null request, just make one.

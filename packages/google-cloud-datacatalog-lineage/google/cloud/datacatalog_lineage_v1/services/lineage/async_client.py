@@ -17,6 +17,7 @@ from collections import OrderedDict
 import functools
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -203,7 +204,9 @@ class LineageAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, LineageTransport] = "grpc_asyncio",
+        transport: Optional[
+            Union[str, LineageTransport, Callable[..., LineageTransport]]
+        ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -215,9 +218,11 @@ class LineageAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.LineageTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,LineageTransport,Callable[..., LineageTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the LineageTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -339,8 +344,8 @@ class LineageAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, open_lineage])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -348,7 +353,10 @@ class LineageAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = lineage.ProcessOpenLineageRunEventRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, lineage.ProcessOpenLineageRunEventRequest):
+            request = lineage.ProcessOpenLineageRunEventRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -359,11 +367,9 @@ class LineageAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.process_open_lineage_run_event,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.process_open_lineage_run_event
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -453,8 +459,8 @@ class LineageAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, process])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -462,7 +468,10 @@ class LineageAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = lineage.CreateProcessRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, lineage.CreateProcessRequest):
+            request = lineage.CreateProcessRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -473,11 +482,9 @@ class LineageAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_process,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_process
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -570,8 +577,8 @@ class LineageAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([process, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -579,7 +586,10 @@ class LineageAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = lineage.UpdateProcessRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, lineage.UpdateProcessRequest):
+            request = lineage.UpdateProcessRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -590,11 +600,9 @@ class LineageAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_process,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_process
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -679,8 +687,8 @@ class LineageAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -688,7 +696,10 @@ class LineageAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = lineage.GetProcessRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, lineage.GetProcessRequest):
+            request = lineage.GetProcessRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -697,11 +708,9 @@ class LineageAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_process,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_process
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -790,8 +799,8 @@ class LineageAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -799,7 +808,10 @@ class LineageAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = lineage.ListProcessesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, lineage.ListProcessesRequest):
+            request = lineage.ListProcessesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -808,11 +820,9 @@ class LineageAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_processes,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_processes
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -918,8 +928,8 @@ class LineageAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -927,7 +937,10 @@ class LineageAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = lineage.DeleteProcessRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, lineage.DeleteProcessRequest):
+            request = lineage.DeleteProcessRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -936,11 +949,9 @@ class LineageAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_process,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_process
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1042,8 +1053,8 @@ class LineageAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, run])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1051,7 +1062,10 @@ class LineageAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = lineage.CreateRunRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, lineage.CreateRunRequest):
+            request = lineage.CreateRunRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1062,11 +1076,9 @@ class LineageAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_run,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_run
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1167,8 +1179,8 @@ class LineageAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([run, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1176,7 +1188,10 @@ class LineageAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = lineage.UpdateRunRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, lineage.UpdateRunRequest):
+            request = lineage.UpdateRunRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1187,11 +1202,9 @@ class LineageAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_run,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_run
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1273,8 +1286,8 @@ class LineageAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1282,7 +1295,10 @@ class LineageAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = lineage.GetRunRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, lineage.GetRunRequest):
+            request = lineage.GetRunRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1291,11 +1307,7 @@ class LineageAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_run,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_run]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1383,8 +1395,8 @@ class LineageAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1392,7 +1404,10 @@ class LineageAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = lineage.ListRunsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, lineage.ListRunsRequest):
+            request = lineage.ListRunsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1401,11 +1416,9 @@ class LineageAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_runs,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_runs
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1511,8 +1524,8 @@ class LineageAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1520,7 +1533,10 @@ class LineageAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = lineage.DeleteRunRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, lineage.DeleteRunRequest):
+            request = lineage.DeleteRunRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1529,11 +1545,9 @@ class LineageAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_run,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_run
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1635,8 +1649,8 @@ class LineageAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, lineage_event])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1644,7 +1658,10 @@ class LineageAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = lineage.CreateLineageEventRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, lineage.CreateLineageEventRequest):
+            request = lineage.CreateLineageEventRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1655,11 +1672,9 @@ class LineageAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_lineage_event,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_lineage_event
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1745,8 +1760,8 @@ class LineageAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1754,7 +1769,10 @@ class LineageAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = lineage.GetLineageEventRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, lineage.GetLineageEventRequest):
+            request = lineage.GetLineageEventRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1763,11 +1781,9 @@ class LineageAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_lineage_event,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_lineage_event
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1856,8 +1872,8 @@ class LineageAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1865,7 +1881,10 @@ class LineageAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = lineage.ListLineageEventsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, lineage.ListLineageEventsRequest):
+            request = lineage.ListLineageEventsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1874,11 +1893,9 @@ class LineageAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_lineage_events,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_lineage_events
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1961,8 +1978,8 @@ class LineageAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1970,7 +1987,10 @@ class LineageAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = lineage.DeleteLineageEventRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, lineage.DeleteLineageEventRequest):
+            request = lineage.DeleteLineageEventRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1979,11 +1999,9 @@ class LineageAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_lineage_event,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_lineage_event
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2071,15 +2089,16 @@ class LineageAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = lineage.SearchLinksRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, lineage.SearchLinksRequest):
+            request = lineage.SearchLinksRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.search_links,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.search_links
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2181,15 +2200,16 @@ class LineageAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = lineage.BatchSearchLinkProcessesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, lineage.BatchSearchLinkProcessesRequest):
+            request = lineage.BatchSearchLinkProcessesRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.batch_search_link_processes,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.batch_search_link_processes
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.

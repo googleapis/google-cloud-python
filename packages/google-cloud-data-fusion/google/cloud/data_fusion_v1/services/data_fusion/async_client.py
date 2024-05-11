@@ -17,6 +17,7 @@ from collections import OrderedDict
 import functools
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -199,7 +200,9 @@ class DataFusionAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, DataFusionTransport] = "grpc_asyncio",
+        transport: Optional[
+            Union[str, DataFusionTransport, Callable[..., DataFusionTransport]]
+        ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -211,9 +214,11 @@ class DataFusionAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.DataFusionTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,DataFusionTransport,Callable[..., DataFusionTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the DataFusionTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -325,8 +330,8 @@ class DataFusionAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -334,7 +339,10 @@ class DataFusionAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = datafusion.ListAvailableVersionsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, datafusion.ListAvailableVersionsRequest):
+            request = datafusion.ListAvailableVersionsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -343,11 +351,9 @@ class DataFusionAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_available_versions,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_available_versions
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -436,15 +442,16 @@ class DataFusionAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = datafusion.ListInstancesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, datafusion.ListInstancesRequest):
+            request = datafusion.ListInstancesRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_instances,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_instances
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -526,15 +533,16 @@ class DataFusionAsyncClient:
                 Represents a Data Fusion instance.
         """
         # Create or coerce a protobuf request object.
-        request = datafusion.GetInstanceRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, datafusion.GetInstanceRequest):
+            request = datafusion.GetInstanceRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_instance,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_instance
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -641,8 +649,8 @@ class DataFusionAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, instance, instance_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -650,7 +658,10 @@ class DataFusionAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = datafusion.CreateInstanceRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, datafusion.CreateInstanceRequest):
+            request = datafusion.CreateInstanceRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -663,11 +674,9 @@ class DataFusionAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_instance,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_instance
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -773,8 +782,8 @@ class DataFusionAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -782,7 +791,10 @@ class DataFusionAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = datafusion.DeleteInstanceRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, datafusion.DeleteInstanceRequest):
+            request = datafusion.DeleteInstanceRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -791,11 +803,9 @@ class DataFusionAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_instance,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_instance
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -916,8 +926,8 @@ class DataFusionAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([instance, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -925,7 +935,10 @@ class DataFusionAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = datafusion.UpdateInstanceRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, datafusion.UpdateInstanceRequest):
+            request = datafusion.UpdateInstanceRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -936,11 +949,9 @@ class DataFusionAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_instance,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_instance
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1033,15 +1044,16 @@ class DataFusionAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = datafusion.RestartInstanceRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, datafusion.RestartInstanceRequest):
+            request = datafusion.RestartInstanceRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.restart_instance,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.restart_instance
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.

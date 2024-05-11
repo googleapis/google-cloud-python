@@ -17,6 +17,7 @@ from collections import OrderedDict
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -742,7 +743,9 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, CloudBuildTransport]] = None,
+        transport: Optional[
+            Union[str, CloudBuildTransport, Callable[..., CloudBuildTransport]]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -754,9 +757,11 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, CloudBuildTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,CloudBuildTransport,Callable[..., CloudBuildTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the CloudBuildTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -862,8 +867,15 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[CloudBuildTransport], Callable[..., CloudBuildTransport]
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., CloudBuildTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -973,8 +985,8 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project_id, build])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -982,10 +994,8 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cloudbuild.CreateBuildRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cloudbuild.CreateBuildRequest):
             request = cloudbuild.CreateBuildRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1126,8 +1136,8 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project_id, id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1135,10 +1145,8 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cloudbuild.GetBuildRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cloudbuild.GetBuildRequest):
             request = cloudbuild.GetBuildRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1253,8 +1261,8 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project_id, filter])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1262,10 +1270,8 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cloudbuild.ListBuildsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cloudbuild.ListBuildsRequest):
             request = cloudbuild.ListBuildsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1403,8 +1409,8 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project_id, id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1412,10 +1418,8 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cloudbuild.CancelBuildRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cloudbuild.CancelBuildRequest):
             request = cloudbuild.CancelBuildRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1583,8 +1587,8 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project_id, id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1592,10 +1596,8 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cloudbuild.RetryBuildRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cloudbuild.RetryBuildRequest):
             request = cloudbuild.RetryBuildRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1747,8 +1749,8 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, approval_result])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1756,10 +1758,8 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cloudbuild.ApproveBuildRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cloudbuild.ApproveBuildRequest):
             request = cloudbuild.ApproveBuildRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1882,8 +1882,8 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project_id, trigger])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1891,10 +1891,8 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cloudbuild.CreateBuildTriggerRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cloudbuild.CreateBuildTriggerRequest):
             request = cloudbuild.CreateBuildTriggerRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2008,8 +2006,8 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project_id, trigger_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2017,10 +2015,8 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cloudbuild.GetBuildTriggerRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cloudbuild.GetBuildTriggerRequest):
             request = cloudbuild.GetBuildTriggerRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2127,8 +2123,8 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2136,10 +2132,8 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cloudbuild.ListBuildTriggersRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cloudbuild.ListBuildTriggersRequest):
             request = cloudbuild.ListBuildTriggersRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2248,8 +2242,8 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project_id, trigger_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2257,10 +2251,8 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cloudbuild.DeleteBuildTriggerRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cloudbuild.DeleteBuildTriggerRequest):
             request = cloudbuild.DeleteBuildTriggerRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2379,8 +2371,8 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project_id, trigger_id, trigger])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2388,10 +2380,8 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cloudbuild.UpdateBuildTriggerRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cloudbuild.UpdateBuildTriggerRequest):
             request = cloudbuild.UpdateBuildTriggerRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2546,8 +2536,8 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project_id, trigger_id, source])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2555,10 +2545,8 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cloudbuild.RunBuildTriggerRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cloudbuild.RunBuildTriggerRequest):
             request = cloudbuild.RunBuildTriggerRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2664,10 +2652,8 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cloudbuild.ReceiveTriggerWebhookRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cloudbuild.ReceiveTriggerWebhookRequest):
             request = cloudbuild.ReceiveTriggerWebhookRequest(request)
 
@@ -2801,8 +2787,8 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, worker_pool, worker_pool_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2810,10 +2796,8 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cloudbuild.CreateWorkerPoolRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cloudbuild.CreateWorkerPoolRequest):
             request = cloudbuild.CreateWorkerPoolRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2939,8 +2923,8 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2948,10 +2932,8 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cloudbuild.GetWorkerPoolRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cloudbuild.GetWorkerPoolRequest):
             request = cloudbuild.GetWorkerPoolRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3066,8 +3048,8 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3075,10 +3057,8 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cloudbuild.DeleteWorkerPoolRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cloudbuild.DeleteWorkerPoolRequest):
             request = cloudbuild.DeleteWorkerPoolRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3217,8 +3197,8 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([worker_pool, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3226,10 +3206,8 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cloudbuild.UpdateWorkerPoolRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cloudbuild.UpdateWorkerPoolRequest):
             request = cloudbuild.UpdateWorkerPoolRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3343,8 +3321,8 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3352,10 +3330,8 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cloudbuild.ListWorkerPoolsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cloudbuild.ListWorkerPoolsRequest):
             request = cloudbuild.ListWorkerPoolsRequest(request)
             # If we have keyword arguments corresponding to fields on the
