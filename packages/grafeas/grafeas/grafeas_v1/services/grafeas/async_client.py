@@ -17,6 +17,7 @@ from collections import OrderedDict
 import functools
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -227,8 +228,8 @@ class GrafeasAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -236,7 +237,10 @@ class GrafeasAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = grafeas.GetOccurrenceRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, grafeas.GetOccurrenceRequest):
+            request = grafeas.GetOccurrenceRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -245,21 +249,9 @@ class GrafeasAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_occurrence,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=30.0,
-            ),
-            default_timeout=30.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_occurrence
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -348,8 +340,8 @@ class GrafeasAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, filter])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -357,7 +349,10 @@ class GrafeasAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = grafeas.ListOccurrencesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, grafeas.ListOccurrencesRequest):
+            request = grafeas.ListOccurrencesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -368,21 +363,9 @@ class GrafeasAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_occurrences,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=30.0,
-            ),
-            default_timeout=30.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_occurrences
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -463,8 +446,8 @@ class GrafeasAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -472,7 +455,10 @@ class GrafeasAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = grafeas.DeleteOccurrenceRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, grafeas.DeleteOccurrenceRequest):
+            request = grafeas.DeleteOccurrenceRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -481,21 +467,9 @@ class GrafeasAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_occurrence,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=30.0,
-            ),
-            default_timeout=30.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_occurrence
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -578,8 +552,8 @@ class GrafeasAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, occurrence])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -587,7 +561,10 @@ class GrafeasAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = grafeas.CreateOccurrenceRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, grafeas.CreateOccurrenceRequest):
+            request = grafeas.CreateOccurrenceRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -598,11 +575,9 @@ class GrafeasAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_occurrence,
-            default_timeout=30.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_occurrence
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -691,8 +666,8 @@ class GrafeasAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, occurrences])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -700,7 +675,10 @@ class GrafeasAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = grafeas.BatchCreateOccurrencesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, grafeas.BatchCreateOccurrencesRequest):
+            request = grafeas.BatchCreateOccurrencesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -711,11 +689,9 @@ class GrafeasAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.batch_create_occurrences,
-            default_timeout=30.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.batch_create_occurrences
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -806,8 +782,8 @@ class GrafeasAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, occurrence, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -815,7 +791,10 @@ class GrafeasAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = grafeas.UpdateOccurrenceRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, grafeas.UpdateOccurrenceRequest):
+            request = grafeas.UpdateOccurrenceRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -828,11 +807,9 @@ class GrafeasAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_occurrence,
-            default_timeout=30.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_occurrence
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -914,8 +891,8 @@ class GrafeasAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -923,7 +900,10 @@ class GrafeasAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = grafeas.GetOccurrenceNoteRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, grafeas.GetOccurrenceNoteRequest):
+            request = grafeas.GetOccurrenceNoteRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -932,21 +912,9 @@ class GrafeasAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_occurrence_note,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=30.0,
-            ),
-            default_timeout=30.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_occurrence_note
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1025,8 +993,8 @@ class GrafeasAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1034,7 +1002,10 @@ class GrafeasAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = grafeas.GetNoteRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, grafeas.GetNoteRequest):
+            request = grafeas.GetNoteRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1043,21 +1014,7 @@ class GrafeasAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_note,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=30.0,
-            ),
-            default_timeout=30.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_note]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1146,8 +1103,8 @@ class GrafeasAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, filter])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1155,7 +1112,10 @@ class GrafeasAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = grafeas.ListNotesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, grafeas.ListNotesRequest):
+            request = grafeas.ListNotesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1166,21 +1126,9 @@ class GrafeasAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_notes,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=30.0,
-            ),
-            default_timeout=30.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_notes
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1259,8 +1207,8 @@ class GrafeasAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1268,7 +1216,10 @@ class GrafeasAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = grafeas.DeleteNoteRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, grafeas.DeleteNoteRequest):
+            request = grafeas.DeleteNoteRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1277,21 +1228,9 @@ class GrafeasAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_note,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=30.0,
-            ),
-            default_timeout=30.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_note
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1381,8 +1320,8 @@ class GrafeasAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, note_id, note])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1390,7 +1329,10 @@ class GrafeasAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = grafeas.CreateNoteRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, grafeas.CreateNoteRequest):
+            request = grafeas.CreateNoteRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1403,11 +1345,9 @@ class GrafeasAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_note,
-            default_timeout=30.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_note
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1493,8 +1433,8 @@ class GrafeasAsyncClient:
                 Response for creating notes in batch.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, notes])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1502,7 +1442,10 @@ class GrafeasAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = grafeas.BatchCreateNotesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, grafeas.BatchCreateNotesRequest):
+            request = grafeas.BatchCreateNotesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1514,11 +1457,9 @@ class GrafeasAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.batch_create_notes,
-            default_timeout=30.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.batch_create_notes
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1609,8 +1550,8 @@ class GrafeasAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, note, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1618,7 +1559,10 @@ class GrafeasAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = grafeas.UpdateNoteRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, grafeas.UpdateNoteRequest):
+            request = grafeas.UpdateNoteRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1631,11 +1575,9 @@ class GrafeasAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_note,
-            default_timeout=30.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_note
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1728,8 +1670,8 @@ class GrafeasAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, filter])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1737,7 +1679,10 @@ class GrafeasAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = grafeas.ListNoteOccurrencesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, grafeas.ListNoteOccurrencesRequest):
+            request = grafeas.ListNoteOccurrencesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1748,21 +1693,9 @@ class GrafeasAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_note_occurrences,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=30.0,
-            ),
-            default_timeout=30.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_note_occurrences
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.

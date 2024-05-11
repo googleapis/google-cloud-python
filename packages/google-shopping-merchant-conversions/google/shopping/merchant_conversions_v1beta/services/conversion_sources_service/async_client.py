@@ -17,6 +17,7 @@ from collections import OrderedDict
 import functools
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -212,7 +213,13 @@ class ConversionSourcesServiceAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, ConversionSourcesServiceTransport] = "grpc_asyncio",
+        transport: Optional[
+            Union[
+                str,
+                ConversionSourcesServiceTransport,
+                Callable[..., ConversionSourcesServiceTransport],
+            ]
+        ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -224,9 +231,11 @@ class ConversionSourcesServiceAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.ConversionSourcesServiceTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,ConversionSourcesServiceTransport,Callable[..., ConversionSourcesServiceTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the ConversionSourcesServiceTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -350,8 +359,8 @@ class ConversionSourcesServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, conversion_source])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -359,7 +368,10 @@ class ConversionSourcesServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = conversionsources.CreateConversionSourceRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, conversionsources.CreateConversionSourceRequest):
+            request = conversionsources.CreateConversionSourceRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -370,11 +382,9 @@ class ConversionSourcesServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_conversion_source,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_conversion_source
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -475,8 +485,8 @@ class ConversionSourcesServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([conversion_source, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -484,7 +494,10 @@ class ConversionSourcesServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = conversionsources.UpdateConversionSourceRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, conversionsources.UpdateConversionSourceRequest):
+            request = conversionsources.UpdateConversionSourceRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -495,11 +508,9 @@ class ConversionSourcesServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_conversion_source,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_conversion_source
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -582,8 +593,8 @@ class ConversionSourcesServiceAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -591,7 +602,10 @@ class ConversionSourcesServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = conversionsources.DeleteConversionSourceRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, conversionsources.DeleteConversionSourceRequest):
+            request = conversionsources.DeleteConversionSourceRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -600,11 +614,9 @@ class ConversionSourcesServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_conversion_source,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_conversion_source
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -682,15 +694,16 @@ class ConversionSourcesServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = conversionsources.UndeleteConversionSourceRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, conversionsources.UndeleteConversionSourceRequest):
+            request = conversionsources.UndeleteConversionSourceRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.undelete_conversion_source,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.undelete_conversion_source
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -778,8 +791,8 @@ class ConversionSourcesServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -787,7 +800,10 @@ class ConversionSourcesServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = conversionsources.GetConversionSourceRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, conversionsources.GetConversionSourceRequest):
+            request = conversionsources.GetConversionSourceRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -796,11 +812,9 @@ class ConversionSourcesServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_conversion_source,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_conversion_source
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -891,8 +905,8 @@ class ConversionSourcesServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -900,7 +914,10 @@ class ConversionSourcesServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = conversionsources.ListConversionSourcesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, conversionsources.ListConversionSourcesRequest):
+            request = conversionsources.ListConversionSourcesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -909,11 +926,9 @@ class ConversionSourcesServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_conversion_sources,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_conversion_sources
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
