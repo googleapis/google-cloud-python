@@ -17,6 +17,7 @@ from collections import OrderedDict
 import functools
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -210,7 +211,9 @@ class AwsClustersAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, AwsClustersTransport] = "grpc_asyncio",
+        transport: Optional[
+            Union[str, AwsClustersTransport, Callable[..., AwsClustersTransport]]
+        ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -222,9 +225,11 @@ class AwsClustersAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.AwsClustersTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,AwsClustersTransport,Callable[..., AwsClustersTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the AwsClustersTransport constructor.
+                If set to None, a transport is chosen automatically.
                 NOTE: "rest" transport functionality is currently in a
                 beta state (preview). We welcome your feedback via an
                 issue in this library's source repository.
@@ -393,8 +398,8 @@ class AwsClustersAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, aws_cluster, aws_cluster_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -402,7 +407,10 @@ class AwsClustersAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = aws_service.CreateAwsClusterRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, aws_service.CreateAwsClusterRequest):
+            request = aws_service.CreateAwsClusterRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -415,11 +423,9 @@ class AwsClustersAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_aws_cluster,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_aws_cluster
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -570,8 +576,8 @@ class AwsClustersAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([aws_cluster, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -579,7 +585,10 @@ class AwsClustersAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = aws_service.UpdateAwsClusterRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, aws_service.UpdateAwsClusterRequest):
+            request = aws_service.UpdateAwsClusterRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -590,11 +599,9 @@ class AwsClustersAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_aws_cluster,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_aws_cluster
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -695,8 +702,8 @@ class AwsClustersAsyncClient:
                 An Anthos cluster running on AWS.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -704,7 +711,10 @@ class AwsClustersAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = aws_service.GetAwsClusterRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, aws_service.GetAwsClusterRequest):
+            request = aws_service.GetAwsClusterRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -713,20 +723,9 @@ class AwsClustersAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_aws_cluster,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_aws_cluster
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -823,8 +822,8 @@ class AwsClustersAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -832,7 +831,10 @@ class AwsClustersAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = aws_service.ListAwsClustersRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, aws_service.ListAwsClustersRequest):
+            request = aws_service.ListAwsClustersRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -841,20 +843,9 @@ class AwsClustersAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_aws_clusters,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_aws_clusters
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -978,8 +969,8 @@ class AwsClustersAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -987,7 +978,10 @@ class AwsClustersAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = aws_service.DeleteAwsClusterRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, aws_service.DeleteAwsClusterRequest):
+            request = aws_service.DeleteAwsClusterRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -996,11 +990,9 @@ class AwsClustersAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_aws_cluster,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_aws_cluster
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1085,24 +1077,16 @@ class AwsClustersAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = aws_service.GenerateAwsClusterAgentTokenRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, aws_service.GenerateAwsClusterAgentTokenRequest):
+            request = aws_service.GenerateAwsClusterAgentTokenRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.generate_aws_cluster_agent_token,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.generate_aws_cluster_agent_token
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1182,24 +1166,16 @@ class AwsClustersAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = aws_service.GenerateAwsAccessTokenRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, aws_service.GenerateAwsAccessTokenRequest):
+            request = aws_service.GenerateAwsAccessTokenRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.generate_aws_access_token,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.generate_aws_access_token
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1342,8 +1318,8 @@ class AwsClustersAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, aws_node_pool, aws_node_pool_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1351,7 +1327,10 @@ class AwsClustersAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = aws_service.CreateAwsNodePoolRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, aws_service.CreateAwsNodePoolRequest):
+            request = aws_service.CreateAwsNodePoolRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1364,11 +1343,9 @@ class AwsClustersAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_aws_node_pool,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_aws_node_pool
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1518,8 +1495,8 @@ class AwsClustersAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([aws_node_pool, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1527,7 +1504,10 @@ class AwsClustersAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = aws_service.UpdateAwsNodePoolRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, aws_service.UpdateAwsNodePoolRequest):
+            request = aws_service.UpdateAwsNodePoolRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1538,11 +1518,9 @@ class AwsClustersAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_aws_node_pool,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_aws_node_pool
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1657,8 +1635,8 @@ class AwsClustersAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1666,7 +1644,10 @@ class AwsClustersAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = aws_service.RollbackAwsNodePoolUpdateRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, aws_service.RollbackAwsNodePoolUpdateRequest):
+            request = aws_service.RollbackAwsNodePoolUpdateRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1675,11 +1656,9 @@ class AwsClustersAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.rollback_aws_node_pool_update,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.rollback_aws_node_pool_update
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1778,8 +1757,8 @@ class AwsClustersAsyncClient:
                 An Anthos node pool running on AWS.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1787,7 +1766,10 @@ class AwsClustersAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = aws_service.GetAwsNodePoolRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, aws_service.GetAwsNodePoolRequest):
+            request = aws_service.GetAwsNodePoolRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1796,20 +1778,9 @@ class AwsClustersAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_aws_node_pool,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_aws_node_pool
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1908,8 +1879,8 @@ class AwsClustersAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1917,7 +1888,10 @@ class AwsClustersAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = aws_service.ListAwsNodePoolsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, aws_service.ListAwsNodePoolsRequest):
+            request = aws_service.ListAwsNodePoolsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1926,20 +1900,9 @@ class AwsClustersAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_aws_node_pools,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_aws_node_pools
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2059,8 +2022,8 @@ class AwsClustersAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2068,7 +2031,10 @@ class AwsClustersAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = aws_service.DeleteAwsNodePoolRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, aws_service.DeleteAwsNodePoolRequest):
+            request = aws_service.DeleteAwsNodePoolRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2077,11 +2043,9 @@ class AwsClustersAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_aws_node_pool,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_aws_node_pool
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2171,24 +2135,16 @@ class AwsClustersAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = aws_service.GetAwsOpenIdConfigRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, aws_service.GetAwsOpenIdConfigRequest):
+            request = aws_service.GetAwsOpenIdConfigRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_aws_open_id_config,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_aws_open_id_config
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2269,24 +2225,16 @@ class AwsClustersAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = aws_service.GetAwsJsonWebKeysRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, aws_service.GetAwsJsonWebKeysRequest):
+            request = aws_service.GetAwsJsonWebKeysRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_aws_json_web_keys,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_aws_json_web_keys
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2381,8 +2329,8 @@ class AwsClustersAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2390,7 +2338,10 @@ class AwsClustersAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = aws_service.GetAwsServerConfigRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, aws_service.GetAwsServerConfigRequest):
+            request = aws_service.GetAwsServerConfigRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2399,20 +2350,9 @@ class AwsClustersAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_aws_server_config,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_aws_server_config
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.

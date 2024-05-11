@@ -17,6 +17,7 @@ from collections import OrderedDict
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -587,7 +588,9 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, AwsClustersTransport]] = None,
+        transport: Optional[
+            Union[str, AwsClustersTransport, Callable[..., AwsClustersTransport]]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -599,9 +602,11 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, AwsClustersTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,AwsClustersTransport,Callable[..., AwsClustersTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the AwsClustersTransport constructor.
+                If set to None, a transport is chosen automatically.
                 NOTE: "rest" transport functionality is currently in a
                 beta state (preview). We welcome your feedback via an
                 issue in this library's source repository.
@@ -710,8 +715,15 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[AwsClustersTransport], Callable[..., AwsClustersTransport]
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., AwsClustersTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -845,8 +857,8 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, aws_cluster, aws_cluster_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -854,10 +866,8 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a aws_service.CreateAwsClusterRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, aws_service.CreateAwsClusterRequest):
             request = aws_service.CreateAwsClusterRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1022,8 +1032,8 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([aws_cluster, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1031,10 +1041,8 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a aws_service.UpdateAwsClusterRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, aws_service.UpdateAwsClusterRequest):
             request = aws_service.UpdateAwsClusterRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1147,8 +1155,8 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
                 An Anthos cluster running on AWS.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1156,10 +1164,8 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a aws_service.GetAwsClusterRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, aws_service.GetAwsClusterRequest):
             request = aws_service.GetAwsClusterRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1266,8 +1272,8 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1275,10 +1281,8 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a aws_service.ListAwsClustersRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, aws_service.ListAwsClustersRequest):
             request = aws_service.ListAwsClustersRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1412,8 +1416,8 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1421,10 +1425,8 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a aws_service.DeleteAwsClusterRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, aws_service.DeleteAwsClusterRequest):
             request = aws_service.DeleteAwsClusterRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1519,10 +1521,8 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a aws_service.GenerateAwsClusterAgentTokenRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, aws_service.GenerateAwsClusterAgentTokenRequest):
             request = aws_service.GenerateAwsClusterAgentTokenRequest(request)
 
@@ -1610,10 +1610,8 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a aws_service.GenerateAwsAccessTokenRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, aws_service.GenerateAwsAccessTokenRequest):
             request = aws_service.GenerateAwsAccessTokenRequest(request)
 
@@ -1764,8 +1762,8 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, aws_node_pool, aws_node_pool_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1773,10 +1771,8 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a aws_service.CreateAwsNodePoolRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, aws_service.CreateAwsNodePoolRequest):
             request = aws_service.CreateAwsNodePoolRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1940,8 +1936,8 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([aws_node_pool, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1949,10 +1945,8 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a aws_service.UpdateAwsNodePoolRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, aws_service.UpdateAwsNodePoolRequest):
             request = aws_service.UpdateAwsNodePoolRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2079,8 +2073,8 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2088,10 +2082,8 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a aws_service.RollbackAwsNodePoolUpdateRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, aws_service.RollbackAwsNodePoolUpdateRequest):
             request = aws_service.RollbackAwsNodePoolUpdateRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2202,8 +2194,8 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
                 An Anthos node pool running on AWS.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2211,10 +2203,8 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a aws_service.GetAwsNodePoolRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, aws_service.GetAwsNodePoolRequest):
             request = aws_service.GetAwsNodePoolRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2323,8 +2313,8 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2332,10 +2322,8 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a aws_service.ListAwsNodePoolsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, aws_service.ListAwsNodePoolsRequest):
             request = aws_service.ListAwsNodePoolsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2465,8 +2453,8 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2474,10 +2462,8 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a aws_service.DeleteAwsNodePoolRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, aws_service.DeleteAwsNodePoolRequest):
             request = aws_service.DeleteAwsNodePoolRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2577,10 +2563,8 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a aws_service.GetAwsOpenIdConfigRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, aws_service.GetAwsOpenIdConfigRequest):
             request = aws_service.GetAwsOpenIdConfigRequest(request)
 
@@ -2667,10 +2651,8 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a aws_service.GetAwsJsonWebKeysRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, aws_service.GetAwsJsonWebKeysRequest):
             request = aws_service.GetAwsJsonWebKeysRequest(request)
 
@@ -2771,8 +2753,8 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2780,10 +2762,8 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a aws_service.GetAwsServerConfigRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, aws_service.GetAwsServerConfigRequest):
             request = aws_service.GetAwsServerConfigRequest(request)
             # If we have keyword arguments corresponding to fields on the

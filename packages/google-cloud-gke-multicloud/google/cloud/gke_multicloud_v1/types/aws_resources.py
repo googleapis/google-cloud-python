@@ -967,8 +967,8 @@ class AwsNodeConfig(proto.Message):
             up to 127 Unicode characters. Values can be up to 255
             Unicode characters.
         iam_instance_profile (str):
-            Required. The name or ARN of the AWS IAM role
-            assigned to nodes in the pool.
+            Required. The name or ARN of the AWS IAM
+            instance profile to assign to nodes in the pool.
         image_type (str):
             Optional. The OS image type to use on node pool instances.
             Can be unspecified, or have a value of ``ubuntu``.
