@@ -17,6 +17,7 @@ from collections import OrderedDict
 import functools
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -205,7 +206,9 @@ class RegistryAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, RegistryTransport] = "grpc_asyncio",
+        transport: Optional[
+            Union[str, RegistryTransport, Callable[..., RegistryTransport]]
+        ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -217,9 +220,11 @@ class RegistryAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.RegistryTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,RegistryTransport,Callable[..., RegistryTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the RegistryTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -327,8 +332,8 @@ class RegistryAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -336,7 +341,10 @@ class RegistryAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = registry_service.ListApisRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, registry_service.ListApisRequest):
+            request = registry_service.ListApisRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -345,23 +353,9 @@ class RegistryAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_apis,
-            default_retry=retries.AsyncRetry(
-                initial=0.2,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.Aborted,
-                    core_exceptions.Cancelled,
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_apis
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -453,8 +447,8 @@ class RegistryAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -462,7 +456,10 @@ class RegistryAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = registry_service.GetApiRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, registry_service.GetApiRequest):
+            request = registry_service.GetApiRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -471,23 +468,7 @@ class RegistryAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_api,
-            default_retry=retries.AsyncRetry(
-                initial=0.2,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.Aborted,
-                    core_exceptions.Cancelled,
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_api]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -590,8 +571,8 @@ class RegistryAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, api, api_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -599,7 +580,10 @@ class RegistryAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = registry_service.CreateApiRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, registry_service.CreateApiRequest):
+            request = registry_service.CreateApiRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -612,23 +596,9 @@ class RegistryAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_api,
-            default_retry=retries.AsyncRetry(
-                initial=0.2,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.Aborted,
-                    core_exceptions.Cancelled,
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_api
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -723,8 +693,8 @@ class RegistryAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([api, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -732,7 +702,10 @@ class RegistryAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = registry_service.UpdateApiRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, registry_service.UpdateApiRequest):
+            request = registry_service.UpdateApiRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -743,23 +716,9 @@ class RegistryAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_api,
-            default_retry=retries.AsyncRetry(
-                initial=0.2,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.Aborted,
-                    core_exceptions.Cancelled,
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_api
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -833,8 +792,8 @@ class RegistryAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -842,7 +801,10 @@ class RegistryAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = registry_service.DeleteApiRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, registry_service.DeleteApiRequest):
+            request = registry_service.DeleteApiRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -851,23 +813,9 @@ class RegistryAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_api,
-            default_retry=retries.AsyncRetry(
-                initial=0.2,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.Aborted,
-                    core_exceptions.Cancelled,
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_api
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -950,8 +898,8 @@ class RegistryAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -959,7 +907,10 @@ class RegistryAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = registry_service.ListApiVersionsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, registry_service.ListApiVersionsRequest):
+            request = registry_service.ListApiVersionsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -968,23 +919,9 @@ class RegistryAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_api_versions,
-            default_retry=retries.AsyncRetry(
-                initial=0.2,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.Aborted,
-                    core_exceptions.Cancelled,
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_api_versions
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1076,8 +1013,8 @@ class RegistryAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1085,7 +1022,10 @@ class RegistryAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = registry_service.GetApiVersionRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, registry_service.GetApiVersionRequest):
+            request = registry_service.GetApiVersionRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1094,23 +1034,9 @@ class RegistryAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_api_version,
-            default_retry=retries.AsyncRetry(
-                initial=0.2,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.Aborted,
-                    core_exceptions.Cancelled,
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_api_version
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1214,8 +1140,8 @@ class RegistryAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, api_version, api_version_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1223,7 +1149,10 @@ class RegistryAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = registry_service.CreateApiVersionRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, registry_service.CreateApiVersionRequest):
+            request = registry_service.CreateApiVersionRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1236,23 +1165,9 @@ class RegistryAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_api_version,
-            default_retry=retries.AsyncRetry(
-                initial=0.2,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.Aborted,
-                    core_exceptions.Cancelled,
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_api_version
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1348,8 +1263,8 @@ class RegistryAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([api_version, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1357,7 +1272,10 @@ class RegistryAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = registry_service.UpdateApiVersionRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, registry_service.UpdateApiVersionRequest):
+            request = registry_service.UpdateApiVersionRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1368,23 +1286,9 @@ class RegistryAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_api_version,
-            default_retry=retries.AsyncRetry(
-                initial=0.2,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.Aborted,
-                    core_exceptions.Cancelled,
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_api_version
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1460,8 +1364,8 @@ class RegistryAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1469,7 +1373,10 @@ class RegistryAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = registry_service.DeleteApiVersionRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, registry_service.DeleteApiVersionRequest):
+            request = registry_service.DeleteApiVersionRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1478,23 +1385,9 @@ class RegistryAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_api_version,
-            default_retry=retries.AsyncRetry(
-                initial=0.2,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.Aborted,
-                    core_exceptions.Cancelled,
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_api_version
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1578,8 +1471,8 @@ class RegistryAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1587,7 +1480,10 @@ class RegistryAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = registry_service.ListApiSpecsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, registry_service.ListApiSpecsRequest):
+            request = registry_service.ListApiSpecsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1596,23 +1492,9 @@ class RegistryAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_api_specs,
-            default_retry=retries.AsyncRetry(
-                initial=0.2,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.Aborted,
-                    core_exceptions.Cancelled,
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_api_specs
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1715,8 +1597,8 @@ class RegistryAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1724,7 +1606,10 @@ class RegistryAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = registry_service.GetApiSpecRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, registry_service.GetApiSpecRequest):
+            request = registry_service.GetApiSpecRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1733,23 +1618,9 @@ class RegistryAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_api_spec,
-            default_retry=retries.AsyncRetry(
-                initial=0.2,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.Aborted,
-                    core_exceptions.Cancelled,
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_api_spec
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1882,8 +1753,8 @@ class RegistryAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1891,7 +1762,10 @@ class RegistryAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = registry_service.GetApiSpecContentsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, registry_service.GetApiSpecContentsRequest):
+            request = registry_service.GetApiSpecContentsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1900,23 +1774,9 @@ class RegistryAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_api_spec_contents,
-            default_retry=retries.AsyncRetry(
-                initial=0.2,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.Aborted,
-                    core_exceptions.Cancelled,
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_api_spec_contents
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2031,8 +1891,8 @@ class RegistryAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, api_spec, api_spec_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2040,7 +1900,10 @@ class RegistryAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = registry_service.CreateApiSpecRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, registry_service.CreateApiSpecRequest):
+            request = registry_service.CreateApiSpecRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2053,23 +1916,9 @@ class RegistryAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_api_spec,
-            default_retry=retries.AsyncRetry(
-                initial=0.2,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.Aborted,
-                    core_exceptions.Cancelled,
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_api_spec
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2176,8 +2025,8 @@ class RegistryAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([api_spec, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2185,7 +2034,10 @@ class RegistryAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = registry_service.UpdateApiSpecRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, registry_service.UpdateApiSpecRequest):
+            request = registry_service.UpdateApiSpecRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2196,23 +2048,9 @@ class RegistryAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_api_spec,
-            default_retry=retries.AsyncRetry(
-                initial=0.2,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.Aborted,
-                    core_exceptions.Cancelled,
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_api_spec
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2288,8 +2126,8 @@ class RegistryAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2297,7 +2135,10 @@ class RegistryAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = registry_service.DeleteApiSpecRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, registry_service.DeleteApiSpecRequest):
+            request = registry_service.DeleteApiSpecRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2306,23 +2147,9 @@ class RegistryAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_api_spec,
-            default_retry=retries.AsyncRetry(
-                initial=0.2,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.Aborted,
-                    core_exceptions.Cancelled,
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_api_spec
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2409,27 +2236,16 @@ class RegistryAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = registry_service.TagApiSpecRevisionRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, registry_service.TagApiSpecRevisionRequest):
+            request = registry_service.TagApiSpecRevisionRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.tag_api_spec_revision,
-            default_retry=retries.AsyncRetry(
-                initial=0.2,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.Aborted,
-                    core_exceptions.Cancelled,
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.tag_api_spec_revision
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2512,27 +2328,16 @@ class RegistryAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = registry_service.ListApiSpecRevisionsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, registry_service.ListApiSpecRevisionsRequest):
+            request = registry_service.ListApiSpecRevisionsRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_api_spec_revisions,
-            default_retry=retries.AsyncRetry(
-                initial=0.2,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.Aborted,
-                    core_exceptions.Cancelled,
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_api_spec_revisions
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2630,15 +2435,16 @@ class RegistryAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = registry_service.RollbackApiSpecRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, registry_service.RollbackApiSpecRequest):
+            request = registry_service.RollbackApiSpecRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.rollback_api_spec,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.rollback_api_spec
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2738,8 +2544,8 @@ class RegistryAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2747,7 +2553,10 @@ class RegistryAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = registry_service.DeleteApiSpecRevisionRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, registry_service.DeleteApiSpecRevisionRequest):
+            request = registry_service.DeleteApiSpecRevisionRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2756,23 +2565,9 @@ class RegistryAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_api_spec_revision,
-            default_retry=retries.AsyncRetry(
-                initial=0.2,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.Aborted,
-                    core_exceptions.Cancelled,
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_api_spec_revision
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2861,8 +2656,8 @@ class RegistryAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2870,7 +2665,10 @@ class RegistryAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = registry_service.ListApiDeploymentsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, registry_service.ListApiDeploymentsRequest):
+            request = registry_service.ListApiDeploymentsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2879,23 +2677,9 @@ class RegistryAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_api_deployments,
-            default_retry=retries.AsyncRetry(
-                initial=0.2,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.Aborted,
-                    core_exceptions.Cancelled,
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_api_deployments
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2993,8 +2777,8 @@ class RegistryAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3002,7 +2786,10 @@ class RegistryAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = registry_service.GetApiDeploymentRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, registry_service.GetApiDeploymentRequest):
+            request = registry_service.GetApiDeploymentRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3011,23 +2798,9 @@ class RegistryAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_api_deployment,
-            default_retry=retries.AsyncRetry(
-                initial=0.2,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.Aborted,
-                    core_exceptions.Cancelled,
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_api_deployment
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3140,8 +2913,8 @@ class RegistryAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, api_deployment, api_deployment_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3149,7 +2922,10 @@ class RegistryAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = registry_service.CreateApiDeploymentRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, registry_service.CreateApiDeploymentRequest):
+            request = registry_service.CreateApiDeploymentRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3162,23 +2938,9 @@ class RegistryAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_api_deployment,
-            default_retry=retries.AsyncRetry(
-                initial=0.2,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.Aborted,
-                    core_exceptions.Cancelled,
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_api_deployment
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3283,8 +3045,8 @@ class RegistryAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([api_deployment, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3292,7 +3054,10 @@ class RegistryAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = registry_service.UpdateApiDeploymentRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, registry_service.UpdateApiDeploymentRequest):
+            request = registry_service.UpdateApiDeploymentRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3303,23 +3068,9 @@ class RegistryAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_api_deployment,
-            default_retry=retries.AsyncRetry(
-                initial=0.2,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.Aborted,
-                    core_exceptions.Cancelled,
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_api_deployment
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3398,8 +3149,8 @@ class RegistryAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3407,7 +3158,10 @@ class RegistryAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = registry_service.DeleteApiDeploymentRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, registry_service.DeleteApiDeploymentRequest):
+            request = registry_service.DeleteApiDeploymentRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3416,23 +3170,9 @@ class RegistryAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_api_deployment,
-            default_retry=retries.AsyncRetry(
-                initial=0.2,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.Aborted,
-                    core_exceptions.Cancelled,
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_api_deployment
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3515,27 +3255,16 @@ class RegistryAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = registry_service.TagApiDeploymentRevisionRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, registry_service.TagApiDeploymentRevisionRequest):
+            request = registry_service.TagApiDeploymentRevisionRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.tag_api_deployment_revision,
-            default_retry=retries.AsyncRetry(
-                initial=0.2,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.Aborted,
-                    core_exceptions.Cancelled,
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.tag_api_deployment_revision
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3618,27 +3347,16 @@ class RegistryAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = registry_service.ListApiDeploymentRevisionsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, registry_service.ListApiDeploymentRevisionsRequest):
+            request = registry_service.ListApiDeploymentRevisionsRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_api_deployment_revisions,
-            default_retry=retries.AsyncRetry(
-                initial=0.2,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.Aborted,
-                    core_exceptions.Cancelled,
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_api_deployment_revisions
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3734,15 +3452,16 @@ class RegistryAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = registry_service.RollbackApiDeploymentRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, registry_service.RollbackApiDeploymentRequest):
+            request = registry_service.RollbackApiDeploymentRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.rollback_api_deployment,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.rollback_api_deployment
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3837,8 +3556,8 @@ class RegistryAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3846,7 +3565,10 @@ class RegistryAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = registry_service.DeleteApiDeploymentRevisionRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, registry_service.DeleteApiDeploymentRevisionRequest):
+            request = registry_service.DeleteApiDeploymentRevisionRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3855,23 +3577,9 @@ class RegistryAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_api_deployment_revision,
-            default_retry=retries.AsyncRetry(
-                initial=0.2,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.Aborted,
-                    core_exceptions.Cancelled,
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_api_deployment_revision
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3957,8 +3665,8 @@ class RegistryAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3966,7 +3674,10 @@ class RegistryAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = registry_service.ListArtifactsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, registry_service.ListArtifactsRequest):
+            request = registry_service.ListArtifactsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3975,23 +3686,9 @@ class RegistryAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_artifacts,
-            default_retry=retries.AsyncRetry(
-                initial=0.2,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.Aborted,
-                    core_exceptions.Cancelled,
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_artifacts
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4091,8 +3788,8 @@ class RegistryAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4100,7 +3797,10 @@ class RegistryAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = registry_service.GetArtifactRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, registry_service.GetArtifactRequest):
+            request = registry_service.GetArtifactRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -4109,23 +3809,9 @@ class RegistryAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_artifact,
-            default_retry=retries.AsyncRetry(
-                initial=0.2,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.Aborted,
-                    core_exceptions.Cancelled,
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_artifact
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4257,8 +3943,8 @@ class RegistryAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4266,7 +3952,10 @@ class RegistryAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = registry_service.GetArtifactContentsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, registry_service.GetArtifactContentsRequest):
+            request = registry_service.GetArtifactContentsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -4275,23 +3964,9 @@ class RegistryAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_artifact_contents,
-            default_retry=retries.AsyncRetry(
-                initial=0.2,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.Aborted,
-                    core_exceptions.Cancelled,
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_artifact_contents
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4403,8 +4078,8 @@ class RegistryAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, artifact, artifact_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4412,7 +4087,10 @@ class RegistryAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = registry_service.CreateArtifactRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, registry_service.CreateArtifactRequest):
+            request = registry_service.CreateArtifactRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -4425,23 +4103,9 @@ class RegistryAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_artifact,
-            default_retry=retries.AsyncRetry(
-                initial=0.2,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.Aborted,
-                    core_exceptions.Cancelled,
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_artifact
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4533,8 +4197,8 @@ class RegistryAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([artifact])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4542,7 +4206,10 @@ class RegistryAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = registry_service.ReplaceArtifactRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, registry_service.ReplaceArtifactRequest):
+            request = registry_service.ReplaceArtifactRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -4551,23 +4218,9 @@ class RegistryAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.replace_artifact,
-            default_retry=retries.AsyncRetry(
-                initial=0.2,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.Aborted,
-                    core_exceptions.Cancelled,
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.replace_artifact
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4642,8 +4295,8 @@ class RegistryAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4651,7 +4304,10 @@ class RegistryAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = registry_service.DeleteArtifactRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, registry_service.DeleteArtifactRequest):
+            request = registry_service.DeleteArtifactRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -4660,23 +4316,9 @@ class RegistryAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_artifact,
-            default_retry=retries.AsyncRetry(
-                initial=0.2,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.Aborted,
-                    core_exceptions.Cancelled,
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_artifact
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.

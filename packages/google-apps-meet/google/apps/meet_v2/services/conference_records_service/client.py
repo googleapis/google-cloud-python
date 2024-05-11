@@ -17,6 +17,7 @@ from collections import OrderedDict
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -647,7 +648,13 @@ class ConferenceRecordsServiceClient(metaclass=ConferenceRecordsServiceClientMet
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, ConferenceRecordsServiceTransport]] = None,
+        transport: Optional[
+            Union[
+                str,
+                ConferenceRecordsServiceTransport,
+                Callable[..., ConferenceRecordsServiceTransport],
+            ]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -659,9 +666,11 @@ class ConferenceRecordsServiceClient(metaclass=ConferenceRecordsServiceClientMet
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ConferenceRecordsServiceTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,ConferenceRecordsServiceTransport,Callable[..., ConferenceRecordsServiceTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the ConferenceRecordsServiceTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -772,8 +781,16 @@ class ConferenceRecordsServiceClient(metaclass=ConferenceRecordsServiceClientMet
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[ConferenceRecordsServiceTransport],
+                Callable[..., ConferenceRecordsServiceTransport],
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., ConferenceRecordsServiceTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -845,8 +862,8 @@ class ConferenceRecordsServiceClient(metaclass=ConferenceRecordsServiceClientMet
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -854,10 +871,8 @@ class ConferenceRecordsServiceClient(metaclass=ConferenceRecordsServiceClientMet
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.GetConferenceRecordRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.GetConferenceRecordRequest):
             request = service.GetConferenceRecordRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -946,10 +961,8 @@ class ConferenceRecordsServiceClient(metaclass=ConferenceRecordsServiceClientMet
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.ListConferenceRecordsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.ListConferenceRecordsRequest):
             request = service.ListConferenceRecordsRequest(request)
 
@@ -1040,8 +1053,8 @@ class ConferenceRecordsServiceClient(metaclass=ConferenceRecordsServiceClientMet
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1049,10 +1062,8 @@ class ConferenceRecordsServiceClient(metaclass=ConferenceRecordsServiceClientMet
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.GetParticipantRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.GetParticipantRequest):
             request = service.GetParticipantRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1153,8 +1164,8 @@ class ConferenceRecordsServiceClient(metaclass=ConferenceRecordsServiceClientMet
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1162,10 +1173,8 @@ class ConferenceRecordsServiceClient(metaclass=ConferenceRecordsServiceClientMet
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.ListParticipantsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.ListParticipantsRequest):
             request = service.ListParticipantsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1273,8 +1282,8 @@ class ConferenceRecordsServiceClient(metaclass=ConferenceRecordsServiceClientMet
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1282,10 +1291,8 @@ class ConferenceRecordsServiceClient(metaclass=ConferenceRecordsServiceClientMet
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.GetParticipantSessionRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.GetParticipantSessionRequest):
             request = service.GetParticipantSessionRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1388,8 +1395,8 @@ class ConferenceRecordsServiceClient(metaclass=ConferenceRecordsServiceClientMet
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1397,10 +1404,8 @@ class ConferenceRecordsServiceClient(metaclass=ConferenceRecordsServiceClientMet
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.ListParticipantSessionsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.ListParticipantSessionsRequest):
             request = service.ListParticipantSessionsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1504,8 +1509,8 @@ class ConferenceRecordsServiceClient(metaclass=ConferenceRecordsServiceClientMet
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1513,10 +1518,8 @@ class ConferenceRecordsServiceClient(metaclass=ConferenceRecordsServiceClientMet
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.GetRecordingRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.GetRecordingRequest):
             request = service.GetRecordingRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1614,8 +1617,8 @@ class ConferenceRecordsServiceClient(metaclass=ConferenceRecordsServiceClientMet
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1623,10 +1626,8 @@ class ConferenceRecordsServiceClient(metaclass=ConferenceRecordsServiceClientMet
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.ListRecordingsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.ListRecordingsRequest):
             request = service.ListRecordingsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1729,8 +1730,8 @@ class ConferenceRecordsServiceClient(metaclass=ConferenceRecordsServiceClientMet
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1738,10 +1739,8 @@ class ConferenceRecordsServiceClient(metaclass=ConferenceRecordsServiceClientMet
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.GetTranscriptRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.GetTranscriptRequest):
             request = service.GetTranscriptRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1839,8 +1838,8 @@ class ConferenceRecordsServiceClient(metaclass=ConferenceRecordsServiceClientMet
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1848,10 +1847,8 @@ class ConferenceRecordsServiceClient(metaclass=ConferenceRecordsServiceClientMet
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.ListTranscriptsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.ListTranscriptsRequest):
             request = service.ListTranscriptsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1956,8 +1953,8 @@ class ConferenceRecordsServiceClient(metaclass=ConferenceRecordsServiceClientMet
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1965,10 +1962,8 @@ class ConferenceRecordsServiceClient(metaclass=ConferenceRecordsServiceClientMet
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.GetTranscriptEntryRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.GetTranscriptEntryRequest):
             request = service.GetTranscriptEntryRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2073,8 +2068,8 @@ class ConferenceRecordsServiceClient(metaclass=ConferenceRecordsServiceClientMet
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2082,10 +2077,8 @@ class ConferenceRecordsServiceClient(metaclass=ConferenceRecordsServiceClientMet
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.ListTranscriptEntriesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.ListTranscriptEntriesRequest):
             request = service.ListTranscriptEntriesRequest(request)
             # If we have keyword arguments corresponding to fields on the
