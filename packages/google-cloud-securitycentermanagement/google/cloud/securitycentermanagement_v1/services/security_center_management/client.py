@@ -17,6 +17,7 @@ from collections import OrderedDict
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -632,7 +633,13 @@ class SecurityCenterManagementClient(metaclass=SecurityCenterManagementClientMet
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, SecurityCenterManagementTransport]] = None,
+        transport: Optional[
+            Union[
+                str,
+                SecurityCenterManagementTransport,
+                Callable[..., SecurityCenterManagementTransport],
+            ]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -644,9 +651,11 @@ class SecurityCenterManagementClient(metaclass=SecurityCenterManagementClientMet
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, SecurityCenterManagementTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,SecurityCenterManagementTransport,Callable[..., SecurityCenterManagementTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the SecurityCenterManagementTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -757,8 +766,16 @@ class SecurityCenterManagementClient(metaclass=SecurityCenterManagementClientMet
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[SecurityCenterManagementTransport],
+                Callable[..., SecurityCenterManagementTransport],
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., SecurityCenterManagementTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -851,8 +868,8 @@ class SecurityCenterManagementClient(metaclass=SecurityCenterManagementClientMet
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -860,10 +877,8 @@ class SecurityCenterManagementClient(metaclass=SecurityCenterManagementClientMet
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a security_center_management.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request,
             security_center_management.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest,
@@ -995,8 +1010,8 @@ class SecurityCenterManagementClient(metaclass=SecurityCenterManagementClientMet
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1004,10 +1019,8 @@ class SecurityCenterManagementClient(metaclass=SecurityCenterManagementClientMet
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a security_center_management.GetEffectiveSecurityHealthAnalyticsCustomModuleRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request,
             security_center_management.GetEffectiveSecurityHealthAnalyticsCustomModuleRequest,
@@ -1124,8 +1137,8 @@ class SecurityCenterManagementClient(metaclass=SecurityCenterManagementClientMet
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1133,10 +1146,8 @@ class SecurityCenterManagementClient(metaclass=SecurityCenterManagementClientMet
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a security_center_management.ListSecurityHealthAnalyticsCustomModulesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request,
             security_center_management.ListSecurityHealthAnalyticsCustomModulesRequest,
@@ -1263,8 +1274,8 @@ class SecurityCenterManagementClient(metaclass=SecurityCenterManagementClientMet
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1272,10 +1283,8 @@ class SecurityCenterManagementClient(metaclass=SecurityCenterManagementClientMet
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a security_center_management.ListDescendantSecurityHealthAnalyticsCustomModulesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request,
             security_center_management.ListDescendantSecurityHealthAnalyticsCustomModulesRequest,
@@ -1395,8 +1404,8 @@ class SecurityCenterManagementClient(metaclass=SecurityCenterManagementClientMet
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1404,10 +1413,8 @@ class SecurityCenterManagementClient(metaclass=SecurityCenterManagementClientMet
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a security_center_management.GetSecurityHealthAnalyticsCustomModuleRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request,
             security_center_management.GetSecurityHealthAnalyticsCustomModuleRequest,
@@ -1537,8 +1544,8 @@ class SecurityCenterManagementClient(metaclass=SecurityCenterManagementClientMet
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, security_health_analytics_custom_module])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1546,10 +1553,8 @@ class SecurityCenterManagementClient(metaclass=SecurityCenterManagementClientMet
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a security_center_management.CreateSecurityHealthAnalyticsCustomModuleRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request,
             security_center_management.CreateSecurityHealthAnalyticsCustomModuleRequest,
@@ -1682,8 +1687,8 @@ class SecurityCenterManagementClient(metaclass=SecurityCenterManagementClientMet
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [security_health_analytics_custom_module, update_mask]
         )
@@ -1693,10 +1698,8 @@ class SecurityCenterManagementClient(metaclass=SecurityCenterManagementClientMet
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a security_center_management.UpdateSecurityHealthAnalyticsCustomModuleRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request,
             security_center_management.UpdateSecurityHealthAnalyticsCustomModuleRequest,
@@ -1811,8 +1814,8 @@ class SecurityCenterManagementClient(metaclass=SecurityCenterManagementClientMet
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1820,10 +1823,8 @@ class SecurityCenterManagementClient(metaclass=SecurityCenterManagementClientMet
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a security_center_management.DeleteSecurityHealthAnalyticsCustomModuleRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request,
             security_center_management.DeleteSecurityHealthAnalyticsCustomModuleRequest,
@@ -1953,8 +1954,8 @@ class SecurityCenterManagementClient(metaclass=SecurityCenterManagementClientMet
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, custom_config, resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1962,10 +1963,8 @@ class SecurityCenterManagementClient(metaclass=SecurityCenterManagementClientMet
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a security_center_management.SimulateSecurityHealthAnalyticsCustomModuleRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request,
             security_center_management.SimulateSecurityHealthAnalyticsCustomModuleRequest,
@@ -2087,8 +2086,8 @@ class SecurityCenterManagementClient(metaclass=SecurityCenterManagementClientMet
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2096,10 +2095,8 @@ class SecurityCenterManagementClient(metaclass=SecurityCenterManagementClientMet
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a security_center_management.ListEffectiveEventThreatDetectionCustomModulesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request,
             security_center_management.ListEffectiveEventThreatDetectionCustomModulesRequest,
@@ -2234,8 +2231,8 @@ class SecurityCenterManagementClient(metaclass=SecurityCenterManagementClientMet
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2243,10 +2240,8 @@ class SecurityCenterManagementClient(metaclass=SecurityCenterManagementClientMet
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a security_center_management.GetEffectiveEventThreatDetectionCustomModuleRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request,
             security_center_management.GetEffectiveEventThreatDetectionCustomModuleRequest,
@@ -2362,8 +2357,8 @@ class SecurityCenterManagementClient(metaclass=SecurityCenterManagementClientMet
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2371,10 +2366,8 @@ class SecurityCenterManagementClient(metaclass=SecurityCenterManagementClientMet
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a security_center_management.ListEventThreatDetectionCustomModulesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request,
             security_center_management.ListEventThreatDetectionCustomModulesRequest,
@@ -2503,8 +2496,8 @@ class SecurityCenterManagementClient(metaclass=SecurityCenterManagementClientMet
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2512,10 +2505,8 @@ class SecurityCenterManagementClient(metaclass=SecurityCenterManagementClientMet
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a security_center_management.ListDescendantEventThreatDetectionCustomModulesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request,
             security_center_management.ListDescendantEventThreatDetectionCustomModulesRequest,
@@ -2638,8 +2629,8 @@ class SecurityCenterManagementClient(metaclass=SecurityCenterManagementClientMet
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2647,10 +2638,8 @@ class SecurityCenterManagementClient(metaclass=SecurityCenterManagementClientMet
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a security_center_management.GetEventThreatDetectionCustomModuleRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request,
             security_center_management.GetEventThreatDetectionCustomModuleRequest,
@@ -2780,8 +2769,8 @@ class SecurityCenterManagementClient(metaclass=SecurityCenterManagementClientMet
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, event_threat_detection_custom_module])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2789,10 +2778,8 @@ class SecurityCenterManagementClient(metaclass=SecurityCenterManagementClientMet
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a security_center_management.CreateEventThreatDetectionCustomModuleRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request,
             security_center_management.CreateEventThreatDetectionCustomModuleRequest,
@@ -2924,8 +2911,8 @@ class SecurityCenterManagementClient(metaclass=SecurityCenterManagementClientMet
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([event_threat_detection_custom_module, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2933,10 +2920,8 @@ class SecurityCenterManagementClient(metaclass=SecurityCenterManagementClientMet
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a security_center_management.UpdateEventThreatDetectionCustomModuleRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request,
             security_center_management.UpdateEventThreatDetectionCustomModuleRequest,
@@ -3051,8 +3036,8 @@ class SecurityCenterManagementClient(metaclass=SecurityCenterManagementClientMet
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3060,10 +3045,8 @@ class SecurityCenterManagementClient(metaclass=SecurityCenterManagementClientMet
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a security_center_management.DeleteEventThreatDetectionCustomModuleRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request,
             security_center_management.DeleteEventThreatDetectionCustomModuleRequest,
@@ -3160,10 +3143,8 @@ class SecurityCenterManagementClient(metaclass=SecurityCenterManagementClientMet
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a security_center_management.ValidateEventThreatDetectionCustomModuleRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request,
             security_center_management.ValidateEventThreatDetectionCustomModuleRequest,

@@ -17,6 +17,7 @@ from collections import OrderedDict
 import functools
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -215,7 +216,13 @@ class SecretManagerServiceAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, SecretManagerServiceTransport] = "grpc_asyncio",
+        transport: Optional[
+            Union[
+                str,
+                SecretManagerServiceTransport,
+                Callable[..., SecretManagerServiceTransport],
+            ]
+        ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -227,9 +234,11 @@ class SecretManagerServiceAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.SecretManagerServiceTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,SecretManagerServiceTransport,Callable[..., SecretManagerServiceTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the SecretManagerServiceTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -340,8 +349,8 @@ class SecretManagerServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -349,7 +358,10 @@ class SecretManagerServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.ListSecretsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.ListSecretsRequest):
+            request = service.ListSecretsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -358,11 +370,9 @@ class SecretManagerServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_secrets,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_secrets
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -486,8 +496,8 @@ class SecretManagerServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, secret_id, secret])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -495,7 +505,10 @@ class SecretManagerServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.CreateSecretRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.CreateSecretRequest):
+            request = service.CreateSecretRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -508,11 +521,9 @@ class SecretManagerServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_secret,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_secret
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -610,8 +621,8 @@ class SecretManagerServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, payload])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -619,7 +630,10 @@ class SecretManagerServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.AddSecretVersionRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.AddSecretVersionRequest):
+            request = service.AddSecretVersionRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -630,11 +644,9 @@ class SecretManagerServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.add_secret_version,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.add_secret_version
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -725,8 +737,8 @@ class SecretManagerServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -734,7 +746,10 @@ class SecretManagerServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.GetSecretRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.GetSecretRequest):
+            request = service.GetSecretRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -743,11 +758,9 @@ class SecretManagerServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_secret,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_secret
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -844,8 +857,8 @@ class SecretManagerServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([secret, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -853,7 +866,10 @@ class SecretManagerServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.UpdateSecretRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.UpdateSecretRequest):
+            request = service.UpdateSecretRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -864,11 +880,9 @@ class SecretManagerServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_secret,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_secret
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -945,8 +959,8 @@ class SecretManagerServiceAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -954,7 +968,10 @@ class SecretManagerServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.DeleteSecretRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.DeleteSecretRequest):
+            request = service.DeleteSecretRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -963,11 +980,9 @@ class SecretManagerServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_secret,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_secret
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1057,8 +1072,8 @@ class SecretManagerServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1066,7 +1081,10 @@ class SecretManagerServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.ListSecretVersionsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.ListSecretVersionsRequest):
+            request = service.ListSecretVersionsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1075,11 +1093,9 @@ class SecretManagerServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_secret_versions,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_secret_versions
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1183,8 +1199,8 @@ class SecretManagerServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1192,7 +1208,10 @@ class SecretManagerServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.GetSecretVersionRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.GetSecretVersionRequest):
+            request = service.GetSecretVersionRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1201,11 +1220,9 @@ class SecretManagerServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_secret_version,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_secret_version
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1301,8 +1318,8 @@ class SecretManagerServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1310,7 +1327,10 @@ class SecretManagerServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.AccessSecretVersionRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.AccessSecretVersionRequest):
+            request = service.AccessSecretVersionRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1319,21 +1339,9 @@ class SecretManagerServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.access_secret_version,
-            default_retry=retries.AsyncRetry(
-                initial=2.0,
-                maximum=60.0,
-                multiplier=2.0,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ResourceExhausted,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.access_secret_version
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1427,8 +1435,8 @@ class SecretManagerServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1436,7 +1444,10 @@ class SecretManagerServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.DisableSecretVersionRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.DisableSecretVersionRequest):
+            request = service.DisableSecretVersionRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1445,11 +1456,9 @@ class SecretManagerServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.disable_secret_version,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.disable_secret_version
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1543,8 +1552,8 @@ class SecretManagerServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1552,7 +1561,10 @@ class SecretManagerServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.EnableSecretVersionRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.EnableSecretVersionRequest):
+            request = service.EnableSecretVersionRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1561,11 +1573,9 @@ class SecretManagerServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.enable_secret_version,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.enable_secret_version
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1660,8 +1670,8 @@ class SecretManagerServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1669,7 +1679,10 @@ class SecretManagerServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.DestroySecretVersionRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.DestroySecretVersionRequest):
+            request = service.DestroySecretVersionRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1678,11 +1691,9 @@ class SecretManagerServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.destroy_secret_version,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.destroy_secret_version
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1791,8 +1802,8 @@ class SecretManagerServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # The request isn't a proto-plus wrapped type,
-        # so it must be constructed via keyword expansion.
+        # - The request isn't a proto-plus wrapped type,
+        #   so it must be constructed via keyword expansion.
         if isinstance(request, dict):
             request = iam_policy_pb2.SetIamPolicyRequest(**request)
         elif not request:
@@ -1800,11 +1811,9 @@ class SecretManagerServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.set_iam_policy,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.set_iam_policy
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1909,8 +1918,8 @@ class SecretManagerServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # The request isn't a proto-plus wrapped type,
-        # so it must be constructed via keyword expansion.
+        # - The request isn't a proto-plus wrapped type,
+        #   so it must be constructed via keyword expansion.
         if isinstance(request, dict):
             request = iam_policy_pb2.GetIamPolicyRequest(**request)
         elif not request:
@@ -1918,11 +1927,9 @@ class SecretManagerServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_iam_policy,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_iam_policy
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2003,8 +2010,8 @@ class SecretManagerServiceAsyncClient:
                 Response message for TestIamPermissions method.
         """
         # Create or coerce a protobuf request object.
-        # The request isn't a proto-plus wrapped type,
-        # so it must be constructed via keyword expansion.
+        # - The request isn't a proto-plus wrapped type,
+        #   so it must be constructed via keyword expansion.
         if isinstance(request, dict):
             request = iam_policy_pb2.TestIamPermissionsRequest(**request)
         elif not request:
@@ -2012,11 +2019,9 @@ class SecretManagerServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.test_iam_permissions,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.test_iam_permissions
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
