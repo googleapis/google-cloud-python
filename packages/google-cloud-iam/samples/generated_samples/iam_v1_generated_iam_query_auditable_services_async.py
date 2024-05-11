@@ -20,7 +20,7 @@
 # It may require modifications to work in your environment.
 
 # To install the latest published package dependency, execute the following:
-#   python3 -m pip install google-iam-admin
+#   python3 -m pip install google-cloud-iam
 
 
 # [START iam_v1_generated_IAM_QueryAuditableServices_async]
@@ -31,15 +31,15 @@
 # - It may require specifying regional endpoints when creating the service
 #   client as shown in:
 #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-from google.iam import admin_v1
+from google.cloud import iam_admin_v1
 
 
 async def sample_query_auditable_services():
     # Create a client
-    client = admin_v1.IAMAsyncClient()
+    client = iam_admin_v1.IAMAsyncClient()
 
     # Initialize request argument(s)
-    request = admin_v1.QueryAuditableServicesRequest(
+    request = iam_admin_v1.QueryAuditableServicesRequest(
     )
 
     # Make the request

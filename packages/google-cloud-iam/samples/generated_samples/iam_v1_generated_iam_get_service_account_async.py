@@ -20,7 +20,7 @@
 # It may require modifications to work in your environment.
 
 # To install the latest published package dependency, execute the following:
-#   python3 -m pip install google-iam-admin
+#   python3 -m pip install google-cloud-iam
 
 
 # [START iam_v1_generated_IAM_GetServiceAccount_async]
@@ -31,15 +31,15 @@
 # - It may require specifying regional endpoints when creating the service
 #   client as shown in:
 #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-from google.iam import admin_v1
+from google.cloud import iam_admin_v1
 
 
 async def sample_get_service_account():
     # Create a client
-    client = admin_v1.IAMAsyncClient()
+    client = iam_admin_v1.IAMAsyncClient()
 
     # Initialize request argument(s)
-    request = admin_v1.GetServiceAccountRequest(
+    request = iam_admin_v1.GetServiceAccountRequest(
         name="name_value",
     )
 

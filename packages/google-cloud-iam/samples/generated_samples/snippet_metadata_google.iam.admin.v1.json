@@ -7,7 +7,7 @@
       }
     ],
     "language": "PYTHON",
-    "name": "google-iam-admin",
+    "name": "google-cloud-iam",
     "version": "0.1.0"
   },
   "snippets": [
@@ -16,10 +16,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.iam.admin_v1.IAMAsyncClient",
+          "fullName": "google.cloud.iam_admin_v1.IAMAsyncClient",
           "shortName": "IAMAsyncClient"
         },
-        "fullName": "google.iam.admin_v1.IAMAsyncClient.create_role",
+        "fullName": "google.cloud.iam_admin_v1.IAMAsyncClient.create_role",
         "method": {
           "fullName": "google.iam.admin.v1.IAM.CreateRole",
           "service": {
@@ -31,7 +31,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.iam.admin_v1.types.CreateRoleRequest"
+            "type": "google.cloud.iam_admin_v1.types.CreateRoleRequest"
           },
           {
             "name": "retry",
@@ -46,7 +46,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.iam.admin_v1.types.Role",
+        "resultType": "google.cloud.iam_admin_v1.types.Role",
         "shortName": "create_role"
       },
       "description": "Sample for CreateRole",
@@ -92,10 +92,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.iam.admin_v1.IAMClient",
+          "fullName": "google.cloud.iam_admin_v1.IAMClient",
           "shortName": "IAMClient"
         },
-        "fullName": "google.iam.admin_v1.IAMClient.create_role",
+        "fullName": "google.cloud.iam_admin_v1.IAMClient.create_role",
         "method": {
           "fullName": "google.iam.admin.v1.IAM.CreateRole",
           "service": {
@@ -107,7 +107,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.iam.admin_v1.types.CreateRoleRequest"
+            "type": "google.cloud.iam_admin_v1.types.CreateRoleRequest"
           },
           {
             "name": "retry",
@@ -122,7 +122,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.iam.admin_v1.types.Role",
+        "resultType": "google.cloud.iam_admin_v1.types.Role",
         "shortName": "create_role"
       },
       "description": "Sample for CreateRole",
@@ -169,10 +169,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.iam.admin_v1.IAMAsyncClient",
+          "fullName": "google.cloud.iam_admin_v1.IAMAsyncClient",
           "shortName": "IAMAsyncClient"
         },
-        "fullName": "google.iam.admin_v1.IAMAsyncClient.create_service_account_key",
+        "fullName": "google.cloud.iam_admin_v1.IAMAsyncClient.create_service_account_key",
         "method": {
           "fullName": "google.iam.admin.v1.IAM.CreateServiceAccountKey",
           "service": {
@@ -184,7 +184,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.iam.admin_v1.types.CreateServiceAccountKeyRequest"
+            "type": "google.cloud.iam_admin_v1.types.CreateServiceAccountKeyRequest"
           },
           {
             "name": "name",
@@ -192,11 +192,11 @@
           },
           {
             "name": "private_key_type",
-            "type": "google.iam.admin_v1.types.ServiceAccountPrivateKeyType"
+            "type": "google.cloud.iam_admin_v1.types.ServiceAccountPrivateKeyType"
           },
           {
             "name": "key_algorithm",
-            "type": "google.iam.admin_v1.types.ServiceAccountKeyAlgorithm"
+            "type": "google.cloud.iam_admin_v1.types.ServiceAccountKeyAlgorithm"
           },
           {
             "name": "retry",
@@ -211,7 +211,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.iam.admin_v1.types.ServiceAccountKey",
+        "resultType": "google.cloud.iam_admin_v1.types.ServiceAccountKey",
         "shortName": "create_service_account_key"
       },
       "description": "Sample for CreateServiceAccountKey",
@@ -257,10 +257,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.iam.admin_v1.IAMClient",
+          "fullName": "google.cloud.iam_admin_v1.IAMClient",
           "shortName": "IAMClient"
         },
-        "fullName": "google.iam.admin_v1.IAMClient.create_service_account_key",
+        "fullName": "google.cloud.iam_admin_v1.IAMClient.create_service_account_key",
         "method": {
           "fullName": "google.iam.admin.v1.IAM.CreateServiceAccountKey",
           "service": {
@@ -272,7 +272,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.iam.admin_v1.types.CreateServiceAccountKeyRequest"
+            "type": "google.cloud.iam_admin_v1.types.CreateServiceAccountKeyRequest"
           },
           {
             "name": "name",
@@ -280,11 +280,11 @@
           },
           {
             "name": "private_key_type",
-            "type": "google.iam.admin_v1.types.ServiceAccountPrivateKeyType"
+            "type": "google.cloud.iam_admin_v1.types.ServiceAccountPrivateKeyType"
           },
           {
             "name": "key_algorithm",
-            "type": "google.iam.admin_v1.types.ServiceAccountKeyAlgorithm"
+            "type": "google.cloud.iam_admin_v1.types.ServiceAccountKeyAlgorithm"
           },
           {
             "name": "retry",
@@ -299,7 +299,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.iam.admin_v1.types.ServiceAccountKey",
+        "resultType": "google.cloud.iam_admin_v1.types.ServiceAccountKey",
         "shortName": "create_service_account_key"
       },
       "description": "Sample for CreateServiceAccountKey",
@@ -346,10 +346,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.iam.admin_v1.IAMAsyncClient",
+          "fullName": "google.cloud.iam_admin_v1.IAMAsyncClient",
           "shortName": "IAMAsyncClient"
         },
-        "fullName": "google.iam.admin_v1.IAMAsyncClient.create_service_account",
+        "fullName": "google.cloud.iam_admin_v1.IAMAsyncClient.create_service_account",
         "method": {
           "fullName": "google.iam.admin.v1.IAM.CreateServiceAccount",
           "service": {
@@ -361,7 +361,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.iam.admin_v1.types.CreateServiceAccountRequest"
+            "type": "google.cloud.iam_admin_v1.types.CreateServiceAccountRequest"
           },
           {
             "name": "name",
@@ -373,7 +373,7 @@
           },
           {
             "name": "service_account",
-            "type": "google.iam.admin_v1.types.ServiceAccount"
+            "type": "google.cloud.iam_admin_v1.types.ServiceAccount"
           },
           {
             "name": "retry",
@@ -388,7 +388,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.iam.admin_v1.types.ServiceAccount",
+        "resultType": "google.cloud.iam_admin_v1.types.ServiceAccount",
         "shortName": "create_service_account"
       },
       "description": "Sample for CreateServiceAccount",
@@ -434,10 +434,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.iam.admin_v1.IAMClient",
+          "fullName": "google.cloud.iam_admin_v1.IAMClient",
           "shortName": "IAMClient"
         },
-        "fullName": "google.iam.admin_v1.IAMClient.create_service_account",
+        "fullName": "google.cloud.iam_admin_v1.IAMClient.create_service_account",
         "method": {
           "fullName": "google.iam.admin.v1.IAM.CreateServiceAccount",
           "service": {
@@ -449,7 +449,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.iam.admin_v1.types.CreateServiceAccountRequest"
+            "type": "google.cloud.iam_admin_v1.types.CreateServiceAccountRequest"
           },
           {
             "name": "name",
@@ -461,7 +461,7 @@
           },
           {
             "name": "service_account",
-            "type": "google.iam.admin_v1.types.ServiceAccount"
+            "type": "google.cloud.iam_admin_v1.types.ServiceAccount"
           },
           {
             "name": "retry",
@@ -476,7 +476,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.iam.admin_v1.types.ServiceAccount",
+        "resultType": "google.cloud.iam_admin_v1.types.ServiceAccount",
         "shortName": "create_service_account"
       },
       "description": "Sample for CreateServiceAccount",
@@ -523,10 +523,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.iam.admin_v1.IAMAsyncClient",
+          "fullName": "google.cloud.iam_admin_v1.IAMAsyncClient",
           "shortName": "IAMAsyncClient"
         },
-        "fullName": "google.iam.admin_v1.IAMAsyncClient.delete_role",
+        "fullName": "google.cloud.iam_admin_v1.IAMAsyncClient.delete_role",
         "method": {
           "fullName": "google.iam.admin.v1.IAM.DeleteRole",
           "service": {
@@ -538,7 +538,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.iam.admin_v1.types.DeleteRoleRequest"
+            "type": "google.cloud.iam_admin_v1.types.DeleteRoleRequest"
           },
           {
             "name": "retry",
@@ -553,7 +553,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.iam.admin_v1.types.Role",
+        "resultType": "google.cloud.iam_admin_v1.types.Role",
         "shortName": "delete_role"
       },
       "description": "Sample for DeleteRole",
@@ -599,10 +599,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.iam.admin_v1.IAMClient",
+          "fullName": "google.cloud.iam_admin_v1.IAMClient",
           "shortName": "IAMClient"
         },
-        "fullName": "google.iam.admin_v1.IAMClient.delete_role",
+        "fullName": "google.cloud.iam_admin_v1.IAMClient.delete_role",
         "method": {
           "fullName": "google.iam.admin.v1.IAM.DeleteRole",
           "service": {
@@ -614,7 +614,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.iam.admin_v1.types.DeleteRoleRequest"
+            "type": "google.cloud.iam_admin_v1.types.DeleteRoleRequest"
           },
           {
             "name": "retry",
@@ -629,7 +629,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.iam.admin_v1.types.Role",
+        "resultType": "google.cloud.iam_admin_v1.types.Role",
         "shortName": "delete_role"
       },
       "description": "Sample for DeleteRole",
@@ -676,10 +676,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.iam.admin_v1.IAMAsyncClient",
+          "fullName": "google.cloud.iam_admin_v1.IAMAsyncClient",
           "shortName": "IAMAsyncClient"
         },
-        "fullName": "google.iam.admin_v1.IAMAsyncClient.delete_service_account_key",
+        "fullName": "google.cloud.iam_admin_v1.IAMAsyncClient.delete_service_account_key",
         "method": {
           "fullName": "google.iam.admin.v1.IAM.DeleteServiceAccountKey",
           "service": {
@@ -691,7 +691,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.iam.admin_v1.types.DeleteServiceAccountKeyRequest"
+            "type": "google.cloud.iam_admin_v1.types.DeleteServiceAccountKeyRequest"
           },
           {
             "name": "name",
@@ -753,10 +753,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.iam.admin_v1.IAMClient",
+          "fullName": "google.cloud.iam_admin_v1.IAMClient",
           "shortName": "IAMClient"
         },
-        "fullName": "google.iam.admin_v1.IAMClient.delete_service_account_key",
+        "fullName": "google.cloud.iam_admin_v1.IAMClient.delete_service_account_key",
         "method": {
           "fullName": "google.iam.admin.v1.IAM.DeleteServiceAccountKey",
           "service": {
@@ -768,7 +768,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.iam.admin_v1.types.DeleteServiceAccountKeyRequest"
+            "type": "google.cloud.iam_admin_v1.types.DeleteServiceAccountKeyRequest"
           },
           {
             "name": "name",
@@ -831,10 +831,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.iam.admin_v1.IAMAsyncClient",
+          "fullName": "google.cloud.iam_admin_v1.IAMAsyncClient",
           "shortName": "IAMAsyncClient"
         },
-        "fullName": "google.iam.admin_v1.IAMAsyncClient.delete_service_account",
+        "fullName": "google.cloud.iam_admin_v1.IAMAsyncClient.delete_service_account",
         "method": {
           "fullName": "google.iam.admin.v1.IAM.DeleteServiceAccount",
           "service": {
@@ -846,7 +846,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.iam.admin_v1.types.DeleteServiceAccountRequest"
+            "type": "google.cloud.iam_admin_v1.types.DeleteServiceAccountRequest"
           },
           {
             "name": "name",
@@ -908,10 +908,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.iam.admin_v1.IAMClient",
+          "fullName": "google.cloud.iam_admin_v1.IAMClient",
           "shortName": "IAMClient"
         },
-        "fullName": "google.iam.admin_v1.IAMClient.delete_service_account",
+        "fullName": "google.cloud.iam_admin_v1.IAMClient.delete_service_account",
         "method": {
           "fullName": "google.iam.admin.v1.IAM.DeleteServiceAccount",
           "service": {
@@ -923,7 +923,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.iam.admin_v1.types.DeleteServiceAccountRequest"
+            "type": "google.cloud.iam_admin_v1.types.DeleteServiceAccountRequest"
           },
           {
             "name": "name",
@@ -986,10 +986,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.iam.admin_v1.IAMAsyncClient",
+          "fullName": "google.cloud.iam_admin_v1.IAMAsyncClient",
           "shortName": "IAMAsyncClient"
         },
-        "fullName": "google.iam.admin_v1.IAMAsyncClient.disable_service_account_key",
+        "fullName": "google.cloud.iam_admin_v1.IAMAsyncClient.disable_service_account_key",
         "method": {
           "fullName": "google.iam.admin.v1.IAM.DisableServiceAccountKey",
           "service": {
@@ -1001,7 +1001,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.iam.admin_v1.types.DisableServiceAccountKeyRequest"
+            "type": "google.cloud.iam_admin_v1.types.DisableServiceAccountKeyRequest"
           },
           {
             "name": "name",
@@ -1063,10 +1063,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.iam.admin_v1.IAMClient",
+          "fullName": "google.cloud.iam_admin_v1.IAMClient",
           "shortName": "IAMClient"
         },
-        "fullName": "google.iam.admin_v1.IAMClient.disable_service_account_key",
+        "fullName": "google.cloud.iam_admin_v1.IAMClient.disable_service_account_key",
         "method": {
           "fullName": "google.iam.admin.v1.IAM.DisableServiceAccountKey",
           "service": {
@@ -1078,7 +1078,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.iam.admin_v1.types.DisableServiceAccountKeyRequest"
+            "type": "google.cloud.iam_admin_v1.types.DisableServiceAccountKeyRequest"
           },
           {
             "name": "name",
@@ -1141,10 +1141,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.iam.admin_v1.IAMAsyncClient",
+          "fullName": "google.cloud.iam_admin_v1.IAMAsyncClient",
           "shortName": "IAMAsyncClient"
         },
-        "fullName": "google.iam.admin_v1.IAMAsyncClient.disable_service_account",
+        "fullName": "google.cloud.iam_admin_v1.IAMAsyncClient.disable_service_account",
         "method": {
           "fullName": "google.iam.admin.v1.IAM.DisableServiceAccount",
           "service": {
@@ -1156,7 +1156,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.iam.admin_v1.types.DisableServiceAccountRequest"
+            "type": "google.cloud.iam_admin_v1.types.DisableServiceAccountRequest"
           },
           {
             "name": "retry",
@@ -1214,10 +1214,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.iam.admin_v1.IAMClient",
+          "fullName": "google.cloud.iam_admin_v1.IAMClient",
           "shortName": "IAMClient"
         },
-        "fullName": "google.iam.admin_v1.IAMClient.disable_service_account",
+        "fullName": "google.cloud.iam_admin_v1.IAMClient.disable_service_account",
         "method": {
           "fullName": "google.iam.admin.v1.IAM.DisableServiceAccount",
           "service": {
@@ -1229,7 +1229,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.iam.admin_v1.types.DisableServiceAccountRequest"
+            "type": "google.cloud.iam_admin_v1.types.DisableServiceAccountRequest"
           },
           {
             "name": "retry",
@@ -1288,10 +1288,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.iam.admin_v1.IAMAsyncClient",
+          "fullName": "google.cloud.iam_admin_v1.IAMAsyncClient",
           "shortName": "IAMAsyncClient"
         },
-        "fullName": "google.iam.admin_v1.IAMAsyncClient.enable_service_account_key",
+        "fullName": "google.cloud.iam_admin_v1.IAMAsyncClient.enable_service_account_key",
         "method": {
           "fullName": "google.iam.admin.v1.IAM.EnableServiceAccountKey",
           "service": {
@@ -1303,7 +1303,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.iam.admin_v1.types.EnableServiceAccountKeyRequest"
+            "type": "google.cloud.iam_admin_v1.types.EnableServiceAccountKeyRequest"
           },
           {
             "name": "name",
@@ -1365,10 +1365,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.iam.admin_v1.IAMClient",
+          "fullName": "google.cloud.iam_admin_v1.IAMClient",
           "shortName": "IAMClient"
         },
-        "fullName": "google.iam.admin_v1.IAMClient.enable_service_account_key",
+        "fullName": "google.cloud.iam_admin_v1.IAMClient.enable_service_account_key",
         "method": {
           "fullName": "google.iam.admin.v1.IAM.EnableServiceAccountKey",
           "service": {
@@ -1380,7 +1380,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.iam.admin_v1.types.EnableServiceAccountKeyRequest"
+            "type": "google.cloud.iam_admin_v1.types.EnableServiceAccountKeyRequest"
           },
           {
             "name": "name",
@@ -1443,10 +1443,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.iam.admin_v1.IAMAsyncClient",
+          "fullName": "google.cloud.iam_admin_v1.IAMAsyncClient",
           "shortName": "IAMAsyncClient"
         },
-        "fullName": "google.iam.admin_v1.IAMAsyncClient.enable_service_account",
+        "fullName": "google.cloud.iam_admin_v1.IAMAsyncClient.enable_service_account",
         "method": {
           "fullName": "google.iam.admin.v1.IAM.EnableServiceAccount",
           "service": {
@@ -1458,7 +1458,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.iam.admin_v1.types.EnableServiceAccountRequest"
+            "type": "google.cloud.iam_admin_v1.types.EnableServiceAccountRequest"
           },
           {
             "name": "retry",
@@ -1516,10 +1516,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.iam.admin_v1.IAMClient",
+          "fullName": "google.cloud.iam_admin_v1.IAMClient",
           "shortName": "IAMClient"
         },
-        "fullName": "google.iam.admin_v1.IAMClient.enable_service_account",
+        "fullName": "google.cloud.iam_admin_v1.IAMClient.enable_service_account",
         "method": {
           "fullName": "google.iam.admin.v1.IAM.EnableServiceAccount",
           "service": {
@@ -1531,7 +1531,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.iam.admin_v1.types.EnableServiceAccountRequest"
+            "type": "google.cloud.iam_admin_v1.types.EnableServiceAccountRequest"
           },
           {
             "name": "retry",
@@ -1590,10 +1590,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.iam.admin_v1.IAMAsyncClient",
+          "fullName": "google.cloud.iam_admin_v1.IAMAsyncClient",
           "shortName": "IAMAsyncClient"
         },
-        "fullName": "google.iam.admin_v1.IAMAsyncClient.get_iam_policy",
+        "fullName": "google.cloud.iam_admin_v1.IAMAsyncClient.get_iam_policy",
         "method": {
           "fullName": "google.iam.admin.v1.IAM.GetIamPolicy",
           "service": {
@@ -1670,10 +1670,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.iam.admin_v1.IAMClient",
+          "fullName": "google.cloud.iam_admin_v1.IAMClient",
           "shortName": "IAMClient"
         },
-        "fullName": "google.iam.admin_v1.IAMClient.get_iam_policy",
+        "fullName": "google.cloud.iam_admin_v1.IAMClient.get_iam_policy",
         "method": {
           "fullName": "google.iam.admin.v1.IAM.GetIamPolicy",
           "service": {
@@ -1751,10 +1751,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.iam.admin_v1.IAMAsyncClient",
+          "fullName": "google.cloud.iam_admin_v1.IAMAsyncClient",
           "shortName": "IAMAsyncClient"
         },
-        "fullName": "google.iam.admin_v1.IAMAsyncClient.get_role",
+        "fullName": "google.cloud.iam_admin_v1.IAMAsyncClient.get_role",
         "method": {
           "fullName": "google.iam.admin.v1.IAM.GetRole",
           "service": {
@@ -1766,7 +1766,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.iam.admin_v1.types.GetRoleRequest"
+            "type": "google.cloud.iam_admin_v1.types.GetRoleRequest"
           },
           {
             "name": "retry",
@@ -1781,7 +1781,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.iam.admin_v1.types.Role",
+        "resultType": "google.cloud.iam_admin_v1.types.Role",
         "shortName": "get_role"
       },
       "description": "Sample for GetRole",
@@ -1827,10 +1827,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.iam.admin_v1.IAMClient",
+          "fullName": "google.cloud.iam_admin_v1.IAMClient",
           "shortName": "IAMClient"
         },
-        "fullName": "google.iam.admin_v1.IAMClient.get_role",
+        "fullName": "google.cloud.iam_admin_v1.IAMClient.get_role",
         "method": {
           "fullName": "google.iam.admin.v1.IAM.GetRole",
           "service": {
@@ -1842,7 +1842,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.iam.admin_v1.types.GetRoleRequest"
+            "type": "google.cloud.iam_admin_v1.types.GetRoleRequest"
           },
           {
             "name": "retry",
@@ -1857,7 +1857,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.iam.admin_v1.types.Role",
+        "resultType": "google.cloud.iam_admin_v1.types.Role",
         "shortName": "get_role"
       },
       "description": "Sample for GetRole",
@@ -1904,10 +1904,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.iam.admin_v1.IAMAsyncClient",
+          "fullName": "google.cloud.iam_admin_v1.IAMAsyncClient",
           "shortName": "IAMAsyncClient"
         },
-        "fullName": "google.iam.admin_v1.IAMAsyncClient.get_service_account_key",
+        "fullName": "google.cloud.iam_admin_v1.IAMAsyncClient.get_service_account_key",
         "method": {
           "fullName": "google.iam.admin.v1.IAM.GetServiceAccountKey",
           "service": {
@@ -1919,7 +1919,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.iam.admin_v1.types.GetServiceAccountKeyRequest"
+            "type": "google.cloud.iam_admin_v1.types.GetServiceAccountKeyRequest"
           },
           {
             "name": "name",
@@ -1927,7 +1927,7 @@
           },
           {
             "name": "public_key_type",
-            "type": "google.iam.admin_v1.types.ServiceAccountPublicKeyType"
+            "type": "google.cloud.iam_admin_v1.types.ServiceAccountPublicKeyType"
           },
           {
             "name": "retry",
@@ -1942,7 +1942,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.iam.admin_v1.types.ServiceAccountKey",
+        "resultType": "google.cloud.iam_admin_v1.types.ServiceAccountKey",
         "shortName": "get_service_account_key"
       },
       "description": "Sample for GetServiceAccountKey",
@@ -1988,10 +1988,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.iam.admin_v1.IAMClient",
+          "fullName": "google.cloud.iam_admin_v1.IAMClient",
           "shortName": "IAMClient"
         },
-        "fullName": "google.iam.admin_v1.IAMClient.get_service_account_key",
+        "fullName": "google.cloud.iam_admin_v1.IAMClient.get_service_account_key",
         "method": {
           "fullName": "google.iam.admin.v1.IAM.GetServiceAccountKey",
           "service": {
@@ -2003,7 +2003,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.iam.admin_v1.types.GetServiceAccountKeyRequest"
+            "type": "google.cloud.iam_admin_v1.types.GetServiceAccountKeyRequest"
           },
           {
             "name": "name",
@@ -2011,7 +2011,7 @@
           },
           {
             "name": "public_key_type",
-            "type": "google.iam.admin_v1.types.ServiceAccountPublicKeyType"
+            "type": "google.cloud.iam_admin_v1.types.ServiceAccountPublicKeyType"
           },
           {
             "name": "retry",
@@ -2026,7 +2026,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.iam.admin_v1.types.ServiceAccountKey",
+        "resultType": "google.cloud.iam_admin_v1.types.ServiceAccountKey",
         "shortName": "get_service_account_key"
       },
       "description": "Sample for GetServiceAccountKey",
@@ -2073,10 +2073,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.iam.admin_v1.IAMAsyncClient",
+          "fullName": "google.cloud.iam_admin_v1.IAMAsyncClient",
           "shortName": "IAMAsyncClient"
         },
-        "fullName": "google.iam.admin_v1.IAMAsyncClient.get_service_account",
+        "fullName": "google.cloud.iam_admin_v1.IAMAsyncClient.get_service_account",
         "method": {
           "fullName": "google.iam.admin.v1.IAM.GetServiceAccount",
           "service": {
@@ -2088,7 +2088,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.iam.admin_v1.types.GetServiceAccountRequest"
+            "type": "google.cloud.iam_admin_v1.types.GetServiceAccountRequest"
           },
           {
             "name": "name",
@@ -2107,7 +2107,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.iam.admin_v1.types.ServiceAccount",
+        "resultType": "google.cloud.iam_admin_v1.types.ServiceAccount",
         "shortName": "get_service_account"
       },
       "description": "Sample for GetServiceAccount",
@@ -2153,10 +2153,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.iam.admin_v1.IAMClient",
+          "fullName": "google.cloud.iam_admin_v1.IAMClient",
           "shortName": "IAMClient"
         },
-        "fullName": "google.iam.admin_v1.IAMClient.get_service_account",
+        "fullName": "google.cloud.iam_admin_v1.IAMClient.get_service_account",
         "method": {
           "fullName": "google.iam.admin.v1.IAM.GetServiceAccount",
           "service": {
@@ -2168,7 +2168,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.iam.admin_v1.types.GetServiceAccountRequest"
+            "type": "google.cloud.iam_admin_v1.types.GetServiceAccountRequest"
           },
           {
             "name": "name",
@@ -2187,7 +2187,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.iam.admin_v1.types.ServiceAccount",
+        "resultType": "google.cloud.iam_admin_v1.types.ServiceAccount",
         "shortName": "get_service_account"
       },
       "description": "Sample for GetServiceAccount",
@@ -2234,10 +2234,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.iam.admin_v1.IAMAsyncClient",
+          "fullName": "google.cloud.iam_admin_v1.IAMAsyncClient",
           "shortName": "IAMAsyncClient"
         },
-        "fullName": "google.iam.admin_v1.IAMAsyncClient.lint_policy",
+        "fullName": "google.cloud.iam_admin_v1.IAMAsyncClient.lint_policy",
         "method": {
           "fullName": "google.iam.admin.v1.IAM.LintPolicy",
           "service": {
@@ -2249,7 +2249,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.iam.admin_v1.types.LintPolicyRequest"
+            "type": "google.cloud.iam_admin_v1.types.LintPolicyRequest"
           },
           {
             "name": "retry",
@@ -2264,7 +2264,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.iam.admin_v1.types.LintPolicyResponse",
+        "resultType": "google.cloud.iam_admin_v1.types.LintPolicyResponse",
         "shortName": "lint_policy"
       },
       "description": "Sample for LintPolicy",
@@ -2310,10 +2310,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.iam.admin_v1.IAMClient",
+          "fullName": "google.cloud.iam_admin_v1.IAMClient",
           "shortName": "IAMClient"
         },
-        "fullName": "google.iam.admin_v1.IAMClient.lint_policy",
+        "fullName": "google.cloud.iam_admin_v1.IAMClient.lint_policy",
         "method": {
           "fullName": "google.iam.admin.v1.IAM.LintPolicy",
           "service": {
@@ -2325,7 +2325,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.iam.admin_v1.types.LintPolicyRequest"
+            "type": "google.cloud.iam_admin_v1.types.LintPolicyRequest"
           },
           {
             "name": "retry",
@@ -2340,7 +2340,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.iam.admin_v1.types.LintPolicyResponse",
+        "resultType": "google.cloud.iam_admin_v1.types.LintPolicyResponse",
         "shortName": "lint_policy"
       },
       "description": "Sample for LintPolicy",
@@ -2387,10 +2387,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.iam.admin_v1.IAMAsyncClient",
+          "fullName": "google.cloud.iam_admin_v1.IAMAsyncClient",
           "shortName": "IAMAsyncClient"
         },
-        "fullName": "google.iam.admin_v1.IAMAsyncClient.list_roles",
+        "fullName": "google.cloud.iam_admin_v1.IAMAsyncClient.list_roles",
         "method": {
           "fullName": "google.iam.admin.v1.IAM.ListRoles",
           "service": {
@@ -2402,7 +2402,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.iam.admin_v1.types.ListRolesRequest"
+            "type": "google.cloud.iam_admin_v1.types.ListRolesRequest"
           },
           {
             "name": "retry",
@@ -2417,7 +2417,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.iam.admin_v1.services.iam.pagers.ListRolesAsyncPager",
+        "resultType": "google.cloud.iam_admin_v1.services.iam.pagers.ListRolesAsyncPager",
         "shortName": "list_roles"
       },
       "description": "Sample for ListRoles",
@@ -2463,10 +2463,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.iam.admin_v1.IAMClient",
+          "fullName": "google.cloud.iam_admin_v1.IAMClient",
           "shortName": "IAMClient"
         },
-        "fullName": "google.iam.admin_v1.IAMClient.list_roles",
+        "fullName": "google.cloud.iam_admin_v1.IAMClient.list_roles",
         "method": {
           "fullName": "google.iam.admin.v1.IAM.ListRoles",
           "service": {
@@ -2478,7 +2478,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.iam.admin_v1.types.ListRolesRequest"
+            "type": "google.cloud.iam_admin_v1.types.ListRolesRequest"
           },
           {
             "name": "retry",
@@ -2493,7 +2493,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.iam.admin_v1.services.iam.pagers.ListRolesPager",
+        "resultType": "google.cloud.iam_admin_v1.services.iam.pagers.ListRolesPager",
         "shortName": "list_roles"
       },
       "description": "Sample for ListRoles",
@@ -2540,10 +2540,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.iam.admin_v1.IAMAsyncClient",
+          "fullName": "google.cloud.iam_admin_v1.IAMAsyncClient",
           "shortName": "IAMAsyncClient"
         },
-        "fullName": "google.iam.admin_v1.IAMAsyncClient.list_service_account_keys",
+        "fullName": "google.cloud.iam_admin_v1.IAMAsyncClient.list_service_account_keys",
         "method": {
           "fullName": "google.iam.admin.v1.IAM.ListServiceAccountKeys",
           "service": {
@@ -2555,7 +2555,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.iam.admin_v1.types.ListServiceAccountKeysRequest"
+            "type": "google.cloud.iam_admin_v1.types.ListServiceAccountKeysRequest"
           },
           {
             "name": "name",
@@ -2563,7 +2563,7 @@
           },
           {
             "name": "key_types",
-            "type": "MutableSequence[google.iam.admin_v1.types.ListServiceAccountKeysRequest.KeyType]"
+            "type": "MutableSequence[google.cloud.iam_admin_v1.types.ListServiceAccountKeysRequest.KeyType]"
           },
           {
             "name": "retry",
@@ -2578,7 +2578,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.iam.admin_v1.types.ListServiceAccountKeysResponse",
+        "resultType": "google.cloud.iam_admin_v1.types.ListServiceAccountKeysResponse",
         "shortName": "list_service_account_keys"
       },
       "description": "Sample for ListServiceAccountKeys",
@@ -2624,10 +2624,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.iam.admin_v1.IAMClient",
+          "fullName": "google.cloud.iam_admin_v1.IAMClient",
           "shortName": "IAMClient"
         },
-        "fullName": "google.iam.admin_v1.IAMClient.list_service_account_keys",
+        "fullName": "google.cloud.iam_admin_v1.IAMClient.list_service_account_keys",
         "method": {
           "fullName": "google.iam.admin.v1.IAM.ListServiceAccountKeys",
           "service": {
@@ -2639,7 +2639,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.iam.admin_v1.types.ListServiceAccountKeysRequest"
+            "type": "google.cloud.iam_admin_v1.types.ListServiceAccountKeysRequest"
           },
           {
             "name": "name",
@@ -2647,7 +2647,7 @@
           },
           {
             "name": "key_types",
-            "type": "MutableSequence[google.iam.admin_v1.types.ListServiceAccountKeysRequest.KeyType]"
+            "type": "MutableSequence[google.cloud.iam_admin_v1.types.ListServiceAccountKeysRequest.KeyType]"
           },
           {
             "name": "retry",
@@ -2662,7 +2662,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.iam.admin_v1.types.ListServiceAccountKeysResponse",
+        "resultType": "google.cloud.iam_admin_v1.types.ListServiceAccountKeysResponse",
         "shortName": "list_service_account_keys"
       },
       "description": "Sample for ListServiceAccountKeys",
@@ -2709,10 +2709,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.iam.admin_v1.IAMAsyncClient",
+          "fullName": "google.cloud.iam_admin_v1.IAMAsyncClient",
           "shortName": "IAMAsyncClient"
         },
-        "fullName": "google.iam.admin_v1.IAMAsyncClient.list_service_accounts",
+        "fullName": "google.cloud.iam_admin_v1.IAMAsyncClient.list_service_accounts",
         "method": {
           "fullName": "google.iam.admin.v1.IAM.ListServiceAccounts",
           "service": {
@@ -2724,7 +2724,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.iam.admin_v1.types.ListServiceAccountsRequest"
+            "type": "google.cloud.iam_admin_v1.types.ListServiceAccountsRequest"
           },
           {
             "name": "name",
@@ -2743,7 +2743,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.iam.admin_v1.services.iam.pagers.ListServiceAccountsAsyncPager",
+        "resultType": "google.cloud.iam_admin_v1.services.iam.pagers.ListServiceAccountsAsyncPager",
         "shortName": "list_service_accounts"
       },
       "description": "Sample for ListServiceAccounts",
@@ -2789,10 +2789,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.iam.admin_v1.IAMClient",
+          "fullName": "google.cloud.iam_admin_v1.IAMClient",
           "shortName": "IAMClient"
         },
-        "fullName": "google.iam.admin_v1.IAMClient.list_service_accounts",
+        "fullName": "google.cloud.iam_admin_v1.IAMClient.list_service_accounts",
         "method": {
           "fullName": "google.iam.admin.v1.IAM.ListServiceAccounts",
           "service": {
@@ -2804,7 +2804,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.iam.admin_v1.types.ListServiceAccountsRequest"
+            "type": "google.cloud.iam_admin_v1.types.ListServiceAccountsRequest"
           },
           {
             "name": "name",
@@ -2823,7 +2823,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.iam.admin_v1.services.iam.pagers.ListServiceAccountsPager",
+        "resultType": "google.cloud.iam_admin_v1.services.iam.pagers.ListServiceAccountsPager",
         "shortName": "list_service_accounts"
       },
       "description": "Sample for ListServiceAccounts",
@@ -2870,10 +2870,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.iam.admin_v1.IAMAsyncClient",
+          "fullName": "google.cloud.iam_admin_v1.IAMAsyncClient",
           "shortName": "IAMAsyncClient"
         },
-        "fullName": "google.iam.admin_v1.IAMAsyncClient.patch_service_account",
+        "fullName": "google.cloud.iam_admin_v1.IAMAsyncClient.patch_service_account",
         "method": {
           "fullName": "google.iam.admin.v1.IAM.PatchServiceAccount",
           "service": {
@@ -2885,7 +2885,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.iam.admin_v1.types.PatchServiceAccountRequest"
+            "type": "google.cloud.iam_admin_v1.types.PatchServiceAccountRequest"
           },
           {
             "name": "retry",
@@ -2900,7 +2900,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.iam.admin_v1.types.ServiceAccount",
+        "resultType": "google.cloud.iam_admin_v1.types.ServiceAccount",
         "shortName": "patch_service_account"
       },
       "description": "Sample for PatchServiceAccount",
@@ -2946,10 +2946,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.iam.admin_v1.IAMClient",
+          "fullName": "google.cloud.iam_admin_v1.IAMClient",
           "shortName": "IAMClient"
         },
-        "fullName": "google.iam.admin_v1.IAMClient.patch_service_account",
+        "fullName": "google.cloud.iam_admin_v1.IAMClient.patch_service_account",
         "method": {
           "fullName": "google.iam.admin.v1.IAM.PatchServiceAccount",
           "service": {
@@ -2961,7 +2961,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.iam.admin_v1.types.PatchServiceAccountRequest"
+            "type": "google.cloud.iam_admin_v1.types.PatchServiceAccountRequest"
           },
           {
             "name": "retry",
@@ -2976,7 +2976,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.iam.admin_v1.types.ServiceAccount",
+        "resultType": "google.cloud.iam_admin_v1.types.ServiceAccount",
         "shortName": "patch_service_account"
       },
       "description": "Sample for PatchServiceAccount",
@@ -3023,10 +3023,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.iam.admin_v1.IAMAsyncClient",
+          "fullName": "google.cloud.iam_admin_v1.IAMAsyncClient",
           "shortName": "IAMAsyncClient"
         },
-        "fullName": "google.iam.admin_v1.IAMAsyncClient.query_auditable_services",
+        "fullName": "google.cloud.iam_admin_v1.IAMAsyncClient.query_auditable_services",
         "method": {
           "fullName": "google.iam.admin.v1.IAM.QueryAuditableServices",
           "service": {
@@ -3038,7 +3038,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.iam.admin_v1.types.QueryAuditableServicesRequest"
+            "type": "google.cloud.iam_admin_v1.types.QueryAuditableServicesRequest"
           },
           {
             "name": "retry",
@@ -3053,7 +3053,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.iam.admin_v1.types.QueryAuditableServicesResponse",
+        "resultType": "google.cloud.iam_admin_v1.types.QueryAuditableServicesResponse",
         "shortName": "query_auditable_services"
       },
       "description": "Sample for QueryAuditableServices",
@@ -3099,10 +3099,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.iam.admin_v1.IAMClient",
+          "fullName": "google.cloud.iam_admin_v1.IAMClient",
           "shortName": "IAMClient"
         },
-        "fullName": "google.iam.admin_v1.IAMClient.query_auditable_services",
+        "fullName": "google.cloud.iam_admin_v1.IAMClient.query_auditable_services",
         "method": {
           "fullName": "google.iam.admin.v1.IAM.QueryAuditableServices",
           "service": {
@@ -3114,7 +3114,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.iam.admin_v1.types.QueryAuditableServicesRequest"
+            "type": "google.cloud.iam_admin_v1.types.QueryAuditableServicesRequest"
           },
           {
             "name": "retry",
@@ -3129,7 +3129,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.iam.admin_v1.types.QueryAuditableServicesResponse",
+        "resultType": "google.cloud.iam_admin_v1.types.QueryAuditableServicesResponse",
         "shortName": "query_auditable_services"
       },
       "description": "Sample for QueryAuditableServices",
@@ -3176,10 +3176,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.iam.admin_v1.IAMAsyncClient",
+          "fullName": "google.cloud.iam_admin_v1.IAMAsyncClient",
           "shortName": "IAMAsyncClient"
         },
-        "fullName": "google.iam.admin_v1.IAMAsyncClient.query_grantable_roles",
+        "fullName": "google.cloud.iam_admin_v1.IAMAsyncClient.query_grantable_roles",
         "method": {
           "fullName": "google.iam.admin.v1.IAM.QueryGrantableRoles",
           "service": {
@@ -3191,7 +3191,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.iam.admin_v1.types.QueryGrantableRolesRequest"
+            "type": "google.cloud.iam_admin_v1.types.QueryGrantableRolesRequest"
           },
           {
             "name": "full_resource_name",
@@ -3210,7 +3210,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.iam.admin_v1.services.iam.pagers.QueryGrantableRolesAsyncPager",
+        "resultType": "google.cloud.iam_admin_v1.services.iam.pagers.QueryGrantableRolesAsyncPager",
         "shortName": "query_grantable_roles"
       },
       "description": "Sample for QueryGrantableRoles",
@@ -3256,10 +3256,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.iam.admin_v1.IAMClient",
+          "fullName": "google.cloud.iam_admin_v1.IAMClient",
           "shortName": "IAMClient"
         },
-        "fullName": "google.iam.admin_v1.IAMClient.query_grantable_roles",
+        "fullName": "google.cloud.iam_admin_v1.IAMClient.query_grantable_roles",
         "method": {
           "fullName": "google.iam.admin.v1.IAM.QueryGrantableRoles",
           "service": {
@@ -3271,7 +3271,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.iam.admin_v1.types.QueryGrantableRolesRequest"
+            "type": "google.cloud.iam_admin_v1.types.QueryGrantableRolesRequest"
           },
           {
             "name": "full_resource_name",
@@ -3290,7 +3290,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.iam.admin_v1.services.iam.pagers.QueryGrantableRolesPager",
+        "resultType": "google.cloud.iam_admin_v1.services.iam.pagers.QueryGrantableRolesPager",
         "shortName": "query_grantable_roles"
       },
       "description": "Sample for QueryGrantableRoles",
@@ -3337,10 +3337,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.iam.admin_v1.IAMAsyncClient",
+          "fullName": "google.cloud.iam_admin_v1.IAMAsyncClient",
           "shortName": "IAMAsyncClient"
         },
-        "fullName": "google.iam.admin_v1.IAMAsyncClient.query_testable_permissions",
+        "fullName": "google.cloud.iam_admin_v1.IAMAsyncClient.query_testable_permissions",
         "method": {
           "fullName": "google.iam.admin.v1.IAM.QueryTestablePermissions",
           "service": {
@@ -3352,7 +3352,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.iam.admin_v1.types.QueryTestablePermissionsRequest"
+            "type": "google.cloud.iam_admin_v1.types.QueryTestablePermissionsRequest"
           },
           {
             "name": "retry",
@@ -3367,7 +3367,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.iam.admin_v1.services.iam.pagers.QueryTestablePermissionsAsyncPager",
+        "resultType": "google.cloud.iam_admin_v1.services.iam.pagers.QueryTestablePermissionsAsyncPager",
         "shortName": "query_testable_permissions"
       },
       "description": "Sample for QueryTestablePermissions",
@@ -3413,10 +3413,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.iam.admin_v1.IAMClient",
+          "fullName": "google.cloud.iam_admin_v1.IAMClient",
           "shortName": "IAMClient"
         },
-        "fullName": "google.iam.admin_v1.IAMClient.query_testable_permissions",
+        "fullName": "google.cloud.iam_admin_v1.IAMClient.query_testable_permissions",
         "method": {
           "fullName": "google.iam.admin.v1.IAM.QueryTestablePermissions",
           "service": {
@@ -3428,7 +3428,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.iam.admin_v1.types.QueryTestablePermissionsRequest"
+            "type": "google.cloud.iam_admin_v1.types.QueryTestablePermissionsRequest"
           },
           {
             "name": "retry",
@@ -3443,7 +3443,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.iam.admin_v1.services.iam.pagers.QueryTestablePermissionsPager",
+        "resultType": "google.cloud.iam_admin_v1.services.iam.pagers.QueryTestablePermissionsPager",
         "shortName": "query_testable_permissions"
       },
       "description": "Sample for QueryTestablePermissions",
@@ -3490,10 +3490,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.iam.admin_v1.IAMAsyncClient",
+          "fullName": "google.cloud.iam_admin_v1.IAMAsyncClient",
           "shortName": "IAMAsyncClient"
         },
-        "fullName": "google.iam.admin_v1.IAMAsyncClient.set_iam_policy",
+        "fullName": "google.cloud.iam_admin_v1.IAMAsyncClient.set_iam_policy",
         "method": {
           "fullName": "google.iam.admin.v1.IAM.SetIamPolicy",
           "service": {
@@ -3570,10 +3570,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.iam.admin_v1.IAMClient",
+          "fullName": "google.cloud.iam_admin_v1.IAMClient",
           "shortName": "IAMClient"
         },
-        "fullName": "google.iam.admin_v1.IAMClient.set_iam_policy",
+        "fullName": "google.cloud.iam_admin_v1.IAMClient.set_iam_policy",
         "method": {
           "fullName": "google.iam.admin.v1.IAM.SetIamPolicy",
           "service": {
@@ -3651,10 +3651,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.iam.admin_v1.IAMAsyncClient",
+          "fullName": "google.cloud.iam_admin_v1.IAMAsyncClient",
           "shortName": "IAMAsyncClient"
         },
-        "fullName": "google.iam.admin_v1.IAMAsyncClient.sign_blob",
+        "fullName": "google.cloud.iam_admin_v1.IAMAsyncClient.sign_blob",
         "method": {
           "fullName": "google.iam.admin.v1.IAM.SignBlob",
           "service": {
@@ -3666,7 +3666,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.iam.admin_v1.types.SignBlobRequest"
+            "type": "google.cloud.iam_admin_v1.types.SignBlobRequest"
           },
           {
             "name": "name",
@@ -3689,7 +3689,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.iam.admin_v1.types.SignBlobResponse",
+        "resultType": "google.cloud.iam_admin_v1.types.SignBlobResponse",
         "shortName": "sign_blob"
       },
       "description": "Sample for SignBlob",
@@ -3735,10 +3735,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.iam.admin_v1.IAMClient",
+          "fullName": "google.cloud.iam_admin_v1.IAMClient",
           "shortName": "IAMClient"
         },
-        "fullName": "google.iam.admin_v1.IAMClient.sign_blob",
+        "fullName": "google.cloud.iam_admin_v1.IAMClient.sign_blob",
         "method": {
           "fullName": "google.iam.admin.v1.IAM.SignBlob",
           "service": {
@@ -3750,7 +3750,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.iam.admin_v1.types.SignBlobRequest"
+            "type": "google.cloud.iam_admin_v1.types.SignBlobRequest"
           },
           {
             "name": "name",
@@ -3773,7 +3773,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.iam.admin_v1.types.SignBlobResponse",
+        "resultType": "google.cloud.iam_admin_v1.types.SignBlobResponse",
         "shortName": "sign_blob"
       },
       "description": "Sample for SignBlob",
@@ -3820,10 +3820,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.iam.admin_v1.IAMAsyncClient",
+          "fullName": "google.cloud.iam_admin_v1.IAMAsyncClient",
           "shortName": "IAMAsyncClient"
         },
-        "fullName": "google.iam.admin_v1.IAMAsyncClient.sign_jwt",
+        "fullName": "google.cloud.iam_admin_v1.IAMAsyncClient.sign_jwt",
         "method": {
           "fullName": "google.iam.admin.v1.IAM.SignJwt",
           "service": {
@@ -3835,7 +3835,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.iam.admin_v1.types.SignJwtRequest"
+            "type": "google.cloud.iam_admin_v1.types.SignJwtRequest"
           },
           {
             "name": "name",
@@ -3858,7 +3858,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.iam.admin_v1.types.SignJwtResponse",
+        "resultType": "google.cloud.iam_admin_v1.types.SignJwtResponse",
         "shortName": "sign_jwt"
       },
       "description": "Sample for SignJwt",
@@ -3904,10 +3904,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.iam.admin_v1.IAMClient",
+          "fullName": "google.cloud.iam_admin_v1.IAMClient",
           "shortName": "IAMClient"
         },
-        "fullName": "google.iam.admin_v1.IAMClient.sign_jwt",
+        "fullName": "google.cloud.iam_admin_v1.IAMClient.sign_jwt",
         "method": {
           "fullName": "google.iam.admin.v1.IAM.SignJwt",
           "service": {
@@ -3919,7 +3919,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.iam.admin_v1.types.SignJwtRequest"
+            "type": "google.cloud.iam_admin_v1.types.SignJwtRequest"
           },
           {
             "name": "name",
@@ -3942,7 +3942,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.iam.admin_v1.types.SignJwtResponse",
+        "resultType": "google.cloud.iam_admin_v1.types.SignJwtResponse",
         "shortName": "sign_jwt"
       },
       "description": "Sample for SignJwt",
@@ -3989,10 +3989,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.iam.admin_v1.IAMAsyncClient",
+          "fullName": "google.cloud.iam_admin_v1.IAMAsyncClient",
           "shortName": "IAMAsyncClient"
         },
-        "fullName": "google.iam.admin_v1.IAMAsyncClient.test_iam_permissions",
+        "fullName": "google.cloud.iam_admin_v1.IAMAsyncClient.test_iam_permissions",
         "method": {
           "fullName": "google.iam.admin.v1.IAM.TestIamPermissions",
           "service": {
@@ -4073,10 +4073,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.iam.admin_v1.IAMClient",
+          "fullName": "google.cloud.iam_admin_v1.IAMClient",
           "shortName": "IAMClient"
         },
-        "fullName": "google.iam.admin_v1.IAMClient.test_iam_permissions",
+        "fullName": "google.cloud.iam_admin_v1.IAMClient.test_iam_permissions",
         "method": {
           "fullName": "google.iam.admin.v1.IAM.TestIamPermissions",
           "service": {
@@ -4158,10 +4158,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.iam.admin_v1.IAMAsyncClient",
+          "fullName": "google.cloud.iam_admin_v1.IAMAsyncClient",
           "shortName": "IAMAsyncClient"
         },
-        "fullName": "google.iam.admin_v1.IAMAsyncClient.undelete_role",
+        "fullName": "google.cloud.iam_admin_v1.IAMAsyncClient.undelete_role",
         "method": {
           "fullName": "google.iam.admin.v1.IAM.UndeleteRole",
           "service": {
@@ -4173,7 +4173,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.iam.admin_v1.types.UndeleteRoleRequest"
+            "type": "google.cloud.iam_admin_v1.types.UndeleteRoleRequest"
           },
           {
             "name": "retry",
@@ -4188,7 +4188,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.iam.admin_v1.types.Role",
+        "resultType": "google.cloud.iam_admin_v1.types.Role",
         "shortName": "undelete_role"
       },
       "description": "Sample for UndeleteRole",
@@ -4234,10 +4234,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.iam.admin_v1.IAMClient",
+          "fullName": "google.cloud.iam_admin_v1.IAMClient",
           "shortName": "IAMClient"
         },
-        "fullName": "google.iam.admin_v1.IAMClient.undelete_role",
+        "fullName": "google.cloud.iam_admin_v1.IAMClient.undelete_role",
         "method": {
           "fullName": "google.iam.admin.v1.IAM.UndeleteRole",
           "service": {
@@ -4249,7 +4249,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.iam.admin_v1.types.UndeleteRoleRequest"
+            "type": "google.cloud.iam_admin_v1.types.UndeleteRoleRequest"
           },
           {
             "name": "retry",
@@ -4264,7 +4264,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.iam.admin_v1.types.Role",
+        "resultType": "google.cloud.iam_admin_v1.types.Role",
         "shortName": "undelete_role"
       },
       "description": "Sample for UndeleteRole",
@@ -4311,10 +4311,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.iam.admin_v1.IAMAsyncClient",
+          "fullName": "google.cloud.iam_admin_v1.IAMAsyncClient",
           "shortName": "IAMAsyncClient"
         },
-        "fullName": "google.iam.admin_v1.IAMAsyncClient.undelete_service_account",
+        "fullName": "google.cloud.iam_admin_v1.IAMAsyncClient.undelete_service_account",
         "method": {
           "fullName": "google.iam.admin.v1.IAM.UndeleteServiceAccount",
           "service": {
@@ -4326,7 +4326,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.iam.admin_v1.types.UndeleteServiceAccountRequest"
+            "type": "google.cloud.iam_admin_v1.types.UndeleteServiceAccountRequest"
           },
           {
             "name": "retry",
@@ -4341,7 +4341,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.iam.admin_v1.types.UndeleteServiceAccountResponse",
+        "resultType": "google.cloud.iam_admin_v1.types.UndeleteServiceAccountResponse",
         "shortName": "undelete_service_account"
       },
       "description": "Sample for UndeleteServiceAccount",
@@ -4387,10 +4387,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.iam.admin_v1.IAMClient",
+          "fullName": "google.cloud.iam_admin_v1.IAMClient",
           "shortName": "IAMClient"
         },
-        "fullName": "google.iam.admin_v1.IAMClient.undelete_service_account",
+        "fullName": "google.cloud.iam_admin_v1.IAMClient.undelete_service_account",
         "method": {
           "fullName": "google.iam.admin.v1.IAM.UndeleteServiceAccount",
           "service": {
@@ -4402,7 +4402,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.iam.admin_v1.types.UndeleteServiceAccountRequest"
+            "type": "google.cloud.iam_admin_v1.types.UndeleteServiceAccountRequest"
           },
           {
             "name": "retry",
@@ -4417,7 +4417,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.iam.admin_v1.types.UndeleteServiceAccountResponse",
+        "resultType": "google.cloud.iam_admin_v1.types.UndeleteServiceAccountResponse",
         "shortName": "undelete_service_account"
       },
       "description": "Sample for UndeleteServiceAccount",
@@ -4464,10 +4464,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.iam.admin_v1.IAMAsyncClient",
+          "fullName": "google.cloud.iam_admin_v1.IAMAsyncClient",
           "shortName": "IAMAsyncClient"
         },
-        "fullName": "google.iam.admin_v1.IAMAsyncClient.update_role",
+        "fullName": "google.cloud.iam_admin_v1.IAMAsyncClient.update_role",
         "method": {
           "fullName": "google.iam.admin.v1.IAM.UpdateRole",
           "service": {
@@ -4479,7 +4479,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.iam.admin_v1.types.UpdateRoleRequest"
+            "type": "google.cloud.iam_admin_v1.types.UpdateRoleRequest"
           },
           {
             "name": "retry",
@@ -4494,7 +4494,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.iam.admin_v1.types.Role",
+        "resultType": "google.cloud.iam_admin_v1.types.Role",
         "shortName": "update_role"
       },
       "description": "Sample for UpdateRole",
@@ -4540,10 +4540,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.iam.admin_v1.IAMClient",
+          "fullName": "google.cloud.iam_admin_v1.IAMClient",
           "shortName": "IAMClient"
         },
-        "fullName": "google.iam.admin_v1.IAMClient.update_role",
+        "fullName": "google.cloud.iam_admin_v1.IAMClient.update_role",
         "method": {
           "fullName": "google.iam.admin.v1.IAM.UpdateRole",
           "service": {
@@ -4555,7 +4555,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.iam.admin_v1.types.UpdateRoleRequest"
+            "type": "google.cloud.iam_admin_v1.types.UpdateRoleRequest"
           },
           {
             "name": "retry",
@@ -4570,7 +4570,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.iam.admin_v1.types.Role",
+        "resultType": "google.cloud.iam_admin_v1.types.Role",
         "shortName": "update_role"
       },
       "description": "Sample for UpdateRole",
@@ -4617,10 +4617,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.iam.admin_v1.IAMAsyncClient",
+          "fullName": "google.cloud.iam_admin_v1.IAMAsyncClient",
           "shortName": "IAMAsyncClient"
         },
-        "fullName": "google.iam.admin_v1.IAMAsyncClient.update_service_account",
+        "fullName": "google.cloud.iam_admin_v1.IAMAsyncClient.update_service_account",
         "method": {
           "fullName": "google.iam.admin.v1.IAM.UpdateServiceAccount",
           "service": {
@@ -4632,7 +4632,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.iam.admin_v1.types.ServiceAccount"
+            "type": "google.cloud.iam_admin_v1.types.ServiceAccount"
           },
           {
             "name": "retry",
@@ -4647,7 +4647,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.iam.admin_v1.types.ServiceAccount",
+        "resultType": "google.cloud.iam_admin_v1.types.ServiceAccount",
         "shortName": "update_service_account"
       },
       "description": "Sample for UpdateServiceAccount",
@@ -4693,10 +4693,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.iam.admin_v1.IAMClient",
+          "fullName": "google.cloud.iam_admin_v1.IAMClient",
           "shortName": "IAMClient"
         },
-        "fullName": "google.iam.admin_v1.IAMClient.update_service_account",
+        "fullName": "google.cloud.iam_admin_v1.IAMClient.update_service_account",
         "method": {
           "fullName": "google.iam.admin.v1.IAM.UpdateServiceAccount",
           "service": {
@@ -4708,7 +4708,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.iam.admin_v1.types.ServiceAccount"
+            "type": "google.cloud.iam_admin_v1.types.ServiceAccount"
           },
           {
             "name": "retry",
@@ -4723,7 +4723,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.iam.admin_v1.types.ServiceAccount",
+        "resultType": "google.cloud.iam_admin_v1.types.ServiceAccount",
         "shortName": "update_service_account"
       },
       "description": "Sample for UpdateServiceAccount",
@@ -4770,10 +4770,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.iam.admin_v1.IAMAsyncClient",
+          "fullName": "google.cloud.iam_admin_v1.IAMAsyncClient",
           "shortName": "IAMAsyncClient"
         },
-        "fullName": "google.iam.admin_v1.IAMAsyncClient.upload_service_account_key",
+        "fullName": "google.cloud.iam_admin_v1.IAMAsyncClient.upload_service_account_key",
         "method": {
           "fullName": "google.iam.admin.v1.IAM.UploadServiceAccountKey",
           "service": {
@@ -4785,7 +4785,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.iam.admin_v1.types.UploadServiceAccountKeyRequest"
+            "type": "google.cloud.iam_admin_v1.types.UploadServiceAccountKeyRequest"
           },
           {
             "name": "retry",
@@ -4800,7 +4800,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.iam.admin_v1.types.ServiceAccountKey",
+        "resultType": "google.cloud.iam_admin_v1.types.ServiceAccountKey",
         "shortName": "upload_service_account_key"
       },
       "description": "Sample for UploadServiceAccountKey",
@@ -4846,10 +4846,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.iam.admin_v1.IAMClient",
+          "fullName": "google.cloud.iam_admin_v1.IAMClient",
           "shortName": "IAMClient"
         },
-        "fullName": "google.iam.admin_v1.IAMClient.upload_service_account_key",
+        "fullName": "google.cloud.iam_admin_v1.IAMClient.upload_service_account_key",
         "method": {
           "fullName": "google.iam.admin.v1.IAM.UploadServiceAccountKey",
           "service": {
@@ -4861,7 +4861,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.iam.admin_v1.types.UploadServiceAccountKeyRequest"
+            "type": "google.cloud.iam_admin_v1.types.UploadServiceAccountKeyRequest"
           },
           {
             "name": "retry",
@@ -4876,7 +4876,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.iam.admin_v1.types.ServiceAccountKey",
+        "resultType": "google.cloud.iam_admin_v1.types.ServiceAccountKey",
         "shortName": "upload_service_account_key"
       },
       "description": "Sample for UploadServiceAccountKey",

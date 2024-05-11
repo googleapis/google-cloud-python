@@ -20,7 +20,7 @@
 # It may require modifications to work in your environment.
 
 # To install the latest published package dependency, execute the following:
-#   python3 -m pip install google-iam-admin
+#   python3 -m pip install google-cloud-iam
 
 
 # [START iam_v1_generated_IAM_TestIamPermissions_async]
@@ -31,13 +31,13 @@
 # - It may require specifying regional endpoints when creating the service
 #   client as shown in:
 #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-from google.iam import admin_v1
+from google.cloud import iam_admin_v1
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 
 
 async def sample_test_iam_permissions():
     # Create a client
-    client = admin_v1.IAMAsyncClient()
+    client = iam_admin_v1.IAMAsyncClient()
 
     # Initialize request argument(s)
     request = iam_policy_pb2.TestIamPermissionsRequest(

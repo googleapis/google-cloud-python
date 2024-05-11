@@ -17,6 +17,7 @@ from collections import OrderedDict
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -579,7 +580,9 @@ class IAMClient(metaclass=IAMClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, IAMTransport]] = None,
+        transport: Optional[
+            Union[str, IAMTransport, Callable[..., IAMTransport]]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -591,9 +594,11 @@ class IAMClient(metaclass=IAMClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, IAMTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,IAMTransport,Callable[..., IAMTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the IAMTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -699,8 +704,13 @@ class IAMClient(metaclass=IAMClientMeta):
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[Type[IAMTransport], Callable[..., IAMTransport]] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., IAMTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -778,8 +788,8 @@ class IAMClient(metaclass=IAMClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -787,10 +797,8 @@ class IAMClient(metaclass=IAMClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a iam.ListServiceAccountsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, iam.ListServiceAccountsRequest):
             request = iam.ListServiceAccountsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -907,8 +915,8 @@ class IAMClient(metaclass=IAMClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -916,10 +924,8 @@ class IAMClient(metaclass=IAMClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a iam.GetServiceAccountRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, iam.GetServiceAccountRequest):
             request = iam.GetServiceAccountRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1045,8 +1051,8 @@ class IAMClient(metaclass=IAMClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, account_id, service_account])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1054,10 +1060,8 @@ class IAMClient(metaclass=IAMClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a iam.CreateServiceAccountRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, iam.CreateServiceAccountRequest):
             request = iam.CreateServiceAccountRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1173,10 +1177,8 @@ class IAMClient(metaclass=IAMClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a iam.ServiceAccount.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, iam.ServiceAccount):
             request = iam.ServiceAccount(request)
 
@@ -1275,10 +1277,8 @@ class IAMClient(metaclass=IAMClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a iam.PatchServiceAccountRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, iam.PatchServiceAccountRequest):
             request = iam.PatchServiceAccountRequest(request)
 
@@ -1382,8 +1382,8 @@ class IAMClient(metaclass=IAMClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1391,10 +1391,8 @@ class IAMClient(metaclass=IAMClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a iam.DeleteServiceAccountRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, iam.DeleteServiceAccountRequest):
             request = iam.DeleteServiceAccountRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1480,10 +1478,8 @@ class IAMClient(metaclass=IAMClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a iam.UndeleteServiceAccountRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, iam.UndeleteServiceAccountRequest):
             request = iam.UndeleteServiceAccountRequest(request)
 
@@ -1563,10 +1559,8 @@ class IAMClient(metaclass=IAMClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a iam.EnableServiceAccountRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, iam.EnableServiceAccountRequest):
             request = iam.EnableServiceAccountRequest(request)
 
@@ -1651,10 +1645,8 @@ class IAMClient(metaclass=IAMClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a iam.DisableServiceAccountRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, iam.DisableServiceAccountRequest):
             request = iam.DisableServiceAccountRequest(request)
 
@@ -1761,8 +1753,8 @@ class IAMClient(metaclass=IAMClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, key_types])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1770,10 +1762,8 @@ class IAMClient(metaclass=IAMClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a iam.ListServiceAccountKeysRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, iam.ListServiceAccountKeysRequest):
             request = iam.ListServiceAccountKeysRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1920,8 +1910,8 @@ class IAMClient(metaclass=IAMClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, public_key_type])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1929,10 +1919,8 @@ class IAMClient(metaclass=IAMClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a iam.GetServiceAccountKeyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, iam.GetServiceAccountKeyRequest):
             request = iam.GetServiceAccountKeyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2086,8 +2074,8 @@ class IAMClient(metaclass=IAMClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, private_key_type, key_algorithm])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2095,10 +2083,8 @@ class IAMClient(metaclass=IAMClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a iam.CreateServiceAccountKeyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, iam.CreateServiceAccountKeyRequest):
             request = iam.CreateServiceAccountKeyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2227,10 +2213,8 @@ class IAMClient(metaclass=IAMClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a iam.UploadServiceAccountKeyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, iam.UploadServiceAccountKeyRequest):
             request = iam.UploadServiceAccountKeyRequest(request)
 
@@ -2321,8 +2305,8 @@ class IAMClient(metaclass=IAMClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2330,10 +2314,8 @@ class IAMClient(metaclass=IAMClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a iam.DeleteServiceAccountKeyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, iam.DeleteServiceAccountKeyRequest):
             request = iam.DeleteServiceAccountKeyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2425,8 +2407,8 @@ class IAMClient(metaclass=IAMClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2434,10 +2416,8 @@ class IAMClient(metaclass=IAMClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a iam.DisableServiceAccountKeyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, iam.DisableServiceAccountKeyRequest):
             request = iam.DisableServiceAccountKeyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2527,8 +2507,8 @@ class IAMClient(metaclass=IAMClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2536,10 +2516,8 @@ class IAMClient(metaclass=IAMClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a iam.EnableServiceAccountKeyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, iam.EnableServiceAccountKeyRequest):
             request = iam.EnableServiceAccountKeyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2666,8 +2644,8 @@ class IAMClient(metaclass=IAMClientMeta):
         warnings.warn("IAMClient.sign_blob is deprecated", DeprecationWarning)
 
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, bytes_to_sign])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2675,10 +2653,8 @@ class IAMClient(metaclass=IAMClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a iam.SignBlobRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, iam.SignBlobRequest):
             request = iam.SignBlobRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2818,8 +2794,8 @@ class IAMClient(metaclass=IAMClientMeta):
         warnings.warn("IAMClient.sign_jwt is deprecated", DeprecationWarning)
 
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, payload])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2827,10 +2803,8 @@ class IAMClient(metaclass=IAMClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a iam.SignJwtRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, iam.SignJwtRequest):
             request = iam.SignJwtRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2966,8 +2940,8 @@ class IAMClient(metaclass=IAMClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2976,8 +2950,8 @@ class IAMClient(metaclass=IAMClientMeta):
             )
 
         if isinstance(request, dict):
-            # The request isn't a proto-plus wrapped type,
-            # so it must be constructed via keyword expansion.
+            # - The request isn't a proto-plus wrapped type,
+            #   so it must be constructed via keyword expansion.
             request = iam_policy_pb2.GetIamPolicyRequest(**request)
         elif not request:
             # Null request, just make one.
@@ -3122,8 +3096,8 @@ class IAMClient(metaclass=IAMClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3132,8 +3106,8 @@ class IAMClient(metaclass=IAMClientMeta):
             )
 
         if isinstance(request, dict):
-            # The request isn't a proto-plus wrapped type,
-            # so it must be constructed via keyword expansion.
+            # - The request isn't a proto-plus wrapped type,
+            #   so it must be constructed via keyword expansion.
             request = iam_policy_pb2.SetIamPolicyRequest(**request)
         elif not request:
             # Null request, just make one.
@@ -3238,8 +3212,8 @@ class IAMClient(metaclass=IAMClientMeta):
                 Response message for TestIamPermissions method.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([resource, permissions])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3248,8 +3222,8 @@ class IAMClient(metaclass=IAMClientMeta):
             )
 
         if isinstance(request, dict):
-            # The request isn't a proto-plus wrapped type,
-            # so it must be constructed via keyword expansion.
+            # - The request isn't a proto-plus wrapped type,
+            #   so it must be constructed via keyword expansion.
             request = iam_policy_pb2.TestIamPermissionsRequest(**request)
         elif not request:
             # Null request, just make one.
@@ -3354,8 +3328,8 @@ class IAMClient(metaclass=IAMClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([full_resource_name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3363,10 +3337,8 @@ class IAMClient(metaclass=IAMClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a iam.QueryGrantableRolesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, iam.QueryGrantableRolesRequest):
             request = iam.QueryGrantableRolesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3459,10 +3431,8 @@ class IAMClient(metaclass=IAMClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a iam.ListRolesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, iam.ListRolesRequest):
             request = iam.ListRolesRequest(request)
 
@@ -3545,10 +3515,8 @@ class IAMClient(metaclass=IAMClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a iam.GetRoleRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, iam.GetRoleRequest):
             request = iam.GetRoleRequest(request)
 
@@ -3627,10 +3595,8 @@ class IAMClient(metaclass=IAMClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a iam.CreateRoleRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, iam.CreateRoleRequest):
             request = iam.CreateRoleRequest(request)
 
@@ -3710,10 +3676,8 @@ class IAMClient(metaclass=IAMClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a iam.UpdateRoleRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, iam.UpdateRoleRequest):
             request = iam.UpdateRoleRequest(request)
 
@@ -3812,10 +3776,8 @@ class IAMClient(metaclass=IAMClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a iam.DeleteRoleRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, iam.DeleteRoleRequest):
             request = iam.DeleteRoleRequest(request)
 
@@ -3895,10 +3857,8 @@ class IAMClient(metaclass=IAMClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a iam.UndeleteRoleRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, iam.UndeleteRoleRequest):
             request = iam.UndeleteRoleRequest(request)
 
@@ -3984,10 +3944,8 @@ class IAMClient(metaclass=IAMClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a iam.QueryTestablePermissionsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, iam.QueryTestablePermissionsRequest):
             request = iam.QueryTestablePermissionsRequest(request)
 
@@ -4076,10 +4034,8 @@ class IAMClient(metaclass=IAMClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a iam.QueryAuditableServicesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, iam.QueryAuditableServicesRequest):
             request = iam.QueryAuditableServicesRequest(request)
 
@@ -4161,10 +4117,8 @@ class IAMClient(metaclass=IAMClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a iam.LintPolicyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, iam.LintPolicyRequest):
             request = iam.LintPolicyRequest(request)
 
