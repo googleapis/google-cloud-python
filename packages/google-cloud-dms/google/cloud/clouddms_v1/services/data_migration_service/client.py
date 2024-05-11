@@ -17,6 +17,7 @@ from collections import OrderedDict
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -652,7 +653,13 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, DataMigrationServiceTransport]] = None,
+        transport: Optional[
+            Union[
+                str,
+                DataMigrationServiceTransport,
+                Callable[..., DataMigrationServiceTransport],
+            ]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -664,9 +671,11 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, DataMigrationServiceTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,DataMigrationServiceTransport,Callable[..., DataMigrationServiceTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the DataMigrationServiceTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -775,8 +784,16 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[DataMigrationServiceTransport],
+                Callable[..., DataMigrationServiceTransport],
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., DataMigrationServiceTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -853,8 +870,8 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -862,10 +879,8 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a clouddms.ListMigrationJobsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, clouddms.ListMigrationJobsRequest):
             request = clouddms.ListMigrationJobsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -967,8 +982,8 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -976,10 +991,8 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a clouddms.GetMigrationJobRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, clouddms.GetMigrationJobRequest):
             request = clouddms.GetMigrationJobRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1108,8 +1121,8 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, migration_job, migration_job_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1117,10 +1130,8 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a clouddms.CreateMigrationJobRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, clouddms.CreateMigrationJobRequest):
             request = clouddms.CreateMigrationJobRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1250,8 +1261,8 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([migration_job, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1259,10 +1270,8 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a clouddms.UpdateMigrationJobRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, clouddms.UpdateMigrationJobRequest):
             request = clouddms.UpdateMigrationJobRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1381,8 +1390,8 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1390,10 +1399,8 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a clouddms.DeleteMigrationJobRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, clouddms.DeleteMigrationJobRequest):
             request = clouddms.DeleteMigrationJobRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1493,10 +1500,8 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a clouddms.StartMigrationJobRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, clouddms.StartMigrationJobRequest):
             request = clouddms.StartMigrationJobRequest(request)
 
@@ -1592,10 +1597,8 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a clouddms.StopMigrationJobRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, clouddms.StopMigrationJobRequest):
             request = clouddms.StopMigrationJobRequest(request)
 
@@ -1692,10 +1695,8 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a clouddms.ResumeMigrationJobRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, clouddms.ResumeMigrationJobRequest):
             request = clouddms.ResumeMigrationJobRequest(request)
 
@@ -1793,10 +1794,8 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a clouddms.PromoteMigrationJobRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, clouddms.PromoteMigrationJobRequest):
             request = clouddms.PromoteMigrationJobRequest(request)
 
@@ -1894,10 +1893,8 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a clouddms.VerifyMigrationJobRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, clouddms.VerifyMigrationJobRequest):
             request = clouddms.VerifyMigrationJobRequest(request)
 
@@ -1995,10 +1992,8 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a clouddms.RestartMigrationJobRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, clouddms.RestartMigrationJobRequest):
             request = clouddms.RestartMigrationJobRequest(request)
 
@@ -2092,10 +2087,8 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a clouddms.GenerateSshScriptRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, clouddms.GenerateSshScriptRequest):
             request = clouddms.GenerateSshScriptRequest(request)
 
@@ -2181,10 +2174,8 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a clouddms.GenerateTcpProxyScriptRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, clouddms.GenerateTcpProxyScriptRequest):
             request = clouddms.GenerateTcpProxyScriptRequest(request)
 
@@ -2282,8 +2273,8 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2291,10 +2282,8 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a clouddms.ListConnectionProfilesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, clouddms.ListConnectionProfilesRequest):
             request = clouddms.ListConnectionProfilesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2394,8 +2383,8 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
                 A connection profile definition.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2403,10 +2392,8 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a clouddms.GetConnectionProfileRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, clouddms.GetConnectionProfileRequest):
             request = clouddms.GetConnectionProfileRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2531,8 +2518,8 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, connection_profile, connection_profile_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2540,10 +2527,8 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a clouddms.CreateConnectionProfileRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, clouddms.CreateConnectionProfileRequest):
             request = clouddms.CreateConnectionProfileRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2674,8 +2659,8 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([connection_profile, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2683,10 +2668,8 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a clouddms.UpdateConnectionProfileRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, clouddms.UpdateConnectionProfileRequest):
             request = clouddms.UpdateConnectionProfileRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2810,8 +2793,8 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2819,10 +2802,8 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a clouddms.DeleteConnectionProfileRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, clouddms.DeleteConnectionProfileRequest):
             request = clouddms.DeleteConnectionProfileRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2955,8 +2936,8 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, private_connection, private_connection_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2964,10 +2945,8 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a clouddms.CreatePrivateConnectionRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, clouddms.CreatePrivateConnectionRequest):
             request = clouddms.CreatePrivateConnectionRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3075,8 +3054,8 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3084,10 +3063,8 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a clouddms.GetPrivateConnectionRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, clouddms.GetPrivateConnectionRequest):
             request = clouddms.GetPrivateConnectionRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3186,8 +3163,8 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3195,10 +3172,8 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a clouddms.ListPrivateConnectionsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, clouddms.ListPrivateConnectionsRequest):
             request = clouddms.ListPrivateConnectionsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3315,8 +3290,8 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3324,10 +3299,8 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a clouddms.DeletePrivateConnectionRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, clouddms.DeletePrivateConnectionRequest):
             request = clouddms.DeletePrivateConnectionRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3430,8 +3403,8 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3439,10 +3412,8 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a clouddms.GetConversionWorkspaceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, clouddms.GetConversionWorkspaceRequest):
             request = clouddms.GetConversionWorkspaceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3541,8 +3512,8 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3550,10 +3521,8 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a clouddms.ListConversionWorkspacesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, clouddms.ListConversionWorkspacesRequest):
             request = clouddms.ListConversionWorkspacesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3694,8 +3663,8 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [parent, conversion_workspace, conversion_workspace_id]
         )
@@ -3705,10 +3674,8 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a clouddms.CreateConversionWorkspaceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, clouddms.CreateConversionWorkspaceRequest):
             request = clouddms.CreateConversionWorkspaceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3843,8 +3810,8 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([conversion_workspace, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3852,10 +3819,8 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a clouddms.UpdateConversionWorkspaceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, clouddms.UpdateConversionWorkspaceRequest):
             request = clouddms.UpdateConversionWorkspaceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3978,8 +3943,8 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3987,10 +3952,8 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a clouddms.DeleteConversionWorkspaceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, clouddms.DeleteConversionWorkspaceRequest):
             request = clouddms.DeleteConversionWorkspaceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4123,8 +4086,8 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, mapping_rule, mapping_rule_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4132,10 +4095,8 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a clouddms.CreateMappingRuleRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, clouddms.CreateMappingRuleRequest):
             request = clouddms.CreateMappingRuleRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4223,8 +4184,8 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4232,10 +4193,8 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a clouddms.DeleteMappingRuleRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, clouddms.DeleteMappingRuleRequest):
             request = clouddms.DeleteMappingRuleRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4331,8 +4290,8 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4340,10 +4299,8 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a clouddms.ListMappingRulesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, clouddms.ListMappingRulesRequest):
             request = clouddms.ListMappingRulesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4458,8 +4415,8 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4467,10 +4424,8 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a clouddms.GetMappingRuleRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, clouddms.GetMappingRuleRequest):
             request = clouddms.GetMappingRuleRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4563,10 +4518,8 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a clouddms.SeedConversionWorkspaceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, clouddms.SeedConversionWorkspaceRequest):
             request = clouddms.SeedConversionWorkspaceRequest(request)
 
@@ -4673,10 +4626,8 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a clouddms.ImportMappingRulesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, clouddms.ImportMappingRulesRequest):
             request = clouddms.ImportMappingRulesRequest(request)
 
@@ -4774,10 +4725,8 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a clouddms.ConvertConversionWorkspaceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, clouddms.ConvertConversionWorkspaceRequest):
             request = clouddms.ConvertConversionWorkspaceRequest(request)
 
@@ -4878,10 +4827,8 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a clouddms.CommitConversionWorkspaceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, clouddms.CommitConversionWorkspaceRequest):
             request = clouddms.CommitConversionWorkspaceRequest(request)
 
@@ -4982,10 +4929,8 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a clouddms.RollbackConversionWorkspaceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, clouddms.RollbackConversionWorkspaceRequest):
             request = clouddms.RollbackConversionWorkspaceRequest(request)
 
@@ -5085,10 +5030,8 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a clouddms.ApplyConversionWorkspaceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, clouddms.ApplyConversionWorkspaceRequest):
             request = clouddms.ApplyConversionWorkspaceRequest(request)
 
@@ -5190,10 +5133,8 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a clouddms.DescribeDatabaseEntitiesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, clouddms.DescribeDatabaseEntitiesRequest):
             request = clouddms.DescribeDatabaseEntitiesRequest(request)
 
@@ -5293,10 +5234,8 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a clouddms.SearchBackgroundJobsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, clouddms.SearchBackgroundJobsRequest):
             request = clouddms.SearchBackgroundJobsRequest(request)
 
@@ -5384,10 +5323,8 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a clouddms.DescribeConversionWorkspaceRevisionsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request, clouddms.DescribeConversionWorkspaceRevisionsRequest
         ):
@@ -5489,8 +5426,8 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5498,10 +5435,8 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a clouddms.FetchStaticIpsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, clouddms.FetchStaticIpsRequest):
             request = clouddms.FetchStaticIpsRequest(request)
             # If we have keyword arguments corresponding to fields on the

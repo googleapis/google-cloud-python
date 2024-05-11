@@ -17,6 +17,7 @@ from collections import OrderedDict
 import functools
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -238,7 +239,13 @@ class DataprocMetastoreAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, DataprocMetastoreTransport] = "grpc_asyncio",
+        transport: Optional[
+            Union[
+                str,
+                DataprocMetastoreTransport,
+                Callable[..., DataprocMetastoreTransport],
+            ]
+        ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -250,9 +257,11 @@ class DataprocMetastoreAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.DataprocMetastoreTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,DataprocMetastoreTransport,Callable[..., DataprocMetastoreTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the DataprocMetastoreTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -363,8 +372,8 @@ class DataprocMetastoreAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -372,7 +381,10 @@ class DataprocMetastoreAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = metastore.ListServicesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, metastore.ListServicesRequest):
+            request = metastore.ListServicesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -381,11 +393,9 @@ class DataprocMetastoreAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_services,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_services
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -479,8 +489,8 @@ class DataprocMetastoreAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -488,7 +498,10 @@ class DataprocMetastoreAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = metastore.GetServiceRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, metastore.GetServiceRequest):
+            request = metastore.GetServiceRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -497,11 +510,9 @@ class DataprocMetastoreAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_service,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_service
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -622,8 +633,8 @@ class DataprocMetastoreAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, service, service_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -631,7 +642,10 @@ class DataprocMetastoreAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = metastore.CreateServiceRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, metastore.CreateServiceRequest):
+            request = metastore.CreateServiceRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -644,11 +658,9 @@ class DataprocMetastoreAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_service,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_service
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -760,8 +772,8 @@ class DataprocMetastoreAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([service, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -769,7 +781,10 @@ class DataprocMetastoreAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = metastore.UpdateServiceRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, metastore.UpdateServiceRequest):
+            request = metastore.UpdateServiceRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -780,11 +795,9 @@ class DataprocMetastoreAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_service,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_service
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -893,8 +906,8 @@ class DataprocMetastoreAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -902,7 +915,10 @@ class DataprocMetastoreAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = metastore.DeleteServiceRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, metastore.DeleteServiceRequest):
+            request = metastore.DeleteServiceRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -911,11 +927,9 @@ class DataprocMetastoreAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_service,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_service
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1012,8 +1026,8 @@ class DataprocMetastoreAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1021,7 +1035,10 @@ class DataprocMetastoreAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = metastore.ListMetadataImportsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, metastore.ListMetadataImportsRequest):
+            request = metastore.ListMetadataImportsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1030,11 +1047,9 @@ class DataprocMetastoreAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_metadata_imports,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_metadata_imports
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1128,8 +1143,8 @@ class DataprocMetastoreAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1137,7 +1152,10 @@ class DataprocMetastoreAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = metastore.GetMetadataImportRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, metastore.GetMetadataImportRequest):
+            request = metastore.GetMetadataImportRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1146,11 +1164,9 @@ class DataprocMetastoreAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_metadata_import,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_metadata_import
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1270,8 +1286,8 @@ class DataprocMetastoreAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, metadata_import, metadata_import_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1279,7 +1295,10 @@ class DataprocMetastoreAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = metastore.CreateMetadataImportRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, metastore.CreateMetadataImportRequest):
+            request = metastore.CreateMetadataImportRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1292,11 +1311,9 @@ class DataprocMetastoreAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_metadata_import,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_metadata_import
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1410,8 +1427,8 @@ class DataprocMetastoreAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([metadata_import, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1419,7 +1436,10 @@ class DataprocMetastoreAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = metastore.UpdateMetadataImportRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, metastore.UpdateMetadataImportRequest):
+            request = metastore.UpdateMetadataImportRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1430,11 +1450,9 @@ class DataprocMetastoreAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_metadata_import,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_metadata_import
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1527,15 +1545,16 @@ class DataprocMetastoreAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = metastore.ExportMetadataRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, metastore.ExportMetadataRequest):
+            request = metastore.ExportMetadataRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.export_metadata,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.export_metadata
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1645,8 +1664,8 @@ class DataprocMetastoreAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([service, backup])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1654,7 +1673,10 @@ class DataprocMetastoreAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = metastore.RestoreServiceRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, metastore.RestoreServiceRequest):
+            request = metastore.RestoreServiceRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1665,11 +1687,9 @@ class DataprocMetastoreAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.restore_service,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.restore_service
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1766,8 +1786,8 @@ class DataprocMetastoreAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1775,7 +1795,10 @@ class DataprocMetastoreAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = metastore.ListBackupsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, metastore.ListBackupsRequest):
+            request = metastore.ListBackupsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1784,11 +1807,9 @@ class DataprocMetastoreAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_backups,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_backups
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1880,8 +1901,8 @@ class DataprocMetastoreAsyncClient:
                 The details of a backup resource.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1889,7 +1910,10 @@ class DataprocMetastoreAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = metastore.GetBackupRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, metastore.GetBackupRequest):
+            request = metastore.GetBackupRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1898,11 +1922,9 @@ class DataprocMetastoreAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_backup,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_backup
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2019,8 +2041,8 @@ class DataprocMetastoreAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, backup, backup_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2028,7 +2050,10 @@ class DataprocMetastoreAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = metastore.CreateBackupRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, metastore.CreateBackupRequest):
+            request = metastore.CreateBackupRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2041,11 +2066,9 @@ class DataprocMetastoreAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_backup,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_backup
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2152,8 +2175,8 @@ class DataprocMetastoreAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2161,7 +2184,10 @@ class DataprocMetastoreAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = metastore.DeleteBackupRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, metastore.DeleteBackupRequest):
+            request = metastore.DeleteBackupRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2170,11 +2196,9 @@ class DataprocMetastoreAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_backup,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_backup
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2257,15 +2281,16 @@ class DataprocMetastoreAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = metastore.RemoveIamPolicyRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, metastore.RemoveIamPolicyRequest):
+            request = metastore.RemoveIamPolicyRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.remove_iam_policy,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.remove_iam_policy
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2347,15 +2372,16 @@ class DataprocMetastoreAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = metastore.QueryMetadataRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, metastore.QueryMetadataRequest):
+            request = metastore.QueryMetadataRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.query_metadata,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.query_metadata
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2447,15 +2473,16 @@ class DataprocMetastoreAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = metastore.MoveTableToDatabaseRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, metastore.MoveTableToDatabaseRequest):
+            request = metastore.MoveTableToDatabaseRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.move_table_to_database,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.move_table_to_database
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2552,15 +2579,16 @@ class DataprocMetastoreAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = metastore.AlterMetadataResourceLocationRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, metastore.AlterMetadataResourceLocationRequest):
+            request = metastore.AlterMetadataResourceLocationRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.alter_metadata_resource_location,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.alter_metadata_resource_location
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
