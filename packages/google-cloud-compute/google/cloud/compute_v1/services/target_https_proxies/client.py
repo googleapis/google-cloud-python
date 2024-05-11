@@ -18,6 +18,7 @@ import functools
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -506,7 +507,13 @@ class TargetHttpsProxiesClient(metaclass=TargetHttpsProxiesClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, TargetHttpsProxiesTransport]] = None,
+        transport: Optional[
+            Union[
+                str,
+                TargetHttpsProxiesTransport,
+                Callable[..., TargetHttpsProxiesTransport],
+            ]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -518,9 +525,11 @@ class TargetHttpsProxiesClient(metaclass=TargetHttpsProxiesClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, TargetHttpsProxiesTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,TargetHttpsProxiesTransport,Callable[..., TargetHttpsProxiesTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the TargetHttpsProxiesTransport constructor.
+                If set to None, a transport is chosen automatically.
                 NOTE: "rest" transport functionality is currently in a
                 beta state (preview). We welcome your feedback via an
                 issue in this library's source repository.
@@ -632,8 +641,16 @@ class TargetHttpsProxiesClient(metaclass=TargetHttpsProxiesClientMeta):
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[TargetHttpsProxiesTransport],
+                Callable[..., TargetHttpsProxiesTransport],
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., TargetHttpsProxiesTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -714,8 +731,8 @@ class TargetHttpsProxiesClient(metaclass=TargetHttpsProxiesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -723,10 +740,8 @@ class TargetHttpsProxiesClient(metaclass=TargetHttpsProxiesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.AggregatedListTargetHttpsProxiesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.AggregatedListTargetHttpsProxiesRequest):
             request = compute.AggregatedListTargetHttpsProxiesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -836,8 +851,8 @@ class TargetHttpsProxiesClient(metaclass=TargetHttpsProxiesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, target_https_proxy])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -845,10 +860,8 @@ class TargetHttpsProxiesClient(metaclass=TargetHttpsProxiesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.DeleteTargetHttpsProxyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.DeleteTargetHttpsProxyRequest):
             request = compute.DeleteTargetHttpsProxyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -956,8 +969,8 @@ class TargetHttpsProxiesClient(metaclass=TargetHttpsProxiesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, target_https_proxy])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -965,10 +978,8 @@ class TargetHttpsProxiesClient(metaclass=TargetHttpsProxiesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.DeleteTargetHttpsProxyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.DeleteTargetHttpsProxyRequest):
             request = compute.DeleteTargetHttpsProxyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1114,8 +1125,8 @@ class TargetHttpsProxiesClient(metaclass=TargetHttpsProxiesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, target_https_proxy])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1123,10 +1134,8 @@ class TargetHttpsProxiesClient(metaclass=TargetHttpsProxiesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.GetTargetHttpsProxyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.GetTargetHttpsProxyRequest):
             request = compute.GetTargetHttpsProxyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1232,8 +1241,8 @@ class TargetHttpsProxiesClient(metaclass=TargetHttpsProxiesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, target_https_proxy_resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1241,10 +1250,8 @@ class TargetHttpsProxiesClient(metaclass=TargetHttpsProxiesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.InsertTargetHttpsProxyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.InsertTargetHttpsProxyRequest):
             request = compute.InsertTargetHttpsProxyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1345,8 +1352,8 @@ class TargetHttpsProxiesClient(metaclass=TargetHttpsProxiesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, target_https_proxy_resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1354,10 +1361,8 @@ class TargetHttpsProxiesClient(metaclass=TargetHttpsProxiesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.InsertTargetHttpsProxyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.InsertTargetHttpsProxyRequest):
             request = compute.InsertTargetHttpsProxyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1480,8 +1485,8 @@ class TargetHttpsProxiesClient(metaclass=TargetHttpsProxiesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1489,10 +1494,8 @@ class TargetHttpsProxiesClient(metaclass=TargetHttpsProxiesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.ListTargetHttpsProxiesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.ListTargetHttpsProxiesRequest):
             request = compute.ListTargetHttpsProxiesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1611,8 +1614,8 @@ class TargetHttpsProxiesClient(metaclass=TargetHttpsProxiesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, target_https_proxy, target_https_proxy_resource]
         )
@@ -1622,10 +1625,8 @@ class TargetHttpsProxiesClient(metaclass=TargetHttpsProxiesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.PatchTargetHttpsProxyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.PatchTargetHttpsProxyRequest):
             request = compute.PatchTargetHttpsProxyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1744,8 +1745,8 @@ class TargetHttpsProxiesClient(metaclass=TargetHttpsProxiesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, target_https_proxy, target_https_proxy_resource]
         )
@@ -1755,10 +1756,8 @@ class TargetHttpsProxiesClient(metaclass=TargetHttpsProxiesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.PatchTargetHttpsProxyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.PatchTargetHttpsProxyRequest):
             request = compute.PatchTargetHttpsProxyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1904,8 +1903,8 @@ class TargetHttpsProxiesClient(metaclass=TargetHttpsProxiesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [
                 project,
@@ -1919,10 +1918,8 @@ class TargetHttpsProxiesClient(metaclass=TargetHttpsProxiesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.SetCertificateMapTargetHttpsProxyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.SetCertificateMapTargetHttpsProxyRequest):
             request = compute.SetCertificateMapTargetHttpsProxyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2046,8 +2043,8 @@ class TargetHttpsProxiesClient(metaclass=TargetHttpsProxiesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [
                 project,
@@ -2061,10 +2058,8 @@ class TargetHttpsProxiesClient(metaclass=TargetHttpsProxiesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.SetCertificateMapTargetHttpsProxyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.SetCertificateMapTargetHttpsProxyRequest):
             request = compute.SetCertificateMapTargetHttpsProxyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2211,8 +2206,8 @@ class TargetHttpsProxiesClient(metaclass=TargetHttpsProxiesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [
                 project,
@@ -2226,10 +2221,8 @@ class TargetHttpsProxiesClient(metaclass=TargetHttpsProxiesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.SetQuicOverrideTargetHttpsProxyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.SetQuicOverrideTargetHttpsProxyRequest):
             request = compute.SetQuicOverrideTargetHttpsProxyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2352,8 +2345,8 @@ class TargetHttpsProxiesClient(metaclass=TargetHttpsProxiesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [
                 project,
@@ -2367,10 +2360,8 @@ class TargetHttpsProxiesClient(metaclass=TargetHttpsProxiesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.SetQuicOverrideTargetHttpsProxyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.SetQuicOverrideTargetHttpsProxyRequest):
             request = compute.SetQuicOverrideTargetHttpsProxyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2516,8 +2507,8 @@ class TargetHttpsProxiesClient(metaclass=TargetHttpsProxiesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [
                 project,
@@ -2531,10 +2522,8 @@ class TargetHttpsProxiesClient(metaclass=TargetHttpsProxiesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.SetSslCertificatesTargetHttpsProxyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.SetSslCertificatesTargetHttpsProxyRequest):
             request = compute.SetSslCertificatesTargetHttpsProxyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2656,8 +2645,8 @@ class TargetHttpsProxiesClient(metaclass=TargetHttpsProxiesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [
                 project,
@@ -2671,10 +2660,8 @@ class TargetHttpsProxiesClient(metaclass=TargetHttpsProxiesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.SetSslCertificatesTargetHttpsProxyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.SetSslCertificatesTargetHttpsProxyRequest):
             request = compute.SetSslCertificatesTargetHttpsProxyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2824,8 +2811,8 @@ class TargetHttpsProxiesClient(metaclass=TargetHttpsProxiesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, target_https_proxy, ssl_policy_reference_resource]
         )
@@ -2835,10 +2822,8 @@ class TargetHttpsProxiesClient(metaclass=TargetHttpsProxiesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.SetSslPolicyTargetHttpsProxyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.SetSslPolicyTargetHttpsProxyRequest):
             request = compute.SetSslPolicyTargetHttpsProxyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2962,8 +2947,8 @@ class TargetHttpsProxiesClient(metaclass=TargetHttpsProxiesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, target_https_proxy, ssl_policy_reference_resource]
         )
@@ -2973,10 +2958,8 @@ class TargetHttpsProxiesClient(metaclass=TargetHttpsProxiesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.SetSslPolicyTargetHttpsProxyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.SetSslPolicyTargetHttpsProxyRequest):
             request = compute.SetSslPolicyTargetHttpsProxyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3116,8 +3099,8 @@ class TargetHttpsProxiesClient(metaclass=TargetHttpsProxiesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, target_https_proxy, url_map_reference_resource]
         )
@@ -3127,10 +3110,8 @@ class TargetHttpsProxiesClient(metaclass=TargetHttpsProxiesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.SetUrlMapTargetHttpsProxyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.SetUrlMapTargetHttpsProxyRequest):
             request = compute.SetUrlMapTargetHttpsProxyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3246,8 +3227,8 @@ class TargetHttpsProxiesClient(metaclass=TargetHttpsProxiesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, target_https_proxy, url_map_reference_resource]
         )
@@ -3257,10 +3238,8 @@ class TargetHttpsProxiesClient(metaclass=TargetHttpsProxiesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.SetUrlMapTargetHttpsProxyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.SetUrlMapTargetHttpsProxyRequest):
             request = compute.SetUrlMapTargetHttpsProxyRequest(request)
             # If we have keyword arguments corresponding to fields on the

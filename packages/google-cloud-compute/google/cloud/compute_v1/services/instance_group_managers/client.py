@@ -18,6 +18,7 @@ import functools
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -508,7 +509,13 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, InstanceGroupManagersTransport]] = None,
+        transport: Optional[
+            Union[
+                str,
+                InstanceGroupManagersTransport,
+                Callable[..., InstanceGroupManagersTransport],
+            ]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -520,9 +527,11 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, InstanceGroupManagersTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,InstanceGroupManagersTransport,Callable[..., InstanceGroupManagersTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the InstanceGroupManagersTransport constructor.
+                If set to None, a transport is chosen automatically.
                 NOTE: "rest" transport functionality is currently in a
                 beta state (preview). We welcome your feedback via an
                 issue in this library's source repository.
@@ -634,8 +643,16 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[InstanceGroupManagersTransport],
+                Callable[..., InstanceGroupManagersTransport],
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., InstanceGroupManagersTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -750,8 +767,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [
                 project,
@@ -766,10 +783,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.AbandonInstancesInstanceGroupManagerRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.AbandonInstancesInstanceGroupManagerRequest):
             request = compute.AbandonInstancesInstanceGroupManagerRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -918,8 +933,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [
                 project,
@@ -934,10 +949,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.AbandonInstancesInstanceGroupManagerRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.AbandonInstancesInstanceGroupManagerRequest):
             request = compute.AbandonInstancesInstanceGroupManagerRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1074,8 +1087,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1083,10 +1096,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.AggregatedListInstanceGroupManagersRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.AggregatedListInstanceGroupManagersRequest):
             request = compute.AggregatedListInstanceGroupManagersRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1218,8 +1229,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [
                 project,
@@ -1234,10 +1245,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.ApplyUpdatesToInstancesInstanceGroupManagerRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request, compute.ApplyUpdatesToInstancesInstanceGroupManagerRequest
         ):
@@ -1380,8 +1389,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [
                 project,
@@ -1396,10 +1405,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.ApplyUpdatesToInstancesInstanceGroupManagerRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request, compute.ApplyUpdatesToInstancesInstanceGroupManagerRequest
         ):
@@ -1572,8 +1579,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [
                 project,
@@ -1588,10 +1595,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.CreateInstancesInstanceGroupManagerRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.CreateInstancesInstanceGroupManagerRequest):
             request = compute.CreateInstancesInstanceGroupManagerRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1733,8 +1738,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [
                 project,
@@ -1749,10 +1754,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.CreateInstancesInstanceGroupManagerRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.CreateInstancesInstanceGroupManagerRequest):
             request = compute.CreateInstancesInstanceGroupManagerRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1906,8 +1909,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, instance_group_manager])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1915,10 +1918,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.DeleteInstanceGroupManagerRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.DeleteInstanceGroupManagerRequest):
             request = compute.DeleteInstanceGroupManagerRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2043,8 +2044,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, instance_group_manager])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2052,10 +2053,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.DeleteInstanceGroupManagerRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.DeleteInstanceGroupManagerRequest):
             request = compute.DeleteInstanceGroupManagerRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2224,8 +2223,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [
                 project,
@@ -2240,10 +2239,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.DeleteInstancesInstanceGroupManagerRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.DeleteInstancesInstanceGroupManagerRequest):
             request = compute.DeleteInstancesInstanceGroupManagerRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2391,8 +2388,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [
                 project,
@@ -2407,10 +2404,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.DeleteInstancesInstanceGroupManagerRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.DeleteInstancesInstanceGroupManagerRequest):
             request = compute.DeleteInstancesInstanceGroupManagerRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2571,8 +2566,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [
                 project,
@@ -2587,10 +2582,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.DeletePerInstanceConfigsInstanceGroupManagerRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request, compute.DeletePerInstanceConfigsInstanceGroupManagerRequest
         ):
@@ -2735,8 +2728,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [
                 project,
@@ -2751,10 +2744,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.DeletePerInstanceConfigsInstanceGroupManagerRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request, compute.DeletePerInstanceConfigsInstanceGroupManagerRequest
         ):
@@ -2920,8 +2911,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, instance_group_manager])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2929,10 +2920,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.GetInstanceGroupManagerRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.GetInstanceGroupManagerRequest):
             request = compute.GetInstanceGroupManagerRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3061,8 +3050,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, instance_group_manager_resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3070,10 +3059,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.InsertInstanceGroupManagerRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.InsertInstanceGroupManagerRequest):
             request = compute.InsertInstanceGroupManagerRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3203,8 +3190,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, instance_group_manager_resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3212,10 +3199,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.InsertInstanceGroupManagerRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.InsertInstanceGroupManagerRequest):
             request = compute.InsertInstanceGroupManagerRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3356,8 +3341,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3365,10 +3350,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.ListInstanceGroupManagersRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.ListInstanceGroupManagersRequest):
             request = compute.ListInstanceGroupManagersRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3503,8 +3486,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, instance_group_manager])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3512,10 +3495,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.ListErrorsInstanceGroupManagersRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.ListErrorsInstanceGroupManagersRequest):
             request = compute.ListErrorsInstanceGroupManagersRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3656,8 +3637,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, instance_group_manager])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3665,10 +3646,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.ListManagedInstancesInstanceGroupManagersRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request, compute.ListManagedInstancesInstanceGroupManagersRequest
         ):
@@ -3806,8 +3785,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, instance_group_manager])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3815,10 +3794,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.ListPerInstanceConfigsInstanceGroupManagersRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request, compute.ListPerInstanceConfigsInstanceGroupManagersRequest
         ):
@@ -3972,8 +3949,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, zone, instance_group_manager, instance_group_manager_resource]
         )
@@ -3983,10 +3960,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.PatchInstanceGroupManagerRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.PatchInstanceGroupManagerRequest):
             request = compute.PatchInstanceGroupManagerRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4129,8 +4104,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, zone, instance_group_manager, instance_group_manager_resource]
         )
@@ -4140,10 +4115,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.PatchInstanceGroupManagerRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.PatchInstanceGroupManagerRequest):
             request = compute.PatchInstanceGroupManagerRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4306,8 +4279,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [
                 project,
@@ -4322,10 +4295,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.PatchPerInstanceConfigsInstanceGroupManagerRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request, compute.PatchPerInstanceConfigsInstanceGroupManagerRequest
         ):
@@ -4472,8 +4443,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [
                 project,
@@ -4488,10 +4459,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.PatchPerInstanceConfigsInstanceGroupManagerRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request, compute.PatchPerInstanceConfigsInstanceGroupManagerRequest
         ):
@@ -4672,8 +4641,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [
                 project,
@@ -4688,10 +4657,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.RecreateInstancesInstanceGroupManagerRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request, compute.RecreateInstancesInstanceGroupManagerRequest
         ):
@@ -4840,8 +4807,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [
                 project,
@@ -4856,10 +4823,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.RecreateInstancesInstanceGroupManagerRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request, compute.RecreateInstancesInstanceGroupManagerRequest
         ):
@@ -5044,8 +5009,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, instance_group_manager, size])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5053,10 +5018,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.ResizeInstanceGroupManagerRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.ResizeInstanceGroupManagerRequest):
             request = compute.ResizeInstanceGroupManagerRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -5212,8 +5175,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, instance_group_manager, size])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5221,10 +5184,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.ResizeInstanceGroupManagerRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.ResizeInstanceGroupManagerRequest):
             request = compute.ResizeInstanceGroupManagerRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -5385,8 +5346,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [
                 project,
@@ -5401,10 +5362,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.SetInstanceTemplateInstanceGroupManagerRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request, compute.SetInstanceTemplateInstanceGroupManagerRequest
         ):
@@ -5547,8 +5506,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [
                 project,
@@ -5563,10 +5522,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.SetInstanceTemplateInstanceGroupManagerRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request, compute.SetInstanceTemplateInstanceGroupManagerRequest
         ):
@@ -5737,8 +5694,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [
                 project,
@@ -5753,10 +5710,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.SetTargetPoolsInstanceGroupManagerRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.SetTargetPoolsInstanceGroupManagerRequest):
             request = compute.SetTargetPoolsInstanceGroupManagerRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -5897,8 +5852,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [
                 project,
@@ -5913,10 +5868,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.SetTargetPoolsInstanceGroupManagerRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.SetTargetPoolsInstanceGroupManagerRequest):
             request = compute.SetTargetPoolsInstanceGroupManagerRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -6079,8 +6032,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [
                 project,
@@ -6095,10 +6048,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.UpdatePerInstanceConfigsInstanceGroupManagerRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request, compute.UpdatePerInstanceConfigsInstanceGroupManagerRequest
         ):
@@ -6245,8 +6196,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [
                 project,
@@ -6261,10 +6212,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.UpdatePerInstanceConfigsInstanceGroupManagerRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request, compute.UpdatePerInstanceConfigsInstanceGroupManagerRequest
         ):

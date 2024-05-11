@@ -181,6 +181,11 @@ class NodeGroupsTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.perform_maintenance: gapic_v1.method.wrap_method(
+                self.perform_maintenance,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.set_iam_policy: gapic_v1.method.wrap_method(
                 self.set_iam_policy,
                 default_timeout=None,
@@ -300,6 +305,15 @@ class NodeGroupsTransport(abc.ABC):
         self,
     ) -> Callable[
         [compute.PatchNodeGroupRequest],
+        Union[compute.Operation, Awaitable[compute.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def perform_maintenance(
+        self,
+    ) -> Callable[
+        [compute.PerformMaintenanceNodeGroupRequest],
         Union[compute.Operation, Awaitable[compute.Operation]],
     ]:
         raise NotImplementedError()

@@ -1055,6 +1055,42 @@ def test_aggregated_list_rest(request_type):
     assert response.unreachables == ["unreachables_value"]
 
 
+def test_aggregated_list_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = PublicDelegatedPrefixesClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.aggregated_list in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.aggregated_list] = mock_rpc
+
+        request = {}
+        client.aggregated_list(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.aggregated_list(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
 def test_aggregated_list_rest_required_fields(
     request_type=compute.AggregatedListPublicDelegatedPrefixesRequest,
 ):
@@ -1463,6 +1499,46 @@ def test_announce_rest(request_type):
     assert response.zone == "zone_value"
 
 
+def test_announce_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = PublicDelegatedPrefixesClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.announce in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.announce] = mock_rpc
+
+        request = {}
+        client.announce(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.announce(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
 def test_announce_rest_required_fields(
     request_type=compute.AnnouncePublicDelegatedPrefixeRequest,
 ):
@@ -1781,6 +1857,46 @@ def test_announce_unary_rest(request_type):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.Operation)
+
+
+def test_announce_unary_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = PublicDelegatedPrefixesClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.announce in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.announce] = mock_rpc
+
+        request = {}
+        client.announce_unary(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.announce_unary(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
 
 
 def test_announce_unary_rest_required_fields(
@@ -2125,6 +2241,46 @@ def test_delete_rest(request_type):
     assert response.zone == "zone_value"
 
 
+def test_delete_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = PublicDelegatedPrefixesClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.delete in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.delete] = mock_rpc
+
+        request = {}
+        client.delete(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.delete(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
 def test_delete_rest_required_fields(
     request_type=compute.DeletePublicDelegatedPrefixeRequest,
 ):
@@ -2445,6 +2601,46 @@ def test_delete_unary_rest(request_type):
     assert isinstance(response, compute.Operation)
 
 
+def test_delete_unary_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = PublicDelegatedPrefixesClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.delete in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.delete] = mock_rpc
+
+        request = {}
+        client.delete_unary(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.delete_unary(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
 def test_delete_unary_rest_required_fields(
     request_type=compute.DeletePublicDelegatedPrefixeRequest,
 ):
@@ -2726,6 +2922,7 @@ def test_get_rest(request_type):
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.PublicDelegatedPrefix(
+            allocatable_prefix_length=2626,
             byoip_api_version="byoip_api_version_value",
             creation_timestamp="creation_timestamp_value",
             description="description_value",
@@ -2734,6 +2931,7 @@ def test_get_rest(request_type):
             ip_cidr_range="ip_cidr_range_value",
             is_live_migration=True,
             kind="kind_value",
+            mode="mode_value",
             name="name_value",
             parent_prefix="parent_prefix_value",
             region="region_value",
@@ -2754,6 +2952,7 @@ def test_get_rest(request_type):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.PublicDelegatedPrefix)
+    assert response.allocatable_prefix_length == 2626
     assert response.byoip_api_version == "byoip_api_version_value"
     assert response.creation_timestamp == "creation_timestamp_value"
     assert response.description == "description_value"
@@ -2762,11 +2961,48 @@ def test_get_rest(request_type):
     assert response.ip_cidr_range == "ip_cidr_range_value"
     assert response.is_live_migration is True
     assert response.kind == "kind_value"
+    assert response.mode == "mode_value"
     assert response.name == "name_value"
     assert response.parent_prefix == "parent_prefix_value"
     assert response.region == "region_value"
     assert response.self_link == "self_link_value"
     assert response.status == "status_value"
+
+
+def test_get_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = PublicDelegatedPrefixesClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.get in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.get] = mock_rpc
+
+        request = {}
+        client.get(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
 
 
 def test_get_rest_required_fields(
@@ -3041,6 +3277,7 @@ def test_insert_rest(request_type):
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "region": "sample2"}
     request_init["public_delegated_prefix_resource"] = {
+        "allocatable_prefix_length": 2626,
         "byoip_api_version": "byoip_api_version_value",
         "creation_timestamp": "creation_timestamp_value",
         "description": "description_value",
@@ -3049,14 +3286,17 @@ def test_insert_rest(request_type):
         "ip_cidr_range": "ip_cidr_range_value",
         "is_live_migration": True,
         "kind": "kind_value",
+        "mode": "mode_value",
         "name": "name_value",
         "parent_prefix": "parent_prefix_value",
         "public_delegated_sub_prefixs": [
             {
+                "allocatable_prefix_length": 2626,
                 "delegatee_project": "delegatee_project_value",
                 "description": "description_value",
                 "ip_cidr_range": "ip_cidr_range_value",
                 "is_address": True,
+                "mode": "mode_value",
                 "name": "name_value",
                 "region": "region_value",
                 "status": "status_value",
@@ -3206,6 +3446,46 @@ def test_insert_rest(request_type):
     assert response.target_link == "target_link_value"
     assert response.user == "user_value"
     assert response.zone == "zone_value"
+
+
+def test_insert_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = PublicDelegatedPrefixesClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.insert in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.insert] = mock_rpc
+
+        request = {}
+        client.insert(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.insert(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
 
 
 def test_insert_rest_required_fields(
@@ -3405,7 +3685,7 @@ def test_insert_rest_flattened():
             project="project_value",
             region="region_value",
             public_delegated_prefix_resource=compute.PublicDelegatedPrefix(
-                byoip_api_version="byoip_api_version_value"
+                allocatable_prefix_length=2626
             ),
         )
         mock_args.update(sample_request)
@@ -3446,7 +3726,7 @@ def test_insert_rest_flattened_error(transport: str = "rest"):
             project="project_value",
             region="region_value",
             public_delegated_prefix_resource=compute.PublicDelegatedPrefix(
-                byoip_api_version="byoip_api_version_value"
+                allocatable_prefix_length=2626
             ),
         )
 
@@ -3473,6 +3753,7 @@ def test_insert_unary_rest(request_type):
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "region": "sample2"}
     request_init["public_delegated_prefix_resource"] = {
+        "allocatable_prefix_length": 2626,
         "byoip_api_version": "byoip_api_version_value",
         "creation_timestamp": "creation_timestamp_value",
         "description": "description_value",
@@ -3481,14 +3762,17 @@ def test_insert_unary_rest(request_type):
         "ip_cidr_range": "ip_cidr_range_value",
         "is_live_migration": True,
         "kind": "kind_value",
+        "mode": "mode_value",
         "name": "name_value",
         "parent_prefix": "parent_prefix_value",
         "public_delegated_sub_prefixs": [
             {
+                "allocatable_prefix_length": 2626,
                 "delegatee_project": "delegatee_project_value",
                 "description": "description_value",
                 "ip_cidr_range": "ip_cidr_range_value",
                 "is_address": True,
+                "mode": "mode_value",
                 "name": "name_value",
                 "region": "region_value",
                 "status": "status_value",
@@ -3616,6 +3900,46 @@ def test_insert_unary_rest(request_type):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.Operation)
+
+
+def test_insert_unary_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = PublicDelegatedPrefixesClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.insert in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.insert] = mock_rpc
+
+        request = {}
+        client.insert_unary(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.insert_unary(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
 
 
 def test_insert_unary_rest_required_fields(
@@ -3815,7 +4139,7 @@ def test_insert_unary_rest_flattened():
             project="project_value",
             region="region_value",
             public_delegated_prefix_resource=compute.PublicDelegatedPrefix(
-                byoip_api_version="byoip_api_version_value"
+                allocatable_prefix_length=2626
             ),
         )
         mock_args.update(sample_request)
@@ -3856,7 +4180,7 @@ def test_insert_unary_rest_flattened_error(transport: str = "rest"):
             project="project_value",
             region="region_value",
             public_delegated_prefix_resource=compute.PublicDelegatedPrefix(
-                byoip_api_version="byoip_api_version_value"
+                allocatable_prefix_length=2626
             ),
         )
 
@@ -3911,6 +4235,42 @@ def test_list_rest(request_type):
     assert response.kind == "kind_value"
     assert response.next_page_token == "next_page_token_value"
     assert response.self_link == "self_link_value"
+
+
+def test_list_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = PublicDelegatedPrefixesClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.list in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.list] = mock_rpc
+
+        request = {}
+        client.list(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.list(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
 
 
 def test_list_rest_required_fields(
@@ -4247,6 +4607,7 @@ def test_patch_rest(request_type):
         "public_delegated_prefix": "sample3",
     }
     request_init["public_delegated_prefix_resource"] = {
+        "allocatable_prefix_length": 2626,
         "byoip_api_version": "byoip_api_version_value",
         "creation_timestamp": "creation_timestamp_value",
         "description": "description_value",
@@ -4255,14 +4616,17 @@ def test_patch_rest(request_type):
         "ip_cidr_range": "ip_cidr_range_value",
         "is_live_migration": True,
         "kind": "kind_value",
+        "mode": "mode_value",
         "name": "name_value",
         "parent_prefix": "parent_prefix_value",
         "public_delegated_sub_prefixs": [
             {
+                "allocatable_prefix_length": 2626,
                 "delegatee_project": "delegatee_project_value",
                 "description": "description_value",
                 "ip_cidr_range": "ip_cidr_range_value",
                 "is_address": True,
+                "mode": "mode_value",
                 "name": "name_value",
                 "region": "region_value",
                 "status": "status_value",
@@ -4412,6 +4776,46 @@ def test_patch_rest(request_type):
     assert response.target_link == "target_link_value"
     assert response.user == "user_value"
     assert response.zone == "zone_value"
+
+
+def test_patch_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = PublicDelegatedPrefixesClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.patch in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.patch] = mock_rpc
+
+        request = {}
+        client.patch(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.patch(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
 
 
 def test_patch_rest_required_fields(
@@ -4625,7 +5029,7 @@ def test_patch_rest_flattened():
             region="region_value",
             public_delegated_prefix="public_delegated_prefix_value",
             public_delegated_prefix_resource=compute.PublicDelegatedPrefix(
-                byoip_api_version="byoip_api_version_value"
+                allocatable_prefix_length=2626
             ),
         )
         mock_args.update(sample_request)
@@ -4667,7 +5071,7 @@ def test_patch_rest_flattened_error(transport: str = "rest"):
             region="region_value",
             public_delegated_prefix="public_delegated_prefix_value",
             public_delegated_prefix_resource=compute.PublicDelegatedPrefix(
-                byoip_api_version="byoip_api_version_value"
+                allocatable_prefix_length=2626
             ),
         )
 
@@ -4698,6 +5102,7 @@ def test_patch_unary_rest(request_type):
         "public_delegated_prefix": "sample3",
     }
     request_init["public_delegated_prefix_resource"] = {
+        "allocatable_prefix_length": 2626,
         "byoip_api_version": "byoip_api_version_value",
         "creation_timestamp": "creation_timestamp_value",
         "description": "description_value",
@@ -4706,14 +5111,17 @@ def test_patch_unary_rest(request_type):
         "ip_cidr_range": "ip_cidr_range_value",
         "is_live_migration": True,
         "kind": "kind_value",
+        "mode": "mode_value",
         "name": "name_value",
         "parent_prefix": "parent_prefix_value",
         "public_delegated_sub_prefixs": [
             {
+                "allocatable_prefix_length": 2626,
                 "delegatee_project": "delegatee_project_value",
                 "description": "description_value",
                 "ip_cidr_range": "ip_cidr_range_value",
                 "is_address": True,
+                "mode": "mode_value",
                 "name": "name_value",
                 "region": "region_value",
                 "status": "status_value",
@@ -4841,6 +5249,46 @@ def test_patch_unary_rest(request_type):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.Operation)
+
+
+def test_patch_unary_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = PublicDelegatedPrefixesClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.patch in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.patch] = mock_rpc
+
+        request = {}
+        client.patch_unary(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.patch_unary(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
 
 
 def test_patch_unary_rest_required_fields(
@@ -5054,7 +5502,7 @@ def test_patch_unary_rest_flattened():
             region="region_value",
             public_delegated_prefix="public_delegated_prefix_value",
             public_delegated_prefix_resource=compute.PublicDelegatedPrefix(
-                byoip_api_version="byoip_api_version_value"
+                allocatable_prefix_length=2626
             ),
         )
         mock_args.update(sample_request)
@@ -5096,7 +5544,7 @@ def test_patch_unary_rest_flattened_error(transport: str = "rest"):
             region="region_value",
             public_delegated_prefix="public_delegated_prefix_value",
             public_delegated_prefix_resource=compute.PublicDelegatedPrefix(
-                byoip_api_version="byoip_api_version_value"
+                allocatable_prefix_length=2626
             ),
         )
 
@@ -5191,6 +5639,46 @@ def test_withdraw_rest(request_type):
     assert response.target_link == "target_link_value"
     assert response.user == "user_value"
     assert response.zone == "zone_value"
+
+
+def test_withdraw_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = PublicDelegatedPrefixesClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.withdraw in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.withdraw] = mock_rpc
+
+        request = {}
+        client.withdraw(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.withdraw(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
 
 
 def test_withdraw_rest_required_fields(
@@ -5511,6 +5999,46 @@ def test_withdraw_unary_rest(request_type):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.Operation)
+
+
+def test_withdraw_unary_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = PublicDelegatedPrefixesClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.withdraw in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.withdraw] = mock_rpc
+
+        request = {}
+        client.withdraw_unary(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.withdraw_unary(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
 
 
 def test_withdraw_unary_rest_required_fields(
