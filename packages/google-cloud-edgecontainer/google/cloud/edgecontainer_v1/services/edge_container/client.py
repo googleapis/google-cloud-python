@@ -17,6 +17,7 @@ from collections import OrderedDict
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -655,7 +656,9 @@ class EdgeContainerClient(metaclass=EdgeContainerClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, EdgeContainerTransport]] = None,
+        transport: Optional[
+            Union[str, EdgeContainerTransport, Callable[..., EdgeContainerTransport]]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -667,9 +670,11 @@ class EdgeContainerClient(metaclass=EdgeContainerClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, EdgeContainerTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,EdgeContainerTransport,Callable[..., EdgeContainerTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the EdgeContainerTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -778,8 +783,15 @@ class EdgeContainerClient(metaclass=EdgeContainerClientMeta):
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[EdgeContainerTransport], Callable[..., EdgeContainerTransport]
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., EdgeContainerTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -855,8 +867,8 @@ class EdgeContainerClient(metaclass=EdgeContainerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -864,10 +876,8 @@ class EdgeContainerClient(metaclass=EdgeContainerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.ListClustersRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.ListClustersRequest):
             request = service.ListClustersRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -968,8 +978,8 @@ class EdgeContainerClient(metaclass=EdgeContainerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -977,10 +987,8 @@ class EdgeContainerClient(metaclass=EdgeContainerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.GetClusterRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.GetClusterRequest):
             request = service.GetClusterRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1103,8 +1111,8 @@ class EdgeContainerClient(metaclass=EdgeContainerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, cluster, cluster_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1112,10 +1120,8 @@ class EdgeContainerClient(metaclass=EdgeContainerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.CreateClusterRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.CreateClusterRequest):
             request = service.CreateClusterRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1235,8 +1241,8 @@ class EdgeContainerClient(metaclass=EdgeContainerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([cluster, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1244,10 +1250,8 @@ class EdgeContainerClient(metaclass=EdgeContainerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.UpdateClusterRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.UpdateClusterRequest):
             request = service.UpdateClusterRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1373,8 +1377,8 @@ class EdgeContainerClient(metaclass=EdgeContainerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, target_version, schedule])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1382,10 +1386,8 @@ class EdgeContainerClient(metaclass=EdgeContainerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.UpgradeClusterRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.UpgradeClusterRequest):
             request = service.UpgradeClusterRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1503,8 +1505,8 @@ class EdgeContainerClient(metaclass=EdgeContainerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1512,10 +1514,8 @@ class EdgeContainerClient(metaclass=EdgeContainerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.DeleteClusterRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.DeleteClusterRequest):
             request = service.DeleteClusterRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1614,8 +1614,8 @@ class EdgeContainerClient(metaclass=EdgeContainerClientMeta):
                 An access token for a cluster.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([cluster])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1623,10 +1623,8 @@ class EdgeContainerClient(metaclass=EdgeContainerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.GenerateAccessTokenRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.GenerateAccessTokenRequest):
             request = service.GenerateAccessTokenRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1717,8 +1715,8 @@ class EdgeContainerClient(metaclass=EdgeContainerClientMeta):
                 An offline credential for a cluster.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([cluster])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1726,10 +1724,8 @@ class EdgeContainerClient(metaclass=EdgeContainerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.GenerateOfflineCredentialRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.GenerateOfflineCredentialRequest):
             request = service.GenerateOfflineCredentialRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1827,8 +1823,8 @@ class EdgeContainerClient(metaclass=EdgeContainerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1836,10 +1832,8 @@ class EdgeContainerClient(metaclass=EdgeContainerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.ListNodePoolsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.ListNodePoolsRequest):
             request = service.ListNodePoolsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1941,8 +1935,8 @@ class EdgeContainerClient(metaclass=EdgeContainerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1950,10 +1944,8 @@ class EdgeContainerClient(metaclass=EdgeContainerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.GetNodePoolRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.GetNodePoolRequest):
             request = service.GetNodePoolRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2072,8 +2064,8 @@ class EdgeContainerClient(metaclass=EdgeContainerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, node_pool, node_pool_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2081,10 +2073,8 @@ class EdgeContainerClient(metaclass=EdgeContainerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.CreateNodePoolRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.CreateNodePoolRequest):
             request = service.CreateNodePoolRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2203,8 +2193,8 @@ class EdgeContainerClient(metaclass=EdgeContainerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([node_pool, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2212,10 +2202,8 @@ class EdgeContainerClient(metaclass=EdgeContainerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.UpdateNodePoolRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.UpdateNodePoolRequest):
             request = service.UpdateNodePoolRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2333,8 +2321,8 @@ class EdgeContainerClient(metaclass=EdgeContainerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2342,10 +2330,8 @@ class EdgeContainerClient(metaclass=EdgeContainerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.DeleteNodePoolRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.DeleteNodePoolRequest):
             request = service.DeleteNodePoolRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2449,8 +2435,8 @@ class EdgeContainerClient(metaclass=EdgeContainerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2458,10 +2444,8 @@ class EdgeContainerClient(metaclass=EdgeContainerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.ListMachinesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.ListMachinesRequest):
             request = service.ListMachinesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2563,8 +2547,8 @@ class EdgeContainerClient(metaclass=EdgeContainerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2572,10 +2556,8 @@ class EdgeContainerClient(metaclass=EdgeContainerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.GetMachineRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.GetMachineRequest):
             request = service.GetMachineRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2672,8 +2654,8 @@ class EdgeContainerClient(metaclass=EdgeContainerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2681,10 +2663,8 @@ class EdgeContainerClient(metaclass=EdgeContainerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.ListVpnConnectionsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.ListVpnConnectionsRequest):
             request = service.ListVpnConnectionsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2783,8 +2763,8 @@ class EdgeContainerClient(metaclass=EdgeContainerClientMeta):
                 A VPN connection .
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2792,10 +2772,8 @@ class EdgeContainerClient(metaclass=EdgeContainerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.GetVpnConnectionRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.GetVpnConnectionRequest):
             request = service.GetVpnConnectionRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2916,8 +2894,8 @@ class EdgeContainerClient(metaclass=EdgeContainerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, vpn_connection, vpn_connection_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2925,10 +2903,8 @@ class EdgeContainerClient(metaclass=EdgeContainerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.CreateVpnConnectionRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.CreateVpnConnectionRequest):
             request = service.CreateVpnConnectionRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3046,8 +3022,8 @@ class EdgeContainerClient(metaclass=EdgeContainerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3055,10 +3031,8 @@ class EdgeContainerClient(metaclass=EdgeContainerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.DeleteVpnConnectionRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.DeleteVpnConnectionRequest):
             request = service.DeleteVpnConnectionRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3159,8 +3133,8 @@ class EdgeContainerClient(metaclass=EdgeContainerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3168,10 +3142,8 @@ class EdgeContainerClient(metaclass=EdgeContainerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.GetServerConfigRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.GetServerConfigRequest):
             request = service.GetServerConfigRequest(request)
             # If we have keyword arguments corresponding to fields on the

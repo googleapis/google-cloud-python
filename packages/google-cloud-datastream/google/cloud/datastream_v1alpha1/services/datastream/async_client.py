@@ -17,6 +17,7 @@ from collections import OrderedDict
 import functools
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -204,7 +205,9 @@ class DatastreamAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, DatastreamTransport] = "grpc_asyncio",
+        transport: Optional[
+            Union[str, DatastreamTransport, Callable[..., DatastreamTransport]]
+        ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -216,9 +219,11 @@ class DatastreamAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.DatastreamTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,DatastreamTransport,Callable[..., DatastreamTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the DatastreamTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -325,8 +330,8 @@ class DatastreamAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -334,7 +339,10 @@ class DatastreamAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = datastream.ListConnectionProfilesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, datastream.ListConnectionProfilesRequest):
+            request = datastream.ListConnectionProfilesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -343,11 +351,9 @@ class DatastreamAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_connection_profiles,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_connection_profiles
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -437,8 +443,8 @@ class DatastreamAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -446,7 +452,10 @@ class DatastreamAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = datastream.GetConnectionProfileRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, datastream.GetConnectionProfileRequest):
+            request = datastream.GetConnectionProfileRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -455,11 +464,9 @@ class DatastreamAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_connection_profile,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_connection_profile
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -575,8 +582,8 @@ class DatastreamAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, connection_profile, connection_profile_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -584,7 +591,10 @@ class DatastreamAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = datastream.CreateConnectionProfileRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, datastream.CreateConnectionProfileRequest):
+            request = datastream.CreateConnectionProfileRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -597,11 +607,9 @@ class DatastreamAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_connection_profile,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_connection_profile
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -720,8 +728,8 @@ class DatastreamAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([connection_profile, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -729,7 +737,10 @@ class DatastreamAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = datastream.UpdateConnectionProfileRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, datastream.UpdateConnectionProfileRequest):
+            request = datastream.UpdateConnectionProfileRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -740,11 +751,9 @@ class DatastreamAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_connection_profile,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_connection_profile
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -852,8 +861,8 @@ class DatastreamAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -861,7 +870,10 @@ class DatastreamAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = datastream.DeleteConnectionProfileRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, datastream.DeleteConnectionProfileRequest):
+            request = datastream.DeleteConnectionProfileRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -870,11 +882,9 @@ class DatastreamAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_connection_profile,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_connection_profile
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -970,15 +980,16 @@ class DatastreamAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = datastream.DiscoverConnectionProfileRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, datastream.DiscoverConnectionProfileRequest):
+            request = datastream.DiscoverConnectionProfileRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.discover_connection_profile,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.discover_connection_profile
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1063,8 +1074,8 @@ class DatastreamAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1072,7 +1083,10 @@ class DatastreamAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = datastream.ListStreamsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, datastream.ListStreamsRequest):
+            request = datastream.ListStreamsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1081,11 +1095,9 @@ class DatastreamAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_streams,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_streams
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1174,8 +1186,8 @@ class DatastreamAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1183,7 +1195,10 @@ class DatastreamAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = datastream.GetStreamRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, datastream.GetStreamRequest):
+            request = datastream.GetStreamRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1192,11 +1207,9 @@ class DatastreamAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_stream,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_stream
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1305,8 +1318,8 @@ class DatastreamAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, stream, stream_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1314,7 +1327,10 @@ class DatastreamAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = datastream.CreateStreamRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, datastream.CreateStreamRequest):
+            request = datastream.CreateStreamRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1327,11 +1343,9 @@ class DatastreamAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_stream,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_stream
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1445,8 +1459,8 @@ class DatastreamAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([stream, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1454,7 +1468,10 @@ class DatastreamAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = datastream.UpdateStreamRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, datastream.UpdateStreamRequest):
+            request = datastream.UpdateStreamRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1465,11 +1482,9 @@ class DatastreamAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_stream,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_stream
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1575,8 +1590,8 @@ class DatastreamAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1584,7 +1599,10 @@ class DatastreamAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = datastream.DeleteStreamRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, datastream.DeleteStreamRequest):
+            request = datastream.DeleteStreamRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1593,11 +1611,9 @@ class DatastreamAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_stream,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_stream
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1687,15 +1703,16 @@ class DatastreamAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = datastream.FetchErrorsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, datastream.FetchErrorsRequest):
+            request = datastream.FetchErrorsRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.fetch_errors,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.fetch_errors
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1793,8 +1810,8 @@ class DatastreamAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1802,7 +1819,10 @@ class DatastreamAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = datastream.FetchStaticIpsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, datastream.FetchStaticIpsRequest):
+            request = datastream.FetchStaticIpsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1811,11 +1831,9 @@ class DatastreamAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.fetch_static_ips,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.fetch_static_ips
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1936,8 +1954,8 @@ class DatastreamAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, private_connection, private_connection_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1945,7 +1963,10 @@ class DatastreamAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = datastream.CreatePrivateConnectionRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, datastream.CreatePrivateConnectionRequest):
+            request = datastream.CreatePrivateConnectionRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1958,11 +1979,9 @@ class DatastreamAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_private_connection,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_private_connection
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2055,8 +2074,8 @@ class DatastreamAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2064,7 +2083,10 @@ class DatastreamAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = datastream.GetPrivateConnectionRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, datastream.GetPrivateConnectionRequest):
+            request = datastream.GetPrivateConnectionRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2073,11 +2095,9 @@ class DatastreamAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_private_connection,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_private_connection
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2163,8 +2183,8 @@ class DatastreamAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2172,7 +2192,10 @@ class DatastreamAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = datastream.ListPrivateConnectionsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, datastream.ListPrivateConnectionsRequest):
+            request = datastream.ListPrivateConnectionsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2181,11 +2204,9 @@ class DatastreamAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_private_connections,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_private_connections
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2293,8 +2314,8 @@ class DatastreamAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2302,7 +2323,10 @@ class DatastreamAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = datastream.DeletePrivateConnectionRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, datastream.DeletePrivateConnectionRequest):
+            request = datastream.DeletePrivateConnectionRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2311,11 +2335,9 @@ class DatastreamAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_private_connection,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_private_connection
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2433,8 +2455,8 @@ class DatastreamAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, route, route_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2442,7 +2464,10 @@ class DatastreamAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = datastream.CreateRouteRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, datastream.CreateRouteRequest):
+            request = datastream.CreateRouteRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2455,11 +2480,9 @@ class DatastreamAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_route,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_route
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2551,8 +2574,8 @@ class DatastreamAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2560,7 +2583,10 @@ class DatastreamAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = datastream.GetRouteRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, datastream.GetRouteRequest):
+            request = datastream.GetRouteRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2569,11 +2595,9 @@ class DatastreamAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_route,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_route
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2660,8 +2684,8 @@ class DatastreamAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2669,7 +2693,10 @@ class DatastreamAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = datastream.ListRoutesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, datastream.ListRoutesRequest):
+            request = datastream.ListRoutesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2678,11 +2705,9 @@ class DatastreamAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_routes,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_routes
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2787,8 +2812,8 @@ class DatastreamAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2796,7 +2821,10 @@ class DatastreamAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = datastream.DeleteRouteRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, datastream.DeleteRouteRequest):
+            request = datastream.DeleteRouteRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2805,11 +2833,9 @@ class DatastreamAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_route,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_route
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
