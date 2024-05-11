@@ -17,6 +17,7 @@ from collections import OrderedDict
 import functools
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -207,7 +208,9 @@ class OsLoginServiceAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, OsLoginServiceTransport] = "grpc_asyncio",
+        transport: Optional[
+            Union[str, OsLoginServiceTransport, Callable[..., OsLoginServiceTransport]]
+        ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -219,9 +222,11 @@ class OsLoginServiceAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.OsLoginServiceTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,OsLoginServiceTransport,Callable[..., OsLoginServiceTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the OsLoginServiceTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -334,8 +339,8 @@ class OsLoginServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, ssh_public_key])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -343,7 +348,10 @@ class OsLoginServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = oslogin.CreateSshPublicKeyRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, oslogin.CreateSshPublicKeyRequest):
+            request = oslogin.CreateSshPublicKeyRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -354,11 +362,9 @@ class OsLoginServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_ssh_public_key,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_ssh_public_key
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -434,8 +440,8 @@ class OsLoginServiceAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -443,7 +449,10 @@ class OsLoginServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = oslogin.DeletePosixAccountRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, oslogin.DeletePosixAccountRequest):
+            request = oslogin.DeletePosixAccountRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -452,21 +461,9 @@ class OsLoginServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_posix_account,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=10.0,
-            ),
-            default_timeout=10.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_posix_account
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -539,8 +536,8 @@ class OsLoginServiceAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -548,7 +545,10 @@ class OsLoginServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = oslogin.DeleteSshPublicKeyRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, oslogin.DeleteSshPublicKeyRequest):
+            request = oslogin.DeleteSshPublicKeyRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -557,21 +557,9 @@ class OsLoginServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_ssh_public_key,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=10.0,
-            ),
-            default_timeout=10.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_ssh_public_key
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -653,8 +641,8 @@ class OsLoginServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -662,7 +650,10 @@ class OsLoginServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = oslogin.GetLoginProfileRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, oslogin.GetLoginProfileRequest):
+            request = oslogin.GetLoginProfileRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -671,21 +662,9 @@ class OsLoginServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_login_profile,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=10.0,
-            ),
-            default_timeout=10.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_login_profile
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -770,8 +749,8 @@ class OsLoginServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -779,7 +758,10 @@ class OsLoginServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = oslogin.GetSshPublicKeyRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, oslogin.GetSshPublicKeyRequest):
+            request = oslogin.GetSshPublicKeyRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -788,21 +770,9 @@ class OsLoginServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_ssh_public_key,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=10.0,
-            ),
-            default_timeout=10.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_ssh_public_key
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -904,8 +874,8 @@ class OsLoginServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, ssh_public_key, project_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -913,7 +883,10 @@ class OsLoginServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = oslogin.ImportSshPublicKeyRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, oslogin.ImportSshPublicKeyRequest):
+            request = oslogin.ImportSshPublicKeyRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -926,21 +899,9 @@ class OsLoginServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.import_ssh_public_key,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=10.0,
-            ),
-            default_timeout=10.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.import_ssh_public_key
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1042,8 +1003,8 @@ class OsLoginServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, ssh_public_key, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1051,7 +1012,10 @@ class OsLoginServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = oslogin.UpdateSshPublicKeyRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, oslogin.UpdateSshPublicKeyRequest):
+            request = oslogin.UpdateSshPublicKeyRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1064,21 +1028,9 @@ class OsLoginServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_ssh_public_key,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=10.0,
-            ),
-            default_timeout=10.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_ssh_public_key
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.

@@ -17,6 +17,7 @@ from collections import OrderedDict
 import functools
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -247,7 +248,13 @@ class OsConfigZonalServiceAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, OsConfigZonalServiceTransport] = "grpc_asyncio",
+        transport: Optional[
+            Union[
+                str,
+                OsConfigZonalServiceTransport,
+                Callable[..., OsConfigZonalServiceTransport],
+            ]
+        ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -259,9 +266,11 @@ class OsConfigZonalServiceAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.OsConfigZonalServiceTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,OsConfigZonalServiceTransport,Callable[..., OsConfigZonalServiceTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the OsConfigZonalServiceTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -428,8 +437,8 @@ class OsConfigZonalServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [parent, os_policy_assignment, os_policy_assignment_id]
         )
@@ -439,7 +448,12 @@ class OsConfigZonalServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = os_policy_assignments.CreateOSPolicyAssignmentRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, os_policy_assignments.CreateOSPolicyAssignmentRequest
+        ):
+            request = os_policy_assignments.CreateOSPolicyAssignmentRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -452,11 +466,9 @@ class OsConfigZonalServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_os_policy_assignment,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_os_policy_assignment
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -591,8 +603,8 @@ class OsConfigZonalServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([os_policy_assignment, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -600,7 +612,12 @@ class OsConfigZonalServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = os_policy_assignments.UpdateOSPolicyAssignmentRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, os_policy_assignments.UpdateOSPolicyAssignmentRequest
+        ):
+            request = os_policy_assignments.UpdateOSPolicyAssignmentRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -611,11 +628,9 @@ class OsConfigZonalServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_os_policy_assignment,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_os_policy_assignment
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -726,8 +741,8 @@ class OsConfigZonalServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -735,7 +750,10 @@ class OsConfigZonalServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = os_policy_assignments.GetOSPolicyAssignmentRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, os_policy_assignments.GetOSPolicyAssignmentRequest):
+            request = os_policy_assignments.GetOSPolicyAssignmentRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -744,11 +762,9 @@ class OsConfigZonalServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_os_policy_assignment,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_os_policy_assignment
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -838,8 +854,8 @@ class OsConfigZonalServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -847,7 +863,12 @@ class OsConfigZonalServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = os_policy_assignments.ListOSPolicyAssignmentsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, os_policy_assignments.ListOSPolicyAssignmentsRequest
+        ):
+            request = os_policy_assignments.ListOSPolicyAssignmentsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -856,11 +877,9 @@ class OsConfigZonalServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_os_policy_assignments,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_os_policy_assignments
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -959,8 +978,8 @@ class OsConfigZonalServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -968,7 +987,14 @@ class OsConfigZonalServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = os_policy_assignments.ListOSPolicyAssignmentRevisionsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, os_policy_assignments.ListOSPolicyAssignmentRevisionsRequest
+        ):
+            request = os_policy_assignments.ListOSPolicyAssignmentRevisionsRequest(
+                request
+            )
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -977,11 +1003,9 @@ class OsConfigZonalServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_os_policy_assignment_revisions,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_os_policy_assignment_revisions
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1101,8 +1125,8 @@ class OsConfigZonalServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1110,7 +1134,12 @@ class OsConfigZonalServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = os_policy_assignments.DeleteOSPolicyAssignmentRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, os_policy_assignments.DeleteOSPolicyAssignmentRequest
+        ):
+            request = os_policy_assignments.DeleteOSPolicyAssignmentRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1119,11 +1148,9 @@ class OsConfigZonalServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_os_policy_assignment,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_os_policy_assignment
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1247,8 +1274,8 @@ class OsConfigZonalServiceAsyncClient:
         )
 
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1256,11 +1283,17 @@ class OsConfigZonalServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = (
-            instance_os_policies_compliance.GetInstanceOSPoliciesComplianceRequest(
-                request
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request,
+            instance_os_policies_compliance.GetInstanceOSPoliciesComplianceRequest,
+        ):
+            request = (
+                instance_os_policies_compliance.GetInstanceOSPoliciesComplianceRequest(
+                    request
+                )
             )
-        )
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1269,11 +1302,9 @@ class OsConfigZonalServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_instance_os_policies_compliance,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_instance_os_policies_compliance
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1378,8 +1409,8 @@ class OsConfigZonalServiceAsyncClient:
         )
 
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1387,11 +1418,15 @@ class OsConfigZonalServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = (
-            instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesRequest(
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request,
+            instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesRequest,
+        ):
+            request = instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesRequest(
                 request
             )
-        )
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1400,11 +1435,9 @@ class OsConfigZonalServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_instance_os_policies_compliances,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_instance_os_policies_compliances
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1509,8 +1542,8 @@ class OsConfigZonalServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1518,9 +1551,14 @@ class OsConfigZonalServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = os_policy_assignment_reports.GetOSPolicyAssignmentReportRequest(
-            request
-        )
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, os_policy_assignment_reports.GetOSPolicyAssignmentReportRequest
+        ):
+            request = os_policy_assignment_reports.GetOSPolicyAssignmentReportRequest(
+                request
+            )
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1529,11 +1567,9 @@ class OsConfigZonalServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_os_policy_assignment_report,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_os_policy_assignment_report
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1651,8 +1687,8 @@ class OsConfigZonalServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1660,9 +1696,14 @@ class OsConfigZonalServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = os_policy_assignment_reports.ListOSPolicyAssignmentReportsRequest(
-            request
-        )
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, os_policy_assignment_reports.ListOSPolicyAssignmentReportsRequest
+        ):
+            request = os_policy_assignment_reports.ListOSPolicyAssignmentReportsRequest(
+                request
+            )
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1671,11 +1712,9 @@ class OsConfigZonalServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_os_policy_assignment_reports,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_os_policy_assignment_reports
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1783,8 +1822,8 @@ class OsConfigZonalServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1792,7 +1831,10 @@ class OsConfigZonalServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = inventory.GetInventoryRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, inventory.GetInventoryRequest):
+            request = inventory.GetInventoryRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1801,11 +1843,9 @@ class OsConfigZonalServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_inventory,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_inventory
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1901,8 +1941,8 @@ class OsConfigZonalServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1910,7 +1950,10 @@ class OsConfigZonalServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = inventory.ListInventoriesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, inventory.ListInventoriesRequest):
+            request = inventory.ListInventoriesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1919,11 +1962,9 @@ class OsConfigZonalServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_inventories,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_inventories
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2031,8 +2072,8 @@ class OsConfigZonalServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2040,7 +2081,10 @@ class OsConfigZonalServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vulnerability.GetVulnerabilityReportRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vulnerability.GetVulnerabilityReportRequest):
+            request = vulnerability.GetVulnerabilityReportRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2049,11 +2093,9 @@ class OsConfigZonalServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_vulnerability_report,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_vulnerability_report
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2151,8 +2193,8 @@ class OsConfigZonalServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2160,7 +2202,10 @@ class OsConfigZonalServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = vulnerability.ListVulnerabilityReportsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vulnerability.ListVulnerabilityReportsRequest):
+            request = vulnerability.ListVulnerabilityReportsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2169,11 +2214,9 @@ class OsConfigZonalServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_vulnerability_reports,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_vulnerability_reports
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.

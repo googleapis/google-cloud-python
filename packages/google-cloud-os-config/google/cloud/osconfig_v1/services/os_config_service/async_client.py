@@ -17,6 +17,7 @@ from collections import OrderedDict
 import functools
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -209,7 +210,11 @@ class OsConfigServiceAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, OsConfigServiceTransport] = "grpc_asyncio",
+        transport: Optional[
+            Union[
+                str, OsConfigServiceTransport, Callable[..., OsConfigServiceTransport]
+            ]
+        ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -221,9 +226,11 @@ class OsConfigServiceAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.OsConfigServiceTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,OsConfigServiceTransport,Callable[..., OsConfigServiceTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the OsConfigServiceTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -330,15 +337,16 @@ class OsConfigServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = patch_jobs.ExecutePatchJobRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, patch_jobs.ExecutePatchJobRequest):
+            request = patch_jobs.ExecutePatchJobRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.execute_patch_job,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.execute_patch_job
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -431,8 +439,8 @@ class OsConfigServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -440,7 +448,10 @@ class OsConfigServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = patch_jobs.GetPatchJobRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, patch_jobs.GetPatchJobRequest):
+            request = patch_jobs.GetPatchJobRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -449,11 +460,9 @@ class OsConfigServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_patch_job,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_patch_job
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -536,15 +545,16 @@ class OsConfigServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = patch_jobs.CancelPatchJobRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, patch_jobs.CancelPatchJobRequest):
+            request = patch_jobs.CancelPatchJobRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.cancel_patch_job,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.cancel_patch_job
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -629,8 +639,8 @@ class OsConfigServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -638,7 +648,10 @@ class OsConfigServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = patch_jobs.ListPatchJobsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, patch_jobs.ListPatchJobsRequest):
+            request = patch_jobs.ListPatchJobsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -647,11 +660,9 @@ class OsConfigServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_patch_jobs,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_patch_jobs
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -749,8 +760,8 @@ class OsConfigServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -758,7 +769,10 @@ class OsConfigServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = patch_jobs.ListPatchJobInstanceDetailsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, patch_jobs.ListPatchJobInstanceDetailsRequest):
+            request = patch_jobs.ListPatchJobInstanceDetailsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -767,11 +781,9 @@ class OsConfigServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_patch_job_instance_details,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_patch_job_instance_details
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -893,8 +905,8 @@ class OsConfigServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, patch_deployment, patch_deployment_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -902,7 +914,10 @@ class OsConfigServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = patch_deployments.CreatePatchDeploymentRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, patch_deployments.CreatePatchDeploymentRequest):
+            request = patch_deployments.CreatePatchDeploymentRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -915,11 +930,9 @@ class OsConfigServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_patch_deployment,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_patch_deployment
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1008,8 +1021,8 @@ class OsConfigServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1017,7 +1030,10 @@ class OsConfigServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = patch_deployments.GetPatchDeploymentRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, patch_deployments.GetPatchDeploymentRequest):
+            request = patch_deployments.GetPatchDeploymentRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1026,11 +1042,9 @@ class OsConfigServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_patch_deployment,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_patch_deployment
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1119,8 +1133,8 @@ class OsConfigServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1128,7 +1142,10 @@ class OsConfigServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = patch_deployments.ListPatchDeploymentsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, patch_deployments.ListPatchDeploymentsRequest):
+            request = patch_deployments.ListPatchDeploymentsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1137,11 +1154,9 @@ class OsConfigServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_patch_deployments,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_patch_deployments
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1226,8 +1241,8 @@ class OsConfigServiceAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1235,7 +1250,10 @@ class OsConfigServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = patch_deployments.DeletePatchDeploymentRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, patch_deployments.DeletePatchDeploymentRequest):
+            request = patch_deployments.DeletePatchDeploymentRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1244,11 +1262,9 @@ class OsConfigServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_patch_deployment,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_patch_deployment
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1342,8 +1358,8 @@ class OsConfigServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([patch_deployment, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1351,7 +1367,10 @@ class OsConfigServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = patch_deployments.UpdatePatchDeploymentRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, patch_deployments.UpdatePatchDeploymentRequest):
+            request = patch_deployments.UpdatePatchDeploymentRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1362,11 +1381,9 @@ class OsConfigServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_patch_deployment,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_patch_deployment
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1459,8 +1476,8 @@ class OsConfigServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1468,7 +1485,10 @@ class OsConfigServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = patch_deployments.PausePatchDeploymentRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, patch_deployments.PausePatchDeploymentRequest):
+            request = patch_deployments.PausePatchDeploymentRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1477,11 +1497,9 @@ class OsConfigServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.pause_patch_deployment,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.pause_patch_deployment
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1572,8 +1590,8 @@ class OsConfigServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1581,7 +1599,10 @@ class OsConfigServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = patch_deployments.ResumePatchDeploymentRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, patch_deployments.ResumePatchDeploymentRequest):
+            request = patch_deployments.ResumePatchDeploymentRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1590,11 +1611,9 @@ class OsConfigServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.resume_patch_deployment,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.resume_patch_deployment
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.

@@ -16,7 +16,9 @@
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
+from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, grpc_helpers_async, operations_v1
+from google.api_core import retry_async as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
@@ -74,7 +76,6 @@ class NotebookServiceGrpcAsyncIOTransport(NotebookServiceTransport):
                 the credentials from the environment.
             credentials_file (Optional[str]): A file with credentials that can
                 be loaded with :func:`google.auth.load_credentials_from_file`.
-                This argument is ignored if ``channel`` is provided.
             scopes (Optional[Sequence[str]]): A optional list of scopes needed for this
                 service. These are only used when credentials are not specified and
                 are passed to :func:`google.auth.default`.
@@ -104,7 +105,7 @@ class NotebookServiceGrpcAsyncIOTransport(NotebookServiceTransport):
         credentials: Optional[ga_credentials.Credentials] = None,
         credentials_file: Optional[str] = None,
         scopes: Optional[Sequence[str]] = None,
-        channel: Optional[aio.Channel] = None,
+        channel: Optional[Union[aio.Channel, Callable[..., aio.Channel]]] = None,
         api_mtls_endpoint: Optional[str] = None,
         client_cert_source: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
         ssl_channel_credentials: Optional[grpc.ChannelCredentials] = None,
@@ -124,15 +125,18 @@ class NotebookServiceGrpcAsyncIOTransport(NotebookServiceTransport):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-                This argument is ignored if ``channel`` is provided.
+                This argument is ignored if a ``channel`` instance is provided.
             credentials_file (Optional[str]): A file with credentials that can
                 be loaded with :func:`google.auth.load_credentials_from_file`.
-                This argument is ignored if ``channel`` is provided.
+                This argument is ignored if a ``channel`` instance is provided.
             scopes (Optional[Sequence[str]]): A optional list of scopes needed for this
                 service. These are only used when credentials are not specified and
                 are passed to :func:`google.auth.default`.
-            channel (Optional[aio.Channel]): A ``Channel`` instance through
-                which to make calls.
+            channel (Optional[Union[aio.Channel, Callable[..., aio.Channel]]]):
+                A ``Channel`` instance through which to make calls, or a Callable
+                that constructs and returns one. If set to None, ``self.create_channel``
+                is used to create the channel. If a Callable is given, it will be called
+                with the same arguments as used in ``self.create_channel``.
             api_mtls_endpoint (Optional[str]): Deprecated. The mutual TLS endpoint.
                 If provided, it overrides the ``host`` argument and tries to create
                 a mutual TLS channel with client SSL credentials from
@@ -142,11 +146,11 @@ class NotebookServiceGrpcAsyncIOTransport(NotebookServiceTransport):
                 private key bytes, both in PEM format. It is ignored if
                 ``api_mtls_endpoint`` is None.
             ssl_channel_credentials (grpc.ChannelCredentials): SSL credentials
-                for the grpc channel. It is ignored if ``channel`` is provided.
+                for the grpc channel. It is ignored if a ``channel`` instance is provided.
             client_cert_source_for_mtls (Optional[Callable[[], Tuple[bytes, bytes]]]):
                 A callback to provide client certificate bytes and private key bytes,
                 both in PEM format. It is used to configure a mutual TLS channel. It is
-                ignored if ``channel`` or ``ssl_channel_credentials`` is provided.
+                ignored if a ``channel`` instance or ``ssl_channel_credentials`` is provided.
             quota_project_id (Optional[str]): An optional project to use for billing
                 and quota.
             client_info (google.api_core.gapic_v1.client_info.ClientInfo):
@@ -173,7 +177,7 @@ class NotebookServiceGrpcAsyncIOTransport(NotebookServiceTransport):
         if client_cert_source:
             warnings.warn("client_cert_source is deprecated", DeprecationWarning)
 
-        if channel:
+        if isinstance(channel, aio.Channel):
             # Ignore credentials if a channel was passed.
             credentials = False
             # If a channel was explicitly provided, set it.
@@ -213,7 +217,9 @@ class NotebookServiceGrpcAsyncIOTransport(NotebookServiceTransport):
         )
 
         if not self._grpc_channel:
-            self._grpc_channel = type(self).create_channel(
+            # initialize with the provided callable or the default channel
+            channel_init = channel or type(self).create_channel
+            self._grpc_channel = channel_init(
                 self._host,
                 # use the credentials which are saved
                 credentials=self._credentials,
@@ -1212,6 +1218,181 @@ class NotebookServiceGrpcAsyncIOTransport(NotebookServiceTransport):
                 response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["create_execution"]
+
+    def _prep_wrapped_messages(self, client_info):
+        """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
+        self._wrapped_methods = {
+            self.list_instances: gapic_v1.method_async.wrap_method(
+                self.list_instances,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.get_instance: gapic_v1.method_async.wrap_method(
+                self.get_instance,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.create_instance: gapic_v1.method_async.wrap_method(
+                self.create_instance,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.register_instance: gapic_v1.method_async.wrap_method(
+                self.register_instance,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.set_instance_accelerator: gapic_v1.method_async.wrap_method(
+                self.set_instance_accelerator,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.set_instance_machine_type: gapic_v1.method_async.wrap_method(
+                self.set_instance_machine_type,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.update_instance_config: gapic_v1.method_async.wrap_method(
+                self.update_instance_config,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.update_shielded_instance_config: gapic_v1.method_async.wrap_method(
+                self.update_shielded_instance_config,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.set_instance_labels: gapic_v1.method_async.wrap_method(
+                self.set_instance_labels,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.update_instance_metadata_items: gapic_v1.method_async.wrap_method(
+                self.update_instance_metadata_items,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_instance: gapic_v1.method_async.wrap_method(
+                self.delete_instance,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.start_instance: gapic_v1.method_async.wrap_method(
+                self.start_instance,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.stop_instance: gapic_v1.method_async.wrap_method(
+                self.stop_instance,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.reset_instance: gapic_v1.method_async.wrap_method(
+                self.reset_instance,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.report_instance_info: gapic_v1.method_async.wrap_method(
+                self.report_instance_info,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.is_instance_upgradeable: gapic_v1.method_async.wrap_method(
+                self.is_instance_upgradeable,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.get_instance_health: gapic_v1.method_async.wrap_method(
+                self.get_instance_health,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.upgrade_instance: gapic_v1.method_async.wrap_method(
+                self.upgrade_instance,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.rollback_instance: gapic_v1.method_async.wrap_method(
+                self.rollback_instance,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.diagnose_instance: gapic_v1.method_async.wrap_method(
+                self.diagnose_instance,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.upgrade_instance_internal: gapic_v1.method_async.wrap_method(
+                self.upgrade_instance_internal,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.list_environments: gapic_v1.method_async.wrap_method(
+                self.list_environments,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.get_environment: gapic_v1.method_async.wrap_method(
+                self.get_environment,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.create_environment: gapic_v1.method_async.wrap_method(
+                self.create_environment,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.delete_environment: gapic_v1.method_async.wrap_method(
+                self.delete_environment,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.list_schedules: gapic_v1.method_async.wrap_method(
+                self.list_schedules,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.get_schedule: gapic_v1.method_async.wrap_method(
+                self.get_schedule,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.delete_schedule: gapic_v1.method_async.wrap_method(
+                self.delete_schedule,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.create_schedule: gapic_v1.method_async.wrap_method(
+                self.create_schedule,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.trigger_schedule: gapic_v1.method_async.wrap_method(
+                self.trigger_schedule,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_executions: gapic_v1.method_async.wrap_method(
+                self.list_executions,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.get_execution: gapic_v1.method_async.wrap_method(
+                self.get_execution,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.delete_execution: gapic_v1.method_async.wrap_method(
+                self.delete_execution,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.create_execution: gapic_v1.method_async.wrap_method(
+                self.create_execution,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+        }
 
     def close(self):
         return self.grpc_channel.close()

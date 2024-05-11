@@ -17,6 +17,7 @@ from collections import OrderedDict
 import functools
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -234,7 +235,13 @@ class RecaptchaEnterpriseServiceAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, RecaptchaEnterpriseServiceTransport] = "grpc_asyncio",
+        transport: Optional[
+            Union[
+                str,
+                RecaptchaEnterpriseServiceTransport,
+                Callable[..., RecaptchaEnterpriseServiceTransport],
+            ]
+        ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -246,9 +253,11 @@ class RecaptchaEnterpriseServiceAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.RecaptchaEnterpriseServiceTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,RecaptchaEnterpriseServiceTransport,Callable[..., RecaptchaEnterpriseServiceTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the RecaptchaEnterpriseServiceTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -363,8 +372,8 @@ class RecaptchaEnterpriseServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, assessment])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -372,7 +381,10 @@ class RecaptchaEnterpriseServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = recaptchaenterprise.CreateAssessmentRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, recaptchaenterprise.CreateAssessmentRequest):
+            request = recaptchaenterprise.CreateAssessmentRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -383,11 +395,9 @@ class RecaptchaEnterpriseServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_assessment,
-            default_timeout=600.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_assessment
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -487,8 +497,8 @@ class RecaptchaEnterpriseServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, annotation])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -496,7 +506,10 @@ class RecaptchaEnterpriseServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = recaptchaenterprise.AnnotateAssessmentRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, recaptchaenterprise.AnnotateAssessmentRequest):
+            request = recaptchaenterprise.AnnotateAssessmentRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -507,11 +520,9 @@ class RecaptchaEnterpriseServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.annotate_assessment,
-            default_timeout=600.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.annotate_assessment
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -607,8 +618,8 @@ class RecaptchaEnterpriseServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, key])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -616,7 +627,10 @@ class RecaptchaEnterpriseServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = recaptchaenterprise.CreateKeyRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, recaptchaenterprise.CreateKeyRequest):
+            request = recaptchaenterprise.CreateKeyRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -627,11 +641,9 @@ class RecaptchaEnterpriseServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_key,
-            default_timeout=600.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_key
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -719,8 +731,8 @@ class RecaptchaEnterpriseServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -728,7 +740,10 @@ class RecaptchaEnterpriseServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = recaptchaenterprise.ListKeysRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, recaptchaenterprise.ListKeysRequest):
+            request = recaptchaenterprise.ListKeysRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -737,11 +752,9 @@ class RecaptchaEnterpriseServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_keys,
-            default_timeout=600.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_keys
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -839,8 +852,8 @@ class RecaptchaEnterpriseServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([key])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -848,7 +861,10 @@ class RecaptchaEnterpriseServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = recaptchaenterprise.RetrieveLegacySecretKeyRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, recaptchaenterprise.RetrieveLegacySecretKeyRequest):
+            request = recaptchaenterprise.RetrieveLegacySecretKeyRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -857,11 +873,9 @@ class RecaptchaEnterpriseServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.retrieve_legacy_secret_key,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.retrieve_legacy_secret_key
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -944,8 +958,8 @@ class RecaptchaEnterpriseServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -953,7 +967,10 @@ class RecaptchaEnterpriseServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = recaptchaenterprise.GetKeyRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, recaptchaenterprise.GetKeyRequest):
+            request = recaptchaenterprise.GetKeyRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -962,11 +979,7 @@ class RecaptchaEnterpriseServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_key,
-            default_timeout=600.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_key]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1061,8 +1074,8 @@ class RecaptchaEnterpriseServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([key, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1070,7 +1083,10 @@ class RecaptchaEnterpriseServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = recaptchaenterprise.UpdateKeyRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, recaptchaenterprise.UpdateKeyRequest):
+            request = recaptchaenterprise.UpdateKeyRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1081,11 +1097,9 @@ class RecaptchaEnterpriseServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_key,
-            default_timeout=600.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_key
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1158,8 +1172,8 @@ class RecaptchaEnterpriseServiceAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1167,7 +1181,10 @@ class RecaptchaEnterpriseServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = recaptchaenterprise.DeleteKeyRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, recaptchaenterprise.DeleteKeyRequest):
+            request = recaptchaenterprise.DeleteKeyRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1176,11 +1193,9 @@ class RecaptchaEnterpriseServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_key,
-            default_timeout=600.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_key
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1258,15 +1273,16 @@ class RecaptchaEnterpriseServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = recaptchaenterprise.MigrateKeyRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, recaptchaenterprise.MigrateKeyRequest):
+            request = recaptchaenterprise.MigrateKeyRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.migrate_key,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.migrate_key
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1347,8 +1363,8 @@ class RecaptchaEnterpriseServiceAsyncClient:
                 Metrics for a single Key.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1356,7 +1372,10 @@ class RecaptchaEnterpriseServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = recaptchaenterprise.GetMetricsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, recaptchaenterprise.GetMetricsRequest):
+            request = recaptchaenterprise.GetMetricsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1365,11 +1384,9 @@ class RecaptchaEnterpriseServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_metrics,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_metrics
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1465,8 +1482,8 @@ class RecaptchaEnterpriseServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, firewall_policy])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1474,7 +1491,10 @@ class RecaptchaEnterpriseServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = recaptchaenterprise.CreateFirewallPolicyRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, recaptchaenterprise.CreateFirewallPolicyRequest):
+            request = recaptchaenterprise.CreateFirewallPolicyRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1485,11 +1505,9 @@ class RecaptchaEnterpriseServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_firewall_policy,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_firewall_policy
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1579,8 +1597,8 @@ class RecaptchaEnterpriseServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1588,7 +1606,10 @@ class RecaptchaEnterpriseServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = recaptchaenterprise.ListFirewallPoliciesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, recaptchaenterprise.ListFirewallPoliciesRequest):
+            request = recaptchaenterprise.ListFirewallPoliciesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1597,11 +1618,9 @@ class RecaptchaEnterpriseServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_firewall_policies,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_firewall_policies
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1697,8 +1716,8 @@ class RecaptchaEnterpriseServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1706,7 +1725,10 @@ class RecaptchaEnterpriseServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = recaptchaenterprise.GetFirewallPolicyRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, recaptchaenterprise.GetFirewallPolicyRequest):
+            request = recaptchaenterprise.GetFirewallPolicyRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1715,11 +1737,9 @@ class RecaptchaEnterpriseServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_firewall_policy,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_firewall_policy
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1812,8 +1832,8 @@ class RecaptchaEnterpriseServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([firewall_policy, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1821,7 +1841,10 @@ class RecaptchaEnterpriseServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = recaptchaenterprise.UpdateFirewallPolicyRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, recaptchaenterprise.UpdateFirewallPolicyRequest):
+            request = recaptchaenterprise.UpdateFirewallPolicyRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1832,11 +1855,9 @@ class RecaptchaEnterpriseServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_firewall_policy,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_firewall_policy
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1915,8 +1936,8 @@ class RecaptchaEnterpriseServiceAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1924,7 +1945,10 @@ class RecaptchaEnterpriseServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = recaptchaenterprise.DeleteFirewallPolicyRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, recaptchaenterprise.DeleteFirewallPolicyRequest):
+            request = recaptchaenterprise.DeleteFirewallPolicyRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1933,11 +1957,9 @@ class RecaptchaEnterpriseServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_firewall_policy,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_firewall_policy
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2029,8 +2051,8 @@ class RecaptchaEnterpriseServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, names])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2038,7 +2060,10 @@ class RecaptchaEnterpriseServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = recaptchaenterprise.ReorderFirewallPoliciesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, recaptchaenterprise.ReorderFirewallPoliciesRequest):
+            request = recaptchaenterprise.ReorderFirewallPoliciesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2049,11 +2074,9 @@ class RecaptchaEnterpriseServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.reorder_firewall_policies,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.reorder_firewall_policies
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2142,8 +2165,8 @@ class RecaptchaEnterpriseServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2151,7 +2174,10 @@ class RecaptchaEnterpriseServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = recaptchaenterprise.ListRelatedAccountGroupsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, recaptchaenterprise.ListRelatedAccountGroupsRequest):
+            request = recaptchaenterprise.ListRelatedAccountGroupsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2160,11 +2186,9 @@ class RecaptchaEnterpriseServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_related_account_groups,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_related_account_groups
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2263,8 +2287,8 @@ class RecaptchaEnterpriseServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2272,7 +2296,14 @@ class RecaptchaEnterpriseServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = recaptchaenterprise.ListRelatedAccountGroupMembershipsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, recaptchaenterprise.ListRelatedAccountGroupMembershipsRequest
+        ):
+            request = recaptchaenterprise.ListRelatedAccountGroupMembershipsRequest(
+                request
+            )
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2281,11 +2312,9 @@ class RecaptchaEnterpriseServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_related_account_group_memberships,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_related_account_group_memberships
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2397,8 +2426,8 @@ class RecaptchaEnterpriseServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, hashed_account_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2406,9 +2435,14 @@ class RecaptchaEnterpriseServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = recaptchaenterprise.SearchRelatedAccountGroupMembershipsRequest(
-            request
-        )
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, recaptchaenterprise.SearchRelatedAccountGroupMembershipsRequest
+        ):
+            request = recaptchaenterprise.SearchRelatedAccountGroupMembershipsRequest(
+                request
+            )
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2419,11 +2453,9 @@ class RecaptchaEnterpriseServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.search_related_account_group_memberships,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.search_related_account_group_memberships
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.

@@ -17,6 +17,7 @@ from collections import OrderedDict
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -599,7 +600,11 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, NetworkSecurityTransport]] = None,
+        transport: Optional[
+            Union[
+                str, NetworkSecurityTransport, Callable[..., NetworkSecurityTransport]
+            ]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -611,9 +616,11 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, NetworkSecurityTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,NetworkSecurityTransport,Callable[..., NetworkSecurityTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the NetworkSecurityTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -722,8 +729,15 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[NetworkSecurityTransport], Callable[..., NetworkSecurityTransport]
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., NetworkSecurityTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -804,8 +818,8 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -813,10 +827,8 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a authorization_policy.ListAuthorizationPoliciesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request, authorization_policy.ListAuthorizationPoliciesRequest
         ):
@@ -930,8 +942,8 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -939,10 +951,8 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a authorization_policy.GetAuthorizationPolicyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, authorization_policy.GetAuthorizationPolicyRequest):
             request = authorization_policy.GetAuthorizationPolicyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1075,8 +1085,8 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [parent, authorization_policy, authorization_policy_id]
         )
@@ -1086,10 +1096,8 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gcn_authorization_policy.CreateAuthorizationPolicyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request, gcn_authorization_policy.CreateAuthorizationPolicyRequest
         ):
@@ -1229,8 +1237,8 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([authorization_policy, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1238,10 +1246,8 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gcn_authorization_policy.UpdateAuthorizationPolicyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request, gcn_authorization_policy.UpdateAuthorizationPolicyRequest
         ):
@@ -1367,8 +1373,8 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1376,10 +1382,8 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a authorization_policy.DeleteAuthorizationPolicyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request, authorization_policy.DeleteAuthorizationPolicyRequest
         ):
@@ -1492,8 +1496,8 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1501,10 +1505,8 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a server_tls_policy.ListServerTlsPoliciesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, server_tls_policy.ListServerTlsPoliciesRequest):
             request = server_tls_policy.ListServerTlsPoliciesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1614,8 +1616,8 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1623,10 +1625,8 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a server_tls_policy.GetServerTlsPolicyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, server_tls_policy.GetServerTlsPolicyRequest):
             request = server_tls_policy.GetServerTlsPolicyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1756,8 +1756,8 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, server_tls_policy, server_tls_policy_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1765,10 +1765,8 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gcn_server_tls_policy.CreateServerTlsPolicyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gcn_server_tls_policy.CreateServerTlsPolicyRequest):
             request = gcn_server_tls_policy.CreateServerTlsPolicyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1900,8 +1898,8 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([server_tls_policy, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1909,10 +1907,8 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gcn_server_tls_policy.UpdateServerTlsPolicyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gcn_server_tls_policy.UpdateServerTlsPolicyRequest):
             request = gcn_server_tls_policy.UpdateServerTlsPolicyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2034,8 +2030,8 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2043,10 +2039,8 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a server_tls_policy.DeleteServerTlsPolicyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, server_tls_policy.DeleteServerTlsPolicyRequest):
             request = server_tls_policy.DeleteServerTlsPolicyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2155,8 +2149,8 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2164,10 +2158,8 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a client_tls_policy.ListClientTlsPoliciesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, client_tls_policy.ListClientTlsPoliciesRequest):
             request = client_tls_policy.ListClientTlsPoliciesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2276,8 +2268,8 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2285,10 +2277,8 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a client_tls_policy.GetClientTlsPolicyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, client_tls_policy.GetClientTlsPolicyRequest):
             request = client_tls_policy.GetClientTlsPolicyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2417,8 +2407,8 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, client_tls_policy, client_tls_policy_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2426,10 +2416,8 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gcn_client_tls_policy.CreateClientTlsPolicyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gcn_client_tls_policy.CreateClientTlsPolicyRequest):
             request = gcn_client_tls_policy.CreateClientTlsPolicyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2560,8 +2548,8 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([client_tls_policy, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2569,10 +2557,8 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gcn_client_tls_policy.UpdateClientTlsPolicyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gcn_client_tls_policy.UpdateClientTlsPolicyRequest):
             request = gcn_client_tls_policy.UpdateClientTlsPolicyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2694,8 +2680,8 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2703,10 +2689,8 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a client_tls_policy.DeleteClientTlsPolicyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, client_tls_policy.DeleteClientTlsPolicyRequest):
             request = client_tls_policy.DeleteClientTlsPolicyRequest(request)
             # If we have keyword arguments corresponding to fields on the

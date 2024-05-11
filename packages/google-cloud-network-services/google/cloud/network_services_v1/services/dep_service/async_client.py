@@ -17,6 +17,7 @@ from collections import OrderedDict
 import functools
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -204,7 +205,9 @@ class DepServiceAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, DepServiceTransport] = "grpc_asyncio",
+        transport: Optional[
+            Union[str, DepServiceTransport, Callable[..., DepServiceTransport]]
+        ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -216,9 +219,11 @@ class DepServiceAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.DepServiceTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,DepServiceTransport,Callable[..., DepServiceTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the DepServiceTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -330,8 +335,8 @@ class DepServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -339,7 +344,10 @@ class DepServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = dep.ListLbTrafficExtensionsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dep.ListLbTrafficExtensionsRequest):
+            request = dep.ListLbTrafficExtensionsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -348,11 +356,9 @@ class DepServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_lb_traffic_extensions,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_lb_traffic_extensions
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -447,8 +453,8 @@ class DepServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -456,7 +462,10 @@ class DepServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = dep.GetLbTrafficExtensionRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dep.GetLbTrafficExtensionRequest):
+            request = dep.GetLbTrafficExtensionRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -465,11 +474,9 @@ class DepServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_lb_traffic_extension,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_lb_traffic_extension
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -587,8 +594,8 @@ class DepServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [parent, lb_traffic_extension, lb_traffic_extension_id]
         )
@@ -598,7 +605,10 @@ class DepServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = dep.CreateLbTrafficExtensionRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dep.CreateLbTrafficExtensionRequest):
+            request = dep.CreateLbTrafficExtensionRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -611,11 +621,9 @@ class DepServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_lb_traffic_extension,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_lb_traffic_extension
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -734,8 +742,8 @@ class DepServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([lb_traffic_extension, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -743,7 +751,10 @@ class DepServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = dep.UpdateLbTrafficExtensionRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dep.UpdateLbTrafficExtensionRequest):
+            request = dep.UpdateLbTrafficExtensionRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -754,11 +765,9 @@ class DepServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_lb_traffic_extension,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_lb_traffic_extension
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -865,8 +874,8 @@ class DepServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -874,7 +883,10 @@ class DepServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = dep.DeleteLbTrafficExtensionRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dep.DeleteLbTrafficExtensionRequest):
+            request = dep.DeleteLbTrafficExtensionRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -883,11 +895,9 @@ class DepServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_lb_traffic_extension,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_lb_traffic_extension
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -985,8 +995,8 @@ class DepServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -994,7 +1004,10 @@ class DepServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = dep.ListLbRouteExtensionsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dep.ListLbRouteExtensionsRequest):
+            request = dep.ListLbRouteExtensionsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1003,11 +1016,9 @@ class DepServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_lb_route_extensions,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_lb_route_extensions
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1099,8 +1110,8 @@ class DepServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1108,7 +1119,10 @@ class DepServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = dep.GetLbRouteExtensionRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dep.GetLbRouteExtensionRequest):
+            request = dep.GetLbRouteExtensionRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1117,11 +1131,9 @@ class DepServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_lb_route_extension,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_lb_route_extension
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1236,8 +1248,8 @@ class DepServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, lb_route_extension, lb_route_extension_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1245,7 +1257,10 @@ class DepServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = dep.CreateLbRouteExtensionRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dep.CreateLbRouteExtensionRequest):
+            request = dep.CreateLbRouteExtensionRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1258,11 +1273,9 @@ class DepServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_lb_route_extension,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_lb_route_extension
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1378,8 +1391,8 @@ class DepServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([lb_route_extension, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1387,7 +1400,10 @@ class DepServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = dep.UpdateLbRouteExtensionRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dep.UpdateLbRouteExtensionRequest):
+            request = dep.UpdateLbRouteExtensionRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1398,11 +1414,9 @@ class DepServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_lb_route_extension,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_lb_route_extension
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1509,8 +1523,8 @@ class DepServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1518,7 +1532,10 @@ class DepServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = dep.DeleteLbRouteExtensionRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dep.DeleteLbRouteExtensionRequest):
+            request = dep.DeleteLbRouteExtensionRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1527,11 +1544,9 @@ class DepServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_lb_route_extension,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_lb_route_extension
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.

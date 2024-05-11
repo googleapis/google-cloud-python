@@ -17,6 +17,7 @@ from collections import OrderedDict
 import functools
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -212,7 +213,9 @@ class HubServiceAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, HubServiceTransport] = "grpc_asyncio",
+        transport: Optional[
+            Union[str, HubServiceTransport, Callable[..., HubServiceTransport]]
+        ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -224,9 +227,11 @@ class HubServiceAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.HubServiceTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,HubServiceTransport,Callable[..., HubServiceTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the HubServiceTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -335,8 +340,8 @@ class HubServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -344,7 +349,10 @@ class HubServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = hub.ListHubsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, hub.ListHubsRequest):
+            request = hub.ListHubsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -353,11 +361,9 @@ class HubServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_hubs,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_hubs
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -455,8 +461,8 @@ class HubServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -464,7 +470,10 @@ class HubServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = hub.GetHubRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, hub.GetHubRequest):
+            request = hub.GetHubRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -473,11 +482,7 @@ class HubServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_hub,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_hub]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -586,8 +591,8 @@ class HubServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, hub, hub_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -595,7 +600,10 @@ class HubServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gcn_hub.CreateHubRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gcn_hub.CreateHubRequest):
+            request = gcn_hub.CreateHubRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -608,11 +616,9 @@ class HubServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_hub,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_hub
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -724,8 +730,8 @@ class HubServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([hub, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -733,7 +739,10 @@ class HubServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gcn_hub.UpdateHubRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gcn_hub.UpdateHubRequest):
+            request = gcn_hub.UpdateHubRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -744,11 +753,9 @@ class HubServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_hub,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_hub
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -853,8 +860,8 @@ class HubServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -862,7 +869,10 @@ class HubServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = hub.DeleteHubRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, hub.DeleteHubRequest):
+            request = hub.DeleteHubRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -871,11 +881,9 @@ class HubServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_hub,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_hub
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -968,8 +976,8 @@ class HubServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -977,7 +985,10 @@ class HubServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = hub.ListSpokesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, hub.ListSpokesRequest):
+            request = hub.ListSpokesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -986,11 +997,9 @@ class HubServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_spokes,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_spokes
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1083,8 +1092,8 @@ class HubServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1092,7 +1101,10 @@ class HubServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = hub.GetSpokeRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, hub.GetSpokeRequest):
+            request = hub.GetSpokeRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1101,11 +1113,9 @@ class HubServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_spoke,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_spoke
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1212,8 +1222,8 @@ class HubServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, spoke, spoke_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1221,7 +1231,10 @@ class HubServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = hub.CreateSpokeRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, hub.CreateSpokeRequest):
+            request = hub.CreateSpokeRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1234,11 +1247,9 @@ class HubServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_spoke,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_spoke
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1349,8 +1360,8 @@ class HubServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([spoke, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1358,7 +1369,10 @@ class HubServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = hub.UpdateSpokeRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, hub.UpdateSpokeRequest):
+            request = hub.UpdateSpokeRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1369,11 +1383,9 @@ class HubServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_spoke,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_spoke
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1480,8 +1492,8 @@ class HubServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1489,7 +1501,10 @@ class HubServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = hub.DeleteSpokeRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, hub.DeleteSpokeRequest):
+            request = hub.DeleteSpokeRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1498,11 +1513,9 @@ class HubServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_spoke,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_spoke
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
