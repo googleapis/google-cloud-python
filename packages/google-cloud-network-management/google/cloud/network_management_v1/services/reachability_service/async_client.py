@@ -17,6 +17,7 @@ from collections import OrderedDict
 import functools
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -219,7 +220,13 @@ class ReachabilityServiceAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, ReachabilityServiceTransport] = "grpc_asyncio",
+        transport: Optional[
+            Union[
+                str,
+                ReachabilityServiceTransport,
+                Callable[..., ReachabilityServiceTransport],
+            ]
+        ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -231,9 +238,11 @@ class ReachabilityServiceAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.ReachabilityServiceTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,ReachabilityServiceTransport,Callable[..., ReachabilityServiceTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the ReachabilityServiceTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -342,8 +351,8 @@ class ReachabilityServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -351,7 +360,10 @@ class ReachabilityServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = reachability.ListConnectivityTestsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, reachability.ListConnectivityTestsRequest):
+            request = reachability.ListConnectivityTestsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -360,11 +372,9 @@ class ReachabilityServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_connectivity_tests,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_connectivity_tests
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -456,8 +466,8 @@ class ReachabilityServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -465,7 +475,10 @@ class ReachabilityServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = reachability.GetConnectivityTestRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, reachability.GetConnectivityTestRequest):
+            request = reachability.GetConnectivityTestRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -474,11 +487,9 @@ class ReachabilityServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_connectivity_test,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_connectivity_test
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -608,8 +619,8 @@ class ReachabilityServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, test_id, resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -617,7 +628,10 @@ class ReachabilityServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = reachability.CreateConnectivityTestRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, reachability.CreateConnectivityTestRequest):
+            request = reachability.CreateConnectivityTestRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -630,11 +644,9 @@ class ReachabilityServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_connectivity_test,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_connectivity_test
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -760,8 +772,8 @@ class ReachabilityServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([update_mask, resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -769,7 +781,10 @@ class ReachabilityServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = reachability.UpdateConnectivityTestRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, reachability.UpdateConnectivityTestRequest):
+            request = reachability.UpdateConnectivityTestRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -780,11 +795,9 @@ class ReachabilityServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_connectivity_test,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_connectivity_test
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -890,15 +903,16 @@ class ReachabilityServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = reachability.RerunConnectivityTestRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, reachability.RerunConnectivityTestRequest):
+            request = reachability.RerunConnectivityTestRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.rerun_connectivity_test,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.rerun_connectivity_test
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1005,8 +1019,8 @@ class ReachabilityServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1014,7 +1028,10 @@ class ReachabilityServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = reachability.DeleteConnectivityTestRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, reachability.DeleteConnectivityTestRequest):
+            request = reachability.DeleteConnectivityTestRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1023,11 +1040,9 @@ class ReachabilityServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_connectivity_test,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_connectivity_test
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.

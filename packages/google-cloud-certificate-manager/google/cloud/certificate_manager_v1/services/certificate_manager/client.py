@@ -17,6 +17,7 @@ from collections import OrderedDict
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -708,7 +709,13 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, CertificateManagerTransport]] = None,
+        transport: Optional[
+            Union[
+                str,
+                CertificateManagerTransport,
+                Callable[..., CertificateManagerTransport],
+            ]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -720,9 +727,11 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, CertificateManagerTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,CertificateManagerTransport,Callable[..., CertificateManagerTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the CertificateManagerTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -831,8 +840,16 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[CertificateManagerTransport],
+                Callable[..., CertificateManagerTransport],
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., CertificateManagerTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -910,8 +927,8 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -919,10 +936,8 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a certificate_manager.ListCertificatesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, certificate_manager.ListCertificatesRequest):
             request = certificate_manager.ListCertificatesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1023,8 +1038,8 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
                 Defines TLS certificate.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1032,10 +1047,8 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a certificate_manager.GetCertificateRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, certificate_manager.GetCertificateRequest):
             request = certificate_manager.GetCertificateRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1154,8 +1167,8 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, certificate, certificate_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1163,10 +1176,8 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a certificate_manager.CreateCertificateRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, certificate_manager.CreateCertificateRequest):
             request = certificate_manager.CreateCertificateRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1287,8 +1298,8 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([certificate, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1296,10 +1307,8 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a certificate_manager.UpdateCertificateRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, certificate_manager.UpdateCertificateRequest):
             request = certificate_manager.UpdateCertificateRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1419,8 +1428,8 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1428,10 +1437,8 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a certificate_manager.DeleteCertificateRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, certificate_manager.DeleteCertificateRequest):
             request = certificate_manager.DeleteCertificateRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1538,8 +1545,8 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1547,10 +1554,8 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a certificate_manager.ListCertificateMapsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, certificate_manager.ListCertificateMapsRequest):
             request = certificate_manager.ListCertificateMapsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1654,8 +1659,8 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1663,10 +1668,8 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a certificate_manager.GetCertificateMapRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, certificate_manager.GetCertificateMapRequest):
             request = certificate_manager.GetCertificateMapRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1785,8 +1788,8 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, certificate_map, certificate_map_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1794,10 +1797,8 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a certificate_manager.CreateCertificateMapRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, certificate_manager.CreateCertificateMapRequest):
             request = certificate_manager.CreateCertificateMapRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1918,8 +1919,8 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([certificate_map, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1927,10 +1928,8 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a certificate_manager.UpdateCertificateMapRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, certificate_manager.UpdateCertificateMapRequest):
             request = certificate_manager.UpdateCertificateMapRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2054,8 +2053,8 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2063,10 +2062,8 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a certificate_manager.DeleteCertificateMapRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, certificate_manager.DeleteCertificateMapRequest):
             request = certificate_manager.DeleteCertificateMapRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2174,8 +2171,8 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2183,10 +2180,8 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a certificate_manager.ListCertificateMapEntriesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request, certificate_manager.ListCertificateMapEntriesRequest
         ):
@@ -2292,8 +2287,8 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
                 Defines a certificate map entry.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2301,10 +2296,8 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a certificate_manager.GetCertificateMapEntryRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, certificate_manager.GetCertificateMapEntryRequest):
             request = certificate_manager.GetCertificateMapEntryRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2430,8 +2423,8 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [parent, certificate_map_entry, certificate_map_entry_id]
         )
@@ -2441,10 +2434,8 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a certificate_manager.CreateCertificateMapEntryRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request, certificate_manager.CreateCertificateMapEntryRequest
         ):
@@ -2574,8 +2565,8 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([certificate_map_entry, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2583,10 +2574,8 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a certificate_manager.UpdateCertificateMapEntryRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request, certificate_manager.UpdateCertificateMapEntryRequest
         ):
@@ -2711,8 +2700,8 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2720,10 +2709,8 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a certificate_manager.DeleteCertificateMapEntryRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request, certificate_manager.DeleteCertificateMapEntryRequest
         ):
@@ -2834,8 +2821,8 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2843,10 +2830,8 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a certificate_manager.ListDnsAuthorizationsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, certificate_manager.ListDnsAuthorizationsRequest):
             request = certificate_manager.ListDnsAuthorizationsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2951,8 +2936,8 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2960,10 +2945,8 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a certificate_manager.GetDnsAuthorizationRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, certificate_manager.GetDnsAuthorizationRequest):
             request = certificate_manager.GetDnsAuthorizationRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3085,8 +3068,8 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, dns_authorization, dns_authorization_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3094,10 +3077,8 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a certificate_manager.CreateDnsAuthorizationRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, certificate_manager.CreateDnsAuthorizationRequest):
             request = certificate_manager.CreateDnsAuthorizationRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3221,8 +3202,8 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([dns_authorization, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3230,10 +3211,8 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a certificate_manager.UpdateDnsAuthorizationRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, certificate_manager.UpdateDnsAuthorizationRequest):
             request = certificate_manager.UpdateDnsAuthorizationRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3354,8 +3333,8 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3363,10 +3342,8 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a certificate_manager.DeleteDnsAuthorizationRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, certificate_manager.DeleteDnsAuthorizationRequest):
             request = certificate_manager.DeleteDnsAuthorizationRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3476,8 +3453,8 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3485,10 +3462,8 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a certificate_issuance_config.ListCertificateIssuanceConfigsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request, certificate_issuance_config.ListCertificateIssuanceConfigsRequest
         ):
@@ -3598,8 +3573,8 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3607,10 +3582,8 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a certificate_issuance_config.GetCertificateIssuanceConfigRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request, certificate_issuance_config.GetCertificateIssuanceConfigRequest
         ):
@@ -3749,8 +3722,8 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [parent, certificate_issuance_config, certificate_issuance_config_id]
         )
@@ -3760,10 +3733,8 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gcc_certificate_issuance_config.CreateCertificateIssuanceConfigRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request,
             gcc_certificate_issuance_config.CreateCertificateIssuanceConfigRequest,
@@ -3896,8 +3867,8 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3905,10 +3876,8 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a certificate_issuance_config.DeleteCertificateIssuanceConfigRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request, certificate_issuance_config.DeleteCertificateIssuanceConfigRequest
         ):
@@ -4020,8 +3989,8 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4029,10 +3998,8 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a trust_config.ListTrustConfigsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, trust_config.ListTrustConfigsRequest):
             request = trust_config.ListTrustConfigsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4131,8 +4098,8 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
                 Defines a trust config.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4140,10 +4107,8 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a trust_config.GetTrustConfigRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, trust_config.GetTrustConfigRequest):
             request = trust_config.GetTrustConfigRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4262,8 +4227,8 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, trust_config, trust_config_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4271,10 +4236,8 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gcc_trust_config.CreateTrustConfigRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gcc_trust_config.CreateTrustConfigRequest):
             request = gcc_trust_config.CreateTrustConfigRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4395,8 +4358,8 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([trust_config, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4404,10 +4367,8 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gcc_trust_config.UpdateTrustConfigRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gcc_trust_config.UpdateTrustConfigRequest):
             request = gcc_trust_config.UpdateTrustConfigRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4525,8 +4486,8 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4534,10 +4495,8 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a trust_config.DeleteTrustConfigRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, trust_config.DeleteTrustConfigRequest):
             request = trust_config.DeleteTrustConfigRequest(request)
             # If we have keyword arguments corresponding to fields on the

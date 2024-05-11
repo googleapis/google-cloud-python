@@ -17,6 +17,7 @@ from collections import OrderedDict
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -586,7 +587,9 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, EnvironmentsTransport]] = None,
+        transport: Optional[
+            Union[str, EnvironmentsTransport, Callable[..., EnvironmentsTransport]]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -598,9 +601,11 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, EnvironmentsTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,EnvironmentsTransport,Callable[..., EnvironmentsTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the EnvironmentsTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -706,8 +711,15 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[EnvironmentsTransport], Callable[..., EnvironmentsTransport]
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., EnvironmentsTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -791,8 +803,8 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, environment])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -800,10 +812,8 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a environments.CreateEnvironmentRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, environments.CreateEnvironmentRequest):
             request = environments.CreateEnvironmentRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -905,8 +915,8 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -914,10 +924,8 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a environments.GetEnvironmentRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, environments.GetEnvironmentRequest):
             request = environments.GetEnvironmentRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1014,8 +1022,8 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1023,10 +1031,8 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a environments.ListEnvironmentsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, environments.ListEnvironmentsRequest):
             request = environments.ListEnvironmentsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1327,8 +1333,8 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, environment, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1336,10 +1342,8 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a environments.UpdateEnvironmentRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, environments.UpdateEnvironmentRequest):
             request = environments.UpdateEnvironmentRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1457,8 +1461,8 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1466,10 +1470,8 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a environments.DeleteEnvironmentRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, environments.DeleteEnvironmentRequest):
             request = environments.DeleteEnvironmentRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1562,10 +1564,8 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a environments.ExecuteAirflowCommandRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, environments.ExecuteAirflowCommandRequest):
             request = environments.ExecuteAirflowCommandRequest(request)
 
@@ -1646,10 +1646,8 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a environments.StopAirflowCommandRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, environments.StopAirflowCommandRequest):
             request = environments.StopAirflowCommandRequest(request)
 
@@ -1730,10 +1728,8 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a environments.PollAirflowCommandRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, environments.PollAirflowCommandRequest):
             request = environments.PollAirflowCommandRequest(request)
 
@@ -1833,8 +1829,8 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1842,10 +1838,8 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a environments.ListWorkloadsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, environments.ListWorkloadsRequest):
             request = environments.ListWorkloadsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1961,8 +1955,8 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, user_workloads_secret])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1970,10 +1964,8 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a environments.CreateUserWorkloadsSecretRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, environments.CreateUserWorkloadsSecretRequest):
             request = environments.CreateUserWorkloadsSecretRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2077,8 +2069,8 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2086,10 +2078,8 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a environments.GetUserWorkloadsSecretRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, environments.GetUserWorkloadsSecretRequest):
             request = environments.GetUserWorkloadsSecretRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2193,8 +2183,8 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2202,10 +2192,8 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a environments.ListUserWorkloadsSecretsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, environments.ListUserWorkloadsSecretsRequest):
             request = environments.ListUserWorkloadsSecretsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2313,8 +2301,8 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([user_workloads_secret])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2322,10 +2310,8 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a environments.UpdateUserWorkloadsSecretRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, environments.UpdateUserWorkloadsSecretRequest):
             request = environments.UpdateUserWorkloadsSecretRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2418,8 +2404,8 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2427,10 +2413,8 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a environments.DeleteUserWorkloadsSecretRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, environments.DeleteUserWorkloadsSecretRequest):
             request = environments.DeleteUserWorkloadsSecretRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2537,8 +2521,8 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, user_workloads_config_map])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2546,10 +2530,8 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a environments.CreateUserWorkloadsConfigMapRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, environments.CreateUserWorkloadsConfigMapRequest):
             request = environments.CreateUserWorkloadsConfigMapRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2652,8 +2634,8 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2661,10 +2643,8 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a environments.GetUserWorkloadsConfigMapRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, environments.GetUserWorkloadsConfigMapRequest):
             request = environments.GetUserWorkloadsConfigMapRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2769,8 +2749,8 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2778,10 +2758,8 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a environments.ListUserWorkloadsConfigMapsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, environments.ListUserWorkloadsConfigMapsRequest):
             request = environments.ListUserWorkloadsConfigMapsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2890,8 +2868,8 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([user_workloads_config_map])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2899,10 +2877,8 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a environments.UpdateUserWorkloadsConfigMapRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, environments.UpdateUserWorkloadsConfigMapRequest):
             request = environments.UpdateUserWorkloadsConfigMapRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3001,8 +2977,8 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3010,10 +2986,8 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a environments.DeleteUserWorkloadsConfigMapRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, environments.DeleteUserWorkloadsConfigMapRequest):
             request = environments.DeleteUserWorkloadsConfigMapRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3107,10 +3081,8 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a environments.SaveSnapshotRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, environments.SaveSnapshotRequest):
             request = environments.SaveSnapshotRequest(request)
 
@@ -3211,10 +3183,8 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a environments.LoadSnapshotRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, environments.LoadSnapshotRequest):
             request = environments.LoadSnapshotRequest(request)
 
@@ -3313,10 +3283,8 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a environments.DatabaseFailoverRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, environments.DatabaseFailoverRequest):
             request = environments.DatabaseFailoverRequest(request)
 
@@ -3409,10 +3377,8 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a environments.FetchDatabasePropertiesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, environments.FetchDatabasePropertiesRequest):
             request = environments.FetchDatabasePropertiesRequest(request)
 

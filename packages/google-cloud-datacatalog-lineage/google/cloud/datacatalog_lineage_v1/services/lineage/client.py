@@ -17,6 +17,7 @@ from collections import OrderedDict
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -590,7 +591,9 @@ class LineageClient(metaclass=LineageClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, LineageTransport]] = None,
+        transport: Optional[
+            Union[str, LineageTransport, Callable[..., LineageTransport]]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -602,9 +605,11 @@ class LineageClient(metaclass=LineageClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, LineageTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,LineageTransport,Callable[..., LineageTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the LineageTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -710,8 +715,15 @@ class LineageClient(metaclass=LineageClientMeta):
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[LineageTransport], Callable[..., LineageTransport]
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., LineageTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -801,8 +813,8 @@ class LineageClient(metaclass=LineageClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, open_lineage])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -810,10 +822,8 @@ class LineageClient(metaclass=LineageClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a lineage.ProcessOpenLineageRunEventRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, lineage.ProcessOpenLineageRunEventRequest):
             request = lineage.ProcessOpenLineageRunEventRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -917,8 +927,8 @@ class LineageClient(metaclass=LineageClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, process])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -926,10 +936,8 @@ class LineageClient(metaclass=LineageClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a lineage.CreateProcessRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, lineage.CreateProcessRequest):
             request = lineage.CreateProcessRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1034,8 +1042,8 @@ class LineageClient(metaclass=LineageClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([process, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1043,10 +1051,8 @@ class LineageClient(metaclass=LineageClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a lineage.UpdateProcessRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, lineage.UpdateProcessRequest):
             request = lineage.UpdateProcessRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1143,8 +1149,8 @@ class LineageClient(metaclass=LineageClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1152,10 +1158,8 @@ class LineageClient(metaclass=LineageClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a lineage.GetProcessRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, lineage.GetProcessRequest):
             request = lineage.GetProcessRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1254,8 +1258,8 @@ class LineageClient(metaclass=LineageClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1263,10 +1267,8 @@ class LineageClient(metaclass=LineageClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a lineage.ListProcessesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, lineage.ListProcessesRequest):
             request = lineage.ListProcessesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1382,8 +1384,8 @@ class LineageClient(metaclass=LineageClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1391,10 +1393,8 @@ class LineageClient(metaclass=LineageClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a lineage.DeleteProcessRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, lineage.DeleteProcessRequest):
             request = lineage.DeleteProcessRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1506,8 +1506,8 @@ class LineageClient(metaclass=LineageClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, run])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1515,10 +1515,8 @@ class LineageClient(metaclass=LineageClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a lineage.CreateRunRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, lineage.CreateRunRequest):
             request = lineage.CreateRunRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1631,8 +1629,8 @@ class LineageClient(metaclass=LineageClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([run, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1640,10 +1638,8 @@ class LineageClient(metaclass=LineageClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a lineage.UpdateRunRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, lineage.UpdateRunRequest):
             request = lineage.UpdateRunRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1737,8 +1733,8 @@ class LineageClient(metaclass=LineageClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1746,10 +1742,8 @@ class LineageClient(metaclass=LineageClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a lineage.GetRunRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, lineage.GetRunRequest):
             request = lineage.GetRunRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1847,8 +1841,8 @@ class LineageClient(metaclass=LineageClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1856,10 +1850,8 @@ class LineageClient(metaclass=LineageClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a lineage.ListRunsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, lineage.ListRunsRequest):
             request = lineage.ListRunsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1975,8 +1967,8 @@ class LineageClient(metaclass=LineageClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1984,10 +1976,8 @@ class LineageClient(metaclass=LineageClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a lineage.DeleteRunRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, lineage.DeleteRunRequest):
             request = lineage.DeleteRunRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2099,8 +2089,8 @@ class LineageClient(metaclass=LineageClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, lineage_event])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2108,10 +2098,8 @@ class LineageClient(metaclass=LineageClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a lineage.CreateLineageEventRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, lineage.CreateLineageEventRequest):
             request = lineage.CreateLineageEventRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2209,8 +2197,8 @@ class LineageClient(metaclass=LineageClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2218,10 +2206,8 @@ class LineageClient(metaclass=LineageClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a lineage.GetLineageEventRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, lineage.GetLineageEventRequest):
             request = lineage.GetLineageEventRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2320,8 +2306,8 @@ class LineageClient(metaclass=LineageClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2329,10 +2315,8 @@ class LineageClient(metaclass=LineageClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a lineage.ListLineageEventsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, lineage.ListLineageEventsRequest):
             request = lineage.ListLineageEventsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2425,8 +2409,8 @@ class LineageClient(metaclass=LineageClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2434,10 +2418,8 @@ class LineageClient(metaclass=LineageClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a lineage.DeleteLineageEventRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, lineage.DeleteLineageEventRequest):
             request = lineage.DeleteLineageEventRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2535,10 +2517,8 @@ class LineageClient(metaclass=LineageClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a lineage.SearchLinksRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, lineage.SearchLinksRequest):
             request = lineage.SearchLinksRequest(request)
 
@@ -2646,10 +2626,8 @@ class LineageClient(metaclass=LineageClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a lineage.BatchSearchLinkProcessesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, lineage.BatchSearchLinkProcessesRequest):
             request = lineage.BatchSearchLinkProcessesRequest(request)
 

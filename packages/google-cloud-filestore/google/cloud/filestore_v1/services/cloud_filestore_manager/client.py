@@ -17,6 +17,7 @@ from collections import OrderedDict
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -610,7 +611,13 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, CloudFilestoreManagerTransport]] = None,
+        transport: Optional[
+            Union[
+                str,
+                CloudFilestoreManagerTransport,
+                Callable[..., CloudFilestoreManagerTransport],
+            ]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -622,9 +629,11 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, CloudFilestoreManagerTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,CloudFilestoreManagerTransport,Callable[..., CloudFilestoreManagerTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the CloudFilestoreManagerTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -733,8 +742,16 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[CloudFilestoreManagerTransport],
+                Callable[..., CloudFilestoreManagerTransport],
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., CloudFilestoreManagerTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -817,8 +834,8 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -826,10 +843,8 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cloud_filestore_service.ListInstancesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cloud_filestore_service.ListInstancesRequest):
             request = cloud_filestore_service.ListInstancesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -931,8 +946,8 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
                 A Filestore instance.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -940,10 +955,8 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cloud_filestore_service.GetInstanceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cloud_filestore_service.GetInstanceRequest):
             request = cloud_filestore_service.GetInstanceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1069,8 +1082,8 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, instance, instance_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1078,10 +1091,8 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cloud_filestore_service.CreateInstanceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cloud_filestore_service.CreateInstanceRequest):
             request = cloud_filestore_service.CreateInstanceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1205,8 +1216,8 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([instance, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1214,10 +1225,8 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cloud_filestore_service.UpdateInstanceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cloud_filestore_service.UpdateInstanceRequest):
             request = cloud_filestore_service.UpdateInstanceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1330,10 +1339,8 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cloud_filestore_service.RestoreInstanceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cloud_filestore_service.RestoreInstanceRequest):
             request = cloud_filestore_service.RestoreInstanceRequest(request)
 
@@ -1434,10 +1441,8 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cloud_filestore_service.RevertInstanceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cloud_filestore_service.RevertInstanceRequest):
             request = cloud_filestore_service.RevertInstanceRequest(request)
 
@@ -1550,8 +1555,8 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1559,10 +1564,8 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cloud_filestore_service.DeleteInstanceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cloud_filestore_service.DeleteInstanceRequest):
             request = cloud_filestore_service.DeleteInstanceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1670,8 +1673,8 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1679,10 +1682,8 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cloud_filestore_service.ListSnapshotsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cloud_filestore_service.ListSnapshotsRequest):
             request = cloud_filestore_service.ListSnapshotsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1784,8 +1785,8 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
                 A Filestore snapshot.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1793,10 +1794,8 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cloud_filestore_service.GetSnapshotRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cloud_filestore_service.GetSnapshotRequest):
             request = cloud_filestore_service.GetSnapshotRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1920,8 +1919,8 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, snapshot, snapshot_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1929,10 +1928,8 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cloud_filestore_service.CreateSnapshotRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cloud_filestore_service.CreateSnapshotRequest):
             request = cloud_filestore_service.CreateSnapshotRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2053,8 +2050,8 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2062,10 +2059,8 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cloud_filestore_service.DeleteSnapshotRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cloud_filestore_service.DeleteSnapshotRequest):
             request = cloud_filestore_service.DeleteSnapshotRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2182,8 +2177,8 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([snapshot, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2191,10 +2186,8 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cloud_filestore_service.UpdateSnapshotRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cloud_filestore_service.UpdateSnapshotRequest):
             request = cloud_filestore_service.UpdateSnapshotRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2309,8 +2302,8 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2318,10 +2311,8 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cloud_filestore_service.ListBackupsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cloud_filestore_service.ListBackupsRequest):
             request = cloud_filestore_service.ListBackupsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2421,8 +2412,8 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
                 A Filestore backup.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2430,10 +2421,8 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cloud_filestore_service.GetBackupRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cloud_filestore_service.GetBackupRequest):
             request = cloud_filestore_service.GetBackupRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2559,8 +2548,8 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, backup, backup_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2568,10 +2557,8 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cloud_filestore_service.CreateBackupRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cloud_filestore_service.CreateBackupRequest):
             request = cloud_filestore_service.CreateBackupRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2691,8 +2678,8 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2700,10 +2687,8 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cloud_filestore_service.DeleteBackupRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cloud_filestore_service.DeleteBackupRequest):
             request = cloud_filestore_service.DeleteBackupRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2821,8 +2806,8 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([backup, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2830,10 +2815,8 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cloud_filestore_service.UpdateBackupRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cloud_filestore_service.UpdateBackupRequest):
             request = cloud_filestore_service.UpdateBackupRequest(request)
             # If we have keyword arguments corresponding to fields on the

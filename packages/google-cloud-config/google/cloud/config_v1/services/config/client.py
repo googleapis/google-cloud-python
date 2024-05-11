@@ -17,6 +17,7 @@ from collections import OrderedDict
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -680,7 +681,9 @@ class ConfigClient(metaclass=ConfigClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, ConfigTransport]] = None,
+        transport: Optional[
+            Union[str, ConfigTransport, Callable[..., ConfigTransport]]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -692,9 +695,11 @@ class ConfigClient(metaclass=ConfigClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ConfigTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,ConfigTransport,Callable[..., ConfigTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the ConfigTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -800,8 +805,15 @@ class ConfigClient(metaclass=ConfigClientMeta):
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[ConfigTransport], Callable[..., ConfigTransport]
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., ConfigTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -877,8 +889,8 @@ class ConfigClient(metaclass=ConfigClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -886,10 +898,8 @@ class ConfigClient(metaclass=ConfigClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a config.ListDeploymentsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, config.ListDeploymentsRequest):
             request = config.ListDeploymentsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -992,8 +1002,8 @@ class ConfigClient(metaclass=ConfigClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1001,10 +1011,8 @@ class ConfigClient(metaclass=ConfigClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a config.GetDeploymentRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, config.GetDeploymentRequest):
             request = config.GetDeploymentRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1123,8 +1131,8 @@ class ConfigClient(metaclass=ConfigClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, deployment, deployment_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1132,10 +1140,8 @@ class ConfigClient(metaclass=ConfigClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a config.CreateDeploymentRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, config.CreateDeploymentRequest):
             request = config.CreateDeploymentRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1266,8 +1272,8 @@ class ConfigClient(metaclass=ConfigClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([deployment, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1275,10 +1281,8 @@ class ConfigClient(metaclass=ConfigClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a config.UpdateDeploymentRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, config.UpdateDeploymentRequest):
             request = config.UpdateDeploymentRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1388,8 +1392,8 @@ class ConfigClient(metaclass=ConfigClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1397,10 +1401,8 @@ class ConfigClient(metaclass=ConfigClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a config.DeleteDeploymentRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, config.DeleteDeploymentRequest):
             request = config.DeleteDeploymentRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1507,8 +1509,8 @@ class ConfigClient(metaclass=ConfigClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1516,10 +1518,8 @@ class ConfigClient(metaclass=ConfigClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a config.ListRevisionsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, config.ListRevisionsRequest):
             request = config.ListRevisionsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1625,8 +1625,8 @@ class ConfigClient(metaclass=ConfigClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1634,10 +1634,8 @@ class ConfigClient(metaclass=ConfigClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a config.GetRevisionRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, config.GetRevisionRequest):
             request = config.GetRevisionRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1733,8 +1731,8 @@ class ConfigClient(metaclass=ConfigClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1742,10 +1740,8 @@ class ConfigClient(metaclass=ConfigClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a config.GetResourceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, config.GetResourceRequest):
             request = config.GetResourceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1844,8 +1840,8 @@ class ConfigClient(metaclass=ConfigClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1853,10 +1849,8 @@ class ConfigClient(metaclass=ConfigClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a config.ListResourcesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, config.ListResourcesRequest):
             request = config.ListResourcesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1951,10 +1945,8 @@ class ConfigClient(metaclass=ConfigClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a config.ExportDeploymentStatefileRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, config.ExportDeploymentStatefileRequest):
             request = config.ExportDeploymentStatefileRequest(request)
 
@@ -2038,10 +2030,8 @@ class ConfigClient(metaclass=ConfigClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a config.ExportRevisionStatefileRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, config.ExportRevisionStatefileRequest):
             request = config.ExportRevisionStatefileRequest(request)
 
@@ -2146,8 +2136,8 @@ class ConfigClient(metaclass=ConfigClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, lock_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2155,10 +2145,8 @@ class ConfigClient(metaclass=ConfigClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a config.ImportStatefileRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, config.ImportStatefileRequest):
             request = config.ImportStatefileRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2245,8 +2233,8 @@ class ConfigClient(metaclass=ConfigClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2254,10 +2242,8 @@ class ConfigClient(metaclass=ConfigClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a config.DeleteStatefileRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, config.DeleteStatefileRequest):
             request = config.DeleteStatefileRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2353,8 +2339,8 @@ class ConfigClient(metaclass=ConfigClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2362,10 +2348,8 @@ class ConfigClient(metaclass=ConfigClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a config.LockDeploymentRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, config.LockDeploymentRequest):
             request = config.LockDeploymentRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2481,8 +2465,8 @@ class ConfigClient(metaclass=ConfigClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, lock_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2490,10 +2474,8 @@ class ConfigClient(metaclass=ConfigClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a config.UnlockDeploymentRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, config.UnlockDeploymentRequest):
             request = config.UnlockDeploymentRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2596,8 +2578,8 @@ class ConfigClient(metaclass=ConfigClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2605,10 +2587,8 @@ class ConfigClient(metaclass=ConfigClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a config.ExportLockInfoRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, config.ExportLockInfoRequest):
             request = config.ExportLockInfoRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2720,8 +2700,8 @@ class ConfigClient(metaclass=ConfigClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, preview])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2729,10 +2709,8 @@ class ConfigClient(metaclass=ConfigClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a config.CreatePreviewRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, config.CreatePreviewRequest):
             request = config.CreatePreviewRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2837,8 +2815,8 @@ class ConfigClient(metaclass=ConfigClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2846,10 +2824,8 @@ class ConfigClient(metaclass=ConfigClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a config.GetPreviewRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, config.GetPreviewRequest):
             request = config.GetPreviewRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2948,8 +2924,8 @@ class ConfigClient(metaclass=ConfigClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2957,10 +2933,8 @@ class ConfigClient(metaclass=ConfigClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a config.ListPreviewsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, config.ListPreviewsRequest):
             request = config.ListPreviewsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3068,8 +3042,8 @@ class ConfigClient(metaclass=ConfigClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3077,10 +3051,8 @@ class ConfigClient(metaclass=ConfigClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a config.DeletePreviewRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, config.DeletePreviewRequest):
             request = config.DeletePreviewRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3172,10 +3144,8 @@ class ConfigClient(metaclass=ConfigClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a config.ExportPreviewResultRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, config.ExportPreviewResultRequest):
             request = config.ExportPreviewResultRequest(request)
 
@@ -3271,8 +3241,8 @@ class ConfigClient(metaclass=ConfigClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3280,10 +3250,8 @@ class ConfigClient(metaclass=ConfigClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a config.ListTerraformVersionsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, config.ListTerraformVersionsRequest):
             request = config.ListTerraformVersionsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3387,8 +3355,8 @@ class ConfigClient(metaclass=ConfigClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3396,10 +3364,8 @@ class ConfigClient(metaclass=ConfigClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a config.GetTerraformVersionRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, config.GetTerraformVersionRequest):
             request = config.GetTerraformVersionRequest(request)
             # If we have keyword arguments corresponding to fields on the

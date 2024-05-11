@@ -17,6 +17,7 @@ from collections import OrderedDict
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -557,7 +558,11 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, PolicyTagManagerTransport]] = None,
+        transport: Optional[
+            Union[
+                str, PolicyTagManagerTransport, Callable[..., PolicyTagManagerTransport]
+            ]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -569,9 +574,11 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, PolicyTagManagerTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,PolicyTagManagerTransport,Callable[..., PolicyTagManagerTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the PolicyTagManagerTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -680,8 +687,16 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[PolicyTagManagerTransport],
+                Callable[..., PolicyTagManagerTransport],
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., PolicyTagManagerTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -765,8 +780,8 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, taxonomy])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -774,10 +789,8 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a policytagmanager.CreateTaxonomyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, policytagmanager.CreateTaxonomyRequest):
             request = policytagmanager.CreateTaxonomyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -866,8 +879,8 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -875,10 +888,8 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a policytagmanager.DeleteTaxonomyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, policytagmanager.DeleteTaxonomyRequest):
             request = policytagmanager.DeleteTaxonomyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -971,8 +982,8 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([taxonomy])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -980,10 +991,8 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a policytagmanager.UpdateTaxonomyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, policytagmanager.UpdateTaxonomyRequest):
             request = policytagmanager.UpdateTaxonomyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1083,8 +1092,8 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1092,10 +1101,8 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a policytagmanager.ListTaxonomiesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, policytagmanager.ListTaxonomiesRequest):
             request = policytagmanager.ListTaxonomiesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1201,8 +1208,8 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1210,10 +1217,8 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a policytagmanager.GetTaxonomyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, policytagmanager.GetTaxonomyRequest):
             request = policytagmanager.GetTaxonomyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1320,8 +1325,8 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, policy_tag])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1329,10 +1334,8 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a policytagmanager.CreatePolicyTagRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, policytagmanager.CreatePolicyTagRequest):
             request = policytagmanager.CreatePolicyTagRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1420,8 +1423,8 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1429,10 +1432,8 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a policytagmanager.DeletePolicyTagRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, policytagmanager.DeletePolicyTagRequest):
             request = policytagmanager.DeletePolicyTagRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1529,8 +1530,8 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([policy_tag])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1538,10 +1539,8 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a policytagmanager.UpdatePolicyTagRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, policytagmanager.UpdatePolicyTagRequest):
             request = policytagmanager.UpdatePolicyTagRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1640,8 +1639,8 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1649,10 +1648,8 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a policytagmanager.ListPolicyTagsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, policytagmanager.ListPolicyTagsRequest):
             request = policytagmanager.ListPolicyTagsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1761,8 +1758,8 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1770,10 +1767,8 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a policytagmanager.GetPolicyTagRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, policytagmanager.GetPolicyTagRequest):
             request = policytagmanager.GetPolicyTagRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1887,8 +1882,8 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
         """
         # Create or coerce a protobuf request object.
         if isinstance(request, dict):
-            # The request isn't a proto-plus wrapped type,
-            # so it must be constructed via keyword expansion.
+            # - The request isn't a proto-plus wrapped type,
+            #   so it must be constructed via keyword expansion.
             request = iam_policy_pb2.GetIamPolicyRequest(**request)
         elif not request:
             # Null request, just make one.
@@ -2000,8 +1995,8 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
         """
         # Create or coerce a protobuf request object.
         if isinstance(request, dict):
-            # The request isn't a proto-plus wrapped type,
-            # so it must be constructed via keyword expansion.
+            # - The request isn't a proto-plus wrapped type,
+            #   so it must be constructed via keyword expansion.
             request = iam_policy_pb2.SetIamPolicyRequest(**request)
         elif not request:
             # Null request, just make one.
@@ -2085,8 +2080,8 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
         """
         # Create or coerce a protobuf request object.
         if isinstance(request, dict):
-            # The request isn't a proto-plus wrapped type,
-            # so it must be constructed via keyword expansion.
+            # - The request isn't a proto-plus wrapped type,
+            #   so it must be constructed via keyword expansion.
             request = iam_policy_pb2.TestIamPermissionsRequest(**request)
         elif not request:
             # Null request, just make one.

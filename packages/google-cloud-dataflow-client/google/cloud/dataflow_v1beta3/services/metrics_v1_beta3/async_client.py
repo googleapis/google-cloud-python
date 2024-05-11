@@ -17,6 +17,7 @@ from collections import OrderedDict
 import functools
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -196,7 +197,9 @@ class MetricsV1Beta3AsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, MetricsV1Beta3Transport] = "grpc_asyncio",
+        transport: Optional[
+            Union[str, MetricsV1Beta3Transport, Callable[..., MetricsV1Beta3Transport]]
+        ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -208,9 +211,11 @@ class MetricsV1Beta3AsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.MetricsV1Beta3Transport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,MetricsV1Beta3Transport,Callable[..., MetricsV1Beta3Transport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the MetricsV1Beta3Transport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -322,15 +327,16 @@ class MetricsV1Beta3AsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = metrics.GetJobMetricsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, metrics.GetJobMetricsRequest):
+            request = metrics.GetJobMetricsRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_job_metrics,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_job_metrics
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -416,15 +422,16 @@ class MetricsV1Beta3AsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = metrics.GetJobExecutionDetailsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, metrics.GetJobExecutionDetailsRequest):
+            request = metrics.GetJobExecutionDetailsRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_job_execution_details,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_job_execution_details
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -522,15 +529,16 @@ class MetricsV1Beta3AsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = metrics.GetStageExecutionDetailsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, metrics.GetStageExecutionDetailsRequest):
+            request = metrics.GetStageExecutionDetailsRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_stage_execution_details,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_stage_execution_details
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.

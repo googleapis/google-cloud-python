@@ -17,6 +17,7 @@ from collections import OrderedDict
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -605,7 +606,13 @@ class ConversationModelsClient(metaclass=ConversationModelsClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, ConversationModelsTransport]] = None,
+        transport: Optional[
+            Union[
+                str,
+                ConversationModelsTransport,
+                Callable[..., ConversationModelsTransport],
+            ]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -617,9 +624,11 @@ class ConversationModelsClient(metaclass=ConversationModelsClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ConversationModelsTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,ConversationModelsTransport,Callable[..., ConversationModelsTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the ConversationModelsTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -728,8 +737,16 @@ class ConversationModelsClient(metaclass=ConversationModelsClientMeta):
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[ConversationModelsTransport],
+                Callable[..., ConversationModelsTransport],
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., ConversationModelsTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -833,8 +850,8 @@ class ConversationModelsClient(metaclass=ConversationModelsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, conversation_model])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -842,10 +859,8 @@ class ConversationModelsClient(metaclass=ConversationModelsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gcd_conversation_model.CreateConversationModelRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request, gcd_conversation_model.CreateConversationModelRequest
         ):
@@ -952,8 +967,8 @@ class ConversationModelsClient(metaclass=ConversationModelsClientMeta):
                 Represents a conversation model.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -961,10 +976,8 @@ class ConversationModelsClient(metaclass=ConversationModelsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a conversation_model.GetConversationModelRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, conversation_model.GetConversationModelRequest):
             request = conversation_model.GetConversationModelRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1063,8 +1076,8 @@ class ConversationModelsClient(metaclass=ConversationModelsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1072,10 +1085,8 @@ class ConversationModelsClient(metaclass=ConversationModelsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a conversation_model.ListConversationModelsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, conversation_model.ListConversationModelsRequest):
             request = conversation_model.ListConversationModelsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1203,8 +1214,8 @@ class ConversationModelsClient(metaclass=ConversationModelsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1212,10 +1223,8 @@ class ConversationModelsClient(metaclass=ConversationModelsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a conversation_model.DeleteConversationModelRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, conversation_model.DeleteConversationModelRequest):
             request = conversation_model.DeleteConversationModelRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1339,10 +1348,8 @@ class ConversationModelsClient(metaclass=ConversationModelsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a conversation_model.DeployConversationModelRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, conversation_model.DeployConversationModelRequest):
             request = conversation_model.DeployConversationModelRequest(request)
 
@@ -1463,10 +1470,8 @@ class ConversationModelsClient(metaclass=ConversationModelsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a conversation_model.UndeployConversationModelRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, conversation_model.UndeployConversationModelRequest):
             request = conversation_model.UndeployConversationModelRequest(request)
 
@@ -1568,8 +1573,8 @@ class ConversationModelsClient(metaclass=ConversationModelsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1577,10 +1582,8 @@ class ConversationModelsClient(metaclass=ConversationModelsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a conversation_model.GetConversationModelEvaluationRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request, conversation_model.GetConversationModelEvaluationRequest
         ):
@@ -1683,8 +1686,8 @@ class ConversationModelsClient(metaclass=ConversationModelsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1692,10 +1695,8 @@ class ConversationModelsClient(metaclass=ConversationModelsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a conversation_model.ListConversationModelEvaluationsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request, conversation_model.ListConversationModelEvaluationsRequest
         ):
@@ -1822,8 +1823,8 @@ class ConversationModelsClient(metaclass=ConversationModelsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, conversation_model_evaluation])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1831,10 +1832,8 @@ class ConversationModelsClient(metaclass=ConversationModelsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a conversation_model.CreateConversationModelEvaluationRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request, conversation_model.CreateConversationModelEvaluationRequest
         ):

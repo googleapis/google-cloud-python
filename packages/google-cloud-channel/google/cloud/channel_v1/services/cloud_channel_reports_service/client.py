@@ -17,6 +17,7 @@ from collections import OrderedDict
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -556,7 +557,13 @@ class CloudChannelReportsServiceClient(metaclass=CloudChannelReportsServiceClien
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, CloudChannelReportsServiceTransport]] = None,
+        transport: Optional[
+            Union[
+                str,
+                CloudChannelReportsServiceTransport,
+                Callable[..., CloudChannelReportsServiceTransport],
+            ]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -568,9 +575,11 @@ class CloudChannelReportsServiceClient(metaclass=CloudChannelReportsServiceClien
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, CloudChannelReportsServiceTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,CloudChannelReportsServiceTransport,Callable[..., CloudChannelReportsServiceTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the CloudChannelReportsServiceTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -681,8 +690,16 @@ class CloudChannelReportsServiceClient(metaclass=CloudChannelReportsServiceClien
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[CloudChannelReportsServiceTransport],
+                Callable[..., CloudChannelReportsServiceTransport],
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., CloudChannelReportsServiceTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -787,10 +804,8 @@ class CloudChannelReportsServiceClient(metaclass=CloudChannelReportsServiceClien
         )
 
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a reports_service.RunReportJobRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, reports_service.RunReportJobRequest):
             request = reports_service.RunReportJobRequest(request)
 
@@ -907,8 +922,8 @@ class CloudChannelReportsServiceClient(metaclass=CloudChannelReportsServiceClien
         )
 
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([report_job])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -916,10 +931,8 @@ class CloudChannelReportsServiceClient(metaclass=CloudChannelReportsServiceClien
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a reports_service.FetchReportResultsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, reports_service.FetchReportResultsRequest):
             request = reports_service.FetchReportResultsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1039,8 +1052,8 @@ class CloudChannelReportsServiceClient(metaclass=CloudChannelReportsServiceClien
         )
 
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1048,10 +1061,8 @@ class CloudChannelReportsServiceClient(metaclass=CloudChannelReportsServiceClien
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a reports_service.ListReportsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, reports_service.ListReportsRequest):
             request = reports_service.ListReportsRequest(request)
             # If we have keyword arguments corresponding to fields on the

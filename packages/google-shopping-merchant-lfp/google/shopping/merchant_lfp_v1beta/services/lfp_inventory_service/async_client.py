@@ -17,6 +17,7 @@ from collections import OrderedDict
 import functools
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -202,7 +203,13 @@ class LfpInventoryServiceAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, LfpInventoryServiceTransport] = "grpc_asyncio",
+        transport: Optional[
+            Union[
+                str,
+                LfpInventoryServiceTransport,
+                Callable[..., LfpInventoryServiceTransport],
+            ]
+        ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -214,9 +221,11 @@ class LfpInventoryServiceAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.LfpInventoryServiceTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,LfpInventoryServiceTransport,Callable[..., LfpInventoryServiceTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the LfpInventoryServiceTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -321,15 +330,16 @@ class LfpInventoryServiceAsyncClient:
                 Local Inventory for the merchant.
         """
         # Create or coerce a protobuf request object.
-        request = lfpinventory.InsertLfpInventoryRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, lfpinventory.InsertLfpInventoryRequest):
+            request = lfpinventory.InsertLfpInventoryRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.insert_lfp_inventory,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.insert_lfp_inventory
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.

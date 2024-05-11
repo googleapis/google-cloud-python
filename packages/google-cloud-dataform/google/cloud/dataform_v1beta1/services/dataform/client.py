@@ -17,6 +17,7 @@ from collections import OrderedDict
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -679,7 +680,9 @@ class DataformClient(metaclass=DataformClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, DataformTransport]] = None,
+        transport: Optional[
+            Union[str, DataformTransport, Callable[..., DataformTransport]]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -691,9 +694,11 @@ class DataformClient(metaclass=DataformClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, DataformTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,DataformTransport,Callable[..., DataformTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the DataformTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -799,8 +804,15 @@ class DataformClient(metaclass=DataformClientMeta):
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[DataformTransport], Callable[..., DataformTransport]
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., DataformTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -875,8 +887,8 @@ class DataformClient(metaclass=DataformClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -884,10 +896,8 @@ class DataformClient(metaclass=DataformClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dataform.ListRepositoriesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, dataform.ListRepositoriesRequest):
             request = dataform.ListRepositoriesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -984,8 +994,8 @@ class DataformClient(metaclass=DataformClientMeta):
                 Represents a Dataform Git repository.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -993,10 +1003,8 @@ class DataformClient(metaclass=DataformClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dataform.GetRepositoryRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, dataform.GetRepositoryRequest):
             request = dataform.GetRepositoryRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1105,8 +1113,8 @@ class DataformClient(metaclass=DataformClientMeta):
                 Represents a Dataform Git repository.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, repository, repository_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1114,10 +1122,8 @@ class DataformClient(metaclass=DataformClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dataform.CreateRepositoryRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, dataform.CreateRepositoryRequest):
             request = dataform.CreateRepositoryRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1217,8 +1223,8 @@ class DataformClient(metaclass=DataformClientMeta):
                 Represents a Dataform Git repository.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([repository, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1226,10 +1232,8 @@ class DataformClient(metaclass=DataformClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dataform.UpdateRepositoryRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, dataform.UpdateRepositoryRequest):
             request = dataform.UpdateRepositoryRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1314,8 +1318,8 @@ class DataformClient(metaclass=DataformClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1323,10 +1327,8 @@ class DataformClient(metaclass=DataformClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dataform.DeleteRepositoryRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, dataform.DeleteRepositoryRequest):
             request = dataform.DeleteRepositoryRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1404,10 +1406,8 @@ class DataformClient(metaclass=DataformClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dataform.CommitRepositoryChangesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, dataform.CommitRepositoryChangesRequest):
             request = dataform.CommitRepositoryChangesRequest(request)
 
@@ -1487,10 +1487,8 @@ class DataformClient(metaclass=DataformClientMeta):
                 ReadRepositoryFile response message.
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dataform.ReadRepositoryFileRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, dataform.ReadRepositoryFileRequest):
             request = dataform.ReadRepositoryFileRequest(request)
 
@@ -1577,10 +1575,8 @@ class DataformClient(metaclass=DataformClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dataform.QueryRepositoryDirectoryContentsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, dataform.QueryRepositoryDirectoryContentsRequest):
             request = dataform.QueryRepositoryDirectoryContentsRequest(request)
 
@@ -1675,10 +1671,8 @@ class DataformClient(metaclass=DataformClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dataform.FetchRepositoryHistoryRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, dataform.FetchRepositoryHistoryRequest):
             request = dataform.FetchRepositoryHistoryRequest(request)
 
@@ -1767,10 +1761,8 @@ class DataformClient(metaclass=DataformClientMeta):
                 ComputeRepositoryAccessTokenStatus response message.
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dataform.ComputeRepositoryAccessTokenStatusRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, dataform.ComputeRepositoryAccessTokenStatusRequest):
             request = dataform.ComputeRepositoryAccessTokenStatusRequest(request)
 
@@ -1850,10 +1842,8 @@ class DataformClient(metaclass=DataformClientMeta):
                 FetchRemoteBranches response message.
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dataform.FetchRemoteBranchesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, dataform.FetchRemoteBranchesRequest):
             request = dataform.FetchRemoteBranchesRequest(request)
 
@@ -1945,8 +1935,8 @@ class DataformClient(metaclass=DataformClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1954,10 +1944,8 @@ class DataformClient(metaclass=DataformClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dataform.ListWorkspacesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, dataform.ListWorkspacesRequest):
             request = dataform.ListWorkspacesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2054,8 +2042,8 @@ class DataformClient(metaclass=DataformClientMeta):
                 Represents a Dataform Git workspace.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2063,10 +2051,8 @@ class DataformClient(metaclass=DataformClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dataform.GetWorkspaceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, dataform.GetWorkspaceRequest):
             request = dataform.GetWorkspaceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2174,8 +2160,8 @@ class DataformClient(metaclass=DataformClientMeta):
                 Represents a Dataform Git workspace.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, workspace, workspace_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2183,10 +2169,8 @@ class DataformClient(metaclass=DataformClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dataform.CreateWorkspaceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, dataform.CreateWorkspaceRequest):
             request = dataform.CreateWorkspaceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2273,8 +2257,8 @@ class DataformClient(metaclass=DataformClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2282,10 +2266,8 @@ class DataformClient(metaclass=DataformClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dataform.DeleteWorkspaceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, dataform.DeleteWorkspaceRequest):
             request = dataform.DeleteWorkspaceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2365,10 +2347,8 @@ class DataformClient(metaclass=DataformClientMeta):
                 InstallNpmPackages response message.
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dataform.InstallNpmPackagesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, dataform.InstallNpmPackagesRequest):
             request = dataform.InstallNpmPackagesRequest(request)
 
@@ -2447,10 +2427,8 @@ class DataformClient(metaclass=DataformClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dataform.PullGitCommitsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, dataform.PullGitCommitsRequest):
             request = dataform.PullGitCommitsRequest(request)
 
@@ -2519,10 +2497,8 @@ class DataformClient(metaclass=DataformClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dataform.PushGitCommitsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, dataform.PushGitCommitsRequest):
             request = dataform.PushGitCommitsRequest(request)
 
@@ -2597,10 +2573,8 @@ class DataformClient(metaclass=DataformClientMeta):
                 FetchFileGitStatuses response message.
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dataform.FetchFileGitStatusesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, dataform.FetchFileGitStatusesRequest):
             request = dataform.FetchFileGitStatusesRequest(request)
 
@@ -2678,10 +2652,8 @@ class DataformClient(metaclass=DataformClientMeta):
                 FetchGitAheadBehind response message.
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dataform.FetchGitAheadBehindRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, dataform.FetchGitAheadBehindRequest):
             request = dataform.FetchGitAheadBehindRequest(request)
 
@@ -2758,10 +2730,8 @@ class DataformClient(metaclass=DataformClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dataform.CommitWorkspaceChangesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, dataform.CommitWorkspaceChangesRequest):
             request = dataform.CommitWorkspaceChangesRequest(request)
 
@@ -2830,10 +2800,8 @@ class DataformClient(metaclass=DataformClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dataform.ResetWorkspaceChangesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, dataform.ResetWorkspaceChangesRequest):
             request = dataform.ResetWorkspaceChangesRequest(request)
 
@@ -2910,10 +2878,8 @@ class DataformClient(metaclass=DataformClientMeta):
                 FetchFileDiff response message.
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dataform.FetchFileDiffRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, dataform.FetchFileDiffRequest):
             request = dataform.FetchFileDiffRequest(request)
 
@@ -2998,10 +2964,8 @@ class DataformClient(metaclass=DataformClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dataform.QueryDirectoryContentsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, dataform.QueryDirectoryContentsRequest):
             request = dataform.QueryDirectoryContentsRequest(request)
 
@@ -3091,10 +3055,8 @@ class DataformClient(metaclass=DataformClientMeta):
                 MakeDirectory response message.
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dataform.MakeDirectoryRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, dataform.MakeDirectoryRequest):
             request = dataform.MakeDirectoryRequest(request)
 
@@ -3169,10 +3131,8 @@ class DataformClient(metaclass=DataformClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dataform.RemoveDirectoryRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, dataform.RemoveDirectoryRequest):
             request = dataform.RemoveDirectoryRequest(request)
 
@@ -3252,10 +3212,8 @@ class DataformClient(metaclass=DataformClientMeta):
                 MoveDirectory response message.
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dataform.MoveDirectoryRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, dataform.MoveDirectoryRequest):
             request = dataform.MoveDirectoryRequest(request)
 
@@ -3336,10 +3294,8 @@ class DataformClient(metaclass=DataformClientMeta):
                 ReadFile response message.
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dataform.ReadFileRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, dataform.ReadFileRequest):
             request = dataform.ReadFileRequest(request)
 
@@ -3413,10 +3369,8 @@ class DataformClient(metaclass=DataformClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dataform.RemoveFileRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, dataform.RemoveFileRequest):
             request = dataform.RemoveFileRequest(request)
 
@@ -3495,10 +3449,8 @@ class DataformClient(metaclass=DataformClientMeta):
                 MoveFile response message.
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dataform.MoveFileRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, dataform.MoveFileRequest):
             request = dataform.MoveFileRequest(request)
 
@@ -3580,10 +3532,8 @@ class DataformClient(metaclass=DataformClientMeta):
                 WriteFile response message.
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dataform.WriteFileRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, dataform.WriteFileRequest):
             request = dataform.WriteFileRequest(request)
 
@@ -3677,8 +3627,8 @@ class DataformClient(metaclass=DataformClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3686,10 +3636,8 @@ class DataformClient(metaclass=DataformClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dataform.ListReleaseConfigsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, dataform.ListReleaseConfigsRequest):
             request = dataform.ListReleaseConfigsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3788,8 +3736,8 @@ class DataformClient(metaclass=DataformClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3797,10 +3745,8 @@ class DataformClient(metaclass=DataformClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dataform.GetReleaseConfigRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, dataform.GetReleaseConfigRequest):
             request = dataform.GetReleaseConfigRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3916,8 +3862,8 @@ class DataformClient(metaclass=DataformClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, release_config, release_config_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3925,10 +3871,8 @@ class DataformClient(metaclass=DataformClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dataform.CreateReleaseConfigRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, dataform.CreateReleaseConfigRequest):
             request = dataform.CreateReleaseConfigRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4036,8 +3980,8 @@ class DataformClient(metaclass=DataformClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([release_config, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4045,10 +3989,8 @@ class DataformClient(metaclass=DataformClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dataform.UpdateReleaseConfigRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, dataform.UpdateReleaseConfigRequest):
             request = dataform.UpdateReleaseConfigRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4133,8 +4075,8 @@ class DataformClient(metaclass=DataformClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4142,10 +4084,8 @@ class DataformClient(metaclass=DataformClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dataform.DeleteReleaseConfigRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, dataform.DeleteReleaseConfigRequest):
             request = dataform.DeleteReleaseConfigRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4238,8 +4178,8 @@ class DataformClient(metaclass=DataformClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4247,10 +4187,8 @@ class DataformClient(metaclass=DataformClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dataform.ListCompilationResultsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, dataform.ListCompilationResultsRequest):
             request = dataform.ListCompilationResultsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4351,8 +4289,8 @@ class DataformClient(metaclass=DataformClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4360,10 +4298,8 @@ class DataformClient(metaclass=DataformClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dataform.GetCompilationResultRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, dataform.GetCompilationResultRequest):
             request = dataform.GetCompilationResultRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4469,8 +4405,8 @@ class DataformClient(metaclass=DataformClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, compilation_result])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4478,10 +4414,8 @@ class DataformClient(metaclass=DataformClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dataform.CreateCompilationResultRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, dataform.CreateCompilationResultRequest):
             request = dataform.CreateCompilationResultRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4575,10 +4509,8 @@ class DataformClient(metaclass=DataformClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dataform.QueryCompilationResultActionsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, dataform.QueryCompilationResultActionsRequest):
             request = dataform.QueryCompilationResultActionsRequest(request)
 
@@ -4681,8 +4613,8 @@ class DataformClient(metaclass=DataformClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4690,10 +4622,8 @@ class DataformClient(metaclass=DataformClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dataform.ListWorkflowConfigsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, dataform.ListWorkflowConfigsRequest):
             request = dataform.ListWorkflowConfigsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4792,8 +4722,8 @@ class DataformClient(metaclass=DataformClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4801,10 +4731,8 @@ class DataformClient(metaclass=DataformClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dataform.GetWorkflowConfigRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, dataform.GetWorkflowConfigRequest):
             request = dataform.GetWorkflowConfigRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4920,8 +4848,8 @@ class DataformClient(metaclass=DataformClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, workflow_config, workflow_config_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4929,10 +4857,8 @@ class DataformClient(metaclass=DataformClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dataform.CreateWorkflowConfigRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, dataform.CreateWorkflowConfigRequest):
             request = dataform.CreateWorkflowConfigRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -5040,8 +4966,8 @@ class DataformClient(metaclass=DataformClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([workflow_config, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5049,10 +4975,8 @@ class DataformClient(metaclass=DataformClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dataform.UpdateWorkflowConfigRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, dataform.UpdateWorkflowConfigRequest):
             request = dataform.UpdateWorkflowConfigRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -5137,8 +5061,8 @@ class DataformClient(metaclass=DataformClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5146,10 +5070,8 @@ class DataformClient(metaclass=DataformClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dataform.DeleteWorkflowConfigRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, dataform.DeleteWorkflowConfigRequest):
             request = dataform.DeleteWorkflowConfigRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -5242,8 +5164,8 @@ class DataformClient(metaclass=DataformClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5251,10 +5173,8 @@ class DataformClient(metaclass=DataformClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dataform.ListWorkflowInvocationsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, dataform.ListWorkflowInvocationsRequest):
             request = dataform.ListWorkflowInvocationsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -5357,8 +5277,8 @@ class DataformClient(metaclass=DataformClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5366,10 +5286,8 @@ class DataformClient(metaclass=DataformClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dataform.GetWorkflowInvocationRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, dataform.GetWorkflowInvocationRequest):
             request = dataform.GetWorkflowInvocationRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -5475,8 +5393,8 @@ class DataformClient(metaclass=DataformClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, workflow_invocation])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5484,10 +5402,8 @@ class DataformClient(metaclass=DataformClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dataform.CreateWorkflowInvocationRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, dataform.CreateWorkflowInvocationRequest):
             request = dataform.CreateWorkflowInvocationRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -5574,8 +5490,8 @@ class DataformClient(metaclass=DataformClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5583,10 +5499,8 @@ class DataformClient(metaclass=DataformClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dataform.DeleteWorkflowInvocationRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, dataform.DeleteWorkflowInvocationRequest):
             request = dataform.DeleteWorkflowInvocationRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -5661,10 +5575,8 @@ class DataformClient(metaclass=DataformClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dataform.CancelWorkflowInvocationRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, dataform.CancelWorkflowInvocationRequest):
             request = dataform.CancelWorkflowInvocationRequest(request)
 
@@ -5749,10 +5661,8 @@ class DataformClient(metaclass=DataformClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dataform.QueryWorkflowInvocationActionsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, dataform.QueryWorkflowInvocationActionsRequest):
             request = dataform.QueryWorkflowInvocationActionsRequest(request)
 

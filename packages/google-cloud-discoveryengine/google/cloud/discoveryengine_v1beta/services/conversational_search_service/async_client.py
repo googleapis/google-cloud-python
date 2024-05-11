@@ -17,6 +17,7 @@ from collections import OrderedDict
 import functools
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -246,7 +247,13 @@ class ConversationalSearchServiceAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, ConversationalSearchServiceTransport] = "grpc_asyncio",
+        transport: Optional[
+            Union[
+                str,
+                ConversationalSearchServiceTransport,
+                Callable[..., ConversationalSearchServiceTransport],
+            ]
+        ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -258,9 +265,11 @@ class ConversationalSearchServiceAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.ConversationalSearchServiceTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,ConversationalSearchServiceTransport,Callable[..., ConversationalSearchServiceTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the ConversationalSearchServiceTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -381,8 +390,8 @@ class ConversationalSearchServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, query])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -390,7 +399,12 @@ class ConversationalSearchServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = conversational_search_service.ConverseConversationRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, conversational_search_service.ConverseConversationRequest
+        ):
+            request = conversational_search_service.ConverseConversationRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -401,11 +415,9 @@ class ConversationalSearchServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.converse_conversation,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.converse_conversation
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -501,8 +513,8 @@ class ConversationalSearchServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, conversation])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -510,7 +522,12 @@ class ConversationalSearchServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = conversational_search_service.CreateConversationRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, conversational_search_service.CreateConversationRequest
+        ):
+            request = conversational_search_service.CreateConversationRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -521,11 +538,9 @@ class ConversationalSearchServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_conversation,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_conversation
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -606,8 +621,8 @@ class ConversationalSearchServiceAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -615,7 +630,12 @@ class ConversationalSearchServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = conversational_search_service.DeleteConversationRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, conversational_search_service.DeleteConversationRequest
+        ):
+            request = conversational_search_service.DeleteConversationRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -624,11 +644,9 @@ class ConversationalSearchServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_conversation,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_conversation
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -725,8 +743,8 @@ class ConversationalSearchServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([conversation, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -734,7 +752,12 @@ class ConversationalSearchServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = conversational_search_service.UpdateConversationRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, conversational_search_service.UpdateConversationRequest
+        ):
+            request = conversational_search_service.UpdateConversationRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -745,11 +768,9 @@ class ConversationalSearchServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_conversation,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_conversation
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -836,8 +857,8 @@ class ConversationalSearchServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -845,7 +866,12 @@ class ConversationalSearchServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = conversational_search_service.GetConversationRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, conversational_search_service.GetConversationRequest
+        ):
+            request = conversational_search_service.GetConversationRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -854,11 +880,9 @@ class ConversationalSearchServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_conversation,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_conversation
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -947,8 +971,8 @@ class ConversationalSearchServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -956,7 +980,12 @@ class ConversationalSearchServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = conversational_search_service.ListConversationsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, conversational_search_service.ListConversationsRequest
+        ):
+            request = conversational_search_service.ListConversationsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -965,11 +994,9 @@ class ConversationalSearchServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_conversations,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_conversations
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1061,15 +1088,16 @@ class ConversationalSearchServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = conversational_search_service.AnswerQueryRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, conversational_search_service.AnswerQueryRequest):
+            request = conversational_search_service.AnswerQueryRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.answer_query,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.answer_query
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1154,8 +1182,8 @@ class ConversationalSearchServiceAsyncClient:
                 Defines an answer.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1163,7 +1191,10 @@ class ConversationalSearchServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = conversational_search_service.GetAnswerRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, conversational_search_service.GetAnswerRequest):
+            request = conversational_search_service.GetAnswerRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1172,11 +1203,9 @@ class ConversationalSearchServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_answer,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_answer
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1268,8 +1297,8 @@ class ConversationalSearchServiceAsyncClient:
                 External session proto definition.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, session])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1277,7 +1306,10 @@ class ConversationalSearchServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = conversational_search_service.CreateSessionRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, conversational_search_service.CreateSessionRequest):
+            request = conversational_search_service.CreateSessionRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1288,11 +1320,9 @@ class ConversationalSearchServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_session,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_session
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1371,8 +1401,8 @@ class ConversationalSearchServiceAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1380,7 +1410,10 @@ class ConversationalSearchServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = conversational_search_service.DeleteSessionRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, conversational_search_service.DeleteSessionRequest):
+            request = conversational_search_service.DeleteSessionRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1389,11 +1422,9 @@ class ConversationalSearchServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_session,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_session
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1487,8 +1518,8 @@ class ConversationalSearchServiceAsyncClient:
                 External session proto definition.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([session, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1496,7 +1527,10 @@ class ConversationalSearchServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = conversational_search_service.UpdateSessionRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, conversational_search_service.UpdateSessionRequest):
+            request = conversational_search_service.UpdateSessionRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1507,11 +1541,9 @@ class ConversationalSearchServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_session,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_session
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1596,8 +1628,8 @@ class ConversationalSearchServiceAsyncClient:
                 External session proto definition.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1605,7 +1637,10 @@ class ConversationalSearchServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = conversational_search_service.GetSessionRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, conversational_search_service.GetSessionRequest):
+            request = conversational_search_service.GetSessionRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1614,11 +1649,9 @@ class ConversationalSearchServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_session,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_session
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1707,8 +1740,8 @@ class ConversationalSearchServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1716,7 +1749,10 @@ class ConversationalSearchServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = conversational_search_service.ListSessionsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, conversational_search_service.ListSessionsRequest):
+            request = conversational_search_service.ListSessionsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1725,11 +1761,9 @@ class ConversationalSearchServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_sessions,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_sessions
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.

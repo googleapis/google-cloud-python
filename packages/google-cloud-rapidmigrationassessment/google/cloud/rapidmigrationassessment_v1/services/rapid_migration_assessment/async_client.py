@@ -17,6 +17,7 @@ from collections import OrderedDict
 import functools
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -219,7 +220,13 @@ class RapidMigrationAssessmentAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, RapidMigrationAssessmentTransport] = "grpc_asyncio",
+        transport: Optional[
+            Union[
+                str,
+                RapidMigrationAssessmentTransport,
+                Callable[..., RapidMigrationAssessmentTransport],
+            ]
+        ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -231,9 +238,11 @@ class RapidMigrationAssessmentAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.RapidMigrationAssessmentTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,RapidMigrationAssessmentTransport,Callable[..., RapidMigrationAssessmentTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the RapidMigrationAssessmentTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -362,8 +371,8 @@ class RapidMigrationAssessmentAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, collector, collector_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -371,7 +380,10 @@ class RapidMigrationAssessmentAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = rapidmigrationassessment.CreateCollectorRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, rapidmigrationassessment.CreateCollectorRequest):
+            request = rapidmigrationassessment.CreateCollectorRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -384,11 +396,9 @@ class RapidMigrationAssessmentAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_collector,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_collector
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -493,8 +503,8 @@ class RapidMigrationAssessmentAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, annotation])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -502,7 +512,10 @@ class RapidMigrationAssessmentAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = rapidmigrationassessment.CreateAnnotationRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, rapidmigrationassessment.CreateAnnotationRequest):
+            request = rapidmigrationassessment.CreateAnnotationRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -513,11 +526,9 @@ class RapidMigrationAssessmentAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_annotation,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_annotation
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -606,8 +617,8 @@ class RapidMigrationAssessmentAsyncClient:
                 Message describing an Annotation
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -615,7 +626,10 @@ class RapidMigrationAssessmentAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = rapidmigrationassessment.GetAnnotationRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, rapidmigrationassessment.GetAnnotationRequest):
+            request = rapidmigrationassessment.GetAnnotationRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -624,21 +638,9 @@ class RapidMigrationAssessmentAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_annotation,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_annotation
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -727,8 +729,8 @@ class RapidMigrationAssessmentAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -736,7 +738,10 @@ class RapidMigrationAssessmentAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = rapidmigrationassessment.ListCollectorsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, rapidmigrationassessment.ListCollectorsRequest):
+            request = rapidmigrationassessment.ListCollectorsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -745,21 +750,9 @@ class RapidMigrationAssessmentAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_collectors,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_collectors
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -849,8 +842,8 @@ class RapidMigrationAssessmentAsyncClient:
                 Message describing Collector object.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -858,7 +851,10 @@ class RapidMigrationAssessmentAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = rapidmigrationassessment.GetCollectorRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, rapidmigrationassessment.GetCollectorRequest):
+            request = rapidmigrationassessment.GetCollectorRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -867,21 +863,9 @@ class RapidMigrationAssessmentAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_collector,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_collector
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -981,8 +965,8 @@ class RapidMigrationAssessmentAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([collector, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -990,7 +974,10 @@ class RapidMigrationAssessmentAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = rapidmigrationassessment.UpdateCollectorRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, rapidmigrationassessment.UpdateCollectorRequest):
+            request = rapidmigrationassessment.UpdateCollectorRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1001,11 +988,9 @@ class RapidMigrationAssessmentAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_collector,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_collector
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1106,8 +1091,8 @@ class RapidMigrationAssessmentAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1115,7 +1100,10 @@ class RapidMigrationAssessmentAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = rapidmigrationassessment.DeleteCollectorRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, rapidmigrationassessment.DeleteCollectorRequest):
+            request = rapidmigrationassessment.DeleteCollectorRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1124,11 +1112,9 @@ class RapidMigrationAssessmentAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_collector,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_collector
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1225,8 +1211,8 @@ class RapidMigrationAssessmentAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1234,7 +1220,10 @@ class RapidMigrationAssessmentAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = rapidmigrationassessment.ResumeCollectorRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, rapidmigrationassessment.ResumeCollectorRequest):
+            request = rapidmigrationassessment.ResumeCollectorRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1243,11 +1232,9 @@ class RapidMigrationAssessmentAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.resume_collector,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.resume_collector
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1344,8 +1331,8 @@ class RapidMigrationAssessmentAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1353,7 +1340,10 @@ class RapidMigrationAssessmentAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = rapidmigrationassessment.RegisterCollectorRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, rapidmigrationassessment.RegisterCollectorRequest):
+            request = rapidmigrationassessment.RegisterCollectorRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1362,11 +1352,9 @@ class RapidMigrationAssessmentAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.register_collector,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.register_collector
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1463,8 +1451,8 @@ class RapidMigrationAssessmentAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1472,7 +1460,10 @@ class RapidMigrationAssessmentAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = rapidmigrationassessment.PauseCollectorRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, rapidmigrationassessment.PauseCollectorRequest):
+            request = rapidmigrationassessment.PauseCollectorRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1481,11 +1472,9 @@ class RapidMigrationAssessmentAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.pause_collector,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.pause_collector
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.

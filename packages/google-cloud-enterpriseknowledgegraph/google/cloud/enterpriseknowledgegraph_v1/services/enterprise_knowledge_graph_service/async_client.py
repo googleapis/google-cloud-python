@@ -17,6 +17,7 @@ from collections import OrderedDict
 import functools
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -237,8 +238,12 @@ class EnterpriseKnowledgeGraphServiceAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[
-            str, EnterpriseKnowledgeGraphServiceTransport
+        transport: Optional[
+            Union[
+                str,
+                EnterpriseKnowledgeGraphServiceTransport,
+                Callable[..., EnterpriseKnowledgeGraphServiceTransport],
+            ]
         ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
@@ -251,9 +256,11 @@ class EnterpriseKnowledgeGraphServiceAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.EnterpriseKnowledgeGraphServiceTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,EnterpriseKnowledgeGraphServiceTransport,Callable[..., EnterpriseKnowledgeGraphServiceTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the EnterpriseKnowledgeGraphServiceTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -369,8 +376,8 @@ class EnterpriseKnowledgeGraphServiceAsyncClient:
                 Entity reconciliation job message.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, entity_reconciliation_job])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -378,7 +385,10 @@ class EnterpriseKnowledgeGraphServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.CreateEntityReconciliationJobRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.CreateEntityReconciliationJobRequest):
+            request = service.CreateEntityReconciliationJobRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -389,11 +399,9 @@ class EnterpriseKnowledgeGraphServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_entity_reconciliation_job,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_entity_reconciliation_job
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -477,8 +485,8 @@ class EnterpriseKnowledgeGraphServiceAsyncClient:
                 Entity reconciliation job message.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -486,7 +494,10 @@ class EnterpriseKnowledgeGraphServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.GetEntityReconciliationJobRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.GetEntityReconciliationJobRequest):
+            request = service.GetEntityReconciliationJobRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -495,20 +506,9 @@ class EnterpriseKnowledgeGraphServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_entity_reconciliation_job,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_entity_reconciliation_job
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -598,8 +598,8 @@ class EnterpriseKnowledgeGraphServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -607,7 +607,10 @@ class EnterpriseKnowledgeGraphServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.ListEntityReconciliationJobsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.ListEntityReconciliationJobsRequest):
+            request = service.ListEntityReconciliationJobsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -616,20 +619,9 @@ class EnterpriseKnowledgeGraphServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_entity_reconciliation_jobs,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_entity_reconciliation_jobs
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -716,8 +708,8 @@ class EnterpriseKnowledgeGraphServiceAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -725,7 +717,10 @@ class EnterpriseKnowledgeGraphServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.CancelEntityReconciliationJobRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.CancelEntityReconciliationJobRequest):
+            request = service.CancelEntityReconciliationJobRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -734,11 +729,9 @@ class EnterpriseKnowledgeGraphServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.cancel_entity_reconciliation_job,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.cancel_entity_reconciliation_job
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -814,8 +807,8 @@ class EnterpriseKnowledgeGraphServiceAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -823,7 +816,10 @@ class EnterpriseKnowledgeGraphServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.DeleteEntityReconciliationJobRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.DeleteEntityReconciliationJobRequest):
+            request = service.DeleteEntityReconciliationJobRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -832,11 +828,9 @@ class EnterpriseKnowledgeGraphServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_entity_reconciliation_job,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_entity_reconciliation_job
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -925,8 +919,8 @@ class EnterpriseKnowledgeGraphServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, ids])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -934,7 +928,10 @@ class EnterpriseKnowledgeGraphServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.LookupRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.LookupRequest):
+            request = service.LookupRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -945,11 +942,7 @@ class EnterpriseKnowledgeGraphServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.lookup,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[self._client._transport.lookup]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1041,8 +1034,8 @@ class EnterpriseKnowledgeGraphServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, query])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1050,7 +1043,10 @@ class EnterpriseKnowledgeGraphServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.SearchRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.SearchRequest):
+            request = service.SearchRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1061,11 +1057,7 @@ class EnterpriseKnowledgeGraphServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.search,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[self._client._transport.search]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1157,8 +1149,8 @@ class EnterpriseKnowledgeGraphServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, ids])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1166,7 +1158,10 @@ class EnterpriseKnowledgeGraphServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.LookupPublicKgRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.LookupPublicKgRequest):
+            request = service.LookupPublicKgRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1177,11 +1172,9 @@ class EnterpriseKnowledgeGraphServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.lookup_public_kg,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.lookup_public_kg
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1273,8 +1266,8 @@ class EnterpriseKnowledgeGraphServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, query])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1282,7 +1275,10 @@ class EnterpriseKnowledgeGraphServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.SearchPublicKgRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.SearchPublicKgRequest):
+            request = service.SearchPublicKgRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1293,11 +1289,9 @@ class EnterpriseKnowledgeGraphServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.search_public_kg,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.search_public_kg
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.

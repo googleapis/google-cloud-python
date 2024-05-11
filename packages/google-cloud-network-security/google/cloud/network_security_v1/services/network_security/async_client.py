@@ -17,6 +17,7 @@ from collections import OrderedDict
 import functools
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -232,7 +233,11 @@ class NetworkSecurityAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, NetworkSecurityTransport] = "grpc_asyncio",
+        transport: Optional[
+            Union[
+                str, NetworkSecurityTransport, Callable[..., NetworkSecurityTransport]
+            ]
+        ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -244,9 +249,11 @@ class NetworkSecurityAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.NetworkSecurityTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,NetworkSecurityTransport,Callable[..., NetworkSecurityTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the NetworkSecurityTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -359,8 +366,8 @@ class NetworkSecurityAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -368,7 +375,12 @@ class NetworkSecurityAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = authorization_policy.ListAuthorizationPoliciesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, authorization_policy.ListAuthorizationPoliciesRequest
+        ):
+            request = authorization_policy.ListAuthorizationPoliciesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -377,11 +389,9 @@ class NetworkSecurityAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_authorization_policies,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_authorization_policies
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -481,8 +491,8 @@ class NetworkSecurityAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -490,7 +500,10 @@ class NetworkSecurityAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = authorization_policy.GetAuthorizationPolicyRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, authorization_policy.GetAuthorizationPolicyRequest):
+            request = authorization_policy.GetAuthorizationPolicyRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -499,11 +512,9 @@ class NetworkSecurityAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_authorization_policy,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_authorization_policy
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -626,8 +637,8 @@ class NetworkSecurityAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [parent, authorization_policy, authorization_policy_id]
         )
@@ -637,7 +648,12 @@ class NetworkSecurityAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gcn_authorization_policy.CreateAuthorizationPolicyRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, gcn_authorization_policy.CreateAuthorizationPolicyRequest
+        ):
+            request = gcn_authorization_policy.CreateAuthorizationPolicyRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -650,11 +666,9 @@ class NetworkSecurityAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_authorization_policy,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_authorization_policy
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -776,8 +790,8 @@ class NetworkSecurityAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([authorization_policy, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -785,7 +799,12 @@ class NetworkSecurityAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gcn_authorization_policy.UpdateAuthorizationPolicyRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, gcn_authorization_policy.UpdateAuthorizationPolicyRequest
+        ):
+            request = gcn_authorization_policy.UpdateAuthorizationPolicyRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -796,11 +815,9 @@ class NetworkSecurityAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_authorization_policy,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_authorization_policy
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -910,8 +927,8 @@ class NetworkSecurityAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -919,7 +936,12 @@ class NetworkSecurityAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = authorization_policy.DeleteAuthorizationPolicyRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, authorization_policy.DeleteAuthorizationPolicyRequest
+        ):
+            request = authorization_policy.DeleteAuthorizationPolicyRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -928,11 +950,9 @@ class NetworkSecurityAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_authorization_policy,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_authorization_policy
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1031,8 +1051,8 @@ class NetworkSecurityAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1040,7 +1060,10 @@ class NetworkSecurityAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = server_tls_policy.ListServerTlsPoliciesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, server_tls_policy.ListServerTlsPoliciesRequest):
+            request = server_tls_policy.ListServerTlsPoliciesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1049,11 +1072,9 @@ class NetworkSecurityAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_server_tls_policies,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_server_tls_policies
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1153,8 +1174,8 @@ class NetworkSecurityAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1162,7 +1183,10 @@ class NetworkSecurityAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = server_tls_policy.GetServerTlsPolicyRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, server_tls_policy.GetServerTlsPolicyRequest):
+            request = server_tls_policy.GetServerTlsPolicyRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1171,11 +1195,9 @@ class NetworkSecurityAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_server_tls_policy,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_server_tls_policy
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1295,8 +1317,8 @@ class NetworkSecurityAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, server_tls_policy, server_tls_policy_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1304,7 +1326,10 @@ class NetworkSecurityAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gcn_server_tls_policy.CreateServerTlsPolicyRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gcn_server_tls_policy.CreateServerTlsPolicyRequest):
+            request = gcn_server_tls_policy.CreateServerTlsPolicyRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1317,11 +1342,9 @@ class NetworkSecurityAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_server_tls_policy,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_server_tls_policy
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1439,8 +1462,8 @@ class NetworkSecurityAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([server_tls_policy, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1448,7 +1471,10 @@ class NetworkSecurityAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gcn_server_tls_policy.UpdateServerTlsPolicyRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gcn_server_tls_policy.UpdateServerTlsPolicyRequest):
+            request = gcn_server_tls_policy.UpdateServerTlsPolicyRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1459,11 +1485,9 @@ class NetworkSecurityAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_server_tls_policy,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_server_tls_policy
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1573,8 +1597,8 @@ class NetworkSecurityAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1582,7 +1606,10 @@ class NetworkSecurityAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = server_tls_policy.DeleteServerTlsPolicyRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, server_tls_policy.DeleteServerTlsPolicyRequest):
+            request = server_tls_policy.DeleteServerTlsPolicyRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1591,11 +1618,9 @@ class NetworkSecurityAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_server_tls_policy,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_server_tls_policy
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1694,8 +1719,8 @@ class NetworkSecurityAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1703,7 +1728,10 @@ class NetworkSecurityAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = client_tls_policy.ListClientTlsPoliciesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, client_tls_policy.ListClientTlsPoliciesRequest):
+            request = client_tls_policy.ListClientTlsPoliciesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1712,11 +1740,9 @@ class NetworkSecurityAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_client_tls_policies,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_client_tls_policies
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1815,8 +1841,8 @@ class NetworkSecurityAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1824,7 +1850,10 @@ class NetworkSecurityAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = client_tls_policy.GetClientTlsPolicyRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, client_tls_policy.GetClientTlsPolicyRequest):
+            request = client_tls_policy.GetClientTlsPolicyRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1833,11 +1862,9 @@ class NetworkSecurityAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_client_tls_policy,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_client_tls_policy
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1956,8 +1983,8 @@ class NetworkSecurityAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, client_tls_policy, client_tls_policy_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1965,7 +1992,10 @@ class NetworkSecurityAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gcn_client_tls_policy.CreateClientTlsPolicyRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gcn_client_tls_policy.CreateClientTlsPolicyRequest):
+            request = gcn_client_tls_policy.CreateClientTlsPolicyRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1978,11 +2008,9 @@ class NetworkSecurityAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_client_tls_policy,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_client_tls_policy
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2099,8 +2127,8 @@ class NetworkSecurityAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([client_tls_policy, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2108,7 +2136,10 @@ class NetworkSecurityAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gcn_client_tls_policy.UpdateClientTlsPolicyRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gcn_client_tls_policy.UpdateClientTlsPolicyRequest):
+            request = gcn_client_tls_policy.UpdateClientTlsPolicyRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2119,11 +2150,9 @@ class NetworkSecurityAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_client_tls_policy,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_client_tls_policy
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2233,8 +2262,8 @@ class NetworkSecurityAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2242,7 +2271,10 @@ class NetworkSecurityAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = client_tls_policy.DeleteClientTlsPolicyRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, client_tls_policy.DeleteClientTlsPolicyRequest):
+            request = client_tls_policy.DeleteClientTlsPolicyRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2251,11 +2283,9 @@ class NetworkSecurityAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_client_tls_policy,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_client_tls_policy
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.

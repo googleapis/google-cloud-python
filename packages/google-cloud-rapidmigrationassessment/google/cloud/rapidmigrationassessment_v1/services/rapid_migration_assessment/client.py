@@ -17,6 +17,7 @@ from collections import OrderedDict
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -567,7 +568,13 @@ class RapidMigrationAssessmentClient(metaclass=RapidMigrationAssessmentClientMet
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, RapidMigrationAssessmentTransport]] = None,
+        transport: Optional[
+            Union[
+                str,
+                RapidMigrationAssessmentTransport,
+                Callable[..., RapidMigrationAssessmentTransport],
+            ]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -579,9 +586,11 @@ class RapidMigrationAssessmentClient(metaclass=RapidMigrationAssessmentClientMet
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, RapidMigrationAssessmentTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,RapidMigrationAssessmentTransport,Callable[..., RapidMigrationAssessmentTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the RapidMigrationAssessmentTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -692,8 +701,16 @@ class RapidMigrationAssessmentClient(metaclass=RapidMigrationAssessmentClientMet
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[RapidMigrationAssessmentTransport],
+                Callable[..., RapidMigrationAssessmentTransport],
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., RapidMigrationAssessmentTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -790,8 +807,8 @@ class RapidMigrationAssessmentClient(metaclass=RapidMigrationAssessmentClientMet
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, collector, collector_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -799,10 +816,8 @@ class RapidMigrationAssessmentClient(metaclass=RapidMigrationAssessmentClientMet
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a rapidmigrationassessment.CreateCollectorRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, rapidmigrationassessment.CreateCollectorRequest):
             request = rapidmigrationassessment.CreateCollectorRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -921,8 +936,8 @@ class RapidMigrationAssessmentClient(metaclass=RapidMigrationAssessmentClientMet
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, annotation])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -930,10 +945,8 @@ class RapidMigrationAssessmentClient(metaclass=RapidMigrationAssessmentClientMet
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a rapidmigrationassessment.CreateAnnotationRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, rapidmigrationassessment.CreateAnnotationRequest):
             request = rapidmigrationassessment.CreateAnnotationRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1034,8 +1047,8 @@ class RapidMigrationAssessmentClient(metaclass=RapidMigrationAssessmentClientMet
                 Message describing an Annotation
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1043,10 +1056,8 @@ class RapidMigrationAssessmentClient(metaclass=RapidMigrationAssessmentClientMet
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a rapidmigrationassessment.GetAnnotationRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, rapidmigrationassessment.GetAnnotationRequest):
             request = rapidmigrationassessment.GetAnnotationRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1145,8 +1156,8 @@ class RapidMigrationAssessmentClient(metaclass=RapidMigrationAssessmentClientMet
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1154,10 +1165,8 @@ class RapidMigrationAssessmentClient(metaclass=RapidMigrationAssessmentClientMet
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a rapidmigrationassessment.ListCollectorsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, rapidmigrationassessment.ListCollectorsRequest):
             request = rapidmigrationassessment.ListCollectorsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1257,8 +1266,8 @@ class RapidMigrationAssessmentClient(metaclass=RapidMigrationAssessmentClientMet
                 Message describing Collector object.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1266,10 +1275,8 @@ class RapidMigrationAssessmentClient(metaclass=RapidMigrationAssessmentClientMet
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a rapidmigrationassessment.GetCollectorRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, rapidmigrationassessment.GetCollectorRequest):
             request = rapidmigrationassessment.GetCollectorRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1379,8 +1386,8 @@ class RapidMigrationAssessmentClient(metaclass=RapidMigrationAssessmentClientMet
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([collector, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1388,10 +1395,8 @@ class RapidMigrationAssessmentClient(metaclass=RapidMigrationAssessmentClientMet
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a rapidmigrationassessment.UpdateCollectorRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, rapidmigrationassessment.UpdateCollectorRequest):
             request = rapidmigrationassessment.UpdateCollectorRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1504,8 +1509,8 @@ class RapidMigrationAssessmentClient(metaclass=RapidMigrationAssessmentClientMet
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1513,10 +1518,8 @@ class RapidMigrationAssessmentClient(metaclass=RapidMigrationAssessmentClientMet
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a rapidmigrationassessment.DeleteCollectorRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, rapidmigrationassessment.DeleteCollectorRequest):
             request = rapidmigrationassessment.DeleteCollectorRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1623,8 +1626,8 @@ class RapidMigrationAssessmentClient(metaclass=RapidMigrationAssessmentClientMet
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1632,10 +1635,8 @@ class RapidMigrationAssessmentClient(metaclass=RapidMigrationAssessmentClientMet
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a rapidmigrationassessment.ResumeCollectorRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, rapidmigrationassessment.ResumeCollectorRequest):
             request = rapidmigrationassessment.ResumeCollectorRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1742,8 +1743,8 @@ class RapidMigrationAssessmentClient(metaclass=RapidMigrationAssessmentClientMet
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1751,10 +1752,8 @@ class RapidMigrationAssessmentClient(metaclass=RapidMigrationAssessmentClientMet
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a rapidmigrationassessment.RegisterCollectorRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, rapidmigrationassessment.RegisterCollectorRequest):
             request = rapidmigrationassessment.RegisterCollectorRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1861,8 +1860,8 @@ class RapidMigrationAssessmentClient(metaclass=RapidMigrationAssessmentClientMet
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1870,10 +1869,8 @@ class RapidMigrationAssessmentClient(metaclass=RapidMigrationAssessmentClientMet
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a rapidmigrationassessment.PauseCollectorRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, rapidmigrationassessment.PauseCollectorRequest):
             request = rapidmigrationassessment.PauseCollectorRequest(request)
             # If we have keyword arguments corresponding to fields on the

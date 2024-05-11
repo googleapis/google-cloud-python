@@ -17,6 +17,7 @@ from collections import OrderedDict
 import functools
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -239,7 +240,9 @@ class ChatServiceAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, ChatServiceTransport] = "grpc_asyncio",
+        transport: Optional[
+            Union[str, ChatServiceTransport, Callable[..., ChatServiceTransport]]
+        ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -251,9 +254,11 @@ class ChatServiceAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.ChatServiceTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,ChatServiceTransport,Callable[..., ChatServiceTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the ChatServiceTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -398,8 +403,8 @@ class ChatServiceAsyncClient:
                 A message in a Google Chat space.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, message, message_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -407,7 +412,10 @@ class ChatServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gc_message.CreateMessageRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gc_message.CreateMessageRequest):
+            request = gc_message.CreateMessageRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -420,20 +428,9 @@ class ChatServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_message,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=30.0,
-            ),
-            default_timeout=30.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_message
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -526,8 +523,8 @@ class ChatServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -535,7 +532,10 @@ class ChatServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = message.ListMessagesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, message.ListMessagesRequest):
+            request = message.ListMessagesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -544,20 +544,9 @@ class ChatServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_messages,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=30.0,
-            ),
-            default_timeout=30.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_messages
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -673,8 +662,8 @@ class ChatServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -682,7 +671,10 @@ class ChatServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = membership.ListMembershipsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, membership.ListMembershipsRequest):
+            request = membership.ListMembershipsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -691,20 +683,9 @@ class ChatServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_memberships,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=30.0,
-            ),
-            default_timeout=30.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_memberships
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -820,8 +801,8 @@ class ChatServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -829,7 +810,10 @@ class ChatServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = membership.GetMembershipRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, membership.GetMembershipRequest):
+            request = membership.GetMembershipRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -838,20 +822,9 @@ class ChatServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_membership,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=30.0,
-            ),
-            default_timeout=30.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_membership
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -948,8 +921,8 @@ class ChatServiceAsyncClient:
                 A message in a Google Chat space.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -957,7 +930,10 @@ class ChatServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = message.GetMessageRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, message.GetMessageRequest):
+            request = message.GetMessageRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -966,20 +942,9 @@ class ChatServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_message,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=30.0,
-            ),
-            default_timeout=30.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_message
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1096,8 +1061,8 @@ class ChatServiceAsyncClient:
                 A message in a Google Chat space.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([message, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1105,7 +1070,10 @@ class ChatServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gc_message.UpdateMessageRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gc_message.UpdateMessageRequest):
+            request = gc_message.UpdateMessageRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1116,20 +1084,9 @@ class ChatServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_message,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=30.0,
-            ),
-            default_timeout=30.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_message
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1220,8 +1177,8 @@ class ChatServiceAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1229,7 +1186,10 @@ class ChatServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = message.DeleteMessageRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, message.DeleteMessageRequest):
+            request = message.DeleteMessageRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1238,20 +1198,9 @@ class ChatServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_message,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=30.0,
-            ),
-            default_timeout=30.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_message
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1334,8 +1283,8 @@ class ChatServiceAsyncClient:
                 An attachment in Google Chat.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1343,7 +1292,10 @@ class ChatServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = attachment.GetAttachmentRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, attachment.GetAttachmentRequest):
+            request = attachment.GetAttachmentRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1352,20 +1304,9 @@ class ChatServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_attachment,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=30.0,
-            ),
-            default_timeout=30.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_attachment
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1446,24 +1387,16 @@ class ChatServiceAsyncClient:
                 Response of uploading an attachment.
         """
         # Create or coerce a protobuf request object.
-        request = attachment.UploadAttachmentRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, attachment.UploadAttachmentRequest):
+            request = attachment.UploadAttachmentRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.upload_attachment,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=30.0,
-            ),
-            default_timeout=30.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.upload_attachment
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1554,24 +1487,16 @@ class ChatServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = space.ListSpacesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, space.ListSpacesRequest):
+            request = space.ListSpacesRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_spaces,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=30.0,
-            ),
-            default_timeout=30.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_spaces
+        ]
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1647,7 +1572,7 @@ class ChatServiceAsyncClient:
                 The request object. A request to return a single space.
             name (:class:`str`):
                 Required. Resource name of the space, in the form
-                `spaces/*`.
+                "spaces/*".
 
                 Format: ``spaces/{space}``
 
@@ -1669,8 +1594,8 @@ class ChatServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1678,7 +1603,10 @@ class ChatServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = space.GetSpaceRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, space.GetSpaceRequest):
+            request = space.GetSpaceRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1687,20 +1615,9 @@ class ChatServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_space,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=30.0,
-            ),
-            default_timeout=30.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_space
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1802,8 +1719,8 @@ class ChatServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([space])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1811,7 +1728,10 @@ class ChatServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gc_space.CreateSpaceRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gc_space.CreateSpaceRequest):
+            request = gc_space.CreateSpaceRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1820,20 +1740,9 @@ class ChatServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_space,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=30.0,
-            ),
-            default_timeout=30.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_space
+        ]
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1948,24 +1857,16 @@ class ChatServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = space_setup.SetUpSpaceRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, space_setup.SetUpSpaceRequest):
+            request = space_setup.SetUpSpaceRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.set_up_space,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=30.0,
-            ),
-            default_timeout=30.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.set_up_space
+        ]
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2105,8 +2006,8 @@ class ChatServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([space, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2114,7 +2015,10 @@ class ChatServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gc_space.UpdateSpaceRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gc_space.UpdateSpaceRequest):
+            request = gc_space.UpdateSpaceRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2125,20 +2029,9 @@ class ChatServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_space,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=30.0,
-            ),
-            default_timeout=30.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_space
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2221,8 +2114,8 @@ class ChatServiceAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2230,7 +2123,10 @@ class ChatServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = space.DeleteSpaceRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, space.DeleteSpaceRequest):
+            request = space.DeleteSpaceRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2239,20 +2135,9 @@ class ChatServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_space,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=30.0,
-            ),
-            default_timeout=30.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_space
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2329,24 +2214,16 @@ class ChatServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = space.CompleteImportSpaceRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, space.CompleteImportSpaceRequest):
+            request = space.CompleteImportSpaceRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.complete_import_space,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=30.0,
-            ),
-            default_timeout=30.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.complete_import_space
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2441,24 +2318,16 @@ class ChatServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = space.FindDirectMessageRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, space.FindDirectMessageRequest):
+            request = space.FindDirectMessageRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.find_direct_message,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=30.0,
-            ),
-            default_timeout=30.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.find_direct_message
+        ]
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2593,8 +2462,8 @@ class ChatServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, membership])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2602,7 +2471,10 @@ class ChatServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gc_membership.CreateMembershipRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gc_membership.CreateMembershipRequest):
+            request = gc_membership.CreateMembershipRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2613,20 +2485,9 @@ class ChatServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_membership,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=30.0,
-            ),
-            default_timeout=30.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_membership
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2724,8 +2585,8 @@ class ChatServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([membership, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2733,7 +2594,10 @@ class ChatServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gc_membership.UpdateMembershipRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gc_membership.UpdateMembershipRequest):
+            request = gc_membership.UpdateMembershipRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2744,20 +2608,9 @@ class ChatServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_membership,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=30.0,
-            ),
-            default_timeout=30.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_membership
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2866,8 +2719,8 @@ class ChatServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2875,7 +2728,10 @@ class ChatServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = membership.DeleteMembershipRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, membership.DeleteMembershipRequest):
+            request = membership.DeleteMembershipRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2884,20 +2740,9 @@ class ChatServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_membership,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=30.0,
-            ),
-            default_timeout=30.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_membership
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2988,8 +2833,8 @@ class ChatServiceAsyncClient:
                 A reaction to a message.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, reaction])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2997,7 +2842,10 @@ class ChatServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gc_reaction.CreateReactionRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gc_reaction.CreateReactionRequest):
+            request = gc_reaction.CreateReactionRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3008,20 +2856,9 @@ class ChatServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_reaction,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=30.0,
-            ),
-            default_timeout=30.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_reaction
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3112,8 +2949,8 @@ class ChatServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3121,7 +2958,10 @@ class ChatServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = reaction.ListReactionsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, reaction.ListReactionsRequest):
+            request = reaction.ListReactionsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3130,20 +2970,9 @@ class ChatServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_reactions,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=30.0,
-            ),
-            default_timeout=30.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_reactions
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3231,8 +3060,8 @@ class ChatServiceAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3240,7 +3069,10 @@ class ChatServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = reaction.DeleteReactionRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, reaction.DeleteReactionRequest):
+            request = reaction.DeleteReactionRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3249,20 +3081,9 @@ class ChatServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_reaction,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=30.0,
-            ),
-            default_timeout=30.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_reaction
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3364,8 +3185,8 @@ class ChatServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3373,7 +3194,10 @@ class ChatServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = space_read_state.GetSpaceReadStateRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, space_read_state.GetSpaceReadStateRequest):
+            request = space_read_state.GetSpaceReadStateRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3382,20 +3206,9 @@ class ChatServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_space_read_state,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=30.0,
-            ),
-            default_timeout=30.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_space_read_state
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3520,8 +3333,8 @@ class ChatServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([space_read_state, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3529,7 +3342,10 @@ class ChatServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gc_space_read_state.UpdateSpaceReadStateRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gc_space_read_state.UpdateSpaceReadStateRequest):
+            request = gc_space_read_state.UpdateSpaceReadStateRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3540,20 +3356,9 @@ class ChatServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_space_read_state,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=30.0,
-            ),
-            default_timeout=30.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_space_read_state
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3661,8 +3466,8 @@ class ChatServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3670,7 +3475,10 @@ class ChatServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = thread_read_state.GetThreadReadStateRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, thread_read_state.GetThreadReadStateRequest):
+            request = thread_read_state.GetThreadReadStateRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3679,20 +3487,9 @@ class ChatServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_thread_read_state,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=30.0,
-            ),
-            default_timeout=30.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_thread_read_state
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.

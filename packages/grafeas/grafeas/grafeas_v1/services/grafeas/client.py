@@ -17,6 +17,7 @@ from collections import OrderedDict
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -401,8 +402,8 @@ class GrafeasClient(metaclass=GrafeasClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -410,10 +411,8 @@ class GrafeasClient(metaclass=GrafeasClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a grafeas.GetOccurrenceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, grafeas.GetOccurrenceRequest):
             request = grafeas.GetOccurrenceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -512,8 +511,8 @@ class GrafeasClient(metaclass=GrafeasClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, filter])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -521,10 +520,8 @@ class GrafeasClient(metaclass=GrafeasClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a grafeas.ListOccurrencesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, grafeas.ListOccurrencesRequest):
             request = grafeas.ListOccurrencesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -617,8 +614,8 @@ class GrafeasClient(metaclass=GrafeasClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -626,10 +623,8 @@ class GrafeasClient(metaclass=GrafeasClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a grafeas.DeleteOccurrenceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, grafeas.DeleteOccurrenceRequest):
             request = grafeas.DeleteOccurrenceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -722,8 +717,8 @@ class GrafeasClient(metaclass=GrafeasClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, occurrence])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -731,10 +726,8 @@ class GrafeasClient(metaclass=GrafeasClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a grafeas.CreateOccurrenceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, grafeas.CreateOccurrenceRequest):
             request = grafeas.CreateOccurrenceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -835,8 +828,8 @@ class GrafeasClient(metaclass=GrafeasClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, occurrences])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -844,10 +837,8 @@ class GrafeasClient(metaclass=GrafeasClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a grafeas.BatchCreateOccurrencesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, grafeas.BatchCreateOccurrencesRequest):
             request = grafeas.BatchCreateOccurrencesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -950,8 +941,8 @@ class GrafeasClient(metaclass=GrafeasClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, occurrence, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -959,10 +950,8 @@ class GrafeasClient(metaclass=GrafeasClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a grafeas.UpdateOccurrenceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, grafeas.UpdateOccurrenceRequest):
             request = grafeas.UpdateOccurrenceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1058,8 +1047,8 @@ class GrafeasClient(metaclass=GrafeasClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1067,10 +1056,8 @@ class GrafeasClient(metaclass=GrafeasClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a grafeas.GetOccurrenceNoteRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, grafeas.GetOccurrenceNoteRequest):
             request = grafeas.GetOccurrenceNoteRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1159,8 +1146,8 @@ class GrafeasClient(metaclass=GrafeasClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1168,10 +1155,8 @@ class GrafeasClient(metaclass=GrafeasClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a grafeas.GetNoteRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, grafeas.GetNoteRequest):
             request = grafeas.GetNoteRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1270,8 +1255,8 @@ class GrafeasClient(metaclass=GrafeasClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, filter])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1279,10 +1264,8 @@ class GrafeasClient(metaclass=GrafeasClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a grafeas.ListNotesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, grafeas.ListNotesRequest):
             request = grafeas.ListNotesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1373,8 +1356,8 @@ class GrafeasClient(metaclass=GrafeasClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1382,10 +1365,8 @@ class GrafeasClient(metaclass=GrafeasClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a grafeas.DeleteNoteRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, grafeas.DeleteNoteRequest):
             request = grafeas.DeleteNoteRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1485,8 +1466,8 @@ class GrafeasClient(metaclass=GrafeasClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, note_id, note])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1494,10 +1475,8 @@ class GrafeasClient(metaclass=GrafeasClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a grafeas.CreateNoteRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, grafeas.CreateNoteRequest):
             request = grafeas.CreateNoteRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1597,8 +1576,8 @@ class GrafeasClient(metaclass=GrafeasClientMeta):
                 Response for creating notes in batch.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, notes])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1606,10 +1585,8 @@ class GrafeasClient(metaclass=GrafeasClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a grafeas.BatchCreateNotesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, grafeas.BatchCreateNotesRequest):
             request = grafeas.BatchCreateNotesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1712,8 +1689,8 @@ class GrafeasClient(metaclass=GrafeasClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, note, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1721,10 +1698,8 @@ class GrafeasClient(metaclass=GrafeasClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a grafeas.UpdateNoteRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, grafeas.UpdateNoteRequest):
             request = grafeas.UpdateNoteRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1831,8 +1806,8 @@ class GrafeasClient(metaclass=GrafeasClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, filter])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1840,10 +1815,8 @@ class GrafeasClient(metaclass=GrafeasClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a grafeas.ListNoteOccurrencesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, grafeas.ListNoteOccurrencesRequest):
             request = grafeas.ListNoteOccurrencesRequest(request)
             # If we have keyword arguments corresponding to fields on the

@@ -17,6 +17,7 @@ from collections import OrderedDict
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -611,7 +612,13 @@ class RepositoryManagerClient(metaclass=RepositoryManagerClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, RepositoryManagerTransport]] = None,
+        transport: Optional[
+            Union[
+                str,
+                RepositoryManagerTransport,
+                Callable[..., RepositoryManagerTransport],
+            ]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -623,9 +630,11 @@ class RepositoryManagerClient(metaclass=RepositoryManagerClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, RepositoryManagerTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,RepositoryManagerTransport,Callable[..., RepositoryManagerTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the RepositoryManagerTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -734,8 +743,16 @@ class RepositoryManagerClient(metaclass=RepositoryManagerClientMeta):
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[RepositoryManagerTransport],
+                Callable[..., RepositoryManagerTransport],
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., RepositoryManagerTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -831,8 +848,8 @@ class RepositoryManagerClient(metaclass=RepositoryManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, connection, connection_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -840,10 +857,8 @@ class RepositoryManagerClient(metaclass=RepositoryManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a repositories.CreateConnectionRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, repositories.CreateConnectionRequest):
             request = repositories.CreateConnectionRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -949,8 +964,8 @@ class RepositoryManagerClient(metaclass=RepositoryManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -958,10 +973,8 @@ class RepositoryManagerClient(metaclass=RepositoryManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a repositories.GetConnectionRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, repositories.GetConnectionRequest):
             request = repositories.GetConnectionRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1058,8 +1071,8 @@ class RepositoryManagerClient(metaclass=RepositoryManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1067,10 +1080,8 @@ class RepositoryManagerClient(metaclass=RepositoryManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a repositories.ListConnectionsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, repositories.ListConnectionsRequest):
             request = repositories.ListConnectionsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1180,8 +1191,8 @@ class RepositoryManagerClient(metaclass=RepositoryManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([connection, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1189,10 +1200,8 @@ class RepositoryManagerClient(metaclass=RepositoryManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a repositories.UpdateConnectionRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, repositories.UpdateConnectionRequest):
             request = repositories.UpdateConnectionRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1310,8 +1319,8 @@ class RepositoryManagerClient(metaclass=RepositoryManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1319,10 +1328,8 @@ class RepositoryManagerClient(metaclass=RepositoryManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a repositories.DeleteConnectionRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, repositories.DeleteConnectionRequest):
             request = repositories.DeleteConnectionRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1453,8 +1460,8 @@ class RepositoryManagerClient(metaclass=RepositoryManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, repository, repository_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1462,10 +1469,8 @@ class RepositoryManagerClient(metaclass=RepositoryManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a repositories.CreateRepositoryRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, repositories.CreateRepositoryRequest):
             request = repositories.CreateRepositoryRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1598,8 +1603,8 @@ class RepositoryManagerClient(metaclass=RepositoryManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, requests])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1607,10 +1612,8 @@ class RepositoryManagerClient(metaclass=RepositoryManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a repositories.BatchCreateRepositoriesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, repositories.BatchCreateRepositoriesRequest):
             request = repositories.BatchCreateRepositoriesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1716,8 +1719,8 @@ class RepositoryManagerClient(metaclass=RepositoryManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1725,10 +1728,8 @@ class RepositoryManagerClient(metaclass=RepositoryManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a repositories.GetRepositoryRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, repositories.GetRepositoryRequest):
             request = repositories.GetRepositoryRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1826,8 +1827,8 @@ class RepositoryManagerClient(metaclass=RepositoryManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1835,10 +1836,8 @@ class RepositoryManagerClient(metaclass=RepositoryManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a repositories.ListRepositoriesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, repositories.ListRepositoriesRequest):
             request = repositories.ListRepositoriesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1953,8 +1952,8 @@ class RepositoryManagerClient(metaclass=RepositoryManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1962,10 +1961,8 @@ class RepositoryManagerClient(metaclass=RepositoryManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a repositories.DeleteRepositoryRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, repositories.DeleteRepositoryRequest):
             request = repositories.DeleteRepositoryRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2067,8 +2064,8 @@ class RepositoryManagerClient(metaclass=RepositoryManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([repository])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2076,10 +2073,8 @@ class RepositoryManagerClient(metaclass=RepositoryManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a repositories.FetchReadWriteTokenRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, repositories.FetchReadWriteTokenRequest):
             request = repositories.FetchReadWriteTokenRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2174,8 +2169,8 @@ class RepositoryManagerClient(metaclass=RepositoryManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([repository])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2183,10 +2178,8 @@ class RepositoryManagerClient(metaclass=RepositoryManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a repositories.FetchReadTokenRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, repositories.FetchReadTokenRequest):
             request = repositories.FetchReadTokenRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2281,10 +2274,8 @@ class RepositoryManagerClient(metaclass=RepositoryManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a repositories.FetchLinkableRepositoriesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, repositories.FetchLinkableRepositoriesRequest):
             request = repositories.FetchLinkableRepositoriesRequest(request)
 
@@ -2385,8 +2376,8 @@ class RepositoryManagerClient(metaclass=RepositoryManagerClientMeta):
                 Response for fetching git refs
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([repository])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2394,10 +2385,8 @@ class RepositoryManagerClient(metaclass=RepositoryManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a repositories.FetchGitRefsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, repositories.FetchGitRefsRequest):
             request = repositories.FetchGitRefsRequest(request)
             # If we have keyword arguments corresponding to fields on the

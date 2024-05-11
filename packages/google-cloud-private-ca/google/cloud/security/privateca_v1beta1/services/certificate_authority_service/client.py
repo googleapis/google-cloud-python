@@ -17,6 +17,7 @@ from collections import OrderedDict
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -616,7 +617,13 @@ class CertificateAuthorityServiceClient(
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, CertificateAuthorityServiceTransport]] = None,
+        transport: Optional[
+            Union[
+                str,
+                CertificateAuthorityServiceTransport,
+                Callable[..., CertificateAuthorityServiceTransport],
+            ]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -628,9 +635,11 @@ class CertificateAuthorityServiceClient(
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, CertificateAuthorityServiceTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,CertificateAuthorityServiceTransport,Callable[..., CertificateAuthorityServiceTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the CertificateAuthorityServiceTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -741,8 +750,18 @@ class CertificateAuthorityServiceClient(
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[CertificateAuthorityServiceTransport],
+                Callable[..., CertificateAuthorityServiceTransport],
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(
+                    Callable[..., CertificateAuthorityServiceTransport], transport
+                )
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -848,8 +867,8 @@ class CertificateAuthorityServiceClient(
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, certificate, certificate_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -857,10 +876,8 @@ class CertificateAuthorityServiceClient(
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.CreateCertificateRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.CreateCertificateRequest):
             request = service.CreateCertificateRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -961,8 +978,8 @@ class CertificateAuthorityServiceClient(
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -970,10 +987,8 @@ class CertificateAuthorityServiceClient(
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.GetCertificateRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.GetCertificateRequest):
             request = service.GetCertificateRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1074,8 +1089,8 @@ class CertificateAuthorityServiceClient(
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1083,10 +1098,8 @@ class CertificateAuthorityServiceClient(
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.ListCertificatesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.ListCertificatesRequest):
             request = service.ListCertificatesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1192,8 +1205,8 @@ class CertificateAuthorityServiceClient(
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1201,10 +1214,8 @@ class CertificateAuthorityServiceClient(
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.RevokeCertificateRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.RevokeCertificateRequest):
             request = service.RevokeCertificateRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1313,8 +1324,8 @@ class CertificateAuthorityServiceClient(
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([certificate, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1322,10 +1333,8 @@ class CertificateAuthorityServiceClient(
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.UpdateCertificateRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.UpdateCertificateRequest):
             request = service.UpdateCertificateRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1449,8 +1458,8 @@ class CertificateAuthorityServiceClient(
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1458,10 +1467,8 @@ class CertificateAuthorityServiceClient(
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.ActivateCertificateAuthorityRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.ActivateCertificateAuthorityRequest):
             request = service.ActivateCertificateAuthorityRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1604,8 +1611,8 @@ class CertificateAuthorityServiceClient(
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [parent, certificate_authority, certificate_authority_id]
         )
@@ -1615,10 +1622,8 @@ class CertificateAuthorityServiceClient(
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.CreateCertificateAuthorityRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.CreateCertificateAuthorityRequest):
             request = service.CreateCertificateAuthorityRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1739,8 +1744,8 @@ class CertificateAuthorityServiceClient(
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1748,10 +1753,8 @@ class CertificateAuthorityServiceClient(
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.DisableCertificateAuthorityRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.DisableCertificateAuthorityRequest):
             request = service.DisableCertificateAuthorityRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1868,8 +1871,8 @@ class CertificateAuthorityServiceClient(
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1877,10 +1880,8 @@ class CertificateAuthorityServiceClient(
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.EnableCertificateAuthorityRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.EnableCertificateAuthorityRequest):
             request = service.EnableCertificateAuthorityRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1997,8 +1998,8 @@ class CertificateAuthorityServiceClient(
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2006,10 +2007,8 @@ class CertificateAuthorityServiceClient(
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.FetchCertificateAuthorityCsrRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.FetchCertificateAuthorityCsrRequest):
             request = service.FetchCertificateAuthorityCsrRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2111,8 +2110,8 @@ class CertificateAuthorityServiceClient(
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2120,10 +2119,8 @@ class CertificateAuthorityServiceClient(
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.GetCertificateAuthorityRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.GetCertificateAuthorityRequest):
             request = service.GetCertificateAuthorityRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2227,8 +2224,8 @@ class CertificateAuthorityServiceClient(
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2236,10 +2233,8 @@ class CertificateAuthorityServiceClient(
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.ListCertificateAuthoritiesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.ListCertificateAuthoritiesRequest):
             request = service.ListCertificateAuthoritiesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2358,8 +2353,8 @@ class CertificateAuthorityServiceClient(
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2367,10 +2362,8 @@ class CertificateAuthorityServiceClient(
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.RestoreCertificateAuthorityRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.RestoreCertificateAuthorityRequest):
             request = service.RestoreCertificateAuthorityRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2488,8 +2481,8 @@ class CertificateAuthorityServiceClient(
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2497,10 +2490,8 @@ class CertificateAuthorityServiceClient(
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.ScheduleDeleteCertificateAuthorityRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.ScheduleDeleteCertificateAuthorityRequest):
             request = service.ScheduleDeleteCertificateAuthorityRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2630,8 +2621,8 @@ class CertificateAuthorityServiceClient(
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([certificate_authority, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2639,10 +2630,8 @@ class CertificateAuthorityServiceClient(
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.UpdateCertificateAuthorityRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.UpdateCertificateAuthorityRequest):
             request = service.UpdateCertificateAuthorityRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2757,8 +2746,8 @@ class CertificateAuthorityServiceClient(
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2766,10 +2755,8 @@ class CertificateAuthorityServiceClient(
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.GetCertificateRevocationListRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.GetCertificateRevocationListRequest):
             request = service.GetCertificateRevocationListRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2874,8 +2861,8 @@ class CertificateAuthorityServiceClient(
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2883,10 +2870,8 @@ class CertificateAuthorityServiceClient(
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.ListCertificateRevocationListsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.ListCertificateRevocationListsRequest):
             request = service.ListCertificateRevocationListsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3011,8 +2996,8 @@ class CertificateAuthorityServiceClient(
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([certificate_revocation_list, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3020,10 +3005,8 @@ class CertificateAuthorityServiceClient(
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.UpdateCertificateRevocationListRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.UpdateCertificateRevocationListRequest):
             request = service.UpdateCertificateRevocationListRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3139,8 +3122,8 @@ class CertificateAuthorityServiceClient(
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3148,10 +3131,8 @@ class CertificateAuthorityServiceClient(
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.GetReusableConfigRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.GetReusableConfigRequest):
             request = service.GetReusableConfigRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3251,8 +3232,8 @@ class CertificateAuthorityServiceClient(
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3260,10 +3241,8 @@ class CertificateAuthorityServiceClient(
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.ListReusableConfigsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.ListReusableConfigsRequest):
             request = service.ListReusableConfigsRequest(request)
             # If we have keyword arguments corresponding to fields on the

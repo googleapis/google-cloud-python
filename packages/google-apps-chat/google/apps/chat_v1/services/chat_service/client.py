@@ -17,6 +17,7 @@ from collections import OrderedDict
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -703,7 +704,9 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, ChatServiceTransport]] = None,
+        transport: Optional[
+            Union[str, ChatServiceTransport, Callable[..., ChatServiceTransport]]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -715,9 +718,11 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ChatServiceTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,ChatServiceTransport,Callable[..., ChatServiceTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the ChatServiceTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -823,8 +828,15 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[ChatServiceTransport], Callable[..., ChatServiceTransport]
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., ChatServiceTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -937,8 +949,8 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
                 A message in a Google Chat space.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, message, message_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -946,10 +958,8 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gc_message.CreateMessageRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gc_message.CreateMessageRequest):
             request = gc_message.CreateMessageRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1056,8 +1066,8 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1065,10 +1075,8 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a message.ListMessagesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, message.ListMessagesRequest):
             request = message.ListMessagesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1194,8 +1202,8 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1203,10 +1211,8 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a membership.ListMembershipsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, membership.ListMembershipsRequest):
             request = membership.ListMembershipsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1332,8 +1338,8 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1341,10 +1347,8 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a membership.GetMembershipRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, membership.GetMembershipRequest):
             request = membership.GetMembershipRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1451,8 +1455,8 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
                 A message in a Google Chat space.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1460,10 +1464,8 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a message.GetMessageRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, message.GetMessageRequest):
             request = message.GetMessageRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1590,8 +1592,8 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
                 A message in a Google Chat space.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([message, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1599,10 +1601,8 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gc_message.UpdateMessageRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gc_message.UpdateMessageRequest):
             request = gc_message.UpdateMessageRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1705,8 +1705,8 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1714,10 +1714,8 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a message.DeleteMessageRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, message.DeleteMessageRequest):
             request = message.DeleteMessageRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1810,8 +1808,8 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
                 An attachment in Google Chat.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1819,10 +1817,8 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a attachment.GetAttachmentRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, attachment.GetAttachmentRequest):
             request = attachment.GetAttachmentRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1913,10 +1909,8 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
                 Response of uploading an attachment.
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a attachment.UploadAttachmentRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, attachment.UploadAttachmentRequest):
             request = attachment.UploadAttachmentRequest(request)
 
@@ -2013,10 +2007,8 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a space.ListSpacesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, space.ListSpacesRequest):
             request = space.ListSpacesRequest(request)
 
@@ -2098,7 +2090,7 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
                 The request object. A request to return a single space.
             name (str):
                 Required. Resource name of the space, in the form
-                `spaces/*`.
+                "spaces/*".
 
                 Format: ``spaces/{space}``
 
@@ -2120,8 +2112,8 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2129,10 +2121,8 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a space.GetSpaceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, space.GetSpaceRequest):
             request = space.GetSpaceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2244,8 +2234,8 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([space])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2253,10 +2243,8 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gc_space.CreateSpaceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gc_space.CreateSpaceRequest):
             request = gc_space.CreateSpaceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2381,10 +2369,8 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a space_setup.SetUpSpaceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, space_setup.SetUpSpaceRequest):
             request = space_setup.SetUpSpaceRequest(request)
 
@@ -2530,8 +2516,8 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([space, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2539,10 +2525,8 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gc_space.UpdateSpaceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gc_space.UpdateSpaceRequest):
             request = gc_space.UpdateSpaceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2637,8 +2621,8 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2646,10 +2630,8 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a space.DeleteSpaceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, space.DeleteSpaceRequest):
             request = space.DeleteSpaceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2736,10 +2718,8 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a space.CompleteImportSpaceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, space.CompleteImportSpaceRequest):
             request = space.CompleteImportSpaceRequest(request)
 
@@ -2840,10 +2820,8 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a space.FindDirectMessageRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, space.FindDirectMessageRequest):
             request = space.FindDirectMessageRequest(request)
 
@@ -2984,8 +2962,8 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, membership])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2993,10 +2971,8 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gc_membership.CreateMembershipRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gc_membership.CreateMembershipRequest):
             request = gc_membership.CreateMembershipRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3106,8 +3082,8 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([membership, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3115,10 +3091,8 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gc_membership.UpdateMembershipRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gc_membership.UpdateMembershipRequest):
             request = gc_membership.UpdateMembershipRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3239,8 +3213,8 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3248,10 +3222,8 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a membership.DeleteMembershipRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, membership.DeleteMembershipRequest):
             request = membership.DeleteMembershipRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3352,8 +3324,8 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
                 A reaction to a message.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, reaction])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3361,10 +3333,8 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gc_reaction.CreateReactionRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gc_reaction.CreateReactionRequest):
             request = gc_reaction.CreateReactionRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3467,8 +3437,8 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3476,10 +3446,8 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a reaction.ListReactionsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, reaction.ListReactionsRequest):
             request = reaction.ListReactionsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3577,8 +3545,8 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3586,10 +3554,8 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a reaction.DeleteReactionRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, reaction.DeleteReactionRequest):
             request = reaction.DeleteReactionRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3701,8 +3667,8 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3710,10 +3676,8 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a space_read_state.GetSpaceReadStateRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, space_read_state.GetSpaceReadStateRequest):
             request = space_read_state.GetSpaceReadStateRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3848,8 +3812,8 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([space_read_state, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3857,10 +3821,8 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gc_space_read_state.UpdateSpaceReadStateRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gc_space_read_state.UpdateSpaceReadStateRequest):
             request = gc_space_read_state.UpdateSpaceReadStateRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3980,8 +3942,8 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3989,10 +3951,8 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a thread_read_state.GetThreadReadStateRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, thread_read_state.GetThreadReadStateRequest):
             request = thread_read_state.GetThreadReadStateRequest(request)
             # If we have keyword arguments corresponding to fields on the

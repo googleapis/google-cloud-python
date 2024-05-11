@@ -17,6 +17,7 @@ from collections import OrderedDict
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -531,7 +532,13 @@ class EssentialContactsServiceClient(metaclass=EssentialContactsServiceClientMet
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, EssentialContactsServiceTransport]] = None,
+        transport: Optional[
+            Union[
+                str,
+                EssentialContactsServiceTransport,
+                Callable[..., EssentialContactsServiceTransport],
+            ]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -543,9 +550,11 @@ class EssentialContactsServiceClient(metaclass=EssentialContactsServiceClientMet
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, EssentialContactsServiceTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,EssentialContactsServiceTransport,Callable[..., EssentialContactsServiceTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the EssentialContactsServiceTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -656,8 +665,16 @@ class EssentialContactsServiceClient(metaclass=EssentialContactsServiceClientMet
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[EssentialContactsServiceTransport],
+                Callable[..., EssentialContactsServiceTransport],
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., EssentialContactsServiceTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -746,8 +763,8 @@ class EssentialContactsServiceClient(metaclass=EssentialContactsServiceClientMet
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, contact])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -755,10 +772,8 @@ class EssentialContactsServiceClient(metaclass=EssentialContactsServiceClientMet
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.CreateContactRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.CreateContactRequest):
             request = service.CreateContactRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -870,8 +885,8 @@ class EssentialContactsServiceClient(metaclass=EssentialContactsServiceClientMet
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([contact, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -879,10 +894,8 @@ class EssentialContactsServiceClient(metaclass=EssentialContactsServiceClientMet
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.UpdateContactRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.UpdateContactRequest):
             request = service.UpdateContactRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -984,8 +997,8 @@ class EssentialContactsServiceClient(metaclass=EssentialContactsServiceClientMet
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -993,10 +1006,8 @@ class EssentialContactsServiceClient(metaclass=EssentialContactsServiceClientMet
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.ListContactsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.ListContactsRequest):
             request = service.ListContactsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1100,8 +1111,8 @@ class EssentialContactsServiceClient(metaclass=EssentialContactsServiceClientMet
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1109,10 +1120,8 @@ class EssentialContactsServiceClient(metaclass=EssentialContactsServiceClientMet
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.GetContactRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.GetContactRequest):
             request = service.GetContactRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1198,8 +1207,8 @@ class EssentialContactsServiceClient(metaclass=EssentialContactsServiceClientMet
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1207,10 +1216,8 @@ class EssentialContactsServiceClient(metaclass=EssentialContactsServiceClientMet
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.DeleteContactRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.DeleteContactRequest):
             request = service.DeleteContactRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1298,10 +1305,8 @@ class EssentialContactsServiceClient(metaclass=EssentialContactsServiceClientMet
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.ComputeContactsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.ComputeContactsRequest):
             request = service.ComputeContactsRequest(request)
 
@@ -1385,10 +1390,8 @@ class EssentialContactsServiceClient(metaclass=EssentialContactsServiceClientMet
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.SendTestMessageRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.SendTestMessageRequest):
             request = service.SendTestMessageRequest(request)
 
