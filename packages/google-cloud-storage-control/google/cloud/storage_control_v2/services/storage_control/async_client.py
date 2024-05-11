@@ -17,6 +17,7 @@ from collections import OrderedDict
 import functools
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -210,7 +211,9 @@ class StorageControlAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, StorageControlTransport] = "grpc_asyncio",
+        transport: Optional[
+            Union[str, StorageControlTransport, Callable[..., StorageControlTransport]]
+        ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -222,9 +225,11 @@ class StorageControlAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.StorageControlTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,StorageControlTransport,Callable[..., StorageControlTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the StorageControlTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -361,8 +366,8 @@ class StorageControlAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, folder, folder_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -370,7 +375,10 @@ class StorageControlAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = storage_control.CreateFolderRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, storage_control.CreateFolderRequest):
+            request = storage_control.CreateFolderRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -383,11 +391,9 @@ class StorageControlAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_folder,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_folder
+        ]
 
         if not request.request_id:
             request.request_id = str(uuid.uuid4())
@@ -464,8 +470,8 @@ class StorageControlAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -473,7 +479,10 @@ class StorageControlAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = storage_control.DeleteFolderRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, storage_control.DeleteFolderRequest):
+            request = storage_control.DeleteFolderRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -482,11 +491,9 @@ class StorageControlAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_folder,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_folder
+        ]
 
         if not request.request_id:
             request.request_id = str(uuid.uuid4())
@@ -571,8 +578,8 @@ class StorageControlAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -580,7 +587,10 @@ class StorageControlAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = storage_control.GetFolderRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, storage_control.GetFolderRequest):
+            request = storage_control.GetFolderRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -589,24 +599,9 @@ class StorageControlAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_folder,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=60.0,
-                multiplier=2,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.InternalServerError,
-                    core_exceptions.ResourceExhausted,
-                    core_exceptions.ServiceUnavailable,
-                    core_exceptions.Unknown,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_folder
+        ]
 
         if not request.request_id:
             request.request_id = str(uuid.uuid4())
@@ -696,8 +691,8 @@ class StorageControlAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -705,7 +700,10 @@ class StorageControlAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = storage_control.ListFoldersRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, storage_control.ListFoldersRequest):
+            request = storage_control.ListFoldersRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -714,24 +712,9 @@ class StorageControlAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_folders,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=60.0,
-                multiplier=2,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.InternalServerError,
-                    core_exceptions.ResourceExhausted,
-                    core_exceptions.ServiceUnavailable,
-                    core_exceptions.Unknown,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_folders
+        ]
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -840,8 +823,8 @@ class StorageControlAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, destination_folder_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -849,7 +832,10 @@ class StorageControlAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = storage_control.RenameFolderRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, storage_control.RenameFolderRequest):
+            request = storage_control.RenameFolderRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -860,24 +846,9 @@ class StorageControlAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.rename_folder,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=60.0,
-                multiplier=2,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.InternalServerError,
-                    core_exceptions.ResourceExhausted,
-                    core_exceptions.ServiceUnavailable,
-                    core_exceptions.Unknown,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.rename_folder
+        ]
 
         if not request.request_id:
             request.request_id = str(uuid.uuid4())
@@ -966,8 +937,8 @@ class StorageControlAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -975,7 +946,10 @@ class StorageControlAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = storage_control.GetStorageLayoutRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, storage_control.GetStorageLayoutRequest):
+            request = storage_control.GetStorageLayoutRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -984,24 +958,9 @@ class StorageControlAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_storage_layout,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=60.0,
-                multiplier=2,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.InternalServerError,
-                    core_exceptions.ResourceExhausted,
-                    core_exceptions.ServiceUnavailable,
-                    core_exceptions.Unknown,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_storage_layout
+        ]
 
         if not request.request_id:
             request.request_id = str(uuid.uuid4())
@@ -1102,8 +1061,8 @@ class StorageControlAsyncClient:
                 A managed folder.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, managed_folder, managed_folder_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1111,7 +1070,10 @@ class StorageControlAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = storage_control.CreateManagedFolderRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, storage_control.CreateManagedFolderRequest):
+            request = storage_control.CreateManagedFolderRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1124,11 +1086,9 @@ class StorageControlAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_managed_folder,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_managed_folder
+        ]
 
         if not request.request_id:
             request.request_id = str(uuid.uuid4())
@@ -1201,8 +1161,8 @@ class StorageControlAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1210,7 +1170,10 @@ class StorageControlAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = storage_control.DeleteManagedFolderRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, storage_control.DeleteManagedFolderRequest):
+            request = storage_control.DeleteManagedFolderRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1219,11 +1182,9 @@ class StorageControlAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_managed_folder,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_managed_folder
+        ]
 
         if not request.request_id:
             request.request_id = str(uuid.uuid4())
@@ -1297,8 +1258,8 @@ class StorageControlAsyncClient:
                 A managed folder.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1306,7 +1267,10 @@ class StorageControlAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = storage_control.GetManagedFolderRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, storage_control.GetManagedFolderRequest):
+            request = storage_control.GetManagedFolderRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1315,24 +1279,9 @@ class StorageControlAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_managed_folder,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=60.0,
-                multiplier=2,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.InternalServerError,
-                    core_exceptions.ResourceExhausted,
-                    core_exceptions.ServiceUnavailable,
-                    core_exceptions.Unknown,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_managed_folder
+        ]
 
         if not request.request_id:
             request.request_id = str(uuid.uuid4())
@@ -1419,8 +1368,8 @@ class StorageControlAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1428,7 +1377,10 @@ class StorageControlAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = storage_control.ListManagedFoldersRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, storage_control.ListManagedFoldersRequest):
+            request = storage_control.ListManagedFoldersRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1437,24 +1389,9 @@ class StorageControlAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_managed_folders,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=60.0,
-                multiplier=2,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.InternalServerError,
-                    core_exceptions.ResourceExhausted,
-                    core_exceptions.ServiceUnavailable,
-                    core_exceptions.Unknown,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_managed_folders
+        ]
 
         if not request.request_id:
             request.request_id = str(uuid.uuid4())

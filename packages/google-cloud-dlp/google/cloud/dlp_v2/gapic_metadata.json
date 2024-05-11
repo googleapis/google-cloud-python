@@ -20,6 +20,11 @@
                 "cancel_dlp_job"
               ]
             },
+            "CreateConnection": {
+              "methods": [
+                "create_connection"
+              ]
+            },
             "CreateDeidentifyTemplate": {
               "methods": [
                 "create_deidentify_template"
@@ -55,6 +60,11 @@
                 "deidentify_content"
               ]
             },
+            "DeleteConnection": {
+              "methods": [
+                "delete_connection"
+              ]
+            },
             "DeleteDeidentifyTemplate": {
               "methods": [
                 "delete_deidentify_template"
@@ -85,6 +95,11 @@
                 "delete_stored_info_type"
               ]
             },
+            "DeleteTableDataProfile": {
+              "methods": [
+                "delete_table_data_profile"
+              ]
+            },
             "FinishDlpJob": {
               "methods": [
                 "finish_dlp_job"
@@ -93,6 +108,11 @@
             "GetColumnDataProfile": {
               "methods": [
                 "get_column_data_profile"
+              ]
+            },
+            "GetConnection": {
+              "methods": [
+                "get_connection"
               ]
             },
             "GetDeidentifyTemplate": {
@@ -155,6 +175,11 @@
                 "list_column_data_profiles"
               ]
             },
+            "ListConnections": {
+              "methods": [
+                "list_connections"
+              ]
+            },
             "ListDeidentifyTemplates": {
               "methods": [
                 "list_deidentify_templates"
@@ -208,6 +233,16 @@
             "ReidentifyContent": {
               "methods": [
                 "reidentify_content"
+              ]
+            },
+            "SearchConnections": {
+              "methods": [
+                "search_connections"
+              ]
+            },
+            "UpdateConnection": {
+              "methods": [
+                "update_connection"
               ]
             },
             "UpdateDeidentifyTemplate": {
@@ -250,6 +285,11 @@
                 "cancel_dlp_job"
               ]
             },
+            "CreateConnection": {
+              "methods": [
+                "create_connection"
+              ]
+            },
             "CreateDeidentifyTemplate": {
               "methods": [
                 "create_deidentify_template"
@@ -285,6 +325,11 @@
                 "deidentify_content"
               ]
             },
+            "DeleteConnection": {
+              "methods": [
+                "delete_connection"
+              ]
+            },
             "DeleteDeidentifyTemplate": {
               "methods": [
                 "delete_deidentify_template"
@@ -315,6 +360,11 @@
                 "delete_stored_info_type"
               ]
             },
+            "DeleteTableDataProfile": {
+              "methods": [
+                "delete_table_data_profile"
+              ]
+            },
             "FinishDlpJob": {
               "methods": [
                 "finish_dlp_job"
@@ -323,6 +373,11 @@
             "GetColumnDataProfile": {
               "methods": [
                 "get_column_data_profile"
+              ]
+            },
+            "GetConnection": {
+              "methods": [
+                "get_connection"
               ]
             },
             "GetDeidentifyTemplate": {
@@ -385,6 +440,11 @@
                 "list_column_data_profiles"
               ]
             },
+            "ListConnections": {
+              "methods": [
+                "list_connections"
+              ]
+            },
             "ListDeidentifyTemplates": {
               "methods": [
                 "list_deidentify_templates"
@@ -438,6 +498,16 @@
             "ReidentifyContent": {
               "methods": [
                 "reidentify_content"
+              ]
+            },
+            "SearchConnections": {
+              "methods": [
+                "search_connections"
+              ]
+            },
+            "UpdateConnection": {
+              "methods": [
+                "update_connection"
               ]
             },
             "UpdateDeidentifyTemplate": {
@@ -480,6 +550,11 @@
                 "cancel_dlp_job"
               ]
             },
+            "CreateConnection": {
+              "methods": [
+                "create_connection"
+              ]
+            },
             "CreateDeidentifyTemplate": {
               "methods": [
                 "create_deidentify_template"
@@ -515,6 +590,11 @@
                 "deidentify_content"
               ]
             },
+            "DeleteConnection": {
+              "methods": [
+                "delete_connection"
+              ]
+            },
             "DeleteDeidentifyTemplate": {
               "methods": [
                 "delete_deidentify_template"
@@ -545,6 +625,11 @@
                 "delete_stored_info_type"
               ]
             },
+            "DeleteTableDataProfile": {
+              "methods": [
+                "delete_table_data_profile"
+              ]
+            },
             "FinishDlpJob": {
               "methods": [
                 "finish_dlp_job"
@@ -553,6 +638,11 @@
             "GetColumnDataProfile": {
               "methods": [
                 "get_column_data_profile"
+              ]
+            },
+            "GetConnection": {
+              "methods": [
+                "get_connection"
               ]
             },
             "GetDeidentifyTemplate": {
@@ -615,6 +705,11 @@
                 "list_column_data_profiles"
               ]
             },
+            "ListConnections": {
+              "methods": [
+                "list_connections"
+              ]
+            },
             "ListDeidentifyTemplates": {
               "methods": [
                 "list_deidentify_templates"
@@ -668,6 +763,16 @@
             "ReidentifyContent": {
               "methods": [
                 "reidentify_content"
+              ]
+            },
+            "SearchConnections": {
+              "methods": [
+                "search_connections"
+              ]
+            },
+            "UpdateConnection": {
+              "methods": [
+                "update_connection"
               ]
             },
             "UpdateDeidentifyTemplate": {

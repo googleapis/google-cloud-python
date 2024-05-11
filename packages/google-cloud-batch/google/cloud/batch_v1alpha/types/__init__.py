@@ -28,6 +28,7 @@ from .batch import (
     ListTasksRequest,
     ListTasksResponse,
     OperationMetadata,
+    UpdateJobRequest,
     UpdateResourceAllowanceRequest,
 )
 from .job import (
@@ -79,6 +80,7 @@ __all__ = (
     "ListTasksRequest",
     "ListTasksResponse",
     "OperationMetadata",
+    "UpdateJobRequest",
     "UpdateResourceAllowanceRequest",
     "AllocationPolicy",
     "Job",

@@ -46,7 +46,7 @@ class generativelanguageCallTransformer(cst.CSTTransformer):
         'batch_update_chunks': ('requests', 'parent', ),
         'count_message_tokens': ('model', 'prompt', ),
         'count_text_tokens': ('model', 'prompt', ),
-        'count_tokens': ('model', 'contents', ),
+        'count_tokens': ('model', 'contents', 'generate_content_request', ),
         'create_chunk': ('parent', 'chunk', ),
         'create_corpus': ('corpus', ),
         'create_document': ('parent', 'document', ),

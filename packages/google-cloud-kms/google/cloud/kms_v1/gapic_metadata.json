@@ -5,6 +5,134 @@
   "protoPackage": "google.cloud.kms.v1",
   "schema": "1.0",
   "services": {
+    "Autokey": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "AutokeyClient",
+          "rpcs": {
+            "CreateKeyHandle": {
+              "methods": [
+                "create_key_handle"
+              ]
+            },
+            "GetKeyHandle": {
+              "methods": [
+                "get_key_handle"
+              ]
+            },
+            "ListKeyHandles": {
+              "methods": [
+                "list_key_handles"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "AutokeyAsyncClient",
+          "rpcs": {
+            "CreateKeyHandle": {
+              "methods": [
+                "create_key_handle"
+              ]
+            },
+            "GetKeyHandle": {
+              "methods": [
+                "get_key_handle"
+              ]
+            },
+            "ListKeyHandles": {
+              "methods": [
+                "list_key_handles"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "AutokeyClient",
+          "rpcs": {
+            "CreateKeyHandle": {
+              "methods": [
+                "create_key_handle"
+              ]
+            },
+            "GetKeyHandle": {
+              "methods": [
+                "get_key_handle"
+              ]
+            },
+            "ListKeyHandles": {
+              "methods": [
+                "list_key_handles"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "AutokeyAdmin": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "AutokeyAdminClient",
+          "rpcs": {
+            "GetAutokeyConfig": {
+              "methods": [
+                "get_autokey_config"
+              ]
+            },
+            "ShowEffectiveAutokeyConfig": {
+              "methods": [
+                "show_effective_autokey_config"
+              ]
+            },
+            "UpdateAutokeyConfig": {
+              "methods": [
+                "update_autokey_config"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "AutokeyAdminAsyncClient",
+          "rpcs": {
+            "GetAutokeyConfig": {
+              "methods": [
+                "get_autokey_config"
+              ]
+            },
+            "ShowEffectiveAutokeyConfig": {
+              "methods": [
+                "show_effective_autokey_config"
+              ]
+            },
+            "UpdateAutokeyConfig": {
+              "methods": [
+                "update_autokey_config"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "AutokeyAdminClient",
+          "rpcs": {
+            "GetAutokeyConfig": {
+              "methods": [
+                "get_autokey_config"
+              ]
+            },
+            "ShowEffectiveAutokeyConfig": {
+              "methods": [
+                "show_effective_autokey_config"
+              ]
+            },
+            "UpdateAutokeyConfig": {
+              "methods": [
+                "update_autokey_config"
+              ]
+            }
+          }
+        }
+      }
+    },
     "EkmService": {
       "clients": {
         "grpc": {

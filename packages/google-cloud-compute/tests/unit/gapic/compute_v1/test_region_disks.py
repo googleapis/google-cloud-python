@@ -4451,6 +4451,7 @@ def test_get_rest(request_type):
             source_snapshot_id="source_snapshot_id_value",
             source_storage_object="source_storage_object_value",
             status="status_value",
+            storage_pool="storage_pool_value",
             type_="type__value",
             users=["users_value"],
             zone="zone_value",
@@ -4511,6 +4512,7 @@ def test_get_rest(request_type):
     assert response.source_snapshot_id == "source_snapshot_id_value"
     assert response.source_storage_object == "source_storage_object_value"
     assert response.status == "status_value"
+    assert response.storage_pool == "storage_pool_value"
     assert response.type_ == "type__value"
     assert response.users == ["users_value"]
     assert response.zone == "zone_value"
@@ -5201,6 +5203,7 @@ def test_insert_rest(request_type):
         "source_snapshot_id": "source_snapshot_id_value",
         "source_storage_object": "source_storage_object_value",
         "status": "status_value",
+        "storage_pool": "storage_pool_value",
         "type_": "type__value",
         "users": ["users_value1", "users_value2"],
         "zone": "zone_value",
@@ -5707,6 +5710,7 @@ def test_insert_unary_rest(request_type):
         "source_snapshot_id": "source_snapshot_id_value",
         "source_storage_object": "source_storage_object_value",
         "status": "status_value",
+        "storage_pool": "storage_pool_value",
         "type_": "type__value",
         "users": ["users_value1", "users_value2"],
         "zone": "zone_value",
@@ -12741,6 +12745,7 @@ def test_update_rest(request_type):
         "source_snapshot_id": "source_snapshot_id_value",
         "source_storage_object": "source_storage_object_value",
         "status": "status_value",
+        "storage_pool": "storage_pool_value",
         "type_": "type__value",
         "users": ["users_value1", "users_value2"],
         "zone": "zone_value",
@@ -13256,6 +13261,7 @@ def test_update_unary_rest(request_type):
         "source_snapshot_id": "source_snapshot_id_value",
         "source_storage_object": "source_storage_object_value",
         "status": "status_value",
+        "storage_pool": "storage_pool_value",
         "type_": "type__value",
         "users": ["users_value1", "users_value2"],
         "zone": "zone_value",

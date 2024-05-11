@@ -2922,6 +2922,7 @@ def test_get_rest(request_type):
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.PublicDelegatedPrefix(
+            allocatable_prefix_length=2626,
             byoip_api_version="byoip_api_version_value",
             creation_timestamp="creation_timestamp_value",
             description="description_value",
@@ -2930,6 +2931,7 @@ def test_get_rest(request_type):
             ip_cidr_range="ip_cidr_range_value",
             is_live_migration=True,
             kind="kind_value",
+            mode="mode_value",
             name="name_value",
             parent_prefix="parent_prefix_value",
             region="region_value",
@@ -2950,6 +2952,7 @@ def test_get_rest(request_type):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.PublicDelegatedPrefix)
+    assert response.allocatable_prefix_length == 2626
     assert response.byoip_api_version == "byoip_api_version_value"
     assert response.creation_timestamp == "creation_timestamp_value"
     assert response.description == "description_value"
@@ -2958,6 +2961,7 @@ def test_get_rest(request_type):
     assert response.ip_cidr_range == "ip_cidr_range_value"
     assert response.is_live_migration is True
     assert response.kind == "kind_value"
+    assert response.mode == "mode_value"
     assert response.name == "name_value"
     assert response.parent_prefix == "parent_prefix_value"
     assert response.region == "region_value"
@@ -3273,6 +3277,7 @@ def test_insert_rest(request_type):
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "region": "sample2"}
     request_init["public_delegated_prefix_resource"] = {
+        "allocatable_prefix_length": 2626,
         "byoip_api_version": "byoip_api_version_value",
         "creation_timestamp": "creation_timestamp_value",
         "description": "description_value",
@@ -3281,14 +3286,17 @@ def test_insert_rest(request_type):
         "ip_cidr_range": "ip_cidr_range_value",
         "is_live_migration": True,
         "kind": "kind_value",
+        "mode": "mode_value",
         "name": "name_value",
         "parent_prefix": "parent_prefix_value",
         "public_delegated_sub_prefixs": [
             {
+                "allocatable_prefix_length": 2626,
                 "delegatee_project": "delegatee_project_value",
                 "description": "description_value",
                 "ip_cidr_range": "ip_cidr_range_value",
                 "is_address": True,
+                "mode": "mode_value",
                 "name": "name_value",
                 "region": "region_value",
                 "status": "status_value",
@@ -3677,7 +3685,7 @@ def test_insert_rest_flattened():
             project="project_value",
             region="region_value",
             public_delegated_prefix_resource=compute.PublicDelegatedPrefix(
-                byoip_api_version="byoip_api_version_value"
+                allocatable_prefix_length=2626
             ),
         )
         mock_args.update(sample_request)
@@ -3718,7 +3726,7 @@ def test_insert_rest_flattened_error(transport: str = "rest"):
             project="project_value",
             region="region_value",
             public_delegated_prefix_resource=compute.PublicDelegatedPrefix(
-                byoip_api_version="byoip_api_version_value"
+                allocatable_prefix_length=2626
             ),
         )
 
@@ -3745,6 +3753,7 @@ def test_insert_unary_rest(request_type):
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "region": "sample2"}
     request_init["public_delegated_prefix_resource"] = {
+        "allocatable_prefix_length": 2626,
         "byoip_api_version": "byoip_api_version_value",
         "creation_timestamp": "creation_timestamp_value",
         "description": "description_value",
@@ -3753,14 +3762,17 @@ def test_insert_unary_rest(request_type):
         "ip_cidr_range": "ip_cidr_range_value",
         "is_live_migration": True,
         "kind": "kind_value",
+        "mode": "mode_value",
         "name": "name_value",
         "parent_prefix": "parent_prefix_value",
         "public_delegated_sub_prefixs": [
             {
+                "allocatable_prefix_length": 2626,
                 "delegatee_project": "delegatee_project_value",
                 "description": "description_value",
                 "ip_cidr_range": "ip_cidr_range_value",
                 "is_address": True,
+                "mode": "mode_value",
                 "name": "name_value",
                 "region": "region_value",
                 "status": "status_value",
@@ -4127,7 +4139,7 @@ def test_insert_unary_rest_flattened():
             project="project_value",
             region="region_value",
             public_delegated_prefix_resource=compute.PublicDelegatedPrefix(
-                byoip_api_version="byoip_api_version_value"
+                allocatable_prefix_length=2626
             ),
         )
         mock_args.update(sample_request)
@@ -4168,7 +4180,7 @@ def test_insert_unary_rest_flattened_error(transport: str = "rest"):
             project="project_value",
             region="region_value",
             public_delegated_prefix_resource=compute.PublicDelegatedPrefix(
-                byoip_api_version="byoip_api_version_value"
+                allocatable_prefix_length=2626
             ),
         )
 
@@ -4595,6 +4607,7 @@ def test_patch_rest(request_type):
         "public_delegated_prefix": "sample3",
     }
     request_init["public_delegated_prefix_resource"] = {
+        "allocatable_prefix_length": 2626,
         "byoip_api_version": "byoip_api_version_value",
         "creation_timestamp": "creation_timestamp_value",
         "description": "description_value",
@@ -4603,14 +4616,17 @@ def test_patch_rest(request_type):
         "ip_cidr_range": "ip_cidr_range_value",
         "is_live_migration": True,
         "kind": "kind_value",
+        "mode": "mode_value",
         "name": "name_value",
         "parent_prefix": "parent_prefix_value",
         "public_delegated_sub_prefixs": [
             {
+                "allocatable_prefix_length": 2626,
                 "delegatee_project": "delegatee_project_value",
                 "description": "description_value",
                 "ip_cidr_range": "ip_cidr_range_value",
                 "is_address": True,
+                "mode": "mode_value",
                 "name": "name_value",
                 "region": "region_value",
                 "status": "status_value",
@@ -5013,7 +5029,7 @@ def test_patch_rest_flattened():
             region="region_value",
             public_delegated_prefix="public_delegated_prefix_value",
             public_delegated_prefix_resource=compute.PublicDelegatedPrefix(
-                byoip_api_version="byoip_api_version_value"
+                allocatable_prefix_length=2626
             ),
         )
         mock_args.update(sample_request)
@@ -5055,7 +5071,7 @@ def test_patch_rest_flattened_error(transport: str = "rest"):
             region="region_value",
             public_delegated_prefix="public_delegated_prefix_value",
             public_delegated_prefix_resource=compute.PublicDelegatedPrefix(
-                byoip_api_version="byoip_api_version_value"
+                allocatable_prefix_length=2626
             ),
         )
 
@@ -5086,6 +5102,7 @@ def test_patch_unary_rest(request_type):
         "public_delegated_prefix": "sample3",
     }
     request_init["public_delegated_prefix_resource"] = {
+        "allocatable_prefix_length": 2626,
         "byoip_api_version": "byoip_api_version_value",
         "creation_timestamp": "creation_timestamp_value",
         "description": "description_value",
@@ -5094,14 +5111,17 @@ def test_patch_unary_rest(request_type):
         "ip_cidr_range": "ip_cidr_range_value",
         "is_live_migration": True,
         "kind": "kind_value",
+        "mode": "mode_value",
         "name": "name_value",
         "parent_prefix": "parent_prefix_value",
         "public_delegated_sub_prefixs": [
             {
+                "allocatable_prefix_length": 2626,
                 "delegatee_project": "delegatee_project_value",
                 "description": "description_value",
                 "ip_cidr_range": "ip_cidr_range_value",
                 "is_address": True,
+                "mode": "mode_value",
                 "name": "name_value",
                 "region": "region_value",
                 "status": "status_value",
@@ -5482,7 +5502,7 @@ def test_patch_unary_rest_flattened():
             region="region_value",
             public_delegated_prefix="public_delegated_prefix_value",
             public_delegated_prefix_resource=compute.PublicDelegatedPrefix(
-                byoip_api_version="byoip_api_version_value"
+                allocatable_prefix_length=2626
             ),
         )
         mock_args.update(sample_request)
@@ -5524,7 +5544,7 @@ def test_patch_unary_rest_flattened_error(transport: str = "rest"):
             region="region_value",
             public_delegated_prefix="public_delegated_prefix_value",
             public_delegated_prefix_resource=compute.PublicDelegatedPrefix(
-                byoip_api_version="byoip_api_version_value"
+                allocatable_prefix_length=2626
             ),
         )
 

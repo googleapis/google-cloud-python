@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.17.19](https://github.com/googleapis/google-cloud-python/compare/google-cloud-batch-v0.17.18...google-cloud-batch-v0.17.19) (2024-05-07)
+
+
+### Documentation
+
+* Update description on allowed_locations in LocationPolicy field ([ae30a4e](https://github.com/googleapis/google-cloud-python/commit/ae30a4ea87d5c2cc0bfcd5a7dd85070ba6ba43b9))
+
 ## [0.17.18](https://github.com/googleapis/google-cloud-python/compare/google-cloud-batch-v0.17.17...google-cloud-batch-v0.17.18) (2024-04-15)
 
 

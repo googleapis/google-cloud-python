@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.14](https://github.com/googleapis/google-cloud-python/compare/google-maps-places-v0.1.13...google-maps-places-v0.1.14) (2024-05-07)
+
+
+### Documentation
+
+* update comment of Places API ([272fb7d](https://github.com/googleapis/google-cloud-python/commit/272fb7d877a98c989c577bb7757bc25dc182340e))
+
 ## [0.1.13](https://github.com/googleapis/google-cloud-python/compare/google-maps-places-v0.1.12...google-maps-places-v0.1.13) (2024-04-22)
 
 

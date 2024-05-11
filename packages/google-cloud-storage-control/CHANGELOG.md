@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.2.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storage-control-v0.1.3...google-cloud-storage-control-v0.2.0) (2024-05-07)
+
+
+### ⚠ BREAKING CHANGES
+
+* An existing resource pattern value `projects/{project}/buckets/{bucket}/managedFolders/{managedFolder=**}` to resource definition `[storage.googleapis.com/ManagedFolder](https://www.google.com/url?sa=D&q=http%3A%2F%2Fstorage.googleapis.com%2FManagedFolder)` is removed
+
+### Features
+
+* A new resource pattern value `projects/{project}/buckets/{bucket}/managedFolders/{managed_folder=**}` added to the resource definition `[storage.googleapis.com/ManagedFolder](https://www.google.com/url?sa=D&q=http%3A%2F%2Fstorage.googleapis.com%2FManagedFolder)` ([ddd1508](https://github.com/googleapis/google-cloud-python/commit/ddd15081a5fa9f844ffcafbc0136c1cd32582a39))
+
+
+### Bug Fixes
+
+* An existing resource pattern value `projects/{project}/buckets/{bucket}/managedFolders/{managedFolder=**}` to resource definition `[storage.googleapis.com/ManagedFolder](https://www.google.com/url?sa=D&q=http%3A%2F%2Fstorage.googleapis.com%2FManagedFolder)` is removed ([ddd1508](https://github.com/googleapis/google-cloud-python/commit/ddd15081a5fa9f844ffcafbc0136c1cd32582a39))
+
 ## [0.1.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storage-control-v0.1.2...google-cloud-storage-control-v0.1.3) (2024-04-19)
 
 

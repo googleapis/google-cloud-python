@@ -17,6 +17,7 @@ from collections import OrderedDict
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -733,7 +734,9 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, VmMigrationTransport]] = None,
+        transport: Optional[
+            Union[str, VmMigrationTransport, Callable[..., VmMigrationTransport]]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -745,9 +748,11 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, VmMigrationTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,VmMigrationTransport,Callable[..., VmMigrationTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the VmMigrationTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -853,8 +858,15 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[VmMigrationTransport], Callable[..., VmMigrationTransport]
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., VmMigrationTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -932,8 +944,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -941,10 +953,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmmigration.ListSourcesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmmigration.ListSourcesRequest):
             request = vmmigration.ListSourcesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1046,8 +1056,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1055,10 +1065,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmmigration.GetSourceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmmigration.GetSourceRequest):
             request = vmmigration.GetSourceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1168,8 +1176,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, source, source_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1177,10 +1185,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmmigration.CreateSourceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmmigration.CreateSourceRequest):
             request = vmmigration.CreateSourceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1300,8 +1306,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([source, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1309,10 +1315,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmmigration.UpdateSourceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmmigration.UpdateSourceRequest):
             request = vmmigration.UpdateSourceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1429,8 +1433,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1438,10 +1442,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmmigration.DeleteSourceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmmigration.DeleteSourceRequest):
             request = vmmigration.DeleteSourceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1546,8 +1548,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([source])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1555,10 +1557,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmmigration.FetchInventoryRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmmigration.FetchInventoryRequest):
             request = vmmigration.FetchInventoryRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1658,8 +1658,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1667,10 +1667,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmmigration.ListUtilizationReportsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmmigration.ListUtilizationReportsRequest):
             request = vmmigration.ListUtilizationReportsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1773,8 +1771,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1782,10 +1780,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmmigration.GetUtilizationReportRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmmigration.GetUtilizationReportRequest):
             request = vmmigration.GetUtilizationReportRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1906,8 +1902,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, utilization_report, utilization_report_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1915,10 +1911,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmmigration.CreateUtilizationReportRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmmigration.CreateUtilizationReportRequest):
             request = vmmigration.CreateUtilizationReportRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2041,8 +2035,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2050,10 +2044,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmmigration.DeleteUtilizationReportRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmmigration.DeleteUtilizationReportRequest):
             request = vmmigration.DeleteUtilizationReportRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2163,8 +2155,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2172,10 +2164,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmmigration.ListDatacenterConnectorsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmmigration.ListDatacenterConnectorsRequest):
             request = vmmigration.ListDatacenterConnectorsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2286,8 +2276,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2295,10 +2285,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmmigration.GetDatacenterConnectorRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmmigration.GetDatacenterConnectorRequest):
             request = vmmigration.GetDatacenterConnectorRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2419,8 +2407,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [parent, datacenter_connector, datacenter_connector_id]
         )
@@ -2430,10 +2418,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmmigration.CreateDatacenterConnectorRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmmigration.CreateDatacenterConnectorRequest):
             request = vmmigration.CreateDatacenterConnectorRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2556,8 +2542,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2565,10 +2551,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmmigration.DeleteDatacenterConnectorRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmmigration.DeleteDatacenterConnectorRequest):
             request = vmmigration.DeleteDatacenterConnectorRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2671,10 +2655,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmmigration.UpgradeApplianceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmmigration.UpgradeApplianceRequest):
             request = vmmigration.UpgradeApplianceRequest(request)
 
@@ -2790,8 +2772,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, migrating_vm, migrating_vm_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2799,10 +2781,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmmigration.CreateMigratingVmRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmmigration.CreateMigratingVmRequest):
             request = vmmigration.CreateMigratingVmRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2912,8 +2892,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2921,10 +2901,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmmigration.ListMigratingVmsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmmigration.ListMigratingVmsRequest):
             request = vmmigration.ListMigratingVmsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3027,8 +3005,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3036,10 +3014,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmmigration.GetMigratingVmRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmmigration.GetMigratingVmRequest):
             request = vmmigration.GetMigratingVmRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3147,8 +3123,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([migrating_vm, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3156,10 +3132,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmmigration.UpdateMigratingVmRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmmigration.UpdateMigratingVmRequest):
             request = vmmigration.UpdateMigratingVmRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3278,8 +3252,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3287,10 +3261,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmmigration.DeleteMigratingVmRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmmigration.DeleteMigratingVmRequest):
             request = vmmigration.DeleteMigratingVmRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3400,8 +3372,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([migrating_vm])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3409,10 +3381,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmmigration.StartMigrationRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmmigration.StartMigrationRequest):
             request = vmmigration.StartMigrationRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3519,10 +3489,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmmigration.ResumeMigrationRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmmigration.ResumeMigrationRequest):
             request = vmmigration.ResumeMigrationRequest(request)
 
@@ -3623,10 +3591,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmmigration.PauseMigrationRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmmigration.PauseMigrationRequest):
             request = vmmigration.PauseMigrationRequest(request)
 
@@ -3734,8 +3700,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([migrating_vm])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3743,10 +3709,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmmigration.FinalizeMigrationRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmmigration.FinalizeMigrationRequest):
             request = vmmigration.FinalizeMigrationRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3878,8 +3842,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, clone_job, clone_job_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3887,10 +3851,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmmigration.CreateCloneJobRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmmigration.CreateCloneJobRequest):
             request = vmmigration.CreateCloneJobRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4000,8 +3962,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4009,10 +3971,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmmigration.CancelCloneJobRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmmigration.CancelCloneJobRequest):
             request = vmmigration.CancelCloneJobRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4118,8 +4078,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4127,10 +4087,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmmigration.ListCloneJobsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmmigration.ListCloneJobsRequest):
             request = vmmigration.ListCloneJobsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4242,8 +4200,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4251,10 +4209,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmmigration.GetCloneJobRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmmigration.GetCloneJobRequest):
             request = vmmigration.GetCloneJobRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4368,8 +4324,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, cutover_job, cutover_job_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4377,10 +4333,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmmigration.CreateCutoverJobRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmmigration.CreateCutoverJobRequest):
             request = vmmigration.CreateCutoverJobRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4490,8 +4444,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4499,10 +4453,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmmigration.CancelCutoverJobRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmmigration.CancelCutoverJobRequest):
             request = vmmigration.CancelCutoverJobRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4608,8 +4560,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4617,10 +4569,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmmigration.ListCutoverJobsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmmigration.ListCutoverJobsRequest):
             request = vmmigration.ListCutoverJobsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4724,8 +4674,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4733,10 +4683,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmmigration.GetCutoverJobRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmmigration.GetCutoverJobRequest):
             request = vmmigration.GetCutoverJobRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4834,8 +4782,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4843,10 +4791,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmmigration.ListGroupsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmmigration.ListGroupsRequest):
             request = vmmigration.ListGroupsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4947,8 +4893,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4956,10 +4902,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmmigration.GetGroupRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmmigration.GetGroupRequest):
             request = vmmigration.GetGroupRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -5069,8 +5013,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, group, group_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5078,10 +5022,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmmigration.CreateGroupRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmmigration.CreateGroupRequest):
             request = vmmigration.CreateGroupRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -5201,8 +5143,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([group, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5210,10 +5152,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmmigration.UpdateGroupRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmmigration.UpdateGroupRequest):
             request = vmmigration.UpdateGroupRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -5330,8 +5270,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5339,10 +5279,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmmigration.DeleteGroupRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmmigration.DeleteGroupRequest):
             request = vmmigration.DeleteGroupRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -5450,8 +5388,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([group])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5459,10 +5397,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmmigration.AddGroupMigrationRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmmigration.AddGroupMigrationRequest):
             request = vmmigration.AddGroupMigrationRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -5568,8 +5504,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([group])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5577,10 +5513,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmmigration.RemoveGroupMigrationRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmmigration.RemoveGroupMigrationRequest):
             request = vmmigration.RemoveGroupMigrationRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -5689,8 +5623,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5698,10 +5632,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmmigration.ListTargetProjectsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmmigration.ListTargetProjectsRequest):
             request = vmmigration.ListTargetProjectsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -5805,8 +5737,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5814,10 +5746,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmmigration.GetTargetProjectRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmmigration.GetTargetProjectRequest):
             request = vmmigration.GetTargetProjectRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -5930,8 +5860,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, target_project, target_project_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5939,10 +5869,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmmigration.CreateTargetProjectRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmmigration.CreateTargetProjectRequest):
             request = vmmigration.CreateTargetProjectRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -6065,8 +5993,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([target_project, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -6074,10 +6002,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmmigration.UpdateTargetProjectRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmmigration.UpdateTargetProjectRequest):
             request = vmmigration.UpdateTargetProjectRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -6197,8 +6123,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -6206,10 +6132,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmmigration.DeleteTargetProjectRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmmigration.DeleteTargetProjectRequest):
             request = vmmigration.DeleteTargetProjectRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -6315,8 +6239,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -6324,10 +6248,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmmigration.ListReplicationCyclesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmmigration.ListReplicationCyclesRequest):
             request = vmmigration.ListReplicationCyclesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -6430,8 +6352,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -6439,10 +6361,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vmmigration.GetReplicationCycleRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vmmigration.GetReplicationCycleRequest):
             request = vmmigration.GetReplicationCycleRequest(request)
             # If we have keyword arguments corresponding to fields on the

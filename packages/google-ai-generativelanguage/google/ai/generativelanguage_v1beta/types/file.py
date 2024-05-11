@@ -60,7 +60,30 @@ class File(proto.Message):
             bytes.
         uri (str):
             Output only. The uri of the ``File``.
+        state (google.ai.generativelanguage_v1beta.types.File.State):
+            Output only. Processing state of the File.
     """
+
+    class State(proto.Enum):
+        r"""States for the lifecycle of a File.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                The default value. This value is used if the
+                state is omitted.
+            PROCESSING (1):
+                File is being processed and cannot be used
+                for inference yet.
+            ACTIVE (2):
+                File is processed and available for
+                inference.
+            FAILED (10):
+                File failed processing.
+        """
+        STATE_UNSPECIFIED = 0
+        PROCESSING = 1
+        ACTIVE = 2
+        FAILED = 10
 
     name: str = proto.Field(
         proto.STRING,
@@ -100,6 +123,11 @@ class File(proto.Message):
     uri: str = proto.Field(
         proto.STRING,
         number=9,
+    )
+    state: State = proto.Field(
+        proto.ENUM,
+        number=10,
+        enum=State,
     )
 
 

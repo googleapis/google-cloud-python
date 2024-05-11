@@ -17,6 +17,7 @@ from collections import OrderedDict
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -593,7 +594,11 @@ class MetastoreServiceClient(metaclass=MetastoreServiceClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, MetastoreServiceTransport]] = None,
+        transport: Optional[
+            Union[
+                str, MetastoreServiceTransport, Callable[..., MetastoreServiceTransport]
+            ]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -605,9 +610,11 @@ class MetastoreServiceClient(metaclass=MetastoreServiceClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, MetastoreServiceTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,MetastoreServiceTransport,Callable[..., MetastoreServiceTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the MetastoreServiceTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -716,8 +723,16 @@ class MetastoreServiceClient(metaclass=MetastoreServiceClientMeta):
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[MetastoreServiceTransport],
+                Callable[..., MetastoreServiceTransport],
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., MetastoreServiceTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -810,8 +825,8 @@ class MetastoreServiceClient(metaclass=MetastoreServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, catalog, catalog_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -819,10 +834,8 @@ class MetastoreServiceClient(metaclass=MetastoreServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a metastore.CreateCatalogRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, metastore.CreateCatalogRequest):
             request = metastore.CreateCatalogRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -920,8 +933,8 @@ class MetastoreServiceClient(metaclass=MetastoreServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -929,10 +942,8 @@ class MetastoreServiceClient(metaclass=MetastoreServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a metastore.DeleteCatalogRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, metastore.DeleteCatalogRequest):
             request = metastore.DeleteCatalogRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1025,8 +1036,8 @@ class MetastoreServiceClient(metaclass=MetastoreServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1034,10 +1045,8 @@ class MetastoreServiceClient(metaclass=MetastoreServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a metastore.GetCatalogRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, metastore.GetCatalogRequest):
             request = metastore.GetCatalogRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1135,8 +1144,8 @@ class MetastoreServiceClient(metaclass=MetastoreServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1144,10 +1153,8 @@ class MetastoreServiceClient(metaclass=MetastoreServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a metastore.ListCatalogsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, metastore.ListCatalogsRequest):
             request = metastore.ListCatalogsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1267,8 +1274,8 @@ class MetastoreServiceClient(metaclass=MetastoreServiceClientMeta):
                 Database is the container of tables.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, database, database_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1276,10 +1283,8 @@ class MetastoreServiceClient(metaclass=MetastoreServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a metastore.CreateDatabaseRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, metastore.CreateDatabaseRequest):
             request = metastore.CreateDatabaseRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1375,8 +1380,8 @@ class MetastoreServiceClient(metaclass=MetastoreServiceClientMeta):
                 Database is the container of tables.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1384,10 +1389,8 @@ class MetastoreServiceClient(metaclass=MetastoreServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a metastore.DeleteDatabaseRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, metastore.DeleteDatabaseRequest):
             request = metastore.DeleteDatabaseRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1493,8 +1496,8 @@ class MetastoreServiceClient(metaclass=MetastoreServiceClientMeta):
                 Database is the container of tables.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([database, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1502,10 +1505,8 @@ class MetastoreServiceClient(metaclass=MetastoreServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a metastore.UpdateDatabaseRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, metastore.UpdateDatabaseRequest):
             request = metastore.UpdateDatabaseRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1600,8 +1601,8 @@ class MetastoreServiceClient(metaclass=MetastoreServiceClientMeta):
                 Database is the container of tables.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1609,10 +1610,8 @@ class MetastoreServiceClient(metaclass=MetastoreServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a metastore.GetDatabaseRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, metastore.GetDatabaseRequest):
             request = metastore.GetDatabaseRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1710,8 +1709,8 @@ class MetastoreServiceClient(metaclass=MetastoreServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1719,10 +1718,8 @@ class MetastoreServiceClient(metaclass=MetastoreServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a metastore.ListDatabasesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, metastore.ListDatabasesRequest):
             request = metastore.ListDatabasesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1841,8 +1838,8 @@ class MetastoreServiceClient(metaclass=MetastoreServiceClientMeta):
                 Represents a table.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, table, table_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1850,10 +1847,8 @@ class MetastoreServiceClient(metaclass=MetastoreServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a metastore.CreateTableRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, metastore.CreateTableRequest):
             request = metastore.CreateTableRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1948,8 +1943,8 @@ class MetastoreServiceClient(metaclass=MetastoreServiceClientMeta):
                 Represents a table.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1957,10 +1952,8 @@ class MetastoreServiceClient(metaclass=MetastoreServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a metastore.DeleteTableRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, metastore.DeleteTableRequest):
             request = metastore.DeleteTableRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2065,8 +2058,8 @@ class MetastoreServiceClient(metaclass=MetastoreServiceClientMeta):
                 Represents a table.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([table, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2074,10 +2067,8 @@ class MetastoreServiceClient(metaclass=MetastoreServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a metastore.UpdateTableRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, metastore.UpdateTableRequest):
             request = metastore.UpdateTableRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2183,8 +2174,8 @@ class MetastoreServiceClient(metaclass=MetastoreServiceClientMeta):
                 Represents a table.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, new_name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2192,10 +2183,8 @@ class MetastoreServiceClient(metaclass=MetastoreServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a metastore.RenameTableRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, metastore.RenameTableRequest):
             request = metastore.RenameTableRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2288,8 +2277,8 @@ class MetastoreServiceClient(metaclass=MetastoreServiceClientMeta):
                 Represents a table.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2297,10 +2286,8 @@ class MetastoreServiceClient(metaclass=MetastoreServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a metastore.GetTableRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, metastore.GetTableRequest):
             request = metastore.GetTableRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2398,8 +2385,8 @@ class MetastoreServiceClient(metaclass=MetastoreServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2407,10 +2394,8 @@ class MetastoreServiceClient(metaclass=MetastoreServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a metastore.ListTablesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, metastore.ListTablesRequest):
             request = metastore.ListTablesRequest(request)
             # If we have keyword arguments corresponding to fields on the

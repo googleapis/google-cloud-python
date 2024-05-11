@@ -2152,6 +2152,7 @@ def test_get_rest(request_type):
             description="description_value",
             fingerprint="fingerprint_value",
             id=205,
+            ip_collection="ip_collection_value",
             ip_version="ip_version_value",
             is_mirroring_collector=True,
             kind="kind_value",
@@ -2198,6 +2199,7 @@ def test_get_rest(request_type):
     assert response.description == "description_value"
     assert response.fingerprint == "fingerprint_value"
     assert response.id == 205
+    assert response.ip_collection == "ip_collection_value"
     assert response.ip_version == "ip_version_value"
     assert response.is_mirroring_collector is True
     assert response.kind == "kind_value"
@@ -2537,6 +2539,7 @@ def test_insert_rest(request_type):
         "description": "description_value",
         "fingerprint": "fingerprint_value",
         "id": 205,
+        "ip_collection": "ip_collection_value",
         "ip_version": "ip_version_value",
         "is_mirroring_collector": True,
         "kind": "kind_value",
@@ -3024,6 +3027,7 @@ def test_insert_unary_rest(request_type):
         "description": "description_value",
         "fingerprint": "fingerprint_value",
         "id": 205,
+        "ip_collection": "ip_collection_value",
         "ip_version": "ip_version_value",
         "is_mirroring_collector": True,
         "kind": "kind_value",
@@ -3889,6 +3893,7 @@ def test_patch_rest(request_type):
         "description": "description_value",
         "fingerprint": "fingerprint_value",
         "id": 205,
+        "ip_collection": "ip_collection_value",
         "ip_version": "ip_version_value",
         "is_mirroring_collector": True,
         "kind": "kind_value",
@@ -4395,6 +4400,7 @@ def test_patch_unary_rest(request_type):
         "description": "description_value",
         "fingerprint": "fingerprint_value",
         "id": 205,
+        "ip_collection": "ip_collection_value",
         "ip_version": "ip_version_value",
         "is_mirroring_collector": True,
         "kind": "kind_value",

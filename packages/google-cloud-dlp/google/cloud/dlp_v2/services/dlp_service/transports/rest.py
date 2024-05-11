@@ -78,6 +78,14 @@ class DlpServiceRestInterceptor:
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
+            def pre_create_connection(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_connection(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_create_deidentify_template(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -134,6 +142,10 @@ class DlpServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_delete_connection(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
             def pre_delete_deidentify_template(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -158,6 +170,10 @@ class DlpServiceRestInterceptor:
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
+            def pre_delete_table_data_profile(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
             def pre_finish_dlp_job(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -167,6 +183,14 @@ class DlpServiceRestInterceptor:
                 return request, metadata
 
             def post_get_column_data_profile(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_get_connection(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_connection(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -266,6 +290,14 @@ class DlpServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_list_connections(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_connections(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_list_deidentify_templates(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -354,6 +386,22 @@ class DlpServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_search_connections(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_search_connections(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_update_connection(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_connection(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_update_deidentify_template(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -430,6 +478,25 @@ class DlpServiceRestInterceptor:
         before they are sent to the DlpService server.
         """
         return request, metadata
+
+    def pre_create_connection(
+        self, request: dlp.CreateConnectionRequest, metadata: Sequence[Tuple[str, str]]
+    ) -> Tuple[dlp.CreateConnectionRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for create_connection
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the DlpService server.
+        """
+        return request, metadata
+
+    def post_create_connection(self, response: dlp.Connection) -> dlp.Connection:
+        """Post-rpc interceptor for create_connection
+
+        Override in a subclass to manipulate the response
+        after it is returned by the DlpService server but before
+        it is returned to user code.
+        """
+        return response
 
     def pre_create_deidentify_template(
         self,
@@ -582,6 +649,16 @@ class DlpServiceRestInterceptor:
         """
         return response
 
+    def pre_delete_connection(
+        self, request: dlp.DeleteConnectionRequest, metadata: Sequence[Tuple[str, str]]
+    ) -> Tuple[dlp.DeleteConnectionRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for delete_connection
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the DlpService server.
+        """
+        return request, metadata
+
     def pre_delete_deidentify_template(
         self,
         request: dlp.DeleteDeidentifyTemplateRequest,
@@ -650,6 +727,18 @@ class DlpServiceRestInterceptor:
         """
         return request, metadata
 
+    def pre_delete_table_data_profile(
+        self,
+        request: dlp.DeleteTableDataProfileRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[dlp.DeleteTableDataProfileRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for delete_table_data_profile
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the DlpService server.
+        """
+        return request, metadata
+
     def pre_finish_dlp_job(
         self, request: dlp.FinishDlpJobRequest, metadata: Sequence[Tuple[str, str]]
     ) -> Tuple[dlp.FinishDlpJobRequest, Sequence[Tuple[str, str]]]:
@@ -676,6 +765,25 @@ class DlpServiceRestInterceptor:
         self, response: dlp.ColumnDataProfile
     ) -> dlp.ColumnDataProfile:
         """Post-rpc interceptor for get_column_data_profile
+
+        Override in a subclass to manipulate the response
+        after it is returned by the DlpService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get_connection(
+        self, request: dlp.GetConnectionRequest, metadata: Sequence[Tuple[str, str]]
+    ) -> Tuple[dlp.GetConnectionRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_connection
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the DlpService server.
+        """
+        return request, metadata
+
+    def post_get_connection(self, response: dlp.Connection) -> dlp.Connection:
+        """Post-rpc interceptor for get_connection
 
         Override in a subclass to manipulate the response
         after it is returned by the DlpService server but before
@@ -947,6 +1055,27 @@ class DlpServiceRestInterceptor:
         """
         return response
 
+    def pre_list_connections(
+        self, request: dlp.ListConnectionsRequest, metadata: Sequence[Tuple[str, str]]
+    ) -> Tuple[dlp.ListConnectionsRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for list_connections
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the DlpService server.
+        """
+        return request, metadata
+
+    def post_list_connections(
+        self, response: dlp.ListConnectionsResponse
+    ) -> dlp.ListConnectionsResponse:
+        """Post-rpc interceptor for list_connections
+
+        Override in a subclass to manipulate the response
+        after it is returned by the DlpService server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_list_deidentify_templates(
         self,
         request: dlp.ListDeidentifyTemplatesRequest,
@@ -1183,6 +1312,46 @@ class DlpServiceRestInterceptor:
         self, response: dlp.ReidentifyContentResponse
     ) -> dlp.ReidentifyContentResponse:
         """Post-rpc interceptor for reidentify_content
+
+        Override in a subclass to manipulate the response
+        after it is returned by the DlpService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_search_connections(
+        self, request: dlp.SearchConnectionsRequest, metadata: Sequence[Tuple[str, str]]
+    ) -> Tuple[dlp.SearchConnectionsRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for search_connections
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the DlpService server.
+        """
+        return request, metadata
+
+    def post_search_connections(
+        self, response: dlp.SearchConnectionsResponse
+    ) -> dlp.SearchConnectionsResponse:
+        """Post-rpc interceptor for search_connections
+
+        Override in a subclass to manipulate the response
+        after it is returned by the DlpService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_update_connection(
+        self, request: dlp.UpdateConnectionRequest, metadata: Sequence[Tuple[str, str]]
+    ) -> Tuple[dlp.UpdateConnectionRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for update_connection
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the DlpService server.
+        """
+        return request, metadata
+
+    def post_update_connection(self, response: dlp.Connection) -> dlp.Connection:
+        """Post-rpc interceptor for update_connection
 
         Override in a subclass to manipulate the response
         after it is returned by the DlpService server but before
@@ -1595,6 +1764,103 @@ class DlpServiceRestTransport(DlpServiceTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
+    class _CreateConnection(DlpServiceRestStub):
+        def __hash__(self):
+            return hash("CreateConnection")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: dlp.CreateConnectionRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> dlp.Connection:
+            r"""Call the create connection method over HTTP.
+
+            Args:
+                request (~.dlp.CreateConnectionRequest):
+                    The request object. Request message for CreateConnection.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.dlp.Connection:
+                    A data connection to allow DLP to
+                profile data in locations that require
+                additional configuration.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v2/{parent=projects/*/locations/*}/connections",
+                    "body": "*",
+                },
+            ]
+            request, metadata = self._interceptor.pre_create_connection(
+                request, metadata
+            )
+            pb_request = dlp.CreateConnectionRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"], use_integers_for_enums=True
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = dlp.Connection()
+            pb_resp = dlp.Connection.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_create_connection(resp)
+            return resp
 
     class _CreateDeidentifyTemplate(DlpServiceRestStub):
         def __hash__(self):
@@ -2074,8 +2340,8 @@ class DlpServiceRestTransport(DlpServiceTransport):
 
             Returns:
                 ~.dlp.JobTrigger:
-                    Contains a configuration to make dlp
-                api calls on a repeating basis. See
+                    Contains a configuration to make api
+                calls on a repeating basis. See
                 https://cloud.google.com/sensitive-data-protection/docs/concepts-job-triggers
                 to learn more.
 
@@ -2349,6 +2615,81 @@ class DlpServiceRestTransport(DlpServiceTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_deidentify_content(resp)
             return resp
+
+    class _DeleteConnection(DlpServiceRestStub):
+        def __hash__(self):
+            return hash("DeleteConnection")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: dlp.DeleteConnectionRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ):
+            r"""Call the delete connection method over HTTP.
+
+            Args:
+                request (~.dlp.DeleteConnectionRequest):
+                    The request object. Request message for DeleteConnection.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "delete",
+                    "uri": "/v2/{name=projects/*/locations/*/connections/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_delete_connection(
+                request, metadata
+            )
+            pb_request = dlp.DeleteConnectionRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
 
     class _DeleteDeidentifyTemplate(DlpServiceRestStub):
         def __hash__(self):
@@ -2856,6 +3197,86 @@ class DlpServiceRestTransport(DlpServiceTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+    class _DeleteTableDataProfile(DlpServiceRestStub):
+        def __hash__(self):
+            return hash("DeleteTableDataProfile")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: dlp.DeleteTableDataProfileRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ):
+            r"""Call the delete table data profile method over HTTP.
+
+            Args:
+                request (~.dlp.DeleteTableDataProfileRequest):
+                    The request object. Request message for
+                DeleteTableProfile.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "delete",
+                    "uri": "/v2/{name=organizations/*/locations/*/tableDataProfiles/*}",
+                },
+                {
+                    "method": "delete",
+                    "uri": "/v2/{name=projects/*/locations/*/tableDataProfiles/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_delete_table_data_profile(
+                request, metadata
+            )
+            pb_request = dlp.DeleteTableDataProfileRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
     class _FinishDlpJob(DlpServiceRestStub):
         def __hash__(self):
             return hash("FinishDlpJob")
@@ -3028,6 +3449,94 @@ class DlpServiceRestTransport(DlpServiceTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get_column_data_profile(resp)
+            return resp
+
+    class _GetConnection(DlpServiceRestStub):
+        def __hash__(self):
+            return hash("GetConnection")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: dlp.GetConnectionRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> dlp.Connection:
+            r"""Call the get connection method over HTTP.
+
+            Args:
+                request (~.dlp.GetConnectionRequest):
+                    The request object. Request message for GetConnection.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.dlp.Connection:
+                    A data connection to allow DLP to
+                profile data in locations that require
+                additional configuration.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v2/{name=projects/*/locations/*/connections/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_get_connection(request, metadata)
+            pb_request = dlp.GetConnectionRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = dlp.Connection()
+            pb_resp = dlp.Connection.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_connection(resp)
             return resp
 
     class _GetDeidentifyTemplate(DlpServiceRestStub):
@@ -3467,8 +3976,8 @@ class DlpServiceRestTransport(DlpServiceTransport):
 
             Returns:
                 ~.dlp.JobTrigger:
-                    Contains a configuration to make dlp
-                api calls on a repeating basis. See
+                    Contains a configuration to make api
+                calls on a repeating basis. See
                 https://cloud.google.com/sensitive-data-protection/docs/concepts-job-triggers
                 to learn more.
 
@@ -4193,6 +4702,93 @@ class DlpServiceRestTransport(DlpServiceTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_list_column_data_profiles(resp)
+            return resp
+
+    class _ListConnections(DlpServiceRestStub):
+        def __hash__(self):
+            return hash("ListConnections")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: dlp.ListConnectionsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> dlp.ListConnectionsResponse:
+            r"""Call the list connections method over HTTP.
+
+            Args:
+                request (~.dlp.ListConnectionsRequest):
+                    The request object. Request message for ListConnections.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.dlp.ListConnectionsResponse:
+                    Response message for ListConnections.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v2/{parent=projects/*/locations/*}/connections",
+                },
+            ]
+            request, metadata = self._interceptor.pre_list_connections(
+                request, metadata
+            )
+            pb_request = dlp.ListConnectionsRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = dlp.ListConnectionsResponse()
+            pb_resp = dlp.ListConnectionsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_list_connections(resp)
             return resp
 
     class _ListDeidentifyTemplates(DlpServiceRestStub):
@@ -5244,6 +5840,197 @@ class DlpServiceRestTransport(DlpServiceTransport):
             resp = self._interceptor.post_reidentify_content(resp)
             return resp
 
+    class _SearchConnections(DlpServiceRestStub):
+        def __hash__(self):
+            return hash("SearchConnections")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: dlp.SearchConnectionsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> dlp.SearchConnectionsResponse:
+            r"""Call the search connections method over HTTP.
+
+            Args:
+                request (~.dlp.SearchConnectionsRequest):
+                    The request object. Request message for
+                SearchConnections.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.dlp.SearchConnectionsResponse:
+                    Response message for
+                SearchConnections.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v2/{parent=projects/*/locations/*}/connections:search",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v2/{parent=organizations/*/locations/*}/connections:search",
+                },
+            ]
+            request, metadata = self._interceptor.pre_search_connections(
+                request, metadata
+            )
+            pb_request = dlp.SearchConnectionsRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = dlp.SearchConnectionsResponse()
+            pb_resp = dlp.SearchConnectionsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_search_connections(resp)
+            return resp
+
+    class _UpdateConnection(DlpServiceRestStub):
+        def __hash__(self):
+            return hash("UpdateConnection")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: dlp.UpdateConnectionRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> dlp.Connection:
+            r"""Call the update connection method over HTTP.
+
+            Args:
+                request (~.dlp.UpdateConnectionRequest):
+                    The request object. Request message for UpdateConnection.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.dlp.Connection:
+                    A data connection to allow DLP to
+                profile data in locations that require
+                additional configuration.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "patch",
+                    "uri": "/v2/{name=projects/*/locations/*/connections/*}",
+                    "body": "*",
+                },
+            ]
+            request, metadata = self._interceptor.pre_update_connection(
+                request, metadata
+            )
+            pb_request = dlp.UpdateConnectionRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"], use_integers_for_enums=True
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = dlp.Connection()
+            pb_resp = dlp.Connection.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_update_connection(resp)
+            return resp
+
     class _UpdateDeidentifyTemplate(DlpServiceRestStub):
         def __hash__(self):
             return hash("UpdateDeidentifyTemplate")
@@ -5619,8 +6406,8 @@ class DlpServiceRestTransport(DlpServiceTransport):
 
             Returns:
                 ~.dlp.JobTrigger:
-                    Contains a configuration to make dlp
-                api calls on a repeating basis. See
+                    Contains a configuration to make api
+                calls on a repeating basis. See
                 https://cloud.google.com/sensitive-data-protection/docs/concepts-job-triggers
                 to learn more.
 
@@ -5820,6 +6607,14 @@ class DlpServiceRestTransport(DlpServiceTransport):
         return self._CancelDlpJob(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def create_connection(
+        self,
+    ) -> Callable[[dlp.CreateConnectionRequest], dlp.Connection]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreateConnection(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def create_deidentify_template(
         self,
     ) -> Callable[[dlp.CreateDeidentifyTemplateRequest], dlp.DeidentifyTemplate]:
@@ -5874,6 +6669,14 @@ class DlpServiceRestTransport(DlpServiceTransport):
         return self._DeidentifyContent(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def delete_connection(
+        self,
+    ) -> Callable[[dlp.DeleteConnectionRequest], empty_pb2.Empty]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteConnection(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def delete_deidentify_template(
         self,
     ) -> Callable[[dlp.DeleteDeidentifyTemplateRequest], empty_pb2.Empty]:
@@ -5920,6 +6723,14 @@ class DlpServiceRestTransport(DlpServiceTransport):
         return self._DeleteStoredInfoType(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def delete_table_data_profile(
+        self,
+    ) -> Callable[[dlp.DeleteTableDataProfileRequest], empty_pb2.Empty]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteTableDataProfile(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def finish_dlp_job(self) -> Callable[[dlp.FinishDlpJobRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
@@ -5932,6 +6743,12 @@ class DlpServiceRestTransport(DlpServiceTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetColumnDataProfile(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_connection(self) -> Callable[[dlp.GetConnectionRequest], dlp.Connection]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetConnection(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_deidentify_template(
@@ -6028,6 +6845,14 @@ class DlpServiceRestTransport(DlpServiceTransport):
         return self._ListColumnDataProfiles(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def list_connections(
+        self,
+    ) -> Callable[[dlp.ListConnectionsRequest], dlp.ListConnectionsResponse]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListConnections(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def list_deidentify_templates(
         self,
     ) -> Callable[
@@ -6120,6 +6945,22 @@ class DlpServiceRestTransport(DlpServiceTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ReidentifyContent(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def search_connections(
+        self,
+    ) -> Callable[[dlp.SearchConnectionsRequest], dlp.SearchConnectionsResponse]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._SearchConnections(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def update_connection(
+        self,
+    ) -> Callable[[dlp.UpdateConnectionRequest], dlp.Connection]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdateConnection(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def update_deidentify_template(

@@ -17,6 +17,7 @@ from collections import OrderedDict
 import functools
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -27,7 +28,6 @@ from typing import (
     Type,
     Union,
 )
-import warnings
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -217,7 +217,11 @@ class DeliveryServiceAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, DeliveryServiceTransport] = "grpc_asyncio",
+        transport: Optional[
+            Union[
+                str, DeliveryServiceTransport, Callable[..., DeliveryServiceTransport]
+            ]
+        ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -229,9 +233,11 @@ class DeliveryServiceAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.DeliveryServiceTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,DeliveryServiceTransport,Callable[..., DeliveryServiceTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the DeliveryServiceTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -380,8 +386,8 @@ class DeliveryServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, delivery_vehicle, delivery_vehicle_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -389,7 +395,10 @@ class DeliveryServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = delivery_api.CreateDeliveryVehicleRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, delivery_api.CreateDeliveryVehicleRequest):
+            request = delivery_api.CreateDeliveryVehicleRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -402,20 +411,9 @@ class DeliveryServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_delivery_vehicle,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_delivery_vehicle
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -508,8 +506,8 @@ class DeliveryServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -517,7 +515,10 @@ class DeliveryServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = delivery_api.GetDeliveryVehicleRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, delivery_api.GetDeliveryVehicleRequest):
+            request = delivery_api.GetDeliveryVehicleRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -526,20 +527,9 @@ class DeliveryServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_delivery_vehicle,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_delivery_vehicle
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -653,8 +643,8 @@ class DeliveryServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([delivery_vehicle, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -662,7 +652,10 @@ class DeliveryServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = delivery_api.UpdateDeliveryVehicleRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, delivery_api.UpdateDeliveryVehicleRequest):
+            request = delivery_api.UpdateDeliveryVehicleRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -673,20 +666,9 @@ class DeliveryServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_delivery_vehicle,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_delivery_vehicle
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -767,24 +749,16 @@ class DeliveryServiceAsyncClient:
                 The BatchCreateTask response message.
         """
         # Create or coerce a protobuf request object.
-        request = delivery_api.BatchCreateTasksRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, delivery_api.BatchCreateTasksRequest):
+            request = delivery_api.BatchCreateTasksRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.batch_create_tasks,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.batch_create_tasks
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -927,8 +901,8 @@ class DeliveryServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, task, task_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -936,7 +910,10 @@ class DeliveryServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = delivery_api.CreateTaskRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, delivery_api.CreateTaskRequest):
+            request = delivery_api.CreateTaskRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -949,20 +926,9 @@ class DeliveryServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_task,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_task
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1060,8 +1026,8 @@ class DeliveryServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1069,7 +1035,10 @@ class DeliveryServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = delivery_api.GetTaskRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, delivery_api.GetTaskRequest):
+            request = delivery_api.GetTaskRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1078,20 +1047,7 @@ class DeliveryServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_task,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_task]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1107,140 +1063,6 @@ class DeliveryServiceAsyncClient:
             request,
             retry=retry,
             timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    async def search_tasks(
-        self,
-        request: Optional[Union[delivery_api.SearchTasksRequest, dict]] = None,
-        *,
-        parent: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> pagers.SearchTasksAsyncPager:
-        r"""Deprecated: Use ``GetTaskTrackingInfo`` instead.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.maps import fleetengine_delivery_v1
-
-            async def sample_search_tasks():
-                # Create a client
-                client = fleetengine_delivery_v1.DeliveryServiceAsyncClient()
-
-                # Initialize request argument(s)
-                request = fleetengine_delivery_v1.SearchTasksRequest(
-                    parent="parent_value",
-                    tracking_id="tracking_id_value",
-                )
-
-                # Make the request
-                page_result = client.search_tasks(request=request)
-
-                # Handle the response
-                async for response in page_result:
-                    print(response)
-
-        Args:
-            request (Optional[Union[google.maps.fleetengine_delivery_v1.types.SearchTasksRequest, dict]]):
-                The request object. Deprecated: Issue ``GetTaskTrackingInfoRequest``\ s to
-                ``GetTaskTrackingInfo`` instead.
-            parent (:class:`str`):
-                Required. Must be in the format
-                ``providers/{provider}``. The provider must be the
-                Google Cloud Project ID. For example,
-                ``sample-cloud-project``.
-
-                This corresponds to the ``parent`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.maps.fleetengine_delivery_v1.services.delivery_service.pagers.SearchTasksAsyncPager:
-                The SearchTasks response. It contains the set of Tasks that meet the search
-                   criteria in the SearchTasksRequest.
-
-                Iterating over this object will yield results and
-                resolve additional pages automatically.
-
-        """
-        warnings.warn(
-            "DeliveryServiceAsyncClient.search_tasks is deprecated", DeprecationWarning
-        )
-
-        # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([parent])
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        request = delivery_api.SearchTasksRequest(request)
-
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
-        if parent is not None:
-            request.parent = parent
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.search_tasks,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
-
-        # Validate the universe domain.
-        self._client._validate_universe_domain()
-
-        # Send the request.
-        response = await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # This method is paged; wrap the response in a pager, which provides
-        # an `__aiter__` convenience method.
-        response = pagers.SearchTasksAsyncPager(
-            method=rpc,
-            request=request,
-            response=response,
             metadata=metadata,
         )
 
@@ -1354,8 +1176,8 @@ class DeliveryServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([task, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1363,7 +1185,10 @@ class DeliveryServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = delivery_api.UpdateTaskRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, delivery_api.UpdateTaskRequest):
+            request = delivery_api.UpdateTaskRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1374,20 +1199,9 @@ class DeliveryServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_task,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_task
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1477,8 +1291,8 @@ class DeliveryServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1486,7 +1300,10 @@ class DeliveryServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = delivery_api.ListTasksRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, delivery_api.ListTasksRequest):
+            request = delivery_api.ListTasksRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1495,20 +1312,9 @@ class DeliveryServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_tasks,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_tasks
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1606,8 +1412,8 @@ class DeliveryServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1615,7 +1421,10 @@ class DeliveryServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = delivery_api.GetTaskTrackingInfoRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, delivery_api.GetTaskTrackingInfoRequest):
+            request = delivery_api.GetTaskTrackingInfoRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1624,20 +1433,9 @@ class DeliveryServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_task_tracking_info,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_task_tracking_info
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1725,8 +1523,8 @@ class DeliveryServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1734,7 +1532,10 @@ class DeliveryServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = delivery_api.ListDeliveryVehiclesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, delivery_api.ListDeliveryVehiclesRequest):
+            request = delivery_api.ListDeliveryVehiclesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1743,20 +1544,9 @@ class DeliveryServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_delivery_vehicles,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_delivery_vehicles
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.

@@ -3454,6 +3454,7 @@ def test_insert_rest(request_type):
                 {"description": "description_value", "range_": "range__value"}
             ],
             "asn": 322,
+            "identifier_range": "identifier_range_value",
             "keepalive_interval": 1914,
         },
         "bgp_peers": [
@@ -3474,15 +3475,20 @@ def test_insert_rest(request_type):
                 "custom_learned_ip_ranges": [{"range_": "range__value"}],
                 "custom_learned_route_priority": 3140,
                 "enable": "enable_value",
+                "enable_ipv4": True,
                 "enable_ipv6": True,
+                "export_policies": ["export_policies_value1", "export_policies_value2"],
+                "import_policies": ["import_policies_value1", "import_policies_value2"],
                 "interface_name": "interface_name_value",
                 "ip_address": "ip_address_value",
+                "ipv4_nexthop_address": "ipv4_nexthop_address_value",
                 "ipv6_nexthop_address": "ipv6_nexthop_address_value",
                 "management_type": "management_type_value",
                 "md5_authentication_key_name": "md5_authentication_key_name_value",
                 "name": "name_value",
                 "peer_asn": 845,
                 "peer_ip_address": "peer_ip_address_value",
+                "peer_ipv4_nexthop_address": "peer_ipv4_nexthop_address_value",
                 "peer_ipv6_nexthop_address": "peer_ipv6_nexthop_address_value",
                 "router_appliance_instance": "router_appliance_instance_value",
             }
@@ -3494,6 +3500,7 @@ def test_insert_rest(request_type):
         "interfaces": [
             {
                 "ip_range": "ip_range_value",
+                "ip_version": "ip_version_value",
                 "linked_interconnect_attachment": "linked_interconnect_attachment_value",
                 "linked_vpn_tunnel": "linked_vpn_tunnel_value",
                 "management_type": "management_type_value",
@@ -4013,6 +4020,7 @@ def test_insert_unary_rest(request_type):
                 {"description": "description_value", "range_": "range__value"}
             ],
             "asn": 322,
+            "identifier_range": "identifier_range_value",
             "keepalive_interval": 1914,
         },
         "bgp_peers": [
@@ -4033,15 +4041,20 @@ def test_insert_unary_rest(request_type):
                 "custom_learned_ip_ranges": [{"range_": "range__value"}],
                 "custom_learned_route_priority": 3140,
                 "enable": "enable_value",
+                "enable_ipv4": True,
                 "enable_ipv6": True,
+                "export_policies": ["export_policies_value1", "export_policies_value2"],
+                "import_policies": ["import_policies_value1", "import_policies_value2"],
                 "interface_name": "interface_name_value",
                 "ip_address": "ip_address_value",
+                "ipv4_nexthop_address": "ipv4_nexthop_address_value",
                 "ipv6_nexthop_address": "ipv6_nexthop_address_value",
                 "management_type": "management_type_value",
                 "md5_authentication_key_name": "md5_authentication_key_name_value",
                 "name": "name_value",
                 "peer_asn": 845,
                 "peer_ip_address": "peer_ip_address_value",
+                "peer_ipv4_nexthop_address": "peer_ipv4_nexthop_address_value",
                 "peer_ipv6_nexthop_address": "peer_ipv6_nexthop_address_value",
                 "router_appliance_instance": "router_appliance_instance_value",
             }
@@ -4053,6 +4066,7 @@ def test_insert_unary_rest(request_type):
         "interfaces": [
             {
                 "ip_range": "ip_range_value",
+                "ip_version": "ip_version_value",
                 "linked_interconnect_attachment": "linked_interconnect_attachment_value",
                 "linked_vpn_tunnel": "linked_vpn_tunnel_value",
                 "management_type": "management_type_value",
@@ -4938,6 +4952,7 @@ def test_patch_rest(request_type):
                 {"description": "description_value", "range_": "range__value"}
             ],
             "asn": 322,
+            "identifier_range": "identifier_range_value",
             "keepalive_interval": 1914,
         },
         "bgp_peers": [
@@ -4958,15 +4973,20 @@ def test_patch_rest(request_type):
                 "custom_learned_ip_ranges": [{"range_": "range__value"}],
                 "custom_learned_route_priority": 3140,
                 "enable": "enable_value",
+                "enable_ipv4": True,
                 "enable_ipv6": True,
+                "export_policies": ["export_policies_value1", "export_policies_value2"],
+                "import_policies": ["import_policies_value1", "import_policies_value2"],
                 "interface_name": "interface_name_value",
                 "ip_address": "ip_address_value",
+                "ipv4_nexthop_address": "ipv4_nexthop_address_value",
                 "ipv6_nexthop_address": "ipv6_nexthop_address_value",
                 "management_type": "management_type_value",
                 "md5_authentication_key_name": "md5_authentication_key_name_value",
                 "name": "name_value",
                 "peer_asn": 845,
                 "peer_ip_address": "peer_ip_address_value",
+                "peer_ipv4_nexthop_address": "peer_ipv4_nexthop_address_value",
                 "peer_ipv6_nexthop_address": "peer_ipv6_nexthop_address_value",
                 "router_appliance_instance": "router_appliance_instance_value",
             }
@@ -4978,6 +4998,7 @@ def test_patch_rest(request_type):
         "interfaces": [
             {
                 "ip_range": "ip_range_value",
+                "ip_version": "ip_version_value",
                 "linked_interconnect_attachment": "linked_interconnect_attachment_value",
                 "linked_vpn_tunnel": "linked_vpn_tunnel_value",
                 "management_type": "management_type_value",
@@ -5508,6 +5529,7 @@ def test_patch_unary_rest(request_type):
                 {"description": "description_value", "range_": "range__value"}
             ],
             "asn": 322,
+            "identifier_range": "identifier_range_value",
             "keepalive_interval": 1914,
         },
         "bgp_peers": [
@@ -5528,15 +5550,20 @@ def test_patch_unary_rest(request_type):
                 "custom_learned_ip_ranges": [{"range_": "range__value"}],
                 "custom_learned_route_priority": 3140,
                 "enable": "enable_value",
+                "enable_ipv4": True,
                 "enable_ipv6": True,
+                "export_policies": ["export_policies_value1", "export_policies_value2"],
+                "import_policies": ["import_policies_value1", "import_policies_value2"],
                 "interface_name": "interface_name_value",
                 "ip_address": "ip_address_value",
+                "ipv4_nexthop_address": "ipv4_nexthop_address_value",
                 "ipv6_nexthop_address": "ipv6_nexthop_address_value",
                 "management_type": "management_type_value",
                 "md5_authentication_key_name": "md5_authentication_key_name_value",
                 "name": "name_value",
                 "peer_asn": 845,
                 "peer_ip_address": "peer_ip_address_value",
+                "peer_ipv4_nexthop_address": "peer_ipv4_nexthop_address_value",
                 "peer_ipv6_nexthop_address": "peer_ipv6_nexthop_address_value",
                 "router_appliance_instance": "router_appliance_instance_value",
             }
@@ -5548,6 +5575,7 @@ def test_patch_unary_rest(request_type):
         "interfaces": [
             {
                 "ip_range": "ip_range_value",
+                "ip_version": "ip_version_value",
                 "linked_interconnect_attachment": "linked_interconnect_attachment_value",
                 "linked_vpn_tunnel": "linked_vpn_tunnel_value",
                 "management_type": "management_type_value",
@@ -6056,6 +6084,7 @@ def test_preview_rest(request_type):
                 {"description": "description_value", "range_": "range__value"}
             ],
             "asn": 322,
+            "identifier_range": "identifier_range_value",
             "keepalive_interval": 1914,
         },
         "bgp_peers": [
@@ -6076,15 +6105,20 @@ def test_preview_rest(request_type):
                 "custom_learned_ip_ranges": [{"range_": "range__value"}],
                 "custom_learned_route_priority": 3140,
                 "enable": "enable_value",
+                "enable_ipv4": True,
                 "enable_ipv6": True,
+                "export_policies": ["export_policies_value1", "export_policies_value2"],
+                "import_policies": ["import_policies_value1", "import_policies_value2"],
                 "interface_name": "interface_name_value",
                 "ip_address": "ip_address_value",
+                "ipv4_nexthop_address": "ipv4_nexthop_address_value",
                 "ipv6_nexthop_address": "ipv6_nexthop_address_value",
                 "management_type": "management_type_value",
                 "md5_authentication_key_name": "md5_authentication_key_name_value",
                 "name": "name_value",
                 "peer_asn": 845,
                 "peer_ip_address": "peer_ip_address_value",
+                "peer_ipv4_nexthop_address": "peer_ipv4_nexthop_address_value",
                 "peer_ipv6_nexthop_address": "peer_ipv6_nexthop_address_value",
                 "router_appliance_instance": "router_appliance_instance_value",
             }
@@ -6096,6 +6130,7 @@ def test_preview_rest(request_type):
         "interfaces": [
             {
                 "ip_range": "ip_range_value",
+                "ip_version": "ip_version_value",
                 "linked_interconnect_attachment": "linked_interconnect_attachment_value",
                 "linked_vpn_tunnel": "linked_vpn_tunnel_value",
                 "management_type": "management_type_value",
@@ -6577,6 +6612,7 @@ def test_update_rest(request_type):
                 {"description": "description_value", "range_": "range__value"}
             ],
             "asn": 322,
+            "identifier_range": "identifier_range_value",
             "keepalive_interval": 1914,
         },
         "bgp_peers": [
@@ -6597,15 +6633,20 @@ def test_update_rest(request_type):
                 "custom_learned_ip_ranges": [{"range_": "range__value"}],
                 "custom_learned_route_priority": 3140,
                 "enable": "enable_value",
+                "enable_ipv4": True,
                 "enable_ipv6": True,
+                "export_policies": ["export_policies_value1", "export_policies_value2"],
+                "import_policies": ["import_policies_value1", "import_policies_value2"],
                 "interface_name": "interface_name_value",
                 "ip_address": "ip_address_value",
+                "ipv4_nexthop_address": "ipv4_nexthop_address_value",
                 "ipv6_nexthop_address": "ipv6_nexthop_address_value",
                 "management_type": "management_type_value",
                 "md5_authentication_key_name": "md5_authentication_key_name_value",
                 "name": "name_value",
                 "peer_asn": 845,
                 "peer_ip_address": "peer_ip_address_value",
+                "peer_ipv4_nexthop_address": "peer_ipv4_nexthop_address_value",
                 "peer_ipv6_nexthop_address": "peer_ipv6_nexthop_address_value",
                 "router_appliance_instance": "router_appliance_instance_value",
             }
@@ -6617,6 +6658,7 @@ def test_update_rest(request_type):
         "interfaces": [
             {
                 "ip_range": "ip_range_value",
+                "ip_version": "ip_version_value",
                 "linked_interconnect_attachment": "linked_interconnect_attachment_value",
                 "linked_vpn_tunnel": "linked_vpn_tunnel_value",
                 "management_type": "management_type_value",
@@ -7147,6 +7189,7 @@ def test_update_unary_rest(request_type):
                 {"description": "description_value", "range_": "range__value"}
             ],
             "asn": 322,
+            "identifier_range": "identifier_range_value",
             "keepalive_interval": 1914,
         },
         "bgp_peers": [
@@ -7167,15 +7210,20 @@ def test_update_unary_rest(request_type):
                 "custom_learned_ip_ranges": [{"range_": "range__value"}],
                 "custom_learned_route_priority": 3140,
                 "enable": "enable_value",
+                "enable_ipv4": True,
                 "enable_ipv6": True,
+                "export_policies": ["export_policies_value1", "export_policies_value2"],
+                "import_policies": ["import_policies_value1", "import_policies_value2"],
                 "interface_name": "interface_name_value",
                 "ip_address": "ip_address_value",
+                "ipv4_nexthop_address": "ipv4_nexthop_address_value",
                 "ipv6_nexthop_address": "ipv6_nexthop_address_value",
                 "management_type": "management_type_value",
                 "md5_authentication_key_name": "md5_authentication_key_name_value",
                 "name": "name_value",
                 "peer_asn": 845,
                 "peer_ip_address": "peer_ip_address_value",
+                "peer_ipv4_nexthop_address": "peer_ipv4_nexthop_address_value",
                 "peer_ipv6_nexthop_address": "peer_ipv6_nexthop_address_value",
                 "router_appliance_instance": "router_appliance_instance_value",
             }
@@ -7187,6 +7235,7 @@ def test_update_unary_rest(request_type):
         "interfaces": [
             {
                 "ip_range": "ip_range_value",
+                "ip_version": "ip_version_value",
                 "linked_interconnect_attachment": "linked_interconnect_attachment_value",
                 "linked_vpn_tunnel": "linked_vpn_tunnel_value",
                 "management_type": "management_type_value",
