@@ -17,6 +17,7 @@ from collections import OrderedDict
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -604,7 +605,9 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, CatalogServiceTransport]] = None,
+        transport: Optional[
+            Union[str, CatalogServiceTransport, Callable[..., CatalogServiceTransport]]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -616,9 +619,11 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, CatalogServiceTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,CatalogServiceTransport,Callable[..., CatalogServiceTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the CatalogServiceTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -727,8 +732,15 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[CatalogServiceTransport], Callable[..., CatalogServiceTransport]
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., CatalogServiceTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -813,8 +825,8 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -822,10 +834,8 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a catalog_service.ListCatalogsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, catalog_service.ListCatalogsRequest):
             request = catalog_service.ListCatalogsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -949,8 +959,8 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
                 The catalog configuration.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([catalog, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -958,10 +968,8 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a catalog_service.UpdateCatalogRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, catalog_service.UpdateCatalogRequest):
             request = catalog_service.UpdateCatalogRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1082,8 +1090,8 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([catalog])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1091,10 +1099,8 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a catalog_service.SetDefaultBranchRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, catalog_service.SetDefaultBranchRequest):
             request = catalog_service.SetDefaultBranchRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1185,8 +1191,8 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([catalog])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1194,10 +1200,8 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a catalog_service.GetDefaultBranchRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, catalog_service.GetDefaultBranchRequest):
             request = catalog_service.GetDefaultBranchRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1295,8 +1299,8 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1304,10 +1308,8 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a catalog_service.GetCompletionConfigRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, catalog_service.GetCompletionConfigRequest):
             request = catalog_service.GetCompletionConfigRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1433,8 +1435,8 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([completion_config, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1442,10 +1444,8 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a catalog_service.UpdateCompletionConfigRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, catalog_service.UpdateCompletionConfigRequest):
             request = catalog_service.UpdateCompletionConfigRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1544,8 +1544,8 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
                 Catalog level attribute config.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1553,10 +1553,8 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a catalog_service.GetAttributesConfigRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, catalog_service.GetAttributesConfigRequest):
             request = catalog_service.GetAttributesConfigRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1677,8 +1675,8 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
                 Catalog level attribute config.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([attributes_config, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1686,10 +1684,8 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a catalog_service.UpdateAttributesConfigRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, catalog_service.UpdateAttributesConfigRequest):
             request = catalog_service.UpdateAttributesConfigRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1789,10 +1785,8 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
                 Catalog level attribute config.
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a catalog_service.AddCatalogAttributeRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, catalog_service.AddCatalogAttributeRequest):
             request = catalog_service.AddCatalogAttributeRequest(request)
 
@@ -1883,10 +1877,8 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
                 Catalog level attribute config.
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a catalog_service.RemoveCatalogAttributeRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, catalog_service.RemoveCatalogAttributeRequest):
             request = catalog_service.RemoveCatalogAttributeRequest(request)
 
@@ -1982,10 +1974,8 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
                 Catalog level attribute config.
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a catalog_service.ReplaceCatalogAttributeRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, catalog_service.ReplaceCatalogAttributeRequest):
             request = catalog_service.ReplaceCatalogAttributeRequest(request)
 

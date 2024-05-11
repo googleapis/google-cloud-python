@@ -17,6 +17,7 @@ from collections import OrderedDict
 import functools
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -200,7 +201,9 @@ class ServiceUsageAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, ServiceUsageTransport] = "grpc_asyncio",
+        transport: Optional[
+            Union[str, ServiceUsageTransport, Callable[..., ServiceUsageTransport]]
+        ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -212,9 +215,11 @@ class ServiceUsageAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.ServiceUsageTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,ServiceUsageTransport,Callable[..., ServiceUsageTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the ServiceUsageTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -318,15 +323,16 @@ class ServiceUsageAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = serviceusage.EnableServiceRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, serviceusage.EnableServiceRequest):
+            request = serviceusage.EnableServiceRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.enable_service,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.enable_service
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -422,15 +428,16 @@ class ServiceUsageAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = serviceusage.DisableServiceRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, serviceusage.DisableServiceRequest):
+            request = serviceusage.DisableServiceRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.disable_service,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.disable_service
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -512,15 +519,16 @@ class ServiceUsageAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = serviceusage.GetServiceRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, serviceusage.GetServiceRequest):
+            request = serviceusage.GetServiceRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_service,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_service
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -609,15 +617,16 @@ class ServiceUsageAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = serviceusage.ListServicesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, serviceusage.ListServicesRequest):
+            request = serviceusage.ListServicesRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_services,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_services
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -710,15 +719,16 @@ class ServiceUsageAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = serviceusage.BatchEnableServicesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, serviceusage.BatchEnableServicesRequest):
+            request = serviceusage.BatchEnableServicesRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.batch_enable_services,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.batch_enable_services
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -798,15 +808,16 @@ class ServiceUsageAsyncClient:
                 Response message for the BatchGetServices method.
         """
         # Create or coerce a protobuf request object.
-        request = serviceusage.BatchGetServicesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, serviceusage.BatchGetServicesRequest):
+            request = serviceusage.BatchGetServicesRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.batch_get_services,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.batch_get_services
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
