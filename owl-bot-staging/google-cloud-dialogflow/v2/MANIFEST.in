@@ -1,0 +1,2 @@
+recursive-include google/cloud/dialogflow *.py
+recursive-include google/cloud/dialogflow_v2 *.py
