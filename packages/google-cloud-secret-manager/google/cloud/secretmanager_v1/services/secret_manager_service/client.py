@@ -17,6 +17,7 @@ from collections import OrderedDict
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -577,7 +578,13 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, SecretManagerServiceTransport]] = None,
+        transport: Optional[
+            Union[
+                str,
+                SecretManagerServiceTransport,
+                Callable[..., SecretManagerServiceTransport],
+            ]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -589,9 +596,11 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, SecretManagerServiceTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,SecretManagerServiceTransport,Callable[..., SecretManagerServiceTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the SecretManagerServiceTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -700,8 +709,16 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[SecretManagerServiceTransport],
+                Callable[..., SecretManagerServiceTransport],
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., SecretManagerServiceTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -780,8 +797,8 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -789,10 +806,8 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.ListSecretsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.ListSecretsRequest):
             request = service.ListSecretsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -925,8 +940,8 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, secret_id, secret])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -934,10 +949,8 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.CreateSecretRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.CreateSecretRequest):
             request = service.CreateSecretRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1049,8 +1062,8 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, payload])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1058,10 +1071,8 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.AddSecretVersionRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.AddSecretVersionRequest):
             request = service.AddSecretVersionRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1164,8 +1175,8 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1173,10 +1184,8 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.GetSecretRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.GetSecretRequest):
             request = service.GetSecretRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1282,8 +1291,8 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([secret, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1291,10 +1300,8 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.UpdateSecretRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.UpdateSecretRequest):
             request = service.UpdateSecretRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1383,8 +1390,8 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1392,10 +1399,8 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.DeleteSecretRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.DeleteSecretRequest):
             request = service.DeleteSecretRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1495,8 +1500,8 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1504,10 +1509,8 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.ListSecretVersionsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.ListSecretVersionsRequest):
             request = service.ListSecretVersionsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1621,8 +1624,8 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1630,10 +1633,8 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.GetSecretVersionRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.GetSecretVersionRequest):
             request = service.GetSecretVersionRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1739,8 +1740,8 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1748,10 +1749,8 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.AccessSecretVersionRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.AccessSecretVersionRequest):
             request = service.AccessSecretVersionRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1854,8 +1853,8 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1863,10 +1862,8 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.DisableSecretVersionRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.DisableSecretVersionRequest):
             request = service.DisableSecretVersionRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1969,8 +1966,8 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1978,10 +1975,8 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.EnableSecretVersionRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.EnableSecretVersionRequest):
             request = service.EnableSecretVersionRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2085,8 +2080,8 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2094,10 +2089,8 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.DestroySecretVersionRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.DestroySecretVersionRequest):
             request = service.DestroySecretVersionRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2217,8 +2210,8 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
         """
         # Create or coerce a protobuf request object.
         if isinstance(request, dict):
-            # The request isn't a proto-plus wrapped type,
-            # so it must be constructed via keyword expansion.
+            # - The request isn't a proto-plus wrapped type,
+            #   so it must be constructed via keyword expansion.
             request = iam_policy_pb2.SetIamPolicyRequest(**request)
         elif not request:
             # Null request, just make one.
@@ -2332,8 +2325,8 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
         """
         # Create or coerce a protobuf request object.
         if isinstance(request, dict):
-            # The request isn't a proto-plus wrapped type,
-            # so it must be constructed via keyword expansion.
+            # - The request isn't a proto-plus wrapped type,
+            #   so it must be constructed via keyword expansion.
             request = iam_policy_pb2.GetIamPolicyRequest(**request)
         elif not request:
             # Null request, just make one.
@@ -2423,8 +2416,8 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
         """
         # Create or coerce a protobuf request object.
         if isinstance(request, dict):
-            # The request isn't a proto-plus wrapped type,
-            # so it must be constructed via keyword expansion.
+            # - The request isn't a proto-plus wrapped type,
+            #   so it must be constructed via keyword expansion.
             request = iam_policy_pb2.TestIamPermissionsRequest(**request)
         elif not request:
             # Null request, just make one.

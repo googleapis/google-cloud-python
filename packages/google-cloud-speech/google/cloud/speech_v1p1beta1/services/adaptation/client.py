@@ -17,6 +17,7 @@ from collections import OrderedDict
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -552,7 +553,9 @@ class AdaptationClient(metaclass=AdaptationClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, AdaptationTransport]] = None,
+        transport: Optional[
+            Union[str, AdaptationTransport, Callable[..., AdaptationTransport]]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -564,9 +567,11 @@ class AdaptationClient(metaclass=AdaptationClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, AdaptationTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,AdaptationTransport,Callable[..., AdaptationTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the AdaptationTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -672,8 +677,15 @@ class AdaptationClient(metaclass=AdaptationClientMeta):
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[AdaptationTransport], Callable[..., AdaptationTransport]
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., AdaptationTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -784,8 +796,8 @@ class AdaptationClient(metaclass=AdaptationClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, phrase_set, phrase_set_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -793,10 +805,8 @@ class AdaptationClient(metaclass=AdaptationClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cloud_speech_adaptation.CreatePhraseSetRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cloud_speech_adaptation.CreatePhraseSetRequest):
             request = cloud_speech_adaptation.CreatePhraseSetRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -906,8 +916,8 @@ class AdaptationClient(metaclass=AdaptationClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -915,10 +925,8 @@ class AdaptationClient(metaclass=AdaptationClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cloud_speech_adaptation.GetPhraseSetRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cloud_speech_adaptation.GetPhraseSetRequest):
             request = cloud_speech_adaptation.GetPhraseSetRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1027,8 +1035,8 @@ class AdaptationClient(metaclass=AdaptationClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1036,10 +1044,8 @@ class AdaptationClient(metaclass=AdaptationClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cloud_speech_adaptation.ListPhraseSetRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cloud_speech_adaptation.ListPhraseSetRequest):
             request = cloud_speech_adaptation.ListPhraseSetRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1161,8 +1167,8 @@ class AdaptationClient(metaclass=AdaptationClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([phrase_set, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1170,10 +1176,8 @@ class AdaptationClient(metaclass=AdaptationClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cloud_speech_adaptation.UpdatePhraseSetRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cloud_speech_adaptation.UpdatePhraseSetRequest):
             request = cloud_speech_adaptation.UpdatePhraseSetRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1264,8 +1268,8 @@ class AdaptationClient(metaclass=AdaptationClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1273,10 +1277,8 @@ class AdaptationClient(metaclass=AdaptationClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cloud_speech_adaptation.DeletePhraseSetRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cloud_speech_adaptation.DeletePhraseSetRequest):
             request = cloud_speech_adaptation.DeletePhraseSetRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1405,8 +1407,8 @@ class AdaptationClient(metaclass=AdaptationClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, custom_class, custom_class_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1414,10 +1416,8 @@ class AdaptationClient(metaclass=AdaptationClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cloud_speech_adaptation.CreateCustomClassRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cloud_speech_adaptation.CreateCustomClassRequest):
             request = cloud_speech_adaptation.CreateCustomClassRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1523,8 +1523,8 @@ class AdaptationClient(metaclass=AdaptationClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1532,10 +1532,8 @@ class AdaptationClient(metaclass=AdaptationClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cloud_speech_adaptation.GetCustomClassRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cloud_speech_adaptation.GetCustomClassRequest):
             request = cloud_speech_adaptation.GetCustomClassRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1644,8 +1642,8 @@ class AdaptationClient(metaclass=AdaptationClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1653,10 +1651,8 @@ class AdaptationClient(metaclass=AdaptationClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cloud_speech_adaptation.ListCustomClassesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cloud_speech_adaptation.ListCustomClassesRequest):
             request = cloud_speech_adaptation.ListCustomClassesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1782,8 +1778,8 @@ class AdaptationClient(metaclass=AdaptationClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([custom_class, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1791,10 +1787,8 @@ class AdaptationClient(metaclass=AdaptationClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cloud_speech_adaptation.UpdateCustomClassRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cloud_speech_adaptation.UpdateCustomClassRequest):
             request = cloud_speech_adaptation.UpdateCustomClassRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1894,8 +1888,8 @@ class AdaptationClient(metaclass=AdaptationClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1903,10 +1897,8 @@ class AdaptationClient(metaclass=AdaptationClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cloud_speech_adaptation.DeleteCustomClassRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cloud_speech_adaptation.DeleteCustomClassRequest):
             request = cloud_speech_adaptation.DeleteCustomClassRequest(request)
             # If we have keyword arguments corresponding to fields on the

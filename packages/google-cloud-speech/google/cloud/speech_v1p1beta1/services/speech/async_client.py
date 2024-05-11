@@ -20,6 +20,7 @@ from typing import (
     AsyncIterable,
     AsyncIterator,
     Awaitable,
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -194,7 +195,9 @@ class SpeechAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, SpeechTransport] = "grpc_asyncio",
+        transport: Optional[
+            Union[str, SpeechTransport, Callable[..., SpeechTransport]]
+        ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -206,9 +209,11 @@ class SpeechAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.SpeechTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,SpeechTransport,Callable[..., SpeechTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the SpeechTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -331,8 +336,8 @@ class SpeechAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([config, audio])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -340,7 +345,10 @@ class SpeechAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = cloud_speech.RecognizeRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cloud_speech.RecognizeRequest):
+            request = cloud_speech.RecognizeRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -351,21 +359,9 @@ class SpeechAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.recognize,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=5000.0,
-            ),
-            default_timeout=5000.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.recognize
+        ]
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -473,8 +469,8 @@ class SpeechAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([config, audio])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -482,7 +478,10 @@ class SpeechAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = cloud_speech.LongRunningRecognizeRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cloud_speech.LongRunningRecognizeRequest):
+            request = cloud_speech.LongRunningRecognizeRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -493,11 +492,9 @@ class SpeechAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.long_running_recognize,
-            default_timeout=5000.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.long_running_recognize
+        ]
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -657,21 +654,9 @@ class SpeechAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.streaming_recognize,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=5000.0,
-            ),
-            default_timeout=5000.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.streaming_recognize
+        ]
 
         # Validate the universe domain.
         self._client._validate_universe_domain()

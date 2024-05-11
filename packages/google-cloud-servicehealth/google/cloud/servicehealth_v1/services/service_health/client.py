@@ -17,6 +17,7 @@ from collections import OrderedDict
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -576,7 +577,9 @@ class ServiceHealthClient(metaclass=ServiceHealthClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, ServiceHealthTransport]] = None,
+        transport: Optional[
+            Union[str, ServiceHealthTransport, Callable[..., ServiceHealthTransport]]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -588,9 +591,11 @@ class ServiceHealthClient(metaclass=ServiceHealthClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ServiceHealthTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,ServiceHealthTransport,Callable[..., ServiceHealthTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the ServiceHealthTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -699,8 +704,15 @@ class ServiceHealthClient(metaclass=ServiceHealthClientMeta):
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[ServiceHealthTransport], Callable[..., ServiceHealthTransport]
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., ServiceHealthTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -780,8 +792,8 @@ class ServiceHealthClient(metaclass=ServiceHealthClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -789,10 +801,8 @@ class ServiceHealthClient(metaclass=ServiceHealthClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a event_resources.ListEventsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, event_resources.ListEventsRequest):
             request = event_resources.ListEventsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -903,8 +913,8 @@ class ServiceHealthClient(metaclass=ServiceHealthClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -912,10 +922,8 @@ class ServiceHealthClient(metaclass=ServiceHealthClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a event_resources.GetEventRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, event_resources.GetEventRequest):
             request = event_resources.GetEventRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1020,8 +1028,8 @@ class ServiceHealthClient(metaclass=ServiceHealthClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1029,10 +1037,8 @@ class ServiceHealthClient(metaclass=ServiceHealthClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a event_resources.ListOrganizationEventsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, event_resources.ListOrganizationEventsRequest):
             request = event_resources.ListOrganizationEventsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1146,8 +1152,8 @@ class ServiceHealthClient(metaclass=ServiceHealthClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1155,10 +1161,8 @@ class ServiceHealthClient(metaclass=ServiceHealthClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a event_resources.GetOrganizationEventRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, event_resources.GetOrganizationEventRequest):
             request = event_resources.GetOrganizationEventRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1261,8 +1265,8 @@ class ServiceHealthClient(metaclass=ServiceHealthClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1270,10 +1274,8 @@ class ServiceHealthClient(metaclass=ServiceHealthClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a event_resources.ListOrganizationImpactsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, event_resources.ListOrganizationImpactsRequest):
             request = event_resources.ListOrganizationImpactsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1391,8 +1393,8 @@ class ServiceHealthClient(metaclass=ServiceHealthClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1400,10 +1402,8 @@ class ServiceHealthClient(metaclass=ServiceHealthClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a event_resources.GetOrganizationImpactRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, event_resources.GetOrganizationImpactRequest):
             request = event_resources.GetOrganizationImpactRequest(request)
             # If we have keyword arguments corresponding to fields on the

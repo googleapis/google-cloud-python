@@ -17,6 +17,7 @@ from collections import OrderedDict
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -611,7 +612,13 @@ class SecureSourceManagerClient(metaclass=SecureSourceManagerClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, SecureSourceManagerTransport]] = None,
+        transport: Optional[
+            Union[
+                str,
+                SecureSourceManagerTransport,
+                Callable[..., SecureSourceManagerTransport],
+            ]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -623,9 +630,11 @@ class SecureSourceManagerClient(metaclass=SecureSourceManagerClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, SecureSourceManagerTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,SecureSourceManagerTransport,Callable[..., SecureSourceManagerTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the SecureSourceManagerTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -734,8 +743,16 @@ class SecureSourceManagerClient(metaclass=SecureSourceManagerClientMeta):
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[SecureSourceManagerTransport],
+                Callable[..., SecureSourceManagerTransport],
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., SecureSourceManagerTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -812,8 +829,8 @@ class SecureSourceManagerClient(metaclass=SecureSourceManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -821,10 +838,8 @@ class SecureSourceManagerClient(metaclass=SecureSourceManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a secure_source_manager.ListInstancesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, secure_source_manager.ListInstancesRequest):
             request = secure_source_manager.ListInstancesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -924,8 +939,8 @@ class SecureSourceManagerClient(metaclass=SecureSourceManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -933,10 +948,8 @@ class SecureSourceManagerClient(metaclass=SecureSourceManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a secure_source_manager.GetInstanceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, secure_source_manager.GetInstanceRequest):
             request = secure_source_manager.GetInstanceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1053,8 +1066,8 @@ class SecureSourceManagerClient(metaclass=SecureSourceManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, instance, instance_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1062,10 +1075,8 @@ class SecureSourceManagerClient(metaclass=SecureSourceManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a secure_source_manager.CreateInstanceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, secure_source_manager.CreateInstanceRequest):
             request = secure_source_manager.CreateInstanceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1184,8 +1195,8 @@ class SecureSourceManagerClient(metaclass=SecureSourceManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1193,10 +1204,8 @@ class SecureSourceManagerClient(metaclass=SecureSourceManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a secure_source_manager.DeleteInstanceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, secure_source_manager.DeleteInstanceRequest):
             request = secure_source_manager.DeleteInstanceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1303,8 +1312,8 @@ class SecureSourceManagerClient(metaclass=SecureSourceManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1312,10 +1321,8 @@ class SecureSourceManagerClient(metaclass=SecureSourceManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a secure_source_manager.ListRepositoriesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, secure_source_manager.ListRepositoriesRequest):
             request = secure_source_manager.ListRepositoriesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1422,8 +1429,8 @@ class SecureSourceManagerClient(metaclass=SecureSourceManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1431,10 +1438,8 @@ class SecureSourceManagerClient(metaclass=SecureSourceManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a secure_source_manager.GetRepositoryRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, secure_source_manager.GetRepositoryRequest):
             request = secure_source_manager.GetRepositoryRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1556,8 +1561,8 @@ class SecureSourceManagerClient(metaclass=SecureSourceManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, repository, repository_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1565,10 +1570,8 @@ class SecureSourceManagerClient(metaclass=SecureSourceManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a secure_source_manager.CreateRepositoryRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, secure_source_manager.CreateRepositoryRequest):
             request = secure_source_manager.CreateRepositoryRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1692,8 +1695,8 @@ class SecureSourceManagerClient(metaclass=SecureSourceManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1701,10 +1704,8 @@ class SecureSourceManagerClient(metaclass=SecureSourceManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a secure_source_manager.DeleteRepositoryRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, secure_source_manager.DeleteRepositoryRequest):
             request = secure_source_manager.DeleteRepositoryRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1835,8 +1836,8 @@ class SecureSourceManagerClient(metaclass=SecureSourceManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1845,8 +1846,8 @@ class SecureSourceManagerClient(metaclass=SecureSourceManagerClientMeta):
             )
 
         if isinstance(request, dict):
-            # The request isn't a proto-plus wrapped type,
-            # so it must be constructed via keyword expansion.
+            # - The request isn't a proto-plus wrapped type,
+            #   so it must be constructed via keyword expansion.
             request = iam_policy_pb2.GetIamPolicyRequest(**request)
         elif not request:
             # Null request, just make one.
@@ -1969,8 +1970,8 @@ class SecureSourceManagerClient(metaclass=SecureSourceManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1979,8 +1980,8 @@ class SecureSourceManagerClient(metaclass=SecureSourceManagerClientMeta):
             )
 
         if isinstance(request, dict):
-            # The request isn't a proto-plus wrapped type,
-            # so it must be constructed via keyword expansion.
+            # - The request isn't a proto-plus wrapped type,
+            #   so it must be constructed via keyword expansion.
             request = iam_policy_pb2.SetIamPolicyRequest(**request)
         elif not request:
             # Null request, just make one.
@@ -2075,8 +2076,8 @@ class SecureSourceManagerClient(metaclass=SecureSourceManagerClientMeta):
                 Response message for TestIamPermissions method.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2085,8 +2086,8 @@ class SecureSourceManagerClient(metaclass=SecureSourceManagerClientMeta):
             )
 
         if isinstance(request, dict):
-            # The request isn't a proto-plus wrapped type,
-            # so it must be constructed via keyword expansion.
+            # - The request isn't a proto-plus wrapped type,
+            #   so it must be constructed via keyword expansion.
             request = iam_policy_pb2.TestIamPermissionsRequest(**request)
         elif not request:
             # Null request, just make one.

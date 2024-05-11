@@ -17,6 +17,7 @@ from collections import OrderedDict
 import functools
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -232,7 +233,13 @@ class SecurityCenterManagementAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, SecurityCenterManagementTransport] = "grpc_asyncio",
+        transport: Optional[
+            Union[
+                str,
+                SecurityCenterManagementTransport,
+                Callable[..., SecurityCenterManagementTransport],
+            ]
+        ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -244,9 +251,11 @@ class SecurityCenterManagementAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.SecurityCenterManagementTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,SecurityCenterManagementTransport,Callable[..., SecurityCenterManagementTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the SecurityCenterManagementTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -371,8 +380,8 @@ class SecurityCenterManagementAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -380,9 +389,15 @@ class SecurityCenterManagementAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = security_center_management.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest(
-            request
-        )
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request,
+            security_center_management.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest,
+        ):
+            request = security_center_management.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest(
+                request
+            )
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -391,21 +406,9 @@ class SecurityCenterManagementAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_effective_security_health_analytics_custom_modules,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_effective_security_health_analytics_custom_modules
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -520,8 +523,8 @@ class SecurityCenterManagementAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -529,9 +532,15 @@ class SecurityCenterManagementAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = security_center_management.GetEffectiveSecurityHealthAnalyticsCustomModuleRequest(
-            request
-        )
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request,
+            security_center_management.GetEffectiveSecurityHealthAnalyticsCustomModuleRequest,
+        ):
+            request = security_center_management.GetEffectiveSecurityHealthAnalyticsCustomModuleRequest(
+                request
+            )
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -540,21 +549,9 @@ class SecurityCenterManagementAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_effective_security_health_analytics_custom_module,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_effective_security_health_analytics_custom_module
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -654,8 +651,8 @@ class SecurityCenterManagementAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -663,11 +660,15 @@ class SecurityCenterManagementAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = (
-            security_center_management.ListSecurityHealthAnalyticsCustomModulesRequest(
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request,
+            security_center_management.ListSecurityHealthAnalyticsCustomModulesRequest,
+        ):
+            request = security_center_management.ListSecurityHealthAnalyticsCustomModulesRequest(
                 request
             )
-        )
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -676,21 +677,9 @@ class SecurityCenterManagementAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_security_health_analytics_custom_modules,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_security_health_analytics_custom_modules
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -800,8 +789,8 @@ class SecurityCenterManagementAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -809,9 +798,15 @@ class SecurityCenterManagementAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = security_center_management.ListDescendantSecurityHealthAnalyticsCustomModulesRequest(
-            request
-        )
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request,
+            security_center_management.ListDescendantSecurityHealthAnalyticsCustomModulesRequest,
+        ):
+            request = security_center_management.ListDescendantSecurityHealthAnalyticsCustomModulesRequest(
+                request
+            )
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -820,21 +815,9 @@ class SecurityCenterManagementAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_descendant_security_health_analytics_custom_modules,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_descendant_security_health_analytics_custom_modules
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -937,8 +920,8 @@ class SecurityCenterManagementAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -946,11 +929,15 @@ class SecurityCenterManagementAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = (
-            security_center_management.GetSecurityHealthAnalyticsCustomModuleRequest(
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request,
+            security_center_management.GetSecurityHealthAnalyticsCustomModuleRequest,
+        ):
+            request = security_center_management.GetSecurityHealthAnalyticsCustomModuleRequest(
                 request
             )
-        )
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -959,21 +946,9 @@ class SecurityCenterManagementAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_security_health_analytics_custom_module,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_security_health_analytics_custom_module
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1086,8 +1061,8 @@ class SecurityCenterManagementAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, security_health_analytics_custom_module])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1095,11 +1070,15 @@ class SecurityCenterManagementAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = (
-            security_center_management.CreateSecurityHealthAnalyticsCustomModuleRequest(
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request,
+            security_center_management.CreateSecurityHealthAnalyticsCustomModuleRequest,
+        ):
+            request = security_center_management.CreateSecurityHealthAnalyticsCustomModuleRequest(
                 request
             )
-        )
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1112,11 +1091,9 @@ class SecurityCenterManagementAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_security_health_analytics_custom_module,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_security_health_analytics_custom_module
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1228,8 +1205,8 @@ class SecurityCenterManagementAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [security_health_analytics_custom_module, update_mask]
         )
@@ -1239,11 +1216,15 @@ class SecurityCenterManagementAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = (
-            security_center_management.UpdateSecurityHealthAnalyticsCustomModuleRequest(
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request,
+            security_center_management.UpdateSecurityHealthAnalyticsCustomModuleRequest,
+        ):
+            request = security_center_management.UpdateSecurityHealthAnalyticsCustomModuleRequest(
                 request
             )
-        )
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1256,11 +1237,9 @@ class SecurityCenterManagementAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_security_health_analytics_custom_module,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_security_health_analytics_custom_module
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1354,8 +1333,8 @@ class SecurityCenterManagementAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1363,11 +1342,15 @@ class SecurityCenterManagementAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = (
-            security_center_management.DeleteSecurityHealthAnalyticsCustomModuleRequest(
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request,
+            security_center_management.DeleteSecurityHealthAnalyticsCustomModuleRequest,
+        ):
+            request = security_center_management.DeleteSecurityHealthAnalyticsCustomModuleRequest(
                 request
             )
-        )
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1376,11 +1359,9 @@ class SecurityCenterManagementAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_security_health_analytics_custom_module,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_security_health_analytics_custom_module
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1493,8 +1474,8 @@ class SecurityCenterManagementAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, custom_config, resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1502,9 +1483,15 @@ class SecurityCenterManagementAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = security_center_management.SimulateSecurityHealthAnalyticsCustomModuleRequest(
-            request
-        )
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request,
+            security_center_management.SimulateSecurityHealthAnalyticsCustomModuleRequest,
+        ):
+            request = security_center_management.SimulateSecurityHealthAnalyticsCustomModuleRequest(
+                request
+            )
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1517,21 +1504,9 @@ class SecurityCenterManagementAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.simulate_security_health_analytics_custom_module,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.simulate_security_health_analytics_custom_module
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1632,8 +1607,8 @@ class SecurityCenterManagementAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1641,9 +1616,15 @@ class SecurityCenterManagementAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = security_center_management.ListEffectiveEventThreatDetectionCustomModulesRequest(
-            request
-        )
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request,
+            security_center_management.ListEffectiveEventThreatDetectionCustomModulesRequest,
+        ):
+            request = security_center_management.ListEffectiveEventThreatDetectionCustomModulesRequest(
+                request
+            )
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1652,21 +1633,9 @@ class SecurityCenterManagementAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_effective_event_threat_detection_custom_modules,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_effective_event_threat_detection_custom_modules
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1784,8 +1753,8 @@ class SecurityCenterManagementAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1793,9 +1762,15 @@ class SecurityCenterManagementAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = security_center_management.GetEffectiveEventThreatDetectionCustomModuleRequest(
-            request
-        )
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request,
+            security_center_management.GetEffectiveEventThreatDetectionCustomModuleRequest,
+        ):
+            request = security_center_management.GetEffectiveEventThreatDetectionCustomModuleRequest(
+                request
+            )
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1804,21 +1779,9 @@ class SecurityCenterManagementAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_effective_event_threat_detection_custom_module,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_effective_event_threat_detection_custom_module
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1917,8 +1880,8 @@ class SecurityCenterManagementAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1926,11 +1889,17 @@ class SecurityCenterManagementAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = (
-            security_center_management.ListEventThreatDetectionCustomModulesRequest(
-                request
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request,
+            security_center_management.ListEventThreatDetectionCustomModulesRequest,
+        ):
+            request = (
+                security_center_management.ListEventThreatDetectionCustomModulesRequest(
+                    request
+                )
             )
-        )
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1939,21 +1908,9 @@ class SecurityCenterManagementAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_event_threat_detection_custom_modules,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_event_threat_detection_custom_modules
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2063,8 +2020,8 @@ class SecurityCenterManagementAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2072,9 +2029,15 @@ class SecurityCenterManagementAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = security_center_management.ListDescendantEventThreatDetectionCustomModulesRequest(
-            request
-        )
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request,
+            security_center_management.ListDescendantEventThreatDetectionCustomModulesRequest,
+        ):
+            request = security_center_management.ListDescendantEventThreatDetectionCustomModulesRequest(
+                request
+            )
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2083,21 +2046,9 @@ class SecurityCenterManagementAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_descendant_event_threat_detection_custom_modules,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_descendant_event_threat_detection_custom_modules
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2203,8 +2154,8 @@ class SecurityCenterManagementAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2212,9 +2163,17 @@ class SecurityCenterManagementAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = security_center_management.GetEventThreatDetectionCustomModuleRequest(
-            request
-        )
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request,
+            security_center_management.GetEventThreatDetectionCustomModuleRequest,
+        ):
+            request = (
+                security_center_management.GetEventThreatDetectionCustomModuleRequest(
+                    request
+                )
+            )
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2223,21 +2182,9 @@ class SecurityCenterManagementAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_event_threat_detection_custom_module,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_event_threat_detection_custom_module
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2348,8 +2295,8 @@ class SecurityCenterManagementAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, event_threat_detection_custom_module])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2357,11 +2304,15 @@ class SecurityCenterManagementAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = (
-            security_center_management.CreateEventThreatDetectionCustomModuleRequest(
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request,
+            security_center_management.CreateEventThreatDetectionCustomModuleRequest,
+        ):
+            request = security_center_management.CreateEventThreatDetectionCustomModuleRequest(
                 request
             )
-        )
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2374,11 +2325,9 @@ class SecurityCenterManagementAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_event_threat_detection_custom_module,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_event_threat_detection_custom_module
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2489,8 +2438,8 @@ class SecurityCenterManagementAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([event_threat_detection_custom_module, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2498,11 +2447,15 @@ class SecurityCenterManagementAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = (
-            security_center_management.UpdateEventThreatDetectionCustomModuleRequest(
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request,
+            security_center_management.UpdateEventThreatDetectionCustomModuleRequest,
+        ):
+            request = security_center_management.UpdateEventThreatDetectionCustomModuleRequest(
                 request
             )
-        )
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2515,11 +2468,9 @@ class SecurityCenterManagementAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_event_threat_detection_custom_module,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_event_threat_detection_custom_module
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2613,8 +2564,8 @@ class SecurityCenterManagementAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2622,11 +2573,15 @@ class SecurityCenterManagementAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = (
-            security_center_management.DeleteEventThreatDetectionCustomModuleRequest(
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request,
+            security_center_management.DeleteEventThreatDetectionCustomModuleRequest,
+        ):
+            request = security_center_management.DeleteEventThreatDetectionCustomModuleRequest(
                 request
             )
-        )
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2635,11 +2590,9 @@ class SecurityCenterManagementAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_event_threat_detection_custom_module,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_event_threat_detection_custom_module
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2719,29 +2672,21 @@ class SecurityCenterManagementAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = (
-            security_center_management.ValidateEventThreatDetectionCustomModuleRequest(
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request,
+            security_center_management.ValidateEventThreatDetectionCustomModuleRequest,
+        ):
+            request = security_center_management.ValidateEventThreatDetectionCustomModuleRequest(
                 request
             )
-        )
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.validate_event_threat_detection_custom_module,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.validate_event_threat_detection_custom_module
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
