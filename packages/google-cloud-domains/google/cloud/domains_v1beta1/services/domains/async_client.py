@@ -17,6 +17,7 @@ from collections import OrderedDict
 import functools
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -195,7 +196,9 @@ class DomainsAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, DomainsTransport] = "grpc_asyncio",
+        transport: Optional[
+            Union[str, DomainsTransport, Callable[..., DomainsTransport]]
+        ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -207,9 +210,11 @@ class DomainsAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.DomainsTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,DomainsTransport,Callable[..., DomainsTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the DomainsTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -325,8 +330,8 @@ class DomainsAsyncClient:
                 Response for the SearchDomains method.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([location, query])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -334,7 +339,10 @@ class DomainsAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = domains.SearchDomainsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, domains.SearchDomainsRequest):
+            request = domains.SearchDomainsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -345,11 +353,9 @@ class DomainsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.search_domains,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.search_domains
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -443,8 +449,8 @@ class DomainsAsyncClient:
                 Response for the RetrieveRegisterParameters method.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([location, domain_name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -452,7 +458,10 @@ class DomainsAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = domains.RetrieveRegisterParametersRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, domains.RetrieveRegisterParametersRequest):
+            request = domains.RetrieveRegisterParametersRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -463,11 +472,9 @@ class DomainsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.retrieve_register_parameters,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.retrieve_register_parameters
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -618,8 +625,8 @@ class DomainsAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, registration, yearly_price])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -627,7 +634,10 @@ class DomainsAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = domains.RegisterDomainRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, domains.RegisterDomainRequest):
+            request = domains.RegisterDomainRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -640,11 +650,9 @@ class DomainsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.register_domain,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.register_domain
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -748,8 +756,8 @@ class DomainsAsyncClient:
                 Response for the RetrieveTransferParameters method.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([location, domain_name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -757,7 +765,10 @@ class DomainsAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = domains.RetrieveTransferParametersRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, domains.RetrieveTransferParametersRequest):
+            request = domains.RetrieveTransferParametersRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -768,11 +779,9 @@ class DomainsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.retrieve_transfer_parameters,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.retrieve_transfer_parameters
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -948,8 +957,8 @@ class DomainsAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [parent, registration, yearly_price, authorization_code]
         )
@@ -959,7 +968,10 @@ class DomainsAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = domains.TransferDomainRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, domains.TransferDomainRequest):
+            request = domains.TransferDomainRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -974,11 +986,9 @@ class DomainsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.transfer_domain,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.transfer_domain
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1072,8 +1082,8 @@ class DomainsAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1081,7 +1091,10 @@ class DomainsAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = domains.ListRegistrationsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, domains.ListRegistrationsRequest):
+            request = domains.ListRegistrationsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1090,11 +1103,9 @@ class DomainsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_registrations,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_registrations
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1205,8 +1216,8 @@ class DomainsAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1214,7 +1225,10 @@ class DomainsAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = domains.GetRegistrationRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, domains.GetRegistrationRequest):
+            request = domains.GetRegistrationRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1223,11 +1237,9 @@ class DomainsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_registration,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_registration
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1350,8 +1362,8 @@ class DomainsAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([registration, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1359,7 +1371,10 @@ class DomainsAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = domains.UpdateRegistrationRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, domains.UpdateRegistrationRequest):
+            request = domains.UpdateRegistrationRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1370,11 +1385,9 @@ class DomainsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_registration,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_registration
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1511,8 +1524,8 @@ class DomainsAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([registration, management_settings, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1520,7 +1533,10 @@ class DomainsAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = domains.ConfigureManagementSettingsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, domains.ConfigureManagementSettingsRequest):
+            request = domains.ConfigureManagementSettingsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1533,11 +1549,9 @@ class DomainsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.configure_management_settings,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.configure_management_settings
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1679,8 +1693,8 @@ class DomainsAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([registration, dns_settings, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1688,7 +1702,10 @@ class DomainsAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = domains.ConfigureDnsSettingsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, domains.ConfigureDnsSettingsRequest):
+            request = domains.ConfigureDnsSettingsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1701,11 +1718,9 @@ class DomainsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.configure_dns_settings,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.configure_dns_settings
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1841,8 +1856,8 @@ class DomainsAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([registration, contact_settings, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1850,7 +1865,10 @@ class DomainsAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = domains.ConfigureContactSettingsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, domains.ConfigureContactSettingsRequest):
+            request = domains.ConfigureContactSettingsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1863,11 +1881,9 @@ class DomainsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.configure_contact_settings,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.configure_contact_settings
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1994,8 +2010,8 @@ class DomainsAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2003,7 +2019,10 @@ class DomainsAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = domains.ExportRegistrationRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, domains.ExportRegistrationRequest):
+            request = domains.ExportRegistrationRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2012,11 +2031,9 @@ class DomainsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.export_registration,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.export_registration
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2141,8 +2158,8 @@ class DomainsAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2150,7 +2167,10 @@ class DomainsAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = domains.DeleteRegistrationRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, domains.DeleteRegistrationRequest):
+            request = domains.DeleteRegistrationRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2159,11 +2179,9 @@ class DomainsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_registration,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_registration
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2256,8 +2274,8 @@ class DomainsAsyncClient:
                 Defines an authorization code.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([registration])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2265,7 +2283,10 @@ class DomainsAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = domains.RetrieveAuthorizationCodeRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, domains.RetrieveAuthorizationCodeRequest):
+            request = domains.RetrieveAuthorizationCodeRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2274,11 +2295,9 @@ class DomainsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.retrieve_authorization_code,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.retrieve_authorization_code
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2365,8 +2384,8 @@ class DomainsAsyncClient:
                 Defines an authorization code.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([registration])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2374,7 +2393,10 @@ class DomainsAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = domains.ResetAuthorizationCodeRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, domains.ResetAuthorizationCodeRequest):
+            request = domains.ResetAuthorizationCodeRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2383,11 +2405,9 @@ class DomainsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.reset_authorization_code,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.reset_authorization_code
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.

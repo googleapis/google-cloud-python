@@ -17,6 +17,7 @@ from collections import OrderedDict
 import functools
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -218,7 +219,9 @@ class EdgeNetworkAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, EdgeNetworkTransport] = "grpc_asyncio",
+        transport: Optional[
+            Union[str, EdgeNetworkTransport, Callable[..., EdgeNetworkTransport]]
+        ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -230,9 +233,11 @@ class EdgeNetworkAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.EdgeNetworkTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,EdgeNetworkTransport,Callable[..., EdgeNetworkTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the EdgeNetworkTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -336,8 +341,8 @@ class EdgeNetworkAsyncClient:
                 The response of initializing a zone
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -345,7 +350,10 @@ class EdgeNetworkAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.InitializeZoneRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.InitializeZoneRequest):
+            request = service.InitializeZoneRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -354,11 +362,9 @@ class EdgeNetworkAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.initialize_zone,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.initialize_zone
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -451,8 +457,8 @@ class EdgeNetworkAsyncClient:
         )
 
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -460,7 +466,10 @@ class EdgeNetworkAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.ListZonesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.ListZonesRequest):
+            request = service.ListZonesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -469,11 +478,9 @@ class EdgeNetworkAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_zones,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_zones
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -566,8 +573,8 @@ class EdgeNetworkAsyncClient:
         )
 
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -575,7 +582,10 @@ class EdgeNetworkAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.GetZoneRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.GetZoneRequest):
+            request = service.GetZoneRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -584,11 +594,7 @@ class EdgeNetworkAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_zone,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_zone]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -675,8 +681,8 @@ class EdgeNetworkAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -684,7 +690,10 @@ class EdgeNetworkAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.ListNetworksRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.ListNetworksRequest):
+            request = service.ListNetworksRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -693,20 +702,9 @@ class EdgeNetworkAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_networks,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_networks
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -793,8 +791,8 @@ class EdgeNetworkAsyncClient:
                 Message describing Network object
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -802,7 +800,10 @@ class EdgeNetworkAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.GetNetworkRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.GetNetworkRequest):
+            request = service.GetNetworkRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -811,20 +812,9 @@ class EdgeNetworkAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_network,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_network
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -908,8 +898,8 @@ class EdgeNetworkAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -917,7 +907,10 @@ class EdgeNetworkAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.DiagnoseNetworkRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.DiagnoseNetworkRequest):
+            request = service.DiagnoseNetworkRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -926,20 +919,9 @@ class EdgeNetworkAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.diagnose_network,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.diagnose_network
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1047,8 +1029,8 @@ class EdgeNetworkAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, network, network_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1056,7 +1038,10 @@ class EdgeNetworkAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.CreateNetworkRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.CreateNetworkRequest):
+            request = service.CreateNetworkRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1069,11 +1054,9 @@ class EdgeNetworkAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_network,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_network
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1175,8 +1158,8 @@ class EdgeNetworkAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1184,7 +1167,10 @@ class EdgeNetworkAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.DeleteNetworkRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.DeleteNetworkRequest):
+            request = service.DeleteNetworkRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1193,11 +1179,9 @@ class EdgeNetworkAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_network,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_network
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1292,8 +1276,8 @@ class EdgeNetworkAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1301,7 +1285,10 @@ class EdgeNetworkAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.ListSubnetsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.ListSubnetsRequest):
+            request = service.ListSubnetsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1310,20 +1297,9 @@ class EdgeNetworkAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_subnets,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_subnets
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1410,8 +1386,8 @@ class EdgeNetworkAsyncClient:
                 Message describing Subnet object
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1419,7 +1395,10 @@ class EdgeNetworkAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.GetSubnetRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.GetSubnetRequest):
+            request = service.GetSubnetRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1428,20 +1407,9 @@ class EdgeNetworkAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_subnet,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_subnet
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1549,8 +1517,8 @@ class EdgeNetworkAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, subnet, subnet_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1558,7 +1526,10 @@ class EdgeNetworkAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.CreateSubnetRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.CreateSubnetRequest):
+            request = service.CreateSubnetRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1571,11 +1542,9 @@ class EdgeNetworkAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_subnet,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_subnet
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1686,8 +1655,8 @@ class EdgeNetworkAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([subnet, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1695,7 +1664,10 @@ class EdgeNetworkAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.UpdateSubnetRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.UpdateSubnetRequest):
+            request = service.UpdateSubnetRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1706,11 +1678,9 @@ class EdgeNetworkAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_subnet,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_subnet
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1814,8 +1784,8 @@ class EdgeNetworkAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1823,7 +1793,10 @@ class EdgeNetworkAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.DeleteSubnetRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.DeleteSubnetRequest):
+            request = service.DeleteSubnetRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1832,11 +1805,9 @@ class EdgeNetworkAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_subnet,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_subnet
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1931,8 +1902,8 @@ class EdgeNetworkAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1940,7 +1911,10 @@ class EdgeNetworkAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.ListInterconnectsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.ListInterconnectsRequest):
+            request = service.ListInterconnectsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1949,20 +1923,9 @@ class EdgeNetworkAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_interconnects,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_interconnects
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2051,8 +2014,8 @@ class EdgeNetworkAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2060,7 +2023,10 @@ class EdgeNetworkAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.GetInterconnectRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.GetInterconnectRequest):
+            request = service.GetInterconnectRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2069,20 +2035,9 @@ class EdgeNetworkAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_interconnect,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_interconnect
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2168,8 +2123,8 @@ class EdgeNetworkAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2177,7 +2132,10 @@ class EdgeNetworkAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.DiagnoseInterconnectRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.DiagnoseInterconnectRequest):
+            request = service.DiagnoseInterconnectRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2186,20 +2144,9 @@ class EdgeNetworkAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.diagnose_interconnect,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.diagnose_interconnect
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2289,8 +2236,8 @@ class EdgeNetworkAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2298,7 +2245,10 @@ class EdgeNetworkAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.ListInterconnectAttachmentsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.ListInterconnectAttachmentsRequest):
+            request = service.ListInterconnectAttachmentsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2307,20 +2257,9 @@ class EdgeNetworkAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_interconnect_attachments,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_interconnect_attachments
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2410,8 +2349,8 @@ class EdgeNetworkAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2419,7 +2358,10 @@ class EdgeNetworkAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.GetInterconnectAttachmentRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.GetInterconnectAttachmentRequest):
+            request = service.GetInterconnectAttachmentRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2428,20 +2370,9 @@ class EdgeNetworkAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_interconnect_attachment,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_interconnect_attachment
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2555,8 +2486,8 @@ class EdgeNetworkAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [parent, interconnect_attachment, interconnect_attachment_id]
         )
@@ -2566,7 +2497,10 @@ class EdgeNetworkAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.CreateInterconnectAttachmentRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.CreateInterconnectAttachmentRequest):
+            request = service.CreateInterconnectAttachmentRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2579,11 +2513,9 @@ class EdgeNetworkAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_interconnect_attachment,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_interconnect_attachment
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2688,8 +2620,8 @@ class EdgeNetworkAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2697,7 +2629,10 @@ class EdgeNetworkAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.DeleteInterconnectAttachmentRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.DeleteInterconnectAttachmentRequest):
+            request = service.DeleteInterconnectAttachmentRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2706,11 +2641,9 @@ class EdgeNetworkAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_interconnect_attachment,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_interconnect_attachment
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2805,8 +2738,8 @@ class EdgeNetworkAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2814,7 +2747,10 @@ class EdgeNetworkAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.ListRoutersRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.ListRoutersRequest):
+            request = service.ListRoutersRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2823,20 +2759,9 @@ class EdgeNetworkAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_routers,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_routers
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2923,8 +2848,8 @@ class EdgeNetworkAsyncClient:
                 Message describing Router object
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2932,7 +2857,10 @@ class EdgeNetworkAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.GetRouterRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.GetRouterRequest):
+            request = service.GetRouterRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2941,20 +2869,9 @@ class EdgeNetworkAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_router,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_router
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3037,8 +2954,8 @@ class EdgeNetworkAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3046,7 +2963,10 @@ class EdgeNetworkAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.DiagnoseRouterRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.DiagnoseRouterRequest):
+            request = service.DiagnoseRouterRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3055,20 +2975,9 @@ class EdgeNetworkAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.diagnose_router,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.diagnose_router
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3176,8 +3085,8 @@ class EdgeNetworkAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, router, router_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3185,7 +3094,10 @@ class EdgeNetworkAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.CreateRouterRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.CreateRouterRequest):
+            request = service.CreateRouterRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3198,11 +3110,9 @@ class EdgeNetworkAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_router,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_router
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3313,8 +3223,8 @@ class EdgeNetworkAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([router, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3322,7 +3232,10 @@ class EdgeNetworkAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.UpdateRouterRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.UpdateRouterRequest):
+            request = service.UpdateRouterRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3333,11 +3246,9 @@ class EdgeNetworkAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_router,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_router
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3441,8 +3352,8 @@ class EdgeNetworkAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3450,7 +3361,10 @@ class EdgeNetworkAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.DeleteRouterRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.DeleteRouterRequest):
+            request = service.DeleteRouterRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3459,11 +3373,9 @@ class EdgeNetworkAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_router,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_router
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.

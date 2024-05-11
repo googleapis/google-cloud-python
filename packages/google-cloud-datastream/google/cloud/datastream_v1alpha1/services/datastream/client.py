@@ -17,6 +17,7 @@ from collections import OrderedDict
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -601,7 +602,9 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, DatastreamTransport]] = None,
+        transport: Optional[
+            Union[str, DatastreamTransport, Callable[..., DatastreamTransport]]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -613,9 +616,11 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, DatastreamTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,DatastreamTransport,Callable[..., DatastreamTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the DatastreamTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -721,8 +726,15 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[DatastreamTransport], Callable[..., DatastreamTransport]
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., DatastreamTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -797,8 +809,8 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -806,10 +818,8 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a datastream.ListConnectionProfilesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, datastream.ListConnectionProfilesRequest):
             request = datastream.ListConnectionProfilesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -909,8 +919,8 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -918,10 +928,8 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a datastream.GetConnectionProfileRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, datastream.GetConnectionProfileRequest):
             request = datastream.GetConnectionProfileRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1047,8 +1055,8 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, connection_profile, connection_profile_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1056,10 +1064,8 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a datastream.CreateConnectionProfileRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, datastream.CreateConnectionProfileRequest):
             request = datastream.CreateConnectionProfileRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1194,8 +1200,8 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([connection_profile, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1203,10 +1209,8 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a datastream.UpdateConnectionProfileRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, datastream.UpdateConnectionProfileRequest):
             request = datastream.UpdateConnectionProfileRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1328,8 +1332,8 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1337,10 +1341,8 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a datastream.DeleteConnectionProfileRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, datastream.DeleteConnectionProfileRequest):
             request = datastream.DeleteConnectionProfileRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1448,10 +1450,8 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a datastream.DiscoverConnectionProfileRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, datastream.DiscoverConnectionProfileRequest):
             request = datastream.DiscoverConnectionProfileRequest(request)
 
@@ -1544,8 +1544,8 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1553,10 +1553,8 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a datastream.ListStreamsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, datastream.ListStreamsRequest):
             request = datastream.ListStreamsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1655,8 +1653,8 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1664,10 +1662,8 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a datastream.GetStreamRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, datastream.GetStreamRequest):
             request = datastream.GetStreamRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1786,8 +1782,8 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, stream, stream_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1795,10 +1791,8 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a datastream.CreateStreamRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, datastream.CreateStreamRequest):
             request = datastream.CreateStreamRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1926,8 +1920,8 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([stream, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1935,10 +1929,8 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a datastream.UpdateStreamRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, datastream.UpdateStreamRequest):
             request = datastream.UpdateStreamRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2056,8 +2048,8 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2065,10 +2057,8 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a datastream.DeleteStreamRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, datastream.DeleteStreamRequest):
             request = datastream.DeleteStreamRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2168,10 +2158,8 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a datastream.FetchErrorsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, datastream.FetchErrorsRequest):
             request = datastream.FetchErrorsRequest(request)
 
@@ -2275,8 +2263,8 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2284,10 +2272,8 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a datastream.FetchStaticIpsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, datastream.FetchStaticIpsRequest):
             request = datastream.FetchStaticIpsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2418,8 +2404,8 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, private_connection, private_connection_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2427,10 +2413,8 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a datastream.CreatePrivateConnectionRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, datastream.CreatePrivateConnectionRequest):
             request = datastream.CreatePrivateConnectionRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2539,8 +2523,8 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2548,10 +2532,8 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a datastream.GetPrivateConnectionRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, datastream.GetPrivateConnectionRequest):
             request = datastream.GetPrivateConnectionRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2647,8 +2629,8 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2656,10 +2638,8 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a datastream.ListPrivateConnectionsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, datastream.ListPrivateConnectionsRequest):
             request = datastream.ListPrivateConnectionsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2777,8 +2757,8 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2786,10 +2766,8 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a datastream.DeletePrivateConnectionRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, datastream.DeletePrivateConnectionRequest):
             request = datastream.DeletePrivateConnectionRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2919,8 +2897,8 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, route, route_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2928,10 +2906,8 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a datastream.CreateRouteRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, datastream.CreateRouteRequest):
             request = datastream.CreateRouteRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3037,8 +3013,8 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3046,10 +3022,8 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a datastream.GetRouteRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, datastream.GetRouteRequest):
             request = datastream.GetRouteRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3146,8 +3120,8 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3155,10 +3129,8 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a datastream.ListRoutesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, datastream.ListRoutesRequest):
             request = datastream.ListRoutesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3273,8 +3245,8 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3282,10 +3254,8 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a datastream.DeleteRouteRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, datastream.DeleteRouteRequest):
             request = datastream.DeleteRouteRequest(request)
             # If we have keyword arguments corresponding to fields on the

@@ -17,6 +17,7 @@ from collections import OrderedDict
 import functools
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -222,7 +223,13 @@ class WorkflowTemplateServiceAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, WorkflowTemplateServiceTransport] = "grpc_asyncio",
+        transport: Optional[
+            Union[
+                str,
+                WorkflowTemplateServiceTransport,
+                Callable[..., WorkflowTemplateServiceTransport],
+            ]
+        ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -234,9 +241,11 @@ class WorkflowTemplateServiceAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.WorkflowTemplateServiceTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,WorkflowTemplateServiceTransport,Callable[..., WorkflowTemplateServiceTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the WorkflowTemplateServiceTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -368,8 +377,8 @@ class WorkflowTemplateServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, template])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -377,7 +386,10 @@ class WorkflowTemplateServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = workflow_templates.CreateWorkflowTemplateRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, workflow_templates.CreateWorkflowTemplateRequest):
+            request = workflow_templates.CreateWorkflowTemplateRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -388,20 +400,9 @@ class WorkflowTemplateServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_workflow_template,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=600.0,
-            ),
-            default_timeout=600.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_workflow_template
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -500,8 +501,8 @@ class WorkflowTemplateServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -509,7 +510,10 @@ class WorkflowTemplateServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = workflow_templates.GetWorkflowTemplateRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, workflow_templates.GetWorkflowTemplateRequest):
+            request = workflow_templates.GetWorkflowTemplateRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -518,22 +522,9 @@ class WorkflowTemplateServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_workflow_template,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.InternalServerError,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=600.0,
-            ),
-            default_timeout=600.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_workflow_template
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -675,8 +666,8 @@ class WorkflowTemplateServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, parameters])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -684,7 +675,12 @@ class WorkflowTemplateServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = workflow_templates.InstantiateWorkflowTemplateRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, workflow_templates.InstantiateWorkflowTemplateRequest
+        ):
+            request = workflow_templates.InstantiateWorkflowTemplateRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -696,20 +692,9 @@ class WorkflowTemplateServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.instantiate_workflow_template,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=600.0,
-            ),
-            default_timeout=600.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.instantiate_workflow_template
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -868,8 +853,8 @@ class WorkflowTemplateServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, template])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -877,7 +862,14 @@ class WorkflowTemplateServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = workflow_templates.InstantiateInlineWorkflowTemplateRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, workflow_templates.InstantiateInlineWorkflowTemplateRequest
+        ):
+            request = workflow_templates.InstantiateInlineWorkflowTemplateRequest(
+                request
+            )
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -888,20 +880,9 @@ class WorkflowTemplateServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.instantiate_inline_workflow_template,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=600.0,
-            ),
-            default_timeout=600.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.instantiate_inline_workflow_template
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1004,8 +985,8 @@ class WorkflowTemplateServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([template])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1013,7 +994,10 @@ class WorkflowTemplateServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = workflow_templates.UpdateWorkflowTemplateRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, workflow_templates.UpdateWorkflowTemplateRequest):
+            request = workflow_templates.UpdateWorkflowTemplateRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1022,20 +1006,9 @@ class WorkflowTemplateServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_workflow_template,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=600.0,
-            ),
-            default_timeout=600.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_workflow_template
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1137,8 +1110,8 @@ class WorkflowTemplateServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1146,7 +1119,10 @@ class WorkflowTemplateServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = workflow_templates.ListWorkflowTemplatesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, workflow_templates.ListWorkflowTemplatesRequest):
+            request = workflow_templates.ListWorkflowTemplatesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1155,22 +1131,9 @@ class WorkflowTemplateServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_workflow_templates,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.InternalServerError,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=600.0,
-            ),
-            default_timeout=600.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_workflow_templates
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1270,8 +1233,8 @@ class WorkflowTemplateServiceAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1279,7 +1242,10 @@ class WorkflowTemplateServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = workflow_templates.DeleteWorkflowTemplateRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, workflow_templates.DeleteWorkflowTemplateRequest):
+            request = workflow_templates.DeleteWorkflowTemplateRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1288,20 +1254,9 @@ class WorkflowTemplateServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_workflow_template,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=600.0,
-            ),
-            default_timeout=600.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_workflow_template
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.

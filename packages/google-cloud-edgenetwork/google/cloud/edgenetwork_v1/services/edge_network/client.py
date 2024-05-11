@@ -17,6 +17,7 @@ from collections import OrderedDict
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -660,7 +661,9 @@ class EdgeNetworkClient(metaclass=EdgeNetworkClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, EdgeNetworkTransport]] = None,
+        transport: Optional[
+            Union[str, EdgeNetworkTransport, Callable[..., EdgeNetworkTransport]]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -672,9 +675,11 @@ class EdgeNetworkClient(metaclass=EdgeNetworkClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, EdgeNetworkTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,EdgeNetworkTransport,Callable[..., EdgeNetworkTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the EdgeNetworkTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -780,8 +785,15 @@ class EdgeNetworkClient(metaclass=EdgeNetworkClientMeta):
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[EdgeNetworkTransport], Callable[..., EdgeNetworkTransport]
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., EdgeNetworkTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -853,8 +865,8 @@ class EdgeNetworkClient(metaclass=EdgeNetworkClientMeta):
                 The response of initializing a zone
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -862,10 +874,8 @@ class EdgeNetworkClient(metaclass=EdgeNetworkClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.InitializeZoneRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.InitializeZoneRequest):
             request = service.InitializeZoneRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -966,8 +976,8 @@ class EdgeNetworkClient(metaclass=EdgeNetworkClientMeta):
         warnings.warn("EdgeNetworkClient.list_zones is deprecated", DeprecationWarning)
 
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -975,10 +985,8 @@ class EdgeNetworkClient(metaclass=EdgeNetworkClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.ListZonesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.ListZonesRequest):
             request = service.ListZonesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1079,8 +1087,8 @@ class EdgeNetworkClient(metaclass=EdgeNetworkClientMeta):
         warnings.warn("EdgeNetworkClient.get_zone is deprecated", DeprecationWarning)
 
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1088,10 +1096,8 @@ class EdgeNetworkClient(metaclass=EdgeNetworkClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.GetZoneRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.GetZoneRequest):
             request = service.GetZoneRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1188,8 +1194,8 @@ class EdgeNetworkClient(metaclass=EdgeNetworkClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1197,10 +1203,8 @@ class EdgeNetworkClient(metaclass=EdgeNetworkClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.ListNetworksRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.ListNetworksRequest):
             request = service.ListNetworksRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1297,8 +1301,8 @@ class EdgeNetworkClient(metaclass=EdgeNetworkClientMeta):
                 Message describing Network object
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1306,10 +1310,8 @@ class EdgeNetworkClient(metaclass=EdgeNetworkClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.GetNetworkRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.GetNetworkRequest):
             request = service.GetNetworkRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1403,8 +1405,8 @@ class EdgeNetworkClient(metaclass=EdgeNetworkClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1412,10 +1414,8 @@ class EdgeNetworkClient(metaclass=EdgeNetworkClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.DiagnoseNetworkRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.DiagnoseNetworkRequest):
             request = service.DiagnoseNetworkRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1533,8 +1533,8 @@ class EdgeNetworkClient(metaclass=EdgeNetworkClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, network, network_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1542,10 +1542,8 @@ class EdgeNetworkClient(metaclass=EdgeNetworkClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.CreateNetworkRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.CreateNetworkRequest):
             request = service.CreateNetworkRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1661,8 +1659,8 @@ class EdgeNetworkClient(metaclass=EdgeNetworkClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1670,10 +1668,8 @@ class EdgeNetworkClient(metaclass=EdgeNetworkClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.DeleteNetworkRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.DeleteNetworkRequest):
             request = service.DeleteNetworkRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1778,8 +1774,8 @@ class EdgeNetworkClient(metaclass=EdgeNetworkClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1787,10 +1783,8 @@ class EdgeNetworkClient(metaclass=EdgeNetworkClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.ListSubnetsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.ListSubnetsRequest):
             request = service.ListSubnetsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1887,8 +1881,8 @@ class EdgeNetworkClient(metaclass=EdgeNetworkClientMeta):
                 Message describing Subnet object
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1896,10 +1890,8 @@ class EdgeNetworkClient(metaclass=EdgeNetworkClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.GetSubnetRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.GetSubnetRequest):
             request = service.GetSubnetRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2017,8 +2009,8 @@ class EdgeNetworkClient(metaclass=EdgeNetworkClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, subnet, subnet_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2026,10 +2018,8 @@ class EdgeNetworkClient(metaclass=EdgeNetworkClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.CreateSubnetRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.CreateSubnetRequest):
             request = service.CreateSubnetRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2154,8 +2144,8 @@ class EdgeNetworkClient(metaclass=EdgeNetworkClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([subnet, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2163,10 +2153,8 @@ class EdgeNetworkClient(metaclass=EdgeNetworkClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.UpdateSubnetRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.UpdateSubnetRequest):
             request = service.UpdateSubnetRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2282,8 +2270,8 @@ class EdgeNetworkClient(metaclass=EdgeNetworkClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2291,10 +2279,8 @@ class EdgeNetworkClient(metaclass=EdgeNetworkClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.DeleteSubnetRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.DeleteSubnetRequest):
             request = service.DeleteSubnetRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2399,8 +2385,8 @@ class EdgeNetworkClient(metaclass=EdgeNetworkClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2408,10 +2394,8 @@ class EdgeNetworkClient(metaclass=EdgeNetworkClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.ListInterconnectsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.ListInterconnectsRequest):
             request = service.ListInterconnectsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2510,8 +2494,8 @@ class EdgeNetworkClient(metaclass=EdgeNetworkClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2519,10 +2503,8 @@ class EdgeNetworkClient(metaclass=EdgeNetworkClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.GetInterconnectRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.GetInterconnectRequest):
             request = service.GetInterconnectRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2618,8 +2600,8 @@ class EdgeNetworkClient(metaclass=EdgeNetworkClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2627,10 +2609,8 @@ class EdgeNetworkClient(metaclass=EdgeNetworkClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.DiagnoseInterconnectRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.DiagnoseInterconnectRequest):
             request = service.DiagnoseInterconnectRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2730,8 +2710,8 @@ class EdgeNetworkClient(metaclass=EdgeNetworkClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2739,10 +2719,8 @@ class EdgeNetworkClient(metaclass=EdgeNetworkClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.ListInterconnectAttachmentsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.ListInterconnectAttachmentsRequest):
             request = service.ListInterconnectAttachmentsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2844,8 +2822,8 @@ class EdgeNetworkClient(metaclass=EdgeNetworkClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2853,10 +2831,8 @@ class EdgeNetworkClient(metaclass=EdgeNetworkClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.GetInterconnectAttachmentRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.GetInterconnectAttachmentRequest):
             request = service.GetInterconnectAttachmentRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2982,8 +2958,8 @@ class EdgeNetworkClient(metaclass=EdgeNetworkClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [parent, interconnect_attachment, interconnect_attachment_id]
         )
@@ -2993,10 +2969,8 @@ class EdgeNetworkClient(metaclass=EdgeNetworkClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.CreateInterconnectAttachmentRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.CreateInterconnectAttachmentRequest):
             request = service.CreateInterconnectAttachmentRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3117,8 +3091,8 @@ class EdgeNetworkClient(metaclass=EdgeNetworkClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3126,10 +3100,8 @@ class EdgeNetworkClient(metaclass=EdgeNetworkClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.DeleteInterconnectAttachmentRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.DeleteInterconnectAttachmentRequest):
             request = service.DeleteInterconnectAttachmentRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3236,8 +3208,8 @@ class EdgeNetworkClient(metaclass=EdgeNetworkClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3245,10 +3217,8 @@ class EdgeNetworkClient(metaclass=EdgeNetworkClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.ListRoutersRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.ListRoutersRequest):
             request = service.ListRoutersRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3345,8 +3315,8 @@ class EdgeNetworkClient(metaclass=EdgeNetworkClientMeta):
                 Message describing Router object
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3354,10 +3324,8 @@ class EdgeNetworkClient(metaclass=EdgeNetworkClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.GetRouterRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.GetRouterRequest):
             request = service.GetRouterRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3450,8 +3418,8 @@ class EdgeNetworkClient(metaclass=EdgeNetworkClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3459,10 +3427,8 @@ class EdgeNetworkClient(metaclass=EdgeNetworkClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.DiagnoseRouterRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.DiagnoseRouterRequest):
             request = service.DiagnoseRouterRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3580,8 +3546,8 @@ class EdgeNetworkClient(metaclass=EdgeNetworkClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, router, router_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3589,10 +3555,8 @@ class EdgeNetworkClient(metaclass=EdgeNetworkClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.CreateRouterRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.CreateRouterRequest):
             request = service.CreateRouterRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3717,8 +3681,8 @@ class EdgeNetworkClient(metaclass=EdgeNetworkClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([router, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3726,10 +3690,8 @@ class EdgeNetworkClient(metaclass=EdgeNetworkClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.UpdateRouterRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.UpdateRouterRequest):
             request = service.UpdateRouterRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3845,8 +3807,8 @@ class EdgeNetworkClient(metaclass=EdgeNetworkClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3854,10 +3816,8 @@ class EdgeNetworkClient(metaclass=EdgeNetworkClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.DeleteRouterRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.DeleteRouterRequest):
             request = service.DeleteRouterRequest(request)
             # If we have keyword arguments corresponding to fields on the
