@@ -2121,7 +2121,13 @@
             "component": "google-cloud-public-ca",
             "extra-files": [
                 "google/cloud/security/publicca/gapic_version.py",
+                "google/cloud/security/publicca_v1/gapic_version.py",
                 "google/cloud/security/publicca_v1beta1/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.security.publicca.v1.json",
+                    "type": "json"
+                },
                 {
                     "jsonpath": "$.clientLibrary.version",
                     "path": "samples/generated_samples/snippet_metadata_google.cloud.security.publicca.v1beta1.json",
@@ -2902,6 +2908,27 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-visionai": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
+            "component": "google-cloud-visionai",
+            "extra-files": [
+                "google/cloud/visionai/gapic_version.py",
+                "google/cloud/visionai_v1/gapic_version.py",
+                "google/cloud/visionai_v1alpha1/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.visionai.v1.json",
+                    "type": "json"
+                },
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.visionai.v1alpha1.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-vm-migration": {
             "bump-minor-pre-major": true,
             "bump-patch-for-minor-pre-major": true,
@@ -3135,6 +3162,21 @@
                 {
                     "jsonpath": "$.clientLibrary.version",
                     "path": "samples/generated_samples/snippet_metadata_google.maps.places.v1.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
+        "packages/google-maps-routeoptimization": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
+            "component": "google-maps-routeoptimization",
+            "extra-files": [
+                "google/maps/routeoptimization/gapic_version.py",
+                "google/maps/routeoptimization_v1/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.maps.routeoptimization.v1.json",
                     "type": "json"
                 }
             ],
