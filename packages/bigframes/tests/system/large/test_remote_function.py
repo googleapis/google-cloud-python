@@ -221,6 +221,41 @@ def test_remote_function_stringify_with_ibis(
         )
 
 
+# @pytest.mark.flaky(retries=2, delay=120)
+def test_remote_function_binop(session, scalars_dfs, dataset_id, bq_cf_connection):
+    try:
+
+        def func(x, y):
+            return x * abs(y % 4)
+
+        remote_func = session.remote_function(
+            [str, int],
+            str,
+            dataset_id,
+            bq_cf_connection,
+            reuse=False,
+        )(func)
+
+        scalars_df, scalars_pandas_df = scalars_dfs
+
+        scalars_df = scalars_df.dropna()
+        scalars_pandas_df = scalars_pandas_df.dropna()
+        bf_result = (
+            scalars_df["string_col"]
+            .combine(scalars_df["int64_col"], remote_func)
+            .to_pandas()
+        )
+        pd_result = scalars_pandas_df["string_col"].combine(
+            scalars_pandas_df["int64_col"], func
+        )
+        pandas.testing.assert_series_equal(bf_result, pd_result)
+    finally:
+        # clean up the gcp assets created for the remote function
+        cleanup_remote_function_assets(
+            session.bqclient, session.cloudfunctionsclient, remote_func
+        )
+
+
 @pytest.mark.flaky(retries=2, delay=120)
 def test_remote_function_decorator_with_bigframes_series(
     session, scalars_dfs, dataset_id, bq_cf_connection

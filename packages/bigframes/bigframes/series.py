@@ -1031,9 +1031,9 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         if lower is None and upper is None:
             return self
         if lower is None:
-            return self._apply_binary_op(upper, ops.clipupper_op, alignment="left")
+            return self._apply_binary_op(upper, ops.minimum_op, alignment="left")
         if upper is None:
-            return self._apply_binary_op(lower, ops.cliplower_op, alignment="left")
+            return self._apply_binary_op(lower, ops.maximum_op, alignment="left")
         value_id, lower_id, upper_id, block = self._align3(lower, upper)
         block, result_id = block.apply_ternary_op(
             value_id, lower_id, upper_id, ops.clip_op
@@ -1367,6 +1367,38 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         reprojected_series = Series(self._block._force_reproject())
         result_series = reprojected_series._apply_unary_op(
             ops.RemoteFunctionOp(func=func, apply_on_null=True)
+        )
+
+        # return Series with materialized result so that any error in the remote
+        # function is caught early
+        materialized_series = result_series._cached()
+        return materialized_series
+
+    def combine(
+        self,
+        other,
+        func,
+    ) -> Series:
+        if not callable(func):
+            raise ValueError(
+                "Only a ufunc (a function that applies to the entire Series) or a remote function that only works on single values are supported."
+            )
+
+        if not hasattr(func, "bigframes_remote_function"):
+            # Keep this in sync with .apply
+            try:
+                return func(self, other)
+            except Exception as ex:
+                # This could happen if any of the operators in func is not
+                # supported on a Series. Let's guide the customer to use a
+                # remote function instead
+                if hasattr(ex, "message"):
+                    ex.message += f"\n{_remote_function_recommendation_message}"
+                raise
+
+        reprojected_series = Series(self._block._force_reproject())
+        result_series = reprojected_series._apply_binary_op(
+            other, ops.BinaryRemoteFunctionOp(func=func)
         )
 
         # return Series with materialized result so that any error in the remote

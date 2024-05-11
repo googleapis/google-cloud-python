@@ -1279,6 +1279,62 @@ class Series(NDFrame):  # type: ignore[misc]
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
+    def combine(
+        self,
+        other: Series | Hashable,
+        func,
+    ) -> Series:
+        """
+        Combine the Series with a Series or scalar according to `func`.
+
+        Combine the Series and `other` using `func` to perform elementwise
+        selection for combined Series.
+        `fill_value` is assumed when value is missing at some index
+        from one of the two objects being combined.
+
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> import numpy as np
+            >>> bpd.options.display.progress_bar = None
+
+            Consider 2 Datasets ``s1`` and ``s2`` containing
+            highest clocked speeds of different birds.
+
+            >>> s1 = bpd.Series({'falcon': 330.0, 'eagle': 160.0})
+            >>> s1
+            falcon    330.0
+            eagle     160.0
+            dtype: Float64
+            >>> s2 = bpd.Series({'falcon': 345.0, 'eagle': 200.0, 'duck': 30.0})
+            >>> s2
+            falcon    345.0
+            eagle     200.0
+            duck       30.0
+            dtype: Float64
+
+            Now, to combine the two datasets and view the highest speeds
+            of the birds across the two datasets
+
+            >>> s1.combine(s2, np.maximum)
+            falcon    345.0
+            eagle     200.0
+            duck       <NA>
+            dtype: Float64
+
+        Args:
+            other (Series or scalar):
+                The value(s) to be combined with the `Series`.
+            func (function):
+                BigFrames DataFrames ``remote_function`` to apply.
+                Takes two scalars as inputs and returns an element.
+                Also accepts some numpy binary functions.
+
+        Returns:
+            Series: The result of combining the Series with the other object.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
     def groupby(
         self,
         by=None,

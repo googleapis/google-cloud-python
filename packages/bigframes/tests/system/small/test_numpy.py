@@ -81,42 +81,20 @@ def test_df_ufuncs(scalars_dfs, opname):
         ("multiply",),
         ("divide",),
         ("power",),
-        ("arctan2",),
-    ],
-)
-def test_series_binary_ufuncs(floats_product_pd, floats_product_bf, opname):
-    bf_result = getattr(np, opname)(
-        floats_product_bf.float64_col_x, floats_product_bf.float64_col_y
-    ).to_pandas()
-    pd_result = getattr(np, opname)(
-        floats_product_pd.float64_col_x, floats_product_pd.float64_col_y
-    )
-    pd.testing.assert_series_equal(bf_result, pd_result)
-
-
-@pytest.mark.parametrize(
-    ("opname",),
-    [
-        ("add",),
-        ("subtract",),
-        ("multiply",),
-        ("divide",),
-        ("power",),
     ],
 )
 def test_df_binary_ufuncs(scalars_dfs, opname):
     scalars_df, scalars_pandas_df = scalars_dfs
+    op = getattr(np, opname)
 
-    bf_result = getattr(np, opname)(
-        scalars_df[["float64_col", "int64_col"]], 5.1
-    ).to_pandas()
-    pd_result = getattr(np, opname)(
-        scalars_pandas_df[["float64_col", "int64_col"]], 5.1
-    )
+    bf_result = op(scalars_df[["float64_col", "int64_col"]], 5.1).to_pandas()
+    pd_result = op(scalars_pandas_df[["float64_col", "int64_col"]], 5.1)
 
     pd.testing.assert_frame_equal(bf_result, pd_result)
 
 
+# Operations tested here don't work on full dataframe in numpy+pandas
+# Maybe because of nullable dtypes?
 @pytest.mark.parametrize(
     ("x", "y"),
     [
@@ -124,12 +102,25 @@ def test_df_binary_ufuncs(scalars_dfs, opname):
         ("float64_col", "int64_col"),
     ],
 )
-def test_series_atan2(scalars_dfs, x, y):
-    # Test atan2 separately as pandas errors when passing entire df as input, so pass only series
+@pytest.mark.parametrize(
+    ("opname",),
+    [
+        ("add",),
+        ("subtract",),
+        ("multiply",),
+        ("divide",),
+        ("arctan2",),
+        ("minimum",),
+        ("maximum",),
+    ],
+)
+def test_series_binary_ufuncs(scalars_dfs, x, y, opname):
     scalars_df, scalars_pandas_df = scalars_dfs
 
-    bf_result = np.arctan2(scalars_df[x], scalars_df[y]).to_pandas()
-    pd_result = np.arctan2(scalars_pandas_df[x], scalars_pandas_df[y])
+    op = getattr(np, opname)
+
+    bf_result = op(scalars_df[x], scalars_df[y]).to_pandas()
+    pd_result = op(scalars_pandas_df[x], scalars_pandas_df[y])
 
     pd.testing.assert_series_equal(bf_result, pd_result)
 

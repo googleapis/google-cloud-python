@@ -3509,6 +3509,41 @@ def test_apply_numpy_ufunc(scalars_dfs, ufunc):
     assert_series_equal(bf_result, pd_result)
 
 
+@pytest.mark.parametrize(
+    ("ufunc",),
+    [
+        pytest.param(numpy.add),
+        pytest.param(numpy.divide),
+    ],
+    ids=[
+        "add",
+        "divide",
+    ],
+)
+def test_combine_series_ufunc(scalars_dfs, ufunc):
+    scalars_df, scalars_pandas_df = scalars_dfs
+
+    bf_col = scalars_df["int64_col"].dropna()
+    bf_result = bf_col.combine(bf_col, ufunc).to_pandas()
+
+    pd_col = scalars_pandas_df["int64_col"].dropna()
+    pd_result = pd_col.combine(pd_col, ufunc)
+
+    assert_series_equal(bf_result, pd_result, check_dtype=False)
+
+
+def test_combine_scalar_ufunc(scalars_dfs):
+    scalars_df, scalars_pandas_df = scalars_dfs
+
+    bf_col = scalars_df["int64_col"].dropna()
+    bf_result = bf_col.combine(2.5, numpy.add).to_pandas()
+
+    pd_col = scalars_pandas_df["int64_col"].dropna()
+    pd_result = pd_col.combine(2.5, numpy.add)
+
+    assert_series_equal(bf_result, pd_result, check_dtype=False)
+
+
 def test_apply_simple_udf(scalars_dfs):
     scalars_df, scalars_pandas_df = scalars_dfs
 
