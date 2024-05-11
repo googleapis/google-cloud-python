@@ -17,6 +17,7 @@ from collections import OrderedDict
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -630,7 +631,13 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, ApiGatewayServiceTransport]] = None,
+        transport: Optional[
+            Union[
+                str,
+                ApiGatewayServiceTransport,
+                Callable[..., ApiGatewayServiceTransport],
+            ]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -642,9 +649,11 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ApiGatewayServiceTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,ApiGatewayServiceTransport,Callable[..., ApiGatewayServiceTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the ApiGatewayServiceTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -753,8 +762,16 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[ApiGatewayServiceTransport],
+                Callable[..., ApiGatewayServiceTransport],
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., ApiGatewayServiceTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -831,8 +848,8 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -840,10 +857,8 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a apigateway.ListGatewaysRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, apigateway.ListGatewaysRequest):
             request = apigateway.ListGatewaysRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -949,8 +964,8 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -958,10 +973,8 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a apigateway.GetGatewayRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, apigateway.GetGatewayRequest):
             request = apigateway.GetGatewayRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1083,8 +1096,8 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, gateway, gateway_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1092,10 +1105,8 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a apigateway.CreateGatewayRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, apigateway.CreateGatewayRequest):
             request = apigateway.CreateGatewayRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1221,8 +1232,8 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([gateway, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1230,10 +1241,8 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a apigateway.UpdateGatewayRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, apigateway.UpdateGatewayRequest):
             request = apigateway.UpdateGatewayRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1352,8 +1361,8 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1361,10 +1370,8 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a apigateway.DeleteGatewayRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, apigateway.DeleteGatewayRequest):
             request = apigateway.DeleteGatewayRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1469,8 +1476,8 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1478,10 +1485,8 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a apigateway.ListApisRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, apigateway.ListApisRequest):
             request = apigateway.ListApisRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1583,8 +1588,8 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1592,10 +1597,8 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a apigateway.GetApiRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, apigateway.GetApiRequest):
             request = apigateway.GetApiRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1711,8 +1714,8 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, api, api_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1720,10 +1723,8 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a apigateway.CreateApiRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, apigateway.CreateApiRequest):
             request = apigateway.CreateApiRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1844,8 +1845,8 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([api, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1853,10 +1854,8 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a apigateway.UpdateApiRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, apigateway.UpdateApiRequest):
             request = apigateway.UpdateApiRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1973,8 +1972,8 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1982,10 +1981,8 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a apigateway.DeleteApiRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, apigateway.DeleteApiRequest):
             request = apigateway.DeleteApiRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2090,8 +2087,8 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2099,10 +2096,8 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a apigateway.ListApiConfigsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, apigateway.ListApiConfigsRequest):
             request = apigateway.ListApiConfigsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2205,8 +2200,8 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2214,10 +2209,8 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a apigateway.GetApiConfigRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, apigateway.GetApiConfigRequest):
             request = apigateway.GetApiConfigRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2333,8 +2326,8 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, api_config, api_config_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2342,10 +2335,8 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a apigateway.CreateApiConfigRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, apigateway.CreateApiConfigRequest):
             request = apigateway.CreateApiConfigRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2465,8 +2456,8 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([api_config, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2474,10 +2465,8 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a apigateway.UpdateApiConfigRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, apigateway.UpdateApiConfigRequest):
             request = apigateway.UpdateApiConfigRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2596,8 +2585,8 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2605,10 +2594,8 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a apigateway.DeleteApiConfigRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, apigateway.DeleteApiConfigRequest):
             request = apigateway.DeleteApiConfigRequest(request)
             # If we have keyword arguments corresponding to fields on the

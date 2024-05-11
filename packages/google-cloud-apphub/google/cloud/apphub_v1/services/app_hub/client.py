@@ -17,6 +17,7 @@ from collections import OrderedDict
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -664,7 +665,9 @@ class AppHubClient(metaclass=AppHubClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, AppHubTransport]] = None,
+        transport: Optional[
+            Union[str, AppHubTransport, Callable[..., AppHubTransport]]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -676,9 +679,11 @@ class AppHubClient(metaclass=AppHubClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, AppHubTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,AppHubTransport,Callable[..., AppHubTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the AppHubTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -784,8 +789,15 @@ class AppHubClient(metaclass=AppHubClientMeta):
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[AppHubTransport], Callable[..., AppHubTransport]
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., AppHubTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -864,8 +876,8 @@ class AppHubClient(metaclass=AppHubClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -873,10 +885,8 @@ class AppHubClient(metaclass=AppHubClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a apphub_service.LookupServiceProjectAttachmentRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request, apphub_service.LookupServiceProjectAttachmentRequest
         ):
@@ -981,8 +991,8 @@ class AppHubClient(metaclass=AppHubClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -990,10 +1000,8 @@ class AppHubClient(metaclass=AppHubClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a apphub_service.ListServiceProjectAttachmentsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, apphub_service.ListServiceProjectAttachmentsRequest):
             request = apphub_service.ListServiceProjectAttachmentsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1134,8 +1142,8 @@ class AppHubClient(metaclass=AppHubClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [parent, service_project_attachment, service_project_attachment_id]
         )
@@ -1145,10 +1153,8 @@ class AppHubClient(metaclass=AppHubClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a apphub_service.CreateServiceProjectAttachmentRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request, apphub_service.CreateServiceProjectAttachmentRequest
         ):
@@ -1268,8 +1274,8 @@ class AppHubClient(metaclass=AppHubClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1277,10 +1283,8 @@ class AppHubClient(metaclass=AppHubClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a apphub_service.GetServiceProjectAttachmentRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, apphub_service.GetServiceProjectAttachmentRequest):
             request = apphub_service.GetServiceProjectAttachmentRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1392,8 +1396,8 @@ class AppHubClient(metaclass=AppHubClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1401,10 +1405,8 @@ class AppHubClient(metaclass=AppHubClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a apphub_service.DeleteServiceProjectAttachmentRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request, apphub_service.DeleteServiceProjectAttachmentRequest
         ):
@@ -1516,8 +1518,8 @@ class AppHubClient(metaclass=AppHubClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1525,10 +1527,8 @@ class AppHubClient(metaclass=AppHubClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a apphub_service.DetachServiceProjectAttachmentRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request, apphub_service.DetachServiceProjectAttachmentRequest
         ):
@@ -1632,8 +1632,8 @@ class AppHubClient(metaclass=AppHubClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1641,10 +1641,8 @@ class AppHubClient(metaclass=AppHubClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a apphub_service.ListDiscoveredServicesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, apphub_service.ListDiscoveredServicesRequest):
             request = apphub_service.ListDiscoveredServicesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1752,8 +1750,8 @@ class AppHubClient(metaclass=AppHubClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1761,10 +1759,8 @@ class AppHubClient(metaclass=AppHubClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a apphub_service.GetDiscoveredServiceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, apphub_service.GetDiscoveredServiceRequest):
             request = apphub_service.GetDiscoveredServiceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1869,8 +1865,8 @@ class AppHubClient(metaclass=AppHubClientMeta):
                 Response for LookupDiscoveredService.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, uri])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1878,10 +1874,8 @@ class AppHubClient(metaclass=AppHubClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a apphub_service.LookupDiscoveredServiceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, apphub_service.LookupDiscoveredServiceRequest):
             request = apphub_service.LookupDiscoveredServiceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1982,8 +1976,8 @@ class AppHubClient(metaclass=AppHubClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1991,10 +1985,8 @@ class AppHubClient(metaclass=AppHubClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a apphub_service.ListServicesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, apphub_service.ListServicesRequest):
             request = apphub_service.ListServicesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2126,8 +2118,8 @@ class AppHubClient(metaclass=AppHubClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, service, service_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2135,10 +2127,8 @@ class AppHubClient(metaclass=AppHubClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a apphub_service.CreateServiceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, apphub_service.CreateServiceRequest):
             request = apphub_service.CreateServiceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2246,8 +2236,8 @@ class AppHubClient(metaclass=AppHubClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2255,10 +2245,8 @@ class AppHubClient(metaclass=AppHubClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a apphub_service.GetServiceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, apphub_service.GetServiceRequest):
             request = apphub_service.GetServiceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2375,8 +2363,8 @@ class AppHubClient(metaclass=AppHubClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([service, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2384,10 +2372,8 @@ class AppHubClient(metaclass=AppHubClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a apphub_service.UpdateServiceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, apphub_service.UpdateServiceRequest):
             request = apphub_service.UpdateServiceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2506,8 +2492,8 @@ class AppHubClient(metaclass=AppHubClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2515,10 +2501,8 @@ class AppHubClient(metaclass=AppHubClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a apphub_service.DeleteServiceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, apphub_service.DeleteServiceRequest):
             request = apphub_service.DeleteServiceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2626,8 +2610,8 @@ class AppHubClient(metaclass=AppHubClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2635,10 +2619,8 @@ class AppHubClient(metaclass=AppHubClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a apphub_service.ListDiscoveredWorkloadsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, apphub_service.ListDiscoveredWorkloadsRequest):
             request = apphub_service.ListDiscoveredWorkloadsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2750,8 +2732,8 @@ class AppHubClient(metaclass=AppHubClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2759,10 +2741,8 @@ class AppHubClient(metaclass=AppHubClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a apphub_service.GetDiscoveredWorkloadRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, apphub_service.GetDiscoveredWorkloadRequest):
             request = apphub_service.GetDiscoveredWorkloadRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2869,8 +2849,8 @@ class AppHubClient(metaclass=AppHubClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, uri])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2878,10 +2858,8 @@ class AppHubClient(metaclass=AppHubClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a apphub_service.LookupDiscoveredWorkloadRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, apphub_service.LookupDiscoveredWorkloadRequest):
             request = apphub_service.LookupDiscoveredWorkloadRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2982,8 +2960,8 @@ class AppHubClient(metaclass=AppHubClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2991,10 +2969,8 @@ class AppHubClient(metaclass=AppHubClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a apphub_service.ListWorkloadsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, apphub_service.ListWorkloadsRequest):
             request = apphub_service.ListWorkloadsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3127,8 +3103,8 @@ class AppHubClient(metaclass=AppHubClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, workload, workload_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3136,10 +3112,8 @@ class AppHubClient(metaclass=AppHubClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a apphub_service.CreateWorkloadRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, apphub_service.CreateWorkloadRequest):
             request = apphub_service.CreateWorkloadRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3249,8 +3223,8 @@ class AppHubClient(metaclass=AppHubClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3258,10 +3232,8 @@ class AppHubClient(metaclass=AppHubClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a apphub_service.GetWorkloadRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, apphub_service.GetWorkloadRequest):
             request = apphub_service.GetWorkloadRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3379,8 +3351,8 @@ class AppHubClient(metaclass=AppHubClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([workload, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3388,10 +3360,8 @@ class AppHubClient(metaclass=AppHubClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a apphub_service.UpdateWorkloadRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, apphub_service.UpdateWorkloadRequest):
             request = apphub_service.UpdateWorkloadRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3510,8 +3480,8 @@ class AppHubClient(metaclass=AppHubClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3519,10 +3489,8 @@ class AppHubClient(metaclass=AppHubClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a apphub_service.DeleteWorkloadRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, apphub_service.DeleteWorkloadRequest):
             request = apphub_service.DeleteWorkloadRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3627,8 +3595,8 @@ class AppHubClient(metaclass=AppHubClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3636,10 +3604,8 @@ class AppHubClient(metaclass=AppHubClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a apphub_service.ListApplicationsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, apphub_service.ListApplicationsRequest):
             request = apphub_service.ListApplicationsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3772,8 +3738,8 @@ class AppHubClient(metaclass=AppHubClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, application, application_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3781,10 +3747,8 @@ class AppHubClient(metaclass=AppHubClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a apphub_service.CreateApplicationRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, apphub_service.CreateApplicationRequest):
             request = apphub_service.CreateApplicationRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3893,8 +3857,8 @@ class AppHubClient(metaclass=AppHubClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3902,10 +3866,8 @@ class AppHubClient(metaclass=AppHubClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a apphub_service.GetApplicationRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, apphub_service.GetApplicationRequest):
             request = apphub_service.GetApplicationRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4023,8 +3985,8 @@ class AppHubClient(metaclass=AppHubClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([application, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4032,10 +3994,8 @@ class AppHubClient(metaclass=AppHubClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a apphub_service.UpdateApplicationRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, apphub_service.UpdateApplicationRequest):
             request = apphub_service.UpdateApplicationRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4155,8 +4115,8 @@ class AppHubClient(metaclass=AppHubClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4164,10 +4124,8 @@ class AppHubClient(metaclass=AppHubClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a apphub_service.DeleteApplicationRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, apphub_service.DeleteApplicationRequest):
             request = apphub_service.DeleteApplicationRequest(request)
             # If we have keyword arguments corresponding to fields on the

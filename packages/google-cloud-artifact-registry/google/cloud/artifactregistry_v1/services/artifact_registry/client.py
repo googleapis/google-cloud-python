@@ -17,6 +17,7 @@ from collections import OrderedDict
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -864,7 +865,11 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, ArtifactRegistryTransport]] = None,
+        transport: Optional[
+            Union[
+                str, ArtifactRegistryTransport, Callable[..., ArtifactRegistryTransport]
+            ]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -876,9 +881,11 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ArtifactRegistryTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,ArtifactRegistryTransport,Callable[..., ArtifactRegistryTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the ArtifactRegistryTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -987,8 +994,16 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[ArtifactRegistryTransport],
+                Callable[..., ArtifactRegistryTransport],
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., ArtifactRegistryTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -1065,8 +1080,8 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1074,10 +1089,8 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a artifact.ListDockerImagesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, artifact.ListDockerImagesRequest):
             request = artifact.ListDockerImagesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1181,8 +1194,8 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1190,10 +1203,8 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a artifact.GetDockerImageRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, artifact.GetDockerImageRequest):
             request = artifact.GetDockerImageRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1290,8 +1301,8 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1299,10 +1310,8 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a artifact.ListMavenArtifactsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, artifact.ListMavenArtifactsRequest):
             request = artifact.ListMavenArtifactsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1403,8 +1412,8 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1412,10 +1421,8 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a artifact.GetMavenArtifactRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, artifact.GetMavenArtifactRequest):
             request = artifact.GetMavenArtifactRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1512,8 +1519,8 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1521,10 +1528,8 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a artifact.ListNpmPackagesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, artifact.ListNpmPackagesRequest):
             request = artifact.ListNpmPackagesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1625,8 +1630,8 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1634,10 +1639,8 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a artifact.GetNpmPackageRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, artifact.GetNpmPackageRequest):
             request = artifact.GetNpmPackageRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1734,8 +1737,8 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1743,10 +1746,8 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a artifact.ListPythonPackagesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, artifact.ListPythonPackagesRequest):
             request = artifact.ListPythonPackagesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1847,8 +1848,8 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1856,10 +1857,8 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a artifact.GetPythonPackageRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, artifact.GetPythonPackageRequest):
             request = artifact.GetPythonPackageRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1954,10 +1953,8 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a apt_artifact.ImportAptArtifactsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, apt_artifact.ImportAptArtifactsRequest):
             request = apt_artifact.ImportAptArtifactsRequest(request)
 
@@ -2056,10 +2053,8 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a yum_artifact.ImportYumArtifactsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, yum_artifact.ImportYumArtifactsRequest):
             request = yum_artifact.ImportYumArtifactsRequest(request)
 
@@ -2160,8 +2155,8 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2169,10 +2164,8 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a repository.ListRepositoriesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, repository.ListRepositoriesRequest):
             request = repository.ListRepositoriesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2273,8 +2266,8 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2282,10 +2275,8 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a repository.GetRepositoryRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, repository.GetRepositoryRequest):
             request = repository.GetRepositoryRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2406,8 +2397,8 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, repository, repository_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2415,10 +2406,8 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gda_repository.CreateRepositoryRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gda_repository.CreateRepositoryRequest):
             request = gda_repository.CreateRepositoryRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2530,8 +2519,8 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([repository, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2539,10 +2528,8 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gda_repository.UpdateRepositoryRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gda_repository.UpdateRepositoryRequest):
             request = gda_repository.UpdateRepositoryRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2655,8 +2642,8 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2664,10 +2651,8 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a repository.DeleteRepositoryRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, repository.DeleteRepositoryRequest):
             request = repository.DeleteRepositoryRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2771,8 +2756,8 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2780,10 +2765,8 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a package.ListPackagesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, package.ListPackagesRequest):
             request = package.ListPackagesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2884,8 +2867,8 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2893,10 +2876,8 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a package.GetPackageRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, package.GetPackageRequest):
             request = package.GetPackageRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3004,8 +2985,8 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3013,10 +2994,8 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a package.DeletePackageRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, package.DeletePackageRequest):
             request = package.DeletePackageRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3119,8 +3098,8 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3128,10 +3107,8 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a version.ListVersionsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, version.ListVersionsRequest):
             request = version.ListVersionsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3232,8 +3209,8 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3241,10 +3218,8 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a version.GetVersionRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, version.GetVersionRequest):
             request = version.GetVersionRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3349,8 +3324,8 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3358,10 +3333,8 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a version.DeleteVersionRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, version.DeleteVersionRequest):
             request = version.DeleteVersionRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3487,8 +3460,8 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, names])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3496,10 +3469,8 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a version.BatchDeleteVersionsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, version.BatchDeleteVersionsRequest):
             request = version.BatchDeleteVersionsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3606,8 +3577,8 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3615,10 +3586,8 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a file.ListFilesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, file.ListFilesRequest):
             request = file.ListFilesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3720,8 +3689,8 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3729,10 +3698,8 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a file.GetFileRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, file.GetFileRequest):
             request = file.GetFileRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3828,8 +3795,8 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3837,10 +3804,8 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a tag.ListTagsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, tag.ListTagsRequest):
             request = tag.ListTagsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3939,8 +3904,8 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3948,10 +3913,8 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a tag.GetTagRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, tag.GetTagRequest):
             request = tag.GetTagRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4057,8 +4020,8 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, tag, tag_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4066,10 +4029,8 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gda_tag.CreateTagRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gda_tag.CreateTagRequest):
             request = gda_tag.CreateTagRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4175,8 +4136,8 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([tag, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4184,10 +4145,8 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gda_tag.UpdateTagRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gda_tag.UpdateTagRequest):
             request = gda_tag.UpdateTagRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4269,8 +4228,8 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4278,10 +4237,8 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a tag.DeleteTagRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, tag.DeleteTagRequest):
             request = tag.DeleteTagRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4392,8 +4349,8 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         """
         # Create or coerce a protobuf request object.
         if isinstance(request, dict):
-            # The request isn't a proto-plus wrapped type,
-            # so it must be constructed via keyword expansion.
+            # - The request isn't a proto-plus wrapped type,
+            #   so it must be constructed via keyword expansion.
             request = iam_policy_pb2.SetIamPolicyRequest(**request)
         elif not request:
             # Null request, just make one.
@@ -4505,8 +4462,8 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         """
         # Create or coerce a protobuf request object.
         if isinstance(request, dict):
-            # The request isn't a proto-plus wrapped type,
-            # so it must be constructed via keyword expansion.
+            # - The request isn't a proto-plus wrapped type,
+            #   so it must be constructed via keyword expansion.
             request = iam_policy_pb2.GetIamPolicyRequest(**request)
         elif not request:
             # Null request, just make one.
@@ -4590,8 +4547,8 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         """
         # Create or coerce a protobuf request object.
         if isinstance(request, dict):
-            # The request isn't a proto-plus wrapped type,
-            # so it must be constructed via keyword expansion.
+            # - The request isn't a proto-plus wrapped type,
+            #   so it must be constructed via keyword expansion.
             request = iam_policy_pb2.TestIamPermissionsRequest(**request)
         elif not request:
             # Null request, just make one.
@@ -4682,8 +4639,8 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4691,10 +4648,8 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a settings.GetProjectSettingsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, settings.GetProjectSettingsRequest):
             request = settings.GetProjectSettingsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4791,8 +4746,8 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project_settings, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4800,10 +4755,8 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a settings.UpdateProjectSettingsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, settings.UpdateProjectSettingsRequest):
             request = settings.UpdateProjectSettingsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4899,8 +4852,8 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4908,10 +4861,8 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a vpcsc_config.GetVPCSCConfigRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, vpcsc_config.GetVPCSCConfigRequest):
             request = vpcsc_config.GetVPCSCConfigRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -5010,8 +4961,8 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([vpcsc_config, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5019,10 +4970,8 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gda_vpcsc_config.UpdateVPCSCConfigRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gda_vpcsc_config.UpdateVPCSCConfigRequest):
             request = gda_vpcsc_config.UpdateVPCSCConfigRequest(request)
             # If we have keyword arguments corresponding to fields on the
