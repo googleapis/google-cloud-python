@@ -36,9 +36,6 @@ REPO_EXCLUSION = [
     "googleapis/python-api-core",
     "googleapis/python-cloud-core",
     # proto only packages
-    "googleapis/python-org-policy",
-    "googleapis/python-os-config",
-    "googleapis/python-access-context-manager",
     "googleapis/python-api-common-protos",
     # testing utilities
     "googleapis/python-test-utils",
