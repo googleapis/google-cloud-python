@@ -832,6 +832,11 @@ class BigQueryDDLCompiler(DDLCompiler):
             field = time_partitioning.field
             if isinstance(
                 table.columns[time_partitioning.field].type,
+                sqlalchemy.sql.sqltypes.DATE,
+            ):
+                return f"PARTITION BY {field}"
+            elif isinstance(
+                table.columns[time_partitioning.field].type,
                 sqlalchemy.sql.sqltypes.TIMESTAMP,
             ):
                 trunc_fn = "TIMESTAMP_TRUNC"

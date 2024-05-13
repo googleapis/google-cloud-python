@@ -561,7 +561,8 @@ def test_dml(engine, session, table_dml):
         assert len(result) == 0
 
 
-def test_create_table(engine, bigquery_dataset):
+@pytest.mark.parametrize("time_partitioning_field", ["timestamp_c", "date_c"])
+def test_create_table(engine, bigquery_dataset, time_partitioning_field):
     meta = MetaData()
     Table(
         f"{bigquery_dataset}.test_table_create",
@@ -581,7 +582,7 @@ def test_create_table(engine, bigquery_dataset):
         bigquery_friendly_name="test table name",
         bigquery_expiration_timestamp=datetime.datetime(2183, 3, 26, 8, 30, 0),
         bigquery_time_partitioning=TimePartitioning(
-            field="timestamp_c",
+            field=time_partitioning_field,
             expiration_ms=1000 * 60 * 60 * 24 * 30,  # 30 days
         ),
         bigquery_require_partition_filter=True,
