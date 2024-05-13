@@ -109,10 +109,12 @@ def client_row(client: CloudClient) -> str:
 
     content_row = [
         f"   * - `{client.title} <{url}>`_\n",
-        f"     - " + client.release_level + "\n"
-        f"     - |PyPI-{client.distribution_name}|\n",
-        f"     - `File an Issue <{client.issue_tracker}>`_\n",
+        f"     - " + client.release_level + "\n",
+        f"     - |PyPI-{client.distribution_name}|\n",   
     ]
+
+    if client.issue_tracker:
+        content_row.append(f"     - `File an Issue <{client.issue_tracker}>`_\n",)
 
     return (content_row, pypi_badge)
 
