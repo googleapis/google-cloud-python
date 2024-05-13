@@ -588,6 +588,11 @@ def endswith_op_impl(x: ibis_types.Value, op: ops.EndsWithOp):
     return any_match if any_match is not None else ibis_types.literal(False)
 
 
+@scalar_op_compiler.register_unary_op(ops.StringSplitOp, pass_op=True)
+def stringsplit_op_impl(x: ibis_types.Value, op: ops.StringSplitOp):
+    return typing.cast(ibis_types.StringValue, x).split(op.pat)
+
+
 @scalar_op_compiler.register_unary_op(ops.ZfillOp, pass_op=True)
 def zfill_op_impl(x: ibis_types.Value, op: ops.ZfillOp):
     str_value = typing.cast(ibis_types.StringValue, x)

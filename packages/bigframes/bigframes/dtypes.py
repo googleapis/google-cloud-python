@@ -405,6 +405,12 @@ def bigframes_dtype_to_ibis_dtype(
     return BIGFRAMES_TO_IBIS[bigframes_dtype]
 
 
+def bigframes_dtype_to_arrow_dtype(
+    bigframes_dtype: Union[DtypeString, Dtype, np.dtype[Any]]
+) -> pa.DataType:
+    return ibis_dtype_to_arrow_dtype(bigframes_dtype_to_ibis_dtype(bigframes_dtype))
+
+
 def literal_to_ibis_scalar(
     literal, force_dtype: typing.Optional[Dtype] = None, validate: bool = True
 ):

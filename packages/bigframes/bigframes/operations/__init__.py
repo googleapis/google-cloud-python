@@ -387,6 +387,19 @@ class StartsWithOp(UnaryOp):
 
 
 @dataclasses.dataclass(frozen=True)
+class StringSplitOp(UnaryOp):
+    name: typing.ClassVar[str] = "str_split"
+    pat: typing.Sequence[str]
+
+    def output_type(self, *input_types):
+        input_type = input_types[0]
+        if not isinstance(input_type, pd.StringDtype):
+            raise TypeError("field accessor input must be a string type")
+        arrow_type = dtypes.bigframes_dtype_to_arrow_dtype(input_type)
+        return pd.ArrowDtype(pa.list_(arrow_type))
+
+
+@dataclasses.dataclass(frozen=True)
 class EndsWithOp(UnaryOp):
     name: typing.ClassVar[str] = "str_endswith"
     pat: typing.Sequence[str]
@@ -463,9 +476,7 @@ class StructFieldOp(UnaryOp):
             raise TypeError("field accessor input must be a struct type")
 
         pa_result_type = pa_type[self.name_or_index].type
-        # TODO: Directly convert from arrow to pandas type
-        ibis_result_type = dtypes.arrow_dtype_to_ibis_dtype(pa_result_type)
-        return dtypes.ibis_dtype_to_bigframes_dtype(ibis_result_type)
+        return dtypes.arrow_dtype_to_bigframes_dtype(pa_result_type)
 
 
 @dataclasses.dataclass(frozen=True)

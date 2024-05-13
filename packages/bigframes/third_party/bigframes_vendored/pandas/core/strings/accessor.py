@@ -940,6 +940,54 @@ class StringMethods:
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
+    def split(
+        self,
+        pat: str = " ",
+        regex: typing.Union[bool, None] = None,
+    ):
+        """
+        Split strings around given separator/delimiter.
+
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> import numpy as np
+            >>> bpd.options.display.progress_bar = None
+
+            >>> s = bpd.Series(
+            ...     [
+            ...         "a regular sentence",
+            ...         "https://docs.python.org/index.html",
+            ...         np.nan
+            ...     ]
+            ... )
+            >>> s.str.split()
+            0                ['a' 'regular' 'sentence']
+            1    ['https://docs.python.org/index.html']
+            2                                        []
+            dtype: list<item: string>[pyarrow]
+
+            The pat parameter can be used to split by other characters.
+
+            >>> s.str.split("//", regex=False)
+            0                     ['a regular sentence']
+            1    ['https:' 'docs.python.org/index.html']
+            2                                         []
+            dtype: list<item: string>[pyarrow]
+
+        Args:
+            pat (str, default " "):
+                String to split on. If not specified, split on whitespace.
+            regex (bool, default None):
+                Determines if the passed-in pattern is a regular expression. Regular
+                expressions aren't currently supported. Please set `regex=False` when
+                `pat` length is not 1.
+
+        Returns:
+            bigframes.series.Series: Type matches caller.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
     def match(self, pat: str, case: bool = True, flags: int = 0):
         """
         Determine if each string starts with a match of a regular expression.

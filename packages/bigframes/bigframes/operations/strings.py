@@ -247,6 +247,18 @@ class StringMethods(bigframes.operations.base.SeriesMethods, vendorstr.StringMet
             pat = (pat,)
         return self._apply_unary_op(ops.EndsWithOp(pat=pat))
 
+    def split(
+        self,
+        pat: str = " ",
+        regex: Union[bool, None] = None,
+    ) -> series.Series:
+        if regex is True or (regex is None and len(pat) > 1):
+            raise NotImplementedError(
+                "Regular expressions aren't currently supported. Please set "
+                + f"`regex=False` and try again. {constants.FEEDBACK_LINK}"
+            )
+        return self._apply_unary_op(ops.StringSplitOp(pat=pat))
+
     def zfill(self, width: int) -> series.Series:
         return self._apply_unary_op(ops.ZfillOp(width=width))
 
