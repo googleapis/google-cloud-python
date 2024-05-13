@@ -17,6 +17,7 @@ from collections import OrderedDict
 import functools
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -233,7 +234,9 @@ class GSuiteAddOnsAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, GSuiteAddOnsTransport] = "grpc_asyncio",
+        transport: Optional[
+            Union[str, GSuiteAddOnsTransport, Callable[..., GSuiteAddOnsTransport]]
+        ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -245,9 +248,11 @@ class GSuiteAddOnsAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.GSuiteAddOnsTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,GSuiteAddOnsTransport,Callable[..., GSuiteAddOnsTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the GSuiteAddOnsTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -356,8 +361,8 @@ class GSuiteAddOnsAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -365,7 +370,10 @@ class GSuiteAddOnsAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gsuiteaddons.GetAuthorizationRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gsuiteaddons.GetAuthorizationRequest):
+            request = gsuiteaddons.GetAuthorizationRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -374,11 +382,9 @@ class GSuiteAddOnsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_authorization,
-            default_timeout=120.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_authorization
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -480,8 +486,8 @@ class GSuiteAddOnsAsyncClient:
                 A Google Workspace Add-on deployment
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, deployment, deployment_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -489,7 +495,10 @@ class GSuiteAddOnsAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gsuiteaddons.CreateDeploymentRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gsuiteaddons.CreateDeploymentRequest):
+            request = gsuiteaddons.CreateDeploymentRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -502,11 +511,9 @@ class GSuiteAddOnsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_deployment,
-            default_timeout=10.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_deployment
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -587,8 +594,8 @@ class GSuiteAddOnsAsyncClient:
                 A Google Workspace Add-on deployment
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([deployment])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -596,7 +603,10 @@ class GSuiteAddOnsAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gsuiteaddons.ReplaceDeploymentRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gsuiteaddons.ReplaceDeploymentRequest):
+            request = gsuiteaddons.ReplaceDeploymentRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -605,11 +615,9 @@ class GSuiteAddOnsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.replace_deployment,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.replace_deployment
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -694,8 +702,8 @@ class GSuiteAddOnsAsyncClient:
                 A Google Workspace Add-on deployment
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -703,7 +711,10 @@ class GSuiteAddOnsAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gsuiteaddons.GetDeploymentRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gsuiteaddons.GetDeploymentRequest):
+            request = gsuiteaddons.GetDeploymentRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -712,11 +723,9 @@ class GSuiteAddOnsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_deployment,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_deployment
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -805,8 +814,8 @@ class GSuiteAddOnsAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -814,7 +823,10 @@ class GSuiteAddOnsAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gsuiteaddons.ListDeploymentsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gsuiteaddons.ListDeploymentsRequest):
+            request = gsuiteaddons.ListDeploymentsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -823,11 +835,9 @@ class GSuiteAddOnsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_deployments,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_deployments
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -913,8 +923,8 @@ class GSuiteAddOnsAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -922,7 +932,10 @@ class GSuiteAddOnsAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gsuiteaddons.DeleteDeploymentRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gsuiteaddons.DeleteDeploymentRequest):
+            request = gsuiteaddons.DeleteDeploymentRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -931,11 +944,9 @@ class GSuiteAddOnsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_deployment,
-            default_timeout=10.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_deployment
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1012,8 +1023,8 @@ class GSuiteAddOnsAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1021,7 +1032,10 @@ class GSuiteAddOnsAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gsuiteaddons.InstallDeploymentRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gsuiteaddons.InstallDeploymentRequest):
+            request = gsuiteaddons.InstallDeploymentRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1030,11 +1044,9 @@ class GSuiteAddOnsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.install_deployment,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.install_deployment
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1111,8 +1123,8 @@ class GSuiteAddOnsAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1120,7 +1132,10 @@ class GSuiteAddOnsAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gsuiteaddons.UninstallDeploymentRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gsuiteaddons.UninstallDeploymentRequest):
+            request = gsuiteaddons.UninstallDeploymentRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1129,11 +1144,9 @@ class GSuiteAddOnsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.uninstall_deployment,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.uninstall_deployment
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1216,8 +1229,8 @@ class GSuiteAddOnsAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1225,7 +1238,10 @@ class GSuiteAddOnsAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gsuiteaddons.GetInstallStatusRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gsuiteaddons.GetInstallStatusRequest):
+            request = gsuiteaddons.GetInstallStatusRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1234,11 +1250,9 @@ class GSuiteAddOnsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_install_status,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_install_status
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.

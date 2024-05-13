@@ -17,6 +17,7 @@ from collections import OrderedDict
 import functools
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -226,7 +227,9 @@ class NetAppAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, NetAppTransport] = "grpc_asyncio",
+        transport: Optional[
+            Union[str, NetAppTransport, Callable[..., NetAppTransport]]
+        ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -238,9 +241,11 @@ class NetAppAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.NetAppTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,NetAppTransport,Callable[..., NetAppTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the NetAppTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -348,8 +353,8 @@ class NetAppAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -357,7 +362,10 @@ class NetAppAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = storage_pool.ListStoragePoolsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, storage_pool.ListStoragePoolsRequest):
+            request = storage_pool.ListStoragePoolsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -366,20 +374,9 @@ class NetAppAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_storage_pools,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_storage_pools
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -503,8 +500,8 @@ class NetAppAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, storage_pool, storage_pool_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -512,7 +509,10 @@ class NetAppAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gcn_storage_pool.CreateStoragePoolRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gcn_storage_pool.CreateStoragePoolRequest):
+            request = gcn_storage_pool.CreateStoragePoolRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -525,11 +525,9 @@ class NetAppAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_storage_pool,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_storage_pool
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -623,8 +621,8 @@ class NetAppAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -632,7 +630,10 @@ class NetAppAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = storage_pool.GetStoragePoolRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, storage_pool.GetStoragePoolRequest):
+            request = storage_pool.GetStoragePoolRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -641,20 +642,9 @@ class NetAppAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_storage_pool,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_storage_pool
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -763,8 +753,8 @@ class NetAppAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([storage_pool, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -772,7 +762,10 @@ class NetAppAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gcn_storage_pool.UpdateStoragePoolRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gcn_storage_pool.UpdateStoragePoolRequest):
+            request = gcn_storage_pool.UpdateStoragePoolRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -783,11 +776,9 @@ class NetAppAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_storage_pool,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_storage_pool
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -893,8 +884,8 @@ class NetAppAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -902,7 +893,10 @@ class NetAppAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = storage_pool.DeleteStoragePoolRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, storage_pool.DeleteStoragePoolRequest):
+            request = storage_pool.DeleteStoragePoolRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -911,11 +905,9 @@ class NetAppAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_storage_pool,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_storage_pool
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1010,8 +1002,8 @@ class NetAppAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1019,7 +1011,10 @@ class NetAppAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = volume.ListVolumesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, volume.ListVolumesRequest):
+            request = volume.ListVolumesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1028,20 +1023,9 @@ class NetAppAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_volumes,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_volumes
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1130,8 +1114,8 @@ class NetAppAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1139,7 +1123,10 @@ class NetAppAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = volume.GetVolumeRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, volume.GetVolumeRequest):
+            request = volume.GetVolumeRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1148,20 +1135,9 @@ class NetAppAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_volume,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_volume
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1271,8 +1247,8 @@ class NetAppAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, volume, volume_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1280,7 +1256,10 @@ class NetAppAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gcn_volume.CreateVolumeRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gcn_volume.CreateVolumeRequest):
+            request = gcn_volume.CreateVolumeRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1293,11 +1272,9 @@ class NetAppAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_volume,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_volume
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1410,8 +1387,8 @@ class NetAppAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([volume, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1419,7 +1396,10 @@ class NetAppAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gcn_volume.UpdateVolumeRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gcn_volume.UpdateVolumeRequest):
+            request = gcn_volume.UpdateVolumeRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1430,11 +1410,9 @@ class NetAppAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_volume,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_volume
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1538,8 +1516,8 @@ class NetAppAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1547,7 +1525,10 @@ class NetAppAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = volume.DeleteVolumeRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, volume.DeleteVolumeRequest):
+            request = volume.DeleteVolumeRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1556,11 +1537,9 @@ class NetAppAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_volume,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_volume
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1653,15 +1632,16 @@ class NetAppAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = volume.RevertVolumeRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, volume.RevertVolumeRequest):
+            request = volume.RevertVolumeRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.revert_volume,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.revert_volume
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1756,8 +1736,8 @@ class NetAppAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1765,7 +1745,10 @@ class NetAppAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = snapshot.ListSnapshotsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, snapshot.ListSnapshotsRequest):
+            request = snapshot.ListSnapshotsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1774,20 +1757,9 @@ class NetAppAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_snapshots,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_snapshots
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1879,8 +1851,8 @@ class NetAppAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1888,7 +1860,10 @@ class NetAppAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = snapshot.GetSnapshotRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, snapshot.GetSnapshotRequest):
+            request = snapshot.GetSnapshotRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1897,20 +1872,9 @@ class NetAppAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_snapshot,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_snapshot
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2019,8 +1983,8 @@ class NetAppAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, snapshot, snapshot_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2028,7 +1992,10 @@ class NetAppAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gcn_snapshot.CreateSnapshotRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gcn_snapshot.CreateSnapshotRequest):
+            request = gcn_snapshot.CreateSnapshotRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2041,11 +2008,9 @@ class NetAppAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_snapshot,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_snapshot
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2150,8 +2115,8 @@ class NetAppAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2159,7 +2124,10 @@ class NetAppAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = snapshot.DeleteSnapshotRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, snapshot.DeleteSnapshotRequest):
+            request = snapshot.DeleteSnapshotRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2168,11 +2136,9 @@ class NetAppAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_snapshot,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_snapshot
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2277,8 +2243,8 @@ class NetAppAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([snapshot, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2286,7 +2252,10 @@ class NetAppAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gcn_snapshot.UpdateSnapshotRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gcn_snapshot.UpdateSnapshotRequest):
+            request = gcn_snapshot.UpdateSnapshotRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2297,11 +2266,9 @@ class NetAppAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_snapshot,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_snapshot
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2400,8 +2367,8 @@ class NetAppAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2409,7 +2376,10 @@ class NetAppAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = active_directory.ListActiveDirectoriesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, active_directory.ListActiveDirectoriesRequest):
+            request = active_directory.ListActiveDirectoriesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2418,20 +2388,9 @@ class NetAppAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_active_directories,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_active_directories
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2526,8 +2485,8 @@ class NetAppAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2535,7 +2494,10 @@ class NetAppAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = active_directory.GetActiveDirectoryRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, active_directory.GetActiveDirectoryRequest):
+            request = active_directory.GetActiveDirectoryRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2544,20 +2506,9 @@ class NetAppAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_active_directory,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_active_directory
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2674,8 +2625,8 @@ class NetAppAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, active_directory, active_directory_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2683,7 +2634,10 @@ class NetAppAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gcn_active_directory.CreateActiveDirectoryRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gcn_active_directory.CreateActiveDirectoryRequest):
+            request = gcn_active_directory.CreateActiveDirectoryRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2696,11 +2650,9 @@ class NetAppAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_active_directory,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_active_directory
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2819,8 +2771,8 @@ class NetAppAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([active_directory, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2828,7 +2780,10 @@ class NetAppAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gcn_active_directory.UpdateActiveDirectoryRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gcn_active_directory.UpdateActiveDirectoryRequest):
+            request = gcn_active_directory.UpdateActiveDirectoryRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2839,11 +2794,9 @@ class NetAppAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_active_directory,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_active_directory
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2952,8 +2905,8 @@ class NetAppAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2961,7 +2914,10 @@ class NetAppAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = active_directory.DeleteActiveDirectoryRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, active_directory.DeleteActiveDirectoryRequest):
+            request = active_directory.DeleteActiveDirectoryRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2970,11 +2926,9 @@ class NetAppAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_active_directory,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_active_directory
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3068,8 +3022,8 @@ class NetAppAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3077,7 +3031,10 @@ class NetAppAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = kms.ListKmsConfigsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, kms.ListKmsConfigsRequest):
+            request = kms.ListKmsConfigsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3086,20 +3043,9 @@ class NetAppAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_kms_configs,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_kms_configs
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3219,8 +3165,8 @@ class NetAppAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, kms_config, kms_config_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3228,7 +3174,10 @@ class NetAppAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = kms.CreateKmsConfigRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, kms.CreateKmsConfigRequest):
+            request = kms.CreateKmsConfigRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3241,11 +3190,9 @@ class NetAppAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_kms_config,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_kms_config
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3335,8 +3282,8 @@ class NetAppAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3344,7 +3291,10 @@ class NetAppAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = kms.GetKmsConfigRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, kms.GetKmsConfigRequest):
+            request = kms.GetKmsConfigRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3353,20 +3303,9 @@ class NetAppAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_kms_config,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_kms_config
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3470,8 +3409,8 @@ class NetAppAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([kms_config, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3479,7 +3418,10 @@ class NetAppAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = kms.UpdateKmsConfigRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, kms.UpdateKmsConfigRequest):
+            request = kms.UpdateKmsConfigRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3490,11 +3432,9 @@ class NetAppAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_kms_config,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_kms_config
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3588,15 +3528,16 @@ class NetAppAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = kms.EncryptVolumesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, kms.EncryptVolumesRequest):
+            request = kms.EncryptVolumesRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.encrypt_volumes,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.encrypt_volumes
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3680,15 +3621,16 @@ class NetAppAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = kms.VerifyKmsConfigRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, kms.VerifyKmsConfigRequest):
+            request = kms.VerifyKmsConfigRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.verify_kms_config,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.verify_kms_config
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3784,8 +3726,8 @@ class NetAppAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3793,7 +3735,10 @@ class NetAppAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = kms.DeleteKmsConfigRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, kms.DeleteKmsConfigRequest):
+            request = kms.DeleteKmsConfigRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3802,11 +3747,9 @@ class NetAppAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_kms_config,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_kms_config
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3902,8 +3845,8 @@ class NetAppAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3911,7 +3854,10 @@ class NetAppAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = replication.ListReplicationsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, replication.ListReplicationsRequest):
+            request = replication.ListReplicationsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3920,20 +3866,9 @@ class NetAppAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_replications,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_replications
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4027,8 +3962,8 @@ class NetAppAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4036,7 +3971,10 @@ class NetAppAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = replication.GetReplicationRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, replication.GetReplicationRequest):
+            request = replication.GetReplicationRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -4045,20 +3983,9 @@ class NetAppAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_replication,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_replication
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4172,8 +4099,8 @@ class NetAppAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, replication, replication_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4181,7 +4108,10 @@ class NetAppAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gcn_replication.CreateReplicationRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gcn_replication.CreateReplicationRequest):
+            request = gcn_replication.CreateReplicationRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -4194,11 +4124,9 @@ class NetAppAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_replication,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_replication
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4303,8 +4231,8 @@ class NetAppAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4312,7 +4240,10 @@ class NetAppAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = replication.DeleteReplicationRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, replication.DeleteReplicationRequest):
+            request = replication.DeleteReplicationRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -4321,11 +4252,9 @@ class NetAppAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_replication,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_replication
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4435,8 +4364,8 @@ class NetAppAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([replication, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4444,7 +4373,10 @@ class NetAppAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gcn_replication.UpdateReplicationRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gcn_replication.UpdateReplicationRequest):
+            request = gcn_replication.UpdateReplicationRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -4455,11 +4387,9 @@ class NetAppAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_replication,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_replication
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4551,15 +4481,16 @@ class NetAppAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = replication.StopReplicationRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, replication.StopReplicationRequest):
+            request = replication.StopReplicationRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.stop_replication,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.stop_replication
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4649,15 +4580,16 @@ class NetAppAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = replication.ResumeReplicationRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, replication.ResumeReplicationRequest):
+            request = replication.ResumeReplicationRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.resume_replication,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.resume_replication
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4752,15 +4684,16 @@ class NetAppAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = replication.ReverseReplicationDirectionRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, replication.ReverseReplicationDirectionRequest):
+            request = replication.ReverseReplicationDirectionRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.reverse_replication_direction,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.reverse_replication_direction
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4881,8 +4814,8 @@ class NetAppAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, backup_vault, backup_vault_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4890,7 +4823,10 @@ class NetAppAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gcn_backup_vault.CreateBackupVaultRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gcn_backup_vault.CreateBackupVaultRequest):
+            request = gcn_backup_vault.CreateBackupVaultRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -4903,11 +4839,9 @@ class NetAppAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_backup_vault,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_backup_vault
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4996,8 +4930,8 @@ class NetAppAsyncClient:
                 A NetApp BackupVault.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5005,7 +4939,10 @@ class NetAppAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = backup_vault.GetBackupVaultRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, backup_vault.GetBackupVaultRequest):
+            request = backup_vault.GetBackupVaultRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -5014,20 +4951,9 @@ class NetAppAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_backup_vault,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_backup_vault
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -5115,8 +5041,8 @@ class NetAppAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5124,7 +5050,10 @@ class NetAppAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = backup_vault.ListBackupVaultsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, backup_vault.ListBackupVaultsRequest):
+            request = backup_vault.ListBackupVaultsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -5133,20 +5062,9 @@ class NetAppAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_backup_vaults,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_backup_vaults
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -5259,8 +5177,8 @@ class NetAppAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([backup_vault, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5268,7 +5186,10 @@ class NetAppAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gcn_backup_vault.UpdateBackupVaultRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gcn_backup_vault.UpdateBackupVaultRequest):
+            request = gcn_backup_vault.UpdateBackupVaultRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -5279,11 +5200,9 @@ class NetAppAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_backup_vault,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_backup_vault
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -5391,8 +5310,8 @@ class NetAppAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5400,7 +5319,10 @@ class NetAppAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = backup_vault.DeleteBackupVaultRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, backup_vault.DeleteBackupVaultRequest):
+            request = backup_vault.DeleteBackupVaultRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -5409,11 +5331,9 @@ class NetAppAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_backup_vault,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_backup_vault
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -5534,8 +5454,8 @@ class NetAppAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, backup, backup_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5543,7 +5463,10 @@ class NetAppAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gcn_backup.CreateBackupRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gcn_backup.CreateBackupRequest):
+            request = gcn_backup.CreateBackupRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -5556,11 +5479,9 @@ class NetAppAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_backup,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_backup
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -5649,8 +5570,8 @@ class NetAppAsyncClient:
                 A NetApp Backup.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5658,7 +5579,10 @@ class NetAppAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = backup.GetBackupRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, backup.GetBackupRequest):
+            request = backup.GetBackupRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -5667,20 +5591,9 @@ class NetAppAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_backup,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_backup
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -5775,8 +5688,8 @@ class NetAppAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5784,7 +5697,10 @@ class NetAppAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = backup.ListBackupsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, backup.ListBackupsRequest):
+            request = backup.ListBackupsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -5793,20 +5709,9 @@ class NetAppAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_backups,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_backups
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -5912,8 +5817,8 @@ class NetAppAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5921,7 +5826,10 @@ class NetAppAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = backup.DeleteBackupRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, backup.DeleteBackupRequest):
+            request = backup.DeleteBackupRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -5930,11 +5838,9 @@ class NetAppAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_backup,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_backup
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -6041,8 +5947,8 @@ class NetAppAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([backup, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -6050,7 +5956,10 @@ class NetAppAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gcn_backup.UpdateBackupRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gcn_backup.UpdateBackupRequest):
+            request = gcn_backup.UpdateBackupRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -6061,11 +5970,9 @@ class NetAppAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_backup,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_backup
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -6188,8 +6095,8 @@ class NetAppAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, backup_policy, backup_policy_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -6197,7 +6104,10 @@ class NetAppAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gcn_backup_policy.CreateBackupPolicyRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gcn_backup_policy.CreateBackupPolicyRequest):
+            request = gcn_backup_policy.CreateBackupPolicyRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -6210,11 +6120,9 @@ class NetAppAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_backup_policy,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_backup_policy
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -6304,8 +6212,8 @@ class NetAppAsyncClient:
                 Backup Policy.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -6313,7 +6221,10 @@ class NetAppAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = backup_policy.GetBackupPolicyRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, backup_policy.GetBackupPolicyRequest):
+            request = backup_policy.GetBackupPolicyRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -6322,20 +6233,9 @@ class NetAppAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_backup_policy,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_backup_policy
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -6422,8 +6322,8 @@ class NetAppAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -6431,7 +6331,10 @@ class NetAppAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = backup_policy.ListBackupPoliciesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, backup_policy.ListBackupPoliciesRequest):
+            request = backup_policy.ListBackupPoliciesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -6440,20 +6343,9 @@ class NetAppAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_backup_policies,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_backup_policies
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -6565,8 +6457,8 @@ class NetAppAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([backup_policy, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -6574,7 +6466,10 @@ class NetAppAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gcn_backup_policy.UpdateBackupPolicyRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gcn_backup_policy.UpdateBackupPolicyRequest):
+            request = gcn_backup_policy.UpdateBackupPolicyRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -6585,11 +6480,9 @@ class NetAppAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_backup_policy,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_backup_policy
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -6697,8 +6590,8 @@ class NetAppAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -6706,7 +6599,10 @@ class NetAppAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = backup_policy.DeleteBackupPolicyRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, backup_policy.DeleteBackupPolicyRequest):
+            request = backup_policy.DeleteBackupPolicyRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -6715,11 +6611,9 @@ class NetAppAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_backup_policy,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_backup_policy
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.

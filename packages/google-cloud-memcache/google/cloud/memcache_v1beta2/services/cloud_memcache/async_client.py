@@ -17,6 +17,7 @@ from collections import OrderedDict
 import functools
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -221,7 +222,9 @@ class CloudMemcacheAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, CloudMemcacheTransport] = "grpc_asyncio",
+        transport: Optional[
+            Union[str, CloudMemcacheTransport, Callable[..., CloudMemcacheTransport]]
+        ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -233,9 +236,11 @@ class CloudMemcacheAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.CloudMemcacheTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,CloudMemcacheTransport,Callable[..., CloudMemcacheTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the CloudMemcacheTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -346,8 +351,8 @@ class CloudMemcacheAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -355,7 +360,10 @@ class CloudMemcacheAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = cloud_memcache.ListInstancesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cloud_memcache.ListInstancesRequest):
+            request = cloud_memcache.ListInstancesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -364,11 +372,9 @@ class CloudMemcacheAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_instances,
-            default_timeout=1200.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_instances
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -460,8 +466,8 @@ class CloudMemcacheAsyncClient:
                 A Memorystore for Memcached instance
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -469,7 +475,10 @@ class CloudMemcacheAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = cloud_memcache.GetInstanceRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cloud_memcache.GetInstanceRequest):
+            request = cloud_memcache.GetInstanceRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -478,11 +487,9 @@ class CloudMemcacheAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_instance,
-            default_timeout=1200.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_instance
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -606,8 +613,8 @@ class CloudMemcacheAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, instance_id, resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -615,7 +622,10 @@ class CloudMemcacheAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = cloud_memcache.CreateInstanceRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cloud_memcache.CreateInstanceRequest):
+            request = cloud_memcache.CreateInstanceRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -628,11 +638,9 @@ class CloudMemcacheAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_instance,
-            default_timeout=1200.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_instance
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -746,8 +754,8 @@ class CloudMemcacheAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([update_mask, resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -755,7 +763,10 @@ class CloudMemcacheAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = cloud_memcache.UpdateInstanceRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cloud_memcache.UpdateInstanceRequest):
+            request = cloud_memcache.UpdateInstanceRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -766,11 +777,9 @@ class CloudMemcacheAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_instance,
-            default_timeout=1200.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_instance
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -888,8 +897,8 @@ class CloudMemcacheAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, update_mask, parameters])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -897,7 +906,10 @@ class CloudMemcacheAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = cloud_memcache.UpdateParametersRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cloud_memcache.UpdateParametersRequest):
+            request = cloud_memcache.UpdateParametersRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -910,11 +922,9 @@ class CloudMemcacheAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_parameters,
-            default_timeout=1200.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_parameters
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1021,8 +1031,8 @@ class CloudMemcacheAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1030,7 +1040,10 @@ class CloudMemcacheAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = cloud_memcache.DeleteInstanceRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cloud_memcache.DeleteInstanceRequest):
+            request = cloud_memcache.DeleteInstanceRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1039,11 +1052,9 @@ class CloudMemcacheAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_instance,
-            default_timeout=1200.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_instance
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1162,8 +1173,8 @@ class CloudMemcacheAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, node_ids, apply_all])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1171,7 +1182,10 @@ class CloudMemcacheAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = cloud_memcache.ApplyParametersRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cloud_memcache.ApplyParametersRequest):
+            request = cloud_memcache.ApplyParametersRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1184,11 +1198,9 @@ class CloudMemcacheAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.apply_parameters,
-            default_timeout=1200.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.apply_parameters
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1311,8 +1323,8 @@ class CloudMemcacheAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([instance, node_ids, apply_all])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1320,7 +1332,10 @@ class CloudMemcacheAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = cloud_memcache.ApplySoftwareUpdateRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cloud_memcache.ApplySoftwareUpdateRequest):
+            request = cloud_memcache.ApplySoftwareUpdateRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1333,11 +1348,9 @@ class CloudMemcacheAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.apply_software_update,
-            default_timeout=1200.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.apply_software_update
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1460,8 +1473,8 @@ class CloudMemcacheAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([instance, reschedule_type, schedule_time])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1469,7 +1482,10 @@ class CloudMemcacheAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = cloud_memcache.RescheduleMaintenanceRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cloud_memcache.RescheduleMaintenanceRequest):
+            request = cloud_memcache.RescheduleMaintenanceRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1482,11 +1498,9 @@ class CloudMemcacheAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.reschedule_maintenance,
-            default_timeout=1200.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.reschedule_maintenance
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.

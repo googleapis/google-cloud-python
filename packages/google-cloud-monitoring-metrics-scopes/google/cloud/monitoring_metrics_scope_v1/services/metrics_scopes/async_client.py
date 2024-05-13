@@ -17,6 +17,7 @@ from collections import OrderedDict
 import functools
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -206,7 +207,9 @@ class MetricsScopesAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, MetricsScopesTransport] = "grpc_asyncio",
+        transport: Optional[
+            Union[str, MetricsScopesTransport, Callable[..., MetricsScopesTransport]]
+        ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -218,9 +221,11 @@ class MetricsScopesAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.MetricsScopesTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,MetricsScopesTransport,Callable[..., MetricsScopesTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the MetricsScopesTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -328,8 +333,8 @@ class MetricsScopesAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -337,7 +342,10 @@ class MetricsScopesAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = metrics_scopes.GetMetricsScopeRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, metrics_scopes.GetMetricsScopeRequest):
+            request = metrics_scopes.GetMetricsScopeRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -346,11 +354,9 @@ class MetricsScopesAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_metrics_scope,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_metrics_scope
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -430,15 +436,18 @@ class MetricsScopesAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = metrics_scopes.ListMetricsScopesByMonitoredProjectRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, metrics_scopes.ListMetricsScopesByMonitoredProjectRequest
+        ):
+            request = metrics_scopes.ListMetricsScopesByMonitoredProjectRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_metrics_scopes_by_monitored_project,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_metrics_scopes_by_monitored_project
+        ]
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -538,8 +547,8 @@ class MetricsScopesAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, monitored_project])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -547,7 +556,10 @@ class MetricsScopesAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = metrics_scopes.CreateMonitoredProjectRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, metrics_scopes.CreateMonitoredProjectRequest):
+            request = metrics_scopes.CreateMonitoredProjectRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -558,11 +570,9 @@ class MetricsScopesAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_monitored_project,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_monitored_project
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -675,8 +685,8 @@ class MetricsScopesAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -684,7 +694,10 @@ class MetricsScopesAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = metrics_scopes.DeleteMonitoredProjectRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, metrics_scopes.DeleteMonitoredProjectRequest):
+            request = metrics_scopes.DeleteMonitoredProjectRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -693,11 +706,9 @@ class MetricsScopesAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_monitored_project,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_monitored_project
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.

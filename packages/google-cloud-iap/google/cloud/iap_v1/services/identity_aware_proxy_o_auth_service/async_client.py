@@ -17,6 +17,7 @@ from collections import OrderedDict
 import functools
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -207,7 +208,13 @@ class IdentityAwareProxyOAuthServiceAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, IdentityAwareProxyOAuthServiceTransport] = "grpc_asyncio",
+        transport: Optional[
+            Union[
+                str,
+                IdentityAwareProxyOAuthServiceTransport,
+                Callable[..., IdentityAwareProxyOAuthServiceTransport],
+            ]
+        ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -219,9 +226,11 @@ class IdentityAwareProxyOAuthServiceAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.IdentityAwareProxyOAuthServiceTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,IdentityAwareProxyOAuthServiceTransport,Callable[..., IdentityAwareProxyOAuthServiceTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the IdentityAwareProxyOAuthServiceTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -315,15 +324,16 @@ class IdentityAwareProxyOAuthServiceAsyncClient:
                 Response message for ListBrands.
         """
         # Create or coerce a protobuf request object.
-        request = service.ListBrandsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.ListBrandsRequest):
+            request = service.ListBrandsRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_brands,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_brands
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -407,15 +417,16 @@ class IdentityAwareProxyOAuthServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = service.CreateBrandRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.CreateBrandRequest):
+            request = service.CreateBrandRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_brand,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_brand
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -490,15 +501,16 @@ class IdentityAwareProxyOAuthServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = service.GetBrandRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.GetBrandRequest):
+            request = service.GetBrandRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_brand,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_brand
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -578,15 +590,16 @@ class IdentityAwareProxyOAuthServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = service.CreateIdentityAwareProxyClientRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.CreateIdentityAwareProxyClientRequest):
+            request = service.CreateIdentityAwareProxyClientRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_identity_aware_proxy_client,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_identity_aware_proxy_client
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -667,15 +680,16 @@ class IdentityAwareProxyOAuthServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = service.ListIdentityAwareProxyClientsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.ListIdentityAwareProxyClientsRequest):
+            request = service.ListIdentityAwareProxyClientsRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_identity_aware_proxy_clients,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_identity_aware_proxy_clients
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -762,15 +776,16 @@ class IdentityAwareProxyOAuthServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = service.GetIdentityAwareProxyClientRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.GetIdentityAwareProxyClientRequest):
+            request = service.GetIdentityAwareProxyClientRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_identity_aware_proxy_client,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_identity_aware_proxy_client
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -849,15 +864,16 @@ class IdentityAwareProxyOAuthServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = service.ResetIdentityAwareProxyClientSecretRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.ResetIdentityAwareProxyClientSecretRequest):
+            request = service.ResetIdentityAwareProxyClientSecretRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.reset_identity_aware_proxy_client_secret,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.reset_identity_aware_proxy_client_secret
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -928,15 +944,16 @@ class IdentityAwareProxyOAuthServiceAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        request = service.DeleteIdentityAwareProxyClientRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.DeleteIdentityAwareProxyClientRequest):
+            request = service.DeleteIdentityAwareProxyClientRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_identity_aware_proxy_client,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_identity_aware_proxy_client
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.

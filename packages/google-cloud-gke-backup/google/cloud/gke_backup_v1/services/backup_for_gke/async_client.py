@@ -17,6 +17,7 @@ from collections import OrderedDict
 import functools
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -228,7 +229,9 @@ class BackupForGKEAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, BackupForGKETransport] = "grpc_asyncio",
+        transport: Optional[
+            Union[str, BackupForGKETransport, Callable[..., BackupForGKETransport]]
+        ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -240,9 +243,11 @@ class BackupForGKEAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.BackupForGKETransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,BackupForGKETransport,Callable[..., BackupForGKETransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the BackupForGKETransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -385,8 +390,8 @@ class BackupForGKEAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, backup_plan, backup_plan_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -394,7 +399,10 @@ class BackupForGKEAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gkebackup.CreateBackupPlanRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gkebackup.CreateBackupPlanRequest):
+            request = gkebackup.CreateBackupPlanRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -407,11 +415,9 @@ class BackupForGKEAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_backup_plan,
-            default_timeout=300.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_backup_plan
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -505,8 +511,8 @@ class BackupForGKEAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -514,7 +520,10 @@ class BackupForGKEAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gkebackup.ListBackupPlansRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gkebackup.ListBackupPlansRequest):
+            request = gkebackup.ListBackupPlansRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -523,20 +532,9 @@ class BackupForGKEAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_backup_plans,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_backup_plans
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -627,8 +625,8 @@ class BackupForGKEAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -636,7 +634,10 @@ class BackupForGKEAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gkebackup.GetBackupPlanRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gkebackup.GetBackupPlanRequest):
+            request = gkebackup.GetBackupPlanRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -645,20 +646,9 @@ class BackupForGKEAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_backup_plan,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_backup_plan
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -770,8 +760,8 @@ class BackupForGKEAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([backup_plan, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -779,7 +769,10 @@ class BackupForGKEAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gkebackup.UpdateBackupPlanRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gkebackup.UpdateBackupPlanRequest):
+            request = gkebackup.UpdateBackupPlanRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -790,11 +783,9 @@ class BackupForGKEAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_backup_plan,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_backup_plan
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -900,8 +891,8 @@ class BackupForGKEAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -909,7 +900,10 @@ class BackupForGKEAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gkebackup.DeleteBackupPlanRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gkebackup.DeleteBackupPlanRequest):
+            request = gkebackup.DeleteBackupPlanRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -918,11 +912,9 @@ class BackupForGKEAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_backup_plan,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_backup_plan
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1047,8 +1039,8 @@ class BackupForGKEAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, backup, backup_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1056,7 +1048,10 @@ class BackupForGKEAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gkebackup.CreateBackupRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gkebackup.CreateBackupRequest):
+            request = gkebackup.CreateBackupRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1069,11 +1064,9 @@ class BackupForGKEAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_backup,
-            default_timeout=120.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_backup
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1167,8 +1160,8 @@ class BackupForGKEAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1176,7 +1169,10 @@ class BackupForGKEAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gkebackup.ListBackupsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gkebackup.ListBackupsRequest):
+            request = gkebackup.ListBackupsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1185,20 +1181,9 @@ class BackupForGKEAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_backups,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_backups
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1294,8 +1279,8 @@ class BackupForGKEAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1303,7 +1288,10 @@ class BackupForGKEAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gkebackup.GetBackupRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gkebackup.GetBackupRequest):
+            request = gkebackup.GetBackupRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1312,20 +1300,9 @@ class BackupForGKEAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_backup,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_backup
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1435,8 +1412,8 @@ class BackupForGKEAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([backup, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1444,7 +1421,10 @@ class BackupForGKEAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gkebackup.UpdateBackupRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gkebackup.UpdateBackupRequest):
+            request = gkebackup.UpdateBackupRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1455,11 +1435,9 @@ class BackupForGKEAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_backup,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_backup
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1565,8 +1543,8 @@ class BackupForGKEAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1574,7 +1552,10 @@ class BackupForGKEAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gkebackup.DeleteBackupRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gkebackup.DeleteBackupRequest):
+            request = gkebackup.DeleteBackupRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1583,11 +1564,9 @@ class BackupForGKEAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_backup,
-            default_timeout=300.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_backup
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1683,8 +1662,8 @@ class BackupForGKEAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1692,7 +1671,10 @@ class BackupForGKEAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gkebackup.ListVolumeBackupsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gkebackup.ListVolumeBackupsRequest):
+            request = gkebackup.ListVolumeBackupsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1701,20 +1683,9 @@ class BackupForGKEAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_volume_backups,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_volume_backups
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1809,8 +1780,8 @@ class BackupForGKEAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1818,7 +1789,10 @@ class BackupForGKEAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gkebackup.GetVolumeBackupRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gkebackup.GetVolumeBackupRequest):
+            request = gkebackup.GetVolumeBackupRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1827,20 +1801,9 @@ class BackupForGKEAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_volume_backup,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_volume_backup
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1962,8 +1925,8 @@ class BackupForGKEAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, restore_plan, restore_plan_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1971,7 +1934,10 @@ class BackupForGKEAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gkebackup.CreateRestorePlanRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gkebackup.CreateRestorePlanRequest):
+            request = gkebackup.CreateRestorePlanRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1984,11 +1950,9 @@ class BackupForGKEAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_restore_plan,
-            default_timeout=120.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_restore_plan
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2082,8 +2046,8 @@ class BackupForGKEAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2091,7 +2055,10 @@ class BackupForGKEAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gkebackup.ListRestorePlansRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gkebackup.ListRestorePlansRequest):
+            request = gkebackup.ListRestorePlansRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2100,20 +2067,9 @@ class BackupForGKEAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_restore_plans,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_restore_plans
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2206,8 +2162,8 @@ class BackupForGKEAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2215,7 +2171,10 @@ class BackupForGKEAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gkebackup.GetRestorePlanRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gkebackup.GetRestorePlanRequest):
+            request = gkebackup.GetRestorePlanRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2224,20 +2183,9 @@ class BackupForGKEAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_restore_plan,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_restore_plan
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2348,8 +2296,8 @@ class BackupForGKEAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([restore_plan, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2357,7 +2305,10 @@ class BackupForGKEAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gkebackup.UpdateRestorePlanRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gkebackup.UpdateRestorePlanRequest):
+            request = gkebackup.UpdateRestorePlanRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2368,11 +2319,9 @@ class BackupForGKEAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_restore_plan,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_restore_plan
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2479,8 +2428,8 @@ class BackupForGKEAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2488,7 +2437,10 @@ class BackupForGKEAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gkebackup.DeleteRestorePlanRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gkebackup.DeleteRestorePlanRequest):
+            request = gkebackup.DeleteRestorePlanRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2497,11 +2449,9 @@ class BackupForGKEAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_restore_plan,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_restore_plan
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2630,8 +2580,8 @@ class BackupForGKEAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, restore, restore_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2639,7 +2589,10 @@ class BackupForGKEAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gkebackup.CreateRestoreRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gkebackup.CreateRestoreRequest):
+            request = gkebackup.CreateRestoreRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2652,11 +2605,9 @@ class BackupForGKEAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_restore,
-            default_timeout=120.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_restore
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2750,8 +2701,8 @@ class BackupForGKEAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2759,7 +2710,10 @@ class BackupForGKEAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gkebackup.ListRestoresRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gkebackup.ListRestoresRequest):
+            request = gkebackup.ListRestoresRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2768,20 +2722,9 @@ class BackupForGKEAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_restores,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_restores
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2874,8 +2817,8 @@ class BackupForGKEAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2883,7 +2826,10 @@ class BackupForGKEAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gkebackup.GetRestoreRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gkebackup.GetRestoreRequest):
+            request = gkebackup.GetRestoreRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2892,20 +2838,9 @@ class BackupForGKEAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_restore,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_restore
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3013,8 +2948,8 @@ class BackupForGKEAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([restore, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3022,7 +2957,10 @@ class BackupForGKEAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gkebackup.UpdateRestoreRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gkebackup.UpdateRestoreRequest):
+            request = gkebackup.UpdateRestoreRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3033,11 +2971,9 @@ class BackupForGKEAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_restore,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_restore
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3143,8 +3079,8 @@ class BackupForGKEAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3152,7 +3088,10 @@ class BackupForGKEAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gkebackup.DeleteRestoreRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gkebackup.DeleteRestoreRequest):
+            request = gkebackup.DeleteRestoreRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3161,11 +3100,9 @@ class BackupForGKEAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_restore,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_restore
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3261,8 +3198,8 @@ class BackupForGKEAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3270,7 +3207,10 @@ class BackupForGKEAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gkebackup.ListVolumeRestoresRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gkebackup.ListVolumeRestoresRequest):
+            request = gkebackup.ListVolumeRestoresRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3279,20 +3219,9 @@ class BackupForGKEAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_volume_restores,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_volume_restores
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3384,8 +3313,8 @@ class BackupForGKEAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3393,7 +3322,10 @@ class BackupForGKEAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gkebackup.GetVolumeRestoreRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gkebackup.GetVolumeRestoreRequest):
+            request = gkebackup.GetVolumeRestoreRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3402,20 +3334,9 @@ class BackupForGKEAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_volume_restore,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_volume_restore
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3500,8 +3421,8 @@ class BackupForGKEAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([backup])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3509,7 +3430,10 @@ class BackupForGKEAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gkebackup.GetBackupIndexDownloadUrlRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gkebackup.GetBackupIndexDownloadUrlRequest):
+            request = gkebackup.GetBackupIndexDownloadUrlRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3518,20 +3442,9 @@ class BackupForGKEAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_backup_index_download_url,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_backup_index_download_url
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.

@@ -15,6 +15,8 @@
 from __future__ import absolute_import
 
 import datetime
+import google.auth.credentials as ga_credentials
+import grpc
 import unittest
 from unittest import mock
 
@@ -71,7 +73,7 @@ class MultiCallableStub(object):
             return response
 
 
-class ChannelStub(object):
+class ChannelStub(grpc.Channel):
     """Stub for the grpc.Channel interface."""
 
     def __init__(self, responses=[]):
@@ -83,6 +85,45 @@ class ChannelStub(object):
 
     def unary_unary(self, method, request_serializer=None, response_deserializer=None):
         return MultiCallableStub(method, self)
+
+    def subscribe(self, callback, try_to_connect=False):
+        """grpc.Channel.subscribe implementation."""
+        pass
+
+    def unary_stream(
+        self,
+        method,
+        request_serializer=None,
+        response_deserializer=None,
+    ):
+        """grpc.Channel.unary_stream implementation."""
+        return self._stub_for_method(method)
+
+    def stream_unary(
+        self,
+        method,
+        request_serializer=None,
+        response_deserializer=None,
+    ):
+        """grpc.Channel.stream_unary implementation."""
+        return self._stub_for_method(method)
+
+    def stream_stream(
+        self,
+        method,
+        request_serializer=None,
+        response_deserializer=None,
+    ):
+        """grpc.Channel.stream_stream implementation."""
+        return self._stub_for_method(method)
+
+    def unsubscribe(self, callback):
+        """grpc.Channel.unsubscribe implementation."""
+        pass
+
+    def close(self):
+        """grpc.Channel.close implementation."""
+        pass
 
 
 class TestQuery(unittest.TestCase):
@@ -104,7 +145,9 @@ class TestQuery(unittest.TestCase):
     def _create_client(channel=None):
         if channel is None:
             channel = ChannelStub()
-        transport = MetricServiceGrpcTransport(channel=channel)
+        transport = MetricServiceGrpcTransport(
+            channel=channel, credentials=ga_credentials.AnonymousCredentials()
+        )
         return MetricServiceClient(transport=transport)
 
     def test_constructor_minimal(self):

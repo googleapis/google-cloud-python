@@ -17,6 +17,7 @@ from collections import OrderedDict
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -719,7 +720,9 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, BackupForGKETransport]] = None,
+        transport: Optional[
+            Union[str, BackupForGKETransport, Callable[..., BackupForGKETransport]]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -731,9 +734,11 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, BackupForGKETransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,BackupForGKETransport,Callable[..., BackupForGKETransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the BackupForGKETransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -839,8 +844,15 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[BackupForGKETransport], Callable[..., BackupForGKETransport]
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., BackupForGKETransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -951,8 +963,8 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, backup_plan, backup_plan_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -960,10 +972,8 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gkebackup.CreateBackupPlanRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gkebackup.CreateBackupPlanRequest):
             request = gkebackup.CreateBackupPlanRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1071,8 +1081,8 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1080,10 +1090,8 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gkebackup.ListBackupPlansRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gkebackup.ListBackupPlansRequest):
             request = gkebackup.ListBackupPlansRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1184,8 +1192,8 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1193,10 +1201,8 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gkebackup.GetBackupPlanRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gkebackup.GetBackupPlanRequest):
             request = gkebackup.GetBackupPlanRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1318,8 +1324,8 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([backup_plan, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1327,10 +1333,8 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gkebackup.UpdateBackupPlanRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gkebackup.UpdateBackupPlanRequest):
             request = gkebackup.UpdateBackupPlanRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1448,8 +1452,8 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1457,10 +1461,8 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gkebackup.DeleteBackupPlanRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gkebackup.DeleteBackupPlanRequest):
             request = gkebackup.DeleteBackupPlanRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1595,8 +1597,8 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, backup, backup_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1604,10 +1606,8 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gkebackup.CreateBackupRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gkebackup.CreateBackupRequest):
             request = gkebackup.CreateBackupRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1715,8 +1715,8 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1724,10 +1724,8 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gkebackup.ListBackupsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gkebackup.ListBackupsRequest):
             request = gkebackup.ListBackupsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1833,8 +1831,8 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1842,10 +1840,8 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gkebackup.GetBackupRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gkebackup.GetBackupRequest):
             request = gkebackup.GetBackupRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1965,8 +1961,8 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([backup, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1974,10 +1970,8 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gkebackup.UpdateBackupRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gkebackup.UpdateBackupRequest):
             request = gkebackup.UpdateBackupRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2095,8 +2089,8 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2104,10 +2098,8 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gkebackup.DeleteBackupRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gkebackup.DeleteBackupRequest):
             request = gkebackup.DeleteBackupRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2213,8 +2205,8 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2222,10 +2214,8 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gkebackup.ListVolumeBackupsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gkebackup.ListVolumeBackupsRequest):
             request = gkebackup.ListVolumeBackupsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2330,8 +2320,8 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2339,10 +2329,8 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gkebackup.GetVolumeBackupRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gkebackup.GetVolumeBackupRequest):
             request = gkebackup.GetVolumeBackupRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2474,8 +2462,8 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, restore_plan, restore_plan_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2483,10 +2471,8 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gkebackup.CreateRestorePlanRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gkebackup.CreateRestorePlanRequest):
             request = gkebackup.CreateRestorePlanRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2594,8 +2580,8 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2603,10 +2589,8 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gkebackup.ListRestorePlansRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gkebackup.ListRestorePlansRequest):
             request = gkebackup.ListRestorePlansRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2709,8 +2693,8 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2718,10 +2702,8 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gkebackup.GetRestorePlanRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gkebackup.GetRestorePlanRequest):
             request = gkebackup.GetRestorePlanRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2842,8 +2824,8 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([restore_plan, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2851,10 +2833,8 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gkebackup.UpdateRestorePlanRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gkebackup.UpdateRestorePlanRequest):
             request = gkebackup.UpdateRestorePlanRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2973,8 +2953,8 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2982,10 +2962,8 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gkebackup.DeleteRestorePlanRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gkebackup.DeleteRestorePlanRequest):
             request = gkebackup.DeleteRestorePlanRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3124,8 +3102,8 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, restore, restore_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3133,10 +3111,8 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gkebackup.CreateRestoreRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gkebackup.CreateRestoreRequest):
             request = gkebackup.CreateRestoreRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3244,8 +3220,8 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3253,10 +3229,8 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gkebackup.ListRestoresRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gkebackup.ListRestoresRequest):
             request = gkebackup.ListRestoresRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3359,8 +3333,8 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3368,10 +3342,8 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gkebackup.GetRestoreRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gkebackup.GetRestoreRequest):
             request = gkebackup.GetRestoreRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3489,8 +3461,8 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([restore, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3498,10 +3470,8 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gkebackup.UpdateRestoreRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gkebackup.UpdateRestoreRequest):
             request = gkebackup.UpdateRestoreRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3619,8 +3589,8 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3628,10 +3598,8 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gkebackup.DeleteRestoreRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gkebackup.DeleteRestoreRequest):
             request = gkebackup.DeleteRestoreRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3737,8 +3705,8 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3746,10 +3714,8 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gkebackup.ListVolumeRestoresRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gkebackup.ListVolumeRestoresRequest):
             request = gkebackup.ListVolumeRestoresRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3851,8 +3817,8 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3860,10 +3826,8 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gkebackup.GetVolumeRestoreRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gkebackup.GetVolumeRestoreRequest):
             request = gkebackup.GetVolumeRestoreRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3958,8 +3922,8 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([backup])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3967,10 +3931,8 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gkebackup.GetBackupIndexDownloadUrlRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gkebackup.GetBackupIndexDownloadUrlRequest):
             request = gkebackup.GetBackupIndexDownloadUrlRequest(request)
             # If we have keyword arguments corresponding to fields on the
