@@ -17,6 +17,7 @@
 import os
 import requests
 from typing import List, Optional
+from dataclasses import dataclass
 
 
 class MissingGithubToken(ValueError):
@@ -30,7 +31,10 @@ SPLIT_REPO_PATH_FORMAT = "{repo_slug}/main"
 REPO_METADATA_FILENAME = ".repo-metadata.json"
 
 
+# MONO_REPO defines the name of the mono repository for Python.
 MONO_REPO = "googleapis/google-cloud-python"
+
+# REPO_EXCLUSION lists the repositories that need to be excluded.
 REPO_EXCLUSION = [
     # core libraries
     "googleapis/python-api-core",
@@ -41,10 +45,17 @@ REPO_EXCLUSION = [
     "googleapis/python-test-utils",
 ]
 
+# PACKAGE_RESPONSE_KEY defines the package name in the response.
 PACKAGE_RESPONSE_KEY = "name"
+
+# REPO_RESPONSE_KEY defines the repository name in the response.
 REPO_RESPONSE_KEY = "full_name"
 
+# BASE_API defines the base API for github.
 BASE_API = "https://api.github.com"
+
+
+
 
 
 class CloudClient:
@@ -71,6 +82,26 @@ class CloudClient:
 
     def __repr__(self):
         return repr((self.release_level, self.title))
+
+
+@dataclass
+class Extractor:
+    path_format: str
+    response_key: str
+    is_split_repo: bool = True
+
+    
+    def client_for_repo(self, repo_slug) -> Optional[CloudClient]:
+        path = self.path_format.format(repo_slug=repo_slug)
+        url = f"{RAW_CONTENT_BASE_URL}/{path}/{REPO_METADATA_FILENAME}"
+        response = requests.get(url)
+        if response.status_code != requests.codes.ok:
+            return
+
+        return CloudClient(response.json())
+    
+    def get_clients_from_batch_response(self, response_json) -> List[CloudClient]:
+        return [self.client_for_repo(repo[self.response_key]) for repo in response_json if (not self.is_split_repo or allowed_split_repo(repo))]
 
 
 def replace_content_in_readme(content_rows: List[str]) -> None:
@@ -137,7 +168,7 @@ def generate_table_contents(clients: List[CloudClient]) -> List[str]:
     return content_rows + pypi_links
 
 
-def allowed_repo(repo) -> bool:
+def allowed_split_repo(repo) -> bool:
     return (
         repo[REPO_RESPONSE_KEY].startswith("googleapis/python-")
         and repo[REPO_RESPONSE_KEY] not in REPO_EXCLUSION
@@ -145,29 +176,14 @@ def allowed_repo(repo) -> bool:
     )
 
 
-def client_for_repo(repo_slug, is_split_repo: bool = True) -> Optional[CloudClient]:
-    path = SPLIT_REPO_PATH_FORMAT if is_split_repo else MONO_REPO_PATH_FORMAT
-    path = path.format(repo_slug=repo_slug)
-    url = f"{RAW_CONTENT_BASE_URL}/{path}/{REPO_METADATA_FILENAME}"
-    response = requests.get(url)
-    if response.status_code != requests.codes.ok:
-        return
-
-    return CloudClient(response.json())
-
-
-def get_clients_from_batch_response(response_json, is_split_repo: bool = True) -> List[CloudClient]:
-    repos_key = REPO_RESPONSE_KEY if is_split_repo else PACKAGE_RESPONSE_KEY
-    return [client_for_repo(repo[repos_key], is_split_repo) for repo in response_json if (not is_split_repo or allowed_repo(repo))]
-
-
 def mono_repo_clients(token: str) -> List[CloudClient]:
     # all mono repo clients
     url = f"{BASE_API}/repos/{MONO_REPO}/contents/packages"
     headers = {'Authorization': f'token {token}'}
     response = requests.get(url=url, headers=headers)
-
-    return get_clients_from_batch_response(response.json(), is_split_repo=False)
+    mono_repo_extractor = Extractor(path_format=MONO_REPO_PATH_FORMAT, response_key=PACKAGE_RESPONSE_KEY, is_split_repo=False)
+    
+    return mono_repo_extractor.get_clients_from_batch_response(response.json())
 
 
 def split_repo_clients(token: str) -> List[CloudClient]:
@@ -185,7 +201,9 @@ def split_repo_clients(token: str) -> List[CloudClient]:
         repositories = response.json().get("items", [])
         if len(repositories) == 0:
             break
-        return get_clients_from_batch_response(repositories)
+
+        split_repo_extractor = Extractor(path_format=SPLIT_REPO_PATH_FORMAT, response_key=REPO_RESPONSE_KEY)
+        return split_repo_extractor.get_clients_from_batch_response(repositories)
 
 
 def get_token():
