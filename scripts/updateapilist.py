@@ -114,7 +114,7 @@ def client_row(client: CloudClient) -> str:
     ]
 
     if client.issue_tracker:
-        content_row.append(f"     - `File an Issue <{client.issue_tracker}>`_\n",)
+        content_row.append(f"     - `File an Issue <{client.issue_tracker}>`_\n")
 
     return (content_row, pypi_badge)
 
@@ -151,7 +151,7 @@ def allowed_repo(repo) -> bool:
 def client_for_repo(repo_slug, is_split_repo: bool = True) -> Optional[CloudClient]:
     path = SPLIT_REPO_PATH_FORMAT if is_split_repo else MONO_REPO_PATH_FORMAT
     path = path.format(repo_slug=repo_slug)
-    url = RAW_CONTENT_BASE_URL + '/' + path + '/' + REPO_METADATA_FILENAME
+    url = f"{RAW_CONTENT_BASE_URL}/{path}/{REPO_METADATA_FILENAME}"
     response = requests.get(url)
     if response.status_code != requests.codes.ok:
         return
