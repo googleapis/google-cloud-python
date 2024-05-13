@@ -111,7 +111,7 @@ def client_row(client: CloudClient) -> str:
     ]
 
     if client.issue_tracker:
-        content_row.append(f"     - `File an Issue <{client.issue_tracker}>`_\n")
+        content_row.append(f"     - `API Issues <{client.issue_tracker}>`_\n")
 
     return (content_row, pypi_badge)
 
@@ -125,7 +125,7 @@ def generate_table_contents(clients: List[CloudClient]) -> List[str]:
         "   * - Client\n",
         "     - Release Level\n",
         "     - Version\n",
-        "     - Issue Tracker\n",
+        "     - API Issue Tracker\n",
     ]
 
     pypi_links = ["\n"]
@@ -156,7 +156,7 @@ def client_for_repo(repo_slug, is_split_repo: bool = True) -> Optional[CloudClie
     return CloudClient(response.json())
 
 
-def get_clients_batch_from_response_json(response_json, is_split_repo: bool = True) -> List[CloudClient]:
+def get_clients_from_batch_response(response_json, is_split_repo: bool = True) -> List[CloudClient]:
     repos_key = REPO_RESPONSE_KEY if is_split_repo else PACKAGE_RESPONSE_KEY
     return [client_for_repo(repo[repos_key], is_split_repo) for repo in response_json if (not is_split_repo or allowed_repo(repo))]
 
@@ -167,7 +167,7 @@ def mono_repo_clients(token: str) -> List[CloudClient]:
     headers = {'Authorization': f'token {token}'}
     response = requests.get(url=url, headers=headers)
 
-    return get_clients_batch_from_response_json(response.json(), is_split_repo=False)
+    return get_clients_from_batch_response(response.json(), is_split_repo=False)
 
 
 def split_repo_clients(token: str) -> List[CloudClient]:
@@ -185,7 +185,7 @@ def split_repo_clients(token: str) -> List[CloudClient]:
         repositories = response.json().get("items", [])
         if len(repositories) == 0:
             break
-        return get_clients_batch_from_response_json(repositories)
+        return get_clients_from_batch_response(repositories)
 
 
 def get_token():
