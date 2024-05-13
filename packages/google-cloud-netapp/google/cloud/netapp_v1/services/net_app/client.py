@@ -17,6 +17,7 @@ from collections import OrderedDict
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -752,7 +753,9 @@ class NetAppClient(metaclass=NetAppClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, NetAppTransport]] = None,
+        transport: Optional[
+            Union[str, NetAppTransport, Callable[..., NetAppTransport]]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -764,9 +767,11 @@ class NetAppClient(metaclass=NetAppClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, NetAppTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,NetAppTransport,Callable[..., NetAppTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the NetAppTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -872,8 +877,15 @@ class NetAppClient(metaclass=NetAppClientMeta):
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[NetAppTransport], Callable[..., NetAppTransport]
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., NetAppTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -949,8 +961,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -958,10 +970,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a storage_pool.ListStoragePoolsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, storage_pool.ListStoragePoolsRequest):
             request = storage_pool.ListStoragePoolsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1095,8 +1105,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, storage_pool, storage_pool_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1104,10 +1114,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gcn_storage_pool.CreateStoragePoolRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gcn_storage_pool.CreateStoragePoolRequest):
             request = gcn_storage_pool.CreateStoragePoolRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1215,8 +1223,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1224,10 +1232,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a storage_pool.GetStoragePoolRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, storage_pool.GetStoragePoolRequest):
             request = storage_pool.GetStoragePoolRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1346,8 +1352,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([storage_pool, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1355,10 +1361,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gcn_storage_pool.UpdateStoragePoolRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gcn_storage_pool.UpdateStoragePoolRequest):
             request = gcn_storage_pool.UpdateStoragePoolRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1476,8 +1480,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1485,10 +1489,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a storage_pool.DeleteStoragePoolRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, storage_pool.DeleteStoragePoolRequest):
             request = storage_pool.DeleteStoragePoolRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1593,8 +1595,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1602,10 +1604,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a volume.ListVolumesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, volume.ListVolumesRequest):
             request = volume.ListVolumesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1704,8 +1704,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1713,10 +1713,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a volume.GetVolumeRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, volume.GetVolumeRequest):
             request = volume.GetVolumeRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1836,8 +1834,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, volume, volume_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1845,10 +1843,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gcn_volume.CreateVolumeRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gcn_volume.CreateVolumeRequest):
             request = gcn_volume.CreateVolumeRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1975,8 +1971,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([volume, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1984,10 +1980,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gcn_volume.UpdateVolumeRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gcn_volume.UpdateVolumeRequest):
             request = gcn_volume.UpdateVolumeRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2103,8 +2097,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2112,10 +2106,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a volume.DeleteVolumeRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, volume.DeleteVolumeRequest):
             request = volume.DeleteVolumeRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2218,10 +2210,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a volume.RevertVolumeRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, volume.RevertVolumeRequest):
             request = volume.RevertVolumeRequest(request)
 
@@ -2322,8 +2312,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2331,10 +2321,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a snapshot.ListSnapshotsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, snapshot.ListSnapshotsRequest):
             request = snapshot.ListSnapshotsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2436,8 +2424,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2445,10 +2433,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a snapshot.GetSnapshotRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, snapshot.GetSnapshotRequest):
             request = snapshot.GetSnapshotRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2567,8 +2553,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, snapshot, snapshot_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2576,10 +2562,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gcn_snapshot.CreateSnapshotRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gcn_snapshot.CreateSnapshotRequest):
             request = gcn_snapshot.CreateSnapshotRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2698,8 +2682,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2707,10 +2691,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a snapshot.DeleteSnapshotRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, snapshot.DeleteSnapshotRequest):
             request = snapshot.DeleteSnapshotRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2825,8 +2807,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([snapshot, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2834,10 +2816,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gcn_snapshot.UpdateSnapshotRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gcn_snapshot.UpdateSnapshotRequest):
             request = gcn_snapshot.UpdateSnapshotRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2948,8 +2928,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2957,10 +2937,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a active_directory.ListActiveDirectoriesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, active_directory.ListActiveDirectoriesRequest):
             request = active_directory.ListActiveDirectoriesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3065,8 +3043,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3074,10 +3052,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a active_directory.GetActiveDirectoryRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, active_directory.GetActiveDirectoryRequest):
             request = active_directory.GetActiveDirectoryRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3204,8 +3180,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, active_directory, active_directory_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3213,10 +3189,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gcn_active_directory.CreateActiveDirectoryRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gcn_active_directory.CreateActiveDirectoryRequest):
             request = gcn_active_directory.CreateActiveDirectoryRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3349,8 +3323,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([active_directory, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3358,10 +3332,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gcn_active_directory.UpdateActiveDirectoryRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gcn_active_directory.UpdateActiveDirectoryRequest):
             request = gcn_active_directory.UpdateActiveDirectoryRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3482,8 +3454,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3491,10 +3463,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a active_directory.DeleteActiveDirectoryRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, active_directory.DeleteActiveDirectoryRequest):
             request = active_directory.DeleteActiveDirectoryRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3598,8 +3568,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3607,10 +3577,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a kms.ListKmsConfigsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, kms.ListKmsConfigsRequest):
             request = kms.ListKmsConfigsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3740,8 +3708,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, kms_config, kms_config_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3749,10 +3717,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a kms.CreateKmsConfigRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, kms.CreateKmsConfigRequest):
             request = kms.CreateKmsConfigRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3856,8 +3822,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3865,10 +3831,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a kms.GetKmsConfigRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, kms.GetKmsConfigRequest):
             request = kms.GetKmsConfigRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3982,8 +3946,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([kms_config, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3991,10 +3955,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a kms.UpdateKmsConfigRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, kms.UpdateKmsConfigRequest):
             request = kms.UpdateKmsConfigRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4100,10 +4062,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a kms.EncryptVolumesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, kms.EncryptVolumesRequest):
             request = kms.EncryptVolumesRequest(request)
 
@@ -4193,10 +4153,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a kms.VerifyKmsConfigRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, kms.VerifyKmsConfigRequest):
             request = kms.VerifyKmsConfigRequest(request)
 
@@ -4298,8 +4256,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4307,10 +4265,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a kms.DeleteKmsConfigRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, kms.DeleteKmsConfigRequest):
             request = kms.DeleteKmsConfigRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4416,8 +4372,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4425,10 +4381,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a replication.ListReplicationsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, replication.ListReplicationsRequest):
             request = replication.ListReplicationsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4532,8 +4486,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4541,10 +4495,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a replication.GetReplicationRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, replication.GetReplicationRequest):
             request = replication.GetReplicationRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4668,8 +4620,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, replication, replication_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4677,10 +4629,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gcn_replication.CreateReplicationRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gcn_replication.CreateReplicationRequest):
             request = gcn_replication.CreateReplicationRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4799,8 +4749,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4808,10 +4758,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a replication.DeleteReplicationRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, replication.DeleteReplicationRequest):
             request = replication.DeleteReplicationRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4931,8 +4879,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([replication, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4940,10 +4888,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gcn_replication.UpdateReplicationRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gcn_replication.UpdateReplicationRequest):
             request = gcn_replication.UpdateReplicationRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -5047,10 +4993,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a replication.StopReplicationRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, replication.StopReplicationRequest):
             request = replication.StopReplicationRequest(request)
 
@@ -5146,10 +5090,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a replication.ResumeReplicationRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, replication.ResumeReplicationRequest):
             request = replication.ResumeReplicationRequest(request)
 
@@ -5250,10 +5192,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a replication.ReverseReplicationDirectionRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, replication.ReverseReplicationDirectionRequest):
             request = replication.ReverseReplicationDirectionRequest(request)
 
@@ -5382,8 +5322,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, backup_vault, backup_vault_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5391,10 +5331,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gcn_backup_vault.CreateBackupVaultRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gcn_backup_vault.CreateBackupVaultRequest):
             request = gcn_backup_vault.CreateBackupVaultRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -5497,8 +5435,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
                 A NetApp BackupVault.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5506,10 +5444,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a backup_vault.GetBackupVaultRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, backup_vault.GetBackupVaultRequest):
             request = backup_vault.GetBackupVaultRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -5607,8 +5543,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5616,10 +5552,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a backup_vault.ListBackupVaultsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, backup_vault.ListBackupVaultsRequest):
             request = backup_vault.ListBackupVaultsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -5742,8 +5676,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([backup_vault, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5751,10 +5685,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gcn_backup_vault.UpdateBackupVaultRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gcn_backup_vault.UpdateBackupVaultRequest):
             request = gcn_backup_vault.UpdateBackupVaultRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -5874,8 +5806,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5883,10 +5815,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a backup_vault.DeleteBackupVaultRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, backup_vault.DeleteBackupVaultRequest):
             request = backup_vault.DeleteBackupVaultRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -6017,8 +5947,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, backup, backup_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -6026,10 +5956,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gcn_backup.CreateBackupRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gcn_backup.CreateBackupRequest):
             request = gcn_backup.CreateBackupRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -6132,8 +6060,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
                 A NetApp Backup.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -6141,10 +6069,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a backup.GetBackupRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, backup.GetBackupRequest):
             request = backup.GetBackupRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -6249,8 +6175,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -6258,10 +6184,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a backup.ListBackupsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, backup.ListBackupsRequest):
             request = backup.ListBackupsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -6377,8 +6301,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -6386,10 +6310,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a backup.DeleteBackupRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, backup.DeleteBackupRequest):
             request = backup.DeleteBackupRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -6506,8 +6428,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([backup, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -6515,10 +6437,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gcn_backup.UpdateBackupRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gcn_backup.UpdateBackupRequest):
             request = gcn_backup.UpdateBackupRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -6653,8 +6573,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, backup_policy, backup_policy_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -6662,10 +6582,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gcn_backup_policy.CreateBackupPolicyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gcn_backup_policy.CreateBackupPolicyRequest):
             request = gcn_backup_policy.CreateBackupPolicyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -6769,8 +6687,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
                 Backup Policy.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -6778,10 +6696,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a backup_policy.GetBackupPolicyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, backup_policy.GetBackupPolicyRequest):
             request = backup_policy.GetBackupPolicyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -6878,8 +6794,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -6887,10 +6803,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a backup_policy.ListBackupPoliciesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, backup_policy.ListBackupPoliciesRequest):
             request = backup_policy.ListBackupPoliciesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -7012,8 +6926,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([backup_policy, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -7021,10 +6935,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gcn_backup_policy.UpdateBackupPolicyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gcn_backup_policy.UpdateBackupPolicyRequest):
             request = gcn_backup_policy.UpdateBackupPolicyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -7144,8 +7056,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -7153,10 +7065,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a backup_policy.DeleteBackupPolicyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, backup_policy.DeleteBackupPolicyRequest):
             request = backup_policy.DeleteBackupPolicyRequest(request)
             # If we have keyword arguments corresponding to fields on the

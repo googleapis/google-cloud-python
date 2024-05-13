@@ -17,6 +17,7 @@ from collections import OrderedDict
 import functools
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -214,7 +215,9 @@ class MetricServiceAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, MetricServiceTransport] = "grpc_asyncio",
+        transport: Optional[
+            Union[str, MetricServiceTransport, Callable[..., MetricServiceTransport]]
+        ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -226,9 +229,11 @@ class MetricServiceAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.MetricServiceTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,MetricServiceTransport,Callable[..., MetricServiceTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the MetricServiceTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -343,8 +348,8 @@ class MetricServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -352,7 +357,12 @@ class MetricServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = metric_service.ListMonitoredResourceDescriptorsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, metric_service.ListMonitoredResourceDescriptorsRequest
+        ):
+            request = metric_service.ListMonitoredResourceDescriptorsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -361,20 +371,9 @@ class MetricServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_monitored_resource_descriptors,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=30.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=30.0,
-            ),
-            default_timeout=30.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_monitored_resource_descriptors
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -485,8 +484,8 @@ class MetricServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -494,7 +493,12 @@ class MetricServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = metric_service.GetMonitoredResourceDescriptorRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, metric_service.GetMonitoredResourceDescriptorRequest
+        ):
+            request = metric_service.GetMonitoredResourceDescriptorRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -503,20 +507,9 @@ class MetricServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_monitored_resource_descriptor,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=30.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=30.0,
-            ),
-            default_timeout=30.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_monitored_resource_descriptor
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -608,8 +601,8 @@ class MetricServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -617,7 +610,10 @@ class MetricServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = metric_service.ListMetricDescriptorsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, metric_service.ListMetricDescriptorsRequest):
+            request = metric_service.ListMetricDescriptorsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -626,20 +622,9 @@ class MetricServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_metric_descriptors,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=30.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=30.0,
-            ),
-            default_timeout=30.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_metric_descriptors
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -742,8 +727,8 @@ class MetricServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -751,7 +736,10 @@ class MetricServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = metric_service.GetMetricDescriptorRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, metric_service.GetMetricDescriptorRequest):
+            request = metric_service.GetMetricDescriptorRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -760,20 +748,9 @@ class MetricServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_metric_descriptor,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=30.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=30.0,
-            ),
-            default_timeout=30.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_metric_descriptor
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -875,8 +852,8 @@ class MetricServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, metric_descriptor])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -884,7 +861,10 @@ class MetricServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = metric_service.CreateMetricDescriptorRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, metric_service.CreateMetricDescriptorRequest):
+            request = metric_service.CreateMetricDescriptorRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -895,11 +875,9 @@ class MetricServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_metric_descriptor,
-            default_timeout=12.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_metric_descriptor
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -983,8 +961,8 @@ class MetricServiceAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -992,7 +970,10 @@ class MetricServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = metric_service.DeleteMetricDescriptorRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, metric_service.DeleteMetricDescriptorRequest):
+            request = metric_service.DeleteMetricDescriptorRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1001,20 +982,9 @@ class MetricServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_metric_descriptor,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=30.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=30.0,
-            ),
-            default_timeout=30.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_metric_descriptor
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1142,8 +1112,8 @@ class MetricServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, filter, interval, view])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1151,7 +1121,10 @@ class MetricServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = metric_service.ListTimeSeriesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, metric_service.ListTimeSeriesRequest):
+            request = metric_service.ListTimeSeriesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1166,20 +1139,9 @@ class MetricServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_time_series,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=30.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=90.0,
-            ),
-            default_timeout=90.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_time_series
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1287,8 +1249,8 @@ class MetricServiceAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, time_series])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1296,7 +1258,10 @@ class MetricServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = metric_service.CreateTimeSeriesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, metric_service.CreateTimeSeriesRequest):
+            request = metric_service.CreateTimeSeriesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1307,11 +1272,9 @@ class MetricServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_time_series,
-            default_timeout=12.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_time_series
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1410,8 +1373,8 @@ class MetricServiceAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, time_series])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1419,7 +1382,10 @@ class MetricServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = metric_service.CreateTimeSeriesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, metric_service.CreateTimeSeriesRequest):
+            request = metric_service.CreateTimeSeriesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1430,11 +1396,9 @@ class MetricServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_service_time_series,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_service_time_series
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.

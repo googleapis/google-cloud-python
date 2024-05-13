@@ -17,6 +17,7 @@ from collections import OrderedDict
 import functools
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -227,7 +228,13 @@ class NotificationChannelServiceAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, NotificationChannelServiceTransport] = "grpc_asyncio",
+        transport: Optional[
+            Union[
+                str,
+                NotificationChannelServiceTransport,
+                Callable[..., NotificationChannelServiceTransport],
+            ]
+        ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -239,9 +246,11 @@ class NotificationChannelServiceAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.NotificationChannelServiceTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,NotificationChannelServiceTransport,Callable[..., NotificationChannelServiceTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the NotificationChannelServiceTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -365,8 +374,8 @@ class NotificationChannelServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -374,9 +383,14 @@ class NotificationChannelServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = notification_service.ListNotificationChannelDescriptorsRequest(
-            request
-        )
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, notification_service.ListNotificationChannelDescriptorsRequest
+        ):
+            request = notification_service.ListNotificationChannelDescriptorsRequest(
+                request
+            )
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -385,20 +399,9 @@ class NotificationChannelServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_notification_channel_descriptors,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=30.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=30.0,
-            ),
-            default_timeout=30.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_notification_channel_descriptors
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -500,8 +503,8 @@ class NotificationChannelServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -509,7 +512,14 @@ class NotificationChannelServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = notification_service.GetNotificationChannelDescriptorRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, notification_service.GetNotificationChannelDescriptorRequest
+        ):
+            request = notification_service.GetNotificationChannelDescriptorRequest(
+                request
+            )
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -518,20 +528,9 @@ class NotificationChannelServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_notification_channel_descriptor,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=30.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=30.0,
-            ),
-            default_timeout=30.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_notification_channel_descriptor
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -633,8 +632,8 @@ class NotificationChannelServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -642,7 +641,12 @@ class NotificationChannelServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = notification_service.ListNotificationChannelsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, notification_service.ListNotificationChannelsRequest
+        ):
+            request = notification_service.ListNotificationChannelsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -651,20 +655,9 @@ class NotificationChannelServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_notification_channels,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=30.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=30.0,
-            ),
-            default_timeout=30.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_notification_channels
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -772,8 +765,8 @@ class NotificationChannelServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -781,7 +774,10 @@ class NotificationChannelServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = notification_service.GetNotificationChannelRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, notification_service.GetNotificationChannelRequest):
+            request = notification_service.GetNotificationChannelRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -790,20 +786,9 @@ class NotificationChannelServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_notification_channel,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=30.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=30.0,
-            ),
-            default_timeout=30.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_notification_channel
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -920,8 +905,8 @@ class NotificationChannelServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, notification_channel])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -929,7 +914,12 @@ class NotificationChannelServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = notification_service.CreateNotificationChannelRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, notification_service.CreateNotificationChannelRequest
+        ):
+            request = notification_service.CreateNotificationChannelRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -940,11 +930,9 @@ class NotificationChannelServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_notification_channel,
-            default_timeout=30.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_notification_channel
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1048,8 +1036,8 @@ class NotificationChannelServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([update_mask, notification_channel])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1057,7 +1045,12 @@ class NotificationChannelServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = notification_service.UpdateNotificationChannelRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, notification_service.UpdateNotificationChannelRequest
+        ):
+            request = notification_service.UpdateNotificationChannelRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1068,11 +1061,9 @@ class NotificationChannelServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_notification_channel,
-            default_timeout=30.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_notification_channel
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1173,8 +1164,8 @@ class NotificationChannelServiceAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, force])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1182,7 +1173,12 @@ class NotificationChannelServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = notification_service.DeleteNotificationChannelRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, notification_service.DeleteNotificationChannelRequest
+        ):
+            request = notification_service.DeleteNotificationChannelRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1193,20 +1189,9 @@ class NotificationChannelServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_notification_channel,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=30.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=30.0,
-            ),
-            default_timeout=30.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_notification_channel
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1283,8 +1268,8 @@ class NotificationChannelServiceAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1292,9 +1277,16 @@ class NotificationChannelServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = notification_service.SendNotificationChannelVerificationCodeRequest(
-            request
-        )
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, notification_service.SendNotificationChannelVerificationCodeRequest
+        ):
+            request = (
+                notification_service.SendNotificationChannelVerificationCodeRequest(
+                    request
+                )
+            )
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1303,11 +1295,9 @@ class NotificationChannelServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.send_notification_channel_verification_code,
-            default_timeout=30.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.send_notification_channel_verification_code
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1419,8 +1409,8 @@ class NotificationChannelServiceAsyncClient:
                 The GetNotificationChannelVerificationCode request.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1428,9 +1418,16 @@ class NotificationChannelServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = notification_service.GetNotificationChannelVerificationCodeRequest(
-            request
-        )
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, notification_service.GetNotificationChannelVerificationCodeRequest
+        ):
+            request = (
+                notification_service.GetNotificationChannelVerificationCodeRequest(
+                    request
+                )
+            )
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1439,20 +1436,9 @@ class NotificationChannelServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_notification_channel_verification_code,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=30.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=30.0,
-            ),
-            default_timeout=30.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_notification_channel_verification_code
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1559,8 +1545,8 @@ class NotificationChannelServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, code])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1568,7 +1554,12 @@ class NotificationChannelServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = notification_service.VerifyNotificationChannelRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, notification_service.VerifyNotificationChannelRequest
+        ):
+            request = notification_service.VerifyNotificationChannelRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1579,20 +1570,9 @@ class NotificationChannelServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.verify_notification_channel,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=30.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=30.0,
-            ),
-            default_timeout=30.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.verify_notification_channel
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
