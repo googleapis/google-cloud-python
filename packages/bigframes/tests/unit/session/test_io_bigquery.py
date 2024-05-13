@@ -64,6 +64,7 @@ def test_create_job_configs_labels_log_adaptor_call_method_under_length_limit():
     # Test running two methods
     df.head()
     df.max()
+    df.columns
     api_methods = log_adapter._api_methods
 
     labels = io_bq.create_job_configs_labels(
@@ -71,9 +72,10 @@ def test_create_job_configs_labels_log_adaptor_call_method_under_length_limit():
     )
     expected_dict = {
         "source": "bigquery-dataframes-temp",
-        "bigframes-api": "dataframe-max",
-        "recent-bigframes-api-0": "dataframe-head",
-        "recent-bigframes-api-1": "dataframe-__init__",
+        "bigframes-api": "dataframe-columns",
+        "recent-bigframes-api-0": "dataframe-max",
+        "recent-bigframes-api-1": "dataframe-head",
+        "recent-bigframes-api-2": "dataframe-__init__",
     }
     assert labels == expected_dict
 

@@ -30,6 +30,10 @@ def class_logger(decorated_cls):
     for attr_name, attr_value in decorated_cls.__dict__.items():
         if callable(attr_value) and (attr_name not in _excluded_methods):
             setattr(decorated_cls, attr_name, method_logger(attr_value, decorated_cls))
+        elif isinstance(attr_value, property):
+            setattr(
+                decorated_cls, attr_name, property_logger(attr_value, decorated_cls)
+            )
     return decorated_cls
 
 
@@ -54,6 +58,35 @@ def method_logger(method, decorated_cls):
             _call_stack.pop()
 
     return wrapper
+
+
+def property_logger(prop, decorated_cls):
+    """Decorator that adds logging functionality to a property."""
+
+    def shared_wrapper(f):
+        @functools.wraps(f)
+        def wrapped(*args, **kwargs):
+            class_name = decorated_cls.__name__
+            property_name = f.__name__
+            full_property_name = f"{class_name.lower()}-{property_name.lower()}"
+
+            if len(_call_stack) == 0:
+                add_api_method(full_property_name)
+
+            _call_stack.append(full_property_name)
+            try:
+                return f(*args, **kwargs)
+            finally:
+                _call_stack.pop()
+
+        return wrapped
+
+    # Apply the wrapper to the getter, setter, and deleter
+    return property(
+        shared_wrapper(prop.fget),
+        shared_wrapper(prop.fset) if prop.fset else None,
+        shared_wrapper(prop.fdel) if prop.fdel else None,
+    )
 
 
 def add_api_method(api_method_name):
