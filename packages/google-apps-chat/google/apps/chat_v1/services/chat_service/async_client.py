@@ -313,8 +313,9 @@ class ChatServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gc_message.Message:
-        r"""Creates a message in a Google Chat space. For an example, see
-        `Send a
+        r"""Creates a message in a Google Chat space. The maximum message
+        size, including text and cards, is 32,000 bytes. For an example,
+        see `Send a
         message <https://developers.google.com/workspace/chat/create-messages>`__.
 
         Calling this method requires
@@ -769,8 +770,9 @@ class ChatServiceAsyncClient:
             name (:class:`str`):
                 Required. Resource name of the membership to retrieve.
 
-                To get the app's own membership, you can optionally use
-                ``spaces/{space}/members/app``.
+                To get the app's own membership `by using user
+                authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__,
+                you can optionally use ``spaces/{space}/members/app``.
 
                 Format: ``spaces/{space}/members/{member}`` or
                 ``spaces/{space}/members/app``
@@ -1572,7 +1574,7 @@ class ChatServiceAsyncClient:
                 The request object. A request to return a single space.
             name (:class:`str`):
                 Required. Resource name of the space, in the form
-                "spaces/*".
+                `spaces/*`.
 
                 Format: ``spaces/{space}``
 
@@ -1773,19 +1775,19 @@ class ChatServiceAsyncClient:
         members <https://developers.google.com/workspace/chat/set-up-spaces>`__.
 
         To specify the human members to add, add memberships with the
-        appropriate ``member.name`` in the ``SetUpSpaceRequest``. To add
-        a human user, use ``users/{user}``, where ``{user}`` can be the
-        email address for the user. For users in the same Workspace
-        organization ``{user}`` can also be the ``id`` for the person
-        from the People API, or the ``id`` for the user in the Directory
-        API. For example, if the People API Person profile ID for
+        appropriate ``membership.member.name``. To add a human user, use
+        ``users/{user}``, where ``{user}`` can be the email address for
+        the user. For users in the same Workspace organization
+        ``{user}`` can also be the ``id`` for the person from the People
+        API, or the ``id`` for the user in the Directory API. For
+        example, if the People API Person profile ID for
         ``user@example.com`` is ``123456789``, you can add the user to
         the space by setting the ``membership.member.name`` to
         ``users/user@example.com`` or ``users/123456789``.
 
-        For a space or group chat, if the caller blocks or is blocked by
-        some members, then those members aren't added to the created
-        space.
+        For a named space or group chat, if the caller blocks, or is
+        blocked by some members, or doesn't have permission to add some
+        members, then those members aren't added to the created space.
 
         To create a direct message (DM) between the calling user and
         another human user, specify exactly one membership to represent
@@ -2365,7 +2367,7 @@ class ChatServiceAsyncClient:
         authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__.
 
         To specify the member to add, set the ``membership.member.name``
-        in the ``CreateMembershipRequest``:
+        for the human or app member.
 
         -  To add the calling app to a space or a direct message between
            two human users, use ``users/app``. Unable to add other apps
@@ -2519,8 +2521,12 @@ class ChatServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gc_membership.Membership:
-        r"""Updates a membership. Requires `user
-        authentication <https://developers.google.com/chat/api/guides/auth/users>`__.
+        r"""Updates a membership. For an example, see `Update a user's
+        membership in a
+        space <https://developers.google.com/workspace/chat/update-members>`__.
+
+        Requires `user
+        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__.
 
         .. code-block:: python
 
@@ -3114,7 +3120,9 @@ class ChatServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> space_read_state.SpaceReadState:
         r"""Returns details about a user's read state within a space, used
-        to identify read and unread messages.
+        to identify read and unread messages. For an example, see `Get
+        details about a user's space read
+        state <https://developers.google.com/workspace/chat/get-space-read-state>`__.
 
         Requires `user
         authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__.
@@ -3243,7 +3251,9 @@ class ChatServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gc_space_read_state.SpaceReadState:
         r"""Updates a user's read state within a space, used to identify
-        read and unread messages.
+        read and unread messages. For an example, see `Update a user's
+        space read
+        state <https://developers.google.com/workspace/chat/update-space-read-state>`__.
 
         Requires `user
         authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__.
@@ -3394,7 +3404,9 @@ class ChatServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> thread_read_state.ThreadReadState:
         r"""Returns details about a user's read state within a thread, used
-        to identify read and unread messages.
+        to identify read and unread messages. For an example, see `Get
+        details about a user's thread read
+        state <https://developers.google.com/workspace/chat/get-thread-read-state>`__.
 
         Requires `user
         authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__.

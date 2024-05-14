@@ -108,7 +108,8 @@ class CustomEmoji(proto.Message):
 
     Attributes:
         uid (str):
-            Unique key for the custom emoji resource.
+            Output only. Unique key for the custom emoji
+            resource.
     """
 
     uid: str = proto.Field(

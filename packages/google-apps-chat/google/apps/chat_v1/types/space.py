@@ -120,16 +120,15 @@ class Space(proto.Message):
             Only populated in the output when ``spaceType`` is
             ``GROUP_CHAT`` or ``SPACE``.
         admin_installed (bool):
-            Output only. Whether the Chat app was
-            installed by a Google Workspace administrator.
-            Administrators can install a Chat app for their
-            domain, organizational unit, or a group of
-            users.
+            Output only. For direct message (DM) spaces
+            with a Chat app, whether the space was created
+            by a Google Workspace administrator.
+            Administrators can install and set up a direct
+            message with a Chat app on behalf of users in
+            their organization.
 
-            Administrators can only install Chat apps for
-            direct messaging between users and the app. To
-            support admin install, your app must feature
-            direct messaging.
+            To support admin install, your Chat app must
+            feature direct messaging.
     """
 
     class Type(proto.Enum):
@@ -409,7 +408,7 @@ class GetSpaceRequest(proto.Message):
     Attributes:
         name (str):
             Required. Resource name of the space, in the form
-            "spaces/*".
+            `spaces/*`.
 
             Format: ``spaces/{space}``
     """
