@@ -164,7 +164,7 @@ class TaskExecution(proto.Message):
             Otherwise, it can be from different sources:
 
             - Batch known failures as
-            https://cloud.google.com/batch/docs/troubleshooting#reserved-exit-codes.
+              https://cloud.google.com/batch/docs/troubleshooting#reserved-exit-codes.
             - Batch runnable execution failures: You can
               rely on Batch logs for further diagnose:
               https://cloud.google.com/batch/docs/analyze-job-using-logs.
