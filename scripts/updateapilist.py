@@ -51,10 +51,10 @@ PACKAGE_RESPONSE_KEY = "name"
 # REPO_RESPONSE_KEY defines the repository name in the response.
 REPO_RESPONSE_KEY = "full_name"
 
-# ARCHIVED_RESPONSE_KEY defines whether a repository is archived.
+# ARCHIVED_RESPONSE_KEY defines the repository archived status in the response.
 ARCHIVED_RESPONSE_KEY = "archived"
 
-# BASE_API defines the base API for github.
+# BASE_API defines the base API for Github.
 BASE_API = "https://api.github.com"
 
 
@@ -91,9 +91,7 @@ class CloudClient:
 class Extractor:
     path_format: str
     response_key: str
-    is_split_repo: bool = True
 
-    
     def client_for_repo(self, repo_slug) -> Optional[CloudClient]:
         path = self.path_format.format(repo_slug=repo_slug)
         url = f"{RAW_CONTENT_BASE_URL}/{path}/{REPO_METADATA_FILENAME}"
@@ -104,7 +102,7 @@ class Extractor:
         return CloudClient(response.json())
     
     def get_clients_from_batch_response(self, response_json) -> List[CloudClient]:
-        return [self.client_for_repo(repo[self.response_key]) for repo in response_json if (not self.is_split_repo or allowed_split_repo(repo))]
+        return [self.client_for_repo(repo[self.response_key]) for repo in response_json if allowed_repo(repo)]
 
 
 def replace_content_in_readme(content_rows: List[str]) -> None:
@@ -171,8 +169,8 @@ def generate_table_contents(clients: List[CloudClient]) -> List[str]:
     return content_rows + pypi_links
 
 
-def allowed_split_repo(repo) -> bool:
-    return (
+def allowed_repo(repo) -> bool:
+    return REPO_RESPONSE_KEY not in repo or (
         repo[REPO_RESPONSE_KEY].startswith("googleapis/python-")
         and repo[REPO_RESPONSE_KEY] not in REPO_EXCLUSION
         and not repo[ARCHIVED_RESPONSE_KEY]
@@ -184,7 +182,7 @@ def mono_repo_clients(token: str) -> List[CloudClient]:
     url = f"{BASE_API}/repos/{MONO_REPO}/contents/packages"
     headers = {'Authorization': f'token {token}'}
     response = requests.get(url=url, headers=headers)
-    mono_repo_extractor = Extractor(path_format=MONO_REPO_PATH_FORMAT, response_key=PACKAGE_RESPONSE_KEY, is_split_repo=False)
+    mono_repo_extractor = Extractor(path_format=MONO_REPO_PATH_FORMAT, response_key=PACKAGE_RESPONSE_KEY)
     
     return mono_repo_extractor.get_clients_from_batch_response(response.json())
 
