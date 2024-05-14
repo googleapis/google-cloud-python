@@ -20,7 +20,7 @@ def test_imported_sklearn_onnx_model() -> None:
 
     PROJECT_ID = os.getenv("GOOGLE_CLOUD_PROJECT", "bigframes-dev")
 
-    # [START bigquery_dataframes_imported_sklearn_onnx_tutorial_import_tensorflow_models]
+    # [START bigquery_dataframes_imported_sklearn_onnx_tutorial_import_onnx_models]
     import bigframes
     from bigframes.ml.imported import ONNXModel
 
@@ -31,7 +31,7 @@ def test_imported_sklearn_onnx_model() -> None:
     imported_onnx_model = ONNXModel(
         model_path="gs://cloud-samples-data/bigquery/ml/onnx/pipeline_rf.onnx"
     )
-    # [END bigquery_dataframes_imported_sklearn_onnx_tutorial_import_tensorflow_models]
+    # [END bigquery_dataframes_imported_sklearn_onnx_tutorial_import_onnx_models]
     assert imported_onnx_model is not None
 
     # [START bigquery_dataframes_imported_sklearn_onnx_tutorial_make_predictions]
@@ -39,5 +39,5 @@ def test_imported_sklearn_onnx_model() -> None:
 
     df = bpd.read_gbq("bigquery-public-data.ml_datasets.iris")
     predictions = imported_onnx_model.predict(df)
-    predictions.head(5)
+    predictions.peek(5)
     # [END bigquery_dataframes_imported_sklearn_onnx_tutorial_make_predictions]

@@ -38,6 +38,7 @@ def test_imported_tensorflow_model() -> None:
     import bigframes.pandas as bpd
 
     df = bpd.read_gbq("bigquery-public-data.hacker_news.full")
-    predictions = imported_tensorflow_model.predict(df)
+    df_pred = df.rename(columns={"title": "input"})
+    predictions = imported_tensorflow_model.predict(df_pred)
     predictions.head(5)
     # [END bigquery_dataframes_imported_tensorflow_tutorial_make_predictions]
