@@ -169,7 +169,8 @@ class LocationSensor(proto.Enum):
 
 
 class TerminalPointId(proto.Message):
-    r"""Identifies a terminal point.
+    r"""Deprecated: TerminalPoints are no longer supported in Fleet Engine.
+    Use ``TerminalLocation.point`` instead.
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
@@ -188,7 +189,7 @@ class TerminalPointId(proto.Message):
 
             This field is a member of `oneof`_ ``Id``.
         value (str):
-            Unique ID of the terminal point.
+            Deprecated.
     """
 
     place_id: str = proto.Field(
@@ -215,9 +216,9 @@ class TerminalLocation(proto.Message):
             Required. Denotes the location of a trip
             waypoint.
         terminal_point_id (google.maps.fleetengine_v1.types.TerminalPointId):
-            ID of the terminal point.
+            Deprecated: Specify the ``point`` field instead.
         access_point_id (str):
-            Deprecated.
+            Deprecated: Specify the ``point`` field instead.
         trip_id (str):
             Deprecated.
         terminal_location_type (google.maps.fleetengine_v1.types.WaypointType):
