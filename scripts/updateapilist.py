@@ -51,6 +51,9 @@ PACKAGE_RESPONSE_KEY = "name"
 # REPO_RESPONSE_KEY defines the repository name in the response.
 REPO_RESPONSE_KEY = "full_name"
 
+# ARCHIVED_RESPONSE_KEY defines whether a repository is archived.
+ARCHIVED_RESPONSE_KEY = "archived"
+
 # BASE_API defines the base API for github.
 BASE_API = "https://api.github.com"
 
@@ -172,7 +175,7 @@ def allowed_split_repo(repo) -> bool:
     return (
         repo[REPO_RESPONSE_KEY].startswith("googleapis/python-")
         and repo[REPO_RESPONSE_KEY] not in REPO_EXCLUSION
-        and not repo[REPO_RESPONSE_KEY]
+        and not repo[ARCHIVED_RESPONSE_KEY]
     )
 
 
