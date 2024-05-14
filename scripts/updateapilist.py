@@ -17,6 +17,7 @@
 import os
 import requests
 from typing import List, Optional
+from dataclasses import dataclass
 
 
 class MissingGithubToken(ValueError):
@@ -24,11 +25,48 @@ class MissingGithubToken(ValueError):
 
     pass
 
+RAW_CONTENT_BASE_URL = "https://raw.githubusercontent.com"
+MONO_REPO_PATH_FORMAT = "googleapis/google-cloud-python/main/packages/{repo_slug}"
+SPLIT_REPO_PATH_FORMAT = "{repo_slug}/main"
+REPO_METADATA_FILENAME = ".repo-metadata.json"
+
+
+# MONO_REPO defines the name of the mono repository for Python.
+MONO_REPO = "googleapis/google-cloud-python"
+
+# REPO_EXCLUSION lists the repositories that need to be excluded.
+REPO_EXCLUSION = [
+    # core libraries
+    "googleapis/python-api-core",
+    "googleapis/python-cloud-core",
+    # proto only packages
+    "googleapis/python-api-common-protos",
+    # testing utilities
+    "googleapis/python-test-utils",
+]
+
+# PACKAGE_RESPONSE_KEY defines the package name in the response.
+PACKAGE_RESPONSE_KEY = "name"
+
+# REPO_RESPONSE_KEY defines the repository name in the response.
+REPO_RESPONSE_KEY = "full_name"
+
+# ARCHIVED_RESPONSE_KEY defines the repository archived status in the response.
+ARCHIVED_RESPONSE_KEY = "archived"
+
+# BASE_API defines the base API for Github.
+BASE_API = "https://api.github.com"
+
+
+
+
+
 class CloudClient:
     repo: str = None
     title: str = None
     release_level: str = None
     distribution_name: str = None
+    issue_tracker: str = None
 
     def __init__(self, repo: dict):
         self.repo = repo["repo"]
@@ -36,6 +74,7 @@ class CloudClient:
         self.title = repo["name_pretty"].replace("Google ", "").replace("Cloud ", "")
         self.release_level = repo["release_level"]
         self.distribution_name = repo["distribution_name"]
+        self.issue_tracker = repo.get("issue_tracker")
 
     # For sorting, we want to sort by release level, then API pretty_name
     def __lt__(self, other):
@@ -46,6 +85,24 @@ class CloudClient:
 
     def __repr__(self):
         return repr((self.release_level, self.title))
+
+
+@dataclass
+class Extractor:
+    path_format: str
+    response_key: str
+
+    def client_for_repo(self, repo_slug) -> Optional[CloudClient]:
+        path = self.path_format.format(repo_slug=repo_slug)
+        url = f"{RAW_CONTENT_BASE_URL}/{path}/{REPO_METADATA_FILENAME}"
+        response = requests.get(url)
+        if response.status_code != requests.codes.ok:
+            return
+
+        return CloudClient(response.json())
+    
+    def get_clients_from_batch_response(self, response_json) -> List[CloudClient]:
+        return [self.client_for_repo(repo[self.response_key]) for repo in response_json if allowed_repo(repo)]
 
 
 def replace_content_in_readme(content_rows: List[str]) -> None:
@@ -74,12 +131,19 @@ def replace_content_in_readme(content_rows: List[str]) -> None:
 def client_row(client: CloudClient) -> str:
     pypi_badge = f""".. |PyPI-{client.distribution_name}| image:: https://img.shields.io/pypi/v/{client.distribution_name}.svg
      :target: https://pypi.org/project/{client.distribution_name}\n"""
+    
+    url = f"https://github.com/{client.repo}"
+    if client.repo == MONO_REPO:
+        url += f"/tree/main/packages/{client.distribution_name}"
 
     content_row = [
-        f"   * - `{client.title} <https://github.com/{client.repo}>`_\n",
-        f"     - " + "|" + client.release_level + "|\n"
-        f"     - |PyPI-{client.distribution_name}|\n",
+        f"   * - `{client.title} <{url}>`_\n",
+        f"     - " + client.release_level + "\n",
+        f"     - |PyPI-{client.distribution_name}|\n",   
     ]
+
+    if client.issue_tracker:
+        content_row.append(f"     - `API Issues <{client.issue_tracker}>`_\n")
 
     return (content_row, pypi_badge)
 
@@ -93,6 +157,7 @@ def generate_table_contents(clients: List[CloudClient]) -> List[str]:
         "   * - Client\n",
         "     - Release Level\n",
         "     - Version\n",
+        "     - API Issue Tracker\n",
     ]
 
     pypi_links = ["\n"]
@@ -104,52 +169,30 @@ def generate_table_contents(clients: List[CloudClient]) -> List[str]:
     return content_rows + pypi_links
 
 
-REPO_METADATA_URL_FORMAT = (
-    "https://raw.githubusercontent.com/{repo_slug}/main/.repo-metadata.json"
-)
-
-
-def client_for_repo(repo_slug) -> Optional[CloudClient]:
-    url = REPO_METADATA_URL_FORMAT.format(repo_slug=repo_slug)
-    response = requests.get(url)
-    if response.status_code != requests.codes.ok:
-        return
-
-    return CloudClient(response.json())
-
-REPO_EXCLUSION = [
-    # core libraries
-    "googleapis/python-api-core",
-    "googleapis/python-cloud-core",
-    # proto only packages
-    "googleapis/python-org-policy",
-    "googleapis/python-os-config",
-    "googleapis/python-access-context-manager",
-    "googleapis/python-api-common-protos",
-    # testing utilities
-    "googleapis/python-test-utils",
-]
-
-
 def allowed_repo(repo) -> bool:
-    return (
-        repo["full_name"].startswith("googleapis/python-")
-        and repo["full_name"] not in REPO_EXCLUSION
-        and not repo["archived"]
+    return REPO_RESPONSE_KEY not in repo or (
+        repo[REPO_RESPONSE_KEY].startswith("googleapis/python-")
+        and repo[REPO_RESPONSE_KEY] not in REPO_EXCLUSION
+        and not repo[ARCHIVED_RESPONSE_KEY]
     )
 
 
-def get_clients_batch_from_response_json(response_json) -> List[CloudClient]:
-    return [client_for_repo(repo["full_name"]) for repo in response_json if allowed_repo(repo)]
+def mono_repo_clients(token: str) -> List[CloudClient]:
+    # all mono repo clients
+    url = f"{BASE_API}/repos/{MONO_REPO}/contents/packages"
+    headers = {'Authorization': f'token {token}'}
+    response = requests.get(url=url, headers=headers)
+    mono_repo_extractor = Extractor(path_format=MONO_REPO_PATH_FORMAT, response_key=PACKAGE_RESPONSE_KEY)
+    
+    return mono_repo_extractor.get_clients_from_batch_response(response.json())
 
-def all_clients() -> List[CloudClient]:
-    clients = []
+
+def split_repo_clients(token: str) -> List[CloudClient]:
+    
     first_request = True
-    token = os.environ['GITHUB_TOKEN']
-
     while first_request or 'next' in response.links:
         if first_request:
-            url = "https://api.github.com/search/repositories?page=1"
+            url = f"{BASE_API}/search/repositories?page=1"
             first_request = False
         else:
             url = response.links['next']['url']
@@ -159,13 +202,29 @@ def all_clients() -> List[CloudClient]:
         repositories = response.json().get("items", [])
         if len(repositories) == 0:
             break
-        clients.extend(get_clients_batch_from_response_json(repositories))
+
+        split_repo_extractor = Extractor(path_format=SPLIT_REPO_PATH_FORMAT, response_key=REPO_RESPONSE_KEY)
+        return split_repo_extractor.get_clients_from_batch_response(repositories)
+
+
+def get_token():
+    if 'GITHUB_TOKEN' not in os.environ:
+        raise MissingGithubToken("Please include a GITHUB_TOKEN env var.")
+    
+    token = os.environ['GITHUB_TOKEN']
+    return token
+
+
+def all_clients() -> List[CloudClient]:
+    clients = []
+    token = get_token()
+    
+    clients.extend(split_repo_clients(token))
+    clients.extend(mono_repo_clients(token))
 
     # remove empty clients
     return [client for client in clients if client]
 
-if 'GITHUB_TOKEN' not in os.environ:
-    raise MissingGithubToken("Please include a GITHUB_TOKEN env var.")
 
 clients = sorted(all_clients())
 table_contents = generate_table_contents(clients)
