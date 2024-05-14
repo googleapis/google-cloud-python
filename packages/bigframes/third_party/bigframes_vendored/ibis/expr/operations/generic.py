@@ -7,3 +7,7 @@ from ibis.expr.operations.core import Unary
 
 class GenerateArray(Unary):
     dtype = dt.Array(dt.int64)
+
+
+class SafeCastToDatetime(Unary):
+    dtype = dt.Timestamp(timezone=None)

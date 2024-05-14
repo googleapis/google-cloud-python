@@ -23,6 +23,7 @@ import numpy as np
 import pandas as pd
 import pyarrow as pa
 
+import bigframes.dtypes
 import bigframes.dtypes as dtypes
 import bigframes.operations.type as op_typing
 
@@ -527,13 +528,34 @@ class MapOp(UnaryOp):
 @dataclasses.dataclass(frozen=True)
 class ToDatetimeOp(UnaryOp):
     name: typing.ClassVar[str] = "to_datetime"
-    utc: bool = False
     format: typing.Optional[str] = None
     unit: typing.Optional[str] = None
 
     def output_type(self, *input_types):
-        timezone = "UTC" if self.utc else None
-        return pd.ArrowDtype(pa.timestamp("us", tz=timezone))
+        if input_types[0] not in (
+            bigframes.dtypes.FLOAT_DTYPE,
+            bigframes.dtypes.INT_DTYPE,
+            bigframes.dtypes.STRING_DTYPE,
+        ):
+            raise TypeError("expected string or numeric input")
+        return pd.ArrowDtype(pa.timestamp("us", tz=None))
+
+
+@dataclasses.dataclass(frozen=True)
+class ToTimestampOp(UnaryOp):
+    name: typing.ClassVar[str] = "to_timestamp"
+    format: typing.Optional[str] = None
+    unit: typing.Optional[str] = None
+
+    def output_type(self, *input_types):
+        # Must be numeric or string
+        if input_types[0] not in (
+            bigframes.dtypes.FLOAT_DTYPE,
+            bigframes.dtypes.INT_DTYPE,
+            bigframes.dtypes.STRING_DTYPE,
+        ):
+            raise TypeError("expected string or numeric input")
+        return pd.ArrowDtype(pa.timestamp("us", tz="UTC"))
 
 
 @dataclasses.dataclass(frozen=True)

@@ -32,6 +32,11 @@ def _generate_array(translator, op: vendored_ibis_ops.GenerateArray):
     return f"GENERATE_ARRAY(0, {arg})"
 
 
+def _safe_cast_to_datetime(translator, op: vendored_ibis_ops.SafeCastToDatetime):
+    arg = translator.translate(op.arg)
+    return f"SAFE_CAST({arg} AS DATETIME)"
+
+
 def _quantile(translator, op: ibis_reductions.Quantile):
     arg = translator.translate(op.arg)
     quantile = translator.translate(op.quantile)
@@ -44,6 +49,7 @@ patched_ops = {
     vendored_ibis_ops.LastNonNullValue: _last_non_null_value,  # type:ignore
     vendored_ibis_ops.ToJsonString: _to_json_string,  # type:ignore
     vendored_ibis_ops.GenerateArray: _generate_array,  # type:ignore
+    vendored_ibis_ops.SafeCastToDatetime: _safe_cast_to_datetime,  # type:ignore
     ibis_reductions.Quantile: _quantile,  # type:ignore
 }
 
