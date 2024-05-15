@@ -130,12 +130,17 @@ def test_train_test_split_seeded_correct_rows(
         X, y, random_state=42
     )
 
-    X_train = X_train.to_pandas().sort_index()
-    X_test = X_test.to_pandas().sort_index()
-    y_train = y_train.to_pandas().sort_index()
-    y_test = y_test.to_pandas().sort_index()
+    # TODO(b/340876926): fix type error
+    X_train = X_train.to_pandas().sort_index()  # type: ignore
+    # TODO(b/340876926): fix type error
+    X_test = X_test.to_pandas().sort_index()  # type: ignore
+    # TODO(b/340876926): fix type error
+    y_train = y_train.to_pandas().sort_index()  # type: ignore
+    # TODO(b/340876926): fix type error
+    y_test = y_test.to_pandas().sort_index()  # type: ignore
 
-    train_index = pd.Index(
+    # TODO(b/340876926): fix type error
+    train_index = pd.Index(  # type: ignore
         [
             144,
             146,
@@ -162,13 +167,15 @@ def test_train_test_split_seeded_correct_rows(
         dtype="Int64",
         name="rowindex",
     )
-    test_index = pd.Index(
+    # TODO(b/340876926): fix type error
+    test_index = pd.Index(  # type: ignore
         [148, 161, 226, 269, 278, 289, 291], dtype="Int64", name="rowindex"
     )
 
     all_data.index.name = "_"
+    # TODO(b/340876926): fix type error
     pd.testing.assert_frame_equal(
-        X_train,
+        X_train,  # type: ignore
         all_data[
             [
                 "species",
@@ -177,8 +184,9 @@ def test_train_test_split_seeded_correct_rows(
             ]
         ].loc[train_index],
     )
+    # TODO(b/340876926): fix type error
     pd.testing.assert_frame_equal(
-        X_test,
+        X_test,  # type: ignore
         all_data[
             [
                 "species",
@@ -187,16 +195,18 @@ def test_train_test_split_seeded_correct_rows(
             ]
         ].loc[test_index],
     )
+    # TODO(b/340876926): fix type error
     pd.testing.assert_frame_equal(
-        y_train,
+        y_train,  # type: ignore
         all_data[
             [
                 "body_mass_g",
             ]
         ].loc[train_index],
     )
+    # TODO(b/340876926): fix type error
     pd.testing.assert_frame_equal(
-        y_test,
+        y_test,  # type: ignore
         all_data[
             [
                 "body_mass_g",

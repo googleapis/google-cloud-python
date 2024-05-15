@@ -490,7 +490,8 @@ def test_read_pandas(session, scalars_dfs):
 
 
 def test_read_pandas_series(session):
-    idx = pd.Index([2, 7, 1, 2, 8], dtype=pd.Int64Dtype())
+    # TODO(b/340887657): fix type error
+    idx = pd.Index([2, 7, 1, 2, 8], dtype=pd.Int64Dtype())  # type: ignore
     pd_series = pd.Series([3, 1, 4, 1, 5], dtype=pd.Int64Dtype(), index=idx)
     bf_series = session.read_pandas(pd_series)
 
@@ -498,7 +499,8 @@ def test_read_pandas_series(session):
 
 
 def test_read_pandas_index(session):
-    pd_idx = pd.Index([2, 7, 1, 2, 8], dtype=pd.Int64Dtype())
+    # TODO(b/340887657): fix type error
+    pd_idx = pd.Index([2, 7, 1, 2, 8], dtype=pd.Int64Dtype())  # type: ignore
     bf_idx = session.read_pandas(pd_idx)
 
     pd.testing.assert_index_equal(bf_idx.to_pandas(), pd_idx)
@@ -516,7 +518,8 @@ def test_read_pandas_inline_respects_location():
     df = session.read_pandas(pd.DataFrame([[1, 2, 3], [4, 5, 6]]))
     repr(df)
 
-    table = session.bqclient.get_table(df.query_job.destination)
+    # TODO(b/340887657): fix type error
+    table = session.bqclient.get_table(df.query_job.destination)  # type: ignore
     assert table.location == "europe-west1"
 
 

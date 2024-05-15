@@ -1226,8 +1226,9 @@ class Block:
         )
         labels = self._get_labels_for_columns(self.value_columns)
 
+        # TODO(b/340896143): fix type error
         expr = expr.unpivot(
-            row_labels=labels,
+            row_labels=labels,  # type: ignore
             index_col_ids=index_col_ids,
             unpivot_columns=unpivot_columns,
         )

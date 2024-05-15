@@ -623,7 +623,8 @@ def test_read_gbq_function_reads_udfs(bigquery_client, dataset_id):
 
         indirect_df = bigframes.dataframe.DataFrame(src)
         indirect_df = indirect_df.assign(y=indirect_df.x.apply(square))
-        indirect_df = indirect_df.to_pandas()
+        # TODO(b/340875260): fix type error
+        indirect_df = indirect_df.to_pandas()  # type: ignore
 
         assert_pandas_df_equal(
             direct_df, indirect_df, ignore_order=True, check_index_type=False

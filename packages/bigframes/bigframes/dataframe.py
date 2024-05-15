@@ -1762,7 +1762,8 @@ class DataFrame(vendored_pandas_frame.DataFrame):
                 if like:
                     return like in label_str
                 else:  # regex
-                    return re.match(regex, label_str) is not None
+                    # TODO(b/340891296): fix type error
+                    return re.match(regex, label_str) is not None  # type: ignore
 
             cols = [
                 col_id

@@ -395,9 +395,11 @@ def test_cut(scalars_dfs):
     # make sure the result is a supported dtype
     assert bf_result.dtype == bpd.Int64Dtype()
 
-    bf_result = bf_result.to_pandas()
+    # TODO(b/340884971): fix type error
+    bf_result = bf_result.to_pandas()  # type: ignore
     pd_result = pd_result.astype("Int64")
-    pd.testing.assert_series_equal(bf_result, pd_result)
+    # TODO(b/340884971): fix type error
+    pd.testing.assert_series_equal(bf_result, pd_result)  # type: ignore
 
 
 def test_cut_default_labels(scalars_dfs):
@@ -528,10 +530,12 @@ def test_qcut(scalars_dfs, q):
     )
     bf_result = bpd.qcut(scalars_df["float64_col"], q, labels=False, duplicates="drop")
 
-    bf_result = bf_result.to_pandas()
+    # TODO(b/340884971): fix type error
+    bf_result = bf_result.to_pandas()  # type: ignore
     pd_result = pd_result.astype("Int64")
 
-    pd.testing.assert_series_equal(bf_result, pd_result)
+    # TODO(b/340884971): fix type error
+    pd.testing.assert_series_equal(bf_result, pd_result)  # type: ignore
 
 
 @pytest.mark.parametrize(
@@ -568,8 +572,9 @@ def test_to_datetime_scalar(arg, utc, unit, format):
     ],
 )
 def test_to_datetime_iterable(arg, utc, unit, format):
+    # TODO(b/340884971): fix type error
     bf_result = (
-        bpd.to_datetime(arg, utc=utc, unit=unit, format=format)
+        bpd.to_datetime(arg, utc=utc, unit=unit, format=format)  # type: ignore
         .to_pandas()
         .astype("datetime64[ns, UTC]" if utc else "datetime64[ns]")
     )
@@ -584,8 +589,9 @@ def test_to_datetime_iterable(arg, utc, unit, format):
 def test_to_datetime_series(scalars_dfs):
     scalars_df, scalars_pandas_df = scalars_dfs
     col = "int64_too"
+    # TODO(b/340884971): fix type error
     bf_result = (
-        bpd.to_datetime(scalars_df[col], unit="s").to_pandas().astype("datetime64[s]")
+        bpd.to_datetime(scalars_df[col], unit="s").to_pandas().astype("datetime64[s]")  # type: ignore
     )
     pd_result = pd.Series(pd.to_datetime(scalars_pandas_df[col], unit="s"))
     pd.testing.assert_series_equal(
@@ -608,7 +614,8 @@ def test_to_datetime_series(scalars_dfs):
     ],
 )
 def test_to_datetime_unit_param(arg, unit):
-    bf_result = bpd.to_datetime(arg, unit=unit).to_pandas().astype("datetime64[ns]")
+    # TODO(b/340884971): fix type error
+    bf_result = bpd.to_datetime(arg, unit=unit).to_pandas().astype("datetime64[ns]")  # type: ignore
     pd_result = pd.Series(pd.to_datetime(arg, unit=unit)).dt.floor("us")
     pd.testing.assert_series_equal(
         bf_result, pd_result, check_index_type=False, check_names=False
@@ -625,8 +632,9 @@ def test_to_datetime_unit_param(arg, unit):
     ],
 )
 def test_to_datetime_format_param(arg, utc, format):
+    # TODO(b/340884971): fix type error
     bf_result = (
-        bpd.to_datetime(arg, utc=utc, format=format)
+        bpd.to_datetime(arg, utc=utc, format=format)  # type: ignore
         .to_pandas()
         .astype("datetime64[ns, UTC]" if utc else "datetime64[ns]")
     )
@@ -678,8 +686,9 @@ def test_to_datetime_format_param(arg, utc, format):
     ],
 )
 def test_to_datetime_string_inputs(arg, utc, output_in_utc, format):
+    # TODO(b/340884971): fix type error
     bf_result = (
-        bpd.to_datetime(arg, utc=utc, format=format)
+        bpd.to_datetime(arg, utc=utc, format=format)  # type: ignore
         .to_pandas()
         .astype("datetime64[ns, UTC]" if output_in_utc else "datetime64[ns]")
     )
@@ -721,8 +730,9 @@ def test_to_datetime_string_inputs(arg, utc, output_in_utc, format):
     ],
 )
 def test_to_datetime_timestamp_inputs(arg, utc, output_in_utc):
+    # TODO(b/340884971): fix type error
     bf_result = (
-        bpd.to_datetime(arg, utc=utc)
+        bpd.to_datetime(arg, utc=utc)  # type: ignore
         .to_pandas()
         .astype("datetime64[ns, UTC]" if output_in_utc else "datetime64[ns]")
     )

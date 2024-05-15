@@ -491,7 +491,8 @@ class AsTypeOp(UnaryOp):
         if self.to_type == pa.string():
             return dtypes.STRING_DTYPE
         if isinstance(self.to_type, str):
-            return dtypes.BIGFRAMES_STRING_TO_BIGFRAMES[self.to_type]
+            # TODO(b/340895446): fix type error
+            return dtypes.BIGFRAMES_STRING_TO_BIGFRAMES[self.to_type]  # type: ignore
         return self.to_type
 
 
@@ -513,7 +514,8 @@ class RemoteFunctionOp(UnaryOp):
 
     def output_type(self, *input_types):
         # This property should be set to a valid Dtype by the @remote_function decorator or read_gbq_function method
-        return self.func.output_dtype
+        # TODO(b/340895446): fix type error
+        return self.func.output_dtype  # type: ignore
 
 
 @dataclasses.dataclass(frozen=True)
@@ -627,7 +629,8 @@ class BinaryRemoteFunctionOp(BinaryOp):
 
     def output_type(self, *input_types):
         # This property should be set to a valid Dtype by the @remote_function decorator or read_gbq_function method
-        return self.func.output_dtype
+        # TODO(b/340895446): fix type error
+        return self.func.output_dtype  # type: ignore
 
 
 add_op = AddOp()

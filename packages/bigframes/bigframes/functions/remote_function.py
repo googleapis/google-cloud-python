@@ -1023,8 +1023,9 @@ def remote_function(
             raise TypeError("f must be callable, got {}".format(f))
 
         signature = inspect.signature(f)
+        # TODO(b/340898611): fix type error
         ibis_signature = ibis_signature_from_python_signature(
-            signature, input_types, output_type
+            signature, input_types, output_type  # type: ignore
         )
 
         remote_function_client = RemoteFunctionClient(

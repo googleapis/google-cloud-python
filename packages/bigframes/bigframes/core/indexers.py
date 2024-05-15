@@ -160,7 +160,8 @@ class LocDataFrameIndexer:
 
                 columns = key[1]
                 if isinstance(columns, pd.Series) and columns.dtype == "bool":
-                    columns = df.columns[columns]
+                    # TODO(b/340892590): fix type error
+                    columns = df.columns[columns]  # type: ignore
 
                 return df[columns]
 

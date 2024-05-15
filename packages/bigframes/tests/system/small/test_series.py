@@ -49,7 +49,8 @@ def test_series_construct_nullable_ints():
         [1, 3, bigframes.pandas.NA], index=[0, 4, bigframes.pandas.NA]
     ).to_pandas()
 
-    expected_index = pd.Index(
+    # TODO(b/340885567): fix type error
+    expected_index = pd.Index(  # type: ignore
         [0, 4, None],
         dtype=pd.Int64Dtype(),
     )
@@ -2957,7 +2958,8 @@ def test_string_astype_date():
 
     bf_series = series.Series(pd_series)
 
-    pd_result = pd_series.astype("date32[day][pyarrow]")
+    # TODO(b/340885567): fix type error
+    pd_result = pd_series.astype("date32[day][pyarrow]")  # type: ignore
     bf_result = bf_series.astype("date32[day][pyarrow]").to_pandas()
 
     pd.testing.assert_series_equal(bf_result, pd_result, check_index_type=False)
@@ -3661,9 +3663,10 @@ def test_series_explode_w_index(index, ignore_index):
     data = [[], [200.0, 23.12], [4.5, -9.0], [1.0]]
     s = bigframes.pandas.Series(data, index=index)
     pd_s = pd.Series(data, index=index)
+    # TODO(b/340885567): fix type error
     pd.testing.assert_series_equal(
-        s.explode(ignore_index=ignore_index).to_pandas(),
-        pd_s.explode(ignore_index=ignore_index).astype(pd.Float64Dtype()),
+        s.explode(ignore_index=ignore_index).to_pandas(),  # type: ignore
+        pd_s.explode(ignore_index=ignore_index).astype(pd.Float64Dtype()),  # type: ignore
         check_index_type=False,
     )
 
@@ -3681,8 +3684,10 @@ def test_series_explode_reserve_order(ignore_index, ordered):
     s = bigframes.pandas.Series(data)
     pd_s = pd.Series(data)
 
-    res = s.explode(ignore_index=ignore_index).to_pandas(ordered=ordered)
-    pd_res = pd_s.explode(ignore_index=ignore_index).astype(pd.Int64Dtype())
+    # TODO(b/340885567): fix type error
+    res = s.explode(ignore_index=ignore_index).to_pandas(ordered=ordered)  # type: ignore
+    # TODO(b/340885567): fix type error
+    pd_res = pd_s.explode(ignore_index=ignore_index).astype(pd.Int64Dtype())  # type: ignore
     pd.testing.assert_series_equal(
         res if ordered else res.sort_index(),
         pd_res,

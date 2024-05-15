@@ -117,10 +117,11 @@ class ClientsProvider:
     def _create_bigquery_client(self):
         bq_options = None
         if self._use_regional_endpoints:
+            # TODO(b/340896138): fix type error
             bq_options = google.api_core.client_options.ClientOptions(
                 api_endpoint=(
                     _BIGQUERY_REGIONAL_ENDPOINT
-                    if self._location.lower() in _REP_SUPPORTED_REGIONS
+                    if self._location.lower() in _REP_SUPPORTED_REGIONS  # type: ignore
                     else _BIGQUERY_LOCATIONAL_ENDPOINT
                 ).format(location=self._location),
             )
@@ -158,12 +159,11 @@ class ClientsProvider:
             bqconnection_info = google.api_core.gapic_v1.client_info.ClientInfo(
                 user_agent=self._application_name
             )
-            self._bqconnectionclient = (
-                google.cloud.bigquery_connection_v1.ConnectionServiceClient(
-                    client_info=bqconnection_info,
-                    client_options=bqconnection_options,
-                    credentials=self._credentials,
-                )
+            # TODO(b/340896138): fix type error
+            self._bqconnectionclient = google.cloud.bigquery_connection_v1.ConnectionServiceClient(  # type: ignore
+                client_info=bqconnection_info,
+                client_options=bqconnection_options,
+                credentials=self._credentials,
             )
 
         return self._bqconnectionclient
@@ -173,18 +173,20 @@ class ClientsProvider:
         if not self._bqstoragereadclient:
             bqstorage_options = None
             if self._use_regional_endpoints:
+                # TODO(b/340896138): fix type error
                 bqstorage_options = google.api_core.client_options.ClientOptions(
                     api_endpoint=(
                         _BIGQUERYSTORAGE_REGIONAL_ENDPOINT
-                        if self._location.lower() in _REP_SUPPORTED_REGIONS
+                        if self._location.lower() in _REP_SUPPORTED_REGIONS  # type: ignore
                         else _BIGQUERYSTORAGE_LOCATIONAL_ENDPOINT
                     ).format(location=self._location),
                 )
             bqstorage_info = google.api_core.gapic_v1.client_info.ClientInfo(
                 user_agent=self._application_name
             )
+            # TODO(b/340896138): fix type error
             self._bqstoragereadclient = (
-                google.cloud.bigquery_storage_v1.BigQueryReadClient(
+                google.cloud.bigquery_storage_v1.BigQueryReadClient(  # type: ignore
                     client_info=bqstorage_info,
                     client_options=bqstorage_options,
                     credentials=self._credentials,
@@ -199,8 +201,9 @@ class ClientsProvider:
             functions_info = google.api_core.gapic_v1.client_info.ClientInfo(
                 user_agent=self._application_name
             )
+            # TODO(b/340896138): fix type error
             self._cloudfunctionsclient = (
-                google.cloud.functions_v2.FunctionServiceClient(
+                google.cloud.functions_v2.FunctionServiceClient(  # type: ignore
                     client_info=functions_info,
                     credentials=self._credentials,
                 )
@@ -214,8 +217,9 @@ class ClientsProvider:
             resourcemanager_info = google.api_core.gapic_v1.client_info.ClientInfo(
                 user_agent=self._application_name
             )
+            # TODO(b/340896138): fix type error
             self._resourcemanagerclient = (
-                google.cloud.resourcemanager_v3.ProjectsClient(
+                google.cloud.resourcemanager_v3.ProjectsClient(  # type: ignore
                     credentials=self._credentials, client_info=resourcemanager_info
                 )
             )

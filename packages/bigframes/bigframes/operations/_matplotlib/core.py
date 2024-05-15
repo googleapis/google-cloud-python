@@ -39,7 +39,8 @@ class MPLPlot(abc.ABC):
 
     @property
     def result(self):
-        return self.axes
+        # TODO(b/340896123): fix type error
+        return self.axes  # type: ignore
 
 
 class SamplingPlot(MPLPlot):

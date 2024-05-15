@@ -147,7 +147,8 @@ def test_columntransformer_save_load(new_penguins_df, dataset_id):
         new_penguins_df[["species", "culmen_length_mm", "flipper_length_mm"]]
     ).to_pandas()
 
-    expected = pandas.DataFrame(
+    # TODO(b/340888429): fix type error
+    expected = pandas.DataFrame(  # type: ignore
         {
             "onehotencoded_species": [
                 [{"index": 1, "value": 1.0}],
@@ -164,4 +165,5 @@ def test_columntransformer_save_load(new_penguins_df, dataset_id):
         index=pandas.Index([1633, 1672, 1690], dtype="Int64", name="tag_number"),
     )
 
-    pandas.testing.assert_frame_equal(result, expected, rtol=0.1, check_dtype=False)
+    # TODO(b/340888429): fix type error
+    pandas.testing.assert_frame_equal(result, expected, rtol=0.1, check_dtype=False)  # type: ignore

@@ -79,9 +79,10 @@ def test_decomposition_configure_fit_score_predict(
     reloaded_model = model.to_gbq(
         f"{dataset_id}.temp_configured_pca_model", replace=True
     )
+    # TODO(b/340876028): fix type error
     assert (
         f"{dataset_id}.temp_configured_pca_model"
-        in reloaded_model._bqml_model.model_name
+        in reloaded_model._bqml_model.model_name  # type: ignore
     )
     assert reloaded_model.n_components == 3
 
@@ -149,9 +150,10 @@ def test_decomposition_configure_fit_score_predict_params(
     reloaded_model = model.to_gbq(
         f"{dataset_id}.temp_configured_pca_model", replace=True
     )
+    # TODO(b/340876028): fix type error
     assert (
         f"{dataset_id}.temp_configured_pca_model"
-        in reloaded_model._bqml_model.model_name
+        in reloaded_model._bqml_model.model_name  # type: ignore
     )
     assert reloaded_model.n_components == 5
     assert reloaded_model.svd_solver == "RANDOMIZED"
@@ -167,9 +169,10 @@ def test_decomposition_configure_fit_load_float_component(
     reloaded_model = model.to_gbq(
         f"{dataset_id}.temp_configured_pca_model", replace=True
     )
+    # TODO(b/340876028): fix type error
     assert (
         f"{dataset_id}.temp_configured_pca_model"
-        in reloaded_model._bqml_model.model_name
+        in reloaded_model._bqml_model.model_name  # type: ignore
     )
     assert reloaded_model.n_components == 0.2
 
@@ -184,8 +187,9 @@ def test_decomposition_configure_fit_load_none_component(
     reloaded_model = model.to_gbq(
         f"{dataset_id}.temp_configured_pca_model", replace=True
     )
+    # TODO(b/340876028): fix type error
     assert (
         f"{dataset_id}.temp_configured_pca_model"
-        in reloaded_model._bqml_model.model_name
+        in reloaded_model._bqml_model.model_name  # type: ignore
     )
     assert reloaded_model.n_components == 7

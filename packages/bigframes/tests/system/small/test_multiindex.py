@@ -850,12 +850,14 @@ def test_column_multi_index_stack(level):
 
     bf_result = bf_df.stack(level=level).to_pandas()
     # BigFrames emulates future_stack impl
-    pd_result = pd_df.stack(level=level, future_stack=True)
+    # TODO(b/340884387): fix type error
+    pd_result = pd_df.stack(level=level, future_stack=True)  # type: ignore
 
     # Pandas produces NaN, where bq dataframes produces pd.NA
     # Column ordering seems to depend on pandas version
+    # TODO(b/340884387): fix type error
     pandas.testing.assert_frame_equal(
-        bf_result, pd_result, check_dtype=False, check_index_type=False
+        bf_result, pd_result, check_dtype=False, check_index_type=False  # type: ignore
     )
 
 
@@ -889,9 +891,11 @@ def test_column_multi_index_melt():
 
 def test_column_multi_index_unstack(scalars_df_index, scalars_pandas_df_index):
     columns = ["int64_too", "int64_col", "rowindex_2"]
-    level1 = pandas.Index(["b", "a", "b"], dtype="string[pyarrow]")
+    # TODO(b/340884387): fix type error
+    level1 = pandas.Index(["b", "a", "b"], dtype="string[pyarrow]")  # type: ignore
     # Need resulting column to be pyarrow string rather than object dtype
-    level2 = pandas.Index(["a", "b", "b"], dtype="string[pyarrow]")
+    # TODO(b/340884387): fix type error
+    level2 = pandas.Index(["a", "b", "b"], dtype="string[pyarrow]")  # type: ignore
     multi_columns = pandas.MultiIndex.from_arrays([level1, level2])
     bf_df = scalars_df_index[columns].copy()
     bf_df.columns = multi_columns
@@ -1185,9 +1189,10 @@ def test_explode_w_multi_index():
 
     df = bpd.DataFrame(data, columns=multi_level_columns)
     pd_df = df.to_pandas()
+    # TODO(b/340884387): fix type error
     pandas.testing.assert_frame_equal(
         df["col0"].explode("col00").to_pandas(),
-        pd_df["col0"].explode("col00"),
+        pd_df["col0"].explode("col00"),  # type: ignore
         check_dtype=False,
         check_index_type=False,
     )
@@ -1197,7 +1202,8 @@ def test_column_multi_index_w_na_stack(scalars_df_index, scalars_pandas_df_index
     columns = ["int64_too", "int64_col", "rowindex_2"]
     level1 = pandas.Index(["b", "c", "d"])
     # Need resulting column to be pyarrow string rather than object dtype
-    level2 = pandas.Index([None, "b", "b"], dtype="string[pyarrow]")
+    # TODO(b/340884387): fix type error
+    level2 = pandas.Index([None, "b", "b"], dtype="string[pyarrow]")  # type: ignore
     multi_columns = pandas.MultiIndex.from_arrays([level1, level2])
     bf_df = scalars_df_index[columns].copy()
     bf_df.columns = multi_columns

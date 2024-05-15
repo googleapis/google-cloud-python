@@ -310,7 +310,8 @@ def test_dt_floor(scalars_dfs, col_name, freq):
 def test_dt_compare_coerce_str_datetime(scalars_dfs):
     scalars_df, scalars_pandas_df = scalars_dfs
     bf_series: bigframes.series.Series = scalars_df["datetime_col"]
-    bf_result = (bf_series >= "2024-01-01").to_pandas()
+    # TODO(b/340878286): fix type error
+    bf_result = (bf_series >= "2024-01-01").to_pandas()  # type: ignore
 
     pd_result = scalars_pandas_df["datetime_col"] >= pd.to_datetime("2024-01-01")
 

@@ -258,8 +258,9 @@ def test_scatter_args_s(s):
 
     ax = df.plot.scatter(x="a", y="b", s="s")
     pd_ax = pd_df.plot.scatter(x="a", y="b", s="s")
+    # TODO(b/340891723): fix type error
     tm.assert_numpy_array_equal(
-        ax.collections[0].get_sizes(), pd_ax.collections[0].get_sizes()
+        ax.collections[0].get_sizes(), pd_ax.collections[0].get_sizes()  # type: ignore
     )
 
 

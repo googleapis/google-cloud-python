@@ -91,7 +91,8 @@ class Index(vendored_pandas_index.Index):
         from bigframes.core.indexes.multi import MultiIndex
 
         klass = MultiIndex if len(block._index_columns) > 1 else cls
-        result = typing.cast(Index, object.__new__(klass))
+        # TODO(b/340893286): fix type error
+        result = typing.cast(Index, object.__new__(klass))  # type: ignore
         result._query_job = None
         result._block = block
         return result

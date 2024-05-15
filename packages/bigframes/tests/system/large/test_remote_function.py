@@ -92,7 +92,8 @@ def make_uniq_udf(udf):
         target_code = source_code.replace(source_key, target_key, 1)
         f.write(target_code)
     spec = importlib.util.spec_from_file_location(udf_file_name, udf_file_path)
-    udf_uniq = getattr(spec.loader.load_module(), udf_uniq_name)
+    # TODO(b/340875260): fix type error
+    udf_uniq = getattr(spec.loader.load_module(), udf_uniq_name)  # type: ignore
 
     # This is a bit of a hack but we need to remove the reference to a foreign
     # module, otherwise the serialization would keep the foreign module

@@ -30,7 +30,8 @@ def test_base_estimator_repr():
     estimator = bigframes.ml.linear_model.LinearRegression(fit_intercept=True)
     assert estimator.__repr__() == "LinearRegression()"
 
-    estimator = bigframes.ml.decomposition.PCA(n_components=7)
+    # TODO(b/340891292): fix type error
+    estimator = bigframes.ml.decomposition.PCA(n_components=7)  # type: ignore
     assert estimator.__repr__() == "PCA(n_components=7)"
 
 
@@ -48,6 +49,7 @@ def test_base_estimator_repr_matches_sklearn():
     sklearn_estimator = sklearn_linear_model.LinearRegression(fit_intercept=True)
     assert estimator.__repr__() == sklearn_estimator.__repr__()
 
-    estimator = bigframes.ml.decomposition.PCA(n_components=7)
+    # TODO(b/340891292): fix type error
+    estimator = bigframes.ml.decomposition.PCA(n_components=7)  # type: ignore
     sklearn_estimator = sklearn_decomposition.PCA(n_components=7)
     assert estimator.__repr__() == sklearn_estimator.__repr__()

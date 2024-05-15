@@ -242,11 +242,14 @@ def test_bqml(bq_cmek, session_with_bq_cmek, penguins_table_id):
     model.fit(X_train, y_train)
 
     assert model is not None
-    assert model._bqml_model.model.encryption_configuration is not None
-    assert model._bqml_model.model.encryption_configuration.kms_key_name == bq_cmek
+    # TODO(b/340879287): fix type error
+    assert model._bqml_model.model.encryption_configuration is not None  # type: ignore
+    # TODO(b/340879287): fix type error
+    assert model._bqml_model.model.encryption_configuration.kms_key_name == bq_cmek  # type: ignore
 
     # Assert that model exists in BQ with intended encryption
-    model_bq = session_with_bq_cmek.bqclient.get_model(model._bqml_model.model_name)
+    # TODO(b/340879287): fix type error
+    model_bq = session_with_bq_cmek.bqclient.get_model(model._bqml_model.model_name)  # type: ignore
     assert model_bq.encryption_configuration.kms_key_name == bq_cmek
 
     # Explicitly save the model to a destination and assert that encryption holds
@@ -257,10 +260,12 @@ def test_bqml(bq_cmek, session_with_bq_cmek, penguins_table_id):
         f"{model_ref.project}.{model_ref.dataset_id}.{model_ref.model_id}"
     )
     new_model = model.to_gbq(model_ref_full_name)
-    assert new_model._bqml_model.model.encryption_configuration.kms_key_name == bq_cmek
+    # TODO(b/340879287): fix type error
+    assert new_model._bqml_model.model.encryption_configuration.kms_key_name == bq_cmek  # type: ignore
 
     # Assert that model exists in BQ with intended encryption
-    model_bq = session_with_bq_cmek.bqclient.get_model(new_model._bqml_model.model_name)
+    # TODO(b/340879287): fix type error
+    model_bq = session_with_bq_cmek.bqclient.get_model(new_model._bqml_model.model_name)  # type: ignore
     assert model_bq.encryption_configuration.kms_key_name == bq_cmek
 
     # Assert that model registration keeps the encryption
@@ -274,9 +279,11 @@ def test_bqml(bq_cmek, session_with_bq_cmek, penguins_table_id):
     # https://cloud.google.com/vertex-ai/docs/general/cmek#create_resources_with_the_kms_key.
     # bigframes.ml does not provide any API for the model deployment.
     model_registered = new_model.register()
+    # TODO(b/340879287): fix type error
     assert (
-        model_registered._bqml_model.model.encryption_configuration.kms_key_name
+        model_registered._bqml_model.model.encryption_configuration.kms_key_name  # type: ignore
         == bq_cmek
     )
-    model_bq = session_with_bq_cmek.bqclient.get_model(new_model._bqml_model.model_name)
+    # TODO(b/340879287): fix type error
+    model_bq = session_with_bq_cmek.bqclient.get_model(new_model._bqml_model.model_name)  # type: ignore
     assert model_bq.encryption_configuration.kms_key_name == bq_cmek

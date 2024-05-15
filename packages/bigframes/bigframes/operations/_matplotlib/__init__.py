@@ -24,7 +24,8 @@ PLOT_CLASSES: dict[str, type[core.MPLPlot]] = {
 
 
 def plot(data, kind, **kwargs):
-    plot_obj = PLOT_CLASSES[kind](data, **kwargs)
+    # TODO(b/340896123): fix type error
+    plot_obj = PLOT_CLASSES[kind](data, **kwargs)  # type: ignore
     plot_obj.generate()
     plot_obj.draw()
     return plot_obj.result
