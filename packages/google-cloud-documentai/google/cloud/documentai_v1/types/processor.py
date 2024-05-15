@@ -42,7 +42,8 @@ class ProcessorVersion(proto.Message):
 
     Attributes:
         name (str):
-            The resource name of the processor version. Format:
+            Identifier. The resource name of the processor version.
+            Format:
             ``projects/{project}/locations/{location}/processors/{processor}/processorVersions/{processor_version}``
         display_name (str):
             The display name of the processor version.
@@ -50,7 +51,8 @@ class ProcessorVersion(proto.Message):
             The schema of the processor version.
             Describes the output.
         state (google.cloud.documentai_v1.types.ProcessorVersion.State):
-            The state of the processor version.
+            Output only. The state of the processor
+            version.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             The time the processor version was created.
         latest_evaluation (google.cloud.documentai_v1.types.EvaluationReference):
