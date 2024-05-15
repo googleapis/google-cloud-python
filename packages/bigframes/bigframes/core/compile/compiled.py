@@ -16,9 +16,8 @@ from __future__ import annotations
 import abc
 import functools
 import itertools
-import textwrap
 import typing
-from typing import Collection, Iterable, Literal, Optional, Sequence
+from typing import Collection, Literal, Optional, Sequence
 
 import bigframes_vendored.ibis.expr.operations as vendored_ibis_ops
 import ibis
@@ -40,6 +39,7 @@ from bigframes.core.ordering import (
     OrderingExpression,
 )
 import bigframes.core.schema as schemata
+import bigframes.core.sql
 from bigframes.core.window_spec import RangeWindowBounds, RowsWindowBounds, WindowSpec
 import bigframes.dtypes
 import bigframes.operations.aggregations as agg_ops
@@ -821,15 +821,13 @@ class OrderedIR(BaseIbisIR):
                 )
             )
             output_columns = [
-                col_id_overrides.get(col) if (col in col_id_overrides) else col
-                for col in baked_ir.column_ids
+                col_id_overrides.get(col, col) for col in baked_ir.column_ids
             ]
-            selection = ", ".join(map(lambda col_id: f"`{col_id}`", output_columns))
+            sql = bigframes.core.sql.select_from(output_columns, sql)
 
-            sql = textwrap.dedent(f"SELECT {selection}\n" "FROM (\n" f"{sql}\n" ")\n")
             # Single row frames may not have any ordering columns
             if len(baked_ir._ordering.all_ordering_columns) > 0:
-                order_by_clause = baked_ir._ordering_clause(
+                order_by_clause = bigframes.core.sql.ordering_clause(
                     baked_ir._ordering.all_ordering_columns
                 )
                 sql += f"{order_by_clause}\n"
@@ -842,22 +840,6 @@ class OrderedIR(BaseIbisIR):
                 )
             )
         return typing.cast(str, sql)
-
-    def _ordering_clause(self, ordering: Iterable[OrderingExpression]) -> str:
-        parts = []
-        for col_ref in ordering:
-            asc_desc = "ASC" if col_ref.direction.is_ascending else "DESC"
-            null_clause = "NULLS LAST" if col_ref.na_last else "NULLS FIRST"
-            ordering_expr = col_ref.scalar_expression
-            # We don't know how to compile scalar expressions in isolation
-            if ordering_expr.is_const:
-                # Probably shouldn't have constants in ordering definition, but best to ignore if somehow they end up here.
-                continue
-            if not isinstance(ordering_expr, ex.UnboundVariableExpression):
-                raise ValueError("Expected direct column reference.")
-            part = f"`{ordering_expr.id}` {asc_desc} {null_clause}"
-            parts.append(part)
-        return f"ORDER BY {' ,'.join(parts)}"
 
     def _to_ibis_expr(
         self,

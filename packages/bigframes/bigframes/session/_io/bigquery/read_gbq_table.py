@@ -40,6 +40,7 @@ import bigframes.core as core
 import bigframes.core.compile
 import bigframes.core.guid as guid
 import bigframes.core.ordering as order
+import bigframes.core.sql
 import bigframes.dtypes
 import bigframes.session._io.bigquery.read_gbq_table
 import bigframes.session.clients
@@ -131,14 +132,14 @@ def _create_time_travel_sql(
     """Query a table via 'time travel' for consistent reads."""
     # If we have an anonymous query results table, it can't be modified and
     # there isn't any BigQuery time travel.
+    selection = bigframes.core.sql.select_table(table_ref)
     if table_ref.dataset_id.startswith("_"):
-        return f"SELECT * FROM `{table_ref.project}`.`{table_ref.dataset_id}`.`{table_ref.table_id}`"
+        return selection
 
     return textwrap.dedent(
         f"""
-        SELECT *
-        FROM `{table_ref.project}`.`{table_ref.dataset_id}`.`{table_ref.table_id}`
-        FOR SYSTEM_TIME AS OF TIMESTAMP({repr(time_travel_timestamp.isoformat())})
+        {selection}
+        {bigframes.core.sql.snapshot_clause(time_travel_timestamp)}
         """
     )
 
@@ -149,9 +150,8 @@ def get_ibis_time_travel_table(
     time_travel_timestamp: datetime.datetime,
 ) -> ibis_types.Table:
     try:
-        return ibis_client.sql(
-            _create_time_travel_sql(table_ref, time_travel_timestamp)
-        )
+        sql = _create_time_travel_sql(table_ref, time_travel_timestamp)
+        return ibis_client.sql(sql)
     except google.api_core.exceptions.Forbidden as ex:
         # Ibis does a dry run to get the types of the columns from the SQL.
         if "Drive credentials" in ex.message:
@@ -166,25 +166,14 @@ def _check_index_uniqueness(
     index_cols: List[str],
     api_name: str,
 ) -> bool:
-    distinct_table = table.select(*index_cols).distinct()
-    is_unique_sql = f"""WITH full_table AS (
-        {ibis_client.compile(table)}
-    ),
-    distinct_table AS (
-        {ibis_client.compile(distinct_table)}
-    )
-
-    SELECT (SELECT COUNT(*) FROM full_table) AS `total_count`,
-    (SELECT COUNT(*) FROM distinct_table) AS `distinct_count`
-    """
+    table_sql = ibis_client.compile(table)
+    is_unique_sql = bigframes.core.sql.is_distinct_sql(index_cols, table_sql)
     job_config = bigquery.QueryJobConfig()
     job_config.labels["bigframes-api"] = api_name
     results = bqclient.query_and_wait(is_unique_sql, job_config=job_config)
     row = next(iter(results))
 
-    total_count = row["total_count"]
-    distinct_count = row["distinct_count"]
-    return total_count == distinct_count
+    return row["total_count"] == row["distinct_count"]
 
 
 def _get_primary_keys(

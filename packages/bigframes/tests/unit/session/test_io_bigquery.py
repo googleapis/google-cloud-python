@@ -249,7 +249,7 @@ def test_bq_schema_to_sql(schema: Iterable[bigquery.SchemaField], expected: str)
                 rowindex,
                 string_col,
             FROM `test_table` AS t
-            ) AS sub WHERE `rowindex` < 4 AND `string_col` = 'Hello, World!'""",
+            ) AS sub WHERE `rowindex` < 4 AND `string_col` = \'Hello, World!\'""",
             id="subquery-all_params-filter_and_operation",
         ),
         pytest.param(

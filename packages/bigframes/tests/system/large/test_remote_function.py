@@ -221,7 +221,7 @@ def test_remote_function_stringify_with_ibis(
         )
 
 
-# @pytest.mark.flaky(retries=2, delay=120)
+@pytest.mark.flaky(retries=2, delay=120)
 def test_remote_function_binop(session, scalars_dfs, dataset_id, bq_cf_connection):
     try:
 
