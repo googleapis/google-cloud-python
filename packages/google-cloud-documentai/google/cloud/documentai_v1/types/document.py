@@ -626,13 +626,17 @@ class Document(proto.Message):
                     underlined (bool):
                         Whether the text is underlined.
                     strikeout (bool):
-                        Whether the text is strikethrough.
+                        Whether the text is strikethrough. This
+                        feature is not supported yet.
                     subscript (bool):
-                        Whether the text is a subscript.
+                        Whether the text is a subscript. This feature
+                        is not supported yet.
                     superscript (bool):
-                        Whether the text is a superscript.
+                        Whether the text is a superscript. This
+                        feature is not supported yet.
                     smallcaps (bool):
-                        Whether the text is in small caps.
+                        Whether the text is in small caps. This
+                        feature is not supported yet.
                     font_weight (int):
                         TrueType weight on a scale ``100`` (thin) to ``1000``
                         (ultra-heavy). Normal is ``400``, bold is ``700``.
