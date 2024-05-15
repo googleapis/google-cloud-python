@@ -724,12 +724,66 @@ class ImportDataMetadata(proto.Message):
         operation_metadata (google.cloud.parallelstore_v1beta.types.TransferOperationMetadata):
             Contains the data transfer operation
             metadata.
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time the operation was
+            created.
+        end_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time the operation finished
+            running.
+        target (str):
+            Output only. Server-defined resource path for
+            the target of the operation.
+        verb (str):
+            Output only. Name of the verb executed by the
+            operation.
+        status_message (str):
+            Output only. Human-readable status of the
+            operation, if any.
+        requested_cancellation (bool):
+            Output only. Identifies whether the user has requested
+            cancellation of the operation. Operations that have
+            successfully been cancelled have [Operation.error][] value
+            with a [google.rpc.Status.code][google.rpc.Status.code] of
+            1, corresponding to ``Code.CANCELLED``.
+        api_version (str):
+            Output only. API version used to start the
+            operation.
     """
 
     operation_metadata: "TransferOperationMetadata" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="TransferOperationMetadata",
+    )
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    target: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    verb: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    status_message: str = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    requested_cancellation: bool = proto.Field(
+        proto.BOOL,
+        number=7,
+    )
+    api_version: str = proto.Field(
+        proto.STRING,
+        number=8,
     )
 
 
@@ -747,6 +801,30 @@ class ExportDataMetadata(proto.Message):
         operation_metadata (google.cloud.parallelstore_v1beta.types.TransferOperationMetadata):
             Contains the data transfer operation
             metadata.
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time the operation was
+            created.
+        end_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time the operation finished
+            running.
+        target (str):
+            Output only. Server-defined resource path for
+            the target of the operation.
+        verb (str):
+            Output only. Name of the verb executed by the
+            operation.
+        status_message (str):
+            Output only. Human-readable status of the
+            operation, if any.
+        requested_cancellation (bool):
+            Output only. Identifies whether the user has requested
+            cancellation of the operation. Operations that have
+            successfully been cancelled have [Operation.error][] value
+            with a [google.rpc.Status.code][google.rpc.Status.code] of
+            1, corresponding to ``Code.CANCELLED``.
+        api_version (str):
+            Output only. API version used to start the
+            operation.
     """
 
     operation_metadata: "TransferOperationMetadata" = proto.Field(
@@ -754,52 +832,100 @@ class ExportDataMetadata(proto.Message):
         number=1,
         message="TransferOperationMetadata",
     )
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    target: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    verb: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    status_message: str = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    requested_cancellation: bool = proto.Field(
+        proto.BOOL,
+        number=7,
+    )
+    api_version: str = proto.Field(
+        proto.STRING,
+        number=8,
+    )
 
 
 class TransferOperationMetadata(proto.Message):
     r"""Represents the metadata of the long-running operation.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
-        create_time (google.protobuf.timestamp_pb2.Timestamp):
-            Output only. CCFE supplied fields BEGIN
-            The time the operation was created.
-        end_time (google.protobuf.timestamp_pb2.Timestamp):
-            Output only. The time the operation finished
-            running.
+        source_parallelstore (google.cloud.parallelstore_v1beta.types.SourceParallelstore):
+            Output only. Parallelstore source.
+
+            This field is a member of `oneof`_ ``source``.
+        source_gcs_bucket (google.cloud.parallelstore_v1beta.types.SourceGcsBucket):
+            Output only. Cloud Storage source.
+
+            This field is a member of `oneof`_ ``source``.
+        destination_gcs_bucket (google.cloud.parallelstore_v1beta.types.DestinationGcsBucket):
+            Output only. Cloud Storage destination.
+
+            This field is a member of `oneof`_ ``destination``.
+        destination_parallelstore (google.cloud.parallelstore_v1beta.types.DestinationParallelstore):
+            Output only. Parallelstore destination.
+
+            This field is a member of `oneof`_ ``destination``.
         counters (google.cloud.parallelstore_v1beta.types.TransferCounters):
-            Information about the progress of the
-            transfer operation.
-        source (str):
-            Required. The origin of the data transfer.
-        destination (str):
-            Required. The destination of the data
-            transfer.
+            Output only. Information about the progress
+            of the transfer operation.
         transfer_type (google.cloud.parallelstore_v1beta.types.TransferType):
-            The type of transfer occurring.
+            Output only. The type of transfer occurring.
     """
 
-    create_time: timestamp_pb2.Timestamp = proto.Field(
+    source_parallelstore: "SourceParallelstore" = proto.Field(
         proto.MESSAGE,
-        number=1,
-        message=timestamp_pb2.Timestamp,
+        number=7,
+        oneof="source",
+        message="SourceParallelstore",
     )
-    end_time: timestamp_pb2.Timestamp = proto.Field(
+    source_gcs_bucket: "SourceGcsBucket" = proto.Field(
         proto.MESSAGE,
-        number=2,
-        message=timestamp_pb2.Timestamp,
+        number=8,
+        oneof="source",
+        message="SourceGcsBucket",
+    )
+    destination_gcs_bucket: "DestinationGcsBucket" = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        oneof="destination",
+        message="DestinationGcsBucket",
+    )
+    destination_parallelstore: "DestinationParallelstore" = proto.Field(
+        proto.MESSAGE,
+        number=10,
+        oneof="destination",
+        message="DestinationParallelstore",
     )
     counters: "TransferCounters" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="TransferCounters",
-    )
-    source: str = proto.Field(
-        proto.STRING,
-        number=4,
-    )
-    destination: str = proto.Field(
-        proto.STRING,
-        number=5,
     )
     transfer_type: "TransferType" = proto.Field(
         proto.ENUM,
