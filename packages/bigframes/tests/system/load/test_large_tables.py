@@ -93,6 +93,7 @@ def test_to_pandas_batches_large_table():
     assert row_count == expected_row_count
 
 
+@pytest.mark.skip(reason="See if it caused kokoro build aborted.")
 def test_to_pandas_large_table():
     df = bpd.read_gbq("load_testing.scalars_10gb")
     # df will be downloaded locally
