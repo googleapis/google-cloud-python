@@ -122,10 +122,10 @@ class Block:
 
         # If no index columns are set, create one.
         #
-        # Note: get_index_cols_and_uniqueness in
+        # Note: get_index_cols in
         # bigframes/session/_io/bigquery/read_gbq_table.py depends on this
         # being as sequential integer index column. If this default behavior
-        # ever changes, please also update get_index_cols_and_uniqueness so
+        # ever changes, please also update get_index_cols so
         # that users who explicitly request a sequential integer index can
         # still get one.
         if len(index_columns) == 0:

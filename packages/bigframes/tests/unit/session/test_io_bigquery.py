@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import datetime
+import re
 from typing import Iterable
 
 import google.cloud.bigquery as bigquery
@@ -205,19 +206,16 @@ def test_bq_schema_to_sql(schema: Iterable[bigquery.SchemaField], expected: str)
 
 
 @pytest.mark.parametrize(
-    ("query_or_table", "index_cols", "columns", "filters", "expected_output"),
+    (
+        "query_or_table",
+        "index_cols",
+        "columns",
+        "filters",
+        "max_results",
+        "time_travel_timestamp",
+        "expected_output",
+    ),
     [
-        pytest.param(
-            "test_table",
-            [],
-            [],
-            ["date_col", ">", "2022-10-20"],
-            None,
-            marks=pytest.mark.xfail(
-                raises=ValueError,
-            ),
-            id="raise_error",
-        ),
         pytest.param(
             "test_table",
             ["row_index"],
@@ -226,30 +224,42 @@ def test_bq_schema_to_sql(schema: Iterable[bigquery.SchemaField], expected: str)
                 (("rowindex", "not in", [0, 6]),),
                 (("string_col", "in", ["Hello, World!", "こんにちは"]),),
             ],
+            123,  # max_results,
+            datetime.datetime(2024, 5, 14, 12, 42, 36, 125125),
             (
-                "SELECT `row_index`, `string_col` FROM `test_table` AS sub WHERE "
-                "`rowindex` NOT IN (0, 6) OR `string_col` IN ('Hello, World!', "
-                "'こんにちは')"
+                "SELECT `row_index`, `string_col` FROM `test_table` "
+                "FOR SYSTEM_TIME AS OF TIMESTAMP('2024-05-14T12:42:36.125125') "
+                "WHERE `rowindex` NOT IN (0, 6) OR `string_col` IN ('Hello, World!', "
+                "'こんにちは') LIMIT 123"
             ),
             id="table-all_params-filter_or_operation",
         ),
         pytest.param(
-            """SELECT
-                rowindex,
-                string_col,
-            FROM `test_table` AS t
-            """,
+            (
+                """SELECT
+                    rowindex,
+                    string_col,
+                FROM `test_table` AS t
+                """
+            ),
             ["rowindex"],
             ["string_col"],
             [
                 ("rowindex", "<", 4),
                 ("string_col", "==", "Hello, World!"),
             ],
-            """SELECT `rowindex`, `string_col` FROM (SELECT
-                rowindex,
-                string_col,
-            FROM `test_table` AS t
-            ) AS sub WHERE `rowindex` < 4 AND `string_col` = \'Hello, World!\'""",
+            123,  # max_results,
+            datetime.datetime(2024, 5, 14, 12, 42, 36, 125125),
+            (
+                """SELECT `rowindex`, `string_col` FROM (SELECT
+                    rowindex,
+                    string_col,
+                FROM `test_table` AS t
+                ) """
+                "FOR SYSTEM_TIME AS OF TIMESTAMP('2024-05-14T12:42:36.125125') "
+                "WHERE `rowindex` < 4 AND `string_col` = 'Hello, World!' "
+                "LIMIT 123"
+            ),
             id="subquery-all_params-filter_and_operation",
         ),
         pytest.param(
@@ -257,7 +267,9 @@ def test_bq_schema_to_sql(schema: Iterable[bigquery.SchemaField], expected: str)
             [],
             ["col_a", "col_b"],
             [],
-            "SELECT `col_a`, `col_b` FROM `test_table` AS sub",
+            None,  # max_results
+            None,  # time_travel_timestampe
+            "SELECT `col_a`, `col_b` FROM `test_table`",
             id="table-columns",
         ),
         pytest.param(
@@ -265,7 +277,9 @@ def test_bq_schema_to_sql(schema: Iterable[bigquery.SchemaField], expected: str)
             [],
             [],
             [("date_col", ">", "2022-10-20")],
-            "SELECT * FROM `test_table` AS sub WHERE `date_col` > '2022-10-20'",
+            None,  # max_results
+            None,  # time_travel_timestampe
+            "SELECT * FROM `test_table` WHERE `date_col` > '2022-10-20'",
             id="table-filter",
         ),
         pytest.param(
@@ -273,7 +287,9 @@ def test_bq_schema_to_sql(schema: Iterable[bigquery.SchemaField], expected: str)
             [],
             [],
             [],
-            "SELECT * FROM `test_table*` AS sub",
+            None,  # max_results
+            None,  # time_travel_timestampe
+            "SELECT * FROM `test_table*`",
             id="wildcard-no_params",
         ),
         pytest.param(
@@ -281,30 +297,49 @@ def test_bq_schema_to_sql(schema: Iterable[bigquery.SchemaField], expected: str)
             [],
             [],
             [("_TABLE_SUFFIX", ">", "2022-10-20")],
-            "SELECT * FROM `test_table*` AS sub WHERE `_TABLE_SUFFIX` > '2022-10-20'",
+            None,  # max_results
+            None,  # time_travel_timestampe
+            "SELECT * FROM `test_table*` WHERE `_TABLE_SUFFIX` > '2022-10-20'",
             id="wildcard-filter",
         ),
     ],
 )
-def test_to_query(query_or_table, index_cols, columns, filters, expected_output):
+def test_to_query(
+    query_or_table,
+    index_cols,
+    columns,
+    filters,
+    max_results,
+    time_travel_timestamp,
+    expected_output,
+):
     query = io_bq.to_query(
         query_or_table,
-        index_cols,
-        columns,
-        filters,
+        index_cols=index_cols,
+        columns=columns,
+        filters=filters,
+        max_results=max_results,
+        time_travel_timestamp=time_travel_timestamp,
     )
     assert query == expected_output
 
 
 @pytest.mark.parametrize(
-    ("query_or_table", "filters", "expected_output"),
-    [],
+    ("filters", "expected_message"),
+    (
+        pytest.param(
+            ["date_col", ">", "2022-10-20"],
+            "Elements of filters must be tuples of length 3, but got 'd'",
+        ),
+    ),
 )
-def test_to_query_with_wildcard_table(query_or_table, filters, expected_output):
-    query = io_bq.to_query(
-        query_or_table,
-        (),  # index_cols
-        (),  # columns
-        filters,
-    )
-    assert query == expected_output
+def test_to_query_fails_with_bad_filters(filters, expected_message):
+    with pytest.raises(ValueError, match=re.escape(expected_message)):
+        io_bq.to_query(
+            "test_table",
+            index_cols=(),
+            columns=(),
+            filters=filters,
+            max_results=None,
+            time_travel_timestamp=None,
+        )

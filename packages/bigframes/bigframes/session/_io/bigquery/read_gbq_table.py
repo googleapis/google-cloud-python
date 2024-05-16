@@ -20,12 +20,12 @@ from __future__ import annotations
 
 import datetime
 import itertools
-import textwrap
 import typing
 from typing import Dict, Iterable, List, Optional, Tuple
 import warnings
 
 import bigframes_vendored.ibis.expr.operations as vendored_ibis_ops
+import bigframes_vendored.pandas.io.gbq as third_party_pandas_gbq
 import google.api_core.exceptions
 import google.cloud.bigquery as bigquery
 import ibis
@@ -42,7 +42,7 @@ import bigframes.core.guid as guid
 import bigframes.core.ordering as order
 import bigframes.core.sql
 import bigframes.dtypes
-import bigframes.session._io.bigquery.read_gbq_table
+import bigframes.session._io.bigquery
 import bigframes.session.clients
 import bigframes.version
 
@@ -126,32 +126,33 @@ def get_table_metadata(
     return cached_table
 
 
-def _create_time_travel_sql(
-    table_ref: bigquery.TableReference, time_travel_timestamp: datetime.datetime
-) -> str:
-    """Query a table via 'time travel' for consistent reads."""
-    # If we have an anonymous query results table, it can't be modified and
-    # there isn't any BigQuery time travel.
-    selection = bigframes.core.sql.select_table(table_ref)
-    if table_ref.dataset_id.startswith("_"):
-        return selection
-
-    return textwrap.dedent(
-        f"""
-        {selection}
-        {bigframes.core.sql.snapshot_clause(time_travel_timestamp)}
-        """
-    )
-
-
 def get_ibis_time_travel_table(
     ibis_client: ibis.BaseBackend,
     table_ref: bigquery.TableReference,
-    time_travel_timestamp: datetime.datetime,
+    index_cols: Iterable[str],
+    columns: Iterable[str],
+    filters: third_party_pandas_gbq.FiltersType,
+    time_travel_timestamp: Optional[datetime.datetime],
 ) -> ibis_types.Table:
+    # If we have an anonymous query results table, it can't be modified and
+    # there isn't any BigQuery time travel.
+    if table_ref.dataset_id.startswith("_"):
+        time_travel_timestamp = None
+
     try:
-        sql = _create_time_travel_sql(table_ref, time_travel_timestamp)
-        return ibis_client.sql(sql)
+        return ibis_client.sql(
+            bigframes.session._io.bigquery.to_query(
+                f"{table_ref.project}.{table_ref.dataset_id}.{table_ref.table_id}",
+                index_cols=index_cols,
+                columns=columns,
+                filters=filters,
+                time_travel_timestamp=time_travel_timestamp,
+                # If we've made it this far, we know we don't have any
+                # max_results to worry about, because in that case we will
+                # have executed a query with a LIMI clause.
+                max_results=None,
+            )
+        )
     except google.api_core.exceptions.Forbidden as ex:
         # Ibis does a dry run to get the types of the columns from the SQL.
         if "Drive credentials" in ex.message:
@@ -159,13 +160,21 @@ def get_ibis_time_travel_table(
         raise
 
 
-def _check_index_uniqueness(
+def are_index_cols_unique(
     bqclient: bigquery.Client,
     ibis_client: ibis.BaseBackend,
-    table: ibis_types.Table,
+    table: bigquery.table.Table,
     index_cols: List[str],
     api_name: str,
 ) -> bool:
+    # If index_cols contain the primary_keys, the query engine assumes they are
+    # provide a unique index.
+    primary_keys = frozenset(_get_primary_keys(table))
+    if primary_keys <= frozenset(index_cols):
+        return True
+
+    # TODO(b/337925142): Avoid a "SELECT *" subquery here by ensuring
+    # table_expression only selects just index_cols.
     table_sql = ibis_client.compile(table)
     is_unique_sql = bigframes.core.sql.is_distinct_sql(index_cols, table_sql)
     job_config = bigquery.QueryJobConfig()
@@ -217,14 +226,10 @@ def _is_table_clustered_or_partitioned(
     return False
 
 
-def get_index_cols_and_uniqueness(
-    bqclient: bigquery.Client,
-    ibis_client: ibis.BaseBackend,
+def get_index_cols(
     table: bigquery.table.Table,
-    table_expression: ibis_types.Table,
     index_col: Iterable[str] | str | bigframes.enums.DefaultIndexKind,
-    api_name: str,
-) -> Tuple[List[str], bool]:
+) -> List[str]:
     """
     If we can get a total ordering from the table, such as via primary key
     column(s), then return those too so that ordering generation can be
@@ -241,7 +246,7 @@ def get_index_cols_and_uniqueness(
             # Note: This relies on the default behavior of the Block
             # constructor to create a default sequential index. If that ever
             # changes, this logic will need to be revisited.
-            return [], False
+            return []
         else:
             # Note: It's actually quite difficult to mock this out to unit
             # test, as it's not possible to subclass enums in Python. See:
@@ -278,19 +283,8 @@ def get_index_cols_and_uniqueness(
         # columns are unique, even if the constraint is not enforced. We make
         # the same assumption and use these columns as the total ordering keys.
         index_cols = primary_keys
-        is_index_unique = len(index_cols) != 0
-    else:
-        is_index_unique = _check_index_uniqueness(
-            bqclient=bqclient,
-            ibis_client=ibis_client,
-            # TODO(b/337925142): Avoid a "SELECT *" subquery here by using
-            # _create_time_travel_sql with just index_cols.
-            table=table_expression,
-            index_cols=index_cols,
-            api_name=api_name,
-        )
 
-    return index_cols, is_index_unique
+    return index_cols
 
 
 def get_time_travel_datetime_and_table_metadata(

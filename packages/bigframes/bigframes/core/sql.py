@@ -33,7 +33,7 @@ if TYPE_CHECKING:
 
 
 ### Writing SQL Values (literals, column references, table references, etc.)
-def simple_literal(value: str | int | bool | float):
+def simple_literal(value: str | int | bool | float | datetime.datetime):
     """Return quoted input string."""
     # https://cloud.google.com/bigquery/docs/reference/standard-sql/lexical#literals
     if isinstance(value, str):
@@ -50,6 +50,8 @@ def simple_literal(value: str | int | bool | float):
         if value == -math.inf:
             return 'CAST("-inf" as FLOAT)'
         return str(value)
+    if isinstance(value, datetime.datetime):
+        return f"TIMESTAMP('{value.isoformat()}')"
     else:
         raise ValueError(f"Cannot produce literal for {value}")
 
@@ -156,7 +158,3 @@ def ordering_clause(
         part = f"`{ordering_expr.id}` {asc_desc} {null_clause}"
         parts.append(part)
     return f"ORDER BY {' ,'.join(parts)}"
-
-
-def snapshot_clause(time_travel_timestamp: datetime.datetime):
-    return f"FOR SYSTEM_TIME AS OF TIMESTAMP({repr(time_travel_timestamp.isoformat())})"
