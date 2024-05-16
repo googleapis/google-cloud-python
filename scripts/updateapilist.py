@@ -138,7 +138,11 @@ class CloudClient:
     
     @property
     def link_to_file_an_issue(self):
-        return f"{BASE_ISSUE_TRACKER}/issues/new?component={self.issue_tracker_component_id}"
+        link = f"{BASE_ISSUE_TRACKER}/issues/new?component={self.issue_tracker_component_id}"
+        template_id = self.issue_tracker_template_id
+        if template_id:
+            link += f"&template={template_id}"
+        return link
     
     @property
     def link_to_already_filed_issues(self):
