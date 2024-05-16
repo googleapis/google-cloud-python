@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.10](https://github.com/googleapis/google-cloud-python/compare/google-cloud-public-ca-v0.3.9...google-cloud-public-ca-v0.3.10) (2024-05-16)
+
+
+### Features
+
+* added protos for publicca v1 ([f38aae4](https://github.com/googleapis/google-cloud-python/commit/f38aae4215c47e566742fb94f40ab2cc6e2ba975))
+
 ## [0.3.9](https://github.com/googleapis/google-cloud-python/compare/google-cloud-public-ca-v0.3.8...google-cloud-public-ca-v0.3.9) (2024-03-05)
 
 

@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.2.0](https://github.com/googleapis/google-cloud-python/compare/google-maps-fleetengine-v0.1.9...google-maps-fleetengine-v0.2.0) (2024-05-16)
+
+
+### ⚠ BREAKING CHANGES
+
+* An existing method `SearchFuzzedVehicles` is removed from service `VehicleService`
+* An existing message `UpdateVehicleLocationRequest` is removed
+* An existing method `UpdateVehicleLocation` is removed from service `VehicleService`
+
+### Bug Fixes
+
+* An existing message `UpdateVehicleLocationRequest` is removed ([e6969d5](https://github.com/googleapis/google-cloud-python/commit/e6969d550a7255f8ff3ed10ab77072d38edb61ff))
+* An existing method `SearchFuzzedVehicles` is removed from service `VehicleService` ([e6969d5](https://github.com/googleapis/google-cloud-python/commit/e6969d550a7255f8ff3ed10ab77072d38edb61ff))
+* An existing method `UpdateVehicleLocation` is removed from service `VehicleService` ([e6969d5](https://github.com/googleapis/google-cloud-python/commit/e6969d550a7255f8ff3ed10ab77072d38edb61ff))
+
+
+### Documentation
+
+* [google-maps-fleetengine] mark TerminalPointId as deprecated ([#12698](https://github.com/googleapis/google-cloud-python/issues/12698)) ([262ef80](https://github.com/googleapis/google-cloud-python/commit/262ef805acda78087ff74e8aea0a808146eeeb3b))
+
 ## [0.1.9](https://github.com/googleapis/google-cloud-python/compare/google-maps-fleetengine-v0.1.8...google-maps-fleetengine-v0.1.9) (2024-03-05)
 
 

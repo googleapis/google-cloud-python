@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.2.0](https://github.com/googleapis/google-cloud-python/compare/google-maps-fleetengine-delivery-v0.1.8...google-maps-fleetengine-delivery-v0.2.0) (2024-05-16)
+
+
+### ⚠ BREAKING CHANGES
+
+* An existing method `SearchFuzzedVehicles` is removed from service `VehicleService`
+* An existing message `UpdateVehicleLocationRequest` is removed
+* An existing method `UpdateVehicleLocation` is removed from service `VehicleService`
+
+### Bug Fixes
+
+* An existing message `UpdateVehicleLocationRequest` is removed ([6c696a2](https://github.com/googleapis/google-cloud-python/commit/6c696a2f789777ed7ecdd0cf0af5dc2a6fc97d73))
+* An existing method `SearchFuzzedVehicles` is removed from service `VehicleService` ([6c696a2](https://github.com/googleapis/google-cloud-python/commit/6c696a2f789777ed7ecdd0cf0af5dc2a6fc97d73))
+* An existing method `UpdateVehicleLocation` is removed from service `VehicleService` ([6c696a2](https://github.com/googleapis/google-cloud-python/commit/6c696a2f789777ed7ecdd0cf0af5dc2a6fc97d73))
+
+
+### Documentation
+
+* remove comment about deleted SearchTasks method ([11fb7ce](https://github.com/googleapis/google-cloud-python/commit/11fb7cee853fde7e87a1856325f9b756e5106b33))
+
 ## [0.1.8](https://github.com/googleapis/google-cloud-python/compare/google-maps-fleetengine-delivery-v0.1.7...google-maps-fleetengine-delivery-v0.1.8) (2024-05-07)
 
 
