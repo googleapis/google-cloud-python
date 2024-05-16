@@ -89,7 +89,7 @@ from google.ai.generativelanguage_v1beta.types.discuss_service import (
     Message,
     MessagePrompt,
 )
-from google.ai.generativelanguage_v1beta.types.file import File
+from google.ai.generativelanguage_v1beta.types.file import File, VideoMetadata
 from google.ai.generativelanguage_v1beta.types.file_service import (
     CreateFileRequest,
     CreateFileResponse,
@@ -251,6 +251,7 @@ __all__ = (
     "Message",
     "MessagePrompt",
     "File",
+    "VideoMetadata",
     "CreateFileRequest",
     "CreateFileResponse",
     "DeleteFileRequest",

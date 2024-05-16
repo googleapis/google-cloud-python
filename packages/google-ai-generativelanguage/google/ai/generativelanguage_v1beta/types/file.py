@@ -17,13 +17,16 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
+from google.rpc import status_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.ai.generativelanguage.v1beta",
     manifest={
         "File",
+        "VideoMetadata",
     },
 )
 
@@ -31,7 +34,13 @@ __protobuf__ = proto.module(
 class File(proto.Message):
     r"""A file uploaded to the API.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
+        video_metadata (google.ai.generativelanguage_v1beta.types.VideoMetadata):
+            Output only. Metadata for a video.
+
+            This field is a member of `oneof`_ ``metadata``.
         name (str):
             Immutable. Identifier. The ``File`` resource name. The ID
             (name excluding the "files/" prefix) can contain up to 40
@@ -62,6 +71,9 @@ class File(proto.Message):
             Output only. The uri of the ``File``.
         state (google.ai.generativelanguage_v1beta.types.File.State):
             Output only. Processing state of the File.
+        error (google.rpc.status_pb2.Status):
+            Output only. Error status if File processing
+            failed.
     """
 
     class State(proto.Enum):
@@ -85,6 +97,12 @@ class File(proto.Message):
         ACTIVE = 2
         FAILED = 10
 
+    video_metadata: "VideoMetadata" = proto.Field(
+        proto.MESSAGE,
+        number=12,
+        oneof="metadata",
+        message="VideoMetadata",
+    )
     name: str = proto.Field(
         proto.STRING,
         number=1,
@@ -128,6 +146,26 @@ class File(proto.Message):
         proto.ENUM,
         number=10,
         enum=State,
+    )
+    error: status_pb2.Status = proto.Field(
+        proto.MESSAGE,
+        number=11,
+        message=status_pb2.Status,
+    )
+
+
+class VideoMetadata(proto.Message):
+    r"""Metadata for a video ``File``.
+
+    Attributes:
+        video_duration (google.protobuf.duration_pb2.Duration):
+            Duration of the video.
+    """
+
+    video_duration: duration_pb2.Duration = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=duration_pb2.Duration,
     )
 
 

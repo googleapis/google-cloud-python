@@ -437,9 +437,9 @@ class GenerativeServiceGrpcAsyncIOTransport(GenerativeServiceTransport):
                     predicate=retries.if_exception_type(
                         core_exceptions.ServiceUnavailable,
                     ),
-                    deadline=60.0,
+                    deadline=600.0,
                 ),
-                default_timeout=60.0,
+                default_timeout=600.0,
                 client_info=client_info,
             ),
             self.generate_answer: gapic_v1.method_async.wrap_method(
@@ -465,9 +465,9 @@ class GenerativeServiceGrpcAsyncIOTransport(GenerativeServiceTransport):
                     predicate=retries.if_exception_type(
                         core_exceptions.ServiceUnavailable,
                     ),
-                    deadline=60.0,
+                    deadline=600.0,
                 ),
-                default_timeout=60.0,
+                default_timeout=600.0,
                 client_info=client_info,
             ),
             self.embed_content: gapic_v1.method_async.wrap_method(

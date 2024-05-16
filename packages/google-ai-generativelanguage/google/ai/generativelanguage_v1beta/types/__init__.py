@@ -39,7 +39,7 @@ from .discuss_service import (
     Message,
     MessagePrompt,
 )
-from .file import File
+from .file import File, VideoMetadata
 from .file_service import (
     CreateFileRequest,
     CreateFileResponse,
@@ -187,6 +187,7 @@ __all__ = (
     "Message",
     "MessagePrompt",
     "File",
+    "VideoMetadata",
     "CreateFileRequest",
     "CreateFileResponse",
     "DeleteFileRequest",

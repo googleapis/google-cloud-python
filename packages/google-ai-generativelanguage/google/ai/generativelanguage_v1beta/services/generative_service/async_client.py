@@ -1018,8 +1018,9 @@ class GenerativeServiceAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             contents (:class:`MutableSequence[google.ai.generativelanguage_v1beta.types.Content]`):
-                Optional. The input given to the
-                model as a prompt.
+                Optional. The input given to the model as a prompt. This
+                field is ignored when ``generate_content_request`` is
+                set.
 
                 This corresponds to the ``contents`` field
                 on the ``request`` instance; if ``request`` is provided, this
