@@ -76,114 +76,170 @@ Libraries
    * - `A python wrapper of the C library 'CRC32C' <https://github.com/googleapis/python-crc32c>`_
      - stable
      - |PyPI-google-crc32c|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/googleapis/python-crc32c/issues>`_
    * - `AI Platform <https://github.com/googleapis/python-aiplatform>`_
      - stable
      - |PyPI-google-cloud-aiplatform|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/googleapis/python-aiplatform/issues>`_
    * - `AI Platform Notebooks <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-notebooks>`_
      - stable
      - |PyPI-google-cloud-notebooks|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `API Gateway <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-api-gateway>`_
      - stable
      - |PyPI-google-cloud-api-gateway|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Access Approval <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-access-approval>`_
      - stable
      - |PyPI-google-cloud-access-approval|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Apigee Connect <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-apigee-connect>`_
      - stable
      - |PyPI-google-cloud-apigee-connect|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `App Engine Admin <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-appengine-admin>`_
      - stable
      - |PyPI-google-cloud-appengine-admin|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `App Engine Logging Protos <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-appengine-logging>`_
      - stable
      - |PyPI-google-cloud-appengine-logging|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Artifact Registry <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-artifact-registry>`_
      - stable
      - |PyPI-google-cloud-artifact-registry|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Asset Inventory <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-asset>`_
      - stable
      - |PyPI-google-cloud-asset|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Assured Workloads for Government <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-assured-workloads>`_
      - stable
      - |PyPI-google-cloud-assured-workloads|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `AutoML <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-automl>`_
      - stable
      - |PyPI-google-cloud-automl|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Bare Metal Solution <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-bare-metal-solution>`_
      - stable
      - |PyPI-google-cloud-bare-metal-solution|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `BigQuery <https://github.com/googleapis/python-bigquery>`_
      - stable
      - |PyPI-google-cloud-bigquery|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/googleapis/python-bigquery/issues>`_
    * - `BigQuery Connection <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-bigquery-connection>`_
      - stable
      - |PyPI-google-cloud-bigquery-connection|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `BigQuery Data Transfer <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-bigquery-datatransfer>`_
      - stable
      - |PyPI-google-cloud-bigquery-datatransfer|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `BigQuery Logging Protos <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-bigquery-logging>`_
      - stable
      - |PyPI-google-cloud-bigquery-logging|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `BigQuery Reservation <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-bigquery-reservation>`_
      - stable
      - |PyPI-google-cloud-bigquery-reservation|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `BigQuery Storage <https://github.com/googleapis/python-bigquery-storage>`_
      - stable
      - |PyPI-google-cloud-bigquery-storage|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/googleapis/python-bigquery-storage/issues>`_
    * - `Bigtable <https://github.com/googleapis/python-bigtable>`_
      - stable
      - |PyPI-google-cloud-bigtable|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/googleapis/python-bigtable/issues>`_
    * - `Billing <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-billing>`_
      - stable
      - |PyPI-google-cloud-billing|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Billing Budget <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-billing-budgets>`_
      - stable
      - |PyPI-google-cloud-billing-budgets|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Binary Authorization <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-binary-authorization>`_
      - stable
      - |PyPI-google-cloud-binary-authorization|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Build <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-build>`_
      - stable
      - |PyPI-google-cloud-build|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Certificate Manager <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-certificate-manager>`_
      - stable
      - |PyPI-google-cloud-certificate-manager|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Channel Services <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-channel>`_
      - stable
      - |PyPI-google-cloud-channel|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Common <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-common>`_
      - stable
      - |PyPI-google-cloud-common|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Composer <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-orchestration-airflow>`_
      - stable
      - |PyPI-google-cloud-orchestration-airflow|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Compute Engine <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-compute>`_
      - stable
@@ -194,254 +250,380 @@ Libraries
    * - `Contact Center AI Insights <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-contact-center-insights>`_
      - stable
      - |PyPI-google-cloud-contact-center-insights|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Container Analysis <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-containeranalysis>`_
      - stable
      - |PyPI-google-cloud-containeranalysis|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Data Catalog <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-datacatalog>`_
      - stable
      - |PyPI-google-cloud-datacatalog|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Data Fusion <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-data-fusion>`_
      - stable
      - |PyPI-google-cloud-data-fusion|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Data Loss Prevention <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-dlp>`_
      - stable
      - |PyPI-google-cloud-dlp|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Database Migration Service <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-dms>`_
      - stable
      - |PyPI-google-cloud-dms|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Dataplex <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-dataplex>`_
      - stable
      - |PyPI-google-cloud-dataplex|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Dataproc <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-dataproc>`_
      - stable
      - |PyPI-google-cloud-dataproc|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Dataproc Metastore <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-dataproc-metastore>`_
      - stable
      - |PyPI-google-cloud-dataproc-metastore|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Datastore <https://github.com/googleapis/python-datastore>`_
      - stable
      - |PyPI-google-cloud-datastore|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/googleapis/python-datastore/issues>`_
    * - `Datastream <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-datastream>`_
      - stable
      - |PyPI-google-cloud-datastream|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Deploy <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-deploy>`_
      - stable
      - |PyPI-google-cloud-deploy|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Dialogflow <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-dialogflow>`_
      - stable
      - |PyPI-google-cloud-dialogflow|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Dialogflow CX <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-dialogflow-cx>`_
      - stable
      - |PyPI-google-cloud-dialogflow-cx|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Document AI <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-documentai>`_
      - stable
      - |PyPI-google-cloud-documentai|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Domains <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-domains>`_
      - stable
      - |PyPI-google-cloud-domains|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Essential Contacts <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-essential-contacts>`_
      - stable
      - |PyPI-google-cloud-essential-contacts|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Eventarc <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-eventarc>`_
      - stable
      - |PyPI-google-cloud-eventarc|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Filestore <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-filestore>`_
      - stable
      - |PyPI-google-cloud-filestore|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Firestore <https://github.com/googleapis/python-firestore>`_
      - stable
      - |PyPI-google-cloud-firestore|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/googleapis/python-firestore/issues>`_
    * - `Functions <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-functions>`_
      - stable
      - |PyPI-google-cloud-functions|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `GKE Hub <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-gke-hub>`_
      - stable
      - |PyPI-google-cloud-gke-hub|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Grafeas <https://github.com/googleapis/google-cloud-python/tree/main/packages/grafeas>`_
      - stable
      - |PyPI-grafeas|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `IAM Logging Protos <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-iam-logging>`_
      - stable
      - |PyPI-google-cloud-iam-logging|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `IAM Policy Troubleshooter API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-policy-troubleshooter>`_
      - stable
      - |PyPI-google-cloud-policy-troubleshooter|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `IDS <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-ids>`_
      - stable
      - |PyPI-google-cloud-ids|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Identity and Access Management <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-iam>`_
      - stable
      - |PyPI-google-cloud-iam|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Identity-Aware Proxy <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-iap>`_
      - stable
      - |PyPI-google-cloud-iap|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Key Management Service <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-kms>`_
      - stable
      - |PyPI-google-cloud-kms|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Kubernetes Engine <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-container>`_
      - stable
      - |PyPI-google-cloud-container|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Live Stream <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-video-live-stream>`_
      - stable
      - |PyPI-google-cloud-video-live-stream|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Logging <https://github.com/googleapis/python-logging>`_
      - stable
      - |PyPI-google-cloud-logging|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/googleapis/python-logging/issues>`_
    * - `Managed Service for Microsoft Active Directory <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-managed-identities>`_
      - stable
      - |PyPI-google-cloud-managed-identities|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Memorystore for Memcached <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-memcache>`_
      - stable
      - |PyPI-google-cloud-memcache|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Metrics Scopes <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-monitoring-metrics-scopes>`_
      - stable
      - |PyPI-google-cloud-monitoring-metrics-scopes|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Monitoring Dashboards <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-monitoring-dashboards>`_
      - stable
      - |PyPI-google-cloud-monitoring-dashboards|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `NDB Client Library for Datastore <https://github.com/googleapis/python-ndb>`_
      - stable
      - |PyPI-google-cloud-ndb|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/googleapis/python-ndb/issues>`_
    * - `Natural Language <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-language>`_
      - stable
      - |PyPI-google-cloud-language|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Network Connectivity Center <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-network-connectivity>`_
      - stable
      - |PyPI-google-cloud-network-connectivity|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Network Management <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-network-management>`_
      - stable
      - |PyPI-google-cloud-network-management|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `OS Config <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-os-config>`_
      - stable
      - |PyPI-google-cloud-os-config|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `OS Login <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-os-login>`_
      - stable
      - |PyPI-google-cloud-os-login|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Optimization <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-optimization>`_
      - stable
      - |PyPI-google-cloud-optimization|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Organization Policy <https://github.com/googleapis/python-org-policy>`_
      - stable
      - |PyPI-google-cloud-org-policy|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/googleapis/python-org-policy/issues>`_
    * - `Pandas Data Types for SQL systems (BigQuery, Spanner) <https://github.com/googleapis/python-db-dtypes-pandas>`_
      - stable
      - |PyPI-db-dtypes|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/googleapis/python-db-dtypes-pandas/issues>`_
    * - `Private Certificate Authority <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-private-ca>`_
      - stable
      - |PyPI-google-cloud-private-ca|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Pub/Sub <https://github.com/googleapis/python-pubsub>`_
      - stable
      - |PyPI-google-cloud-pubsub|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/googleapis/python-pubsub/issues>`_
    * - `Pub/Sub Lite <https://github.com/googleapis/python-pubsublite>`_
      - stable
      - |PyPI-google-cloud-pubsublite|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/googleapis/python-pubsublite/issues>`_
    * - `Recommender <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-recommender>`_
      - stable
      - |PyPI-google-cloud-recommender|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Redis <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-redis>`_
      - stable
      - |PyPI-google-cloud-redis|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Resource Manager <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-resource-manager>`_
      - stable
      - |PyPI-google-cloud-resource-manager|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Resource Settings <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-resource-settings>`_
      - stable
      - |PyPI-google-cloud-resource-settings|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Retail <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-retail>`_
      - stable
      - |PyPI-google-cloud-retail|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Scheduler <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-scheduler>`_
      - stable
      - |PyPI-google-cloud-scheduler|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Secret Manager <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-secret-manager>`_
      - stable
      - |PyPI-google-cloud-secret-manager|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Security Command Center <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-securitycenter>`_
      - stable
      - |PyPI-google-cloud-securitycenter|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Security Scanner <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-websecurityscanner>`_
      - stable
      - |PyPI-google-cloud-websecurityscanner|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Service Control <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-service-control>`_
      - stable
      - |PyPI-google-cloud-service-control|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Service Directory <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-service-directory>`_
      - stable
      - |PyPI-google-cloud-service-directory|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Service Management <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-service-management>`_
      - stable
      - |PyPI-google-cloud-service-management|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Service Usage <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-service-usage>`_
      - stable
      - |PyPI-google-cloud-service-usage|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Shell <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-shell>`_
      - stable
      - |PyPI-google-cloud-shell|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Source Context <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-source-context>`_
      - stable
      - |PyPI-google-cloud-source-context|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Spanner <https://github.com/googleapis/python-spanner>`_
      - stable
@@ -458,82 +640,122 @@ Libraries
    * - `Speech <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-speech>`_
      - stable
      - |PyPI-google-cloud-speech|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Stackdriver Monitoring <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-monitoring>`_
      - stable
      - |PyPI-google-cloud-monitoring|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Storage <https://github.com/googleapis/python-storage>`_
      - stable
      - |PyPI-google-cloud-storage|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/googleapis/python-storage/issues>`_
    * - `Storage Transfer Service <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-storage-transfer>`_
      - stable
      - |PyPI-google-cloud-storage-transfer|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `TPU <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-tpu>`_
      - stable
      - |PyPI-google-cloud-tpu|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Talent Solution <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-talent>`_
      - stable
      - |PyPI-google-cloud-talent|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Tasks <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-tasks>`_
      - stable
      - |PyPI-google-cloud-tasks|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Text-to-Speech <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-texttospeech>`_
      - stable
      - |PyPI-google-cloud-texttospeech|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Trace <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-trace>`_
      - stable
      - |PyPI-google-cloud-trace|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Transcoder <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-video-transcoder>`_
      - stable
      - |PyPI-google-cloud-video-transcoder|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Translation <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-translate>`_
      - stable
      - |PyPI-google-cloud-translate|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `VM Migration <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-vm-migration>`_
      - stable
      - |PyPI-google-cloud-vm-migration|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Video Intelligence <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-videointelligence>`_
      - stable
      - |PyPI-google-cloud-videointelligence|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Virtual Private Cloud <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-vpc-access>`_
      - stable
      - |PyPI-google-cloud-vpc-access|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Vision <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-vision>`_
      - stable
      - |PyPI-google-cloud-vision|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Web Risk <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-webrisk>`_
      - stable
      - |PyPI-google-cloud-webrisk|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Workflows <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-workflows>`_
      - stable
      - |PyPI-google-cloud-workflows|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `reCAPTCHA Enterprise <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-recaptcha-enterprise>`_
      - stable
      - |PyPI-google-cloud-recaptcha-enterprise|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `A unified Python API in BigQuery <https://github.com/googleapis/python-bigquery-dataframes>`_
      - preview
      - |PyPI-bigframes|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/googleapis/python-bigquery-dataframes/issues>`_
    * - `API Keys <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-api-keys>`_
      - preview
      - |PyPI-google-cloud-api-keys|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Ad Manager <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-ads-admanager>`_
      - preview
@@ -544,14 +766,20 @@ Libraries
    * - `Address Validation API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-maps-addressvalidation>`_
      - preview
      - |PyPI-google-maps-addressvalidation|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Advisory Notifications <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-advisorynotifications>`_
      - preview
      - |PyPI-google-cloud-advisorynotifications|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `AlloyDB <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-alloydb>`_
      - preview
      - |PyPI-google-cloud-alloydb|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `AlloyDB connectors <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-alloydb-connectors>`_
      - preview
@@ -574,10 +802,14 @@ Libraries
    * - `Anthos Multicloud <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-gke-multicloud>`_
      - preview
      - |PyPI-google-cloud-gke-multicloud|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Apigee Registry API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-apigee-registry>`_
      - preview
      - |PyPI-google-cloud-apigee-registry|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `App Hub API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-apphub>`_
      - preview
@@ -588,14 +820,20 @@ Libraries
    * - `Apps Card Protos <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-apps-card>`_
      - preview
      - |PyPI-google-apps-card|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Apps Script Type Protos <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-apps-script-type>`_
      - preview
      - |PyPI-google-apps-script-type|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Area 120 Tables <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-area120-tables>`_
      - preview
      - |PyPI-google-area120-tables|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Backup and DR Service API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-backupdr>`_
      - preview
@@ -606,30 +844,44 @@ Libraries
    * - `Backup for GKE <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-gke-backup>`_
      - preview
      - |PyPI-google-cloud-gke-backup|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Batch <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-batch>`_
      - preview
      - |PyPI-google-cloud-batch|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `BeyondCorp AppConnections <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-beyondcorp-appconnections>`_
      - preview
      - |PyPI-google-cloud-beyondcorp-appconnections|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `BeyondCorp AppConnectors <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-beyondcorp-appconnectors>`_
      - preview
      - |PyPI-google-cloud-beyondcorp-appconnectors|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `BeyondCorp AppGateways <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-beyondcorp-appgateways>`_
      - preview
      - |PyPI-google-cloud-beyondcorp-appgateways|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `BeyondCorp ClientConnectorServices <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-beyondcorp-clientconnectorservices>`_
      - preview
      - |PyPI-google-cloud-beyondcorp-clientconnectorservices|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `BeyondCorp ClientGateways <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-beyondcorp-clientgateways>`_
      - preview
      - |PyPI-google-cloud-beyondcorp-clientgateways|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `BigLake API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-bigquery-biglake>`_
      - preview
@@ -640,22 +892,32 @@ Libraries
    * - `BigQuery Analytics Hub <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-bigquery-analyticshub>`_
      - preview
      - |PyPI-google-cloud-bigquery-analyticshub|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `BigQuery Analytics Hub <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-bigquery-data-exchange>`_
      - preview
      - |PyPI-google-cloud-bigquery-data-exchange|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `BigQuery Data Policy <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-bigquery-datapolicies>`_
      - preview
      - |PyPI-google-cloud-bigquery-datapolicies|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `BigQuery Migration <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-bigquery-migration>`_
      - preview
      - |PyPI-google-cloud-bigquery-migration|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `BigQuery connector for pandas <https://github.com/googleapis/python-bigquery-pandas>`_
      - preview
      - |PyPI-pandas-gbq|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/googleapis/python-bigquery-pandas/issues>`_
    * - `CSS API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-shopping-css>`_
      - preview
@@ -666,6 +928,8 @@ Libraries
    * - `Chat API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-apps-chat>`_
      - preview
      - |PyPI-google-apps-chat|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Commerce Consumer Procurement API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-commerce-consumer-procurement>`_
      - preview
@@ -682,38 +946,56 @@ Libraries
    * - `Controls Partner API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-cloudcontrolspartner>`_
      - preview
      - |PyPI-google-cloud-cloudcontrolspartner|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `DNS <https://github.com/googleapis/python-dns>`_
      - preview
      - |PyPI-google-cloud-dns|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/googleapis/python-dns/issues>`_
    * - `Data Labeling <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-datalabeling>`_
      - preview
      - |PyPI-google-cloud-datalabeling|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Data Lineage API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-datacatalog-lineage>`_
      - preview
      - |PyPI-google-cloud-datacatalog-lineage|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Data QnA <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-data-qna>`_
      - preview
      - |PyPI-google-cloud-data-qna|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Dataflow <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-dataflow-client>`_
      - preview
      - |PyPI-google-cloud-dataflow-client|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Dataform <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-dataform>`_
      - preview
      - |PyPI-google-cloud-dataform|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Discovery Engine API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-discoveryengine>`_
      - preview
      - |PyPI-google-cloud-discoveryengine|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Distributed Edge Container <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-edgecontainer>`_
      - preview
      - |PyPI-google-cloud-edgecontainer|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Distributed Edge Network API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-edgenetwork>`_
      - preview
@@ -724,34 +1006,50 @@ Libraries
    * - `Document AI Toolbox <https://github.com/googleapis/python-documentai-toolbox>`_
      - preview
      - |PyPI-google-cloud-documentai-toolbox|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/googleapis/python-documentai-toolbox/issues>`_
    * - `Document AI Warehouse <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-contentwarehouse>`_
      - preview
      - |PyPI-google-cloud-contentwarehouse|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Enterprise Knowledge Graph <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-enterpriseknowledgegraph>`_
      - preview
      - |PyPI-google-cloud-enterpriseknowledgegraph|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Error Reporting <https://github.com/googleapis/python-error-reporting>`_
      - preview
      - |PyPI-google-cloud-error-reporting|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/googleapis/python-error-reporting/issues>`_
    * - `Eventarc Publishing <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-eventarc-publishing>`_
      - preview
      - |PyPI-google-cloud-eventarc-publishing|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `GKE Connect Gateway <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-gke-connect-gateway>`_
      - preview
      - |PyPI-google-cloud-gke-connect-gateway|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Generative Language API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-ai-generativelanguage>`_
      - preview
      - |PyPI-google-ai-generativelanguage|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Geo Type Protos <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-geo-type>`_
      - preview
      - |PyPI-google-geo-type|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Infrastructure Manager API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-config>`_
      - preview
@@ -768,26 +1066,38 @@ Libraries
    * - `Last Mile Fleet Solution Delivery API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-maps-fleetengine-delivery>`_
      - preview
      - |PyPI-google-maps-fleetengine-delivery|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Life Sciences <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-life-sciences>`_
      - preview
      - |PyPI-google-cloud-life-sciences|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Local Rides and Deliveries API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-maps-fleetengine>`_
      - preview
      - |PyPI-google-maps-fleetengine|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Maps Platform Datasets API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-maps-mapsplatformdatasets>`_
      - preview
      - |PyPI-google-maps-mapsplatformdatasets|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Maps Routing <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-maps-routing>`_
      - preview
      - |PyPI-google-maps-routing|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Media Translation <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-media-translation>`_
      - preview
      - |PyPI-google-cloud-media-translation|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Meet API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-apps-meet>`_
      - preview
@@ -804,14 +1114,20 @@ Libraries
    * - `Merchant API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-shopping-merchant-conversions>`_
      - preview
      - |PyPI-google-shopping-merchant-conversions|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Merchant API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-shopping-merchant-lfp>`_
      - preview
      - |PyPI-google-shopping-merchant-lfp|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Merchant API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-shopping-merchant-notifications>`_
      - preview
      - |PyPI-google-shopping-merchant-notifications|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Merchant Inventories API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-shopping-merchant-inventories>`_
      - preview
@@ -828,6 +1144,8 @@ Libraries
    * - `Migration Center API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-migrationcenter>`_
      - preview
      - |PyPI-google-cloud-migrationcenter|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `NetApp API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-netapp>`_
      - preview
@@ -838,26 +1156,38 @@ Libraries
    * - `Network Security <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-network-security>`_
      - preview
      - |PyPI-google-cloud-network-security|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Network Services <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-network-services>`_
      - preview
      - |PyPI-google-cloud-network-services|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Parallelstore API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-parallelstore>`_
      - preview
      - |PyPI-google-cloud-parallelstore|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Phishing Protection <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-phishing-protection>`_
      - preview
      - |PyPI-google-cloud-phishing-protection|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Places API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-maps-places>`_
      - preview
      - |PyPI-google-maps-places|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Policy Simulator API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-policysimulator>`_
      - preview
      - |PyPI-google-cloud-policysimulator|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Policy Troubleshooter API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-policytroubleshooter-iam>`_
      - preview
@@ -868,10 +1198,14 @@ Libraries
    * - `Private Catalog <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-private-catalog>`_
      - preview
      - |PyPI-google-cloud-private-catalog|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Public Certificate Authority <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-public-ca>`_
      - preview
      - |PyPI-google-cloud-public-ca|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Quotas API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-cloudquotas>`_
      - preview
@@ -882,10 +1216,14 @@ Libraries
    * - `Rapid Migration Assessment API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-rapidmigrationassessment>`_
      - preview
      - |PyPI-google-cloud-rapidmigrationassessment|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Recommendations AI <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-recommendations-ai>`_
      - preview
      - |PyPI-google-cloud-recommendations-ai|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Route Optimization API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-maps-routeoptimization>`_
      - preview
@@ -896,22 +1234,32 @@ Libraries
    * - `Run <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-run>`_
      - preview
      - |PyPI-google-cloud-run|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Runtime Configurator <https://github.com/googleapis/python-runtimeconfig>`_
      - preview
      - |PyPI-google-cloud-runtimeconfig|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/googleapis/python-runtimeconfig/issues>`_
    * - `SQLAlchemy dialect for BigQuery <https://github.com/googleapis/python-bigquery-sqlalchemy>`_
      - preview
      - |PyPI-sqlalchemy-bigquery|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/googleapis/python-bigquery-sqlalchemy/issues>`_
    * - `Secure Source Manager API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-securesourcemanager>`_
      - preview
      - |PyPI-google-cloud-securesourcemanager|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Security Center Management API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-securitycentermanagement>`_
      - preview
      - |PyPI-google-cloud-securitycentermanagement|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Service Health API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-servicehealth>`_
      - preview
@@ -928,6 +1276,8 @@ Libraries
    * - `Shopping Type Protos <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-shopping-type>`_
      - preview
      - |PyPI-google-shopping-type|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Solar API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-maps-solar>`_
      - preview
@@ -950,6 +1300,8 @@ Libraries
    * - `Support API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-support>`_
      - preview
      - |PyPI-google-cloud-support|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Telco Automation API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-telcoautomation>`_
      - preview
@@ -960,10 +1312,14 @@ Libraries
    * - `VMware Engine <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-vmwareengine>`_
      - preview
      - |PyPI-google-cloud-vmwareengine|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Video Stitcher <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-video-stitcher>`_
      - preview
      - |PyPI-google-cloud-video-stitcher|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Vision AI API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-visionai>`_
      - preview
@@ -974,14 +1330,20 @@ Libraries
    * - `Workspace Add-ons API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-gsuiteaddons>`_
      - preview
      - |PyPI-google-cloud-gsuiteaddons|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Workspace Events API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-apps-events-subscriptions>`_
      - preview
      - |PyPI-google-apps-events-subscriptions|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Workstations <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-workstations>`_
      - preview
      - |PyPI-google-cloud-workstations|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
 
 .. |PyPI-google-crc32c| image:: https://img.shields.io/pypi/v/google-crc32c.svg
