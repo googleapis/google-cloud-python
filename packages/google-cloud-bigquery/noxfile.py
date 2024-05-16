@@ -14,11 +14,13 @@
 
 from __future__ import absolute_import
 
+from functools import wraps
 import pathlib
 import os
 import re
 import shutil
 import nox
+import time
 
 
 MYPY_VERSION = "mypy==1.6.1"
@@ -39,6 +41,27 @@ DEFAULT_PYTHON_VERSION = "3.8"
 SYSTEM_TEST_PYTHON_VERSIONS = ["3.8", "3.11", "3.12"]
 UNIT_TEST_PYTHON_VERSIONS = ["3.7", "3.8", "3.12"]
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
+
+
+def _calculate_duration(func):
+    """This decorator prints the execution time for the decorated function."""
+
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        start = time.monotonic()
+        result = func(*args, **kwargs)
+        end = time.monotonic()
+        total_seconds = round(end - start)
+        hours = total_seconds // 3600  # Integer division to get hours
+        remaining_seconds = total_seconds % 3600  # Modulo to find remaining seconds
+        minutes = remaining_seconds // 60
+        seconds = remaining_seconds % 60
+        human_time = f"{hours:}:{minutes:0>2}:{seconds:0>2}"
+        print(f"Session ran in {total_seconds} seconds ({human_time})")
+        return result
+
+    return wrapper
+
 
 # 'docfx' is excluded since it only needs to run in 'docs-presubmit'
 nox.options.sessions = [
@@ -105,6 +128,7 @@ def default(session, install_extras=True):
 
 
 @nox.session(python=UNIT_TEST_PYTHON_VERSIONS)
+@_calculate_duration
 def unit(session):
     """Run the unit test suite."""
 
@@ -112,6 +136,7 @@ def unit(session):
 
 
 @nox.session(python=[UNIT_TEST_PYTHON_VERSIONS[0], UNIT_TEST_PYTHON_VERSIONS[-1]])
+@_calculate_duration
 def unit_noextras(session):
     """Run the unit test suite."""
 
@@ -129,6 +154,7 @@ def unit_noextras(session):
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
+@_calculate_duration
 def mypy(session):
     """Run type checks with mypy."""
 
@@ -147,6 +173,7 @@ def mypy(session):
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
+@_calculate_duration
 def pytype(session):
     """Run type checks with pytype."""
     # An indirect dependecy attrs==21.1.0 breaks the check, and installing a less
@@ -161,6 +188,7 @@ def pytype(session):
 
 
 @nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)
+@_calculate_duration
 def system(session):
     """Run the system test suite."""
 
@@ -209,6 +237,7 @@ def system(session):
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
+@_calculate_duration
 def mypy_samples(session):
     """Run type checks with mypy."""
 
@@ -244,6 +273,7 @@ def mypy_samples(session):
 
 
 @nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)
+@_calculate_duration
 def snippets(session):
     """Run the snippets test suite."""
 
@@ -279,6 +309,7 @@ def snippets(session):
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
+@_calculate_duration
 def cover(session):
     """Run the final coverage report.
 
@@ -292,6 +323,7 @@ def cover(session):
 
 
 @nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)
+@_calculate_duration
 def prerelease_deps(session):
     """Run all tests with prerelease versions of dependencies installed.
 
@@ -382,6 +414,7 @@ def prerelease_deps(session):
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
+@_calculate_duration
 def lint(session):
     """Run linters.
 
@@ -400,6 +433,7 @@ def lint(session):
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
+@_calculate_duration
 def lint_setup_py(session):
     """Verify that setup.py is valid (including RST check)."""
 
@@ -408,6 +442,7 @@ def lint_setup_py(session):
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
+@_calculate_duration
 def blacken(session):
     """Run black.
     Format code to uniform standard.
@@ -418,6 +453,7 @@ def blacken(session):
 
 
 @nox.session(python="3.9")
+@_calculate_duration
 def docs(session):
     """Build the docs."""
 
@@ -454,6 +490,7 @@ def docs(session):
 
 
 @nox.session(python="3.10")
+@_calculate_duration
 def docfx(session):
     """Build the docfx yaml files for this library."""
 
