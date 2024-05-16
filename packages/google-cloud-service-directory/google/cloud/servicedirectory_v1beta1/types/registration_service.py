@@ -96,7 +96,7 @@ class ListNamespacesRequest(proto.Message):
             list.
         page_size (int):
             Optional. The maximum number of items to
-            return.
+            return. The default value is 100.
         page_token (str):
             Optional. The next_page_token value returned from a previous
             List request, if any.
@@ -302,7 +302,7 @@ class ListServicesRequest(proto.Message):
             whose services you'd like to list.
         page_size (int):
             Optional. The maximum number of items to
-            return.
+            return. The default value is 100.
         page_token (str):
             Optional. The next_page_token value returned from a previous
             List request, if any.
@@ -512,7 +512,7 @@ class ListEndpointsRequest(proto.Message):
             whose endpoints you'd like to list.
         page_size (int):
             Optional. The maximum number of items to
-            return.
+            return. The default value is 100.
         page_token (str):
             Optional. The next_page_token value returned from a previous
             List request, if any.
