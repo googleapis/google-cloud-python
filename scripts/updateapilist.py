@@ -18,7 +18,8 @@ import os
 import requests
 from typing import List, Optional
 from dataclasses import dataclass
-
+from urllib.parse import urlparse, parse_qs
+import re
 
 class MissingGithubToken(ValueError):
     """Raised when the GITHUB_TOKEN environment variable is not set"""
@@ -58,7 +59,9 @@ ARCHIVED_RESPONSE_KEY = "archived"
 BASE_API = "https://api.github.com"
 
 
+GITHUB_ISSUES = "https://github.com/{repo}/issues"
 
+BASE_ISSUE_TRACKER = "https://issuetracker.google.com/issues"
 
 
 class CloudClient:
@@ -67,6 +70,10 @@ class CloudClient:
     release_level: str = None
     distribution_name: str = None
     issue_tracker: str = None
+    file_an_issue: str = None
+    already_filed_issue: str = None
+    github_issues: str = None
+
 
     def __init__(self, repo: dict):
         self.repo = repo["repo"]
@@ -75,6 +82,14 @@ class CloudClient:
         self.release_level = repo["release_level"]
         self.distribution_name = repo["distribution_name"]
         self.issue_tracker = repo.get("issue_tracker")
+        self.component_id = find_issue_tracker_component_id(self.issue_tracker)
+        self.file_an_issue = f"{BASE_ISSUE_TRACKER}/new?component={self.component_id}"
+        self.already_filed_issue = f"{BASE_ISSUE_TRACKER}?q=componentid:{self.component_id}"
+        if self.repo == MONO_REPO:
+            self.github_issues = GITHUB_ISSUES.format(repo=self.repo)
+        else:
+            self.github_issues = GITHUB_ISSUES.format(repo=("googleapis/" + self.repo))
+
 
     # For sorting, we want to sort by release level, then API pretty_name
     def __lt__(self, other):
@@ -105,6 +120,24 @@ class Extractor:
         return [self.client_for_repo(repo[self.response_key]) for repo in response_json if allowed_repo(repo)]
 
 
+def find_issue_tracker_component_id(issue_tracker):
+    if not issue_tracker:
+        return None
+    match = re.search(r'(?:(?:\?|&)component=(\d+)|\bcomponentid:(\d+))', issue_tracker)
+    if match:
+        return match.group(1) or match.group(2)
+    return None
+
+
+def find_issue_tracker_template_id(issue_tracker):
+    if not issue_tracker:
+        return None
+    match = re.search(r'(?:\?|&)template=(\d+)', issue_tracker)
+    if match:
+        return match.group(1)
+    return None
+
+    
 def replace_content_in_readme(content_rows: List[str]) -> None:
     START_MARKER = ".. API_TABLE_START"
     END_MARKER = ".. API_TABLE_END"
@@ -142,8 +175,14 @@ def client_row(client: CloudClient) -> str:
         f"     - |PyPI-{client.distribution_name}|\n",   
     ]
 
-    if client.issue_tracker:
-        content_row.append(f"     - `API Issues <{client.issue_tracker}>`_\n")
+    if client.component_id:
+        content_row.append(f"     - `API Issues <{client.already_filed_issue}>`_\n")
+        content_row.append(f"     - `File an API Issue <{client.file_an_issue}>`_\n")
+    else:
+        content_row.append("")
+        content_row.append("")
+    
+    content_row.append(f"     - `Client Library Issues <{client.github_issues}>`_\n")
 
     return (content_row, pypi_badge)
 
@@ -157,7 +196,9 @@ def generate_table_contents(clients: List[CloudClient]) -> List[str]:
         "   * - Client\n",
         "     - Release Level\n",
         "     - Version\n",
-        "     - API Issue Tracker\n",
+        "     - API Issues\n",
+        "     - File an API Issue\n",
+        "     - Client Library Issues\n",
     ]
 
     pypi_links = ["\n"]
