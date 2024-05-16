@@ -155,10 +155,18 @@ def compile_rowcount(node: nodes.RowCountNode, ordered: bool = True):
 
 @_compile_node.register
 def compile_aggregate(node: nodes.AggregateNode, ordered: bool = True):
-    result = compile_unordered_ir(node.child).aggregate(
-        node.aggregations, node.by_column_ids, node.dropna
+    has_ordered_aggregation_ops = any(
+        aggregate.op.can_order_by for aggregate, _ in node.aggregations
     )
-    return result if ordered else result.to_unordered()
+    if ordered and has_ordered_aggregation_ops:
+        return compile_ordered_ir(node.child).aggregate(
+            node.aggregations, node.by_column_ids, node.dropna
+        )
+    else:
+        result = compile_unordered_ir(node.child).aggregate(
+            node.aggregations, node.by_column_ids, node.dropna
+        )
+        return result if ordered else result.to_unordered()
 
 
 @_compile_node.register
@@ -180,10 +188,10 @@ def compile_reproject(node: nodes.ReprojectOpNode, ordered: bool = True):
 
 
 @_compile_node.register
-def compiler_explode(node: nodes.ExplodeNode, ordered: bool = True):
+def compile_explode(node: nodes.ExplodeNode, ordered: bool = True):
     return compile_node(node.child, ordered).explode(node.column_ids)
 
 
 @_compile_node.register
-def compiler_random_sample(node: nodes.RandomSampleNode, ordered: bool = True):
+def compile_random_sample(node: nodes.RandomSampleNode, ordered: bool = True):
     return compile_node(node.child, ordered)._uniform_sampling(node.fraction)

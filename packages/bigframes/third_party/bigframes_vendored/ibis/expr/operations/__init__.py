@@ -2,6 +2,6 @@
 from __future__ import annotations
 
 from bigframes_vendored.ibis.expr.operations.analytic import *  # noqa: F401 F403
-from bigframes_vendored.ibis.expr.operations.generic import *  # noqa: F401 F403
+from bigframes_vendored.ibis.expr.operations.arrays import *  # noqa: F401 F403
 from bigframes_vendored.ibis.expr.operations.json import *  # noqa: F401 F403
 from bigframes_vendored.ibis.expr.operations.reductions import *  # noqa: F401 F403
