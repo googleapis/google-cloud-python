@@ -4498,15 +4498,7 @@ def test_count_tokens_rest_unset_required_fields():
     )
 
     unset_fields = transport.count_tokens._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(())
-        & set(
-            (
-                "model",
-                "contents",
-            )
-        )
-    )
+    assert set(unset_fields) == (set(()) & set(("model",)))
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])

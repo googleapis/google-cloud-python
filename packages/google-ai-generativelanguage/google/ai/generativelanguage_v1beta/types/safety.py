@@ -223,7 +223,7 @@ class SafetySetting(proto.Message):
     r"""Safety setting, affecting the safety-blocking behavior.
 
     Passing a safety setting for a category changes the allowed
-    proability that content is blocked.
+    probability that content is blocked.
 
     Attributes:
         category (google.ai.generativelanguage_v1beta.types.HarmCategory):

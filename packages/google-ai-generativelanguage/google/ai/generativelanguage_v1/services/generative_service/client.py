@@ -696,6 +696,12 @@ class GenerativeServiceClient(metaclass=GenerativeServiceClientMeta):
         r"""Generates a response from the model given an input
         ``GenerateContentRequest``.
 
+        Input capabilities differ between models, including tuned
+        models. See the `model
+        guide <https://ai.google.dev/models/gemini>`__ and `tuning
+        guide <https://ai.google.dev/docs/model_tuning_guidance>`__ for
+        details.
+
         .. code-block:: python
 
             # This snippet has been automatically generated and should be regarded as a
@@ -1248,8 +1254,9 @@ class GenerativeServiceClient(metaclass=GenerativeServiceClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             contents (MutableSequence[google.ai.generativelanguage_v1.types.Content]):
-                Required. The input given to the
-                model as a prompt.
+                Optional. The input given to the model as a prompt. This
+                field is ignored when ``generate_content_request`` is
+                set.
 
                 This corresponds to the ``contents`` field
                 on the ``request`` instance; if ``request`` is provided, this

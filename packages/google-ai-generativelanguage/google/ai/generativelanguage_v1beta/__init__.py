@@ -60,7 +60,7 @@ from .types.discuss_service import (
     Message,
     MessagePrompt,
 )
-from .types.file import File
+from .types.file import File, VideoMetadata
 from .types.file_service import (
     CreateFileRequest,
     CreateFileResponse,
@@ -325,4 +325,5 @@ __all__ = (
     "UpdateDocumentRequest",
     "UpdatePermissionRequest",
     "UpdateTunedModelRequest",
+    "VideoMetadata",
 )
