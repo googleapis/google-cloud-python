@@ -21459,6 +21459,7 @@ def test_create_target_rest(request_type):
                 "service_account": "service_account_value",
                 "artifact_storage": "artifact_storage_value",
                 "execution_timeout": {"seconds": 751, "nanos": 543},
+                "verbose": True,
             }
         ],
         "deploy_parameters": {},
@@ -21903,6 +21904,7 @@ def test_update_target_rest(request_type):
                 "service_account": "service_account_value",
                 "artifact_storage": "artifact_storage_value",
                 "execution_timeout": {"seconds": 751, "nanos": 543},
+                "verbose": True,
             }
         ],
         "deploy_parameters": {},
@@ -25405,6 +25407,7 @@ def test_create_release_rest(request_type):
                         "service_account": "service_account_value",
                         "artifact_storage": "artifact_storage_value",
                         "execution_timeout": {},
+                        "verbose": True,
                     }
                 ],
                 "deploy_parameters": {},
