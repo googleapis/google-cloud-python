@@ -18,7 +18,7 @@ import os
 import requests
 from typing import List, Optional
 from dataclasses import dataclass
-from urllib.parse import urlparse, parse_qs
+
 import re
 
 class MissingGithubToken(ValueError):
@@ -61,7 +61,7 @@ BASE_API = "https://api.github.com"
 
 GITHUB_ISSUES = "https://github.com/{repo}/issues"
 
-BASE_ISSUE_TRACKER = "https://issuetracker.google.com/issues"
+BASE_ISSUE_TRACKER = "https://issuetracker.google.com"
 
 
 class CloudClient:
@@ -84,12 +84,40 @@ class CloudClient:
         self.issue_tracker = repo.get("issue_tracker")
     
     @property
-    def issue_tracker_component_id(self):
+    def saved_search_id(self):
         if not self.issue_tracker:
             return None
-        match = re.search(r'(?:(?:\?|&)component=(\d+)|\bcomponentid:(\d+))', self.issue_tracker)
+        match = re.search(r'savedsearches/(\d+)', self.issue_tracker)
         if match:
-            return match.group(1) or match.group(2)
+            return match.group(1)
+        return None
+    
+    def saved_search_response_text(self):
+        id = self.saved_search_id
+        if id:
+            url = f"{BASE_ISSUE_TRACKER}/action/saved_searches/{id}"
+            response = requests.get(url=url)
+            if response.status_code != requests.codes.ok:
+                return None
+            return response.text
+        return None
+
+    @property
+    def issue_tracker_component_id(self):
+        # First, check if the issue tracker is a saved search:
+        query_string = self.issue_tracker
+        if self.saved_search_id:
+            query_string = self.saved_search_response_text()        
+        if not query_string:
+            return None
+        # Try to match 'component=' in the query string
+        query_match = re.search(r'\bcomponent=(\d+)', query_string)
+        if query_match:
+            return query_match.group(1)
+        # If not found, try to match 'componentid:' in the query string
+        query_match = re.search(r'\bcomponentid:(\d+)', query_string)
+        if query_match:
+            return query_match.group(1)
         return None
     
     @property
@@ -110,11 +138,11 @@ class CloudClient:
     
     @property
     def link_to_file_an_issue(self):
-        return f"{BASE_ISSUE_TRACKER}/new?component={self.issue_tracker_component_id}"
+        return f"{BASE_ISSUE_TRACKER}/issues/new?component={self.issue_tracker_component_id}"
     
     @property
     def link_to_already_filed_issues(self):
-        f"{BASE_ISSUE_TRACKER}?q=componentid:{self.issue_tracker_component_id}"
+        return f"{BASE_ISSUE_TRACKER}/issues?q=componentid:{self.issue_tracker_component_id}"
 
     # For sorting, we want to sort by release level, then API pretty_name
     def __lt__(self, other):
