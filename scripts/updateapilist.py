@@ -82,14 +82,39 @@ class CloudClient:
         self.release_level = repo["release_level"]
         self.distribution_name = repo["distribution_name"]
         self.issue_tracker = repo.get("issue_tracker")
-        self.component_id = find_issue_tracker_component_id(self.issue_tracker)
-        self.file_an_issue = f"{BASE_ISSUE_TRACKER}/new?component={self.component_id}"
-        self.already_filed_issue = f"{BASE_ISSUE_TRACKER}?q=componentid:{self.component_id}"
-        if self.repo == MONO_REPO:
-            self.github_issues = GITHUB_ISSUES.format(repo=self.repo)
-        else:
-            self.github_issues = GITHUB_ISSUES.format(repo=("googleapis/" + self.repo))
-
+    
+    @property
+    def issue_tracker_component_id(self):
+        if not self.issue_tracker:
+            return None
+        match = re.search(r'(?:(?:\?|&)component=(\d+)|\bcomponentid:(\d+))', self.issue_tracker)
+        if match:
+            return match.group(1) or match.group(2)
+        return None
+    
+    @property
+    def issue_tracker_template_id(self):
+        if not self.issue_tracker:
+            return None
+        match = re.search(r'(?:\?|&)template=(\d+)', self.issue_tracker)
+        if match:
+            return match.group(1)
+        return None
+    
+    @property
+    def link_to_github_issues(self):
+        repo_path = self.repo
+        if self.repo != MONO_REPO:
+            repo_path = "googleapis/" + self.repo
+        return GITHUB_ISSUES.format(repo=repo_path)
+    
+    @property
+    def link_to_file_an_issue(self):
+        return f"{BASE_ISSUE_TRACKER}/new?component={self.issue_tracker_component_id}"
+    
+    @property
+    def link_to_already_filed_issues(self):
+        f"{BASE_ISSUE_TRACKER}?q=componentid:{self.issue_tracker_component_id}"
 
     # For sorting, we want to sort by release level, then API pretty_name
     def __lt__(self, other):
@@ -119,23 +144,6 @@ class Extractor:
     def get_clients_from_batch_response(self, response_json) -> List[CloudClient]:
         return [self.client_for_repo(repo[self.response_key]) for repo in response_json if allowed_repo(repo)]
 
-
-def find_issue_tracker_component_id(issue_tracker):
-    if not issue_tracker:
-        return None
-    match = re.search(r'(?:(?:\?|&)component=(\d+)|\bcomponentid:(\d+))', issue_tracker)
-    if match:
-        return match.group(1) or match.group(2)
-    return None
-
-
-def find_issue_tracker_template_id(issue_tracker):
-    if not issue_tracker:
-        return None
-    match = re.search(r'(?:\?|&)template=(\d+)', issue_tracker)
-    if match:
-        return match.group(1)
-    return None
 
     
 def replace_content_in_readme(content_rows: List[str]) -> None:
@@ -171,18 +179,12 @@ def client_row(client: CloudClient) -> str:
 
     content_row = [
         f"   * - `{client.title} <{url}>`_\n",
-        f"     - " + client.release_level + "\n",
-        f"     - |PyPI-{client.distribution_name}|\n",   
+        f"     - {client.release_level}\n",
+        f"     - |PyPI-{client.distribution_name}|\n",
+        f"     - `API Issues <{client.link_to_already_filed_issues}>`_\n" if client.issue_tracker_component_id else "     -\n",
+        f"     - `File an API Issue <{client.link_to_file_an_issue}>`_\n" if client.issue_tracker_component_id else "     -\n",
+        f"     - `Client Library Issues <{client.link_to_github_issues}>`_\n"
     ]
-
-    if client.component_id:
-        content_row.append(f"     - `API Issues <{client.already_filed_issue}>`_\n")
-        content_row.append(f"     - `File an API Issue <{client.file_an_issue}>`_\n")
-    else:
-        content_row.append("")
-        content_row.append("")
-    
-    content_row.append(f"     - `Client Library Issues <{client.github_issues}>`_\n")
 
     return (content_row, pypi_badge)
 
