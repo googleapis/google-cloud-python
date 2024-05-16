@@ -1,5 +1,62 @@
 # Changelog
 
+## [0.2.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-parallelstore-v0.1.2...google-cloud-parallelstore-v0.2.0) (2024-05-16)
+
+
+### ⚠ BREAKING CHANGES
+
+* An existing field `end_time` is removed from message `.google.cloud.parallelstore.v1beta.TransferOperationMetadata`
+* An existing field `source` is removed from message `.google.cloud.parallelstore.v1beta.TransferOperationMetadata`
+* An existing field `destination` is removed from message `.google.cloud.parallelstore.v1beta.TransferOperationMetadata`
+* [google-cloud-parallelstore] An existing field `create_time` is removed from message `.google.cloud.parallelstore.v1beta.TransferOperationMetadata`
+* An existing field `destination_path` is renamed to `destination_parallelstore` in message `.google.cloud.parallelstore.v1beta.ImportDataRequest`
+* An existing field `source_path` is renamed to `source_parallelstore` in message `.google.cloud.parallelstore.v1beta.ExportDataRequest`
+* An existing field `destination_gcs_uri` is renamed to `destination_gcs_bucket` in message `.google.cloud.parallelstore.v1beta.ExportDataRequest`
+* An existing field `source_gcs_uri` is renamed to `source_gcs_bucket` in message `.google.cloud.parallelstore.v1beta.ImportDataRequest`
+
+### Features
+
+* A new field `api_version` is added to message `.google.cloud.parallelstore.v1beta.ExportDataMetadata` ([2f57a44](https://github.com/googleapis/google-cloud-python/commit/2f57a447ca30796c1ce993a593f3fee3328ff2b0))
+* A new field `api_version` is added to message `.google.cloud.parallelstore.v1beta.ImportDataMetadata` ([2f57a44](https://github.com/googleapis/google-cloud-python/commit/2f57a447ca30796c1ce993a593f3fee3328ff2b0))
+* A new field `create_time` is added to message `.google.cloud.parallelstore.v1beta.ExportDataMetadata` ([2f57a44](https://github.com/googleapis/google-cloud-python/commit/2f57a447ca30796c1ce993a593f3fee3328ff2b0))
+* A new field `create_time` is added to message `.google.cloud.parallelstore.v1beta.ImportDataMetadata` ([2f57a44](https://github.com/googleapis/google-cloud-python/commit/2f57a447ca30796c1ce993a593f3fee3328ff2b0))
+* A new field `destination_gcs_bucket` is added to message `.google.cloud.parallelstore.v1beta.TransferOperationMetadata` ([2f57a44](https://github.com/googleapis/google-cloud-python/commit/2f57a447ca30796c1ce993a593f3fee3328ff2b0))
+* A new field `destination_parallelstore` is added to message `.google.cloud.parallelstore.v1beta.TransferOperationMetadata` ([2f57a44](https://github.com/googleapis/google-cloud-python/commit/2f57a447ca30796c1ce993a593f3fee3328ff2b0))
+* A new field `end_time` is added to message `.google.cloud.parallelstore.v1beta.ExportDataMetadata` ([2f57a44](https://github.com/googleapis/google-cloud-python/commit/2f57a447ca30796c1ce993a593f3fee3328ff2b0))
+* A new field `end_time` is added to message `.google.cloud.parallelstore.v1beta.ImportDataMetadata` ([2f57a44](https://github.com/googleapis/google-cloud-python/commit/2f57a447ca30796c1ce993a593f3fee3328ff2b0))
+* A new field `requested_cancellation` is added to message `.google.cloud.parallelstore.v1beta.ExportDataMetadata` ([2f57a44](https://github.com/googleapis/google-cloud-python/commit/2f57a447ca30796c1ce993a593f3fee3328ff2b0))
+* A new field `requested_cancellation` is added to message `.google.cloud.parallelstore.v1beta.ImportDataMetadata` ([2f57a44](https://github.com/googleapis/google-cloud-python/commit/2f57a447ca30796c1ce993a593f3fee3328ff2b0))
+* A new field `source_gcs_bucket` is added to message `.google.cloud.parallelstore.v1beta.TransferOperationMetadata` ([2f57a44](https://github.com/googleapis/google-cloud-python/commit/2f57a447ca30796c1ce993a593f3fee3328ff2b0))
+* A new field `source_parallelstore` is added to message `.google.cloud.parallelstore.v1beta.TransferOperationMetadata` ([2f57a44](https://github.com/googleapis/google-cloud-python/commit/2f57a447ca30796c1ce993a593f3fee3328ff2b0))
+* A new field `status_message` is added to message `.google.cloud.parallelstore.v1beta.ExportDataMetadata` ([2f57a44](https://github.com/googleapis/google-cloud-python/commit/2f57a447ca30796c1ce993a593f3fee3328ff2b0))
+* A new field `status_message` is added to message `.google.cloud.parallelstore.v1beta.ImportDataMetadata` ([2f57a44](https://github.com/googleapis/google-cloud-python/commit/2f57a447ca30796c1ce993a593f3fee3328ff2b0))
+* A new field `target` is added to message `.google.cloud.parallelstore.v1beta.ExportDataMetadata` ([2f57a44](https://github.com/googleapis/google-cloud-python/commit/2f57a447ca30796c1ce993a593f3fee3328ff2b0))
+* A new field `target` is added to message `.google.cloud.parallelstore.v1beta.ImportDataMetadata` ([2f57a44](https://github.com/googleapis/google-cloud-python/commit/2f57a447ca30796c1ce993a593f3fee3328ff2b0))
+* A new field `verb` is added to message `.google.cloud.parallelstore.v1beta.ExportDataMetadata` ([2f57a44](https://github.com/googleapis/google-cloud-python/commit/2f57a447ca30796c1ce993a593f3fee3328ff2b0))
+* A new field `verb` is added to message `.google.cloud.parallelstore.v1beta.ImportDataMetadata` ([2f57a44](https://github.com/googleapis/google-cloud-python/commit/2f57a447ca30796c1ce993a593f3fee3328ff2b0))
+* A new message `DestinationGcsBucket` is added ([e3c48d7](https://github.com/googleapis/google-cloud-python/commit/e3c48d7661dbbdc9ee4fcd18c1572910615389fd))
+* A new message `DestinationParallelstore` is added ([e3c48d7](https://github.com/googleapis/google-cloud-python/commit/e3c48d7661dbbdc9ee4fcd18c1572910615389fd))
+* A new message `SourceGcsBucket` is added ([e3c48d7](https://github.com/googleapis/google-cloud-python/commit/e3c48d7661dbbdc9ee4fcd18c1572910615389fd))
+* A new message `SourceParallelstore` is added ([e3c48d7](https://github.com/googleapis/google-cloud-python/commit/e3c48d7661dbbdc9ee4fcd18c1572910615389fd))
+
+
+### Bug Fixes
+
+* [google-cloud-parallelstore] An existing field `create_time` is removed from message `.google.cloud.parallelstore.v1beta.TransferOperationMetadata` ([2f57a44](https://github.com/googleapis/google-cloud-python/commit/2f57a447ca30796c1ce993a593f3fee3328ff2b0))
+* An existing field `destination_gcs_uri` is renamed to `destination_gcs_bucket` in message `.google.cloud.parallelstore.v1beta.ExportDataRequest` ([e3c48d7](https://github.com/googleapis/google-cloud-python/commit/e3c48d7661dbbdc9ee4fcd18c1572910615389fd))
+* An existing field `destination_path` is renamed to `destination_parallelstore` in message `.google.cloud.parallelstore.v1beta.ImportDataRequest` ([e3c48d7](https://github.com/googleapis/google-cloud-python/commit/e3c48d7661dbbdc9ee4fcd18c1572910615389fd))
+* An existing field `destination` is removed from message `.google.cloud.parallelstore.v1beta.TransferOperationMetadata` ([2f57a44](https://github.com/googleapis/google-cloud-python/commit/2f57a447ca30796c1ce993a593f3fee3328ff2b0))
+* An existing field `end_time` is removed from message `.google.cloud.parallelstore.v1beta.TransferOperationMetadata` ([2f57a44](https://github.com/googleapis/google-cloud-python/commit/2f57a447ca30796c1ce993a593f3fee3328ff2b0))
+* An existing field `source_gcs_uri` is renamed to `source_gcs_bucket` in message `.google.cloud.parallelstore.v1beta.ImportDataRequest` ([e3c48d7](https://github.com/googleapis/google-cloud-python/commit/e3c48d7661dbbdc9ee4fcd18c1572910615389fd))
+* An existing field `source_path` is renamed to `source_parallelstore` in message `.google.cloud.parallelstore.v1beta.ExportDataRequest` ([e3c48d7](https://github.com/googleapis/google-cloud-python/commit/e3c48d7661dbbdc9ee4fcd18c1572910615389fd))
+* An existing field `source` is removed from message `.google.cloud.parallelstore.v1beta.TransferOperationMetadata` ([2f57a44](https://github.com/googleapis/google-cloud-python/commit/2f57a447ca30796c1ce993a593f3fee3328ff2b0))
+
+
+### Documentation
+
+* A comment for field `counters` in message `.google.cloud.parallelstore.v1beta.TransferOperationMetadata` is changed ([2f57a44](https://github.com/googleapis/google-cloud-python/commit/2f57a447ca30796c1ce993a593f3fee3328ff2b0))
+* A comment for field `transfer_type` in message `.google.cloud.parallelstore.v1beta.TransferOperationMetadata` is changed ([2f57a44](https://github.com/googleapis/google-cloud-python/commit/2f57a447ca30796c1ce993a593f3fee3328ff2b0))
+
 ## [0.1.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-parallelstore-v0.1.1...google-cloud-parallelstore-v0.1.2) (2024-05-07)
 
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.19.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-deploy-v1.18.1...google-cloud-deploy-v1.19.0) (2024-05-16)
+
+
+### Features
+
+* [google-cloud-deploy] add Skaffold verbose support to Execution Environment properties ([#12701](https://github.com/googleapis/google-cloud-python/issues/12701)) ([03c7b0c](https://github.com/googleapis/google-cloud-python/commit/03c7b0c78a5304d2195f200ab94e51ac386a92c4))
+
 ## [1.18.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-deploy-v1.18.0...google-cloud-deploy-v1.18.1) (2024-05-07)
 
 

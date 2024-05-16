@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.11.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-service-directory-v1.11.3...google-cloud-service-directory-v1.11.4) (2024-05-16)
+
+
+### Documentation
+
+* add maximum page_size to ListEndpoint API documentation ([f8ff81b](https://github.com/googleapis/google-cloud-python/commit/f8ff81ba1e57c7c974a40fcce2f6b61b1ca12e47))
+* add maximum page_size to ListNamespace API documentation ([f8ff81b](https://github.com/googleapis/google-cloud-python/commit/f8ff81ba1e57c7c974a40fcce2f6b61b1ca12e47))
+* add maximum page_size to ListService API documentation ([f8ff81b](https://github.com/googleapis/google-cloud-python/commit/f8ff81ba1e57c7c974a40fcce2f6b61b1ca12e47))
+
 ## [1.11.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-service-directory-v1.11.2...google-cloud-service-directory-v1.11.3) (2024-03-05)
 
 

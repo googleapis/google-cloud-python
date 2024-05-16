@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-kms/#history
 
+## [2.23.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-kms-v2.22.0...google-cloud-kms-v2.23.0) (2024-05-16)
+
+
+### Features
+
+* add client library for KMS Autokey service, which enables automated KMS key provision and management ([b74c6c2](https://github.com/googleapis/google-cloud-python/commit/b74c6c26225d3bb2703cf6421f047372df59eaa8))
+
 ## [2.22.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-kms-v2.21.4...google-cloud-kms-v2.22.0) (2024-05-07)
 
 

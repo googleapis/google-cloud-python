@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.10](https://github.com/googleapis/google-cloud-python/compare/google-cloud-gke-multicloud-v0.6.9...google-cloud-gke-multicloud-v0.6.10) (2024-05-16)
+
+
+### Features
+
+* [google-cloud-gke-multicloud] option to ignore_errors while deleting Azure clusters / nodepools ([#12686](https://github.com/googleapis/google-cloud-python/issues/12686)) ([3d1901e](https://github.com/googleapis/google-cloud-python/commit/3d1901ee7d9412db4ca9ee7d10dc05a07976d387))
+
 ## [0.6.9](https://github.com/googleapis/google-cloud-python/compare/google-cloud-gke-multicloud-v0.6.8...google-cloud-gke-multicloud-v0.6.9) (2024-03-05)
 
 
