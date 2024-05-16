@@ -44,6 +44,14 @@ CREATE TABLE Albums (
 INTERLEAVE IN PARENT Singers ON DELETE CASCADE
 """
 
+CREATE_TABLE_SINGERS_ = """\
+CREATE TABLE Singers (
+    SingerId         INT64 NOT NULL,
+    FirstName        STRING(1024),
+    LastName         STRING(1024),
+    ) PRIMARY KEY (SingerId)
+"""
+
 retry_429 = RetryErrors(exceptions.ResourceExhausted, delay=15)
 
 
@@ -95,12 +103,26 @@ def default_leader_database_id():
 
 
 @pytest.fixture(scope="module")
+def proto_columns_database_id():
+    return f"test-db-proto-{uuid.uuid4().hex[:10]}"
+
+
+@pytest.fixture(scope="module")
 def database_ddl():
     """Sequence of DDL statements used to set up the database.
 
     Sample testcase modules can override as needed.
     """
     return [CREATE_TABLE_SINGERS, CREATE_TABLE_ALBUMS]
+
+
+@pytest.fixture(scope="module")
+def proto_columns_database_ddl():
+    """Sequence of DDL statements used to set up the database for proto columns.
+
+    Sample testcase modules can override as needed.
+    """
+    return [CREATE_TABLE_SINGERS_, CREATE_TABLE_ALBUMS]
 
 
 @pytest.fixture(scope="module")
@@ -885,3 +907,44 @@ def test_set_custom_timeout_and_retry(capsys, instance_id, sample_database):
     snippets.set_custom_timeout_and_retry(instance_id, sample_database.database_id)
     out, _ = capsys.readouterr()
     assert "SingerId: 1, AlbumId: 1, AlbumTitle: Total Junk" in out
+
+
+@pytest.mark.dependency(
+    name="add_proto_types_column",
+)
+def test_add_proto_types_column(capsys, instance_id, proto_columns_database):
+    snippets.add_proto_type_columns(instance_id, proto_columns_database.database_id)
+    out, _ = capsys.readouterr()
+    assert 'Altered table "Singers" on database ' in out
+
+    snippets.insert_data(instance_id, proto_columns_database.database_id)
+
+
+@pytest.mark.dependency(
+    name="update_data_with_proto_message", depends=["add_proto_types_column"]
+)
+def test_update_data_with_proto_types(capsys, instance_id, proto_columns_database):
+    snippets.update_data_with_proto_types(
+        instance_id, proto_columns_database.database_id
+    )
+    out, _ = capsys.readouterr()
+    assert "Data updated" in out
+
+    snippets.update_data_with_proto_types_with_dml(
+        instance_id, proto_columns_database.database_id
+    )
+    out, _ = capsys.readouterr()
+    assert "1 record(s) updated." in out
+
+
+@pytest.mark.dependency(
+    depends=["add_proto_types_column", "update_data_with_proto_message"]
+)
+def test_query_data_with_proto_types_parameter(
+    capsys, instance_id, proto_columns_database
+):
+    snippets.query_data_with_proto_types_parameter(
+        instance_id, proto_columns_database.database_id
+    )
+    out, _ = capsys.readouterr()
+    assert "SingerId: 2, SingerInfo: singer_id: 2" in out

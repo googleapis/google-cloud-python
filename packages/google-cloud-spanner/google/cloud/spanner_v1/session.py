@@ -228,7 +228,7 @@ class Session(object):
 
         return Snapshot(self, **kw)
 
-    def read(self, table, columns, keyset, index="", limit=0):
+    def read(self, table, columns, keyset, index="", limit=0, column_info=None):
         """Perform a ``StreamingRead`` API request for rows in a table.
 
         :type table: str
@@ -247,10 +247,21 @@ class Session(object):
         :type limit: int
         :param limit: (Optional) maximum number of rows to return
 
+        :type column_info: dict
+        :param column_info: (Optional) dict of mapping between column names and additional column information.
+            An object where column names as keys and custom objects as corresponding
+            values for deserialization. It's specifically useful for data types like
+            protobuf where deserialization logic is on user-specific code. When provided,
+            the custom object enables deserialization of backend-received column data.
+            If not provided, data remains serialized as bytes for Proto Messages and
+            integer for Proto Enums.
+
         :rtype: :class:`~google.cloud.spanner_v1.streamed.StreamedResultSet`
         :returns: a result set instance which can be used to consume rows.
         """
-        return self.snapshot().read(table, columns, keyset, index, limit)
+        return self.snapshot().read(
+            table, columns, keyset, index, limit, column_info=column_info
+        )
 
     def execute_sql(
         self,
@@ -262,6 +273,7 @@ class Session(object):
         request_options=None,
         retry=method.DEFAULT,
         timeout=method.DEFAULT,
+        column_info=None,
     ):
         """Perform an ``ExecuteStreamingSql`` API request.
 
@@ -301,6 +313,15 @@ class Session(object):
         :type timeout: float
         :param timeout: (Optional) The timeout for this request.
 
+        :type column_info: dict
+        :param column_info: (Optional) dict of mapping between column names and additional column information.
+            An object where column names as keys and custom objects as corresponding
+            values for deserialization. It's specifically useful for data types like
+            protobuf where deserialization logic is on user-specific code. When provided,
+            the custom object enables deserialization of backend-received column data.
+            If not provided, data remains serialized as bytes for Proto Messages and
+            integer for Proto Enums.
+
         :rtype: :class:`~google.cloud.spanner_v1.streamed.StreamedResultSet`
         :returns: a result set instance which can be used to consume rows.
         """
@@ -313,6 +334,7 @@ class Session(object):
             request_options=request_options,
             retry=retry,
             timeout=timeout,
+            column_info=column_info,
         )
 
     def batch(self):

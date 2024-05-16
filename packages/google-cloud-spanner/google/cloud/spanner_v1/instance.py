@@ -435,6 +435,7 @@ class Instance(object):
         enable_drop_protection=False,
         # should be only set for tests if tests want to use interceptors
         enable_interceptors_in_tests=False,
+        proto_descriptors=None,
     ):
         """Factory to create a database within this instance.
 
@@ -478,9 +479,14 @@ class Instance(object):
         :param enable_interceptors_in_tests: (Optional) should only be set to True
             for tests if the tests want to use interceptors.
 
+        :type proto_descriptors: bytes
+        :param proto_descriptors: (Optional) Proto descriptors used by CREATE/ALTER PROTO BUNDLE
+                                  statements in 'ddl_statements' above.
+
         :rtype: :class:`~google.cloud.spanner_v1.database.Database`
         :returns: a database owned by this instance.
         """
+
         if not enable_interceptors_in_tests:
             return Database(
                 database_id,
@@ -492,6 +498,7 @@ class Instance(object):
                 database_dialect=database_dialect,
                 database_role=database_role,
                 enable_drop_protection=enable_drop_protection,
+                proto_descriptors=proto_descriptors,
             )
         else:
             return TestDatabase(

@@ -18,7 +18,7 @@ import math
 from google.api_core import datetime_helpers
 from google.cloud._helpers import UTC
 from google.cloud import spanner_v1
-
+from samples.samples.testdata import singer_pb2
 
 TABLE = "contacts"
 COLUMNS = ("contact_id", "first_name", "last_name", "email")
@@ -40,6 +40,31 @@ SQL = "SELECT * FROM contacts ORDER BY contact_id"
 
 COUNTERS_TABLE = "counters"
 COUNTERS_COLUMNS = ("name", "value")
+
+SINGERS_PROTO_TABLE = "singers"
+SINGERS_PROTO_COLUMNS = (
+    "singer_id",
+    "first_name",
+    "last_name",
+    "singer_info",
+    "singer_genre",
+)
+SINGER_INFO_1 = singer_pb2.SingerInfo()
+SINGER_GENRE_1 = singer_pb2.Genre.ROCK
+SINGER_INFO_1.singer_id = 1
+SINGER_INFO_1.birth_date = "January"
+SINGER_INFO_1.nationality = "Country1"
+SINGER_INFO_1.genre = SINGER_GENRE_1
+SINGER_INFO_2 = singer_pb2.SingerInfo()
+SINGER_GENRE_2 = singer_pb2.Genre.FOLK
+SINGER_INFO_2.singer_id = 2
+SINGER_INFO_2.birth_date = "February"
+SINGER_INFO_2.nationality = "Country2"
+SINGER_INFO_2.genre = SINGER_GENRE_2
+SINGERS_PROTO_ROW_DATA = (
+    (1, "Singer1", "Singer1", SINGER_INFO_1, SINGER_GENRE_1),
+    (2, "Singer2", "Singer2", SINGER_INFO_2, SINGER_GENRE_2),
+)
 
 
 def _assert_timestamp(value, nano_value):

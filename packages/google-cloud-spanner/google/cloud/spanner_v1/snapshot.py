@@ -177,6 +177,7 @@ class _SnapshotBase(_SessionWrapper):
         *,
         retry=gapic_v1.method.DEFAULT,
         timeout=gapic_v1.method.DEFAULT,
+        column_info=None,
     ):
         """Perform a ``StreamingRead`` API request for rows in a table.
 
@@ -230,6 +231,15 @@ class _SnapshotBase(_SessionWrapper):
         :param directed_read_options: (Optional) Request level option used to set the directed_read_options
             for all ReadRequests and ExecuteSqlRequests that indicates which replicas
             or regions should be used for non-transactional reads or queries.
+
+        :type column_info: dict
+        :param column_info: (Optional) dict of mapping between column names and additional column information.
+            An object where column names as keys and custom objects as corresponding
+            values for deserialization. It's specifically useful for data types like
+            protobuf where deserialization logic is on user-specific code. When provided,
+            the custom object enables deserialization of backend-received column data.
+            If not provided, data remains serialized as bytes for Proto Messages and
+            integer for Proto Enums.
 
         :rtype: :class:`~google.cloud.spanner_v1.streamed.StreamedResultSet`
         :returns: a result set instance which can be used to consume rows.
@@ -303,9 +313,11 @@ class _SnapshotBase(_SessionWrapper):
                 )
                 self._read_request_count += 1
                 if self._multi_use:
-                    return StreamedResultSet(iterator, source=self)
+                    return StreamedResultSet(
+                        iterator, source=self, column_info=column_info
+                    )
                 else:
-                    return StreamedResultSet(iterator)
+                    return StreamedResultSet(iterator, column_info=column_info)
         else:
             iterator = _restart_on_unavailable(
                 restart,
@@ -319,9 +331,9 @@ class _SnapshotBase(_SessionWrapper):
         self._read_request_count += 1
 
         if self._multi_use:
-            return StreamedResultSet(iterator, source=self)
+            return StreamedResultSet(iterator, source=self, column_info=column_info)
         else:
-            return StreamedResultSet(iterator)
+            return StreamedResultSet(iterator, column_info=column_info)
 
     def execute_sql(
         self,
@@ -336,6 +348,7 @@ class _SnapshotBase(_SessionWrapper):
         timeout=gapic_v1.method.DEFAULT,
         data_boost_enabled=False,
         directed_read_options=None,
+        column_info=None,
     ):
         """Perform an ``ExecuteStreamingSql`` API request.
 
@@ -398,6 +411,15 @@ class _SnapshotBase(_SessionWrapper):
         :param directed_read_options: (Optional) Request level option used to set the directed_read_options
             for all ReadRequests and ExecuteSqlRequests that indicates which replicas
             or regions should be used for non-transactional reads or queries.
+
+        :type column_info: dict
+        :param column_info: (Optional) dict of mapping between column names and additional column information.
+            An object where column names as keys and custom objects as corresponding
+            values for deserialization. It's specifically useful for data types like
+            protobuf where deserialization logic is on user-specific code. When provided,
+            the custom object enables deserialization of backend-received column data.
+            If not provided, data remains serialized as bytes for Proto Messages and
+            integer for Proto Enums.
 
         :raises ValueError:
             for reuse of single-use snapshots, or if a transaction ID is
@@ -471,11 +493,15 @@ class _SnapshotBase(_SessionWrapper):
         if self._transaction_id is None:
             # lock is added to handle the inline begin for first rpc
             with self._lock:
-                return self._get_streamed_result_set(restart, request, trace_attributes)
+                return self._get_streamed_result_set(
+                    restart, request, trace_attributes, column_info
+                )
         else:
-            return self._get_streamed_result_set(restart, request, trace_attributes)
+            return self._get_streamed_result_set(
+                restart, request, trace_attributes, column_info
+            )
 
-    def _get_streamed_result_set(self, restart, request, trace_attributes):
+    def _get_streamed_result_set(self, restart, request, trace_attributes, column_info):
         iterator = _restart_on_unavailable(
             restart,
             request,
@@ -488,9 +514,9 @@ class _SnapshotBase(_SessionWrapper):
         self._execute_sql_count += 1
 
         if self._multi_use:
-            return StreamedResultSet(iterator, source=self)
+            return StreamedResultSet(iterator, source=self, column_info=column_info)
         else:
-            return StreamedResultSet(iterator)
+            return StreamedResultSet(iterator, column_info=column_info)
 
     def partition_read(
         self,

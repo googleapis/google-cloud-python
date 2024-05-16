@@ -87,3 +87,37 @@ class Test_OidParamType(unittest.TestCase):
         found = param_types.PG_OID
 
         self.assertEqual(found, expected)
+
+
+class Test_ProtoMessageParamType(unittest.TestCase):
+    def test_it(self):
+        from google.cloud.spanner_v1 import Type
+        from google.cloud.spanner_v1 import TypeCode
+        from google.cloud.spanner_v1 import param_types
+        from samples.samples.testdata import singer_pb2
+
+        singer_info = singer_pb2.SingerInfo()
+        expected = Type(
+            code=TypeCode.PROTO, proto_type_fqn=singer_info.DESCRIPTOR.full_name
+        )
+
+        found = param_types.ProtoMessage(singer_info)
+
+        self.assertEqual(found, expected)
+
+
+class Test_ProtoEnumParamType(unittest.TestCase):
+    def test_it(self):
+        from google.cloud.spanner_v1 import Type
+        from google.cloud.spanner_v1 import TypeCode
+        from google.cloud.spanner_v1 import param_types
+        from samples.samples.testdata import singer_pb2
+
+        singer_genre = singer_pb2.Genre
+        expected = Type(
+            code=TypeCode.ENUM, proto_type_fqn=singer_genre.DESCRIPTOR.full_name
+        )
+
+        found = param_types.ProtoEnum(singer_genre)
+
+        self.assertEqual(found, expected)

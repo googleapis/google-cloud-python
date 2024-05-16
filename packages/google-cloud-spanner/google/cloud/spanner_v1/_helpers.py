@@ -18,9 +18,12 @@ import datetime
 import decimal
 import math
 import time
+import base64
 
 from google.protobuf.struct_pb2 import ListValue
 from google.protobuf.struct_pb2 import Value
+from google.protobuf.message import Message
+from google.protobuf.internal.enum_type_wrapper import EnumTypeWrapper
 
 from google.api_core import datetime_helpers
 from google.cloud._helpers import _date_from_iso8601_date
@@ -204,6 +207,12 @@ def _make_value_pb(value):
             return Value(null_value="NULL_VALUE")
         else:
             return Value(string_value=value)
+    if isinstance(value, Message):
+        value = value.SerializeToString()
+        if value is None:
+            return Value(null_value="NULL_VALUE")
+        else:
+            return Value(string_value=base64.b64encode(value))
 
     raise ValueError("Unknown type: %s" % (value,))
 
@@ -232,7 +241,7 @@ def _make_list_value_pbs(values):
     return [_make_list_value_pb(row) for row in values]
 
 
-def _parse_value_pb(value_pb, field_type):
+def _parse_value_pb(value_pb, field_type, field_name, column_info=None):
     """Convert a Value protobuf to cell data.
 
     :type value_pb: :class:`~google.protobuf.struct_pb2.Value`
@@ -240,6 +249,18 @@ def _parse_value_pb(value_pb, field_type):
 
     :type field_type: :class:`~google.cloud.spanner_v1.types.Type`
     :param field_type: type code for the value
+
+    :type field_name: str
+    :param field_name: column name
+
+    :type column_info: dict
+    :param column_info: (Optional) dict of column name and column information.
+            An object where column names as keys and custom objects as corresponding
+            values for deserialization. It's specifically useful for data types like
+            protobuf where deserialization logic is on user-specific code. When provided,
+            the custom object enables deserialization of backend-received column data.
+            If not provided, data remains serialized as bytes for Proto Messages and
+            integer for Proto Enums.
 
     :rtype: varies on field_type
     :returns: value extracted from value_pb
@@ -273,18 +294,38 @@ def _parse_value_pb(value_pb, field_type):
         return DatetimeWithNanoseconds.from_rfc3339(value_pb.string_value)
     elif type_code == TypeCode.ARRAY:
         return [
-            _parse_value_pb(item_pb, field_type.array_element_type)
+            _parse_value_pb(
+                item_pb, field_type.array_element_type, field_name, column_info
+            )
             for item_pb in value_pb.list_value.values
         ]
     elif type_code == TypeCode.STRUCT:
         return [
-            _parse_value_pb(item_pb, field_type.struct_type.fields[i].type_)
+            _parse_value_pb(
+                item_pb, field_type.struct_type.fields[i].type_, field_name, column_info
+            )
             for (i, item_pb) in enumerate(value_pb.list_value.values)
         ]
     elif type_code == TypeCode.NUMERIC:
         return decimal.Decimal(value_pb.string_value)
     elif type_code == TypeCode.JSON:
         return JsonObject.from_str(value_pb.string_value)
+    elif type_code == TypeCode.PROTO:
+        bytes_value = base64.b64decode(value_pb.string_value)
+        if column_info is not None and column_info.get(field_name) is not None:
+            default_proto_message = column_info.get(field_name)
+            if isinstance(default_proto_message, Message):
+                proto_message = type(default_proto_message)()
+                proto_message.ParseFromString(bytes_value)
+                return proto_message
+        return bytes_value
+    elif type_code == TypeCode.ENUM:
+        int_value = int(value_pb.string_value)
+        if column_info is not None and column_info.get(field_name) is not None:
+            proto_enum = column_info.get(field_name)
+            if isinstance(proto_enum, EnumTypeWrapper):
+                return proto_enum.Name(int_value)
+        return int_value
     else:
         raise ValueError("Unknown type: %s" % (field_type,))
 
@@ -305,7 +346,7 @@ def _parse_list_value_pbs(rows, row_type):
     for row in rows:
         row_data = []
         for value_pb, field in zip(row.values, row_type.fields):
-            row_data.append(_parse_value_pb(value_pb, field.type_))
+            row_data.append(_parse_value_pb(value_pb, field.type_, field.name))
         result.append(row_data)
     return result
 

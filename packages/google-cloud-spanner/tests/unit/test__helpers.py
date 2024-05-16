@@ -353,6 +353,25 @@ class Test_make_value_pb(unittest.TestCase):
         value_pb = self._callFUT(value)
         self.assertTrue(value_pb.HasField("null_value"))
 
+    def test_w_proto_message(self):
+        from google.protobuf.struct_pb2 import Value
+        import base64
+        from samples.samples.testdata import singer_pb2
+
+        singer_info = singer_pb2.SingerInfo()
+        expected = Value(string_value=base64.b64encode(singer_info.SerializeToString()))
+        value_pb = self._callFUT(singer_info)
+        self.assertIsInstance(value_pb, Value)
+        self.assertEqual(value_pb, expected)
+
+    def test_w_proto_enum(self):
+        from google.protobuf.struct_pb2 import Value
+        from samples.samples.testdata import singer_pb2
+
+        value_pb = self._callFUT(singer_pb2.Genre.ROCK)
+        self.assertIsInstance(value_pb, Value)
+        self.assertEqual(value_pb.string_value, "3")
+
 
 class Test_make_list_value_pb(unittest.TestCase):
     def _callFUT(self, *args, **kw):
@@ -434,9 +453,10 @@ class Test_parse_value_pb(unittest.TestCase):
         from google.cloud.spanner_v1 import TypeCode
 
         field_type = Type(code=TypeCode.STRING)
+        field_name = "null_column"
         value_pb = Value(null_value=NULL_VALUE)
 
-        self.assertEqual(self._callFUT(value_pb, field_type), None)
+        self.assertEqual(self._callFUT(value_pb, field_type, field_name), None)
 
     def test_w_string(self):
         from google.protobuf.struct_pb2 import Value
@@ -445,9 +465,10 @@ class Test_parse_value_pb(unittest.TestCase):
 
         VALUE = "Value"
         field_type = Type(code=TypeCode.STRING)
+        field_name = "string_column"
         value_pb = Value(string_value=VALUE)
 
-        self.assertEqual(self._callFUT(value_pb, field_type), VALUE)
+        self.assertEqual(self._callFUT(value_pb, field_type, field_name), VALUE)
 
     def test_w_bytes(self):
         from google.protobuf.struct_pb2 import Value
@@ -456,9 +477,10 @@ class Test_parse_value_pb(unittest.TestCase):
 
         VALUE = b"Value"
         field_type = Type(code=TypeCode.BYTES)
+        field_name = "bytes_column"
         value_pb = Value(string_value=VALUE)
 
-        self.assertEqual(self._callFUT(value_pb, field_type), VALUE)
+        self.assertEqual(self._callFUT(value_pb, field_type, field_name), VALUE)
 
     def test_w_bool(self):
         from google.protobuf.struct_pb2 import Value
@@ -467,9 +489,10 @@ class Test_parse_value_pb(unittest.TestCase):
 
         VALUE = True
         field_type = Type(code=TypeCode.BOOL)
+        field_name = "bool_column"
         value_pb = Value(bool_value=VALUE)
 
-        self.assertEqual(self._callFUT(value_pb, field_type), VALUE)
+        self.assertEqual(self._callFUT(value_pb, field_type, field_name), VALUE)
 
     def test_w_int(self):
         from google.protobuf.struct_pb2 import Value
@@ -478,9 +501,10 @@ class Test_parse_value_pb(unittest.TestCase):
 
         VALUE = 12345
         field_type = Type(code=TypeCode.INT64)
+        field_name = "int_column"
         value_pb = Value(string_value=str(VALUE))
 
-        self.assertEqual(self._callFUT(value_pb, field_type), VALUE)
+        self.assertEqual(self._callFUT(value_pb, field_type, field_name), VALUE)
 
     def test_w_float(self):
         from google.protobuf.struct_pb2 import Value
@@ -489,9 +513,10 @@ class Test_parse_value_pb(unittest.TestCase):
 
         VALUE = 3.14159
         field_type = Type(code=TypeCode.FLOAT64)
+        field_name = "float_column"
         value_pb = Value(number_value=VALUE)
 
-        self.assertEqual(self._callFUT(value_pb, field_type), VALUE)
+        self.assertEqual(self._callFUT(value_pb, field_type, field_name), VALUE)
 
     def test_w_float_str(self):
         from google.protobuf.struct_pb2 import Value
@@ -500,10 +525,13 @@ class Test_parse_value_pb(unittest.TestCase):
 
         VALUE = "3.14159"
         field_type = Type(code=TypeCode.FLOAT64)
+        field_name = "float_str_column"
         value_pb = Value(string_value=VALUE)
         expected_value = 3.14159
 
-        self.assertEqual(self._callFUT(value_pb, field_type), expected_value)
+        self.assertEqual(
+            self._callFUT(value_pb, field_type, field_name), expected_value
+        )
 
     def test_w_float32(self):
         from google.cloud.spanner_v1 import Type, TypeCode
@@ -511,9 +539,10 @@ class Test_parse_value_pb(unittest.TestCase):
 
         VALUE = 3.14159
         field_type = Type(code=TypeCode.FLOAT32)
+        field_name = "float32_column"
         value_pb = Value(number_value=VALUE)
 
-        self.assertEqual(self._callFUT(value_pb, field_type), VALUE)
+        self.assertEqual(self._callFUT(value_pb, field_type, field_name), VALUE)
 
     def test_w_float32_str(self):
         from google.cloud.spanner_v1 import Type, TypeCode
@@ -521,10 +550,13 @@ class Test_parse_value_pb(unittest.TestCase):
 
         VALUE = "3.14159"
         field_type = Type(code=TypeCode.FLOAT32)
+        field_name = "float32_str_column"
         value_pb = Value(string_value=VALUE)
         expected_value = 3.14159
 
-        self.assertEqual(self._callFUT(value_pb, field_type), expected_value)
+        self.assertEqual(
+            self._callFUT(value_pb, field_type, field_name), expected_value
+        )
 
     def test_w_date(self):
         import datetime
@@ -534,9 +566,10 @@ class Test_parse_value_pb(unittest.TestCase):
 
         VALUE = datetime.date.today()
         field_type = Type(code=TypeCode.DATE)
+        field_name = "date_column"
         value_pb = Value(string_value=VALUE.isoformat())
 
-        self.assertEqual(self._callFUT(value_pb, field_type), VALUE)
+        self.assertEqual(self._callFUT(value_pb, field_type, field_name), VALUE)
 
     def test_w_timestamp_wo_nanos(self):
         import datetime
@@ -549,9 +582,10 @@ class Test_parse_value_pb(unittest.TestCase):
             2016, 12, 20, 21, 13, 47, microsecond=123456, tzinfo=datetime.timezone.utc
         )
         field_type = Type(code=TypeCode.TIMESTAMP)
+        field_name = "nanos_column"
         value_pb = Value(string_value=datetime_helpers.to_rfc3339(value))
 
-        parsed = self._callFUT(value_pb, field_type)
+        parsed = self._callFUT(value_pb, field_type, field_name)
         self.assertIsInstance(parsed, datetime_helpers.DatetimeWithNanoseconds)
         self.assertEqual(parsed, value)
 
@@ -566,9 +600,10 @@ class Test_parse_value_pb(unittest.TestCase):
             2016, 12, 20, 21, 13, 47, nanosecond=123456789, tzinfo=datetime.timezone.utc
         )
         field_type = Type(code=TypeCode.TIMESTAMP)
+        field_name = "timestamp_column"
         value_pb = Value(string_value=datetime_helpers.to_rfc3339(value))
 
-        parsed = self._callFUT(value_pb, field_type)
+        parsed = self._callFUT(value_pb, field_type, field_name)
         self.assertIsInstance(parsed, datetime_helpers.DatetimeWithNanoseconds)
         self.assertEqual(parsed, value)
 
@@ -580,9 +615,10 @@ class Test_parse_value_pb(unittest.TestCase):
         field_type = Type(
             code=TypeCode.ARRAY, array_element_type=Type(code=TypeCode.INT64)
         )
+        field_name = "array_empty_column"
         value_pb = Value(list_value=ListValue(values=[]))
 
-        self.assertEqual(self._callFUT(value_pb, field_type), [])
+        self.assertEqual(self._callFUT(value_pb, field_type, field_name), [])
 
     def test_w_array_non_empty(self):
         from google.protobuf.struct_pb2 import Value, ListValue
@@ -592,13 +628,14 @@ class Test_parse_value_pb(unittest.TestCase):
         field_type = Type(
             code=TypeCode.ARRAY, array_element_type=Type(code=TypeCode.INT64)
         )
+        field_name = "array_non_empty_column"
         VALUES = [32, 19, 5]
         values_pb = ListValue(
             values=[Value(string_value=str(value)) for value in VALUES]
         )
         value_pb = Value(list_value=values_pb)
 
-        self.assertEqual(self._callFUT(value_pb, field_type), VALUES)
+        self.assertEqual(self._callFUT(value_pb, field_type, field_name), VALUES)
 
     def test_w_struct(self):
         from google.protobuf.struct_pb2 import Value
@@ -615,9 +652,10 @@ class Test_parse_value_pb(unittest.TestCase):
             ]
         )
         field_type = Type(code=TypeCode.STRUCT, struct_type=struct_type_pb)
+        field_name = "struct_column"
         value_pb = Value(list_value=_make_list_value_pb(VALUES))
 
-        self.assertEqual(self._callFUT(value_pb, field_type), VALUES)
+        self.assertEqual(self._callFUT(value_pb, field_type, field_name), VALUES)
 
     def test_w_numeric(self):
         import decimal
@@ -627,9 +665,10 @@ class Test_parse_value_pb(unittest.TestCase):
 
         VALUE = decimal.Decimal("99999999999999999999999999999.999999999")
         field_type = Type(code=TypeCode.NUMERIC)
+        field_name = "numeric_column"
         value_pb = Value(string_value=str(VALUE))
 
-        self.assertEqual(self._callFUT(value_pb, field_type), VALUE)
+        self.assertEqual(self._callFUT(value_pb, field_type, field_name), VALUE)
 
     def test_w_json(self):
         import json
@@ -641,9 +680,10 @@ class Test_parse_value_pb(unittest.TestCase):
         str_repr = json.dumps(VALUE, sort_keys=True, separators=(",", ":"))
 
         field_type = Type(code=TypeCode.JSON)
+        field_name = "json_column"
         value_pb = Value(string_value=str_repr)
 
-        self.assertEqual(self._callFUT(value_pb, field_type), VALUE)
+        self.assertEqual(self._callFUT(value_pb, field_type, field_name), VALUE)
 
         VALUE = None
         str_repr = json.dumps(VALUE, sort_keys=True, separators=(",", ":"))
@@ -651,7 +691,7 @@ class Test_parse_value_pb(unittest.TestCase):
         field_type = Type(code=TypeCode.JSON)
         value_pb = Value(string_value=str_repr)
 
-        self.assertEqual(self._callFUT(value_pb, field_type), {})
+        self.assertEqual(self._callFUT(value_pb, field_type, field_name), {})
 
     def test_w_unknown_type(self):
         from google.protobuf.struct_pb2 import Value
@@ -659,10 +699,44 @@ class Test_parse_value_pb(unittest.TestCase):
         from google.cloud.spanner_v1 import TypeCode
 
         field_type = Type(code=TypeCode.TYPE_CODE_UNSPECIFIED)
+        field_name = "unknown_column"
         value_pb = Value(string_value="Borked")
 
         with self.assertRaises(ValueError):
-            self._callFUT(value_pb, field_type)
+            self._callFUT(value_pb, field_type, field_name)
+
+    def test_w_proto_message(self):
+        from google.protobuf.struct_pb2 import Value
+        from google.cloud.spanner_v1 import Type
+        from google.cloud.spanner_v1 import TypeCode
+        import base64
+        from samples.samples.testdata import singer_pb2
+
+        VALUE = singer_pb2.SingerInfo()
+        field_type = Type(code=TypeCode.PROTO)
+        field_name = "proto_message_column"
+        value_pb = Value(string_value=base64.b64encode(VALUE.SerializeToString()))
+        column_info = {"proto_message_column": singer_pb2.SingerInfo()}
+
+        self.assertEqual(
+            self._callFUT(value_pb, field_type, field_name, column_info), VALUE
+        )
+
+    def test_w_proto_enum(self):
+        from google.protobuf.struct_pb2 import Value
+        from google.cloud.spanner_v1 import Type
+        from google.cloud.spanner_v1 import TypeCode
+        from samples.samples.testdata import singer_pb2
+
+        VALUE = "ROCK"
+        field_type = Type(code=TypeCode.ENUM)
+        field_name = "proto_enum_column"
+        value_pb = Value(string_value=str(singer_pb2.Genre.ROCK))
+        column_info = {"proto_enum_column": singer_pb2.Genre}
+
+        self.assertEqual(
+            self._callFUT(value_pb, field_type, field_name, column_info), VALUE
+        )
 
 
 class Test_parse_list_value_pbs(unittest.TestCase):

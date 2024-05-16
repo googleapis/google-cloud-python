@@ -37,7 +37,7 @@ class StreamedResultSet(object):
     :param source: Snapshot from which the result set was fetched.
     """
 
-    def __init__(self, response_iterator, source=None):
+    def __init__(self, response_iterator, source=None, column_info=None):
         self._response_iterator = response_iterator
         self._rows = []  # Fully-processed rows
         self._metadata = None  # Until set from first PRS
@@ -45,6 +45,7 @@ class StreamedResultSet(object):
         self._current_row = []  # Accumulated values for incomplete row
         self._pending_chunk = None  # Incomplete value
         self._source = source  # Source snapshot
+        self._column_info = column_info  # Column information
 
     @property
     def fields(self):
@@ -99,10 +100,15 @@ class StreamedResultSet(object):
         :param values: non-chunked values from partial result set.
         """
         field_types = [field.type_ for field in self.fields]
+        field_names = [field.name for field in self.fields]
         width = len(field_types)
         index = len(self._current_row)
         for value in values:
-            self._current_row.append(_parse_value_pb(value, field_types[index]))
+            self._current_row.append(
+                _parse_value_pb(
+                    value, field_types[index], field_names[index], self._column_info
+                )
+            )
             index += 1
             if index == width:
                 self._rows.append(self._current_row)

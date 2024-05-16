@@ -220,6 +220,13 @@ class TestDatabase(_BaseTest):
         self.assertIs(database._instance, instance)
         self.assertEqual(database._directed_read_options, DIRECTED_READ_OPTIONS)
 
+    def test_ctor_w_proto_descriptors(self):
+        instance = _Instance(self.INSTANCE_NAME)
+        database = self._make_one(self.DATABASE_ID, instance, proto_descriptors=b"")
+        self.assertEqual(database.database_id, self.DATABASE_ID)
+        self.assertIs(database._instance, instance)
+        self.assertEqual(database._proto_descriptors, b"")
+
     def test_from_pb_bad_database_name(self):
         from google.cloud.spanner_admin_database_v1 import Database
 
@@ -384,6 +391,14 @@ class TestDatabase(_BaseTest):
         database = self._make_one(self.DATABASE_ID, instance, pool=pool)
         default_leader = database._default_leader = "us-east4"
         self.assertEqual(database.default_leader, default_leader)
+
+    def test_proto_descriptors(self):
+        instance = _Instance(self.INSTANCE_NAME)
+        pool = _Pool()
+        database = self._make_one(
+            self.DATABASE_ID, instance, pool=pool, proto_descriptors=b""
+        )
+        self.assertEqual(database.proto_descriptors, b"")
 
     def test_spanner_api_property_w_scopeless_creds(self):
         client = _Client()
@@ -652,6 +667,41 @@ class TestDatabase(_BaseTest):
             create_statement="CREATE DATABASE {}".format(self.DATABASE_ID),
             extra_statements=DDL_STATEMENTS,
             encryption_config=expected_encryption_config,
+        )
+
+        api.create_database.assert_called_once_with(
+            request=expected_request,
+            metadata=[("google-cloud-resource-prefix", database.name)],
+        )
+
+    def test_create_success_w_proto_descriptors(self):
+        from tests._fixtures import DDL_STATEMENTS
+        from google.cloud.spanner_admin_database_v1 import CreateDatabaseRequest
+
+        op_future = object()
+        client = _Client()
+        api = client.database_admin_api = self._make_database_admin_api()
+        api.create_database.return_value = op_future
+        instance = _Instance(self.INSTANCE_NAME, client=client)
+        pool = _Pool()
+        proto_descriptors = b""
+        database = self._make_one(
+            self.DATABASE_ID,
+            instance,
+            ddl_statements=DDL_STATEMENTS,
+            pool=pool,
+            proto_descriptors=proto_descriptors,
+        )
+
+        future = database.create()
+
+        self.assertIs(future, op_future)
+
+        expected_request = CreateDatabaseRequest(
+            parent=self.INSTANCE_NAME,
+            create_statement="CREATE DATABASE {}".format(self.DATABASE_ID),
+            extra_statements=DDL_STATEMENTS,
+            proto_descriptors=proto_descriptors,
         )
 
         api.create_database.assert_called_once_with(
@@ -941,6 +991,34 @@ class TestDatabase(_BaseTest):
         api.update_database.assert_called_once_with(
             database=expected_database,
             update_mask=field_mask,
+            metadata=[("google-cloud-resource-prefix", database.name)],
+        )
+
+    def test_update_ddl_w_proto_descriptors(self):
+        from tests._fixtures import DDL_STATEMENTS
+        from google.cloud.spanner_admin_database_v1 import UpdateDatabaseDdlRequest
+
+        op_future = object()
+        client = _Client()
+        api = client.database_admin_api = self._make_database_admin_api()
+        api.update_database_ddl.return_value = op_future
+        instance = _Instance(self.INSTANCE_NAME, client=client)
+        pool = _Pool()
+        database = self._make_one(self.DATABASE_ID, instance, pool=pool)
+
+        future = database.update_ddl(DDL_STATEMENTS, proto_descriptors=b"")
+
+        self.assertIs(future, op_future)
+
+        expected_request = UpdateDatabaseDdlRequest(
+            database=self.DATABASE_NAME,
+            statements=DDL_STATEMENTS,
+            operation_id="",
+            proto_descriptors=b"",
+        )
+
+        api.update_database_ddl.assert_called_once_with(
+            request=expected_request,
             metadata=[("google-cloud-resource-prefix", database.name)],
         )
 

@@ -643,7 +643,12 @@ class TestSession(OpenTelemetryBase):
         self.assertIs(found, snapshot().read.return_value)
 
         snapshot().read.assert_called_once_with(
-            TABLE_NAME, COLUMNS, KEYSET, INDEX, LIMIT
+            TABLE_NAME,
+            COLUMNS,
+            KEYSET,
+            INDEX,
+            LIMIT,
+            column_info=None,
         )
 
     def test_execute_sql_not_created(self):
@@ -674,6 +679,7 @@ class TestSession(OpenTelemetryBase):
             request_options=None,
             timeout=google.api_core.gapic_v1.method.DEFAULT,
             retry=google.api_core.gapic_v1.method.DEFAULT,
+            column_info=None,
         )
 
     def test_execute_sql_non_default_retry(self):
@@ -704,6 +710,7 @@ class TestSession(OpenTelemetryBase):
             request_options=None,
             timeout=None,
             retry=None,
+            column_info=None,
         )
 
     def test_execute_sql_explicit(self):
@@ -732,6 +739,7 @@ class TestSession(OpenTelemetryBase):
             request_options=None,
             timeout=google.api_core.gapic_v1.method.DEFAULT,
             retry=google.api_core.gapic_v1.method.DEFAULT,
+            column_info=None,
         )
 
     def test_batch_not_created(self):

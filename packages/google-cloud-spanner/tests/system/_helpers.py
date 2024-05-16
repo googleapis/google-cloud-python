@@ -65,6 +65,8 @@ DDL_STATEMENTS = (
     )
 )
 
+PROTO_COLUMNS_DDL_STATEMENTS = _fixtures.PROTO_COLUMNS_DDL_STATEMENTS
+
 retry_true = retry.RetryResult(operator.truth)
 retry_false = retry.RetryResult(operator.not_)
 

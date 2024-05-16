@@ -75,6 +75,17 @@ def database_dialect():
 
 
 @pytest.fixture(scope="session")
+def proto_descriptor_file():
+    import os
+
+    dirname = os.path.dirname(__file__)
+    filename = os.path.join(dirname, "testdata/descriptors.pb")
+    file = open(filename, "rb")
+    yield file.read()
+    file.close()
+
+
+@pytest.fixture(scope="session")
 def spanner_client():
     if _helpers.USE_EMULATOR:
         from google.auth.credentials import AnonymousCredentials
@@ -176,7 +187,9 @@ def shared_instance(
 
 
 @pytest.fixture(scope="session")
-def shared_database(shared_instance, database_operation_timeout, database_dialect):
+def shared_database(
+    shared_instance, database_operation_timeout, database_dialect, proto_descriptor_file
+):
     database_name = _helpers.unique_id("test_database")
     pool = spanner_v1.BurstyPool(labels={"testcase": "database_api"})
     if database_dialect == DatabaseDialect.POSTGRESQL:
@@ -197,6 +210,7 @@ def shared_database(shared_instance, database_operation_timeout, database_dialec
             ddl_statements=_helpers.DDL_STATEMENTS,
             pool=pool,
             database_dialect=database_dialect,
+            proto_descriptors=proto_descriptor_file,
         )
         operation = database.create()
         operation.result(database_operation_timeout)  # raises on failure / timeout.

@@ -556,6 +556,7 @@ class TestInstance(unittest.TestCase):
         pool = _Pool()
         logger = mock.create_autospec(Logger, instance=True)
         encryption_config = {"kms_key_name": "kms_key_name"}
+        proto_descriptors = b""
 
         database = instance.database(
             DATABASE_ID,
@@ -564,6 +565,7 @@ class TestInstance(unittest.TestCase):
             logger=logger,
             encryption_config=encryption_config,
             database_role=DATABASE_ROLE,
+            proto_descriptors=proto_descriptors,
         )
 
         self.assertIsInstance(database, Database)
@@ -575,6 +577,7 @@ class TestInstance(unittest.TestCase):
         self.assertIs(pool._bound, database)
         self.assertIs(database._encryption_config, encryption_config)
         self.assertIs(database.database_role, DATABASE_ROLE)
+        self.assertIs(database._proto_descriptors, proto_descriptors)
 
     def test_list_databases(self):
         from google.cloud.spanner_admin_database_v1 import Database as DatabasePB

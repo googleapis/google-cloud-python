@@ -33,6 +33,7 @@ from google.cloud.spanner_admin_instance_v1.types import spanner_instance_admin
 from google.cloud.spanner_v1 import DirectedReadOptions, param_types
 from google.cloud.spanner_v1.data_types import JsonObject
 from google.protobuf import field_mask_pb2  # type: ignore
+from testdata import singer_pb2
 
 OPERATION_TIMEOUT_SECONDS = 240
 
@@ -3144,6 +3145,241 @@ def create_instance_with_autoscaling_config(instance_id):
 # [END spanner_create_instance_with_autoscaling_config]
 
 
+def add_proto_type_columns(instance_id, database_id):
+    # [START spanner_add_proto_type_columns]
+    # instance_id = "your-spanner-instance"
+    # database_id = "your-spanner-db-id"
+
+    """Adds a new Proto Message column and Proto Enum column to the Singers table."""
+
+    import os
+    from google.cloud.spanner_admin_database_v1.types import spanner_database_admin
+
+    dirname = os.path.dirname(__file__)
+    filename = os.path.join(dirname, "testdata/descriptors.pb")
+
+    spanner_client = spanner.Client()
+    database_admin_api = spanner_client.database_admin_api
+
+    proto_descriptor_file = open(filename, "rb")
+    proto_descriptor = proto_descriptor_file.read()
+
+    request = spanner_database_admin.UpdateDatabaseDdlRequest(
+        database=database_admin_api.database_path(
+            spanner_client.project, instance_id, database_id
+        ),
+        statements=[
+            """CREATE PROTO BUNDLE (
+            examples.spanner.music.SingerInfo,
+            examples.spanner.music.Genre,
+            )""",
+            "ALTER TABLE Singers ADD COLUMN SingerInfo examples.spanner.music.SingerInfo",
+            "ALTER TABLE Singers ADD COLUMN SingerInfoArray ARRAY<examples.spanner.music.SingerInfo>",
+            "ALTER TABLE Singers ADD COLUMN SingerGenre examples.spanner.music.Genre",
+            "ALTER TABLE Singers ADD COLUMN SingerGenreArray ARRAY<examples.spanner.music.Genre>",
+        ],
+        proto_descriptors=proto_descriptor,
+    )
+
+    operation = database_admin_api.update_database_ddl(request)
+
+    print("Waiting for operation to complete...")
+    operation.result(OPERATION_TIMEOUT_SECONDS)
+    proto_descriptor_file.close()
+
+    print(
+        'Altered table "Singers" on database {} on instance {} with proto descriptors.'.format(
+            database_id, instance_id
+        )
+    )
+    # [END spanner_add_proto_type_columns]
+
+
+def update_data_with_proto_types(instance_id, database_id):
+    # [START spanner_update_data_with_proto_types]
+    # instance_id = "your-spanner-instance"
+    # database_id = "your-spanner-db-id"
+
+    """Updates Singers tables in the database with the ProtoMessage
+    and ProtoEnum column.
+
+    This updates the `SingerInfo`, `SingerInfoArray`, `SingerGenre` and
+    `SingerGenreArray` columns which must be created before
+    running this sample. You can add the column by running the
+    `add_proto_type_columns` sample or by running this DDL statement
+     against your database:
+
+         ALTER TABLE Singers ADD COLUMN SingerInfo examples.spanner.music.SingerInfo\n
+         ALTER TABLE Singers ADD COLUMN SingerInfoArray ARRAY<examples.spanner.music.SingerInfo>\n
+         ALTER TABLE Singers ADD COLUMN SingerGenre examples.spanner.music.Genre\n
+         ALTER TABLE Singers ADD COLUMN SingerGenreArray ARRAY<examples.spanner.music.Genre>\n
+    """
+    spanner_client = spanner.Client()
+    instance = spanner_client.instance(instance_id)
+    database = instance.database(database_id)
+
+    singer_info = singer_pb2.SingerInfo()
+    singer_info.singer_id = 2
+    singer_info.birth_date = "February"
+    singer_info.nationality = "Country2"
+    singer_info.genre = singer_pb2.Genre.FOLK
+
+    singer_info_array = [singer_info]
+
+    singer_genre_array = [singer_pb2.Genre.FOLK]
+
+    with database.batch() as batch:
+        batch.update(
+            table="Singers",
+            columns=(
+                "SingerId",
+                "SingerInfo",
+                "SingerInfoArray",
+                "SingerGenre",
+                "SingerGenreArray",
+            ),
+            values=[
+                (
+                    2,
+                    singer_info,
+                    singer_info_array,
+                    singer_pb2.Genre.FOLK,
+                    singer_genre_array,
+                ),
+                (3, None, None, None, None),
+            ],
+        )
+
+    print("Data updated.")
+    # [END spanner_update_data_with_proto_types]
+
+
+def update_data_with_proto_types_with_dml(instance_id, database_id):
+    # [START spanner_update_data_with_proto_types_with_dml]
+    # instance_id = "your-spanner-instance"
+    # database_id = "your-spanner-db-id"
+
+    """Updates Singers tables in the database with the ProtoMessage
+    and ProtoEnum column.
+
+    This updates the `SingerInfo`, `SingerInfoArray`, `SingerGenre` and `SingerGenreArray` columns which must be created before
+    running this sample. You can add the column by running the
+    `add_proto_type_columns` sample or by running this DDL statement
+     against your database:
+
+         ALTER TABLE Singers ADD COLUMN SingerInfo examples.spanner.music.SingerInfo\n
+         ALTER TABLE Singers ADD COLUMN SingerInfoArray ARRAY<examples.spanner.music.SingerInfo>\n
+         ALTER TABLE Singers ADD COLUMN SingerGenre examples.spanner.music.Genre\n
+         ALTER TABLE Singers ADD COLUMN SingerGenreArray ARRAY<examples.spanner.music.Genre>\n
+    """
+    spanner_client = spanner.Client()
+    instance = spanner_client.instance(instance_id)
+    database = instance.database(database_id)
+
+    singer_info = singer_pb2.SingerInfo()
+    singer_info.singer_id = 1
+    singer_info.birth_date = "January"
+    singer_info.nationality = "Country1"
+    singer_info.genre = singer_pb2.Genre.ROCK
+
+    singer_info_array = [singer_info, None]
+
+    singer_genre_array = [singer_pb2.Genre.ROCK, None]
+
+    def update_singers_with_proto_types(transaction):
+        row_ct = transaction.execute_update(
+            "UPDATE Singers "
+            "SET SingerInfo = @singerInfo,  SingerInfoArray=@singerInfoArray, "
+            "SingerGenre=@singerGenre, SingerGenreArray=@singerGenreArray "
+            "WHERE SingerId = 1",
+            params={
+                "singerInfo": singer_info,
+                "singerInfoArray": singer_info_array,
+                "singerGenre": singer_pb2.Genre.ROCK,
+                "singerGenreArray": singer_genre_array,
+            },
+            param_types={
+                "singerInfo": param_types.ProtoMessage(singer_info),
+                "singerInfoArray": param_types.Array(
+                    param_types.ProtoMessage(singer_info)
+                ),
+                "singerGenre": param_types.ProtoEnum(singer_pb2.Genre),
+                "singerGenreArray": param_types.Array(
+                    param_types.ProtoEnum(singer_pb2.Genre)
+                ),
+            },
+        )
+
+        print("{} record(s) updated.".format(row_ct))
+
+    database.run_in_transaction(update_singers_with_proto_types)
+
+    def update_singers_with_proto_field(transaction):
+        row_ct = transaction.execute_update(
+            "UPDATE Singers "
+            "SET SingerInfo.nationality = @singerNationality "
+            "WHERE SingerId = 1",
+            params={
+                "singerNationality": "Country2",
+            },
+            param_types={
+                "singerNationality": param_types.STRING,
+            },
+        )
+
+        print("{} record(s) updated.".format(row_ct))
+
+    database.run_in_transaction(update_singers_with_proto_field)
+    # [END spanner_update_data_with_proto_types_with_dml]
+
+
+def query_data_with_proto_types_parameter(instance_id, database_id):
+    # [START spanner_query_with_proto_types_parameter]
+    # instance_id = "your-spanner-instance"
+    # database_id = "your-spanner-db-id"
+
+    spanner_client = spanner.Client()
+    instance = spanner_client.instance(instance_id)
+    database = instance.database(database_id)
+
+    with database.snapshot() as snapshot:
+        results = snapshot.execute_sql(
+            "SELECT SingerId, SingerInfo, SingerInfo.nationality, SingerInfoArray, "
+            "SingerGenre, SingerGenreArray FROM Singers "
+            "WHERE SingerInfo.Nationality=@country "
+            "and SingerGenre=@singerGenre",
+            params={
+                "country": "Country2",
+                "singerGenre": singer_pb2.Genre.FOLK,
+            },
+            param_types={
+                "country": param_types.STRING,
+                "singerGenre": param_types.ProtoEnum(singer_pb2.Genre),
+            },
+            # column_info is an optional parameter and is used to deserialize
+            # the proto message and enum object back from bytearray and
+            # int respectively.
+            # If column_info is not passed for proto messages and enums, then
+            # the data types for these columns will be bytes and int
+            # respectively.
+            column_info={
+                "SingerInfo": singer_pb2.SingerInfo(),
+                "SingerInfoArray": singer_pb2.SingerInfo(),
+                "SingerGenre": singer_pb2.Genre,
+                "SingerGenreArray": singer_pb2.Genre,
+            },
+        )
+
+        for row in results:
+            print(
+                "SingerId: {}, SingerInfo: {}, SingerInfoNationality: {}, "
+                "SingerInfoArray: {}, SingerGenre: {}, SingerGenreArray: {}".format(
+                    *row
+                )
+            )
+    # [END spanner_query_with_proto_types_parameter]
+
+
 if __name__ == "__main__":  # noqa: C901
     parser = argparse.ArgumentParser(
         description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter
@@ -3288,6 +3524,18 @@ if __name__ == "__main__":  # noqa: C901
     subparsers.add_parser(
         "set_custom_timeout_and_retry", help=set_custom_timeout_and_retry.__doc__
     )
+    subparsers.add_parser("add_proto_type_columns", help=add_proto_type_columns.__doc__)
+    subparsers.add_parser(
+        "update_data_with_proto_types", help=update_data_with_proto_types.__doc__
+    )
+    subparsers.add_parser(
+        "update_data_with_proto_types_with_dml",
+        help=update_data_with_proto_types_with_dml.__doc__,
+    )
+    subparsers.add_parser(
+        "query_data_with_proto_types_parameter",
+        help=query_data_with_proto_types_parameter.__doc__,
+    )
 
     args = parser.parse_args()
 
@@ -3427,3 +3675,11 @@ if __name__ == "__main__":  # noqa: C901
         set_custom_timeout_and_retry(args.instance_id, args.database_id)
     elif args.command == "create_instance_with_autoscaling_config":
         create_instance_with_autoscaling_config(args.instance_id)
+    elif args.command == "add_proto_type_columns":
+        add_proto_type_columns(args.instance_id, args.database_id)
+    elif args.command == "update_data_with_proto_types":
+        update_data_with_proto_types(args.instance_id, args.database_id)
+    elif args.command == "update_data_with_proto_types_with_dml":
+        update_data_with_proto_types_with_dml(args.instance_id, args.database_id)
+    elif args.command == "query_data_with_proto_types_parameter":
+        query_data_with_proto_types_parameter(args.instance_id, args.database_id)
