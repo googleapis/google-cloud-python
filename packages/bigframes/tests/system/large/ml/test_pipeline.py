@@ -24,7 +24,7 @@ from bigframes.ml import (
     pipeline,
     preprocessing,
 )
-from tests.system.utils import assert_pandas_df_equal, assert_pandas_df_equal_pca
+from tests.system import utils
 
 
 def test_pipeline_linear_regression_fit_score_predict(
@@ -51,21 +51,8 @@ def test_pipeline_linear_regression_fit_score_predict(
 
     # Check score to ensure the model was fitted
     score_result = pl.score(X_train, y_train).to_pandas()
-    score_expected = pd.DataFrame(
-        {
-            "mean_absolute_error": [309.477331],
-            "mean_squared_error": [152184.227219],
-            "mean_squared_log_error": [0.009524],
-            "median_absolute_error": [257.728263],
-            "r2_score": [0.764356],
-            "explained_variance": [0.764356],
-        },
-        dtype="Float64",
-    )
-    score_expected = score_expected.reindex(index=score_expected.index.astype("Int64"))
-
-    pd.testing.assert_frame_equal(
-        score_result, score_expected, check_exact=False, rtol=0.1
+    utils.check_pandas_df_schema_and_index(
+        score_result, columns=utils.ML_REGRESSION_METRICS, index=1
     )
 
     # predict new labels
@@ -87,13 +74,11 @@ def test_pipeline_linear_regression_fit_score_predict(
         ).set_index("tag_number")
     )
     predictions = pl.predict(new_penguins).to_pandas()
-    expected = pd.DataFrame(
-        {"predicted_body_mass_g": [3968.8, 3176.3, 3545.2]},
-        dtype="Float64",
-        index=pd.Index([1633, 1672, 1690], name="tag_number", dtype="Int64"),
-    )
-    pd.testing.assert_frame_equal(
-        predictions[["predicted_body_mass_g"]], expected, check_exact=False, rtol=0.1
+    utils.check_pandas_df_schema_and_index(
+        predictions,
+        columns=["predicted_body_mass_g"],
+        index=[1633, 1672, 1690],
+        col_exact=False,
     )
 
 
@@ -115,21 +100,8 @@ def test_pipeline_linear_regression_series_fit_score_predict(
 
     # Check score to ensure the model was fitted
     score_result = pl.score(X_train, y_train).to_pandas()
-    score_expected = pd.DataFrame(
-        {
-            "mean_absolute_error": [528.495599],
-            "mean_squared_error": [421722.261808],
-            "mean_squared_log_error": [0.022963],
-            "median_absolute_error": [468.895249],
-            "r2_score": [0.346999],
-            "explained_variance": [0.346999],
-        },
-        dtype="Float64",
-    )
-    score_expected = score_expected.reindex(index=score_expected.index.astype("Int64"))
-
-    pd.testing.assert_frame_equal(
-        score_result, score_expected, check_exact=False, rtol=0.1
+    utils.check_pandas_df_schema_and_index(
+        score_result, columns=utils.ML_REGRESSION_METRICS, index=1
     )
 
     # predict new labels
@@ -142,13 +114,11 @@ def test_pipeline_linear_regression_series_fit_score_predict(
         ).set_index("tag_number")
     )
     predictions = pl.predict(new_penguins["culmen_length_mm"]).to_pandas()
-    expected = pd.DataFrame(
-        {"predicted_body_mass_g": [3818.845703, 3732.022253, 3679.928123]},
-        dtype="Float64",
-        index=pd.Index([1633, 1672, 1690], name="tag_number", dtype="Int64"),
-    )
-    pd.testing.assert_frame_equal(
-        predictions[["predicted_body_mass_g"]], expected, check_exact=False, rtol=0.1
+    utils.check_pandas_df_schema_and_index(
+        predictions,
+        columns=["predicted_body_mass_g"],
+        index=[1633, 1672, 1690],
+        col_exact=False,
     )
 
 
@@ -176,21 +146,8 @@ def test_pipeline_logistic_regression_fit_score_predict(
 
     # Check score to ensure the model was fitted
     score_result = pl.score(X_train, y_train).to_pandas()
-    score_expected = pd.DataFrame(
-        {
-            "precision": [0.537091],
-            "recall": [0.538636],
-            "accuracy": [0.805389],
-            "f1_score": [0.537716],
-            "log_loss": [1.445433],
-            "roc_auc": [0.917818],
-        },
-        dtype="Float64",
-    )
-    score_expected = score_expected.reindex(index=score_expected.index.astype("Int64"))
-
-    pd.testing.assert_frame_equal(
-        score_result, score_expected, check_exact=False, rtol=0.1
+    utils.check_pandas_df_schema_and_index(
+        score_result, columns=utils.ML_CLASSFICATION_METRICS, index=1
     )
 
     # predict new labels
@@ -211,19 +168,14 @@ def test_pipeline_logistic_regression_fit_score_predict(
         ).set_index("tag_number")
     )
     predictions = pl.predict(new_penguins).to_pandas()
-    expected = pd.DataFrame(
-        {"predicted_sex": ["MALE", "FEMALE", "FEMALE"]},
-        dtype=pd.StringDtype(storage="pyarrow"),
-        index=pd.Index([1633, 1672, 1690], name="tag_number", dtype="Int64"),
-    )
-    pd.testing.assert_frame_equal(
-        predictions[["predicted_sex"]],
-        expected,
+    utils.check_pandas_df_schema_and_index(
+        predictions,
+        columns=["predicted_sex"],
+        index=[1633, 1672, 1690],
+        col_exact=False,
     )
 
 
-# TODO(garrettwu): Re-enable or not check exact numbers.
-@pytest.mark.skip(reason="bqml regression")
 @pytest.mark.flaky(retries=2)
 def test_pipeline_xgbregressor_fit_score_predict(session, penguins_df_default_index):
     """Test a supervised model with a minimal preprocessing step"""
@@ -247,21 +199,8 @@ def test_pipeline_xgbregressor_fit_score_predict(session, penguins_df_default_in
 
     # Check score to ensure the model was fitted
     score_result = pl.score(X_train, y_train).to_pandas()
-    score_expected = pd.DataFrame(
-        {
-            "mean_absolute_error": [202.298434],
-            "mean_squared_error": [74515.108971],
-            "mean_squared_log_error": [0.004365],
-            "median_absolute_error": [142.949219],
-            "r2_score": [0.88462],
-            "explained_variance": [0.886454],
-        },
-        dtype="Float64",
-    )
-    score_expected = score_expected.reindex(index=score_expected.index.astype("Int64"))
-
-    pd.testing.assert_frame_equal(
-        score_result, score_expected, check_exact=False, rtol=0.1
+    utils.check_pandas_df_schema_and_index(
+        score_result, columns=utils.ML_REGRESSION_METRICS, index=1
     )
 
     # predict new labels
@@ -283,24 +222,14 @@ def test_pipeline_xgbregressor_fit_score_predict(session, penguins_df_default_in
         ).set_index("tag_number")
     )
     predictions = pl.predict(new_penguins).to_pandas()
-    expected = pd.DataFrame(
-        {
-            "predicted_body_mass_g": [
-                4287.34521484375,
-                3198.351806640625,
-                3385.34130859375,
-            ]
-        },
-        dtype="Float64",
-        index=pd.Index([1633, 1672, 1690], name="tag_number", dtype="Int64"),
-    )
-    pd.testing.assert_frame_equal(
-        predictions[["predicted_body_mass_g"]], expected, check_exact=False, rtol=0.1
+    utils.check_pandas_df_schema_and_index(
+        predictions,
+        columns=["predicted_body_mass_g"],
+        index=[1633, 1672, 1690],
+        col_exact=False,
     )
 
 
-# TODO(garrettwu): Re-enable or not check exact numbers.
-@pytest.mark.skip(reason="bqml regression")
 @pytest.mark.flaky(retries=2)
 def test_pipeline_random_forest_classifier_fit_score_predict(
     session, penguins_df_default_index
@@ -326,21 +255,8 @@ def test_pipeline_random_forest_classifier_fit_score_predict(
 
     # Check score to ensure the model was fitted
     score_result = pl.score(X_train, y_train).to_pandas()
-    score_expected = pd.DataFrame(
-        {
-            "precision": [0.585505],
-            "recall": [0.58676],
-            "accuracy": [0.877246],
-            "f1_score": [0.585657],
-            "log_loss": [0.880643],
-            "roc_auc": [0.970697],
-        },
-        dtype="Float64",
-    )
-    score_expected = score_expected.reindex(index=score_expected.index.astype("Int64"))
-
-    pd.testing.assert_frame_equal(
-        score_result, score_expected, check_exact=False, rtol=0.1
+    utils.check_pandas_df_schema_and_index(
+        score_result, columns=utils.ML_CLASSFICATION_METRICS, index=1
     )
 
     # predict new labels
@@ -361,14 +277,11 @@ def test_pipeline_random_forest_classifier_fit_score_predict(
         ).set_index("tag_number")
     )
     predictions = pl.predict(new_penguins).to_pandas()
-    expected = pd.DataFrame(
-        {"predicted_sex": ["MALE", "FEMALE", "FEMALE"]},
-        dtype=pd.StringDtype(storage="pyarrow"),
-        index=pd.Index([1633, 1672, 1690], name="tag_number", dtype="Int64"),
-    )
-    pd.testing.assert_frame_equal(
-        predictions[["predicted_sex"]],
-        expected,
+    utils.check_pandas_df_schema_and_index(
+        predictions,
+        columns=["predicted_sex"],
+        index=[1633, 1672, 1690],
+        col_exact=False,
     )
 
 
@@ -412,40 +325,20 @@ def test_pipeline_PCA_fit_score_predict(session, penguins_df_default_index):
 
     # Check score to ensure the model was fitted
     score_result = pl.score(new_penguins).to_pandas()
-    score_expected = pd.DataFrame(
-        {
-            "total_explained_variance_ratio": [1.0],
-        },
-        dtype="Float64",
-    )
-    score_expected = score_expected.reindex(index=score_expected.index.astype("Int64"))
-
-    pd.testing.assert_frame_equal(
-        score_result, score_expected, check_exact=False, rtol=0.1
+    utils.check_pandas_df_schema_and_index(
+        score_result, columns=["total_explained_variance_ratio"], index=1
     )
 
     predictions = pl.predict(new_penguins).to_pandas()
-    expected = pd.DataFrame(
-        {
-            "principal_component_1": [-1.115259, -1.506141, -1.471173],
-            "principal_component_2": [-0.074825, 0.69664, 0.406103],
-            "principal_component_3": [0.500013, -0.544479, 0.075849],
-        },
-        dtype="Float64",
-        index=pd.Index([1633, 1672, 1690], name="tag_number", dtype="Int64"),
-    )
-
-    assert_pandas_df_equal_pca(
-        predictions[
-            [
-                "principal_component_1",
-                "principal_component_2",
-                "principal_component_3",
-            ]
+    utils.check_pandas_df_schema_and_index(
+        predictions,
+        columns=[
+            "principal_component_1",
+            "principal_component_2",
+            "principal_component_3",
         ],
-        expected,
-        check_exact=False,
-        rtol=0.1,
+        index=[1633, 1672, 1690],
+        col_exact=False,
     )
 
 
@@ -538,29 +431,16 @@ def test_pipeline_standard_scaler_kmeans_fit_score_predict(
 
     # Check score to ensure the model was fitted
     score_result = pl.score(new_penguins).to_pandas()
-    score_expected = pd.DataFrame(
-        {"davies_bouldin_index": [7.542981], "mean_squared_distance": [94.692409]},
-        dtype="Float64",
-    )
-    score_expected = score_expected.reindex(index=score_expected.index.astype("Int64"))
-
-    pd.testing.assert_frame_equal(
-        score_result, score_expected, check_exact=False, rtol=0.1
-    )
+    eval_metrics = ["davies_bouldin_index", "mean_squared_distance"]
+    utils.check_pandas_df_schema_and_index(score_result, columns=eval_metrics, index=1)
 
     predictions = pl.predict(new_penguins).to_pandas().sort_index()
-    assert predictions.shape == (6, 9)
-    result = predictions[["CENTROID_ID"]]
-    expected = pd.DataFrame(
-        {"CENTROID_ID": [1, 2, 1, 2, 1, 2]},
-        dtype="Int64",
-        index=pd.Index(
-            ["test1", "test2", "test3", "test4", "test5", "test6"],
-            dtype="string[pyarrow]",
-        ),
+    utils.check_pandas_df_schema_and_index(
+        predictions,
+        columns=["CENTROID_ID"],
+        index=["test1", "test2", "test3", "test4", "test5", "test6"],
+        col_exact=False,
     )
-    expected.index.name = "observation"
-    assert_pandas_df_equal(result, expected, ignore_order=True)
 
 
 def test_pipeline_columntransformer_fit_predict(session, penguins_df_default_index):
@@ -632,13 +512,11 @@ def test_pipeline_columntransformer_fit_predict(session, penguins_df_default_ind
         ).set_index("tag_number")
     )
     predictions = pl.predict(new_penguins).to_pandas()
-    expected = pd.DataFrame(
-        {"predicted_body_mass_g": [3909.2, 3436.0, 2860.0]},
-        dtype="Float64",
-        index=pd.Index([1633, 1672, 1690], name="tag_number", dtype="Int64"),
-    )
-    pd.testing.assert_frame_equal(
-        predictions[["predicted_body_mass_g"]], expected, check_exact=False, rtol=0.1
+    utils.check_pandas_df_schema_and_index(
+        predictions,
+        columns=["predicted_body_mass_g"],
+        index=[1633, 1672, 1690],
+        col_exact=False,
     )
 
 

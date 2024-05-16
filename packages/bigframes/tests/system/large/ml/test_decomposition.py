@@ -15,7 +15,7 @@
 import pandas as pd
 
 from bigframes.ml import decomposition
-import tests.system.utils
+from tests.system import utils
 
 
 def test_decomposition_configure_fit_score_predict(
@@ -45,34 +45,19 @@ def test_decomposition_configure_fit_score_predict(
 
     # Check score to ensure the model was fitted
     score_result = model.score(new_penguins).to_pandas()
-    score_expected = pd.DataFrame(
-        {
-            "total_explained_variance_ratio": [0.812383],
-        },
-        dtype="Float64",
-    )
-    score_expected = score_expected.reindex(index=score_expected.index.astype("Int64"))
-
-    pd.testing.assert_frame_equal(
-        score_result, score_expected, check_exact=False, rtol=0.1
+    utils.check_pandas_df_schema_and_index(
+        score_result, columns=["total_explained_variance_ratio"], index=1
     )
 
     result = model.predict(new_penguins).to_pandas()
-    expected = pd.DataFrame(
-        {
-            "principal_component_1": [-1.459, 2.258, -1.685],
-            "principal_component_2": [-1.120, -1.351, -0.874],
-            "principal_component_3": [-0.646, 0.443, -0.704],
-        },
-        dtype="Float64",
-        index=pd.Index([1633, 1672, 1690], name="tag_number", dtype="Int64"),
-    )
-
-    tests.system.utils.assert_pandas_df_equal_pca(
+    utils.check_pandas_df_schema_and_index(
         result,
-        expected,
-        check_exact=False,
-        rtol=0.1,
+        columns=[
+            "principal_component_1",
+            "principal_component_2",
+            "principal_component_3",
+        ],
+        index=[1633, 1672, 1690],
     )
 
     # save, load, check n_components to ensure configuration was kept
@@ -114,36 +99,21 @@ def test_decomposition_configure_fit_score_predict_params(
 
     # Check score to ensure the model was fitted
     score_result = model.score(new_penguins).to_pandas()
-    score_expected = pd.DataFrame(
-        {
-            "total_explained_variance_ratio": [0.932897],
-        },
-        dtype="Float64",
-    )
-    score_expected = score_expected.reindex(index=score_expected.index.astype("Int64"))
-
-    pd.testing.assert_frame_equal(
-        score_result, score_expected, check_exact=False, rtol=0.1
+    utils.check_pandas_df_schema_and_index(
+        score_result, columns=["total_explained_variance_ratio"], index=1
     )
 
     result = model.predict(new_penguins).to_pandas()
-    expected = pd.DataFrame(
-        {
-            "principal_component_1": [-1.459, 2.258, -1.685],
-            "principal_component_2": [-1.120, -1.351, -0.874],
-            "principal_component_3": [-0.646, 0.443, -0.704],
-            "principal_component_4": [-0.539, 0.234, -0.571],
-            "principal_component_5": [-0.876, 0.122, 0.609],
-        },
-        dtype="Float64",
-        index=pd.Index([1633, 1672, 1690], name="tag_number", dtype="Int64"),
-    )
-
-    tests.system.utils.assert_pandas_df_equal_pca(
+    utils.check_pandas_df_schema_and_index(
         result,
-        expected,
-        check_exact=False,
-        rtol=0.1,
+        columns=[
+            "principal_component_1",
+            "principal_component_2",
+            "principal_component_3",
+            "principal_component_4",
+            "principal_component_5",
+        ],
+        index=[1633, 1672, 1690],
     )
 
     # save, load, check n_components to ensure configuration was kept

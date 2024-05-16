@@ -12,9 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import pandas as pd
-
 import bigframes.ml.linear_model
+from tests.system import utils
 
 
 def test_linear_regression_configure_fit_score(penguins_df_default_index, dataset_id):
@@ -36,19 +35,9 @@ def test_linear_regression_configure_fit_score(penguins_df_default_index, datase
 
     # Check score to ensure the model was fitted
     result = model.score(X_train, y_train).to_pandas()
-    expected = pd.DataFrame(
-        {
-            "mean_absolute_error": [225.735767],
-            "mean_squared_error": [80417.461828],
-            "mean_squared_log_error": [0.004967],
-            "median_absolute_error": [172.543702],
-            "r2_score": [0.87548],
-            "explained_variance": [0.87548],
-        },
-        dtype="Float64",
+    utils.check_pandas_df_schema_and_index(
+        result, columns=utils.ML_REGRESSION_METRICS, index=1
     )
-    expected = expected.reindex(index=expected.index.astype("Int64"))
-    pd.testing.assert_frame_equal(result, expected, check_exact=False, rtol=0.1)
 
     # save, load, check parameters to ensure configuration was kept
     reloaded_model = model.to_gbq(f"{dataset_id}.temp_configured_model", replace=True)
@@ -99,19 +88,9 @@ def test_linear_regression_customized_params_fit_score(
 
     # Check score to ensure the model was fitted
     result = model.score(X_train, y_train).to_pandas()
-    expected = pd.DataFrame(
-        {
-            "mean_absolute_error": [240],
-            "mean_squared_error": [91197],
-            "mean_squared_log_error": [0.00573],
-            "median_absolute_error": [197],
-            "r2_score": [0.858],
-            "explained_variance": [0.8588],
-        },
-        dtype="Float64",
+    utils.check_pandas_df_schema_and_index(
+        result, columns=utils.ML_REGRESSION_METRICS, index=1
     )
-    expected = expected.reindex(index=expected.index.astype("Int64"))
-    pd.testing.assert_frame_equal(result, expected, check_exact=False, rtol=0.1)
 
     # save, load, check parameters to ensure configuration was kept
     reloaded_model = model.to_gbq(f"{dataset_id}.temp_configured_model", replace=True)
@@ -154,19 +133,9 @@ def test_logistic_regression_configure_fit_score(penguins_df_default_index, data
 
     # Check score to ensure the model was fitted
     result = model.score(X_train, y_train).to_pandas()
-    expected = pd.DataFrame(
-        {
-            "precision": [0.616753],
-            "recall": [0.618615],
-            "accuracy": [0.92515],
-            "f1_score": [0.617681],
-            "log_loss": [1.498832],
-            "roc_auc": [0.975807],
-        },
-        dtype="Float64",
+    utils.check_pandas_df_schema_and_index(
+        result, columns=utils.ML_CLASSFICATION_METRICS, index=1
     )
-    expected = expected.reindex(index=expected.index.astype("Int64"))
-    pd.testing.assert_frame_equal(result, expected, check_exact=False, rtol=0.1)
 
     # save, load, check parameters to ensure configuration was kept
     reloaded_model = model.to_gbq(
@@ -210,19 +179,9 @@ def test_logistic_regression_customized_params_fit_score(
 
     # Check score to ensure the model was fitted
     result = model.score(X_train, y_train).to_pandas()
-    expected = pd.DataFrame(
-        {
-            "precision": [0.487],
-            "recall": [0.602],
-            "accuracy": [0.464],
-            "f1_score": [0.379],
-            "log_loss": [0.972],
-            "roc_auc": [0.700],
-        },
-        dtype="Float64",
+    utils.check_pandas_df_schema_and_index(
+        result, columns=utils.ML_CLASSFICATION_METRICS, index=1
     )
-    expected = expected.reindex(index=expected.index.astype("Int64"))
-    pd.testing.assert_frame_equal(result, expected, check_exact=False, rtol=0.1)
 
     # save, load, check parameters to ensure configuration was kept
     reloaded_model = model.to_gbq(

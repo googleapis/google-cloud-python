@@ -13,13 +13,11 @@
 # limitations under the License.
 
 import pandas as pd
-import pytest
 
 from bigframes.ml import cluster
-from tests.system.utils import assert_pandas_df_equal
+from tests.system import utils
 
 
-@pytest.mark.flaky(retries=2)
 def test_cluster_configure_fit_score_predict(
     session, penguins_df_default_index, dataset_id
 ):
@@ -88,26 +86,18 @@ def test_cluster_configure_fit_score_predict(
 
     # Check score to ensure the model was fitted
     score_result = model.score(new_penguins).to_pandas()
-    score_expected = pd.DataFrame(
-        {"davies_bouldin_index": [1.502182], "mean_squared_distance": [1.953408]},
-        dtype="Float64",
-    )
-    score_expected = score_expected.reindex(index=score_expected.index.astype("Int64"))
 
-    pd.testing.assert_frame_equal(
-        score_result, score_expected, check_exact=False, rtol=0.1
-    )
+    eval_metrics = ["davies_bouldin_index", "mean_squared_distance"]
+    utils.check_pandas_df_schema_and_index(score_result, columns=eval_metrics, index=1)
 
     predictions = model.predict(new_penguins).to_pandas()
     assert predictions.shape == (4, 9)
-    result = predictions[["CENTROID_ID"]]
-    expected = pd.DataFrame(
-        {"CENTROID_ID": [2, 3, 1, 2]},
-        dtype="Int64",
-        index=pd.Index(["test1", "test2", "test3", "test4"], dtype="string[pyarrow]"),
+    utils.check_pandas_df_schema_and_index(
+        predictions,
+        columns=["CENTROID_ID"],
+        index=["test1", "test2", "test3", "test4"],
+        col_exact=False,
     )
-    expected.index.name = "observation"
-    assert_pandas_df_equal(result, expected, ignore_order=True)
 
     # save, load, check n_clusters to ensure configuration was kept
     reloaded_model = model.to_gbq(

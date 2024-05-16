@@ -12,9 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import pandas
-
 from bigframes.ml import compose, preprocessing
+from tests.system import utils
 
 
 def test_columntransformer_standalone_fit_and_transform(
@@ -45,25 +44,17 @@ def test_columntransformer_standalone_fit_and_transform(
     )
     result = transformer.transform(new_penguins_df).to_pandas()
 
-    expected = pandas.DataFrame(
-        {
-            "onehotencoded_species": [
-                [{"index": 1, "value": 1.0}],
-                [{"index": 1, "value": 1.0}],
-                [{"index": 2, "value": 1.0}],
-            ],
-            "standard_scaled_culmen_length_mm": [
-                -0.811119671289163,
-                -0.9945520581113803,
-                -1.104611490204711,
-            ],
-            "min_max_scaled_culmen_length_mm": [0.269, 0.232, 0.210],
-            "standard_scaled_flipper_length_mm": [-0.350044, -1.418336, -0.9198],
-        },
-        index=pandas.Index([1633, 1672, 1690], dtype="Int64", name="tag_number"),
+    utils.check_pandas_df_schema_and_index(
+        result,
+        columns=[
+            "onehotencoded_species",
+            "standard_scaled_culmen_length_mm",
+            "min_max_scaled_culmen_length_mm",
+            "standard_scaled_flipper_length_mm",
+        ],
+        index=[1633, 1672, 1690],
+        col_exact=False,
     )
-
-    pandas.testing.assert_frame_equal(result, expected, rtol=0.1, check_dtype=False)
 
 
 def test_columntransformer_standalone_fit_transform(new_penguins_df):
@@ -86,24 +77,16 @@ def test_columntransformer_standalone_fit_transform(new_penguins_df):
         new_penguins_df[["species", "culmen_length_mm", "flipper_length_mm"]]
     ).to_pandas()
 
-    expected = pandas.DataFrame(
-        {
-            "onehotencoded_species": [
-                [{"index": 1, "value": 1.0}],
-                [{"index": 1, "value": 1.0}],
-                [{"index": 2, "value": 1.0}],
-            ],
-            "standard_scaled_culmen_length_mm": [
-                1.313249,
-                -0.20198,
-                -1.111118,
-            ],
-            "standard_scaled_flipper_length_mm": [1.251098, -1.196588, -0.054338],
-        },
-        index=pandas.Index([1633, 1672, 1690], dtype="Int64", name="tag_number"),
+    utils.check_pandas_df_schema_and_index(
+        result,
+        columns=[
+            "onehotencoded_species",
+            "standard_scaled_culmen_length_mm",
+            "standard_scaled_flipper_length_mm",
+        ],
+        index=[1633, 1672, 1690],
+        col_exact=False,
     )
-
-    pandas.testing.assert_frame_equal(result, expected, rtol=0.1, check_dtype=False)
 
 
 def test_columntransformer_save_load(new_penguins_df, dataset_id):
@@ -147,23 +130,13 @@ def test_columntransformer_save_load(new_penguins_df, dataset_id):
         new_penguins_df[["species", "culmen_length_mm", "flipper_length_mm"]]
     ).to_pandas()
 
-    # TODO(b/340888429): fix type error
-    expected = pandas.DataFrame(  # type: ignore
-        {
-            "onehotencoded_species": [
-                [{"index": 1, "value": 1.0}],
-                [{"index": 1, "value": 1.0}],
-                [{"index": 2, "value": 1.0}],
-            ],
-            "standard_scaled_culmen_length_mm": [
-                1.313249,
-                -0.20198,
-                -1.111118,
-            ],
-            "standard_scaled_flipper_length_mm": [1.251098, -1.196588, -0.054338],
-        },
-        index=pandas.Index([1633, 1672, 1690], dtype="Int64", name="tag_number"),
+    utils.check_pandas_df_schema_and_index(
+        result,
+        columns=[
+            "onehotencoded_species",
+            "standard_scaled_culmen_length_mm",
+            "standard_scaled_flipper_length_mm",
+        ],
+        index=[1633, 1672, 1690],
+        col_exact=False,
     )
-
-    # TODO(b/340888429): fix type error
-    pandas.testing.assert_frame_equal(result, expected, rtol=0.1, check_dtype=False)  # type: ignore

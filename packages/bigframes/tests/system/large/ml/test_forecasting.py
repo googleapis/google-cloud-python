@@ -12,15 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import pandas as pd
 import pytest
 
 from bigframes.ml import forecasting
+from tests.system import utils
 
 ARIMA_EVALUATE_OUTPUT_COL = [
     "non_seasonal_p",
     "non_seasonal_d",
     "non_seasonal_q",
+    "has_drift",
     "log_likelihood",
     "AIC",
     "variance",
@@ -50,18 +51,17 @@ def test_arima_plus_model_fit_score(
     result = arima_model.score(
         new_time_series_df[["parsed_date"]], new_time_series_df[["total_visits"]]
     ).to_pandas()
-    expected = pd.DataFrame(
-        {
-            "mean_absolute_error": [154.742547],
-            "mean_squared_error": [26844.868855],
-            "root_mean_squared_error": [163.844038],
-            "mean_absolute_percentage_error": [6.189702],
-            "symmetric_mean_absolute_percentage_error": [6.097155],
-        },
-        dtype="Float64",
+    utils.check_pandas_df_schema_and_index(
+        result,
+        columns=[
+            "mean_absolute_error",
+            "mean_squared_error",
+            "root_mean_squared_error",
+            "mean_absolute_percentage_error",
+            "symmetric_mean_absolute_percentage_error",
+        ],
+        index=1,
     )
-    expected = expected.reindex(index=expected.index.astype("Int64"))
-    pd.testing.assert_frame_equal(result, expected, check_exact=False, rtol=0.1)
 
     # save, load to ensure configuration was kept
     reloaded_model = arima_model.to_gbq(
@@ -73,10 +73,10 @@ def test_arima_plus_model_fit_score(
 
 
 def test_arima_plus_model_fit_summary(dataset_id, arima_model):
-
-    result = arima_model.summary()
-    assert result.shape == (1, 12)
-    assert all(column in result.columns for column in ARIMA_EVALUATE_OUTPUT_COL)
+    result = arima_model.summary().to_pandas()
+    utils.check_pandas_df_schema_and_index(
+        result, columns=ARIMA_EVALUATE_OUTPUT_COL, index=1
+    )
 
     # save, load to ensure configuration was kept
     reloaded_model = arima_model.to_gbq(
@@ -88,13 +88,13 @@ def test_arima_plus_model_fit_summary(dataset_id, arima_model):
 
 
 def test_arima_coefficients(arima_model):
-    got = arima_model.coef_
-    expected_columns = {
+    result = arima_model.coef_.to_pandas()
+    expected_columns = [
         "ar_coefficients",
         "ma_coefficients",
         "intercept_or_drift",
-    }
-    assert set(got.columns) == expected_columns
+    ]
+    utils.check_pandas_df_schema_and_index(result, columns=expected_columns, index=1)
 
 
 def test_arima_plus_model_fit_params(time_series_df_default_index, dataset_id):

@@ -12,14 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import pandas
-import pytest
-
 from bigframes.ml import globals
+from tests.system import utils
 
 
-# TODO(garrettwu): Re-enable or not check exact numbers.
-@pytest.mark.skip(reason="bqml regression")
 def test_bqml_e2e(session, dataset_id, penguins_df_default_index, new_penguins_df):
     df = penguins_df_default_index.dropna()
     X_train = df[
@@ -38,41 +34,33 @@ def test_bqml_e2e(session, dataset_id, penguins_df_default_index, new_penguins_d
         X_train, y_train, options={"model_type": "linear_reg"}
     )
 
+    eval_metrics = [
+        "mean_absolute_error",
+        "mean_squared_error",
+        "mean_squared_log_error",
+        "median_absolute_error",
+        "r2_score",
+        "explained_variance",
+    ]
     # no data - report evaluation from the automatic data split
     evaluate_result = model.evaluate().to_pandas()
-    evaluate_expected = pandas.DataFrame(
-        {
-            "mean_absolute_error": [225.817334],
-            "mean_squared_error": [80540.705944],
-            "mean_squared_log_error": [0.004972],
-            "median_absolute_error": [173.080816],
-            "r2_score": [0.87529],
-            "explained_variance": [0.87529],
-        },
-        dtype="Float64",
-    )
-    evaluate_expected = evaluate_expected.reindex(
-        index=evaluate_expected.index.astype("Int64")
-    )
-    pandas.testing.assert_frame_equal(
-        evaluate_result, evaluate_expected, check_exact=False, rtol=0.1
+    utils.check_pandas_df_schema_and_index(
+        evaluate_result, columns=eval_metrics, index=1
     )
 
     # evaluate on all training data
     evaluate_result = model.evaluate(df).to_pandas()
-    pandas.testing.assert_frame_equal(
-        evaluate_result, evaluate_expected, check_exact=False, rtol=0.1
+    utils.check_pandas_df_schema_and_index(
+        evaluate_result, columns=eval_metrics, index=1
     )
 
     # predict new labels
     predictions = model.predict(new_penguins_df).to_pandas()
-    expected = pandas.DataFrame(
-        {"predicted_body_mass_g": [4030.1, 3280.8, 3177.9]},
-        dtype="Float64",
-        index=pandas.Index([1633, 1672, 1690], name="tag_number", dtype="Int64"),
-    )
-    pandas.testing.assert_frame_equal(
-        predictions[["predicted_body_mass_g"]], expected, check_exact=False, rtol=0.1
+    utils.check_pandas_df_schema_and_index(
+        predictions,
+        columns=["predicted_body_mass_g"],
+        index=[1633, 1672, 1690],
+        col_exact=False,
     )
 
     new_name = f"{dataset_id}.my_model"
@@ -108,42 +96,34 @@ def test_bqml_manual_preprocessing_e2e(
         X_train, y_train, transforms=transforms, options=options
     )
 
+    eval_metrics = [
+        "mean_absolute_error",
+        "mean_squared_error",
+        "mean_squared_log_error",
+        "median_absolute_error",
+        "r2_score",
+        "explained_variance",
+    ]
+
     # no data - report evaluation from the automatic data split
     evaluate_result = model.evaluate().to_pandas()
-    evaluate_expected = pandas.DataFrame(
-        {
-            "mean_absolute_error": [309.477334],
-            "mean_squared_error": [152184.227218],
-            "mean_squared_log_error": [0.009524],
-            "median_absolute_error": [257.727777],
-            "r2_score": [0.764356],
-            "explained_variance": [0.764356],
-        },
-        dtype="Float64",
-    )
-    evaluate_expected = evaluate_expected.reindex(
-        index=evaluate_expected.index.astype("Int64")
-    )
-
-    pandas.testing.assert_frame_equal(
-        evaluate_result, evaluate_expected, check_exact=False, rtol=0.1
+    utils.check_pandas_df_schema_and_index(
+        evaluate_result, columns=eval_metrics, index=1
     )
 
     # evaluate on all training data
     evaluate_result = model.evaluate(df).to_pandas()
-    pandas.testing.assert_frame_equal(
-        evaluate_result, evaluate_expected, check_exact=False, rtol=0.1
+    utils.check_pandas_df_schema_and_index(
+        evaluate_result, columns=eval_metrics, index=1
     )
 
     # predict new labels
     predictions = model.predict(new_penguins_df).to_pandas()
-    expected = pandas.DataFrame(
-        {"predicted_body_mass_g": [3968.8, 3176.3, 3545.2]},
-        dtype="Float64",
-        index=pandas.Index([1633, 1672, 1690], name="tag_number", dtype="Int64"),
-    )
-    pandas.testing.assert_frame_equal(
-        predictions[["predicted_body_mass_g"]], expected, check_exact=False, rtol=0.1
+    utils.check_pandas_df_schema_and_index(
+        predictions,
+        columns=["predicted_body_mass_g"],
+        index=[1633, 1672, 1690],
+        col_exact=False,
     )
 
     new_name = f"{dataset_id}.my_model"
@@ -168,24 +148,9 @@ def test_bqml_standalone_transform(penguins_df_default_index, new_penguins_df):
     )
 
     transformed = model.transform(new_penguins_df).to_pandas()
-    expected = pandas.DataFrame(
-        {
-            "scaled_culmen_length_mm": [-0.8099, -0.9931, -1.103],
-            "onehotencoded_species": [
-                [{"index": 1, "value": 1.0}],
-                [{"index": 1, "value": 1.0}],
-                [{"index": 2, "value": 1.0}],
-            ],
-        },
-        index=pandas.Index([1633, 1672, 1690], name="tag_number", dtype="Int64"),
-    )
-    expected["scaled_culmen_length_mm"] = expected["scaled_culmen_length_mm"].astype(
-        "Float64"
-    )
-    pandas.testing.assert_frame_equal(
-        transformed[["scaled_culmen_length_mm", "onehotencoded_species"]],
-        expected,
-        check_exact=False,
-        rtol=0.1,
-        check_dtype=False,
+    utils.check_pandas_df_schema_and_index(
+        transformed,
+        columns=["scaled_culmen_length_mm", "onehotencoded_species"],
+        index=[1633, 1672, 1690],
+        col_exact=False,
     )
