@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.6.4](https://github.com/googleapis/google-cloud-python/compare/google-ai-generativelanguage-v0.6.3...google-ai-generativelanguage-v0.6.4) (2024-05-16)
+
+
+### Features
+
+* **v1:** Add generate_content_request to CountTokensRequest ([e5dd7ed](https://github.com/googleapis/google-cloud-python/commit/e5dd7eddcea1f3f22a023a42e0cc80d93a06ccfc))
+* **v1:** Add usage metadata to GenerateContentResponse ([e5dd7ed](https://github.com/googleapis/google-cloud-python/commit/e5dd7eddcea1f3f22a023a42e0cc80d93a06ccfc))
+* **v1beta:** Add video metadata to files API ([e5dd7ed](https://github.com/googleapis/google-cloud-python/commit/e5dd7eddcea1f3f22a023a42e0cc80d93a06ccfc))
+* **v1beta:** Update timeouts for generate content ([e5dd7ed](https://github.com/googleapis/google-cloud-python/commit/e5dd7eddcea1f3f22a023a42e0cc80d93a06ccfc))
+* **v1:** Update timeouts ([e5dd7ed](https://github.com/googleapis/google-cloud-python/commit/e5dd7eddcea1f3f22a023a42e0cc80d93a06ccfc))
+
+
+### Documentation
+
+* **v1beta:** Minor updates ([e5dd7ed](https://github.com/googleapis/google-cloud-python/commit/e5dd7eddcea1f3f22a023a42e0cc80d93a06ccfc))
+* **v1:** Minor updates ([e5dd7ed](https://github.com/googleapis/google-cloud-python/commit/e5dd7eddcea1f3f22a023a42e0cc80d93a06ccfc))
+
 ## [0.6.3](https://github.com/googleapis/google-cloud-python/compare/google-ai-generativelanguage-v0.6.2...google-ai-generativelanguage-v0.6.3) (2024-05-07)
 
 
