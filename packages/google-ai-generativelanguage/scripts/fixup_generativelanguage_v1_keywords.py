@@ -40,7 +40,7 @@ class generativelanguageCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
         'batch_embed_contents': ('model', 'requests', ),
-        'count_tokens': ('model', 'contents', ),
+        'count_tokens': ('model', 'contents', 'generate_content_request', ),
         'embed_content': ('model', 'content', 'task_type', 'title', 'output_dimensionality', ),
         'generate_content': ('model', 'contents', 'safety_settings', 'generation_config', ),
         'get_model': ('name', ),

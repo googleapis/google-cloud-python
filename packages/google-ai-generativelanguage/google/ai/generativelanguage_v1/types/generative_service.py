@@ -273,6 +273,9 @@ class GenerateContentResponse(proto.Message):
         prompt_feedback (google.ai.generativelanguage_v1.types.GenerateContentResponse.PromptFeedback):
             Returns the prompt's feedback related to the
             content filters.
+        usage_metadata (google.ai.generativelanguage_v1.types.GenerateContentResponse.UsageMetadata):
+            Output only. Metadata on the generation
+            requests' token usage.
     """
 
     class PromptFeedback(proto.Message):
@@ -319,6 +322,33 @@ class GenerateContentResponse(proto.Message):
             message=safety.SafetyRating,
         )
 
+    class UsageMetadata(proto.Message):
+        r"""Metadata on the generation request's token usage.
+
+        Attributes:
+            prompt_token_count (int):
+                Number of tokens in the prompt.
+            candidates_token_count (int):
+                Total number of tokens across the generated
+                candidates.
+            total_token_count (int):
+                Total token count for the generation request
+                (prompt + candidates).
+        """
+
+        prompt_token_count: int = proto.Field(
+            proto.INT32,
+            number=1,
+        )
+        candidates_token_count: int = proto.Field(
+            proto.INT32,
+            number=2,
+        )
+        total_token_count: int = proto.Field(
+            proto.INT32,
+            number=3,
+        )
+
     candidates: MutableSequence["Candidate"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
@@ -328,6 +358,11 @@ class GenerateContentResponse(proto.Message):
         proto.MESSAGE,
         number=2,
         message=PromptFeedback,
+    )
+    usage_metadata: UsageMetadata = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=UsageMetadata,
     )
 
 
@@ -458,8 +493,9 @@ class EmbedContentRequest(proto.Message):
         output_dimensionality (int):
             Optional. Optional reduced dimension for the output
             embedding. If set, excessive values in the output embedding
-            are truncated from the end. Supported by
-            ``models/text-embedding-latest``.
+            are truncated from the end. Supported by newer models since
+            2024, and the earlier model (``models/embedding-001``)
+            cannot specify this value.
 
             This field is a member of `oneof`_ ``_output_dimensionality``.
     """
@@ -584,8 +620,12 @@ class CountTokensRequest(proto.Message):
 
             Format: ``models/{model}``
         contents (MutableSequence[google.ai.generativelanguage_v1.types.Content]):
-            Required. The input given to the model as a
-            prompt.
+            Optional. The input given to the model as a prompt. This
+            field is ignored when ``generate_content_request`` is set.
+        generate_content_request (google.ai.generativelanguage_v1.types.GenerateContentRequest):
+            Optional. The overall input given to the
+            model. CountTokens will count prompt, function
+            calling, etc.
     """
 
     model: str = proto.Field(
@@ -596,6 +636,11 @@ class CountTokensRequest(proto.Message):
         proto.MESSAGE,
         number=2,
         message=gag_content.Content,
+    )
+    generate_content_request: "GenerateContentRequest" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="GenerateContentRequest",
     )
 
 

@@ -247,6 +247,12 @@ class GenerativeServiceGrpcTransport(GenerativeServiceTransport):
         Generates a response from the model given an input
         ``GenerateContentRequest``.
 
+        Input capabilities differ between models, including tuned
+        models. See the `model
+        guide <https://ai.google.dev/models/gemini>`__ and `tuning
+        guide <https://ai.google.dev/docs/model_tuning_guidance>`__ for
+        details.
+
         Returns:
             Callable[[~.GenerateContentRequest],
                     ~.GenerateContentResponse]:
