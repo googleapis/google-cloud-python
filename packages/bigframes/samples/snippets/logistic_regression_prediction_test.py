@@ -80,7 +80,21 @@ def test_logistic_regression_prediction(random_model_id: str) -> None:
     X = training_data.drop(columns=["income_bracket", "dataframe"])
     y = training_data["income_bracket"]
 
-    census_model = bigframes.ml.linear_model.LogisticRegression()
+    census_model = bigframes.ml.linear_model.LogisticRegression(
+        # Balance the class labels in the training data by setting
+        # class_weight="balanced".
+        #
+        # By default, the training data is unweighted. If the labels
+        # in the training data are imbalanced, the model may learn to
+        # predict the most popular class of labels more heavily. In
+        # this case, most of the respondents in the dataset are in the
+        # lower income bracket. This may lead to a model that predicts
+        # the lower income bracket too heavily. Class weights balance
+        # the class labels by calculating the weights for each class in
+        # inverse proportion to the frequency of that class.
+        class_weight="balanced",
+        max_iterations=15,
+    )
     census_model.fit(X, y)
 
     census_model.to_gbq(
