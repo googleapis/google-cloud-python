@@ -5,6 +5,20 @@
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
 
+## [3.23.0](https://github.com/googleapis/python-bigquery/compare/v3.22.0...v3.23.0) (2024-05-16)
+
+
+### Features
+
+* Adds timer decorator to facilitate debugging ([#1917](https://github.com/googleapis/python-bigquery/issues/1917)) ([ea750e0](https://github.com/googleapis/python-bigquery/commit/ea750e0248473b6207b8517aa7ea1cf4e19bccf2))
+* Support insertAll for range ([#1909](https://github.com/googleapis/python-bigquery/issues/1909)) ([74e75e8](https://github.com/googleapis/python-bigquery/commit/74e75e89ce3a5ac18112b2c1c33248445ff072e4))
+
+
+### Bug Fixes
+
+* Add pyarrow version check for range support ([#1914](https://github.com/googleapis/python-bigquery/issues/1914)) ([a86d7b9](https://github.com/googleapis/python-bigquery/commit/a86d7b96813f67fea28b46c5252416222edca9a6))
+* Edit presubmit for to simplify configuration ([#1915](https://github.com/googleapis/python-bigquery/issues/1915)) ([b739596](https://github.com/googleapis/python-bigquery/commit/b739596f37b8c00b375cc811c316b618097d761a))
+
 ## [3.22.0](https://github.com/googleapis/python-bigquery/compare/v3.21.0...v3.22.0) (2024-04-19)
 
 
