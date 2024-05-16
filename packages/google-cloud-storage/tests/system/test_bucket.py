@@ -410,9 +410,9 @@ def test_bucket_copy_blob_w_metageneration_match(
 ):
     payload = b"DEADBEEF"
     bucket_name = _helpers.unique_name("generation-match")
-    created = _helpers.retry_429_503(storage_client.create_bucket)(
-        bucket_name, requester_pays=True
-    )
+    bucket = storage_client.bucket(bucket_name)
+    bucket.requester_pays = True
+    created = _helpers.retry_429_503(storage_client.create_bucket)(bucket)
     buckets_to_delete.append(created)
     assert created.name == bucket_name
 

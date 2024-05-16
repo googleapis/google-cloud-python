@@ -761,7 +761,7 @@ def test_blob_upload_download_crc32_md5_hash(
 
     download_blob = shared_bucket.blob("MyBuffer")
 
-    assert download_blob.download_as_string() == payload
+    assert download_blob.download_as_bytes() == payload
     assert download_blob.crc32c == blob.crc32c
     assert download_blob.md5_hash == blob.md5_hash
 
