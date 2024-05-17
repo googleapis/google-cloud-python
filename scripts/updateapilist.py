@@ -16,8 +16,12 @@
 
 import os
 import requests
+import logging
 from typing import List, Optional
 from dataclasses import dataclass
+
+# Configure logging to output messages to console
+logging.basicConfig(level=logging.INFO)  # Set the desired logging level
 
 import re
 
@@ -100,12 +104,16 @@ class CloudClient:
     
     @property
     def saved_search_response_text(self):
-        id = self.saved_search_id
-        if id:
-            url = f"{BASE_ISSUE_TRACKER}/action/saved_searches/{id}"
-            response = requests.get(url=url)
-            if response.status_code != requests.codes.ok:
+        saved_search_id = self.saved_search_id
+        if saved_search_id:
+            url = f"{BASE_ISSUE_TRACKER}/action/saved_searches/{saved_search_id}"
+            try:
+                response = requests.get(url=url)
+                response.raise_for_status()
+            except requests.RequestException as e:
+                logging.error(f"Request failed for URL {url}: {e}")
                 return None
+            
             return response.text
         return None
 
@@ -131,6 +139,7 @@ class CloudClient:
                         continue
                     if self._cached_component_id:
                         self._cached_component_id = None
+                        logging.error(f"More than one component ids found for issue tracker: {self.issue_tracker}")
                         break
                     self._cached_component_id = component_id
         self._is_component_id_computed = True
@@ -186,10 +195,18 @@ class Extractor:
     def client_for_repo(self, repo_slug) -> Optional[CloudClient]:
         path = self.path_format.format(repo_slug=repo_slug)
         url = f"{RAW_CONTENT_BASE_URL}/{path}/{REPO_METADATA_FILENAME}"
-        response = requests.get(url)
-        if response.status_code != requests.codes.ok:
-            return
+        try:
+            response = requests.get(url)
+            response.raise_for_status()
+        except requests.RequestException as e:
+            logging.error(f"Request failed for URL {url}: {e}")
+            return None
 
+        try:
+            metadata = response.json()
+        except ValueError as e:
+            logging.error(f"JSON decoding failed for URL {url}: {e}")
+            return None
         return CloudClient(response.json())
     
     def get_clients_from_batch_response(self, response_json) -> List[CloudClient]:
@@ -276,29 +293,51 @@ def mono_repo_clients(token: str) -> List[CloudClient]:
     # all mono repo clients
     url = f"{BASE_API}/repos/{MONO_REPO}/contents/packages"
     headers = {'Authorization': f'token {token}'}
-    response = requests.get(url=url, headers=headers)
+    try:
+        response = requests.get(url=url, headers=headers)
+        response.raise_for_status()
+        response_json = response.json()
+    except requests.RequestException as e:
+        logging.error(f"Request failed for URL {url}: {e}")
+        return []
+    except ValueError as e:
+        logging.error(f"Failed to decode JSON response from URL {url}: {e}")
+        return []
+
     mono_repo_extractor = Extractor(path_format=MONO_REPO_PATH_FORMAT, response_key=PACKAGE_RESPONSE_KEY)
-    
-    return mono_repo_extractor.get_clients_from_batch_response(response.json())
+    return mono_repo_extractor.get_clients_from_batch_response(response_json)
 
 
 def split_repo_clients(token: str) -> List[CloudClient]:
-    first_request = True
-    while first_request or 'next' in response.links:
-        if first_request:
-            url = f"{BASE_API}/search/repositories?page=1"
-            first_request = False
-        else:
-            url = response.links['next']['url']
-        headers = {'Authorization': f'token {token}'}
-        params = {'per_page': 100, "q": "python- in:name org:googleapis"}
-        response = requests.get(url=url, params=params, headers=headers)
-        repositories = response.json().get("items", [])
+    clients = []
+    url = f"{BASE_API}/search/repositories?page=1"
+    headers = {'Authorization': f'token {token}'}
+    params = {'per_page': 100, "q": "python- in:name org:googleapis"}
+
+    while url:
+        try:
+            response = requests.get(url=url, params=params, headers=headers)
+            response.raise_for_status()
+            response_json = response.json()
+        except requests.RequestException as e:
+            logging.error(f"RequestException failed for URL {url}: {e}")
+            break
+        except ValueError as e:
+            logging.error(f"Failed to decode JSON response from URL {url}: {e}")
+            break
+
+        repositories = response_json.get("items", [])
         if len(repositories) == 0:
             break
 
         split_repo_extractor = Extractor(path_format=SPLIT_REPO_PATH_FORMAT, response_key=REPO_RESPONSE_KEY)
-        return split_repo_extractor.get_clients_from_batch_response(repositories)
+        clients.extend(split_repo_extractor.get_clients_from_batch_response(repositories))
+
+        # Check for the 'next' link in the response headers for pagination
+        next_link = response.links.get('next', {}).get('url')
+        url = next_link if next_link else None
+
+        return clients
 
 
 def get_token():
