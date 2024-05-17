@@ -12,7 +12,64 @@ permissions:
   contents: read
 
 jobs:
+  # The two jobs "docs" and "docsfx" are marked as required checks
+  # (and reset as such periodically) elsewhere in our
+  # automation. Since we don't want to block non-release PRs on docs
+  # failures, we want these checks to always show up as succeeded for
+  # those PRs. For release PRs, we do want the checks to run and block
+  # merge on failure.
+  #
+  # We accomplish this by using an "if:" conditional. Jobs
+  # thus skipped via a conditional (i.e. a false condition) show as
+  # having succeeded. See:
+  # https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/collaborating-on-repositories-with-code-quality-features/troubleshooting-required-status-checks#handling-skipped-but-required-checks
+  #
+  # Since we want advance notice of docs errors, we also have two
+  # corresponding non-required checks, the jobs "docs-warnings" and
+  # "docfx-warnings", that run for all non-release PRs (i.e., when the
+  # "docs" and "docfx" jobs don't run).
+  #
+  #
+  # PLEASE ENSURE THE FOLLOWING AT ALL TIMES:
+  #
+  # - the "*-warnings" checks remain NON-REQUIRED in the repo
+  #   settings.
+  #
+  # - the steps for the jobs "docs" and "docfx" are identical to the
+  #   ones in "docs-warnings" and "docfx-warnings", respectively.  We
+  #   will be able to avoid config duplication once GitHub actions
+  #   support YAML anchors (see
+  #   https://github.com/actions/runner/issues/1182)
   docs:
+    if: github.actor == 'release-please'
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      # Use a fetch-depth of 2 to avoid error `fatal: origin/main...HEAD: no merge base`
+      # See https://github.com/googleapis/google-cloud-python/issues/12013
+      # and https://github.com/actions/checkout#checkout-head.
+      with:
+        fetch-depth: 2
+    - name: Setup Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.10"
+    - name: Install nox
+      run: |
+        python -m pip install --upgrade setuptools pip wheel
+        python -m pip install nox
+    - name: Run docs
+      env:
+        BUILD_TYPE: presubmit
+        TEST_TYPE: docs
+        PY_VERSION: "3.10"
+      run: |
+        ci/run_conditional_tests.sh
+  docs-warnings:    
+    if: github.actor != 'release-please'
+    name: "Docs warnings: will block release"
+    continue-on-error: true
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -38,6 +95,35 @@ jobs:
       run: |
         ci/run_conditional_tests.sh
   docfx:
+    if: github.actor == 'release-please'
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      # Use a fetch-depth of 2 to avoid error `fatal: origin/main...HEAD: no merge base`
+      # See https://github.com/googleapis/google-cloud-python/issues/12013
+      # and https://github.com/actions/checkout#checkout-head.
+      with:
+        fetch-depth: 2
+    - name: Setup Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.10"
+    - name: Install nox
+      run: |
+        python -m pip install --upgrade setuptools pip wheel
+        python -m pip install nox
+    - name: Run docfx
+      env:
+        BUILD_TYPE: presubmit
+        TEST_TYPE: docfx
+        PY_VERSION: "3.10"
+      run: |
+        ci/run_conditional_tests.sh
+  docfx-warnings:
+    if: github.actor != 'release-please'
+    name: "Docfx warnings: will block release"
+    continue-on-error: true
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
