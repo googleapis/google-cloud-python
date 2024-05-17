@@ -55,5 +55,7 @@ Consider using [Google Cloud Customer Care](https://cloud.google.com/support/?hl
     -   For more information on the difference between Cloud Client Libraries and Google API Client Libraries, see [Client Libraries Explained](https://cloud.google.com/apis/docs/client-libraries-explained).
 -   Go to the correct repository, as identified above
     1.  Search for issues already opened (in this repository, those would be in <https://github.com/googleapis/google-cloud-python/issues>). If you find your problem already filed, just add any more context or details that seem appropriate.
-    2.  If your problem has not been previously filed, file an issue. If you're filing  in this repository, choose either the [bug report](https://github.com/vchudnov-g/google-cloud-python/issues/new?assignees=&labels=&projects=&template=bug_report.md) or [feature request](https://github.com/vchudnov-g/google-cloud-python/issues/new?assignees=&labels=&projects=&template=feature_request.md) template, fill in the details, and submit the issue with an informative title!
+    2.  If your problem has not been previously filed, file an issue. If you're filing in this repository, go [here](https://github.com/vchudnov-g/google-cloud-python/issues/new/choose) to select the issue type, fill in the details, and submit with an informative title!
+    
+Thank you for filing issues! They help us make our products better.
 
