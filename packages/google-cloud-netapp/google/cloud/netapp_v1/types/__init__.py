@@ -50,7 +50,7 @@ from .backup_vault import (
     UpdateBackupVaultRequest,
 )
 from .cloud_netapp_service import OperationMetadata
-from .common import EncryptionType, ServiceLevel
+from .common import EncryptionType, LocationMetadata, ServiceLevel
 from .kms import (
     CreateKmsConfigRequest,
     DeleteKmsConfigRequest,
@@ -116,6 +116,7 @@ from .volume import (
     SimpleExportPolicyRule,
     SMBSettings,
     SnapshotPolicy,
+    TieringPolicy,
     UpdateVolumeRequest,
     Volume,
     WeeklySchedule,
@@ -151,6 +152,7 @@ __all__ = (
     "ListBackupVaultsResponse",
     "UpdateBackupVaultRequest",
     "OperationMetadata",
+    "LocationMetadata",
     "EncryptionType",
     "ServiceLevel",
     "CreateKmsConfigRequest",
@@ -204,6 +206,7 @@ __all__ = (
     "RevertVolumeRequest",
     "SimpleExportPolicyRule",
     "SnapshotPolicy",
+    "TieringPolicy",
     "UpdateVolumeRequest",
     "Volume",
     "WeeklySchedule",
