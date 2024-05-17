@@ -14,6 +14,7 @@ body:
       - label: I determined this is the correct repository in which to report this bug
         required: true
 - type: textarea
+  id: summary
   attributes:
     label: Summary of the issue
     description: Describe succinctly what you expected to happen, and what actually happened
