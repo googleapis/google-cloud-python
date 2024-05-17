@@ -64,7 +64,10 @@ GITHUB_ISSUES = "https://github.com/{repo}/issues"
 # BASE_ISSUE_TRACKER defines the base url for issue tracker.
 BASE_ISSUE_TRACKER = "https://issuetracker.google.com"
 
-# GENERIC_ISSUE_TRACKER_COMPONENT defines a generic component for issue tracker.
+# This issue-tracker component is part of some saved searches for listing API-side issues.
+# However, when we construct URLs for filing new issues (which in some cases we do by analyzing
+# the query string for a saved search),we want to ensure we DON'T file a new issue against this
+# generic component but against a more specific one.
 GENERIC_ISSUE_TRACKER_COMPONENT = "187065"
 
 
@@ -83,6 +86,8 @@ class CloudClient:
         self.release_level = repo["release_level"]
         self.distribution_name = repo["distribution_name"]
         self.issue_tracker = repo.get("issue_tracker")
+        self._cached_component_id = None
+        self._is_component_id_computed = False
     
     @property
     def saved_search_id(self):
@@ -106,20 +111,30 @@ class CloudClient:
 
     @property
     def issue_tracker_component_id(self):
+        if self._is_component_id_computed:
+            return self._cached_component_id
+        
         # First, check if the issue tracker is a saved search:
         query_string = self.saved_search_response_text or self.issue_tracker
         if not query_string:
-            return None
-        # Try to match 'component=' in the query string
-        query_match = re.search(r'\bcomponent=(\d+)', query_string)
-        if query_match:
-            return query_match.group(1)
-        # If not found, try to match 'componentid:' in the query string
-        query_match = re.findall(r'\bcomponentid:(\d+)', query_string)
-        for component_id in query_match:
-            if component_id != GENERIC_ISSUE_TRACKER_COMPONENT:
-                return component_id
-        return None
+            self._cached_component_id = None
+        else:
+            # Try to match 'component=' in the query string
+            query_match = re.search(r'\bcomponent=(\d+)', query_string)
+            if query_match:
+                self._cached_component_id = query_match.group(1)
+            else:
+                # If not found, try to match 'componentid:' in the query string
+                query_match = re.findall(r'\bcomponentid:(\d+)', query_string)
+                for component_id in query_match:
+                    if component_id == GENERIC_ISSUE_TRACKER_COMPONENT:
+                        continue
+                    if self._cached_component_id:
+                        self._cached_component_id = None
+                        break
+                    self._cached_component_id = component_id
+        self._is_component_id_computed = True
+        return self._cached_component_id
     
     @property
     def issue_tracker_template_id(self):
@@ -132,22 +147,25 @@ class CloudClient:
     
     @property
     def show_client_issues(self):
-        repo_path = self.repo
-        if self.repo != MONO_REPO:
-            repo_path = "googleapis/" + self.repo
-        return GITHUB_ISSUES.format(repo=repo_path)
+        return GITHUB_ISSUES.format(repo=self.repo)
     
     @property
     def file_api_issue(self):
-        link = f"{BASE_ISSUE_TRACKER}/issues/new?component={self.issue_tracker_component_id}"
-        template_id = self.issue_tracker_template_id
-        if template_id:
-            link += f"&template={template_id}"
-        return link
+        component = self.issue_tracker_component_id
+        if component:
+            link = f"{BASE_ISSUE_TRACKER}/issues/new?component={self.issue_tracker_component_id}"
+            template_id = self.issue_tracker_template_id
+            if template_id:
+                link += f"&template={template_id}"
+            return link
+        return None
     
     @property
     def show_api_issues(self):
-        return f"{BASE_ISSUE_TRACKER}/issues?q=componentid:{self.issue_tracker_component_id}"
+        component = self.issue_tracker_component_id
+        if component:
+            return f"{BASE_ISSUE_TRACKER}/issues?q=componentid:{self.issue_tracker_component_id}"
+        return None
 
     # For sorting, we want to sort by release level, then API pretty_name
     def __lt__(self, other):
@@ -209,13 +227,14 @@ def client_row(client: CloudClient) -> str:
     url = f"https://github.com/{client.repo}"
     if client.repo == MONO_REPO:
         url += f"/tree/main/packages/{client.distribution_name}"
-
+    _show_api_issues = client.show_api_issues
+    _file_api_issue = client.file_api_issue
     content_row = [
         f"   * - `{client.title} <{url}>`_\n",
         f"     - {client.release_level}\n",
         f"     - |PyPI-{client.distribution_name}|\n",
-        f"     - `API Issues <{client.show_api_issues}>`_\n" if client.issue_tracker_component_id else "     -\n",
-        f"     - `File an API Issue <{client.file_api_issue}>`_\n" if client.issue_tracker_component_id else "     -\n",
+        f"     - `API Issues <{_show_api_issues}>`_\n" if _show_api_issues else "     -\n",
+        f"     - `File an API Issue <{_file_api_issue}>`_\n" if _file_api_issue else "     -\n",
         f"     - `Client Library Issues <{client.show_client_issues}>`_\n"
     ]
 
