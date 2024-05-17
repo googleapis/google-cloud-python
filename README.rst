@@ -78,13 +78,13 @@ Libraries
      - |PyPI-google-crc32c|
      -
      -
-     - `Client Library Issues <https://github.com/googleapis/googleapis/python-crc32c/issues>`_
+     - `Client Library Issues <https://github.com/googleapis/python-crc32c/issues>`_
    * - `AI Platform <https://github.com/googleapis/python-aiplatform>`_
      - stable
      - |PyPI-google-cloud-aiplatform|
      - `API Issues <https://issuetracker.google.com/issues?q=componentid:187220>`_
      - `File an API Issue <https://issuetracker.google.com/issues/new?component=187220>`_
-     - `Client Library Issues <https://github.com/googleapis/googleapis/python-aiplatform/issues>`_
+     - `Client Library Issues <https://github.com/googleapis/python-aiplatform/issues>`_
    * - `AI Platform Notebooks <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-notebooks>`_
      - stable
      - |PyPI-google-cloud-notebooks|
@@ -156,7 +156,7 @@ Libraries
      - |PyPI-google-cloud-bigquery|
      - `API Issues <https://issuetracker.google.com/issues?q=componentid:187149>`_
      - `File an API Issue <https://issuetracker.google.com/issues/new?component=187149>`_
-     - `Client Library Issues <https://github.com/googleapis/googleapis/python-bigquery/issues>`_
+     - `Client Library Issues <https://github.com/googleapis/python-bigquery/issues>`_
    * - `BigQuery Connection <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-bigquery-connection>`_
      - stable
      - |PyPI-google-cloud-bigquery-connection|
@@ -186,13 +186,13 @@ Libraries
      - |PyPI-google-cloud-bigquery-storage|
      - `API Issues <https://issuetracker.google.com/issues?q=componentid:187149>`_
      - `File an API Issue <https://issuetracker.google.com/issues/new?component=187149>`_
-     - `Client Library Issues <https://github.com/googleapis/googleapis/python-bigquery-storage/issues>`_
+     - `Client Library Issues <https://github.com/googleapis/python-bigquery-storage/issues>`_
    * - `Bigtable <https://github.com/googleapis/python-bigtable>`_
      - stable
      - |PyPI-google-cloud-bigtable|
      - `API Issues <https://issuetracker.google.com/issues?q=componentid:187206>`_
      - `File an API Issue <https://issuetracker.google.com/issues/new?component=187206>`_
-     - `Client Library Issues <https://github.com/googleapis/googleapis/python-bigtable/issues>`_
+     - `Client Library Issues <https://github.com/googleapis/python-bigtable/issues>`_
    * - `Billing <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-billing>`_
      - stable
      - |PyPI-google-cloud-billing|
@@ -306,7 +306,7 @@ Libraries
      - |PyPI-google-cloud-datastore|
      - `API Issues <https://issuetracker.google.com/issues?q=componentid:187197>`_
      - `File an API Issue <https://issuetracker.google.com/issues/new?component=187197>`_
-     - `Client Library Issues <https://github.com/googleapis/googleapis/python-datastore/issues>`_
+     - `Client Library Issues <https://github.com/googleapis/python-datastore/issues>`_
    * - `Datastream <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-datastream>`_
      - stable
      - |PyPI-google-cloud-datastream|
@@ -366,7 +366,7 @@ Libraries
      - |PyPI-google-cloud-firestore|
      - `API Issues <https://issuetracker.google.com/issues?q=componentid:530136>`_
      - `File an API Issue <https://issuetracker.google.com/issues/new?component=530136>`_
-     - `Client Library Issues <https://github.com/googleapis/googleapis/python-firestore/issues>`_
+     - `Client Library Issues <https://github.com/googleapis/python-firestore/issues>`_
    * - `Functions <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-functions>`_
      - stable
      - |PyPI-google-cloud-functions|
@@ -438,7 +438,7 @@ Libraries
      - |PyPI-google-cloud-logging|
      - `API Issues <https://issuetracker.google.com/issues?q=componentid:187203>`_
      - `File an API Issue <https://issuetracker.google.com/issues/new?component=187203>`_
-     - `Client Library Issues <https://github.com/googleapis/googleapis/python-logging/issues>`_
+     - `Client Library Issues <https://github.com/googleapis/python-logging/issues>`_
    * - `Managed Service for Microsoft Active Directory <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-managed-identities>`_
      - stable
      - |PyPI-google-cloud-managed-identities|
@@ -468,7 +468,7 @@ Libraries
      - |PyPI-google-cloud-ndb|
      -
      -
-     - `Client Library Issues <https://github.com/googleapis/googleapis/python-ndb/issues>`_
+     - `Client Library Issues <https://github.com/googleapis/python-ndb/issues>`_
    * - `Natural Language <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-language>`_
      - stable
      - |PyPI-google-cloud-language|
@@ -510,13 +510,13 @@ Libraries
      - |PyPI-google-cloud-org-policy|
      -
      -
-     - `Client Library Issues <https://github.com/googleapis/googleapis/python-org-policy/issues>`_
+     - `Client Library Issues <https://github.com/googleapis/python-org-policy/issues>`_
    * - `Pandas Data Types for SQL systems (BigQuery, Spanner) <https://github.com/googleapis/python-db-dtypes-pandas>`_
      - stable
      - |PyPI-db-dtypes|
      -
      -
-     - `Client Library Issues <https://github.com/googleapis/googleapis/python-db-dtypes-pandas/issues>`_
+     - `Client Library Issues <https://github.com/googleapis/python-db-dtypes-pandas/issues>`_
    * - `Private Certificate Authority <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-private-ca>`_
      - stable
      - |PyPI-google-cloud-private-ca|
@@ -528,13 +528,13 @@ Libraries
      - |PyPI-google-cloud-pubsub|
      - `API Issues <https://issuetracker.google.com/issues?q=componentid:187173>`_
      - `File an API Issue <https://issuetracker.google.com/issues/new?component=187173>`_
-     - `Client Library Issues <https://github.com/googleapis/googleapis/python-pubsub/issues>`_
+     - `Client Library Issues <https://github.com/googleapis/python-pubsub/issues>`_
    * - `Pub/Sub Lite <https://github.com/googleapis/python-pubsublite>`_
      - stable
      - |PyPI-google-cloud-pubsublite|
      -
      -
-     - `Client Library Issues <https://github.com/googleapis/googleapis/python-pubsublite/issues>`_
+     - `Client Library Issues <https://github.com/googleapis/python-pubsublite/issues>`_
    * - `Recommender <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-recommender>`_
      - stable
      - |PyPI-google-cloud-recommender|
@@ -630,13 +630,13 @@ Libraries
      - |PyPI-google-cloud-spanner|
      - `API Issues <https://issuetracker.google.com/issues?q=componentid:190851>`_
      - `File an API Issue <https://issuetracker.google.com/issues/new?component=190851>`_
-     - `Client Library Issues <https://github.com/googleapis/googleapis/python-spanner/issues>`_
+     - `Client Library Issues <https://github.com/googleapis/python-spanner/issues>`_
    * - `Spanner Django <https://github.com/googleapis/python-spanner-django>`_
      - stable
      - |PyPI-django-google-spanner|
      - `API Issues <https://issuetracker.google.com/issues?q=componentid:190851>`_
      - `File an API Issue <https://issuetracker.google.com/issues/new?component=190851>`_
-     - `Client Library Issues <https://github.com/googleapis/googleapis/python-spanner-django/issues>`_
+     - `Client Library Issues <https://github.com/googleapis/python-spanner-django/issues>`_
    * - `Speech <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-speech>`_
      - stable
      - |PyPI-google-cloud-speech|
@@ -654,7 +654,7 @@ Libraries
      - |PyPI-google-cloud-storage|
      - `API Issues <https://issuetracker.google.com/issues?q=componentid:187243>`_
      - `File an API Issue <https://issuetracker.google.com/issues/new?component=187243>`_
-     - `Client Library Issues <https://github.com/googleapis/googleapis/python-storage/issues>`_
+     - `Client Library Issues <https://github.com/googleapis/python-storage/issues>`_
    * - `Storage Transfer Service <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-storage-transfer>`_
      - stable
      - |PyPI-google-cloud-storage-transfer|
@@ -750,7 +750,7 @@ Libraries
      - |PyPI-bigframes|
      -
      -
-     - `Client Library Issues <https://github.com/googleapis/googleapis/python-bigquery-dataframes/issues>`_
+     - `Client Library Issues <https://github.com/googleapis/python-bigquery-dataframes/issues>`_
    * - `API Keys <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-api-keys>`_
      - preview
      - |PyPI-google-cloud-api-keys|
@@ -918,7 +918,7 @@ Libraries
      - |PyPI-pandas-gbq|
      -
      -
-     - `Client Library Issues <https://github.com/googleapis/googleapis/python-bigquery-pandas/issues>`_
+     - `Client Library Issues <https://github.com/googleapis/python-bigquery-pandas/issues>`_
    * - `CSS API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-shopping-css>`_
      - preview
      - |PyPI-google-shopping-css|
@@ -954,7 +954,7 @@ Libraries
      - |PyPI-google-cloud-dns|
      - `API Issues <https://issuetracker.google.com/issues?q=componentid:187241>`_
      - `File an API Issue <https://issuetracker.google.com/issues/new?component=187241>`_
-     - `Client Library Issues <https://github.com/googleapis/googleapis/python-dns/issues>`_
+     - `Client Library Issues <https://github.com/googleapis/python-dns/issues>`_
    * - `Data Labeling <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-datalabeling>`_
      - preview
      - |PyPI-google-cloud-datalabeling|
@@ -1008,7 +1008,7 @@ Libraries
      - |PyPI-google-cloud-documentai-toolbox|
      -
      -
-     - `Client Library Issues <https://github.com/googleapis/googleapis/python-documentai-toolbox/issues>`_
+     - `Client Library Issues <https://github.com/googleapis/python-documentai-toolbox/issues>`_
    * - `Document AI Warehouse <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-contentwarehouse>`_
      - preview
      - |PyPI-google-cloud-contentwarehouse|
@@ -1026,7 +1026,7 @@ Libraries
      - |PyPI-google-cloud-error-reporting|
      - `API Issues <https://issuetracker.google.com/issues?q=componentid:187271>`_
      - `File an API Issue <https://issuetracker.google.com/issues/new?component=187271>`_
-     - `Client Library Issues <https://github.com/googleapis/googleapis/python-error-reporting/issues>`_
+     - `Client Library Issues <https://github.com/googleapis/python-error-reporting/issues>`_
    * - `Eventarc Publishing <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-eventarc-publishing>`_
      - preview
      - |PyPI-google-cloud-eventarc-publishing|
@@ -1242,13 +1242,13 @@ Libraries
      - |PyPI-google-cloud-runtimeconfig|
      - `API Issues <https://issuetracker.google.com/issues?q=componentid:187078>`_
      - `File an API Issue <https://issuetracker.google.com/issues/new?component=187078>`_
-     - `Client Library Issues <https://github.com/googleapis/googleapis/python-runtimeconfig/issues>`_
+     - `Client Library Issues <https://github.com/googleapis/python-runtimeconfig/issues>`_
    * - `SQLAlchemy dialect for BigQuery <https://github.com/googleapis/python-bigquery-sqlalchemy>`_
      - preview
      - |PyPI-sqlalchemy-bigquery|
      -
      -
-     - `Client Library Issues <https://github.com/googleapis/googleapis/python-bigquery-sqlalchemy/issues>`_
+     - `Client Library Issues <https://github.com/googleapis/python-bigquery-sqlalchemy/issues>`_
    * - `Secure Source Manager API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-securesourcemanager>`_
      - preview
      - |PyPI-google-cloud-securesourcemanager|
