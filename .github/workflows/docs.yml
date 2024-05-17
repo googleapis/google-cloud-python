@@ -41,7 +41,7 @@ jobs:
   #   support YAML anchors (see
   #   https://github.com/actions/runner/issues/1182)
   docs:
-    if: github.actor == "release-please"
+    if: github.actor == 'release-please'
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -67,7 +67,7 @@ jobs:
       run: |
         ci/run_conditional_tests.sh
   docs-warnings:    
-    if: github.actor != "release-please"
+    if: github.actor != 'release-please'
     name: "Docs warnings: will block release"
     continue-on-error: true
     runs-on: ubuntu-latest
@@ -95,7 +95,7 @@ jobs:
       run: |
         ci/run_conditional_tests.sh
   docfx:
-    if: github.actor == "release-please"
+    if: github.actor == 'release-please'
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -121,7 +121,7 @@ jobs:
       run: |
         ci/run_conditional_tests.sh
   docfx-warnings:
-    if: github.actor != "release-please"
+    if: github.actor != 'release-please'
     name: "Docfx warnings: will block release"
     continue-on-error: true
     runs-on: ubuntu-latest
