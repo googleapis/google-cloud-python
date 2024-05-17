@@ -31,8 +31,8 @@ def test_base_estimator_repr():
     assert estimator.__repr__() == "LinearRegression()"
 
     # TODO(b/340891292): fix type error
-    estimator = bigframes.ml.decomposition.PCA(n_components=7)  # type: ignore
-    assert estimator.__repr__() == "PCA(n_components=7)"
+    pca_estimator = bigframes.ml.decomposition.PCA(n_components=7)
+    assert pca_estimator.__repr__() == "PCA(n_components=7)"
 
 
 @pytest.mark.skipif(sklearn_linear_model is None, reason="requires sklearn")
@@ -50,6 +50,6 @@ def test_base_estimator_repr_matches_sklearn():
     assert estimator.__repr__() == sklearn_estimator.__repr__()
 
     # TODO(b/340891292): fix type error
-    estimator = bigframes.ml.decomposition.PCA(n_components=7)  # type: ignore
+    pca_estimator = bigframes.ml.decomposition.PCA(n_components=7)
     sklearn_estimator = sklearn_decomposition.PCA(n_components=7)
-    assert estimator.__repr__() == sklearn_estimator.__repr__()
+    assert pca_estimator.__repr__() == sklearn_estimator.__repr__()
