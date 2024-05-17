@@ -58,10 +58,14 @@ ARCHIVED_RESPONSE_KEY = "archived"
 # BASE_API defines the base API for Github.
 BASE_API = "https://api.github.com"
 
-
+# GITHUB_ISSUES defines the issues url for a repository on Github.
 GITHUB_ISSUES = "https://github.com/{repo}/issues"
 
+# BASE_ISSUE_TRACKER defines the base url for issue tracker.
 BASE_ISSUE_TRACKER = "https://issuetracker.google.com"
+
+# GENERIC_ISSUE_TRACKER_COMPONENT defines a generic component for issue tracker.
+GENERIC_ISSUE_TRACKER_COMPONENT = "187065"
 
 
 class CloudClient:
@@ -70,9 +74,6 @@ class CloudClient:
     release_level: str = None
     distribution_name: str = None
     issue_tracker: str = None
-    file_an_issue: str = None
-    already_filed_issue: str = None
-    github_issues: str = None
 
 
     def __init__(self, repo: dict):
@@ -92,6 +93,7 @@ class CloudClient:
             return match.group(1)
         return None
     
+    @property
     def saved_search_response_text(self):
         id = self.saved_search_id
         if id:
@@ -105,9 +107,7 @@ class CloudClient:
     @property
     def issue_tracker_component_id(self):
         # First, check if the issue tracker is a saved search:
-        query_string = self.issue_tracker
-        if self.saved_search_id:
-            query_string = self.saved_search_response_text()        
+        query_string = self.saved_search_response_text or self.issue_tracker
         if not query_string:
             return None
         # Try to match 'component=' in the query string
@@ -115,9 +115,10 @@ class CloudClient:
         if query_match:
             return query_match.group(1)
         # If not found, try to match 'componentid:' in the query string
-        query_match = re.search(r'\bcomponentid:(\d+)', query_string)
-        if query_match:
-            return query_match.group(1)
+        query_match = re.findall(r'\bcomponentid:(\d+)', query_string)
+        for component_id in query_match:
+            if component_id != GENERIC_ISSUE_TRACKER_COMPONENT:
+                return component_id
         return None
     
     @property
@@ -130,14 +131,14 @@ class CloudClient:
         return None
     
     @property
-    def link_to_github_issues(self):
+    def show_client_issues(self):
         repo_path = self.repo
         if self.repo != MONO_REPO:
             repo_path = "googleapis/" + self.repo
         return GITHUB_ISSUES.format(repo=repo_path)
     
     @property
-    def link_to_file_an_issue(self):
+    def file_api_issue(self):
         link = f"{BASE_ISSUE_TRACKER}/issues/new?component={self.issue_tracker_component_id}"
         template_id = self.issue_tracker_template_id
         if template_id:
@@ -145,7 +146,7 @@ class CloudClient:
         return link
     
     @property
-    def link_to_already_filed_issues(self):
+    def show_api_issues(self):
         return f"{BASE_ISSUE_TRACKER}/issues?q=componentid:{self.issue_tracker_component_id}"
 
     # For sorting, we want to sort by release level, then API pretty_name
@@ -213,9 +214,9 @@ def client_row(client: CloudClient) -> str:
         f"   * - `{client.title} <{url}>`_\n",
         f"     - {client.release_level}\n",
         f"     - |PyPI-{client.distribution_name}|\n",
-        f"     - `API Issues <{client.link_to_already_filed_issues}>`_\n" if client.issue_tracker_component_id else "     -\n",
-        f"     - `File an API Issue <{client.link_to_file_an_issue}>`_\n" if client.issue_tracker_component_id else "     -\n",
-        f"     - `Client Library Issues <{client.link_to_github_issues}>`_\n"
+        f"     - `API Issues <{client.show_api_issues}>`_\n" if client.issue_tracker_component_id else "     -\n",
+        f"     - `File an API Issue <{client.file_api_issue}>`_\n" if client.issue_tracker_component_id else "     -\n",
+        f"     - `Client Library Issues <{client.show_client_issues}>`_\n"
     ]
 
     return (content_row, pypi_badge)
@@ -263,7 +264,6 @@ def mono_repo_clients(token: str) -> List[CloudClient]:
 
 
 def split_repo_clients(token: str) -> List[CloudClient]:
-    
     first_request = True
     while first_request or 'next' in response.links:
         if first_request:
