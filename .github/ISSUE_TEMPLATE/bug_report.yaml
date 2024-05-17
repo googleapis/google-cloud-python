@@ -1,16 +1,15 @@
 name: Bug report
 description: Create a report to help us improve
-title: "[bug]: "
 labels: ["type: bug","triage me"]
 body:
-  - type: markdown
-    attributes:
-      value: |
+- type: markdown
+  attributes:
+    value: |
         **PLEASE READ**: If you have a support contract with Google, please create an issue in the [support console](https://cloud.google.com/support/) instead of filing on GitHub. This will ensure a timely response.
-  - type: checkboxes
-    attributes:
-      label: Determine this is the right repository
-      description: Please follow the steps in [the SUPPORT guide](https://github.com/vchudnov-g/google-cloud-python/blob/issue-templates/SUPPORT.md) and determine that this is likely a client library issue and this is the correct repository in which to report it
-      options:
-        - label: I determined this is likely a client library issue and this is the correct repository in which to report it
-        - required: true
+- type: checkboxes
+  attributes:
+    label: Determine this is the right repository
+    description: Please follow the steps in [the SUPPORT guide](https://github.com/vchudnov-g/google-cloud-python/blob/issue-templates/SUPPORT.md) and determine that this is likely a client library issue and this is the correct repository in which to report it
+    options:
+      - label: I determined this is the correct repository in which to report this bug
+        required: true
