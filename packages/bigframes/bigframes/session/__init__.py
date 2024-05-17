@@ -779,7 +779,6 @@ class Session(
         # check.
         is_index_unique = bf_read_gbq_table.are_index_cols_unique(
             bqclient=self.bqclient,
-            ibis_client=self.ibis_client,
             table=table,
             index_cols=index_cols,
             api_name=api_name,

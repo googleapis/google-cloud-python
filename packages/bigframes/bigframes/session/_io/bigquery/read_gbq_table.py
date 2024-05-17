@@ -162,21 +162,21 @@ def get_ibis_time_travel_table(
 
 def are_index_cols_unique(
     bqclient: bigquery.Client,
-    ibis_client: ibis.BaseBackend,
     table: bigquery.table.Table,
     index_cols: List[str],
     api_name: str,
 ) -> bool:
+    if len(index_cols) == 0:
+        return False
     # If index_cols contain the primary_keys, the query engine assumes they are
     # provide a unique index.
     primary_keys = frozenset(_get_primary_keys(table))
-    if primary_keys <= frozenset(index_cols):
+    if (len(primary_keys) > 0) and primary_keys <= frozenset(index_cols):
         return True
 
     # TODO(b/337925142): Avoid a "SELECT *" subquery here by ensuring
     # table_expression only selects just index_cols.
-    table_sql = ibis_client.compile(table)
-    is_unique_sql = bigframes.core.sql.is_distinct_sql(index_cols, table_sql)
+    is_unique_sql = bigframes.core.sql.is_distinct_sql(index_cols, table.reference)
     job_config = bigquery.QueryJobConfig()
     job_config.labels["bigframes-api"] = api_name
     results = bqclient.query_and_wait(is_unique_sql, job_config=job_config)

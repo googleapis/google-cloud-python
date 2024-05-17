@@ -897,7 +897,7 @@ class OrderedIR(BaseIbisIR):
             output_columns = [
                 col_id_overrides.get(col, col) for col in baked_ir.column_ids
             ]
-            sql = bigframes.core.sql.select_from(output_columns, sql)
+            sql = bigframes.core.sql.select_from_subquery(output_columns, sql)
 
             # Single row frames may not have any ordering columns
             if len(baked_ir._ordering.all_ordering_columns) > 0:

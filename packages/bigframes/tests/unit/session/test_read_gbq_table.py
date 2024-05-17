@@ -15,8 +15,11 @@
 """Unit tests for read_gbq_table helper functions."""
 
 import datetime
+import unittest.mock as mock
 
+import google.cloud.bigquery
 import google.cloud.bigquery as bigquery
+import pytest
 
 import bigframes.session._io.bigquery.read_gbq_table as bf_read_gbq_table
 
@@ -45,3 +48,71 @@ def test_get_ibis_time_travel_table_doesnt_timetravel_anonymous_datasets():
 
     # Need fully-qualified table name.
     assert "my-test-project" in sql
+
+
+@pytest.mark.parametrize(
+    ("index_cols", "primary_keys", "values_distinct", "expected"),
+    (
+        (["col1", "col2"], ["col1", "col2", "col3"], False, False),
+        (["col1", "col2", "col3"], ["col1", "col2", "col3"], True, True),
+        (
+            ["col2", "col3", "col1"],
+            [
+                "col3",
+                "col2",
+            ],
+            True,
+            True,
+        ),
+        (["col1", "col2"], [], False, False),
+        ([], ["col1", "col2", "col3"], False, False),
+        ([], [], False, False),
+    ),
+)
+def test_are_index_cols_unique(index_cols, primary_keys, values_distinct, expected):
+    """If a primary key is set on the table, we use that as the index column
+    by default, no error should be raised in this case.
+
+    See internal issue 335727141.
+    """
+    table = google.cloud.bigquery.Table.from_api_repr(
+        {
+            "tableReference": {
+                "projectId": "my-project",
+                "datasetId": "my_dataset",
+                "tableId": "my_table",
+            },
+            "clustering": {
+                "fields": ["col1", "col2"],
+            },
+        },
+    )
+    table.schema = (
+        google.cloud.bigquery.SchemaField("col1", "INT64"),
+        google.cloud.bigquery.SchemaField("col2", "INT64"),
+        google.cloud.bigquery.SchemaField("col3", "INT64"),
+        google.cloud.bigquery.SchemaField("col4", "INT64"),
+    )
+
+    # TODO(b/305264153): use setter for table_constraints in client library
+    # when available.
+    table._properties["tableConstraints"] = {
+        "primaryKey": {
+            "columns": primary_keys,
+        },
+    }
+    bqclient = mock.create_autospec(google.cloud.bigquery.Client, instance=True)
+    bqclient.project = "test-project"
+    bqclient.get_table.return_value = table
+
+    bqclient.query_and_wait.return_value = (
+        {"total_count": 3, "distinct_count": 3 if values_distinct else 2},
+    )
+    session = resources.create_bigquery_session(
+        bqclient=bqclient, table_schema=table.schema
+    )
+    table._properties["location"] = session._location
+
+    result = bf_read_gbq_table.are_index_cols_unique(bqclient, table, index_cols, "")
+
+    assert result == expected
