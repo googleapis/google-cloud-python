@@ -21,6 +21,8 @@ __version__ = package_version.__version__
 from google.maps.places_v1.services.places.async_client import PlacesAsyncClient
 from google.maps.places_v1.services.places.client import PlacesClient
 from google.maps.places_v1.types.attribution import AuthorAttribution
+from google.maps.places_v1.types.content_block import ContentBlock
+from google.maps.places_v1.types.contextual_content import ContextualContent
 from google.maps.places_v1.types.ev_charging import EVChargeOptions, EVConnectorType
 from google.maps.places_v1.types.fuel_options import FuelOptions
 from google.maps.places_v1.types.geometry import Circle
@@ -37,12 +39,15 @@ from google.maps.places_v1.types.places_service import (
     SearchTextRequest,
     SearchTextResponse,
 )
+from google.maps.places_v1.types.reference import References
 from google.maps.places_v1.types.review import Review
 
 __all__ = (
     "PlacesClient",
     "PlacesAsyncClient",
     "AuthorAttribution",
+    "ContentBlock",
+    "ContextualContent",
     "EVChargeOptions",
     "EVConnectorType",
     "FuelOptions",
@@ -59,5 +64,6 @@ __all__ = (
     "SearchNearbyResponse",
     "SearchTextRequest",
     "SearchTextResponse",
+    "References",
     "Review",
 )

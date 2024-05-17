@@ -22,11 +22,10 @@ import proto  # type: ignore
 from google.maps.places_v1.types import photo
 from google.maps.places_v1.types import review as gmp_review
 
-
 __protobuf__ = proto.module(
-    package='google.maps.places.v1',
+    package="google.maps.places.v1",
     manifest={
-        'ContextualContent',
+        "ContextualContent",
     },
 )
 
@@ -139,16 +138,18 @@ class ContextualContent(proto.Message):
                     proto.STRING,
                     number=1,
                 )
-                highlighted_text_ranges: MutableSequence['ContextualContent.Justification.ReviewJustification.HighlightedText.HighlightedTextRange'] = proto.RepeatedField(
+                highlighted_text_ranges: MutableSequence[
+                    "ContextualContent.Justification.ReviewJustification.HighlightedText.HighlightedTextRange"
+                ] = proto.RepeatedField(
                     proto.MESSAGE,
                     number=2,
-                    message='ContextualContent.Justification.ReviewJustification.HighlightedText.HighlightedTextRange',
+                    message="ContextualContent.Justification.ReviewJustification.HighlightedText.HighlightedTextRange",
                 )
 
-            highlighted_text: 'ContextualContent.Justification.ReviewJustification.HighlightedText' = proto.Field(
+            highlighted_text: "ContextualContent.Justification.ReviewJustification.HighlightedText" = proto.Field(
                 proto.MESSAGE,
                 number=1,
-                message='ContextualContent.Justification.ReviewJustification.HighlightedText',
+                message="ContextualContent.Justification.ReviewJustification.HighlightedText",
             )
             review: gmp_review.Review = proto.Field(
                 proto.MESSAGE,
@@ -185,17 +186,19 @@ class ContextualContent(proto.Message):
                 number=3,
             )
 
-        review_justification: 'ContextualContent.Justification.ReviewJustification' = proto.Field(
-            proto.MESSAGE,
-            number=1,
-            oneof='justification',
-            message='ContextualContent.Justification.ReviewJustification',
+        review_justification: "ContextualContent.Justification.ReviewJustification" = (
+            proto.Field(
+                proto.MESSAGE,
+                number=1,
+                oneof="justification",
+                message="ContextualContent.Justification.ReviewJustification",
+            )
         )
-        business_availability_attributes_justification: 'ContextualContent.Justification.BusinessAvailabilityAttributesJustification' = proto.Field(
+        business_availability_attributes_justification: "ContextualContent.Justification.BusinessAvailabilityAttributesJustification" = proto.Field(
             proto.MESSAGE,
             number=2,
-            oneof='justification',
-            message='ContextualContent.Justification.BusinessAvailabilityAttributesJustification',
+            oneof="justification",
+            message="ContextualContent.Justification.BusinessAvailabilityAttributesJustification",
         )
 
     reviews: MutableSequence[gmp_review.Review] = proto.RepeatedField(

@@ -17,16 +17,15 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.type import localized_text_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.maps.places_v1.types import reference
-from google.type import localized_text_pb2  # type: ignore
-
 
 __protobuf__ = proto.module(
-    package='google.maps.places.v1',
+    package="google.maps.places.v1",
     manifest={
-        'ContentBlock',
+        "ContentBlock",
     },
 )
 

@@ -21,11 +21,10 @@ import proto  # type: ignore
 
 from google.maps.places_v1.types import review
 
-
 __protobuf__ = proto.module(
-    package='google.maps.places.v1',
+    package="google.maps.places.v1",
     manifest={
-        'References',
+        "References",
     },
 )
 

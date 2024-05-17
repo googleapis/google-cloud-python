@@ -14,6 +14,8 @@
 # limitations under the License.
 #
 from .attribution import AuthorAttribution
+from .content_block import ContentBlock
+from .contextual_content import ContextualContent
 from .ev_charging import EVChargeOptions, EVConnectorType
 from .fuel_options import FuelOptions
 from .geometry import Circle
@@ -30,10 +32,13 @@ from .places_service import (
     SearchTextRequest,
     SearchTextResponse,
 )
+from .reference import References
 from .review import Review
 
 __all__ = (
     "AuthorAttribution",
+    "ContentBlock",
+    "ContextualContent",
     "EVChargeOptions",
     "EVConnectorType",
     "FuelOptions",
@@ -50,5 +55,6 @@ __all__ = (
     "SearchNearbyResponse",
     "SearchTextRequest",
     "SearchTextResponse",
+    "References",
     "Review",
 )
