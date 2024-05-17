@@ -57,7 +57,11 @@ from google.cloud.netapp_v1.types.backup_vault import (
     UpdateBackupVaultRequest,
 )
 from google.cloud.netapp_v1.types.cloud_netapp_service import OperationMetadata
-from google.cloud.netapp_v1.types.common import EncryptionType, ServiceLevel
+from google.cloud.netapp_v1.types.common import (
+    EncryptionType,
+    LocationMetadata,
+    ServiceLevel,
+)
 from google.cloud.netapp_v1.types.kms import (
     CreateKmsConfigRequest,
     DeleteKmsConfigRequest,
@@ -123,6 +127,7 @@ from google.cloud.netapp_v1.types.volume import (
     SimpleExportPolicyRule,
     SMBSettings,
     SnapshotPolicy,
+    TieringPolicy,
     UpdateVolumeRequest,
     Volume,
     WeeklySchedule,
@@ -160,6 +165,7 @@ __all__ = (
     "ListBackupVaultsResponse",
     "UpdateBackupVaultRequest",
     "OperationMetadata",
+    "LocationMetadata",
     "EncryptionType",
     "ServiceLevel",
     "CreateKmsConfigRequest",
@@ -213,6 +219,7 @@ __all__ = (
     "RevertVolumeRequest",
     "SimpleExportPolicyRule",
     "SnapshotPolicy",
+    "TieringPolicy",
     "UpdateVolumeRequest",
     "Volume",
     "WeeklySchedule",

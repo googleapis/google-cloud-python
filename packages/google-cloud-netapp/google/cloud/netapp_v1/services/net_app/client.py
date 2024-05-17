@@ -1044,7 +1044,7 @@ class NetAppClient(metaclass=NetAppClientMeta):
 
                 # Initialize request argument(s)
                 storage_pool = netapp_v1.StoragePool()
-                storage_pool.service_level = "STANDARD"
+                storage_pool.service_level = "FLEX"
                 storage_pool.capacity_gib = 1247
                 storage_pool.network = "network_value"
 
@@ -1297,7 +1297,7 @@ class NetAppClient(metaclass=NetAppClientMeta):
 
                 # Initialize request argument(s)
                 storage_pool = netapp_v1.StoragePool()
-                storage_pool.service_level = "STANDARD"
+                storage_pool.service_level = "FLEX"
                 storage_pool.capacity_gib = 1247
                 storage_pool.network = "network_value"
 
