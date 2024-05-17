@@ -9,14 +9,14 @@ body:
 - type: checkboxes
   attributes:
     label: Determine this is the right repository
-    description: Please follow the steps in [the SUPPORT guide](https://github.com/vchudnov-g/google-cloud-python/blob/issue-templates/SUPPORT.md) and determine that this is likely a client library issue and this is the correct repository in which to report it
+    description: Please follow the steps in [the SUPPORT guide](https://github.com/vchudnov-g/google-cloud-python/blob/issue-templates/SUPPORT.md) and determine that this is likely a client library issue and this is the correct repository in which to report it.
     options:
       - label: I determined this is the correct repository in which to report this bug
         required: true
 - type: textarea
   attributes:
     label: Summary of the issue
-    description: Describe succinctly what you expected to happen, and what actually happened
+    description: Describe succinctly what you expected to happen, and what actually happened.
     placeholder: Describe the issue you encountered
     value: |
         **Context**
@@ -30,12 +30,12 @@ body:
 - type: input
   attributes:
     label: API client name and version
-    description: Try `pip list | grep google-cloud`, which should give you a name corresponding to one of the packages listed [here](https://github.com/googleapis/google-cloud-python/tree/main/packages)
+    description: Try `pip list | grep google-cloud`, which should give you a name corresponding to one of the packages listed [here](https://github.com/googleapis/google-cloud-python/tree/main/packages).
     placeholder: e.g. google-cloud-vision v3.7.2
 - type: textarea
   attributes:
     label: 'Reproduction steps: code'
-    description: A minimal but complete set of Python files that will reproduce the problem
+    description: Include a minimal but complete set of Python files that will reproduce the problem.
     value: |
       file: main.py
       ```python
@@ -47,7 +47,7 @@ body:
 - type: textarea
   attributes:
     label: 'Reproduction steps: supporting files'
-    description: Any files needed for the code above to work
+    description: Include any files needed for the code above to work.
     value: |
       file: mydata.csv
       ```
@@ -59,7 +59,7 @@ body:
 - type: textarea
   attributes:
     label: 'Reproduction steps: actual results'
-    description: The results you got when running your code, such as output files
+    description: Include the results you got when running your code, such as output files.
     value: |
       file: output.txtmydata.csv
       ```
@@ -68,7 +68,7 @@ body:
 - type: textarea
   attributes:
     label: 'Reproduction steps: expected results'
-    description: The results you expected to get when running your code
+    description: Include the results you expected to get when running your code.
     value: |
       file: output.txtmydata.csv
       ```
@@ -81,12 +81,12 @@ body:
 - type: input
   attributes:
     label: Python environment
-    description: Try `python3 --version`
+    description: Try `python3 --version`.
     placeholder: e.g. Python 3.11.8
 - type: textarea
   attributes:
     label: Python dependencies
-    description: Try `pip list`
+    description: Try `pip list`.
     placeholder: |
       pip list
       Package                     Version
