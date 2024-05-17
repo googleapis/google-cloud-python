@@ -1179,6 +1179,7 @@ class Test_Bucket(unittest.TestCase):
         expected_fields = None
         expected_include_folders_as_prefixes = None
         soft_deleted = None
+        page_size = None
         client.list_blobs.assert_called_once_with(
             bucket,
             max_results=expected_max_results,
@@ -1196,6 +1197,7 @@ class Test_Bucket(unittest.TestCase):
             match_glob=expected_match_glob,
             include_folders_as_prefixes=expected_include_folders_as_prefixes,
             soft_deleted=soft_deleted,
+            page_size=page_size,
         )
 
     def test_list_blobs_w_explicit(self):
@@ -1211,6 +1213,7 @@ class Test_Bucket(unittest.TestCase):
         include_folders_as_prefixes = True
         versions = True
         soft_deleted = True
+        page_size = 2
         projection = "full"
         fields = "items/contentLanguage,nextPageToken"
         bucket = self._make_one(client=None, name=name)
@@ -1236,6 +1239,7 @@ class Test_Bucket(unittest.TestCase):
             match_glob=match_glob,
             include_folders_as_prefixes=include_folders_as_prefixes,
             soft_deleted=soft_deleted,
+            page_size=page_size,
         )
 
         self.assertIs(iterator, other_client.list_blobs.return_value)
@@ -1253,6 +1257,7 @@ class Test_Bucket(unittest.TestCase):
         expected_fields = fields
         expected_include_folders_as_prefixes = include_folders_as_prefixes
         expected_soft_deleted = soft_deleted
+        expected_page_size = page_size
         other_client.list_blobs.assert_called_once_with(
             bucket,
             max_results=expected_max_results,
@@ -1270,6 +1275,7 @@ class Test_Bucket(unittest.TestCase):
             match_glob=expected_match_glob,
             include_folders_as_prefixes=expected_include_folders_as_prefixes,
             soft_deleted=expected_soft_deleted,
+            page_size=expected_page_size,
         )
 
     def test_list_notifications_w_defaults(self):

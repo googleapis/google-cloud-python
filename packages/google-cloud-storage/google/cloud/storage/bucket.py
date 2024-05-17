@@ -1308,6 +1308,7 @@ class Bucket(_PropertyMixin):
         match_glob=None,
         include_folders_as_prefixes=None,
         soft_deleted=None,
+        page_size=None,
     ):
         """Return an iterator used to find blobs in the bucket.
 
@@ -1401,6 +1402,11 @@ class Bucket(_PropertyMixin):
             Note ``soft_deleted`` and ``versions`` cannot be set to True simultaneously. See:
             https://cloud.google.com/storage/docs/soft-delete
 
+        :type page_size: int
+        :param page_size:
+            (Optional) Maximum number of blobs to return in each page.
+            Defaults to a value set by the API.
+
         :rtype: :class:`~google.api_core.page_iterator.Iterator`
         :returns: Iterator of all :class:`~google.cloud.storage.blob.Blob`
                   in this bucket matching the arguments.
@@ -1418,6 +1424,7 @@ class Bucket(_PropertyMixin):
             versions=versions,
             projection=projection,
             fields=fields,
+            page_size=page_size,
             timeout=timeout,
             retry=retry,
             match_glob=match_glob,
