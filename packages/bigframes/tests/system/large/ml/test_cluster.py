@@ -103,10 +103,10 @@ def test_cluster_configure_fit_score_predict(
     reloaded_model = model.to_gbq(
         f"{dataset_id}.temp_configured_cluster_model", replace=True
     )
-    # TODO(b/340875247): fix type error
+    assert reloaded_model._bqml_model is not None
     assert (
         f"{dataset_id}.temp_configured_cluster_model"
-        in reloaded_model._bqml_model.model_name  # type: ignore
+        in reloaded_model._bqml_model.model_name
     )
     assert reloaded_model.n_clusters == 3
     assert reloaded_model.init == "RANDOM"
@@ -144,10 +144,10 @@ def test_cluster_configure_fit_load_params(penguins_df_default_index, dataset_id
     reloaded_model = model.to_gbq(
         f"{dataset_id}.temp_configured_cluster_model", replace=True
     )
-    # TODO(b/340875247): fix type error
+    assert reloaded_model._bqml_model is not None
     assert (
         f"{dataset_id}.temp_configured_cluster_model"
-        in reloaded_model._bqml_model.model_name  # type: ignore
+        in reloaded_model._bqml_model.model_name
     )
     assert reloaded_model.n_clusters == 4
     assert reloaded_model.init == "RANDOM"
