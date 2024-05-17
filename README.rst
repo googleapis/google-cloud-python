@@ -187,6 +187,12 @@ Libraries
      - `API Issues <https://issuetracker.google.com/issues?q=componentid:187149>`_
      - `File an API Issue <https://issuetracker.google.com/issues/new?component=187149>`_
      - `Client Library Issues <https://github.com/googleapis/python-bigquery-storage/issues>`_
+   * - `BigQuery connector for Jupyter and IPython <https://github.com/googleapis/python-bigquery-magics>`_
+     - stable
+     - |PyPI-bigquery-magics|
+     -
+     -
+     - `Client Library Issues <https://github.com/googleapis/python-bigquery-magics/issues>`_
    * - `Bigtable <https://github.com/googleapis/python-bigtable>`_
      - stable
      - |PyPI-google-cloud-bigtable|
@@ -403,6 +409,12 @@ Libraries
      -
      -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
+   * - `Identity and Access Management <https://github.com/googleapis/python-grpc-google-iam-v1>`_
+     - stable
+     - |PyPI-grpc-google-iam-v1|
+     - `API Issues <https://issuetracker.google.com/issues?q=componentid:187161>`_
+     - `File an API Issue <https://issuetracker.google.com/issues/new?component=187161>`_
+     - `Client Library Issues <https://github.com/googleapis/python-grpc-google-iam-v1/issues>`_
    * - `Identity and Access Management <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-iam>`_
      - stable
      - |PyPI-google-cloud-iam|
@@ -757,6 +769,12 @@ Libraries
      -
      -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
+   * - `Access Context Manager <https://github.com/googleapis/python-access-context-manager>`_
+     - preview
+     - |PyPI-google-cloud-access-context-manager|
+     -
+     -
+     - `Client Library Issues <https://github.com/googleapis/python-access-context-manager/issues>`_
    * - `Ad Manager <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-ads-admanager>`_
      - preview
      - |PyPI-google-ads-admanager|
@@ -835,6 +853,12 @@ Libraries
      -
      -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
+   * - `Audit Log <https://github.com/googleapis/python-audit-log>`_
+     - preview
+     - |PyPI-google-cloud-audit-log|
+     -
+     -
+     - `Client Library Issues <https://github.com/googleapis/python-audit-log/issues>`_
    * - `Backup and DR Service API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-backupdr>`_
      - preview
      - |PyPI-google-cloud-backupdr|
@@ -1384,6 +1408,8 @@ Libraries
      :target: https://pypi.org/project/google-cloud-bigquery-reservation
 .. |PyPI-google-cloud-bigquery-storage| image:: https://img.shields.io/pypi/v/google-cloud-bigquery-storage.svg
      :target: https://pypi.org/project/google-cloud-bigquery-storage
+.. |PyPI-bigquery-magics| image:: https://img.shields.io/pypi/v/bigquery-magics.svg
+     :target: https://pypi.org/project/bigquery-magics
 .. |PyPI-google-cloud-bigtable| image:: https://img.shields.io/pypi/v/google-cloud-bigtable.svg
      :target: https://pypi.org/project/google-cloud-bigtable
 .. |PyPI-google-cloud-billing| image:: https://img.shields.io/pypi/v/google-cloud-billing.svg
@@ -1456,6 +1482,8 @@ Libraries
      :target: https://pypi.org/project/google-cloud-policy-troubleshooter
 .. |PyPI-google-cloud-ids| image:: https://img.shields.io/pypi/v/google-cloud-ids.svg
      :target: https://pypi.org/project/google-cloud-ids
+.. |PyPI-grpc-google-iam-v1| image:: https://img.shields.io/pypi/v/grpc-google-iam-v1.svg
+     :target: https://pypi.org/project/grpc-google-iam-v1
 .. |PyPI-google-cloud-iam| image:: https://img.shields.io/pypi/v/google-cloud-iam.svg
      :target: https://pypi.org/project/google-cloud-iam
 .. |PyPI-google-cloud-iap| image:: https://img.shields.io/pypi/v/google-cloud-iap.svg
@@ -1574,6 +1602,8 @@ Libraries
      :target: https://pypi.org/project/bigframes
 .. |PyPI-google-cloud-api-keys| image:: https://img.shields.io/pypi/v/google-cloud-api-keys.svg
      :target: https://pypi.org/project/google-cloud-api-keys
+.. |PyPI-google-cloud-access-context-manager| image:: https://img.shields.io/pypi/v/google-cloud-access-context-manager.svg
+     :target: https://pypi.org/project/google-cloud-access-context-manager
 .. |PyPI-google-ads-admanager| image:: https://img.shields.io/pypi/v/google-ads-admanager.svg
      :target: https://pypi.org/project/google-ads-admanager
 .. |PyPI-google-maps-addressvalidation| image:: https://img.shields.io/pypi/v/google-maps-addressvalidation.svg
@@ -1600,6 +1630,8 @@ Libraries
      :target: https://pypi.org/project/google-apps-script-type
 .. |PyPI-google-area120-tables| image:: https://img.shields.io/pypi/v/google-area120-tables.svg
      :target: https://pypi.org/project/google-area120-tables
+.. |PyPI-google-cloud-audit-log| image:: https://img.shields.io/pypi/v/google-cloud-audit-log.svg
+     :target: https://pypi.org/project/google-cloud-audit-log
 .. |PyPI-google-cloud-backupdr| image:: https://img.shields.io/pypi/v/google-cloud-backupdr.svg
      :target: https://pypi.org/project/google-cloud-backupdr
 .. |PyPI-google-cloud-gke-backup| image:: https://img.shields.io/pypi/v/google-cloud-gke-backup.svg

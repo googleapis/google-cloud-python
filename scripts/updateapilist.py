@@ -201,13 +201,12 @@ class Extractor:
         except requests.RequestException as e:
             logging.error(f"Request failed for URL {url}: {e}")
             return None
-
         try:
             metadata = response.json()
         except ValueError as e:
             logging.error(f"JSON decoding failed for URL {url}: {e}")
             return None
-        return CloudClient(response.json())
+        return CloudClient(metadata)
     
     def get_clients_from_batch_response(self, response_json) -> List[CloudClient]:
         return [self.client_for_repo(repo[self.response_key]) for repo in response_json if allowed_repo(repo)]
@@ -296,10 +295,11 @@ def mono_repo_clients(token: str) -> List[CloudClient]:
     try:
         response = requests.get(url=url, headers=headers)
         response.raise_for_status()
-        response_json = response.json()
     except requests.RequestException as e:
         logging.error(f"Request failed for URL {url}: {e}")
         return []
+    try:
+        response_json = response.json()
     except ValueError as e:
         logging.error(f"Failed to decode JSON response from URL {url}: {e}")
         return []
@@ -318,10 +318,11 @@ def split_repo_clients(token: str) -> List[CloudClient]:
         try:
             response = requests.get(url=url, params=params, headers=headers)
             response.raise_for_status()
-            response_json = response.json()
         except requests.RequestException as e:
             logging.error(f"RequestException failed for URL {url}: {e}")
             break
+        try:
+            response_json = response.json()
         except ValueError as e:
             logging.error(f"Failed to decode JSON response from URL {url}: {e}")
             break
@@ -337,7 +338,7 @@ def split_repo_clients(token: str) -> List[CloudClient]:
         next_link = response.links.get('next', {}).get('url')
         url = next_link if next_link else None
 
-        return clients
+    return clients
 
 
 def get_token():
