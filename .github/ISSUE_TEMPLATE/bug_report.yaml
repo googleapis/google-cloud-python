@@ -57,6 +57,24 @@ body:
       ```
 
       <any additional supporting files>
+- type: textarea
+  attributes:
+    label: 'Reproduction steps: actual results'
+    description: The results you got when running your code, such as output files
+    value: |
+      file: output.txtmydata.csv
+      ```
+      Calculated: foo
+      ```
+- type: textarea
+  attributes:
+    label: 'Reproduction steps: expected results'
+    description: The results you expected to get when running your code
+    value: |
+      file: output.txtmydata.csv
+      ```
+      Calculated: bar
+      ```
 - type: input
   attributes:
     label: OS & version + platform
