@@ -8,14 +8,11 @@ from pandas import DataFrame
 import pytest
 
 from pandas_gbq import gbq
-from pandas_gbq.features import FEATURES
 
 
 @pytest.fixture
 def expected_load_method(mock_bigquery_client):
-    if FEATURES.pandas_has_parquet_with_lossless_timestamp:
-        return mock_bigquery_client.load_table_from_dataframe
-    return mock_bigquery_client.load_table_from_file
+    return mock_bigquery_client.load_table_from_dataframe
 
 
 def test_to_gbq_create_dataset_with_location(mock_bigquery_client):

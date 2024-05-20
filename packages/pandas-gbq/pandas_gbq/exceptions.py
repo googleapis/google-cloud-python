@@ -28,6 +28,10 @@ class InvalidPrivateKeyFormat(ValueError):
     """
 
 
+class LargeResultsWarning(UserWarning):
+    """Raise when results are beyond that recommended for pandas DataFrame."""
+
+
 class PerformanceWarning(RuntimeWarning):
     """
     Raised when a performance-related feature is requested, but unsupported.

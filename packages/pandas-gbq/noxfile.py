@@ -375,6 +375,15 @@ def cover(session):
     session.install("coverage", "pytest-cov")
     session.run("coverage", "report", "--show-missing", "--fail-under=96")
 
+    # Make sure there is no dead code in our test directories.
+    session.run(
+        "coverage",
+        "report",
+        "--show-missing",
+        "--include=tests/unit/*",
+        "--fail-under=100",
+    )
+
     session.run("coverage", "erase")
 
 

@@ -23,6 +23,12 @@ Note:  The canonical version of this documentation can always be found on the
    `BigQuery sandbox <https://cloud.google.com/bigquery/docs/sandbox>`__ to
    try the service for free.
 
+   Also, consider using `BigQuery DataFrames
+   <https://cloud.google.com/bigquery/docs/bigquery-dataframes-introduction>`__
+   to process large results with pandas compatible APIs with transparent SQL
+   pushdown to BigQuery engine. This provides an opportunity to save on costs
+   and improve performance.
+
 While BigQuery uses standard SQL syntax, it has some important differences
 from traditional databases both in functionality, API limitations (size and
 quantity of queries or uploads), and how Google charges for use of the
