@@ -392,6 +392,16 @@ def scalars_df_index(
 
 
 @pytest.fixture(scope="session")
+def scalars_df_empty_index(
+    scalars_table_id: str, session: bigframes.Session
+) -> bigframes.dataframe.DataFrame:
+    """DataFrame pointing at test data."""
+    return session.read_gbq(
+        scalars_table_id, index_col=bigframes.enums.DefaultIndexKind.NULL
+    ).sort_values("rowindex")
+
+
+@pytest.fixture(scope="session")
 def scalars_df_2_default_index(
     scalars_df_2_index: bigframes.dataframe.DataFrame,
 ) -> bigframes.dataframe.DataFrame:

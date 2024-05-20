@@ -101,6 +101,11 @@ class Index(vendored_pandas_index.Index):
     def from_frame(
         cls, frame: Union[bigframes.series.Series, bigframes.dataframe.DataFrame]
     ) -> Index:
+        if len(frame._block.index_columns) == 0:
+            raise bigframes.exceptions.NullIndexError(
+                "Cannot access index properties with Null Index. Set an index using set_index."
+            )
+        frame._block._throw_if_null_index("from_frame")
         index = Index(frame._block)
         index._linked_frame = frame
         return index

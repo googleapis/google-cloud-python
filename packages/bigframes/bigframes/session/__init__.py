@@ -26,6 +26,7 @@ from typing import (
     Any,
     Callable,
     Dict,
+    Hashable,
     IO,
     Iterable,
     List,
@@ -79,6 +80,7 @@ import bigframes.constants as constants
 import bigframes.core as core
 import bigframes.core.blocks as blocks
 import bigframes.core.compile
+import bigframes.core.guid
 import bigframes.core.nodes as nodes
 from bigframes.core.ordering import IntegerEncoding
 import bigframes.core.ordering as order
@@ -799,15 +801,28 @@ class Session(
             )
 
         # ----------------------------------------------------
-        # Create Block & default index if len(index_cols) == 0
+        # Create Default Sequential Index if still have no index
         # ----------------------------------------------------
+
+        # If no index columns provided or found, fall back to sequential index
+        if (index_col != bigframes.enums.DefaultIndexKind.NULL) and len(
+            index_cols
+        ) == 0:
+            index_col = bigframes.enums.DefaultIndexKind.SEQUENTIAL_INT64
+
+        index_names: Sequence[Hashable] = index_cols
+        if index_col == bigframes.enums.DefaultIndexKind.SEQUENTIAL_INT64:
+            sequential_index_col = bigframes.core.guid.generate_guid("index_")
+            array_value = array_value.promote_offsets(sequential_index_col)
+            index_cols = [sequential_index_col]
+            index_names = [None]
 
         value_columns = [col for col in array_value.column_ids if col not in index_cols]
         block = blocks.Block(
             array_value,
             index_columns=index_cols,
             column_labels=value_columns,
-            index_labels=index_cols,
+            index_labels=index_names,
         )
         if max_results:
             block = block.slice(stop=max_results)

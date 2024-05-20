@@ -98,12 +98,12 @@ class SquashedSelect:
             self.root, self.columns, self.predicate, new_ordering, self.reverse_root
         )
 
-    def maybe_join(
+    def can_join(
         self, right: SquashedSelect, join_def: join_defs.JoinDefinition
-    ) -> Optional[SquashedSelect]:
+    ) -> bool:
         if join_def.type == "cross":
             # Cannot convert cross join to projection
-            return None
+            return False
 
         r_exprs_by_id = {id: expr for expr, id in right.columns}
         l_exprs_by_id = {id: expr for expr, id in self.columns}
@@ -113,10 +113,17 @@ class SquashedSelect:
         if (self.root != right.root) or any(
             l_expr != r_expr for l_expr, r_expr in zip(l_join_exprs, r_join_exprs)
         ):
+            return False
+        return True
+
+    def maybe_merge(
+        self,
+        right: SquashedSelect,
+        join_type: join_defs.JoinType,
+        mappings: Tuple[join_defs.JoinColumnMapping, ...],
+    ) -> Optional[SquashedSelect]:
+        if self.root != right.root:
             return None
-
-        join_type = join_def.type
-
         # Mask columns and remap names to expected schema
         lselection = self.columns
         rselection = right.columns
@@ -136,7 +143,7 @@ class SquashedSelect:
             lselection = tuple((apply_mask(expr, lmask), id) for expr, id in lselection)
         if rmask is not None:
             rselection = tuple((apply_mask(expr, rmask), id) for expr, id in rselection)
-        new_columns = remap_names(join_def, lselection, rselection)
+        new_columns = remap_names(mappings, lselection, rselection)
 
         # Reconstruct ordering
         reverse_root = self.reverse_root
@@ -201,20 +208,27 @@ def maybe_squash_projection(node: nodes.BigFrameNode) -> nodes.BigFrameNode:
 def maybe_rewrite_join(join_node: nodes.JoinNode) -> nodes.BigFrameNode:
     left_side = SquashedSelect.from_node(join_node.left_child)
     right_side = SquashedSelect.from_node(join_node.right_child)
-    joined = left_side.maybe_join(right_side, join_node.join)
-    if joined is not None:
-        return joined.expand()
+    if left_side.can_join(right_side, join_node.join):
+        merged = left_side.maybe_merge(
+            right_side, join_node.join.type, join_node.join.mappings
+        )
+        assert (
+            merged is not None
+        ), "Couldn't merge nodes. This shouldn't happen. Please share full stacktrace with the BigQuery DataFrames team at bigframes-feedback@google.com."
+        return merged.expand()
     else:
         return join_node
 
 
 def remap_names(
-    join: join_defs.JoinDefinition, lselection: Selection, rselection: Selection
+    mappings: Tuple[join_defs.JoinColumnMapping, ...],
+    lselection: Selection,
+    rselection: Selection,
 ) -> Selection:
     new_selection: Selection = tuple()
     l_exprs_by_id = {id: expr for expr, id in lselection}
     r_exprs_by_id = {id: expr for expr, id in rselection}
-    for mapping in join.mappings:
+    for mapping in mappings:
         if mapping.source_table == join_defs.JoinSide.LEFT:
             expr = l_exprs_by_id[mapping.source_id]
         else:  # Right

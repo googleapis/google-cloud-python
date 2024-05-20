@@ -456,6 +456,19 @@ class ArrayValue:
             return ArrayValue(bigframes.core.rewrite.maybe_rewrite_join(join_node))
         return ArrayValue(join_node)
 
+    def try_align_as_projection(
+        self,
+        other: ArrayValue,
+        join_type: join_def.JoinType,
+        mappings: typing.Tuple[join_def.JoinColumnMapping, ...],
+    ) -> typing.Optional[ArrayValue]:
+        left_side = bigframes.core.rewrite.SquashedSelect.from_node(self.node)
+        right_side = bigframes.core.rewrite.SquashedSelect.from_node(other.node)
+        result = left_side.maybe_merge(right_side, join_type, mappings)
+        if result is not None:
+            return ArrayValue(result.expand())
+        return None
+
     def explode(self, column_ids: typing.Sequence[str]) -> ArrayValue:
         assert len(column_ids) > 0
         for column_id in column_ids:

@@ -242,10 +242,8 @@ def get_index_cols(
         if index_col == bigframes.enums.DefaultIndexKind.SEQUENTIAL_INT64:
             # User has explicity asked for a default, sequential index.
             # Use that, even if there are primary keys on the table.
-            #
-            # Note: This relies on the default behavior of the Block
-            # constructor to create a default sequential index. If that ever
-            # changes, this logic will need to be revisited.
+            return []
+        if index_col == bigframes.enums.DefaultIndexKind.NULL:
             return []
         else:
             # Note: It's actually quite difficult to mock this out to unit

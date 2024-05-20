@@ -1430,13 +1430,13 @@ def test_numeric_literal(scalars_dfs):
     assert bf_result.dtype == pd.ArrowDtype(pa.decimal128(38, 9))
 
 
-def test_repr(scalars_dfs):
+def test_series_small_repr(scalars_dfs):
     scalars_df, scalars_pandas_df = scalars_dfs
 
     col_name = "int64_col"
     bf_series = scalars_df[col_name]
     pd_series = scalars_pandas_df[col_name]
-    assert repr(bf_series) == repr(pd_series)
+    assert repr(bf_series) == pd_series.to_string(length=False, dtype=True, name=True)
 
 
 def test_sum(scalars_dfs):
@@ -3688,10 +3688,10 @@ def test_series_explode_reserve_order(ignore_index, ordered):
     res = s.explode(ignore_index=ignore_index).to_pandas(ordered=ordered)  # type: ignore
     # TODO(b/340885567): fix type error
     pd_res = pd_s.explode(ignore_index=ignore_index).astype(pd.Int64Dtype())  # type: ignore
+    pd_res.index = pd_res.index.astype(pd.Int64Dtype())
     pd.testing.assert_series_equal(
         res if ordered else res.sort_index(),
         pd_res,
-        check_index_type=False,
     )
 
 
