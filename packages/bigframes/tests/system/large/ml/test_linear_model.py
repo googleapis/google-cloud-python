@@ -41,9 +41,9 @@ def test_linear_regression_configure_fit_score(penguins_df_default_index, datase
 
     # save, load, check parameters to ensure configuration was kept
     reloaded_model = model.to_gbq(f"{dataset_id}.temp_configured_model", replace=True)
-    # TODO(b/340890167): fix type error
+    assert reloaded_model._bqml_model is not None
     assert (
-        f"{dataset_id}.temp_configured_model" in reloaded_model._bqml_model.model_name  # type: ignore
+        f"{dataset_id}.temp_configured_model" in reloaded_model._bqml_model.model_name
     )
     assert reloaded_model.optimize_strategy == "NORMAL_EQUATION"
     assert reloaded_model.fit_intercept is True
@@ -94,9 +94,9 @@ def test_linear_regression_customized_params_fit_score(
 
     # save, load, check parameters to ensure configuration was kept
     reloaded_model = model.to_gbq(f"{dataset_id}.temp_configured_model", replace=True)
-    # TODO(b/340890167): fix type error
+    assert reloaded_model._bqml_model is not None
     assert (
-        f"{dataset_id}.temp_configured_model" in reloaded_model._bqml_model.model_name  # type: ignore
+        f"{dataset_id}.temp_configured_model" in reloaded_model._bqml_model.model_name
     )
     assert reloaded_model.optimize_strategy == "BATCH_GRADIENT_DESCENT"
     assert reloaded_model.fit_intercept is False
@@ -141,10 +141,10 @@ def test_logistic_regression_configure_fit_score(penguins_df_default_index, data
     reloaded_model = model.to_gbq(
         f"{dataset_id}.temp_configured_logistic_reg_model", replace=True
     )
-    # TODO(b/340890167): fix type error
+    assert reloaded_model._bqml_model is not None
     assert (
         f"{dataset_id}.temp_configured_logistic_reg_model"
-        in reloaded_model._bqml_model.model_name  # type: ignore
+        in reloaded_model._bqml_model.model_name
     )
     assert reloaded_model.fit_intercept is True
     assert reloaded_model.class_weight is None
@@ -187,10 +187,10 @@ def test_logistic_regression_customized_params_fit_score(
     reloaded_model = model.to_gbq(
         f"{dataset_id}.temp_configured_logistic_reg_model", replace=True
     )
-    # TODO(b/340890167): fix type error
+    assert reloaded_model._bqml_model is not None
     assert (
         f"{dataset_id}.temp_configured_logistic_reg_model"
-        in reloaded_model._bqml_model.model_name  # type: ignore
+        in reloaded_model._bqml_model.model_name
     )
     # TODO(garrettwu) optimize_strategy isn't logged in BQML
     # assert reloaded_model.optimize_strategy == "BATCH_GRADIENT_DESCENT"

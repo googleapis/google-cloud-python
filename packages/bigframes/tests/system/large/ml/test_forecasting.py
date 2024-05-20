@@ -119,9 +119,9 @@ def test_arima_plus_model_fit_params(time_series_df_default_index, dataset_id):
 
     # save, load to ensure configuration was kept
     reloaded_model = model.to_gbq(f"{dataset_id}.temp_arima_plus_model", replace=True)
-    # TODO(b/340891711): fix type error
+    assert reloaded_model._bqml_model is not None
     assert (
-        f"{dataset_id}.temp_arima_plus_model" in reloaded_model._bqml_model.model_name  # type: ignore
+        f"{dataset_id}.temp_arima_plus_model" in reloaded_model._bqml_model.model_name
     )
 
     assert reloaded_model.horizon == 100
