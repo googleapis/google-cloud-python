@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.23.0](https://github.com/googleapis/python-bigquery-pandas/compare/v0.22.0...v0.23.0) (2024-05-20)
+
+
+### Features
+
+* `read_gbq` suggests using BigQuery DataFrames with large results ([#769](https://github.com/googleapis/python-bigquery-pandas/issues/769)) ([f937edf](https://github.com/googleapis/python-bigquery-pandas/commit/f937edf5db910257a367b4cc20d865a38b440f75))
+
 ## [0.22.0](https://github.com/googleapis/python-bigquery-pandas/compare/v0.21.0...v0.22.0) (2024-03-05)
 
 
