@@ -34,6 +34,7 @@ __protobuf__ = proto.module(
         "PriceInsightsProductView",
         "BestSellersProductClusterView",
         "BestSellersBrandView",
+        "NonProductPerformanceView",
         "CompetitiveVisibilityCompetitorView",
         "CompetitiveVisibilityTopMerchantView",
         "CompetitiveVisibilityBenchmarkView",
@@ -127,6 +128,9 @@ class ReportRow(proto.Message):
         product_performance_view (google.shopping.merchant_reports_v1beta.types.ProductPerformanceView):
             Fields available for query in ``product_performance_view``
             table.
+        non_product_performance_view (google.shopping.merchant_reports_v1beta.types.NonProductPerformanceView):
+            Fields available for query in
+            ``non_product_performance_view`` table.
         product_view (google.shopping.merchant_reports_v1beta.types.ProductView):
             Fields available for query in ``product_view`` table.
         price_competitiveness_product_view (google.shopping.merchant_reports_v1beta.types.PriceCompetitivenessProductView):
@@ -156,6 +160,11 @@ class ReportRow(proto.Message):
         proto.MESSAGE,
         number=1,
         message="ProductPerformanceView",
+    )
+    non_product_performance_view: "NonProductPerformanceView" = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message="NonProductPerformanceView",
     )
     product_view: "ProductView" = proto.Field(
         proto.MESSAGE,
@@ -1913,6 +1922,80 @@ class BestSellersBrandView(proto.Message):
             optional=True,
             enum="RelativeDemandChangeType.RelativeDemandChangeTypeEnum",
         )
+    )
+
+
+class NonProductPerformanceView(proto.Message):
+    r"""Fields available for query in ``non_product_performance_view``
+    table.
+
+    Performance data on images and online store links leading to your
+    non-product pages. This includes performance metrics (for example,
+    ``clicks``) and dimensions according to which performance metrics
+    are segmented (for example, ``date``).
+
+    Segment fields cannot be selected in queries without also selecting
+    at least one metric field.
+
+    Values are only set for fields requested explicitly in the request's
+    search query.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        date (google.type.date_pb2.Date):
+            Date in the merchant timezone to which metrics apply.
+            Segment.
+
+            Condition on ``date`` is required in the ``WHERE`` clause.
+        week (google.type.date_pb2.Date):
+            First day of the week (Monday) of the metrics
+            date in the merchant timezone. Segment.
+        clicks (int):
+            Number of clicks on images and online store
+            links leading to your non-product pages. Metric.
+
+            This field is a member of `oneof`_ ``_clicks``.
+        impressions (int):
+            Number of times images and online store links
+            leading to your non-product pages were shown.
+            Metric.
+
+            This field is a member of `oneof`_ ``_impressions``.
+        click_through_rate (float):
+            Click-through rate - the number of clicks (``clicks``)
+            divided by the number of impressions (``impressions``) of
+            images and online store links leading to your non-product
+            pages. Metric.
+
+            This field is a member of `oneof`_ ``_click_through_rate``.
+    """
+
+    date: date_pb2.Date = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=date_pb2.Date,
+    )
+    week: date_pb2.Date = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=date_pb2.Date,
+    )
+    clicks: int = proto.Field(
+        proto.INT64,
+        number=3,
+        optional=True,
+    )
+    impressions: int = proto.Field(
+        proto.INT64,
+        number=4,
+        optional=True,
+    )
+    click_through_rate: float = proto.Field(
+        proto.DOUBLE,
+        number=5,
+        optional=True,
     )
 
 
