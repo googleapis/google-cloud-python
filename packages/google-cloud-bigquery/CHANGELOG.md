@@ -5,6 +5,13 @@
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
 
+## [3.23.1](https://github.com/googleapis/python-bigquery/compare/v3.23.0...v3.23.1) (2024-05-21)
+
+
+### Performance Improvements
+
+* Decrease the threshold in which we use the BQ Storage Read API ([#1925](https://github.com/googleapis/python-bigquery/issues/1925)) ([eaa1a52](https://github.com/googleapis/python-bigquery/commit/eaa1a52b360646909c14ca7194b8c6b17fefdd79))
+
 ## [3.23.0](https://github.com/googleapis/python-bigquery/compare/v3.22.0...v3.23.0) (2024-05-16)
 
 
