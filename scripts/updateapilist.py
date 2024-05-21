@@ -70,8 +70,8 @@ BASE_ISSUE_TRACKER = "https://issuetracker.google.com"
 
 # This issue-tracker component is part of some saved searches for listing API-side issues.
 # However, when we construct URLs for filing new issues (which in some cases we do by analyzing
-# the query string for a saved search),we want to ensure we DON'T file a new issue against this
-# generic component but against a more specific one.
+# the query string for a saved search), we want to ensure we DON'T file a new issue against
+# this generic component but against a more specific one.
 GENERIC_ISSUE_TRACKER_COMPONENT = "187065"
 
 
@@ -105,17 +105,11 @@ class CloudClient:
     @property
     def saved_search_response_text(self):
         saved_search_id = self.saved_search_id
-        if saved_search_id:
-            url = f"{BASE_ISSUE_TRACKER}/action/saved_searches/{saved_search_id}"
-            try:
-                response = requests.get(url=url)
-                response.raise_for_status()
-            except requests.RequestException as e:
-                logging.error(f"Request failed for URL {url}: {e}")
-                return None
-            
-            return response.text
-        return None
+        if not saved_search_id:
+            return None
+        url = f"{BASE_ISSUE_TRACKER}/action/saved_searches/{saved_search_id}"
+        response = _fetch_response(url)
+        return response.text if response else None
 
     @property
     def issue_tracker_component_id(self):
@@ -160,8 +154,7 @@ class CloudClient:
     
     @property
     def file_api_issue(self):
-        component = self.issue_tracker_component_id
-        if component:
+        if self.issue_tracker_component_id:
             link = f"{BASE_ISSUE_TRACKER}/issues/new?component={self.issue_tracker_component_id}"
             template_id = self.issue_tracker_template_id
             if template_id:
@@ -171,8 +164,7 @@ class CloudClient:
     
     @property
     def show_api_issues(self):
-        component = self.issue_tracker_component_id
-        if component:
+        if self.issue_tracker_component_id:
             return f"{BASE_ISSUE_TRACKER}/issues?q=componentid:{self.issue_tracker_component_id}"
         return None
 
@@ -195,24 +187,36 @@ class Extractor:
     def client_for_repo(self, repo_slug) -> Optional[CloudClient]:
         path = self.path_format.format(repo_slug=repo_slug)
         url = f"{RAW_CONTENT_BASE_URL}/{path}/{REPO_METADATA_FILENAME}"
-        try:
-            response = requests.get(url)
-            response.raise_for_status()
-        except requests.RequestException as e:
-            logging.error(f"Request failed for URL {url}: {e}")
-            return None
-        try:
-            metadata = response.json()
-        except ValueError as e:
-            logging.error(f"JSON decoding failed for URL {url}: {e}")
+        _, metadata = _fetch_and_parse_response(url)
+        if not metadata:
             return None
         return CloudClient(metadata)
     
     def get_clients_from_batch_response(self, response_json) -> List[CloudClient]:
         return [self.client_for_repo(repo[self.response_key]) for repo in response_json if allowed_repo(repo)]
 
+def _fetch_response(url: str, headers:dict = None, params:Optional[dict] = None) -> Optional[requests.Response]:
+    try:
+        response = requests.get(url, headers=headers, params=params)
+        response.raise_for_status()
+        return response
+    except requests.RequestException as e:
+        logging.error(f"Request failed for URL {url}: {e}")
+        return None
 
+def _parse_response(response: requests.Response) -> Optional[dict]:
+    try:
+        return response.json()
+    except ValueError as e:
+        logging.error(f"JSON decoding failed for URL {response.url}: {e}")
+        return None
     
+def _fetch_and_parse_response(url: str, headers:dict = None, params:Optional[dict] = None):
+    response = _fetch_response(url, headers, params)
+    if not response:
+        return None, None
+    return response, _parse_response(response)
+
 def replace_content_in_readme(content_rows: List[str]) -> None:
     START_MARKER = ".. API_TABLE_START"
     END_MARKER = ".. API_TABLE_END"
@@ -292,20 +296,11 @@ def mono_repo_clients(token: str) -> List[CloudClient]:
     # all mono repo clients
     url = f"{BASE_API}/repos/{MONO_REPO}/contents/packages"
     headers = {'Authorization': f'token {token}'}
-    try:
-        response = requests.get(url=url, headers=headers)
-        response.raise_for_status()
-    except requests.RequestException as e:
-        logging.error(f"Request failed for URL {url}: {e}")
+    _, metadata = _fetch_and_parse_response(url, headers)
+    if not metadata:
         return []
-    try:
-        response_json = response.json()
-    except ValueError as e:
-        logging.error(f"Failed to decode JSON response from URL {url}: {e}")
-        return []
-
     mono_repo_extractor = Extractor(path_format=MONO_REPO_PATH_FORMAT, response_key=PACKAGE_RESPONSE_KEY)
-    return mono_repo_extractor.get_clients_from_batch_response(response_json)
+    return mono_repo_extractor.get_clients_from_batch_response(metadata)
 
 
 def split_repo_clients(token: str) -> List[CloudClient]:
@@ -315,28 +310,17 @@ def split_repo_clients(token: str) -> List[CloudClient]:
     params = {'per_page': 100, "q": "python- in:name org:googleapis"}
 
     while url:
-        try:
-            response = requests.get(url=url, params=params, headers=headers)
-            response.raise_for_status()
-        except requests.RequestException as e:
-            logging.error(f"RequestException failed for URL {url}: {e}")
+        response, metadata = _fetch_and_parse_response(url, headers, params)
+        if not metadata:
             break
-        try:
-            response_json = response.json()
-        except ValueError as e:
-            logging.error(f"Failed to decode JSON response from URL {url}: {e}")
-            break
-
-        repositories = response_json.get("items", [])
+        repositories = metadata.get("items", [])
         if len(repositories) == 0:
             break
-
         split_repo_extractor = Extractor(path_format=SPLIT_REPO_PATH_FORMAT, response_key=REPO_RESPONSE_KEY)
         clients.extend(split_repo_extractor.get_clients_from_batch_response(repositories))
 
         # Check for the 'next' link in the response headers for pagination
-        next_link = response.links.get('next', {}).get('url')
-        url = next_link if next_link else None
+        url = response.links.get('next', {}).get('url')
 
     return clients
 
