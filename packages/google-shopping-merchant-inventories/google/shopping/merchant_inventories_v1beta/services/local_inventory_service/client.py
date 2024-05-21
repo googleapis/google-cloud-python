@@ -878,7 +878,7 @@ class LocalInventoryServiceClient(metaclass=LocalInventoryServiceClientMeta):
                    for a specific product at the store specified by
                    [storeCode][google.shopping.merchant.inventories.v1beta.LocalInventory.store_code].
                    For a list of all accepted attribute values, see the
-                   [local product inventory feed
+                   [local product inventory data
                    specification](\ https://support.google.com/merchants/answer/3061342).
 
         """
