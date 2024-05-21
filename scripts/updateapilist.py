@@ -149,8 +149,9 @@ class CloudClient:
             return self._cached_template_id
         if not self.issue_tracker:
             self._cached_template_id =  None
-        match = re.search(r'(?:\?|&)template=(\d+)', self.issue_tracker)
-        self._cached_template_id = match.group(1) if match else None
+        else:
+            match = re.search(r'(?:\?|&)template=(\d+)', self.issue_tracker)
+            self._cached_template_id = match.group(1) if match else None
         return self._cached_template_id
     
     @property
