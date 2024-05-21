@@ -54,11 +54,17 @@ class TestParquetOptions:
         )
         assert not config.enum_as_string
         assert config.enable_list_inference
+        assert config.map_target_type is None
 
     def test_to_api_repr(self):
         config = self._get_target_class()()
         config.enum_as_string = True
         config.enable_list_inference = False
+        config.map_target_type = "ARRAY_OF_STRUCT"
 
         result = config.to_api_repr()
-        assert result == {"enumAsString": True, "enableListInference": False}
+        assert result == {
+            "enumAsString": True,
+            "enableListInference": False,
+            "mapTargetType": "ARRAY_OF_STRUCT",
+        }

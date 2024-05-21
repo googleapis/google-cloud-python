@@ -105,6 +105,21 @@ class ParquetOptions:
     def enable_list_inference(self, value: bool) -> None:
         self._properties["enableListInference"] = value
 
+    @property
+    def map_target_type(self) -> str:
+        """Indicates whether to simplify the representation of parquet maps to only show keys and values."""
+
+        return self._properties.get("mapTargetType")
+
+    @map_target_type.setter
+    def map_target_type(self, value: str) -> None:
+        """Sets the map target type.
+
+        Args:
+          value: The map target type (eg ARRAY_OF_STRUCT).
+        """
+        self._properties["mapTargetType"] = value
+
     @classmethod
     def from_api_repr(cls, resource: Dict[str, bool]) -> "ParquetOptions":
         """Factory: construct an instance from a resource dict.
