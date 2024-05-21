@@ -15,7 +15,7 @@ from __future__ import annotations
 
 import functools
 import itertools
-from typing import Dict
+from typing import Callable, Dict, Optional
 
 import bigframes.core.nodes as nodes
 
@@ -40,46 +40,66 @@ def peekable(node: nodes.BigFrameNode) -> bool:
     return children_peekable and self_peekable
 
 
-def count_complex_nodes(
-    root: nodes.BigFrameNode, min_complexity: float, max_complexity: float
-) -> Dict[nodes.BigFrameNode, int]:
+# Replace modified_cost(node) = cost(apply_cache(node))
+def select_cache_target(
+    root: nodes.BigFrameNode,
+    min_complexity: float,
+    max_complexity: float,
+    cache: dict[nodes.BigFrameNode, nodes.BigFrameNode],
+    heuristic: Callable[[int, int], float],
+) -> Optional[nodes.BigFrameNode]:
+    """Take tree, and return candidate nodes with (# of occurences, post-caching planning complexity).
+
+    heurstic takes two args, node complexity, and node occurence count, in that order
+    """
+
+    @functools.cache
+    def _with_caching(subtree: nodes.BigFrameNode) -> nodes.BigFrameNode:
+        return replace_nodes(subtree, cache)
+
+    def _combine_counts(
+        left: Dict[nodes.BigFrameNode, int], right: Dict[nodes.BigFrameNode, int]
+    ) -> Dict[nodes.BigFrameNode, int]:
+        return {
+            key: left.get(key, 0) + right.get(key, 0)
+            for key in itertools.chain(left.keys(), right.keys())
+        }
+
     @functools.cache
     def _node_counts_inner(
         subtree: nodes.BigFrameNode,
     ) -> Dict[nodes.BigFrameNode, int]:
         """Helper function to count occurences of duplicate nodes in a subtree. Considers only nodes in a complexity range"""
         empty_counts: Dict[nodes.BigFrameNode, int] = {}
-        if subtree.planning_complexity >= min_complexity:
+        subtree_complexity = _with_caching(subtree).planning_complexity
+        if subtree_complexity >= min_complexity:
             child_counts = [_node_counts_inner(child) for child in subtree.child_nodes]
             node_counts = functools.reduce(_combine_counts, child_counts, empty_counts)
-            if subtree.planning_complexity <= max_complexity:
+            if subtree_complexity <= max_complexity:
                 return _combine_counts(node_counts, {subtree: 1})
             else:
                 return node_counts
         return empty_counts
 
-    return _node_counts_inner(root)
+    node_counts = _node_counts_inner(root)
+
+    return max(
+        node_counts.keys(),
+        key=lambda node: heuristic(
+            _with_caching(node).planning_complexity, node_counts[node]
+        ),
+    )
 
 
 def replace_nodes(
     root: nodes.BigFrameNode,
-    to_replace: nodes.BigFrameNode,
-    replacemenet: nodes.BigFrameNode,
+    replacements: dict[nodes.BigFrameNode, nodes.BigFrameNode],
 ):
     @functools.cache
-    def apply_substition(n: nodes.BigFrameNode) -> nodes.BigFrameNode:
-        if n == to_replace:
-            return replacemenet
+    def apply_substition(node: nodes.BigFrameNode) -> nodes.BigFrameNode:
+        if node in replacements.keys():
+            return replacements[node]
         else:
-            return n.transform_children(apply_substition)
+            return node.transform_children(apply_substition)
 
-    return root.transform_children(apply_substition)
-
-
-def _combine_counts(
-    left: Dict[nodes.BigFrameNode, int], right: Dict[nodes.BigFrameNode, int]
-) -> Dict[nodes.BigFrameNode, int]:
-    return {
-        key: left.get(key, 0) + right.get(key, 0)
-        for key in itertools.chain(left.keys(), right.keys())
-    }
+    return apply_substition(root)

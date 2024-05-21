@@ -191,6 +191,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             else:
                 self._block = bigframes.pandas.read_pandas(pd_dataframe)._get_block()
         self._query_job: Optional[bigquery.QueryJob] = None
+        self._block.session._register_object(self)
 
     def __dir__(self):
         return dir(type(self)) + [
@@ -3515,7 +3516,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         No-op if the dataframe represents a trivial transformation of an existing materialization.
         Force=True is used for BQML integration where need to copy data rather than use snapshot.
         """
-        self._set_block(self._block.cached(force=force))
+        self._block.cached(force=force)
         return self
 
     def _optimize_query_complexity(self):
@@ -3523,8 +3524,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         May generate many queries and take substantial time to execute.
         """
         # TODO: Move all this to session
-        new_expr = self._session._simplify_with_caching(self._block.expr)
-        self._set_block(self._block.swap_array_expr(new_expr))
+        self._session._simplify_with_caching(self._block.expr)
 
     _DataFrameOrSeries = typing.TypeVar("_DataFrameOrSeries")
 

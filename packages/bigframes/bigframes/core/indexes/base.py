@@ -95,6 +95,7 @@ class Index(vendored_pandas_index.Index):
         result = typing.cast(Index, object.__new__(klass))  # type: ignore
         result._query_job = None
         result._block = block
+        block.session._register_object(result)
         return result
 
     @classmethod
