@@ -568,3 +568,38 @@ class TestMutualTlsOffloadAdapter(object):
 
         adapter.proxy_manager_for()
         mock_proxy_manager_for.assert_called_with(ssl_context=adapter._ctx_proxymanager)
+
+    @mock.patch.object(requests.adapters.HTTPAdapter, "init_poolmanager")
+    @mock.patch.object(requests.adapters.HTTPAdapter, "proxy_manager_for")
+    @mock.patch.object(
+        google.auth.transport._custom_tls_signer.CustomTlsSigner, "should_use_provider"
+    )
+    @mock.patch.object(
+        google.auth.transport._custom_tls_signer.CustomTlsSigner, "load_libraries"
+    )
+    @mock.patch.object(
+        google.auth.transport._custom_tls_signer.CustomTlsSigner,
+        "attach_to_ssl_context",
+    )
+    def test_success_should_use_provider(
+        self,
+        mock_attach_to_ssl_context,
+        mock_load_libraries,
+        mock_should_use_provider,
+        mock_proxy_manager_for,
+        mock_init_poolmanager,
+    ):
+        enterprise_cert_file_path = "/path/to/enterprise/cert/json"
+        adapter = google.auth.transport.requests._MutualTlsOffloadAdapter(
+            enterprise_cert_file_path
+        )
+
+        mock_should_use_provider.side_effect = True
+        mock_load_libraries.assert_called_once()
+        assert mock_attach_to_ssl_context.call_count == 2
+
+        adapter.init_poolmanager()
+        mock_init_poolmanager.assert_called_with(ssl_context=adapter._ctx_poolmanager)
+
+        adapter.proxy_manager_for()
+        mock_proxy_manager_for.assert_called_with(ssl_context=adapter._ctx_proxymanager)

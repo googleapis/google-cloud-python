@@ -46,8 +46,15 @@ SIGN_CALLBACK_CTYPE = ctypes.CFUNCTYPE(
 
 
 # Cast SSL_CTX* to void*
-def _cast_ssl_ctx_to_void_p(ssl_ctx):
+def _cast_ssl_ctx_to_void_p_pyopenssl(ssl_ctx):
     return ctypes.cast(int(cffi.FFI().cast("intptr_t", ssl_ctx)), ctypes.c_void_p)
+
+
+# Cast SSL_CTX* to void*
+def _cast_ssl_ctx_to_void_p_stdlib(context):
+    return ctypes.c_void_p.from_address(
+        id(context) + ctypes.sizeof(ctypes.c_void_p) * 2
+    )
 
 
 # Load offload library and set up the function types.
@@ -249,10 +256,15 @@ class CustomTlsSigner(object):
             self._signer_lib, self._enterprise_cert_file_path
         )
 
-    def attach_to_ssl_context(self, ctx):
+    def should_use_provider(self):
         if self._provider_lib:
+            return True
+        return False
+
+    def attach_to_ssl_context(self, ctx):
+        if self.should_use_provider():
             if not self._provider_lib.ECP_attach_to_ctx(
-                _cast_ssl_ctx_to_void_p(ctx._ctx._context),
+                _cast_ssl_ctx_to_void_p_stdlib(ctx),
                 self._enterprise_cert_file_path.encode("ascii"),
             ):
                 raise exceptions.MutualTLSChannelError(
@@ -262,7 +274,7 @@ class CustomTlsSigner(object):
             if not self._offload_lib.ConfigureSslContext(
                 self._sign_callback,
                 ctypes.c_char_p(self._cert),
-                _cast_ssl_ctx_to_void_p(ctx._ctx._context),
+                _cast_ssl_ctx_to_void_p_pyopenssl(ctx._ctx._context),
             ):
                 raise exceptions.MutualTLSChannelError(
                     "failed to configure ECP Offload SSL context"

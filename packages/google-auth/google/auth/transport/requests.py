@@ -262,18 +262,15 @@ class _MutualTlsOffloadAdapter(requests.adapters.HTTPAdapter):
 
     def __init__(self, enterprise_cert_file_path):
         import certifi
-        import urllib3.contrib.pyopenssl
-
         from google.auth.transport import _custom_tls_signer
-
-        # Call inject_into_urllib3 to activate certificate checking. See the
-        # following links for more info:
-        # (1) doc: https://github.com/urllib3/urllib3/blob/cb9ebf8aac5d75f64c8551820d760b72b619beff/src/urllib3/contrib/pyopenssl.py#L31-L32
-        # (2) mTLS example: https://github.com/urllib3/urllib3/issues/474#issuecomment-253168415
-        urllib3.contrib.pyopenssl.inject_into_urllib3()
 
         self.signer = _custom_tls_signer.CustomTlsSigner(enterprise_cert_file_path)
         self.signer.load_libraries()
+
+        if not self.signer.should_use_provider():
+            import urllib3.contrib.pyopenssl
+
+            urllib3.contrib.pyopenssl.inject_into_urllib3()
 
         poolmanager = create_urllib3_context()
         poolmanager.load_verify_locations(cafile=certifi.where())
