@@ -74,6 +74,8 @@ BASE_ISSUE_TRACKER = "https://issuetracker.google.com"
 # this generic component but against a more specific one.
 GENERIC_ISSUE_TRACKER_COMPONENT = "187065"
 
+# This field is used to avoid re-computing an already computed property.
+NOT_COMPUTED = -1
 
 class CloudClient:
     repo: str = None
@@ -90,30 +92,32 @@ class CloudClient:
         self.release_level = repo["release_level"]
         self.distribution_name = repo["distribution_name"]
         self.issue_tracker = repo.get("issue_tracker")
-        self._cached_component_id = None
-        self._is_component_id_computed = False
+        self._cached_component_id = NOT_COMPUTED
+        self._cached_template_id = NOT_COMPUTED
+        self._cached_saved_search_id = NOT_COMPUTED
     
     @property
     def saved_search_id(self):
+        if self._cached_saved_search_id != NOT_COMPUTED:
+            return self._cached_saved_search_id
         if not self.issue_tracker:
-            return None
-        match = re.search(r'savedsearches/(\d+)', self.issue_tracker)
-        if match:
-            return match.group(1)
-        return None
+            self._cached_saved_search_id = None
+        else:
+            match = re.search(r'savedsearches/(\d+)', self.issue_tracker)
+            self._cached_saved_search_id = match.group(1) if match else None
+        return self._cached_saved_search_id
     
     @property
     def saved_search_response_text(self):
-        saved_search_id = self.saved_search_id
-        if not saved_search_id:
+        if not self.saved_search_id:
             return None
-        url = f"{BASE_ISSUE_TRACKER}/action/saved_searches/{saved_search_id}"
+        url = f"{BASE_ISSUE_TRACKER}/action/saved_searches/{self.saved_search_id}"
         response = _fetch_response(url)
         return response.text if response else None
 
     @property
     def issue_tracker_component_id(self):
-        if self._is_component_id_computed:
+        if self._cached_component_id != NOT_COMPUTED:
             return self._cached_component_id
         
         # First, check if the issue tracker is a saved search:
@@ -131,22 +135,23 @@ class CloudClient:
                 for component_id in query_match:
                     if component_id == GENERIC_ISSUE_TRACKER_COMPONENT:
                         continue
-                    if self._cached_component_id:
+                    if self._cached_component_id != NOT_COMPUTED:
                         self._cached_component_id = None
                         logging.error(f"More than one component ids found for issue tracker: {self.issue_tracker}")
                         break
                     self._cached_component_id = component_id
-        self._is_component_id_computed = True
+                self._cached_component_id = self._cached_component_id if self._cached_component_id != NOT_COMPUTED else None
         return self._cached_component_id
     
     @property
     def issue_tracker_template_id(self):
+        if self._cached_template_id != NOT_COMPUTED:
+            return self._cached_template_id
         if not self.issue_tracker:
-            return None
+            self._cached_template_id =  None
         match = re.search(r'(?:\?|&)template=(\d+)', self.issue_tracker)
-        if match:
-            return match.group(1)
-        return None
+        self._cached_template_id = match.group(1) if match else None
+        return self._cached_template_id
     
     @property
     def show_client_issues(self):
@@ -156,15 +161,16 @@ class CloudClient:
     def file_api_issue(self):
         if self.issue_tracker_component_id:
             link = f"{BASE_ISSUE_TRACKER}/issues/new?component={self.issue_tracker_component_id}"
-            template_id = self.issue_tracker_template_id
-            if template_id:
-                link += f"&template={template_id}"
+            if self.issue_tracker_template_id:
+                link += f"&template={self.issue_tracker_template_id}"
             return link
         return None
     
     @property
     def show_api_issues(self):
-        if self.issue_tracker_component_id:
+        if self.saved_search_id:
+            return self.issue_tracker
+        elif self.issue_tracker_component_id:
             return f"{BASE_ISSUE_TRACKER}/issues?q=componentid:{self.issue_tracker_component_id}"
         return None
 
