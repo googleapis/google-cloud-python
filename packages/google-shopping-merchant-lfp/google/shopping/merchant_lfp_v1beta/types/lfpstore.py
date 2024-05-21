@@ -34,8 +34,8 @@ __protobuf__ = proto.module(
 
 class LfpStore(proto.Message):
     r"""A store for the merchant. This will be used to match to a
-    Google Business Profile listing for the target merchant. If a
-    matching listing can't be found, the inventories or sales
+    store under the Google Business Profile of the target merchant.
+    If a matching store can't be found, the inventories or sales
     submitted with the store code will not be used.
 
 
@@ -82,7 +82,7 @@ class LfpStore(proto.Message):
             This field is a member of `oneof`_ ``_place_id``.
         matching_state (google.shopping.merchant_lfp_v1beta.types.LfpStore.StoreMatchingState):
             Optional. Output only. The state of matching to a Google
-            Business Profile listing. See
+            Business Profile. See
             [matchingStateHint][google.shopping.merchant.lfp.v1beta.LfpStore.matching_state_hint]
             for further details if no match is found.
         matching_state_hint (str):
@@ -112,8 +112,7 @@ class LfpStore(proto.Message):
     """
 
     class StoreMatchingState(proto.Enum):
-        r"""The state of matching ``LfpStore`` to a Google Business Profile
-        listing.
+        r"""The state of matching ``LfpStore`` to a Google Business Profile.
 
         Values:
             STORE_MATCHING_STATE_UNSPECIFIED (0):

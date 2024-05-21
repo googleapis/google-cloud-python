@@ -318,11 +318,12 @@ class LfpStoreServiceAsyncClient:
         Returns:
             google.shopping.merchant_lfp_v1beta.types.LfpStore:
                 A store for the merchant. This will
-                be used to match to a Google Business
-                Profile listing for the target merchant.
-                If a matching listing can't be found,
-                the inventories or sales submitted with
-                the store code will not be used.
+                be used to match to a store under the
+                Google Business Profile of the target
+                merchant. If a matching store can't be
+                found, the inventories or sales
+                submitted with the store code will not
+                be used.
 
         """
         # Create or coerce a protobuf request object.
@@ -442,11 +443,12 @@ class LfpStoreServiceAsyncClient:
         Returns:
             google.shopping.merchant_lfp_v1beta.types.LfpStore:
                 A store for the merchant. This will
-                be used to match to a Google Business
-                Profile listing for the target merchant.
-                If a matching listing can't be found,
-                the inventories or sales submitted with
-                the store code will not be used.
+                be used to match to a store under the
+                Google Business Profile of the target
+                merchant. If a matching store can't be
+                found, the inventories or sales
+                submitted with the store code will not
+                be used.
 
         """
         # Create or coerce a protobuf request object.
