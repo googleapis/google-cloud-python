@@ -2307,9 +2307,17 @@ class TestRowIterator(unittest.TestCase):
         rows = [
             {"f": [{"v": "Phred Phlyntstone"}, {"v": "32"}]},
             {"f": [{"v": "Bharney Rhubble"}, {"v": "33"}]},
+            {"f": [{"v": "Whillma Phlyntstone"}, {"v": "27"}]},
+            {"f": [{"v": "Bhetty Rhubble"}, {"v": "28"}]},
+            {"f": [{"v": "Pebbles Phlyntstone"}, {"v": "4"}]},
+            {"f": [{"v": "Bamm-Bamm Rhubble"}, {"v": "5"}]},
+            {"f": [{"v": "Joseph Rockhead"}, {"v": "32"}]},
+            {"f": [{"v": "Perry Masonry"}, {"v": "33"}]},
         ]
         first_page = {"pageToken": "next-page", "rows": rows}
-        iterator = self._make_one(first_page_response=first_page, total_rows=6)
+        iterator = self._make_one(
+            first_page_response=first_page, total_rows=len(rows) + 1
+        )
         self.assertTrue(iterator._is_almost_completely_cached())
 
     def test__is_almost_completely_cached_returns_true_with_no_rows_remaining(self):

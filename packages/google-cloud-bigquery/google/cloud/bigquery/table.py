@@ -108,7 +108,17 @@ _RANGE_PYARROW_WARNING = (
 
 # How many of the total rows need to be downloaded already for us to skip
 # calling the BQ Storage API?
-ALMOST_COMPLETELY_CACHED_RATIO = 0.333
+#
+# In microbenchmarks on 2024-05-21, I (tswast@) measure that at about 2 MB of
+# remaining results, it's faster to use the BQ Storage Read API to download
+# the results than use jobs.getQueryResults. Since we don't have a good way to
+# know the remaining bytes, we estimate by remaining number of rows.
+#
+# Except when rows themselves are larger, I observe that the a single page of
+# results will be around 10 MB. Therefore, the proportion of rows already
+# downloaded should be 10 (first page) / 12 (all results) or less for it to be
+# worth it to make a call to jobs.getQueryResults.
+ALMOST_COMPLETELY_CACHED_RATIO = 0.833333
 
 
 def _reference_getter(table):
