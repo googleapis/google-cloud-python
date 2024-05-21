@@ -15,7 +15,13 @@
 #
 from .backup import Backup
 from .backup_plan import BackupPlan, ExclusionWindow, RpoConfig
-from .common import EncryptionKey, NamespacedName, NamespacedNames, Namespaces
+from .common import (
+    EncryptionKey,
+    NamespacedName,
+    NamespacedNames,
+    Namespaces,
+    VolumeTypeEnum,
+)
 from .gkebackup import (
     CreateBackupPlanRequest,
     CreateBackupRequest,
@@ -51,7 +57,12 @@ from .gkebackup import (
     UpdateRestorePlanRequest,
     UpdateRestoreRequest,
 )
-from .restore import Restore, RestoreConfig
+from .restore import (
+    ResourceSelector,
+    Restore,
+    RestoreConfig,
+    VolumeDataRestorePolicyOverride,
+)
 from .restore_plan import RestorePlan
 from .volume import VolumeBackup, VolumeRestore
 
@@ -64,6 +75,7 @@ __all__ = (
     "NamespacedName",
     "NamespacedNames",
     "Namespaces",
+    "VolumeTypeEnum",
     "CreateBackupPlanRequest",
     "CreateBackupRequest",
     "CreateRestorePlanRequest",
@@ -97,8 +109,10 @@ __all__ = (
     "UpdateBackupRequest",
     "UpdateRestorePlanRequest",
     "UpdateRestoreRequest",
+    "ResourceSelector",
     "Restore",
     "RestoreConfig",
+    "VolumeDataRestorePolicyOverride",
     "RestorePlan",
     "VolumeBackup",
     "VolumeRestore",
