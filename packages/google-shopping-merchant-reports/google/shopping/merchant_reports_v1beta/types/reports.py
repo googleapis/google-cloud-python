@@ -643,7 +643,7 @@ class ProductView(proto.Message):
         shipping_label (str):
             Normalized `shipping
             label <https://support.google.com/merchants/answer/6324504>`__
-            specified in the feed.
+            specified in the data source.
 
             This field is a member of `oneof`_ ``_shipping_label``.
         gtin (MutableSequence[str]):
@@ -694,7 +694,7 @@ class ProductView(proto.Message):
 
         Here's an example of how the aggregated status is computed:
 
-        Free listings \| Shopping Ads \| Status
+        Free listings \| Shopping ads \| Status
         --------------|--------------|------------------------------
         Approved \| Approved \| ELIGIBLE Approved \| Pending \| ELIGIBLE
         Approved \| Disapproved \| ELIGIBLE_LIMITED Pending \| Pending \|
@@ -1368,7 +1368,35 @@ class PriceInsightsProductView(proto.Message):
             5% predicted increase in conversions).
 
             This field is a member of `oneof`_ ``_predicted_conversions_change_fraction``.
+        effectiveness (google.shopping.merchant_reports_v1beta.types.PriceInsightsProductView.Effectiveness):
+            The predicted effectiveness of applying the
+            price suggestion, bucketed.
     """
+
+    class Effectiveness(proto.Enum):
+        r"""Predicted effectiveness bucket.
+
+        Effectiveness indicates which products would benefit most from price
+        changes. This rating takes into consideration the performance boost
+        predicted by adjusting the sale price and the difference between
+        your current price and the suggested price. Price suggestions with
+        ``HIGH`` effectiveness are predicted to drive the largest increase
+        in performance.
+
+        Values:
+            EFFECTIVENESS_UNSPECIFIED (0):
+                Effectiveness is unknown.
+            LOW (1):
+                Effectiveness is low.
+            MEDIUM (2):
+                Effectiveness is medium.
+            HIGH (3):
+                Effectiveness is high.
+        """
+        EFFECTIVENESS_UNSPECIFIED = 0
+        LOW = 1
+        MEDIUM = 2
+        HIGH = 3
 
     id: str = proto.Field(
         proto.STRING,
@@ -1464,6 +1492,11 @@ class PriceInsightsProductView(proto.Message):
         proto.DOUBLE,
         number=19,
         optional=True,
+    )
+    effectiveness: Effectiveness = proto.Field(
+        proto.ENUM,
+        number=22,
+        enum=Effectiveness,
     )
 
 
@@ -1563,9 +1596,9 @@ class BestSellersProductClusterView(proto.Message):
             cluster.
         inventory_status (google.shopping.merchant_reports_v1beta.types.BestSellersProductClusterView.InventoryStatus):
             Whether the product cluster is ``IN_STOCK`` in your product
-            feed in at least one of the countries, ``OUT_OF_STOCK`` in
-            your product feed in all countries, or ``NOT_IN_INVENTORY``
-            at all.
+            data source in at least one of the countries,
+            ``OUT_OF_STOCK`` in your product data source in all
+            countries, or ``NOT_IN_INVENTORY`` at all.
 
             The field doesn't take the Best sellers report country
             filter into account.
@@ -1573,9 +1606,10 @@ class BestSellersProductClusterView(proto.Message):
             This field is a member of `oneof`_ ``_inventory_status``.
         brand_inventory_status (google.shopping.merchant_reports_v1beta.types.BestSellersProductClusterView.InventoryStatus):
             Whether there is at least one product of the brand currently
-            ``IN_STOCK`` in your product feed in at least one of the
-            countries, all products are ``OUT_OF_STOCK`` in your product
-            feed in all countries, or ``NOT_IN_INVENTORY``.
+            ``IN_STOCK`` in your product data source in at least one of
+            the countries, all products are ``OUT_OF_STOCK`` in your
+            product data source in all countries, or
+            ``NOT_IN_INVENTORY``.
 
             The field doesn't take the Best sellers report country
             filter into account.
