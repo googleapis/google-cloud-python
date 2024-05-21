@@ -27,6 +27,8 @@ __protobuf__ = proto.module(
     manifest={
         "Restore",
         "RestoreConfig",
+        "ResourceSelector",
+        "VolumeDataRestorePolicyOverride",
     },
 )
 
@@ -108,6 +110,22 @@ class Restore(proto.Message):
             that etag in the request to ``UpdateRestore`` or
             ``DeleteRestore`` to ensure that their change will be
             applied to the same version of the resource.
+        filter (google.cloud.gke_backup_v1.types.Restore.Filter):
+            Optional. Immutable. Filters resources for ``Restore``. If
+            not specified, the scope of the restore will remain the same
+            as defined in the ``RestorePlan``. If this is specified, and
+            no resources are matched by the ``inclusion_filters`` or
+            everyting is excluded by the ``exclusion_filters``, nothing
+            will be restored. This filter can only be specified if the
+            value of
+            [namespaced_resource_restore_mode][google.cloud.gkebackup.v1.RestoreConfig.namespaced_resource_restore_mode]
+            is set to ``MERGE_SKIP_ON_CONFLICT``,
+            ``MERGE_REPLACE_VOLUME_ON_CONFLICT`` or
+            ``MERGE_REPLACE_ON_CONFLICT``.
+        volume_data_restore_policy_overrides (MutableSequence[google.cloud.gke_backup_v1.types.VolumeDataRestorePolicyOverride]):
+            Optional. Immutable. Overrides the volume
+            data restore policies selected in the Restore
+            Config for override-scoped resources.
     """
 
     class State(proto.Enum):
@@ -140,6 +158,38 @@ class Restore(proto.Message):
         SUCCEEDED = 3
         FAILED = 4
         DELETING = 5
+
+    class Filter(proto.Message):
+        r"""Defines the filter for ``Restore``. This filter can be used to
+        further refine the resource selection of the ``Restore`` beyond the
+        coarse-grained scope defined in the ``RestorePlan``.
+        ``exclusion_filters`` take precedence over ``inclusion_filters``. If
+        a resource matches both ``inclusion_filters`` and
+        ``exclusion_filters``, it will not be restored.
+
+        Attributes:
+            inclusion_filters (MutableSequence[google.cloud.gke_backup_v1.types.ResourceSelector]):
+                Optional. Selects resources for restoration. If specified,
+                only resources which match ``inclusion_filters`` will be
+                selected for restoration. A resource will be selected if it
+                matches any ``ResourceSelector`` of the
+                ``inclusion_filters``.
+            exclusion_filters (MutableSequence[google.cloud.gke_backup_v1.types.ResourceSelector]):
+                Optional. Excludes resources from restoration. If specified,
+                a resource will not be restored if it matches any
+                ``ResourceSelector`` of the ``exclusion_filters``.
+        """
+
+        inclusion_filters: MutableSequence["ResourceSelector"] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="ResourceSelector",
+        )
+        exclusion_filters: MutableSequence["ResourceSelector"] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message="ResourceSelector",
+        )
 
     name: str = proto.Field(
         proto.STRING,
@@ -214,6 +264,18 @@ class Restore(proto.Message):
     etag: str = proto.Field(
         proto.STRING,
         number=17,
+    )
+    filter: Filter = proto.Field(
+        proto.MESSAGE,
+        number=18,
+        message=Filter,
+    )
+    volume_data_restore_policy_overrides: MutableSequence[
+        "VolumeDataRestorePolicyOverride"
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=19,
+        message="VolumeDataRestorePolicyOverride",
     )
 
 
@@ -296,6 +358,14 @@ class RestoreConfig(proto.Message):
             matters, as changes made by a rule may impact
             the filtering logic of subsequent rules. An
             empty list means no transformation will occur.
+        volume_data_restore_policy_bindings (MutableSequence[google.cloud.gke_backup_v1.types.RestoreConfig.VolumeDataRestorePolicyBinding]):
+            Optional. A table that binds volumes by their scope to a
+            restore policy. Bindings must have a unique scope. Any
+            volumes not scoped in the bindings are subject to the policy
+            defined in volume_data_restore_policy.
+        restore_order (google.cloud.gke_backup_v1.types.RestoreConfig.RestoreOrder):
+            Optional. RestoreOrder contains custom
+            ordering to use on a Restore.
     """
 
     class VolumeDataRestorePolicy(proto.Enum):
@@ -380,10 +450,51 @@ class RestoreConfig(proto.Message):
                 itself (e.g., because an out of band process
                 creates conflicting resources), a conflict will
                 be reported.
+            MERGE_SKIP_ON_CONFLICT (3):
+                This mode merges the backup and the target
+                cluster and skips the conflicting resources. If
+                a single resource to restore exists in the
+                cluster before restoration, the resource will be
+                skipped, otherwise it will be restored.
+            MERGE_REPLACE_VOLUME_ON_CONFLICT (4):
+                This mode merges the backup and the target cluster and skips
+                the conflicting resources except volume data. If a PVC to
+                restore already exists, this mode will restore/reconnect the
+                volume without overwriting the PVC. It is similar to
+                MERGE_SKIP_ON_CONFLICT except that it will apply the volume
+                data policy for the conflicting PVCs:
+
+                -  RESTORE_VOLUME_DATA_FROM_BACKUP: restore data only and
+                   respect the reclaim policy of the original PV;
+                -  REUSE_VOLUME_HANDLE_FROM_BACKUP: reconnect and respect
+                   the reclaim policy of the original PV;
+                -  NO_VOLUME_DATA_RESTORATION: new provision and respect the
+                   reclaim policy of the original PV. Note that this mode
+                   could cause data loss as the original PV can be retained
+                   or deleted depending on its reclaim policy.
+            MERGE_REPLACE_ON_CONFLICT (5):
+                This mode merges the backup and the target
+                cluster and replaces the conflicting resources
+                with the ones in the backup. If a single
+                resource to restore exists in the cluster before
+                restoration, the resource will be replaced with
+                the one from the backup. To replace an existing
+                resource, the first attempt is to update the
+                resource to match the one from the backup; if
+                the update fails, the second attempt is to
+                delete the resource and restore it from the
+                backup.
+                Note that this mode could cause data loss as it
+                replaces the existing resources in the target
+                cluster, and the original PV can be retained or
+                deleted depending on its reclaim policy.
         """
         NAMESPACED_RESOURCE_RESTORE_MODE_UNSPECIFIED = 0
         DELETE_AND_RESTORE = 1
         FAIL_ON_CONFLICT = 2
+        MERGE_SKIP_ON_CONFLICT = 3
+        MERGE_REPLACE_VOLUME_ON_CONFLICT = 4
+        MERGE_REPLACE_ON_CONFLICT = 5
 
     class GroupKind(proto.Message):
         r"""This is a direct map to the Kubernetes GroupKind type
@@ -744,6 +855,81 @@ class RestoreConfig(proto.Message):
             number=3,
         )
 
+    class VolumeDataRestorePolicyBinding(proto.Message):
+        r"""Binds resources in the scope to the given
+        VolumeDataRestorePolicy.
+
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            policy (google.cloud.gke_backup_v1.types.RestoreConfig.VolumeDataRestorePolicy):
+                Required. The VolumeDataRestorePolicy to
+                apply when restoring volumes in scope.
+            volume_type (google.cloud.gke_backup_v1.types.VolumeTypeEnum.VolumeType):
+                The volume type, as determined by the PVC's
+                bound PV, to apply the policy to.
+
+                This field is a member of `oneof`_ ``scope``.
+        """
+
+        policy: "RestoreConfig.VolumeDataRestorePolicy" = proto.Field(
+            proto.ENUM,
+            number=1,
+            enum="RestoreConfig.VolumeDataRestorePolicy",
+        )
+        volume_type: common.VolumeTypeEnum.VolumeType = proto.Field(
+            proto.ENUM,
+            number=2,
+            oneof="scope",
+            enum=common.VolumeTypeEnum.VolumeType,
+        )
+
+    class RestoreOrder(proto.Message):
+        r"""Allows customers to specify dependencies between resources
+        that Backup for GKE can use to compute a resasonable restore
+        order.
+
+        Attributes:
+            group_kind_dependencies (MutableSequence[google.cloud.gke_backup_v1.types.RestoreConfig.RestoreOrder.GroupKindDependency]):
+                Optional. Contains a list of group kind
+                dependency pairs provided by the customer, that
+                is used by Backup for GKE to generate a group
+                kind restore order.
+        """
+
+        class GroupKindDependency(proto.Message):
+            r"""Defines a dependency between two group kinds.
+
+            Attributes:
+                satisfying (google.cloud.gke_backup_v1.types.RestoreConfig.GroupKind):
+                    Required. The satisfying group kind must be
+                    restored first in order to satisfy the
+                    dependency.
+                requiring (google.cloud.gke_backup_v1.types.RestoreConfig.GroupKind):
+                    Required. The requiring group kind requires
+                    that the other group kind be restored first.
+            """
+
+            satisfying: "RestoreConfig.GroupKind" = proto.Field(
+                proto.MESSAGE,
+                number=1,
+                message="RestoreConfig.GroupKind",
+            )
+            requiring: "RestoreConfig.GroupKind" = proto.Field(
+                proto.MESSAGE,
+                number=2,
+                message="RestoreConfig.GroupKind",
+            )
+
+        group_kind_dependencies: MutableSequence[
+            "RestoreConfig.RestoreOrder.GroupKindDependency"
+        ] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="RestoreConfig.RestoreOrder.GroupKindDependency",
+        )
+
     volume_data_restore_policy: VolumeDataRestorePolicy = proto.Field(
         proto.ENUM,
         number=1,
@@ -801,6 +987,107 @@ class RestoreConfig(proto.Message):
         proto.MESSAGE,
         number=11,
         message=TransformationRule,
+    )
+    volume_data_restore_policy_bindings: MutableSequence[
+        VolumeDataRestorePolicyBinding
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=12,
+        message=VolumeDataRestorePolicyBinding,
+    )
+    restore_order: RestoreOrder = proto.Field(
+        proto.MESSAGE,
+        number=13,
+        message=RestoreOrder,
+    )
+
+
+class ResourceSelector(proto.Message):
+    r"""Defines a selector to identify a single or a group of
+    resources. Conditions in the selector are optional, but at least
+    one field should be set to a non-empty value. If a condition is
+    not specified, no restrictions will be applied on that
+    dimension.
+    If more than one condition is specified, a resource will be
+    selected if and only if all conditions are met.
+
+    Attributes:
+        group_kind (google.cloud.gke_backup_v1.types.RestoreConfig.GroupKind):
+            Optional. Selects resources using their
+            Kubernetes GroupKinds. If specified, only
+            resources of provided GroupKind will be
+            selected.
+        name (str):
+            Optional. Selects resources using their
+            resource names. If specified, only resources
+            with the provided name will be selected.
+        namespace (str):
+            Optional. Selects resources using their namespaces. This
+            only applies to namespace scoped resources and cannot be
+            used for selecting cluster scoped resources. If specified,
+            only resources in the provided namespace will be selected.
+            If not specified, the filter will apply to both cluster
+            scoped and namespace scoped resources (e.g. name or label).
+            The
+            `Namespace <https://pkg.go.dev/k8s.io/api/core/v1#Namespace>`__
+            resource itself will be restored if and only if any
+            resources within the namespace are restored.
+        labels (MutableMapping[str, str]):
+            Optional. Selects resources using Kubernetes
+            `labels <https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/>`__.
+            If specified, a resource will be selected if and only if the
+            resource has all of the provided labels and all the label
+            values match.
+    """
+
+    group_kind: "RestoreConfig.GroupKind" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="RestoreConfig.GroupKind",
+    )
+    name: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    namespace: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    labels: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=4,
+    )
+
+
+class VolumeDataRestorePolicyOverride(proto.Message):
+    r"""Defines an override to apply a VolumeDataRestorePolicy for
+    scoped resources.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        policy (google.cloud.gke_backup_v1.types.RestoreConfig.VolumeDataRestorePolicy):
+            Required. The VolumeDataRestorePolicy to
+            apply when restoring volumes in scope.
+        selected_pvcs (google.cloud.gke_backup_v1.types.NamespacedNames):
+            A list of PVCs to apply the policy override
+            to.
+
+            This field is a member of `oneof`_ ``scope``.
+    """
+
+    policy: "RestoreConfig.VolumeDataRestorePolicy" = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum="RestoreConfig.VolumeDataRestorePolicy",
+    )
+    selected_pvcs: common.NamespacedNames = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="scope",
+        message=common.NamespacedNames,
     )
 
 
