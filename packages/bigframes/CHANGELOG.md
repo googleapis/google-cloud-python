@@ -4,6 +4,40 @@
 
 [1]: https://pypi.org/project/bigframes/#history
 
+## [1.7.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v1.6.0...v1.7.0) (2024-05-20)
+
+
+### Features
+
+* `read_gbq_query` supports `filters` ([9386373](https://github.com/googleapis/python-bigquery-dataframes/commit/9386373538c1e7827e2210c4fd9946312821b54d))
+* `read_gbq` suggests a correct column name when one is not found ([9386373](https://github.com/googleapis/python-bigquery-dataframes/commit/9386373538c1e7827e2210c4fd9946312821b54d))
+* Add `DefaultIndexKind.NULL` to use as `index_col` in `read_gbq*`, creating an indexless DataFrame/Series ([#662](https://github.com/googleapis/python-bigquery-dataframes/issues/662)) ([29e4886](https://github.com/googleapis/python-bigquery-dataframes/commit/29e4886d41e3d615bc493cf3a104ef1b0698ece8))
+* Bigframes.bigquery.array_agg(SeriesGroupBy|DataFrameGroupby) ([#663](https://github.com/googleapis/python-bigquery-dataframes/issues/663)) ([412f28b](https://github.com/googleapis/python-bigquery-dataframes/commit/412f28bf7551430473690160a2a1c4c2f133539e))
+* To_datetime supports utc=False for string inputs ([#579](https://github.com/googleapis/python-bigquery-dataframes/issues/579)) ([adf9889](https://github.com/googleapis/python-bigquery-dataframes/commit/adf98892e499f4a9c85162c38f56ca5634a1ba6d))
+
+
+### Bug Fixes
+
+* `read_gbq_table` respects primary keys even when `filters` are set ([#689](https://github.com/googleapis/python-bigquery-dataframes/issues/689)) ([9386373](https://github.com/googleapis/python-bigquery-dataframes/commit/9386373538c1e7827e2210c4fd9946312821b54d))
+* Fix type error in test_cluster ([#698](https://github.com/googleapis/python-bigquery-dataframes/issues/698)) ([14d81c1](https://github.com/googleapis/python-bigquery-dataframes/commit/14d81c17505f9a09439a874ff855aec6f95fc0d1))
+* Improve escaping of literals and identifiers ([#682](https://github.com/googleapis/python-bigquery-dataframes/issues/682)) ([da9b136](https://github.com/googleapis/python-bigquery-dataframes/commit/da9b136df08b243c8515946f7c0d7b591b8fcbdc))
+* Properly identify non-unique index in tables without primary keys ([#699](https://github.com/googleapis/python-bigquery-dataframes/issues/699)) ([6e0f4d8](https://github.com/googleapis/python-bigquery-dataframes/commit/6e0f4d8c76f78dc26f4aa1880dd67ebdb638bb5e))
+* Remove a usage of the `resource` package when not available, such as on Windows ([#681](https://github.com/googleapis/python-bigquery-dataframes/issues/681)) ([96243f2](https://github.com/googleapis/python-bigquery-dataframes/commit/96243f23a1571001509d0d01c16c1e72e47e0d23))
+* The imported samples error and use peek() ([#688](https://github.com/googleapis/python-bigquery-dataframes/issues/688)) ([1a0b744](https://github.com/googleapis/python-bigquery-dataframes/commit/1a0b744c5aacdd8ba4eececf7b0a374808e8672c))
+
+
+### Performance Improvements
+
+* Don't run query immediately from `read_gbq_table` if `filters` is set ([9386373](https://github.com/googleapis/python-bigquery-dataframes/commit/9386373538c1e7827e2210c4fd9946312821b54d))
+* Use a `LIMIT` clause when `max_results` is set ([9386373](https://github.com/googleapis/python-bigquery-dataframes/commit/9386373538c1e7827e2210c4fd9946312821b54d))
+
+
+### Documentation
+
+* Add code snippets for imported onnx tutorials ([#684](https://github.com/googleapis/python-bigquery-dataframes/issues/684)) ([cb36e46](https://github.com/googleapis/python-bigquery-dataframes/commit/cb36e468d1c2a34c2231638124f3c8d9052f032b))
+* Add code snippets for imported tensorflow model ([#679](https://github.com/googleapis/python-bigquery-dataframes/issues/679)) ([b02c401](https://github.com/googleapis/python-bigquery-dataframes/commit/b02c401614eeab9cbf2e9a7c648b3d0a4e741b97))
+* Use `class_weight="balanced"` in the  logistic regression prediction tutorial ([#678](https://github.com/googleapis/python-bigquery-dataframes/issues/678)) ([b951549](https://github.com/googleapis/python-bigquery-dataframes/commit/b95154908fd7838e499a2af0fc3760c5ab33358f))
+
 ## [1.6.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v1.5.0...v1.6.0) (2024-05-13)
 
 
