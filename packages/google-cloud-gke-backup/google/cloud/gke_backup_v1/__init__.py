@@ -21,7 +21,13 @@ __version__ = package_version.__version__
 from .services.backup_for_gke import BackupForGKEAsyncClient, BackupForGKEClient
 from .types.backup import Backup
 from .types.backup_plan import BackupPlan, ExclusionWindow, RpoConfig
-from .types.common import EncryptionKey, NamespacedName, NamespacedNames, Namespaces
+from .types.common import (
+    EncryptionKey,
+    NamespacedName,
+    NamespacedNames,
+    Namespaces,
+    VolumeTypeEnum,
+)
 from .types.gkebackup import (
     CreateBackupPlanRequest,
     CreateBackupRequest,
@@ -57,7 +63,12 @@ from .types.gkebackup import (
     UpdateRestorePlanRequest,
     UpdateRestoreRequest,
 )
-from .types.restore import Restore, RestoreConfig
+from .types.restore import (
+    ResourceSelector,
+    Restore,
+    RestoreConfig,
+    VolumeDataRestorePolicyOverride,
+)
 from .types.restore_plan import RestorePlan
 from .types.volume import VolumeBackup, VolumeRestore
 
@@ -100,6 +111,7 @@ __all__ = (
     "NamespacedNames",
     "Namespaces",
     "OperationMetadata",
+    "ResourceSelector",
     "Restore",
     "RestoreConfig",
     "RestorePlan",
@@ -109,5 +121,7 @@ __all__ = (
     "UpdateRestorePlanRequest",
     "UpdateRestoreRequest",
     "VolumeBackup",
+    "VolumeDataRestorePolicyOverride",
     "VolumeRestore",
+    "VolumeTypeEnum",
 )

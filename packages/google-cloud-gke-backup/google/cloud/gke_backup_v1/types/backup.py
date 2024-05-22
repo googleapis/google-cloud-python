@@ -171,6 +171,14 @@ class Backup(proto.Message):
         config_backup_size_bytes (int):
             Output only. The size of the config backup in
             bytes.
+        permissive_mode (bool):
+            Output only. If false, Backup will fail when Backup for GKE
+            detects Kubernetes configuration that is non-standard or
+            requires additional setup to restore.
+
+            Inherited from the parent BackupPlan's
+            [permissive_mode][google.cloud.gkebackup.v1.BackupPlan.BackupConfig.permissive_mode]
+            value.
     """
 
     class State(proto.Enum):
@@ -386,6 +394,10 @@ class Backup(proto.Message):
     config_backup_size_bytes: int = proto.Field(
         proto.INT64,
         number=27,
+    )
+    permissive_mode: bool = proto.Field(
+        proto.BOOL,
+        number=28,
     )
 
 

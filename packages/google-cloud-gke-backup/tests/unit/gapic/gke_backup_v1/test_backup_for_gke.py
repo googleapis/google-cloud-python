@@ -4336,6 +4336,7 @@ def test_get_backup(request_type, transport: str = "grpc"):
             description="description_value",
             pod_count=971,
             config_backup_size_bytes=2539,
+            permissive_mode=True,
             all_namespaces=True,
         )
         response = client.get_backup(request)
@@ -4364,6 +4365,7 @@ def test_get_backup(request_type, transport: str = "grpc"):
     assert response.description == "description_value"
     assert response.pod_count == 971
     assert response.config_backup_size_bytes == 2539
+    assert response.permissive_mode is True
 
 
 def test_get_backup_empty_call():
@@ -4478,6 +4480,7 @@ async def test_get_backup_empty_call_async():
                 description="description_value",
                 pod_count=971,
                 config_backup_size_bytes=2539,
+                permissive_mode=True,
             )
         )
         response = await client.get_backup()
@@ -4564,6 +4567,7 @@ async def test_get_backup_async(
                 description="description_value",
                 pod_count=971,
                 config_backup_size_bytes=2539,
+                permissive_mode=True,
             )
         )
         response = await client.get_backup(request)
@@ -4592,6 +4596,7 @@ async def test_get_backup_async(
     assert response.description == "description_value"
     assert response.pod_count == 971
     assert response.config_backup_size_bytes == 2539
+    assert response.permissive_mode is True
 
 
 @pytest.mark.asyncio
@@ -12329,6 +12334,7 @@ def test_create_backup_plan_rest(request_type):
             "encryption_key": {
                 "gcp_kms_encryption_key": "gcp_kms_encryption_key_value"
             },
+            "permissive_mode": True,
         },
         "protected_pod_count": 2036,
         "state": 1,
@@ -13499,6 +13505,7 @@ def test_update_backup_plan_rest(request_type):
             "encryption_key": {
                 "gcp_kms_encryption_key": "gcp_kms_encryption_key_value"
             },
+            "permissive_mode": True,
         },
         "protected_pod_count": 2036,
         "state": 1,
@@ -14229,6 +14236,7 @@ def test_create_backup_rest(request_type):
         "description": "description_value",
         "pod_count": 971,
         "config_backup_size_bytes": 2539,
+        "permissive_mode": True,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -15002,6 +15010,7 @@ def test_get_backup_rest(request_type):
             description="description_value",
             pod_count=971,
             config_backup_size_bytes=2539,
+            permissive_mode=True,
             all_namespaces=True,
         )
 
@@ -15034,6 +15043,7 @@ def test_get_backup_rest(request_type):
     assert response.description == "description_value"
     assert response.pod_count == 971
     assert response.config_backup_size_bytes == 2539
+    assert response.permissive_mode is True
 
 
 def test_get_backup_rest_use_cached_wrapped_rpc():
@@ -15354,6 +15364,7 @@ def test_update_backup_rest(request_type):
         "description": "description_value",
         "pod_count": 971,
         "config_backup_size_bytes": 2539,
+        "permissive_mode": True,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -16823,6 +16834,10 @@ def test_create_restore_plan_rest(request_type):
                     "description": "description_value",
                 }
             ],
+            "volume_data_restore_policy_bindings": [{"policy": 1, "volume_type": 1}],
+            "restore_order": {
+                "group_kind_dependencies": [{"satisfying": {}, "requiring": {}}]
+            },
         },
         "labels": {},
         "etag": "etag_value",
@@ -18002,6 +18017,10 @@ def test_update_restore_plan_rest(request_type):
                     "description": "description_value",
                 }
             ],
+            "volume_data_restore_policy_bindings": [{"policy": 1, "volume_type": 1}],
+            "restore_order": {
+                "group_kind_dependencies": [{"satisfying": {}, "requiring": {}}]
+            },
         },
         "labels": {},
         "etag": "etag_value",
@@ -18770,6 +18789,10 @@ def test_create_restore_rest(request_type):
                     "description": "description_value",
                 }
             ],
+            "volume_data_restore_policy_bindings": [{"policy": 1, "volume_type": 1}],
+            "restore_order": {
+                "group_kind_dependencies": [{"satisfying": {}, "requiring": {}}]
+            },
         },
         "labels": {},
         "state": 1,
@@ -18780,6 +18803,18 @@ def test_create_restore_rest(request_type):
         "resources_failed_count": 2343,
         "volumes_restored_count": 2394,
         "etag": "etag_value",
+        "filter": {
+            "inclusion_filters": [
+                {
+                    "group_kind": {},
+                    "name": "name_value",
+                    "namespace": "namespace_value",
+                    "labels": {},
+                }
+            ],
+            "exclusion_filters": {},
+        },
+        "volume_data_restore_policy_overrides": [{"policy": 1, "selected_pvcs": {}}],
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -19948,6 +19983,10 @@ def test_update_restore_rest(request_type):
                     "description": "description_value",
                 }
             ],
+            "volume_data_restore_policy_bindings": [{"policy": 1, "volume_type": 1}],
+            "restore_order": {
+                "group_kind_dependencies": [{"satisfying": {}, "requiring": {}}]
+            },
         },
         "labels": {},
         "state": 1,
@@ -19958,6 +19997,18 @@ def test_update_restore_rest(request_type):
         "resources_failed_count": 2343,
         "volumes_restored_count": 2394,
         "etag": "etag_value",
+        "filter": {
+            "inclusion_filters": [
+                {
+                    "group_kind": {},
+                    "name": "name_value",
+                    "namespace": "namespace_value",
+                    "labels": {},
+                }
+            ],
+            "exclusion_filters": {},
+        },
+        "volume_data_restore_policy_overrides": [{"policy": 1, "selected_pvcs": {}}],
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency

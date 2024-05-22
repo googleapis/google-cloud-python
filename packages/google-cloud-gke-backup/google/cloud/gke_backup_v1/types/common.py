@@ -26,6 +26,7 @@ __protobuf__ = proto.module(
         "NamespacedName",
         "NamespacedNames",
         "EncryptionKey",
+        "VolumeTypeEnum",
     },
 )
 
@@ -96,6 +97,22 @@ class EncryptionKey(proto.Message):
         proto.STRING,
         number=1,
     )
+
+
+class VolumeTypeEnum(proto.Message):
+    r"""Message to encapsulate VolumeType enum."""
+
+    class VolumeType(proto.Enum):
+        r"""Supported volume types.
+
+        Values:
+            VOLUME_TYPE_UNSPECIFIED (0):
+                Default
+            GCE_PERSISTENT_DISK (1):
+                Compute Engine Persistent Disk volume
+        """
+        VOLUME_TYPE_UNSPECIFIED = 0
+        GCE_PERSISTENT_DISK = 1
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
