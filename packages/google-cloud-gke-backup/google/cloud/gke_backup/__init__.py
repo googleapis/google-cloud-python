@@ -33,6 +33,7 @@ from google.cloud.gke_backup_v1.types.common import (
     NamespacedName,
     NamespacedNames,
     Namespaces,
+    VolumeTypeEnum,
 )
 from google.cloud.gke_backup_v1.types.gkebackup import (
     CreateBackupPlanRequest,
@@ -69,7 +70,12 @@ from google.cloud.gke_backup_v1.types.gkebackup import (
     UpdateRestorePlanRequest,
     UpdateRestoreRequest,
 )
-from google.cloud.gke_backup_v1.types.restore import Restore, RestoreConfig
+from google.cloud.gke_backup_v1.types.restore import (
+    ResourceSelector,
+    Restore,
+    RestoreConfig,
+    VolumeDataRestorePolicyOverride,
+)
 from google.cloud.gke_backup_v1.types.restore_plan import RestorePlan
 from google.cloud.gke_backup_v1.types.volume import VolumeBackup, VolumeRestore
 
@@ -84,6 +90,7 @@ __all__ = (
     "NamespacedName",
     "NamespacedNames",
     "Namespaces",
+    "VolumeTypeEnum",
     "CreateBackupPlanRequest",
     "CreateBackupRequest",
     "CreateRestorePlanRequest",
@@ -117,8 +124,10 @@ __all__ = (
     "UpdateBackupRequest",
     "UpdateRestorePlanRequest",
     "UpdateRestoreRequest",
+    "ResourceSelector",
     "Restore",
     "RestoreConfig",
+    "VolumeDataRestorePolicyOverride",
     "RestorePlan",
     "VolumeBackup",
     "VolumeRestore",

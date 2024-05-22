@@ -39,7 +39,7 @@ class RegionalInventory(proto.Message):
     specific
     [``region``][google.shopping.merchant.inventories.v1beta.RegionalInventory.region].
     For a list of all accepted attribute values, see the `regional
-    product inventory feed
+    product inventory data
     specification <https://support.google.com/merchants/answer/9698880>`__.
 
 
@@ -70,14 +70,14 @@ class RegionalInventory(proto.Message):
             The ``TimePeriod`` of the sale price in this region.
         availability (str):
             Availability of the product in this region. For accepted
-            attribute values, see the `regional product inventory feed
+            attribute values, see the `regional product inventory data
             specification <https://support.google.com/merchants/answer/3061342>`__
 
             This field is a member of `oneof`_ ``_availability``.
         custom_attributes (MutableSequence[google.shopping.type.types.CustomAttribute]):
             A list of custom (merchant-provided) attributes. You can
             also use ``CustomAttribute`` to submit any attribute of the
-            feed specification in its generic form.
+            data specification in its generic form.
     """
 
     name: str = proto.Field(
