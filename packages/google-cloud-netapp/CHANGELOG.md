@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.3.10](https://github.com/googleapis/google-cloud-python/compare/google-cloud-netapp-v0.3.9...google-cloud-netapp-v0.3.10) (2024-05-17)
+
+
+### Features
+
+* Add a new Service Level FLEX ([74a7e9c](https://github.com/googleapis/google-cloud-python/commit/74a7e9c313c2d6301982eded0e46bc5176d2737b))
+* Add backup chain bytes to BackupConfig in Volume ([74a7e9c](https://github.com/googleapis/google-cloud-python/commit/74a7e9c313c2d6301982eded0e46bc5176d2737b))
+* Add Location metadata support ([74a7e9c](https://github.com/googleapis/google-cloud-python/commit/74a7e9c313c2d6301982eded0e46bc5176d2737b))
+* Add Tiering Policy to Volume ([74a7e9c](https://github.com/googleapis/google-cloud-python/commit/74a7e9c313c2d6301982eded0e46bc5176d2737b))
+
 ## [0.3.9](https://github.com/googleapis/google-cloud-python/compare/google-cloud-netapp-v0.3.8...google-cloud-netapp-v0.3.9) (2024-03-22)
 
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.6](https://github.com/googleapis/google-cloud-python/compare/google-apps-chat-v0.1.5...google-apps-chat-v0.1.6) (2024-05-16)
+
+
+### Documentation
+
+* [google-apps-chat] update Chat API comments ([#12694](https://github.com/googleapis/google-cloud-python/issues/12694)) ([f66440d](https://github.com/googleapis/google-cloud-python/commit/f66440dec8cab0a11e53dd9e3e165b85f9651f38))
+
 ## [0.1.5](https://github.com/googleapis/google-cloud-python/compare/google-apps-chat-v0.1.4...google-apps-chat-v0.1.5) (2024-04-22)
 
 

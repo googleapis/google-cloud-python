@@ -49,6 +49,7 @@ __protobuf__ = proto.module(
         "MountOption",
         "RestoreParameters",
         "BackupConfig",
+        "TieringPolicy",
     },
 )
 
@@ -444,6 +445,10 @@ class Volume(proto.Message):
         restricted_actions (MutableSequence[google.cloud.netapp_v1.types.RestrictedAction]):
             Optional. List of actions that are restricted
             on this volume.
+        tiering_policy (google.cloud.netapp_v1.types.TieringPolicy):
+            Tiering policy for the volume.
+
+            This field is a member of `oneof`_ ``_tiering_policy``.
     """
 
     class State(proto.Enum):
@@ -614,6 +619,12 @@ class Volume(proto.Message):
         proto.ENUM,
         number=31,
         enum="RestrictedAction",
+    )
+    tiering_policy: "TieringPolicy" = proto.Field(
+        proto.MESSAGE,
+        number=34,
+        optional=True,
+        message="TieringPolicy",
     )
 
 
@@ -1100,6 +1111,12 @@ class BackupConfig(proto.Message):
             nil when there's no backup policy attached.
 
             This field is a member of `oneof`_ ``_scheduled_backup_enabled``.
+        backup_chain_bytes (int):
+            Output only. Total size of all backups in a
+            chain in bytes = baseline backup size +
+            sum(incremental backup size).
+
+            This field is a member of `oneof`_ ``_backup_chain_bytes``.
     """
 
     backup_policies: MutableSequence[str] = proto.RepeatedField(
@@ -1113,6 +1130,61 @@ class BackupConfig(proto.Message):
     scheduled_backup_enabled: bool = proto.Field(
         proto.BOOL,
         number=3,
+        optional=True,
+    )
+    backup_chain_bytes: int = proto.Field(
+        proto.INT64,
+        number=4,
+        optional=True,
+    )
+
+
+class TieringPolicy(proto.Message):
+    r"""Defines tiering policy for the volume.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        tier_action (google.cloud.netapp_v1.types.TieringPolicy.TierAction):
+            Optional. Flag indicating if the volume has
+            tiering policy enable/pause. Default is PAUSED.
+
+            This field is a member of `oneof`_ ``_tier_action``.
+        cooling_threshold_days (int):
+            Optional. Time in days to mark the volume's
+            data block as cold and make it eligible for
+            tiering, can be range from 7-183. Default is 31.
+
+            This field is a member of `oneof`_ ``_cooling_threshold_days``.
+    """
+
+    class TierAction(proto.Enum):
+        r"""Tier action for the volume.
+
+        Values:
+            TIER_ACTION_UNSPECIFIED (0):
+                Unspecified.
+            ENABLED (1):
+                When tiering is enabled, new cold data will
+                be tiered.
+            PAUSED (2):
+                When paused, tiering won't be performed on
+                new data. Existing data stays tiered until
+                accessed.
+        """
+        TIER_ACTION_UNSPECIFIED = 0
+        ENABLED = 1
+        PAUSED = 2
+
+    tier_action: TierAction = proto.Field(
+        proto.ENUM,
+        number=1,
+        optional=True,
+        enum=TierAction,
+    )
+    cooling_threshold_days: int = proto.Field(
+        proto.INT32,
+        number=2,
         optional=True,
     )
 

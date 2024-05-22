@@ -1651,6 +1651,10 @@ class ExecutionConfig(proto.Message):
             Execution. This must be between 10m and 24h in
             seconds format. If unspecified, a default
             timeout of 1h is used.
+        verbose (bool):
+            Optional. If true, additional logging will be
+            enabled when running builds in this execution
+            environment.
     """
 
     class ExecutionEnvironmentUsage(proto.Enum):
@@ -1710,6 +1714,10 @@ class ExecutionConfig(proto.Message):
         proto.MESSAGE,
         number=7,
         message=duration_pb2.Duration,
+    )
+    verbose: bool = proto.Field(
+        proto.BOOL,
+        number=8,
     )
 
 

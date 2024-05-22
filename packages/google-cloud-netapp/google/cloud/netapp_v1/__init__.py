@@ -56,7 +56,7 @@ from .types.backup_vault import (
     UpdateBackupVaultRequest,
 )
 from .types.cloud_netapp_service import OperationMetadata
-from .types.common import EncryptionType, ServiceLevel
+from .types.common import EncryptionType, LocationMetadata, ServiceLevel
 from .types.kms import (
     CreateKmsConfigRequest,
     DeleteKmsConfigRequest,
@@ -122,6 +122,7 @@ from .types.volume import (
     SimpleExportPolicyRule,
     SMBSettings,
     SnapshotPolicy,
+    TieringPolicy,
     UpdateVolumeRequest,
     Volume,
     WeeklySchedule,
@@ -187,6 +188,7 @@ __all__ = (
     "ListStoragePoolsResponse",
     "ListVolumesRequest",
     "ListVolumesResponse",
+    "LocationMetadata",
     "MonthlySchedule",
     "MountOption",
     "NetAppClient",
@@ -206,6 +208,7 @@ __all__ = (
     "SnapshotPolicy",
     "StopReplicationRequest",
     "StoragePool",
+    "TieringPolicy",
     "TransferStats",
     "UpdateActiveDirectoryRequest",
     "UpdateBackupPolicyRequest",

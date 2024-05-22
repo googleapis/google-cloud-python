@@ -24,6 +24,7 @@ __protobuf__ = proto.module(
     manifest={
         "ServiceLevel",
         "EncryptionType",
+        "LocationMetadata",
     },
 )
 
@@ -40,11 +41,14 @@ class ServiceLevel(proto.Enum):
             Extreme service level.
         STANDARD (3):
             Standard service level.
+        FLEX (4):
+            Flex service level.
     """
     SERVICE_LEVEL_UNSPECIFIED = 0
     PREMIUM = 1
     EXTREME = 2
     STANDARD = 3
+    FLEX = 4
 
 
 class EncryptionType(proto.Enum):
@@ -63,6 +67,23 @@ class EncryptionType(proto.Enum):
     ENCRYPTION_TYPE_UNSPECIFIED = 0
     SERVICE_MANAGED = 1
     CLOUD_KMS = 2
+
+
+class LocationMetadata(proto.Message):
+    r"""Metadata for a given
+    [google.cloud.location.Location][google.cloud.location.Location].
+
+    Attributes:
+        supported_service_levels (MutableSequence[google.cloud.netapp_v1.types.ServiceLevel]):
+            Output only. Supported service levels in a
+            location.
+    """
+
+    supported_service_levels: MutableSequence["ServiceLevel"] = proto.RepeatedField(
+        proto.ENUM,
+        number=1,
+        enum="ServiceLevel",
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

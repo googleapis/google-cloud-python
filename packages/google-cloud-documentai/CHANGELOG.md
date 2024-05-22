@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.27.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-v2.27.0...google-cloud-documentai-v2.27.1) (2024-05-16)
+
+
+### Documentation
+
+* [google-cloud-documentai] clarify the unavailability of some features ([#12699](https://github.com/googleapis/google-cloud-python/issues/12699)) ([3ec5a2c](https://github.com/googleapis/google-cloud-python/commit/3ec5a2c1232fc496c72f47af312d59c1bdd0fe32))
+* updated comments ([9722673](https://github.com/googleapis/google-cloud-python/commit/9722673d20f8e10c017f2f1f460daee1c098c230))
+
 ## [2.27.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-v2.26.0...google-cloud-documentai-v2.27.0) (2024-04-24)
 
 

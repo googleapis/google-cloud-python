@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.17.20](https://github.com/googleapis/google-cloud-python/compare/google-cloud-batch-v0.17.19...google-cloud-batch-v0.17.20) (2024-05-16)
+
+
+### Features
+
+* Add UpdateJob API to update the job spec, only task_count is supported now ([b855629](https://github.com/googleapis/google-cloud-python/commit/b855629c19567168cbfeaf04b76f79986b2039fb))
+* Update description on allowed_locations in LocationPolicy field ([b855629](https://github.com/googleapis/google-cloud-python/commit/b855629c19567168cbfeaf04b76f79986b2039fb))
+
+
+### Documentation
+
+* [google-cloud-batch] Refine description for field `task_execution` ([f149fb8](https://github.com/googleapis/google-cloud-python/commit/f149fb8450b210a789f969c23aa19bb53db8cb33))
+* [google-cloud-batch] Refine description for field `task_execution` ([#12693](https://github.com/googleapis/google-cloud-python/issues/12693)) ([f149fb8](https://github.com/googleapis/google-cloud-python/commit/f149fb8450b210a789f969c23aa19bb53db8cb33))
+* updated comments ([b855629](https://github.com/googleapis/google-cloud-python/commit/b855629c19567168cbfeaf04b76f79986b2039fb))
+
 ## [0.17.19](https://github.com/googleapis/google-cloud-python/compare/google-cloud-batch-v0.17.18...google-cloud-batch-v0.17.19) (2024-05-07)
 
 

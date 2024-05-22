@@ -38,7 +38,7 @@ class LocalInventory(proto.Message):
     information for a specific product at the store specified by
     [``storeCode``][google.shopping.merchant.inventories.v1beta.LocalInventory.store_code].
     For a list of all accepted attribute values, see the `local product
-    inventory feed
+    inventory data
     specification <https://support.google.com/merchants/answer/3061342>`__.
 
 
@@ -56,7 +56,7 @@ class LocalInventory(proto.Message):
         store_code (str):
             Required. Immutable. Store code (the store ID from your
             Business Profile) of the physical store the product is sold
-            in. See the `Local product inventory feed
+            in. See the `Local product inventory data
             specification <https://support.google.com/merchants/answer/3061342>`__
             for more information.
         price (google.shopping.type.types.Price):
@@ -69,7 +69,7 @@ class LocalInventory(proto.Message):
             The ``TimePeriod`` of the sale at this store.
         availability (str):
             Availability of the product at this store. For accepted
-            attribute values, see the `local product inventory feed
+            attribute values, see the `local product inventory data
             specification <https://support.google.com/merchants/answer/3061342>`__
 
             This field is a member of `oneof`_ ``_availability``.
@@ -82,7 +82,7 @@ class LocalInventory(proto.Message):
             Supported pickup method for this product. Unless the value
             is ``"not supported"``, this field must be submitted
             together with ``pickupSla``. For accepted attribute values,
-            see the `local product inventory feed
+            see the `local product inventory data
             specification <https://support.google.com/merchants/answer/3061342>`__
 
             This field is a member of `oneof`_ ``_pickup_method``.
@@ -90,7 +90,7 @@ class LocalInventory(proto.Message):
             Relative time period from the order date for an order for
             this product, from this store, to be ready for pickup. Must
             be submitted with ``pickupMethod``. For accepted attribute
-            values, see the `local product inventory feed
+            values, see the `local product inventory data
             specification <https://support.google.com/merchants/answer/3061342>`__
 
             This field is a member of `oneof`_ ``_pickup_sla``.
@@ -102,7 +102,7 @@ class LocalInventory(proto.Message):
         custom_attributes (MutableSequence[google.shopping.type.types.CustomAttribute]):
             A list of custom (merchant-provided) attributes. You can
             also use ``CustomAttribute`` to submit any attribute of the
-            feed specification in its generic form.
+            data specification in its generic form.
     """
 
     name: str = proto.Field(

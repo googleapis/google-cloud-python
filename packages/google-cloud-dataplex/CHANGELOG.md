@@ -1,5 +1,39 @@
 # Changelog
 
+## [2.0.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataplex-v1.13.0...google-cloud-dataplex-v2.0.0) (2024-05-16)
+
+
+### ⚠ BREAKING CHANGES
+
+* An existing field `entry` is removed from message `.google.cloud.dataplex.v1.SearchEntriesResult`
+* An existing field `display_name` is removed from message `.google.cloud.dataplex.v1.SearchEntriesResult`
+* An existing field `entry_type` is removed from message `.google.cloud.dataplex.v1.SearchEntriesResult`
+* An existing field `modify_time` is removed from message `.google.cloud.dataplex.v1.SearchEntriesResult`
+* An existing field `fully_qualified_name` is removed from message `.google.cloud.dataplex.v1.SearchEntriesResult`
+* An existing field `description` is removed from message `.google.cloud.dataplex.v1.SearchEntriesResult`
+* An existing field `relative_resource` is removed from message `.google.cloud.dataplex.v1.SearchEntriesResult`
+
+### Features
+
+* updated client libraries for Dataplex Catalog: removed deprecated fields, updated comments ([fd6e39c](https://github.com/googleapis/google-cloud-python/commit/fd6e39c955877f90b63ff085be139ca2e7c5aff0))
+
+
+### Bug Fixes
+
+* An existing field `description` is removed from message `.google.cloud.dataplex.v1.SearchEntriesResult` ([fd6e39c](https://github.com/googleapis/google-cloud-python/commit/fd6e39c955877f90b63ff085be139ca2e7c5aff0))
+* An existing field `display_name` is removed from message `.google.cloud.dataplex.v1.SearchEntriesResult` ([fd6e39c](https://github.com/googleapis/google-cloud-python/commit/fd6e39c955877f90b63ff085be139ca2e7c5aff0))
+* An existing field `entry_type` is removed from message `.google.cloud.dataplex.v1.SearchEntriesResult` ([fd6e39c](https://github.com/googleapis/google-cloud-python/commit/fd6e39c955877f90b63ff085be139ca2e7c5aff0))
+* An existing field `entry` is removed from message `.google.cloud.dataplex.v1.SearchEntriesResult` ([fd6e39c](https://github.com/googleapis/google-cloud-python/commit/fd6e39c955877f90b63ff085be139ca2e7c5aff0))
+* An existing field `fully_qualified_name` is removed from message `.google.cloud.dataplex.v1.SearchEntriesResult` ([fd6e39c](https://github.com/googleapis/google-cloud-python/commit/fd6e39c955877f90b63ff085be139ca2e7c5aff0))
+* An existing field `modify_time` is removed from message `.google.cloud.dataplex.v1.SearchEntriesResult` ([fd6e39c](https://github.com/googleapis/google-cloud-python/commit/fd6e39c955877f90b63ff085be139ca2e7c5aff0))
+* An existing field `relative_resource` is removed from message `.google.cloud.dataplex.v1.SearchEntriesResult` ([fd6e39c](https://github.com/googleapis/google-cloud-python/commit/fd6e39c955877f90b63ff085be139ca2e7c5aff0))
+
+
+### Documentation
+
+* A comment for field `aspects` in message `.google.cloud.dataplex.v1.Entry` is changed ([fd6e39c](https://github.com/googleapis/google-cloud-python/commit/fd6e39c955877f90b63ff085be139ca2e7c5aff0))
+* A comment for field `filter` in message `.google.cloud.dataplex.v1.ListEntriesRequest` is changed ([fd6e39c](https://github.com/googleapis/google-cloud-python/commit/fd6e39c955877f90b63ff085be139ca2e7c5aff0))
+
 ## [1.13.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataplex-v1.12.3...google-cloud-dataplex-v1.13.0) (2024-03-22)
 
 

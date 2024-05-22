@@ -1094,8 +1094,8 @@ class CountTokensRequest(proto.Message):
 
             Format: ``models/{model}``
         contents (MutableSequence[google.ai.generativelanguage_v1beta.types.Content]):
-            Optional. The input given to the model as a
-            prompt.
+            Optional. The input given to the model as a prompt. This
+            field is ignored when ``generate_content_request`` is set.
         generate_content_request (google.ai.generativelanguage_v1beta.types.GenerateContentRequest):
             Optional. The overall input given to the
             model. CountTokens will count prompt, function

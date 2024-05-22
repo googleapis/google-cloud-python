@@ -25228,8 +25228,10 @@ def test_create_volume_rest(request_type):
             "backup_policies": ["backup_policies_value1", "backup_policies_value2"],
             "backup_vault": "backup_vault_value",
             "scheduled_backup_enabled": True,
+            "backup_chain_bytes": 1886,
         },
         "restricted_actions": [1],
+        "tiering_policy": {"tier_action": 1, "cooling_threshold_days": 2343},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -25706,8 +25708,10 @@ def test_update_volume_rest(request_type):
             "backup_policies": ["backup_policies_value1", "backup_policies_value2"],
             "backup_vault": "backup_vault_value",
             "scheduled_backup_enabled": True,
+            "backup_chain_bytes": 1886,
         },
         "restricted_actions": [1],
+        "tiering_policy": {"tier_action": 1, "cooling_threshold_days": 2343},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency

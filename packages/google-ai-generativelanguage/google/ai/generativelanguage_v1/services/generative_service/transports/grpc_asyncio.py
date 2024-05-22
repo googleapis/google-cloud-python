@@ -251,6 +251,12 @@ class GenerativeServiceGrpcAsyncIOTransport(GenerativeServiceTransport):
         Generates a response from the model given an input
         ``GenerateContentRequest``.
 
+        Input capabilities differ between models, including tuned
+        models. See the `model
+        guide <https://ai.google.dev/models/gemini>`__ and `tuning
+        guide <https://ai.google.dev/docs/model_tuning_guidance>`__ for
+        details.
+
         Returns:
             Callable[[~.GenerateContentRequest],
                     Awaitable[~.GenerateContentResponse]]:
@@ -401,9 +407,9 @@ class GenerativeServiceGrpcAsyncIOTransport(GenerativeServiceTransport):
                     predicate=retries.if_exception_type(
                         core_exceptions.ServiceUnavailable,
                     ),
-                    deadline=60.0,
+                    deadline=600.0,
                 ),
-                default_timeout=60.0,
+                default_timeout=600.0,
                 client_info=client_info,
             ),
             self.stream_generate_content: gapic_v1.method_async.wrap_method(
@@ -415,9 +421,9 @@ class GenerativeServiceGrpcAsyncIOTransport(GenerativeServiceTransport):
                     predicate=retries.if_exception_type(
                         core_exceptions.ServiceUnavailable,
                     ),
-                    deadline=60.0,
+                    deadline=600.0,
                 ),
-                default_timeout=60.0,
+                default_timeout=600.0,
                 client_info=client_info,
             ),
             self.embed_content: gapic_v1.method_async.wrap_method(
