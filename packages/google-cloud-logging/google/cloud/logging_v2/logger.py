@@ -359,7 +359,7 @@ class Batch(object):
         Args:
             logger (logging_v2.logger.Logger):
                 the logger to which entries will be logged.
-            client (~logging_V2.client.Cilent):
+            client (~logging_V2.client.Client):
                 The client to use.
             resource (Optional[~logging_v2.resource.Resource]):
                 Monitored resource of the batch, defaults

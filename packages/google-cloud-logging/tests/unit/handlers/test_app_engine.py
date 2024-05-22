@@ -166,7 +166,7 @@ class TestAppEngineHandler(unittest.TestCase):
             setattr(record, "trace", expected_trace)
             expected_span = "456"
             setattr(record, "span_id", expected_span)
-            expected_http = {"reuqest_url": "manual"}
+            expected_http = {"request_url": "manual"}
             setattr(record, "http_request", expected_http)
             expected_resource = Resource(type="test", labels={})
             setattr(record, "resource", expected_resource)

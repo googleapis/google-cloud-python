@@ -435,7 +435,7 @@ class TestCloudLoggingHandler(unittest.TestCase):
         setattr(record, "span_id", expected_span)
         expected_sampled = True
         setattr(record, "trace_sampled", expected_sampled)
-        expected_http = {"reuqest_url": "manual"}
+        expected_http = {"request_url": "manual"}
         setattr(record, "http_request", expected_http)
         expected_source = {"file": "test-file"}
         setattr(record, "source_location", expected_source)

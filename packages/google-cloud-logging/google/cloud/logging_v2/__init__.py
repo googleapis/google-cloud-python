@@ -36,7 +36,7 @@ from google.cloud.logging_v2 import types
 ASCENDING = "timestamp asc"
 """Query string to order by ascending timestamps."""
 DESCENDING = "timestamp desc"
-"""Query string to order by decending timestamps."""
+"""Query string to order by descending timestamps."""
 _instrumentation_emitted = False
 """Flag for whether instrumentation info has been emitted"""
 
