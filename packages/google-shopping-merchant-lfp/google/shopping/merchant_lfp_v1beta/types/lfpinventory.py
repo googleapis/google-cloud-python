@@ -71,7 +71,7 @@ class LfpInventory(proto.Message):
         availability (str):
             Required. Availability of the product at this store. For
             accepted attribute values, see the `local product inventory
-            feed
+            data
             specification <https://support.google.com/merchants/answer/3061342>`__
         quantity (int):
             Optional. Quantity of the product available
@@ -87,7 +87,7 @@ class LfpInventory(proto.Message):
             Optional. Supported pickup method for this offer. Unless the
             value is "not supported", this field must be submitted
             together with ``pickupSla``. For accepted attribute values,
-            see the `local product inventory feed
+            see the `local product inventory data
             specification <https://support.google.com/merchants/answer/3061342>`__.
 
             This field is a member of `oneof`_ ``_pickup_method``.
@@ -95,7 +95,7 @@ class LfpInventory(proto.Message):
             Optional. Expected date that an order will be ready for
             pickup relative to the order date. Must be submitted
             together with ``pickupMethod``. For accepted attribute
-            values, see the `local product inventory feed
+            values, see the `local product inventory data
             specification <https://support.google.com/merchants/answer/3061342>`__.
 
             This field is a member of `oneof`_ ``_pickup_sla``.
