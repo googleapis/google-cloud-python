@@ -2957,6 +2957,35 @@ class Bucket(_PropertyMixin):
         if object_retention is not None:
             return object_retention.get("mode")
 
+    @property
+    def hierarchical_namespace_enabled(self):
+        """Whether hierarchical namespace is enabled for this bucket.
+
+        :setter: Update whether hierarchical namespace is enabled for this bucket.
+        :getter: Query whether hierarchical namespace is enabled for this bucket.
+
+        :rtype: bool
+        :returns: True if enabled, else False.
+        """
+        hns = self._properties.get("hierarchicalNamespace", {})
+        return hns.get("enabled")
+
+    @hierarchical_namespace_enabled.setter
+    def hierarchical_namespace_enabled(self, value):
+        """Enable or disable hierarchical namespace at the bucket-level.
+
+        :type value: convertible to boolean
+        :param value: If true, enable hierarchical namespace for this bucket.
+                      If false, disable hierarchical namespace for this bucket.
+
+        .. note::
+          To enable hierarchical namespace, you must set it at bucket creation time.
+          Currently, hierarchical namespace configuration cannot be changed after bucket creation.
+        """
+        hns = self._properties.get("hierarchicalNamespace", {})
+        hns["enabled"] = bool(value)
+        self._patch_property("hierarchicalNamespace", hns)
+
     def configure_website(self, main_page_suffix=None, not_found_page=None):
         """Configure website-related properties.
 

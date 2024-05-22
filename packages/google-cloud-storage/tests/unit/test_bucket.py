@@ -3163,6 +3163,19 @@ class Test_Bucket(unittest.TestCase):
         self.assertTrue("softDeletePolicy" in bucket._changes)
         self.assertEqual(bucket.soft_delete_policy.retention_duration_seconds, seconds)
 
+    def test_hierarchical_namespace_enabled_getter_and_setter(self):
+        # Test hierarchical_namespace configuration unset
+        bucket = self._make_one()
+        self.assertIsNone(bucket.hierarchical_namespace_enabled)
+
+        # Test hierarchical_namespace configuration explicitly set
+        properties = {"hierarchicalNamespace": {"enabled": True}}
+        bucket = self._make_one(properties=properties)
+        self.assertTrue(bucket.hierarchical_namespace_enabled)
+        bucket.hierarchical_namespace_enabled = False
+        self.assertIn("hierarchicalNamespace", bucket._changes)
+        self.assertFalse(bucket.hierarchical_namespace_enabled)
+
     def test_configure_website_defaults(self):
         NAME = "name"
         UNSET = {"website": {"mainPageSuffix": None, "notFoundPage": None}}
