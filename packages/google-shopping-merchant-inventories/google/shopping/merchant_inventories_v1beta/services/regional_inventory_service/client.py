@@ -889,7 +889,7 @@ class RegionalInventoryServiceClient(metaclass=RegionalInventoryServiceClientMet
                    product in a specific
                    [region][google.shopping.merchant.inventories.v1beta.RegionalInventory.region].
                    For a list of all accepted attribute values, see the
-                   [regional product inventory feed
+                   [regional product inventory data
                    specification](\ https://support.google.com/merchants/answer/9698880).
 
         """
