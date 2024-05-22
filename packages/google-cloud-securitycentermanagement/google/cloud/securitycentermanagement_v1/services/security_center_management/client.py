@@ -285,6 +285,28 @@ class SecurityCenterManagementClient(metaclass=SecurityCenterManagementClientMet
         return m.groupdict() if m else {}
 
     @staticmethod
+    def security_center_service_path(
+        project: str,
+        location: str,
+        service: str,
+    ) -> str:
+        """Returns a fully-qualified security_center_service string."""
+        return "projects/{project}/locations/{location}/securityCenterServices/{service}".format(
+            project=project,
+            location=location,
+            service=service,
+        )
+
+    @staticmethod
+    def parse_security_center_service_path(path: str) -> Dict[str, str]:
+        """Parses a security_center_service path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/securityCenterServices/(?P<service>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def security_health_analytics_custom_module_path(
         organization: str,
         location: str,
@@ -840,12 +862,12 @@ class SecurityCenterManagementClient(metaclass=SecurityCenterManagementClientMet
                 Security Health Analytics custom
                 modules.
             parent (str):
-                Required. Name of parent to list
-                effective custom modules. Its format is
-                "organizations/{organization}/locations/{location}",
-                "folders/{folder}/locations/{location}",
-                or
-                "projects/{project}/locations/{location}"
+                Required. Name of parent to list effective custom
+                modules. specified in one of the following formats:
+
+                -  ``organizations/{organization}/locations/{location}``
+                -  ``folders/{folder}/locations/{location}`` or
+                   ``projects/{project}/locations/{location}``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -974,13 +996,12 @@ class SecurityCenterManagementClient(metaclass=SecurityCenterManagementClientMet
                 The request object. Message for getting a
                 EffectiveSecurityHealthAnalyticsCustomModule
             name (str):
-                Required. The resource name of the SHA custom module.
+                Required. The full resource name of the custom module,
+                specified in one of the following formats:
 
-                Its format is:
-
-                -  "organizations/{organization}/locations/{location}/effectiveSecurityHealthAnalyticsCustomModules/{module_id}".
-                -  "folders/{folder}/locations/{location}/effectiveSecurityHealthAnalyticsCustomModules/{module_id}".
-                -  "projects/{project}/locations/{location}/effectiveSecurityHealthAnalyticsCustomModules/{module_id}".
+                -  ``organizations/organization/{location}/effectiveSecurityHealthAnalyticsCustomModules/{effective_security_health_analytics_custom_module}``
+                -  ``folders/folder/{location}/effectiveSecurityHealthAnalyticsCustomModules/{effective_security_health_analytics_custom_module}``
+                -  ``projects/project/{location}/effectiveSecurityHealthAnalyticsCustomModules/{effective_security_health_analytics_custom_module}``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1111,12 +1132,13 @@ class SecurityCenterManagementClient(metaclass=SecurityCenterManagementClientMet
                 The request object. Request message for listing Security
                 Health Analytics custom modules.
             parent (str):
-                Required. Name of parent to list
-                custom modules. Its format is
-                "organizations/{organization}/locations/{location}",
-                "folders/{folder}/locations/{location}",
-                or
-                "projects/{project}/locations/{location}"
+                Required. Name of parent organization, folder, or
+                project in which to list custom modules, specified in
+                one of the following formats:
+
+                -  ``organizations/{organization}/locations/{location}``
+                -  ``folders/{folder}/locations/{location}``
+                -  ``projects/{project}/locations/{location}``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1246,12 +1268,13 @@ class SecurityCenterManagementClient(metaclass=SecurityCenterManagementClientMet
                 descendant Security Health Analytics
                 custom modules.
             parent (str):
-                Required. Name of parent to list
-                custom modules. Its format is
-                "organizations/{organization}/locations/{location}",
-                "folders/{folder}/locations/{location}",
-                or
-                "projects/{project}/locations/{location}"
+                Required. Name of the parent organization, folder, or
+                project in which to list custom modules, specified in
+                one of the following formats:
+
+                -  ``organizations/{organization}/locations/{location}``
+                -  ``folders/{folder}/locations/{location}``
+                -  ``projects/{project}/locations/{location}``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1508,12 +1531,13 @@ class SecurityCenterManagementClient(metaclass=SecurityCenterManagementClientMet
                 The request object. Message for creating a
                 SecurityHealthAnalyticsCustomModule
             parent (str):
-                Required. Name of the parent for the
-                module. Its format is
-                "organizations/{organization}/locations/{location}",
-                "folders/{folder}/locations/{location}",
-                or
-                "projects/{project}/locations/{location}"
+                Required. Name of the parent organization, folder, or
+                project of the module, specified in one of the following
+                formats:
+
+                -  ``organizations/{organization}/locations/{location}``
+                -  ``folders/{folder}/locations/{location}``
+                -  ``projects/{project}/locations/{location}``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1800,9 +1824,9 @@ class SecurityCenterManagementClient(metaclass=SecurityCenterManagementClientMet
 
                 Its format is:
 
-                -  "organizations/{organization}/locations/{location}/securityHealthAnalyticsCustomModules/{security_health_analytics_custom_module}".
-                -  "folders/{folder}/locations/{location}/securityHealthAnalyticsCustomModules/{security_health_analytics_custom_module}".
-                -  "projects/{project}/locations/{location}/securityHealthAnalyticsCustomModules/{security_health_analytics_custom_module}".
+                -  ``organizations/{organization}/locations/{location}/securityHealthAnalyticsCustomModules/{security_health_analytics_custom_module}``.
+                -  ``folders/{folder}/locations/{location}/securityHealthAnalyticsCustomModules/{security_health_analytics_custom_module}``.
+                -  ``projects/{project}/locations/{location}/securityHealthAnalyticsCustomModules/{security_health_analytics_custom_module}``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2058,12 +2082,11 @@ class SecurityCenterManagementClient(metaclass=SecurityCenterManagementClientMet
                 The request object. Request message for listing effective
                 Event Threat Detection custom modules.
             parent (str):
-                Required. Name of parent to list
-                effective custom modules. Its format is
-                "organizations/{organization}/locations/{location}",
-                "folders/{folder}/locations/{location}",
-                or
-                "projects/{project}/locations/{location}"
+                Required. Name of parent to list effective custom
+                modules. Its format is
+                ``organizations/{organization}/locations/{location}``,
+                ``folders/{folder}/locations/{location}``, or
+                ``projects/{project}/locations/{location}``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2202,9 +2225,9 @@ class SecurityCenterManagementClient(metaclass=SecurityCenterManagementClientMet
 
                 Its format is:
 
-                -  "organizations/{organization}/locations/{location}/effectiveEventThreatDetectionCustomModules/{effective_event_threat_detection_custom_module}".
-                -  "folders/{folder}/locations/{location}/effectiveEventThreatDetectionCustomModules/{effective_event_threat_detection_custom_module}".
-                -  "projects/{project}/locations/{location}/effectiveEventThreatDetectionCustomModules/{effective_event_threat_detection_custom_module}".
+                -  ``organizations/{organization}/locations/{location}/effectiveEventThreatDetectionCustomModules/{effective_event_threat_detection_custom_module}``.
+                -  ``folders/{folder}/locations/{location}/effectiveEventThreatDetectionCustomModules/{effective_event_threat_detection_custom_module}``.
+                -  ``projects/{project}/locations/{location}/effectiveEventThreatDetectionCustomModules/{effective_event_threat_detection_custom_module}``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2331,12 +2354,11 @@ class SecurityCenterManagementClient(metaclass=SecurityCenterManagementClientMet
                 The request object. Request message for listing Event
                 Threat Detection custom modules.
             parent (str):
-                Required. Name of parent to list
-                custom modules. Its format is
-                "organizations/{organization}/locations/{location}",
-                "folders/{folder}/locations/{location}",
-                or
-                "projects/{project}/locations/{location}"
+                Required. Name of parent to list custom modules. Its
+                format is
+                ``organizations/{organization}/locations/{location}``,
+                ``folders/{folder}/locations/{location}``, or
+                ``projects/{project}/locations/{location}``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2468,12 +2490,11 @@ class SecurityCenterManagementClient(metaclass=SecurityCenterManagementClientMet
                 descendant Event Threat Detection custom
                 modules.
             parent (str):
-                Required. Name of parent to list
-                custom modules. Its format is
-                "organizations/{organization}/locations/{location}",
-                "folders/{folder}/locations/{location}",
-                or
-                "projects/{project}/locations/{location}"
+                Required. Name of parent to list custom modules. Its
+                format is
+                ``organizations/{organization}/locations/{location}``,
+                ``folders/{folder}/locations/{location}``, or
+                ``projects/{project}/locations/{location}``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2605,9 +2626,9 @@ class SecurityCenterManagementClient(metaclass=SecurityCenterManagementClientMet
 
                 Its format is:
 
-                -  "organizations/{organization}/locations/{location}/eventThreatDetectionCustomModules/{event_threat_detection_custom_module}".
-                -  "folders/{folder}/locations/{location}/eventThreatDetectionCustomModules/{event_threat_detection_custom_module}".
-                -  "projects/{project}/locations/{location}/eventThreatDetectionCustomModules/{event_threat_detection_custom_module}".
+                -  ``organizations/{organization}/locations/{location}/eventThreatDetectionCustomModules/{event_threat_detection_custom_module}``.
+                -  ``folders/{folder}/locations/{location}/eventThreatDetectionCustomModules/{event_threat_detection_custom_module}``.
+                -  ``projects/{project}/locations/{location}/eventThreatDetectionCustomModules/{event_threat_detection_custom_module}``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2734,12 +2755,10 @@ class SecurityCenterManagementClient(metaclass=SecurityCenterManagementClientMet
                 The request object. Message for creating a
                 EventThreatDetectionCustomModule
             parent (str):
-                Required. Name of parent for the
-                module. Its format is
-                "organizations/{organization}/locations/{location}",
-                "folders/{folder}/locations/{location}",
-                or
-                "projects/{project}/locations/{location}"
+                Required. Name of parent for the module. Its format is
+                ``organizations/{organization}/locations/{location}``,
+                ``folders/{folder}/locations/{location}``, or
+                ``projects/{project}/locations/{location}``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3022,9 +3041,9 @@ class SecurityCenterManagementClient(metaclass=SecurityCenterManagementClientMet
 
                 Its format is:
 
-                -  "organizations/{organization}/locations/{location}/eventThreatDetectionCustomModules/{event_threat_detection_custom_module}".
-                -  "folders/{folder}/locations/{location}/eventThreatDetectionCustomModules/{event_threat_detection_custom_module}".
-                -  "projects/{project}/locations/{location}/eventThreatDetectionCustomModules/{event_threat_detection_custom_module}".
+                -  ``organizations/{organization}/locations/{location}/eventThreatDetectionCustomModules/{event_threat_detection_custom_module}``.
+                -  ``folders/{folder}/locations/{location}/eventThreatDetectionCustomModules/{event_threat_detection_custom_module}``.
+                -  ``projects/{project}/locations/{location}/eventThreatDetectionCustomModules/{event_threat_detection_custom_module}``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3163,6 +3182,410 @@ class SecurityCenterManagementClient(metaclass=SecurityCenterManagementClientMet
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def get_security_center_service(
+        self,
+        request: Optional[
+            Union[security_center_management.GetSecurityCenterServiceRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> security_center_management.SecurityCenterService:
+        r"""Gets service settings for the specified Security
+        Command Center service.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import securitycentermanagement_v1
+
+            def sample_get_security_center_service():
+                # Create a client
+                client = securitycentermanagement_v1.SecurityCenterManagementClient()
+
+                # Initialize request argument(s)
+                request = securitycentermanagement_v1.GetSecurityCenterServiceRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_security_center_service(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.securitycentermanagement_v1.types.GetSecurityCenterServiceRequest, dict]):
+                The request object. Request message for getting a
+                Security Command Center service.
+            name (str):
+                Required. The Security Command Center service to
+                retrieve.
+
+                Formats:
+
+                -  organizations/{organization}/locations/{location}/securityCenterServices/{service}
+                -  folders/{folder}/locations/{location}/securityCenterServices/{service}
+                -  projects/{project}/locations/{location}/securityCenterServices/{service}
+
+                The possible values for id {service} are:
+
+                -  container-threat-detection
+                -  event-threat-detection
+                -  security-health-analytics
+                -  vm-threat-detection
+                -  web-security-scanner
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.securitycentermanagement_v1.types.SecurityCenterService:
+                Represents a particular Security
+                Command Center service. This includes
+                settings information such as top-level
+                enablement in addition to individual
+                module settings. Service settings can be
+                configured at the organization, folder,
+                or project level. Service settings at
+                the organization or folder level are
+                inherited by those in child folders and
+                projects.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, security_center_management.GetSecurityCenterServiceRequest
+        ):
+            request = security_center_management.GetSecurityCenterServiceRequest(
+                request
+            )
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.get_security_center_service
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def list_security_center_services(
+        self,
+        request: Optional[
+            Union[security_center_management.ListSecurityCenterServicesRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListSecurityCenterServicesPager:
+        r"""Returns a list of all Security Command Center
+        services for the given parent.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import securitycentermanagement_v1
+
+            def sample_list_security_center_services():
+                # Create a client
+                client = securitycentermanagement_v1.SecurityCenterManagementClient()
+
+                # Initialize request argument(s)
+                request = securitycentermanagement_v1.ListSecurityCenterServicesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_security_center_services(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
+        Args:
+            request (Union[google.cloud.securitycentermanagement_v1.types.ListSecurityCenterServicesRequest, dict]):
+                The request object. Request message for listing Security
+                Command Center services.
+            parent (str):
+                Required. The name of the parent to list Security
+                Command Center services.
+
+                Formats:
+
+                -  organizations/{organization}/locations/{location}
+                -  folders/{folder}/locations/{location}
+                -  projects/{project}/locations/{location}
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.securitycentermanagement_v1.services.security_center_management.pagers.ListSecurityCenterServicesPager:
+                Response message for listing Security
+                Command Center services.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, security_center_management.ListSecurityCenterServicesRequest
+        ):
+            request = security_center_management.ListSecurityCenterServicesRequest(
+                request
+            )
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.list_security_center_services
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListSecurityCenterServicesPager(
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def update_security_center_service(
+        self,
+        request: Optional[
+            Union[security_center_management.UpdateSecurityCenterServiceRequest, dict]
+        ] = None,
+        *,
+        security_center_service: Optional[
+            security_center_management.SecurityCenterService
+        ] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> security_center_management.SecurityCenterService:
+        r"""Updates a Security Command Center service using the
+        given update mask.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import securitycentermanagement_v1
+
+            def sample_update_security_center_service():
+                # Create a client
+                client = securitycentermanagement_v1.SecurityCenterManagementClient()
+
+                # Initialize request argument(s)
+                request = securitycentermanagement_v1.UpdateSecurityCenterServiceRequest(
+                )
+
+                # Make the request
+                response = client.update_security_center_service(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.securitycentermanagement_v1.types.UpdateSecurityCenterServiceRequest, dict]):
+                The request object. Request message for updating a
+                Security Command Center service.
+            security_center_service (google.cloud.securitycentermanagement_v1.types.SecurityCenterService):
+                Required. The updated service.
+                This corresponds to the ``security_center_service`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (google.protobuf.field_mask_pb2.FieldMask):
+                Required. The list of fields to be updated. Possible
+                values:
+
+                -  "intended_enablement_state"
+                -  "modules"
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.securitycentermanagement_v1.types.SecurityCenterService:
+                Represents a particular Security
+                Command Center service. This includes
+                settings information such as top-level
+                enablement in addition to individual
+                module settings. Service settings can be
+                configured at the organization, folder,
+                or project level. Service settings at
+                the organization or folder level are
+                inherited by those in child folders and
+                projects.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([security_center_service, update_mask])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, security_center_management.UpdateSecurityCenterServiceRequest
+        ):
+            request = security_center_management.UpdateSecurityCenterServiceRequest(
+                request
+            )
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if security_center_service is not None:
+                request.security_center_service = security_center_service
+            if update_mask is not None:
+                request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.update_security_center_service
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    (
+                        "security_center_service.name",
+                        request.security_center_service.name,
+                    ),
+                )
+            ),
         )
 
         # Validate the universe domain.
