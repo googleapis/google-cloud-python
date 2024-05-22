@@ -62,10 +62,10 @@ ARCHIVED_RESPONSE_KEY = "archived"
 # BASE_API defines the base API for Github.
 BASE_API = "https://api.github.com"
 
-# GITHUB_ISSUES defines the issues url for a repository on Github.
+# GITHUB_ISSUES defines the issues URL for a repository on GitHub.
 GITHUB_ISSUES = "https://github.com/{repo}/issues"
 
-# BASE_ISSUE_TRACKER defines the base url for issue tracker.
+# BASE_ISSUE_TRACKER defines the base URL for issue tracker.
 BASE_ISSUE_TRACKER = "https://issuetracker.google.com"
 
 # This issue-tracker component is part of some saved searches for listing API-side issues.
@@ -74,7 +74,7 @@ BASE_ISSUE_TRACKER = "https://issuetracker.google.com"
 # this generic component but against a more specific one.
 GENERIC_ISSUE_TRACKER_COMPONENT = "187065"
 
-# This field is used to avoid re-computing an already computed property.
+# This sentinel value is used to mark cache fields that have not been computed yet.
 NOT_COMPUTED = -1
 
 class CloudClient:
@@ -137,7 +137,7 @@ class CloudClient:
                         continue
                     if self._cached_component_id != NOT_COMPUTED:
                         self._cached_component_id = None
-                        logging.error(f"More than one component ids found for issue tracker: {self.issue_tracker}")
+                        logging.error(f"More than one component ID found for issue tracker: {self.issue_tracker}")
                         break
                     self._cached_component_id = component_id
                 self._cached_component_id = self._cached_component_id if self._cached_component_id != NOT_COMPUTED else None
@@ -170,6 +170,7 @@ class CloudClient:
     @property
     def show_api_issues(self):
         if self.saved_search_id:
+            # Return the original issue_tracker content, which already links to the saved search.
             return self.issue_tracker
         elif self.issue_tracker_component_id:
             return f"{BASE_ISSUE_TRACKER}/issues?q=componentid:{self.issue_tracker_component_id}"
@@ -303,11 +304,11 @@ def mono_repo_clients(token: str) -> List[CloudClient]:
     # all mono repo clients
     url = f"{BASE_API}/repos/{MONO_REPO}/contents/packages"
     headers = {'Authorization': f'token {token}'}
-    _, metadata = _fetch_and_parse_response(url, headers)
-    if not metadata:
+    _, packages = _fetch_and_parse_response(url, headers)
+    if not packages:
         return []
     mono_repo_extractor = Extractor(path_format=MONO_REPO_PATH_FORMAT, response_key=PACKAGE_RESPONSE_KEY)
-    return mono_repo_extractor.get_clients_from_batch_response(metadata)
+    return mono_repo_extractor.get_clients_from_batch_response(packages)
 
 
 def split_repo_clients(token: str) -> List[CloudClient]:
