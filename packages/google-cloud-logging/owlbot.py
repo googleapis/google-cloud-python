@@ -93,6 +93,7 @@ templated_files = gcp.CommonTemplates().py_library(
         "google-cloud-pubsub",
         "google-cloud-storage",
         "google-cloud-testutils",
+        "opentelemetry-sdk"
     ],
     unit_test_external_dependencies=["flask", "webob", "django"],
     samples=True,

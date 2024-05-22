@@ -63,6 +63,7 @@ SYSTEM_TEST_EXTERNAL_DEPENDENCIES: List[str] = [
     "google-cloud-pubsub",
     "google-cloud-storage",
     "google-cloud-testutils",
+    "opentelemetry-sdk",
 ]
 SYSTEM_TEST_LOCAL_DEPENDENCIES: List[str] = []
 SYSTEM_TEST_DEPENDENCIES: List[str] = []
