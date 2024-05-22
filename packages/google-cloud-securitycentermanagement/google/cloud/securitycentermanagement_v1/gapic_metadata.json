@@ -45,6 +45,11 @@
                 "get_event_threat_detection_custom_module"
               ]
             },
+            "GetSecurityCenterService": {
+              "methods": [
+                "get_security_center_service"
+              ]
+            },
             "GetSecurityHealthAnalyticsCustomModule": {
               "methods": [
                 "get_security_health_analytics_custom_module"
@@ -75,6 +80,11 @@
                 "list_event_threat_detection_custom_modules"
               ]
             },
+            "ListSecurityCenterServices": {
+              "methods": [
+                "list_security_center_services"
+              ]
+            },
             "ListSecurityHealthAnalyticsCustomModules": {
               "methods": [
                 "list_security_health_analytics_custom_modules"
@@ -88,6 +98,11 @@
             "UpdateEventThreatDetectionCustomModule": {
               "methods": [
                 "update_event_threat_detection_custom_module"
+              ]
+            },
+            "UpdateSecurityCenterService": {
+              "methods": [
+                "update_security_center_service"
               ]
             },
             "UpdateSecurityHealthAnalyticsCustomModule": {
@@ -140,6 +155,11 @@
                 "get_event_threat_detection_custom_module"
               ]
             },
+            "GetSecurityCenterService": {
+              "methods": [
+                "get_security_center_service"
+              ]
+            },
             "GetSecurityHealthAnalyticsCustomModule": {
               "methods": [
                 "get_security_health_analytics_custom_module"
@@ -170,6 +190,11 @@
                 "list_event_threat_detection_custom_modules"
               ]
             },
+            "ListSecurityCenterServices": {
+              "methods": [
+                "list_security_center_services"
+              ]
+            },
             "ListSecurityHealthAnalyticsCustomModules": {
               "methods": [
                 "list_security_health_analytics_custom_modules"
@@ -183,6 +208,11 @@
             "UpdateEventThreatDetectionCustomModule": {
               "methods": [
                 "update_event_threat_detection_custom_module"
+              ]
+            },
+            "UpdateSecurityCenterService": {
+              "methods": [
+                "update_security_center_service"
               ]
             },
             "UpdateSecurityHealthAnalyticsCustomModule": {
@@ -235,6 +265,11 @@
                 "get_event_threat_detection_custom_module"
               ]
             },
+            "GetSecurityCenterService": {
+              "methods": [
+                "get_security_center_service"
+              ]
+            },
             "GetSecurityHealthAnalyticsCustomModule": {
               "methods": [
                 "get_security_health_analytics_custom_module"
@@ -265,6 +300,11 @@
                 "list_event_threat_detection_custom_modules"
               ]
             },
+            "ListSecurityCenterServices": {
+              "methods": [
+                "list_security_center_services"
+              ]
+            },
             "ListSecurityHealthAnalyticsCustomModules": {
               "methods": [
                 "list_security_health_analytics_custom_modules"
@@ -278,6 +318,11 @@
             "UpdateEventThreatDetectionCustomModule": {
               "methods": [
                 "update_event_threat_detection_custom_module"
+              ]
+            },
+            "UpdateSecurityCenterService": {
+              "methods": [
+                "update_security_center_service"
               ]
             },
             "UpdateSecurityHealthAnalyticsCustomModule": {

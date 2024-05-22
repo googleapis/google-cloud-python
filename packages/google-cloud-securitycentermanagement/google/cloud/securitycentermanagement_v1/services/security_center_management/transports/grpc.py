@@ -882,6 +882,100 @@ class SecurityCenterManagementGrpcTransport(SecurityCenterManagementTransport):
             )
         return self._stubs["validate_event_threat_detection_custom_module"]
 
+    @property
+    def get_security_center_service(
+        self,
+    ) -> Callable[
+        [security_center_management.GetSecurityCenterServiceRequest],
+        security_center_management.SecurityCenterService,
+    ]:
+        r"""Return a callable for the get security center service method over gRPC.
+
+        Gets service settings for the specified Security
+        Command Center service.
+
+        Returns:
+            Callable[[~.GetSecurityCenterServiceRequest],
+                    ~.SecurityCenterService]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_security_center_service" not in self._stubs:
+            self._stubs["get_security_center_service"] = self.grpc_channel.unary_unary(
+                "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/GetSecurityCenterService",
+                request_serializer=security_center_management.GetSecurityCenterServiceRequest.serialize,
+                response_deserializer=security_center_management.SecurityCenterService.deserialize,
+            )
+        return self._stubs["get_security_center_service"]
+
+    @property
+    def list_security_center_services(
+        self,
+    ) -> Callable[
+        [security_center_management.ListSecurityCenterServicesRequest],
+        security_center_management.ListSecurityCenterServicesResponse,
+    ]:
+        r"""Return a callable for the list security center services method over gRPC.
+
+        Returns a list of all Security Command Center
+        services for the given parent.
+
+        Returns:
+            Callable[[~.ListSecurityCenterServicesRequest],
+                    ~.ListSecurityCenterServicesResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_security_center_services" not in self._stubs:
+            self._stubs[
+                "list_security_center_services"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/ListSecurityCenterServices",
+                request_serializer=security_center_management.ListSecurityCenterServicesRequest.serialize,
+                response_deserializer=security_center_management.ListSecurityCenterServicesResponse.deserialize,
+            )
+        return self._stubs["list_security_center_services"]
+
+    @property
+    def update_security_center_service(
+        self,
+    ) -> Callable[
+        [security_center_management.UpdateSecurityCenterServiceRequest],
+        security_center_management.SecurityCenterService,
+    ]:
+        r"""Return a callable for the update security center service method over gRPC.
+
+        Updates a Security Command Center service using the
+        given update mask.
+
+        Returns:
+            Callable[[~.UpdateSecurityCenterServiceRequest],
+                    ~.SecurityCenterService]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_security_center_service" not in self._stubs:
+            self._stubs[
+                "update_security_center_service"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/UpdateSecurityCenterService",
+                request_serializer=security_center_management.UpdateSecurityCenterServiceRequest.serialize,
+                response_deserializer=security_center_management.SecurityCenterService.deserialize,
+            )
+        return self._stubs["update_security_center_service"]
+
     def close(self):
         self.grpc_channel.close()
 
