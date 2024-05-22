@@ -1820,11 +1820,11 @@ Example Applications
 ********************
 
 -  `getting-started-python`_ - A sample and `tutorial`_ that demonstrates how to build a complete web application using Cloud Datastore, Cloud Storage, and Cloud Pub/Sub and deploy it to Google App Engine or Google Compute Engine.
--  `google-cloud-python-expenses-demo`_ - A sample expenses demo using Cloud Datastore and Cloud Storage.
+-  `python-docs-samples`_ - Python samples for Google Cloud Platform products.
 
 .. _getting-started-python: https://github.com/GoogleCloudPlatform/getting-started-python
 .. _tutorial: https://cloud.google.com/python
-.. _google-cloud-python-expenses-demo: https://github.com/GoogleCloudPlatform/google-cloud-python-expenses-demo
+.. _python-docs-samples: https://github.com/GoogleCloudPlatform/python-docs-samples
 
 
 Authentication
