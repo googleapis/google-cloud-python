@@ -512,6 +512,107 @@ class TestStructuredLogHandler(unittest.TestCase):
             for key, value in expected_payload.items():
                 self.assertEqual(value, result[key])
 
+    def test_format_with_opentelemetry_span(self):
+        import logging
+        import json
+
+        from tests.unit.handlers import (
+            _setup_otel_span_context,
+            _EXPECTED_OTEL_TRACE_ID,
+            _EXPECTED_OTEL_SPAN_ID,
+            _EXPECTED_OTEL_TRACESAMPLED,
+        )
+
+        handler = self._make_one()
+        logname = "loggername"
+        message = "hello world，嗨 世界"
+        record = logging.LogRecord(logname, logging.INFO, "", 0, message, None, None)
+        expected_payload = {
+            "logging.googleapis.com/trace": _EXPECTED_OTEL_TRACE_ID,
+            "logging.googleapis.com/spanId": _EXPECTED_OTEL_SPAN_ID,
+            "logging.googleapis.com/trace_sampled": _EXPECTED_OTEL_TRACESAMPLED,
+        }
+
+        with _setup_otel_span_context():
+            handler.filter(record)
+            result = json.loads(handler.format(record))
+            for key, value in expected_payload.items():
+                self.assertEqual(value, result[key])
+
+    def test_format_with_opentelemetry_span_and_request(self):
+        import logging
+        import json
+
+        from tests.unit.handlers import (
+            _setup_otel_span_context,
+            _EXPECTED_OTEL_TRACE_ID,
+            _EXPECTED_OTEL_SPAN_ID,
+            _EXPECTED_OTEL_TRACESAMPLED,
+        )
+
+        handler = self._make_one()
+        logname = "loggername"
+        message = "hello world，嗨 世界"
+        record = logging.LogRecord(logname, logging.INFO, "", 0, message, None, None)
+        expected_path = "http://testserver/123"
+        expected_agent = "Mozilla/5.0"
+        http_trace = "123"
+        http_span = "456"
+        trace_header = f"{http_trace}/{http_span};o=1"
+        expected_payload = {
+            "logging.googleapis.com/trace": _EXPECTED_OTEL_TRACE_ID,
+            "logging.googleapis.com/spanId": _EXPECTED_OTEL_SPAN_ID,
+            "logging.googleapis.com/trace_sampled": _EXPECTED_OTEL_TRACESAMPLED,
+            "httpRequest": {
+                "requestMethod": "GET",
+                "requestUrl": expected_path,
+                "userAgent": expected_agent,
+                "protocol": "HTTP/1.1",
+            },
+        }
+
+        app = self.create_app()
+        with app.test_request_context(
+            expected_path,
+            headers={
+                "User-Agent": expected_agent,
+                "X_CLOUD_TRACE_CONTEXT": trace_header,
+            },
+        ):
+            with _setup_otel_span_context():
+                handler.filter(record)
+                result = json.loads(handler.format(record))
+                for key, value in expected_payload.items():
+                    self.assertEqual(value, result[key])
+
+    def test_format_with_opentelemetry_span_and_overrides(self):
+        import logging
+        import json
+
+        from tests.unit.handlers import _setup_otel_span_context
+
+        handler = self._make_one()
+        logname = "loggername"
+        message = "hello world，嗨 世界"
+        record = logging.LogRecord(logname, logging.INFO, "", 0, message, None, None)
+        overwrite_trace = "abc"
+        overwrite_span = "123"
+        overwrite_tracesampled = False
+        record.trace = overwrite_trace
+        record.span_id = overwrite_span
+        record.trace_sampled = overwrite_tracesampled
+        expected_payload = {
+            "logging.googleapis.com/trace": overwrite_trace,
+            "logging.googleapis.com/spanId": overwrite_span,
+            "logging.googleapis.com/trace_sampled": overwrite_tracesampled,
+        }
+
+        with _setup_otel_span_context():
+            handler.filter(record)
+            result = json.loads(handler.format(record))
+            for key, value in expected_payload.items():
+                self.assertEqual(value, result[key])
+
     def test_format_with_json_fields(self):
         """
         User can add json_fields to the record, which should populate the payload

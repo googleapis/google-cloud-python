@@ -28,6 +28,13 @@ from google.cloud.logging_v2.handlers._monitored_resources import (
     _GAE_ENV_VARS,
 )
 
+from tests.unit.handlers import (
+    _setup_otel_span_context,
+    _EXPECTED_OTEL_TRACE_ID,
+    _EXPECTED_OTEL_SPAN_ID,
+    _EXPECTED_OTEL_TRACESAMPLED,
+)
+
 
 class TestCloudLoggingFilter(unittest.TestCase):
     PROJECT = "PROJECT"
@@ -229,6 +236,136 @@ class TestCloudLoggingFilter(unittest.TestCase):
             self.assertEqual(record._trace_sampled_str, "true")
             self.assertEqual(record._http_request, expected_request)
             self.assertEqual(record._http_request_str, json.dumps(expected_request))
+
+    def test_record_with_opentelemetry_span_no_request(self):
+        filter_obj = self._make_one()
+        record = logging.LogRecord(
+            None,
+            logging.INFO,
+            None,
+            None,
+            None,
+            None,
+            None,
+        )
+        record.created = None
+
+        with _setup_otel_span_context():
+            success = filter_obj.filter(record)
+            self.assertTrue(success)
+
+            self.assertEqual(record._trace, _EXPECTED_OTEL_TRACE_ID)
+            self.assertEqual(record._trace_str, _EXPECTED_OTEL_TRACE_ID)
+            self.assertEqual(record._span_id, _EXPECTED_OTEL_SPAN_ID)
+            self.assertEqual(record._span_id_str, _EXPECTED_OTEL_SPAN_ID)
+            self.assertEqual(record._trace_sampled, _EXPECTED_OTEL_TRACESAMPLED)
+            self.assertEqual(record._trace_sampled_str, "true")
+            self.assertIsNone(record._http_request)
+            self.assertEqual(record._http_request_str, "{}")
+
+    def test_record_with_opentelemetry_span_and_request(self):
+        filter_obj = self._make_one()
+        record = logging.LogRecord(
+            None,
+            logging.INFO,
+            None,
+            None,
+            None,
+            None,
+            None,
+        )
+        record.created = None
+        http_path = "http://testserver/123"
+        http_agent = "Mozilla/5.0"
+        http_trace = "123"
+        http_span = "456"
+        combined_trace = f"{http_trace}/{http_span};o=1"
+        expected_request = {
+            "requestMethod": "GET",
+            "requestUrl": http_path,
+            "userAgent": http_agent,
+            "protocol": "HTTP/1.1",
+        }
+
+        app = self.create_app()
+        with app.test_request_context(
+            http_path,
+            headers={
+                "User-Agent": http_agent,
+                "X_CLOUD_TRACE_CONTEXT": combined_trace,
+            },
+        ):
+            with _setup_otel_span_context():
+                success = filter_obj.filter(record)
+                self.assertTrue(success)
+
+                self.assertEqual(record._trace, _EXPECTED_OTEL_TRACE_ID)
+                self.assertEqual(record._trace_str, _EXPECTED_OTEL_TRACE_ID)
+                self.assertEqual(record._span_id, _EXPECTED_OTEL_SPAN_ID)
+                self.assertEqual(record._span_id_str, _EXPECTED_OTEL_SPAN_ID)
+                self.assertEqual(record._trace_sampled, _EXPECTED_OTEL_TRACESAMPLED)
+                self.assertEqual(record._trace_sampled_str, "true")
+
+                self.assertEqual(record._http_request, expected_request)
+                self.assertEqual(record._http_request_str, json.dumps(expected_request))
+
+    def test_record_with_opentelemetry_span_and_request_with_overrides(self):
+        """
+        sort of does what the test after this one does, but more in the context of OTel precedence
+        """
+        filter_obj = self._make_one()
+        record = logging.LogRecord(
+            None,
+            logging.INFO,
+            None,
+            None,
+            None,
+            None,
+            None,
+        )
+        record.created = None
+        http_path = "http://testserver/123"
+        http_agent = "Mozilla/5.0"
+        http_trace = "123"
+        http_span = "456"
+        combined_trace = f"{http_trace}/{http_span};o=1"
+        expected_request = {
+            "requestMethod": "GET",
+            "requestUrl": http_path,
+            "userAgent": http_agent,
+            "protocol": "HTTP/1.1",
+        }
+
+        overwritten_trace = "01234"
+        overwritten_span = "43210"
+        overwritten_tracesampled = False
+        record.trace = overwritten_trace
+        record.span_id = overwritten_span
+        record.trace_sampled = overwritten_tracesampled
+
+        app = self.create_app()
+        with app.test_request_context(
+            http_path,
+            headers={
+                "User-Agent": http_agent,
+                "X_CLOUD_TRACE_CONTEXT": combined_trace,
+            },
+        ):
+            with _setup_otel_span_context():
+                success = filter_obj.filter(record)
+                self.assertTrue(success)
+
+                self.assertEqual(record._trace, overwritten_trace)
+                self.assertEqual(record._trace_str, overwritten_trace)
+                self.assertEqual(record._span_id, overwritten_span)
+                self.assertEqual(record._span_id_str, overwritten_span)
+                self.assertFalse(record._trace_sampled)
+                self.assertEqual(
+                    record._trace_sampled_str, json.dumps(overwritten_tracesampled)
+                )
+
+                self.assertEqual(record._http_request, expected_request)
+                self.assertEqual(record._http_request_str, json.dumps(expected_request))
 
     def test_user_overrides(self):
         """

@@ -19,6 +19,7 @@ import logging
 import numbers
 import os
 import pytest
+import sys
 import unittest
 import uuid
 
@@ -115,6 +116,25 @@ def setUpModule():
 skip_for_mtls = pytest.mark.skipif(
     Config.use_mtls == "always", reason="Skip the test case for mTLS testing"
 )
+
+
+def _cleanup_otel_sdk_modules(f):
+    """
+    Decorator to delete all references to opentelemetry SDK modules after a
+    testcase is run. Test case should import opentelemetry SDK modules inside
+    the function. This is to test situations where the opentelemetry SDK
+    is not imported at all.
+    """
+
+    def wrapped(*args, **kwargs):
+        f(*args, **kwargs)
+
+        # Deleting from sys.modules should be good enough in this use case
+        for module_name in list(sys.modules.keys()):
+            if module_name.startswith("opentelemetry.sdk"):
+                sys.modules.pop(module_name)
+
+    return wrapped
 
 
 class TestLogging(unittest.TestCase):
@@ -661,6 +681,43 @@ class TestLogging(unittest.TestCase):
 
         self.assertEqual(len(entries), 1)
         self.assertEqual(entries[0].payload, expected_payload)
+
+    @_cleanup_otel_sdk_modules
+    def test_log_handler_otel_integration(self):
+        # Doing OTel imports here to not taint the other tests with OTel SDK imports
+        from opentelemetry import trace
+        from opentelemetry.sdk.trace import TracerProvider
+
+        LOG_MESSAGE = "This is a test of OpenTelemetry"
+        LOGGER_NAME = "otel-integration"
+        handler_name = self._logger_name(LOGGER_NAME)
+
+        handler = CloudLoggingHandler(
+            Config.CLIENT, name=handler_name, transport=SyncTransport
+        )
+        # only create the logger to delete, hidden otherwise
+        logger = Config.CLIENT.logger(handler.name)
+        self.to_delete.append(logger)
+
+        # Set up OTel SDK
+        provider = TracerProvider()
+
+        tracer = provider.get_tracer("test_system")
+        with tracer.start_as_current_span("test-span") as span:
+            context = span.get_span_context()
+            expected_trace_id = f"projects/{Config.CLIENT.project}/traces/{trace.format_trace_id(context.trace_id)}"
+            expected_span_id = trace.format_span_id(context.span_id)
+            expected_tracesampled = context.trace_flags.sampled
+
+            cloud_logger = logging.getLogger(LOGGER_NAME)
+            cloud_logger.addHandler(handler)
+            cloud_logger.warning(LOG_MESSAGE)
+
+            entries = _list_entries(logger)
+            self.assertEqual(len(entries), 1)
+            self.assertEqual(entries[0].trace, expected_trace_id)
+            self.assertEqual(entries[0].span_id, expected_span_id)
+            self.assertTrue(entries[0].trace_sampled, expected_tracesampled)
 
     def test_create_metric(self):
         METRIC_NAME = "test-create-metric%s" % (_RESOURCE_ID,)
