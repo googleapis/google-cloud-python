@@ -305,6 +305,7 @@ class KBinsDiscretizer(
         return (
             type(other) is KBinsDiscretizer
             and self.n_bins == other.n_bins
+            and self.strategy == other.strategy
             and self._bqml_model == other._bqml_model
         )
 

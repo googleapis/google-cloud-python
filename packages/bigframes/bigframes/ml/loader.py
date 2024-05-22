@@ -29,6 +29,7 @@ from bigframes.ml import (
     ensemble,
     forecasting,
     imported,
+    impute,
     linear_model,
     llm,
     pipeline,
@@ -84,6 +85,7 @@ def from_bq(
     pipeline.Pipeline,
     compose.ColumnTransformer,
     preprocessing.PreprocessingType,
+    impute.SimpleImputer,
 ]:
     """Load a BQML model to BigQuery DataFrames ML.
 

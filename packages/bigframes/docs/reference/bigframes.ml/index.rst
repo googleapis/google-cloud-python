@@ -19,6 +19,8 @@ API Reference
 
     imported
 
+    impute
+
     linear_model
 
     llm

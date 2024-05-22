@@ -26,7 +26,15 @@ from google.cloud import bigquery
 import bigframes
 import bigframes.constants as constants
 from bigframes.core import log_adapter
-from bigframes.ml import base, compose, forecasting, loader, preprocessing, utils
+from bigframes.ml import (
+    base,
+    compose,
+    forecasting,
+    impute,
+    loader,
+    preprocessing,
+    utils,
+)
 import bigframes.pandas as bpd
 
 
@@ -56,6 +64,7 @@ class Pipeline(
                 preprocessing.MinMaxScaler,
                 preprocessing.KBinsDiscretizer,
                 preprocessing.LabelEncoder,
+                impute.SimpleImputer,
             ),
         ):
             self._transform = transform

@@ -106,6 +106,13 @@ def test_min_max_scaler_correct(
     assert sql == "ML.MIN_MAX_SCALER(col_a) OVER() AS scaled_col_a"
 
 
+def test_imputer_correct(
+    base_sql_generator: ml_sql.BaseSqlGenerator,
+):
+    sql = base_sql_generator.ml_imputer("col_a", "mean", "scaled_col_a")
+    assert sql == "ML.IMPUTER(col_a, 'mean') OVER() AS scaled_col_a"
+
+
 def test_k_bins_discretizer_correct(
     base_sql_generator: ml_sql.BaseSqlGenerator,
 ):

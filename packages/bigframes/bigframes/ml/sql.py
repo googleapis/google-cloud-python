@@ -103,6 +103,15 @@ class BaseSqlGenerator:
         """Encode ML.MIN_MAX_SCALER for BQML"""
         return f"""ML.MIN_MAX_SCALER({numeric_expr_sql}) OVER() AS {name}"""
 
+    def ml_imputer(
+        self,
+        expr_sql: str,
+        strategy: str,
+        name: str,
+    ) -> str:
+        """Encode ML.IMPUTER for BQML"""
+        return f"""ML.IMPUTER({expr_sql}, '{strategy}') OVER() AS {name}"""
+
     def ml_bucketize(
         self,
         numeric_expr_sql: str,

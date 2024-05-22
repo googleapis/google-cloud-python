@@ -20,6 +20,7 @@ from bigframes.ml import (
     compose,
     decomposition,
     ensemble,
+    impute,
     linear_model,
     pipeline,
     preprocessing,
@@ -477,6 +478,11 @@ def test_pipeline_columntransformer_fit_predict(session, penguins_df_default_ind
                             ["culmen_length_mm", "flipper_length_mm"],
                         ),
                         (
+                            "simple_imputer",
+                            impute.SimpleImputer(strategy="mean"),
+                            ["culmen_length_mm", "flipper_length_mm"],
+                        ),
+                        (
                             "label",
                             preprocessing.LabelEncoder(),
                             "species",
@@ -557,6 +563,11 @@ def test_pipeline_columntransformer_to_gbq(penguins_df_default_index, dataset_id
                             ["culmen_length_mm", "flipper_length_mm"],
                         ),
                         (
+                            "simple_imputer",
+                            impute.SimpleImputer(),
+                            ["culmen_length_mm", "flipper_length_mm"],
+                        ),
+                        (
                             "label",
                             preprocessing.LabelEncoder(),
                             "species",
@@ -600,12 +611,22 @@ def test_pipeline_columntransformer_to_gbq(penguins_df_default_index, dataset_id
             preprocessing.KBinsDiscretizer(strategy="uniform"),
             "culmen_length_mm",
         ),
+        (
+            "simple_imputer",
+            impute.SimpleImputer(),
+            "culmen_length_mm",
+        ),
         ("standard_scaler", preprocessing.StandardScaler(), "flipper_length_mm"),
         ("max_abs_scaler", preprocessing.MaxAbsScaler(), "flipper_length_mm"),
         ("min_max_scaler", preprocessing.MinMaxScaler(), "flipper_length_mm"),
         (
             "k_bins_discretizer",
             preprocessing.KBinsDiscretizer(strategy="uniform"),
+            "flipper_length_mm",
+        ),
+        (
+            "simple_imputer",
+            impute.SimpleImputer(),
             "flipper_length_mm",
         ),
     ]
@@ -792,6 +813,39 @@ def test_pipeline_label_encoder_to_gbq(penguins_df_default_index, dataset_id):
     label_encoder = pl_loaded._transform
     assert label_encoder.min_frequency == 5
     assert label_encoder.max_categories == 100
+
+    assert isinstance(pl_loaded._estimator, linear_model.LinearRegression)
+    assert pl_loaded._estimator.fit_intercept is False
+
+
+def test_pipeline_simple_imputer_to_gbq(penguins_df_default_index, dataset_id):
+    pl = pipeline.Pipeline(
+        [
+            (
+                "transform",
+                impute.SimpleImputer(strategy="most_frequent"),
+            ),
+            ("estimator", linear_model.LinearRegression(fit_intercept=False)),
+        ]
+    )
+
+    df = penguins_df_default_index.dropna()
+    X_train = df[
+        [
+            "sex",
+            "species",
+        ]
+    ]
+    y_train = df[["body_mass_g"]]
+    pl.fit(X_train, y_train)
+
+    pl_loaded = pl.to_gbq(
+        f"{dataset_id}.test_penguins_pipeline_simple_imputer", replace=True
+    )
+    assert isinstance(pl_loaded._transform, impute.SimpleImputer)
+
+    simple_imputer = pl_loaded._transform
+    assert simple_imputer.strategy == "most_frequent"
 
     assert isinstance(pl_loaded._estimator, linear_model.LinearRegression)
     assert pl_loaded._estimator.fit_intercept is False

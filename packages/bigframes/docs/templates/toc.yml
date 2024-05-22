@@ -136,6 +136,12 @@
       name: imported
     - items:
       - name: Overview
+        uid: bigframes.ml.impute
+      - name: SimpleImputer
+        uid: bigframes.ml.impute.SimpleImputer
+      name: impute
+    - items:
+      - name: Overview
         uid: bigframes.ml.linear_model
       - name: LinearRegression
         uid: bigframes.ml.linear_model.LinearRegression
