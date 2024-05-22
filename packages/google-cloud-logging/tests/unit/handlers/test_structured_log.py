@@ -459,7 +459,7 @@ class TestStructuredLogHandler(unittest.TestCase):
         """
         Allow users to override log fields using `logging.info("", extra={})`
 
-        If supported fields were overriden by the user, those choices should
+        If supported fields were overridden by the user, those choices should
         take precedence.
         """
         import logging

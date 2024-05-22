@@ -14,7 +14,7 @@
 
 """Transport for Python logging handler.
 
-Logs directly to the the Cloud Logging API with a synchronous call.
+Logs directly to the Cloud Logging API with a synchronous call.
 """
 from google.cloud.logging_v2 import _helpers
 from google.cloud.logging_v2.handlers.transports.base import Transport

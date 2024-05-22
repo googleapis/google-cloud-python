@@ -331,7 +331,7 @@ class _SinksAPI(object):
             dict: The sink resource returned from the API (converted from a
                   protobuf to a dictionary).
         """
-        name = sink_name.split("/")[-1]  # parse name out of full resoure name
+        name = sink_name.split("/")[-1]  # parse name out of full resource name
         sink_pb = LogSink(
             name=name,
             filter=filter_,

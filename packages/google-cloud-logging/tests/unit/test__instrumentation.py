@@ -25,7 +25,7 @@ class TestInstrumentation(unittest.TestCase):
     # LONG_VERSION > 16 characters
     LONG_VERSION = TEST_VERSION + "6789ABCDEF12"
 
-    def _get_diagonstic_value(self, entry, key):
+    def _get_diagnostic_value(self, entry, key):
         return entry.payload[i._DIAGNOSTIC_INFO_KEY][i._INSTRUMENTATION_SOURCE_KEY][-1][
             key
         ]
@@ -34,10 +34,10 @@ class TestInstrumentation(unittest.TestCase):
         entry = i._create_diagnostic_entry()
         self.assertEqual(
             i._PYTHON_LIBRARY_NAME,
-            self._get_diagonstic_value(entry, "name"),
+            self._get_diagnostic_value(entry, "name"),
         )
         self.assertEqual(
-            i._LIBRARY_VERSION, self._get_diagonstic_value(entry, "version")
+            i._LIBRARY_VERSION, self._get_diagnostic_value(entry, "version")
         )
 
     def test_custom_diagnostic_info(self):
@@ -46,10 +46,10 @@ class TestInstrumentation(unittest.TestCase):
         )
         self.assertEqual(
             self.TEST_NAME,
-            self._get_diagonstic_value(entry, "name"),
+            self._get_diagnostic_value(entry, "name"),
         )
         self.assertEqual(
-            self.TEST_VERSION, self._get_diagonstic_value(entry, "version")
+            self.TEST_VERSION, self._get_diagnostic_value(entry, "version")
         )
 
     def test_truncate_long_values(self):
@@ -60,8 +60,8 @@ class TestInstrumentation(unittest.TestCase):
         expected_name = self.LONG_NAME[: i._MAX_NAME_LENGTH] + "*"
         expected_version = self.LONG_VERSION[: i._MAX_VERSION_LENGTH] + "*"
 
-        self.assertEqual(expected_name, self._get_diagonstic_value(entry, "name"))
-        self.assertEqual(expected_version, self._get_diagonstic_value(entry, "version"))
+        self.assertEqual(expected_name, self._get_diagnostic_value(entry, "name"))
+        self.assertEqual(expected_version, self._get_diagnostic_value(entry, "version"))
 
     def test_drop_labels(self):
         """Labels should not be copied in instrumentation log"""

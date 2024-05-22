@@ -347,7 +347,7 @@ class _SinksAPI(object):
             dict: The returned (updated) resource.
         """
         target = f"/{sink_name}"
-        name = sink_name.split("/")[-1]  # parse name out of full resoure name
+        name = sink_name.split("/")[-1]  # parse name out of full resource name
         data = {"name": name, "filter": filter_, "destination": destination}
         query_params = {"uniqueWriterIdentity": unique_writer_identity}
         return self.api_request(
