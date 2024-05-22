@@ -278,8 +278,9 @@ class GoogleAnalyticsLink(proto.Message):
 
 class MerchantCenterDestination(proto.Message):
     r""" "Merchant Center Destination" sources can be used to send
-    conversion events from a website using a Google tag directly to
-    a Merchant Center account where the source is created.
+    conversion events from an online store using a Google tag
+    directly to a Merchant Center account where the source is
+    created.
 
     Attributes:
         destination (str):
