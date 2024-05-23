@@ -210,6 +210,7 @@ from .types.dlp import (
     SearchConnectionsRequest,
     SearchConnectionsResponse,
     SecretManagerCredential,
+    SecretsDiscoveryTarget,
     StatisticalTable,
     StorageMetadataLabel,
     StoredInfoType,
@@ -272,6 +273,7 @@ from .types.storage import (
     StorageConfig,
     StoredType,
     TableOptions,
+    TableReference,
 )
 
 __all__ = (
@@ -488,6 +490,7 @@ __all__ = (
     "SearchConnectionsRequest",
     "SearchConnectionsResponse",
     "SecretManagerCredential",
+    "SecretsDiscoveryTarget",
     "SensitivityScore",
     "StatisticalTable",
     "StorageConfig",
@@ -502,6 +505,7 @@ __all__ = (
     "TableDataProfile",
     "TableLocation",
     "TableOptions",
+    "TableReference",
     "TimePartConfig",
     "TransformationConfig",
     "TransformationContainerType",

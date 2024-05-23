@@ -2703,7 +2703,7 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
 
         Returns:
             google.cloud.dlp_v2.types.JobTrigger:
-                Contains a configuration to make api
+                Contains a configuration to make API
                 calls on a repeating basis. See
                 https://cloud.google.com/sensitive-data-protection/docs/concepts-job-triggers
                 to learn more.
@@ -2827,7 +2827,7 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
 
         Returns:
             google.cloud.dlp_v2.types.JobTrigger:
-                Contains a configuration to make api
+                Contains a configuration to make API
                 calls on a repeating basis. See
                 https://cloud.google.com/sensitive-data-protection/docs/concepts-job-triggers
                 to learn more.
@@ -3048,7 +3048,7 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
 
         Returns:
             google.cloud.dlp_v2.types.JobTrigger:
-                Contains a configuration to make api
+                Contains a configuration to make API
                 calls on a repeating basis. See
                 https://cloud.google.com/sensitive-data-protection/docs/concepts-job-triggers
                 to learn more.

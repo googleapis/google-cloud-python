@@ -45,6 +45,7 @@ __protobuf__ = proto.module(
         "Key",
         "RecordKey",
         "BigQueryTable",
+        "TableReference",
         "BigQueryField",
         "EntityId",
         "TableOptions",
@@ -1497,6 +1498,27 @@ class BigQueryTable(proto.Message):
     table_id: str = proto.Field(
         proto.STRING,
         number=3,
+    )
+
+
+class TableReference(proto.Message):
+    r"""Message defining the location of a BigQuery table with the
+    projectId inferred from the parent project.
+
+    Attributes:
+        dataset_id (str):
+            Dataset ID of the table.
+        table_id (str):
+            Name of the table.
+    """
+
+    dataset_id: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    table_id: str = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 
