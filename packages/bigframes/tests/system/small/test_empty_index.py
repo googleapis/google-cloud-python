@@ -169,6 +169,21 @@ def test_empty_index_df_self_aligns(
     )
 
 
+def test_empty_index_setitem(scalars_df_empty_index, scalars_pandas_df_default_index):
+    bf_result = scalars_df_empty_index.copy()
+    bf_result["new_col"] = (
+        scalars_df_empty_index["int64_col"] + scalars_df_empty_index["float64_col"]
+    )
+    pd_result = scalars_pandas_df_default_index.copy()
+    pd_result["new_col"] = (
+        scalars_pandas_df_default_index["int64_col"]
+        + scalars_pandas_df_default_index["float64_col"]
+    )
+    pd.testing.assert_frame_equal(
+        bf_result.to_pandas(), pd_result.reset_index(drop=True), check_dtype=False
+    )
+
+
 def test_empty_index_df_concat(scalars_df_empty_index, scalars_pandas_df_default_index):
     bf_result = bpd.concat([scalars_df_empty_index, scalars_df_empty_index])
     pd_result = pd.concat(
