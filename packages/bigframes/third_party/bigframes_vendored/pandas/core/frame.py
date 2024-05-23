@@ -2003,6 +2003,30 @@ class DataFrame(generic.NDFrame):
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
+    def __invert__(self) -> DataFrame:
+        """
+        Returns the bitwise inversion of the DataFrame, element-wise
+        using operator `~`.
+
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> df = bpd.DataFrame({'a':[True, False, True], 'b':[-1, 0, 1]})
+            >>> ~df
+                   a  b
+            0  False  0
+            1   True -1
+            2  False -2
+            <BLANKLINE>
+            [3 rows x 2 columns]
+
+        Returns:
+            DataFrame: The result of inverting elements in the input.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
     def ne(self, other, axis: str | int = "columns") -> DataFrame:
         """
         Get not equal to of DataFrame and other, element-wise (binary operator `ne`).

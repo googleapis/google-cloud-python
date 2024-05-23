@@ -1699,6 +1699,16 @@ def test_df_abs(scalars_dfs):
     assert_pandas_df_equal(bf_result, pd_result)
 
 
+def test_df_invert(scalars_dfs):
+    scalars_df, scalars_pandas_df = scalars_dfs
+    columns = ["int64_col", "bool_col"]
+
+    bf_result = (~scalars_df[columns]).to_pandas()
+    pd_result = ~scalars_pandas_df[columns]
+
+    assert_pandas_df_equal(bf_result, pd_result)
+
+
 def test_df_isnull(scalars_dfs):
     scalars_df, scalars_pandas_df = scalars_dfs
 

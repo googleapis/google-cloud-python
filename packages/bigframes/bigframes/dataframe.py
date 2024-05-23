@@ -904,6 +904,11 @@ class DataFrame(vendored_pandas_frame.DataFrame):
 
     __ne__.__doc__ = inspect.getdoc(vendored_pandas_frame.DataFrame.__ne__)
 
+    def __invert__(self) -> DataFrame:
+        return self._apply_unary_op(ops.invert_op)
+
+    __invert__.__doc__ = inspect.getdoc(vendored_pandas_frame.DataFrame.__invert__)
+
     def le(self, other: typing.Any, axis: str | int = "columns") -> DataFrame:
         return self._apply_binop(other, ops.le_op, axis=axis)
 
