@@ -713,7 +713,8 @@ class Session(
         # Fetch table metadata and validate
         # ---------------------------------
 
-        (time_travel_timestamp, table,) = bf_read_gbq_table.get_table_metadata(
+        time_travel_timestamp: Optional[datetime.datetime] = None
+        time_travel_timestamp, table = bf_read_gbq_table.get_table_metadata(
             self.bqclient,
             table_ref=table_ref,
             api_name=api_name,
@@ -795,9 +796,34 @@ class Session(
 
         # Use a time travel to make sure the DataFrame is deterministic, even
         # if the underlying table changes.
-        # TODO(b/340540991): If a dry run query fails with time travel but
+
+        # If a dry run query fails with time travel but
         # succeeds without it, omit the time travel clause and raise a warning
         # about potential non-determinism if the underlying tables are modified.
+        sql = bigframes.session._io.bigquery.to_query(
+            f"{table_ref.project}.{table_ref.dataset_id}.{table_ref.table_id}",
+            index_cols=index_cols,
+            columns=columns,
+            filters=filters,
+            time_travel_timestamp=time_travel_timestamp,
+            max_results=None,
+        )
+        dry_run_config = bigquery.QueryJobConfig()
+        dry_run_config.dry_run = True
+        try:
+            self._start_query(sql, job_config=dry_run_config)
+        except google.api_core.exceptions.NotFound:
+            # note that a notfound caused by a simple typo will be
+            # caught above when the metadata is fetched, not here
+            time_travel_timestamp = None
+            warnings.warn(
+                "NotFound error when reading table with time travel."
+                " Attempting query without time travel. Warning: Without"
+                " time travel, modifications to the underlying table may"
+                " result in errors or unexpected behavior.",
+                category=bigframes.exceptions.TimeTravelDisabledWarning,
+            )
+
         table_expression = bf_read_gbq_table.get_ibis_time_travel_table(
             ibis_client=self.ibis_client,
             table_ref=table_ref,

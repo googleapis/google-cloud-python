@@ -20,6 +20,7 @@ import textwrap
 import time
 import typing
 from typing import List, Optional, Sequence
+import warnings
 
 import google
 import google.cloud.bigquery as bigquery
@@ -384,6 +385,13 @@ def test_read_gbq_twice_with_same_timestamp(session, penguins_table_id):
     ]
     df3 = df1.join(df2)
     assert df3 is not None
+
+
+def test_read_gbq_on_linked_dataset_warns(session):
+    with warnings.catch_warnings(record=True) as warned:
+        session.read_gbq("bigframes-dev.thelook_ecommerce.orders")
+        assert len(warned) == 1
+        assert warned[0].category == bigframes.exceptions.TimeTravelDisabledWarning
 
 
 def test_read_gbq_table_clustered_with_filter(session: bigframes.Session):
