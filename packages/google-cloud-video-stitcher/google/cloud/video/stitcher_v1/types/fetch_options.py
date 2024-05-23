@@ -19,11 +19,10 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
-
 __protobuf__ = proto.module(
-    package='google.cloud.video.stitcher.v1',
+    package="google.cloud.video.stitcher.v1",
     manifest={
-        'FetchOptions',
+        "FetchOptions",
     },
 )
 

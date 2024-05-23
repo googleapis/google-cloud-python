@@ -21,12 +21,11 @@ import proto  # type: ignore
 
 from google.cloud.video.stitcher_v1.types import fetch_options
 
-
 __protobuf__ = proto.module(
-    package='google.cloud.video.stitcher.v1',
+    package="google.cloud.video.stitcher.v1",
     manifest={
-        'VodConfig',
-        'GamVodConfig',
+        "VodConfig",
+        "GamVodConfig",
     },
 )
 
@@ -53,6 +52,7 @@ class VodConfig(proto.Message):
             Options for fetching source manifests and
             segments.
     """
+
     class State(proto.Enum):
         r"""State of the VOD config.
 
@@ -83,10 +83,10 @@ class VodConfig(proto.Message):
         proto.STRING,
         number=3,
     )
-    gam_vod_config: 'GamVodConfig' = proto.Field(
+    gam_vod_config: "GamVodConfig" = proto.Field(
         proto.MESSAGE,
         number=4,
-        message='GamVodConfig',
+        message="GamVodConfig",
     )
     state: State = proto.Field(
         proto.ENUM,

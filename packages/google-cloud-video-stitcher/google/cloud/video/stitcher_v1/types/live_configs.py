@@ -20,6 +20,8 @@ from typing import MutableMapping, MutableSequence
 from google.protobuf import duration_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.cloud.video.stitcher_v1.types import fetch_options
+
 __protobuf__ = proto.module(
     package="google.cloud.video.stitcher.v1",
     manifest={
@@ -70,10 +72,7 @@ class LiveConfig(proto.Message):
         state (google.cloud.video.stitcher_v1.types.LiveConfig.State):
             Output only. State of the live config.
         ad_tracking (google.cloud.video.stitcher_v1.types.AdTracking):
-            Required. Determines how the ads are tracked. If
-            [gam_live_config][google.cloud.video.stitcher.v1.LiveConfig.gam_live_config]
-            is set, the value must be ``CLIENT`` because the IMA SDK
-            handles ad tracking.
+            Required. Determines how the ads are tracked.
         default_slate (str):
             This must refer to a slate in the same project. If Google Ad
             Manager (GAM) is used for ads, this string sets the value of
@@ -85,6 +84,9 @@ class LiveConfig(proto.Message):
             default is ``CUT_CURRENT``.
         prefetch_config (google.cloud.video.stitcher_v1.types.PrefetchConfig):
             The configuration for prefetching ads.
+        source_fetch_options (google.cloud.video.stitcher_v1.types.FetchOptions):
+            Options for fetching source manifests and
+            segments.
     """
 
     class State(proto.Enum):
@@ -164,6 +166,11 @@ class LiveConfig(proto.Message):
         proto.MESSAGE,
         number=10,
         message="PrefetchConfig",
+    )
+    source_fetch_options: fetch_options.FetchOptions = proto.Field(
+        proto.MESSAGE,
+        number=16,
+        message=fetch_options.FetchOptions,
     )
 
 
