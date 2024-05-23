@@ -23,8 +23,8 @@ Note:  The canonical version of this documentation can always be found on the
    `BigQuery sandbox <https://cloud.google.com/bigquery/docs/sandbox>`__ to
    try the service for free.
 
-   Also, consider using `BigQuery DataFrames
-   <https://cloud.google.com/bigquery/docs/bigquery-dataframes-introduction>`__
+   Also, consider using BigQuery DataFrames 
+   (`bit.ly/bigframes-intro <https://bit.ly/bigframes-intro>`__)
    to process large results with pandas compatible APIs with transparent SQL
    pushdown to BigQuery engine. This provides an opportunity to save on costs
    and improve performance.
