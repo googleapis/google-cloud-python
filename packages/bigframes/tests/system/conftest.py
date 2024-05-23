@@ -20,6 +20,7 @@ import pathlib
 import textwrap
 import typing
 from typing import Dict, Generator, Optional
+import warnings
 
 import google.api_core.exceptions
 import google.cloud.bigquery as bigquery
@@ -1129,7 +1130,9 @@ def cleanup_cloud_functions(session, cloudfunctions_client, dataset_id_permanent
             # successfully, while the other instance will run into this
             # exception. Ignore this exception.
             pass
-        except google.api_core.exceptions.ResourceExhausted:
+        except Exception as exc:
+            # Don't fail the tests for unknown exceptions.
+            #
             # This can happen if we are hitting GCP limits, e.g.
             # google.api_core.exceptions.ResourceExhausted: 429 Quota exceeded
             # for quota metric 'Per project mutation requests' and limit
@@ -1137,5 +1140,11 @@ def cleanup_cloud_functions(session, cloudfunctions_client, dataset_id_permanent
             # 'cloudfunctions.googleapis.com' for consumer
             # 'project_number:1084210331973'.
             # [reason: "RATE_LIMIT_EXCEEDED" domain: "googleapis.com" ...
+            #
+            # It can also happen occasionally with
+            # google.api_core.exceptions.ServiceUnavailable when there is some
+            # backend flakiness.
+            #
             # Let's stop further clean up and leave it to later.
+            warnings.warn(f"Cloud functions cleanup failed: {str(exc)}")
             break
