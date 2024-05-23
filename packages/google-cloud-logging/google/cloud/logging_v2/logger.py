@@ -29,6 +29,7 @@ from google.cloud.logging_v2._instrumentation import _add_instrumentation
 from google.api_core.exceptions import InvalidArgument
 from google.rpc.error_details_pb2 import DebugInfo
 
+import google.cloud.logging_v2
 import google.protobuf.message
 
 _GLOBAL_RESOURCE = Resource(type="global", labels={})
