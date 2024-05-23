@@ -119,6 +119,14 @@ def _job_should_retry(exc):
     if isinstance(exc, exceptions.RetryError):
         exc = exc.cause
 
+    # Per https://github.com/googleapis/python-bigquery/issues/1929, sometimes
+    # retriable errors make their way here. Because of the separate
+    # `restart_query_job` logic to make sure we aren't restarting non-failed
+    # jobs, it should be safe to continue and not totally fail our attempt at
+    # waiting for the query to complete.
+    if _should_retry(exc):
+        return True
+
     if not hasattr(exc, "errors") or len(exc.errors) == 0:
         return False
 
