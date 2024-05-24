@@ -2,8 +2,17 @@
 
 from __future__ import annotations
 
+import ibis
 import ibis.expr.operations as ops
 import ibis.expr.rules as rlz
+
+
+# TODO(swast): We can remove this if ibis adds aggregates over scalar values.
+# See: https://github.com/ibis-project/ibis/issues/8698
+@ibis.udf.agg.builtin
+def count(value: int) -> int:
+    """Count of a scalar."""
+    return 0  # pragma: NO COVER
 
 
 class FirstNonNullValue(ops.Analytic):
@@ -21,6 +30,7 @@ class LastNonNullValue(ops.Analytic):
 
 
 __all__ = [
+    "count",
     "FirstNonNullValue",
     "LastNonNullValue",
 ]

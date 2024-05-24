@@ -18,6 +18,10 @@ import pytest
 import bigframes.pandas as bpd
 from tests.system.utils import assert_pandas_df_equal
 
+# =================
+# DataFrame.groupby
+# =================
+
 
 @pytest.mark.parametrize(
     ("operator"),
@@ -269,21 +273,26 @@ def test_dataframe_groupby_analytic(
     pd.testing.assert_frame_equal(pd_result, bf_result_computed, check_dtype=False)
 
 
-def test_series_groupby_skew(scalars_df_index, scalars_pandas_df_index):
-    bf_result = scalars_df_index.groupby("bool_col")["int64_too"].skew().to_pandas()
-    pd_result = scalars_pandas_df_index.groupby("bool_col")["int64_too"].skew()
+def test_dataframe_groupby_size_as_index_false(
+    scalars_df_index, scalars_pandas_df_index
+):
+    bf_result = scalars_df_index.groupby("string_col", as_index=False).size()
+    bf_result_computed = bf_result.to_pandas()
+    pd_result = scalars_pandas_df_index.groupby("string_col", as_index=False).size()
 
-    pd.testing.assert_series_equal(pd_result, bf_result, check_dtype=False)
-
-
-def test_series_groupby_kurt(scalars_df_index, scalars_pandas_df_index):
-    bf_result = scalars_df_index.groupby("bool_col")["int64_too"].kurt().to_pandas()
-    # Pandas doesn't have groupby.kurt yet: https://github.com/pandas-dev/pandas/issues/40139
-    pd_result = scalars_pandas_df_index.groupby("bool_col")["int64_too"].apply(
-        pd.Series.kurt
+    pd.testing.assert_frame_equal(
+        pd_result, bf_result_computed, check_dtype=False, check_index_type=False
     )
 
-    pd.testing.assert_series_equal(pd_result, bf_result, check_dtype=False)
+
+def test_dataframe_groupby_size_as_index_true(
+    scalars_df_index, scalars_pandas_df_index
+):
+    bf_result = scalars_df_index.groupby("string_col", as_index=True).size()
+    pd_result = scalars_pandas_df_index.groupby("string_col", as_index=True).size()
+    bf_result_computed = bf_result.to_pandas()
+
+    pd.testing.assert_series_equal(pd_result, bf_result_computed, check_dtype=False)
 
 
 def test_dataframe_groupby_skew(scalars_df_index, scalars_pandas_df_index):
@@ -356,6 +365,30 @@ def test_dataframe_groupby_getitem_list(
     pd.testing.assert_frame_equal(pd_result, bf_result, check_dtype=False)
 
 
+def test_dataframe_groupby_nonnumeric_with_mean():
+    df = pd.DataFrame(
+        {
+            "key1": ["a", "a", "a", "b"],
+            "key2": ["a", "a", "c", "c"],
+            "key3": [1, 2, 3, 4],
+            "key4": [1.6, 2, 3, 4],
+        }
+    )
+    pd_result = df.groupby(["key1", "key2"]).mean()
+
+    with bpd.option_context("bigquery.location", "US"):
+        bf_result = bpd.DataFrame(df).groupby(["key1", "key2"]).mean().to_pandas()
+
+    pd.testing.assert_frame_equal(
+        pd_result, bf_result, check_index_type=False, check_dtype=False
+    )
+
+
+# ==============
+# Series.groupby
+# ==============
+
+
 def test_series_groupby_agg_string(scalars_df_index, scalars_pandas_df_index):
     bf_result = (
         scalars_df_index["int64_col"]
@@ -392,21 +425,49 @@ def test_series_groupby_agg_list(scalars_df_index, scalars_pandas_df_index):
     )
 
 
-def test_dataframe_groupby_nonnumeric_with_mean():
-    df = pd.DataFrame(
-        {
-            "key1": ["a", "a", "a", "b"],
-            "key2": ["a", "a", "c", "c"],
-            "key3": [1, 2, 3, 4],
-            "key4": [1.6, 2, 3, 4],
-        }
+def test_series_groupby_kurt(scalars_df_index, scalars_pandas_df_index):
+    bf_result = (
+        scalars_df_index["int64_too"]
+        .groupby(scalars_df_index["bool_col"])
+        .kurt()
+        .to_pandas()
     )
-    pd_result = df.groupby(["key1", "key2"]).mean()
-    bf_result = bpd.DataFrame(df).groupby(["key1", "key2"]).mean().to_pandas()
+    # Pandas doesn't have groupby.kurt yet: https://github.com/pandas-dev/pandas/issues/40139
+    pd_result = scalars_pandas_df_index.groupby("bool_col")["int64_too"].apply(
+        pd.Series.kurt
+    )
 
-    pd.testing.assert_frame_equal(
-        pd_result, bf_result, check_index_type=False, check_dtype=False
+    pd.testing.assert_series_equal(pd_result, bf_result, check_dtype=False)
+
+
+def test_series_groupby_size(scalars_df_index, scalars_pandas_df_index):
+    bf_result = (
+        scalars_df_index["int64_too"].groupby(scalars_df_index["bool_col"]).size()
     )
+    pd_result = (
+        scalars_pandas_df_index["int64_too"]
+        .groupby(scalars_pandas_df_index["bool_col"])
+        .size()
+    )
+    bf_result_computed = bf_result.to_pandas()
+
+    pd.testing.assert_series_equal(pd_result, bf_result_computed, check_dtype=False)
+
+
+def test_series_groupby_skew(scalars_df_index, scalars_pandas_df_index):
+    bf_result = (
+        scalars_df_index["int64_too"]
+        .groupby(scalars_df_index["bool_col"])
+        .skew()
+        .to_pandas()
+    )
+    pd_result = (
+        scalars_pandas_df_index["int64_too"]
+        .groupby(scalars_pandas_df_index["bool_col"])
+        .skew()
+    )
+
+    pd.testing.assert_series_equal(pd_result, bf_result, check_dtype=False)
 
 
 @pytest.mark.parametrize(

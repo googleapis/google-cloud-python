@@ -1014,6 +1014,34 @@ class Block:
                 index_labels=self.index.names,
             )
 
+    def aggregate_size(
+        self,
+        by_column_ids: typing.Sequence[str] = (),
+        *,
+        dropna: bool = True,
+    ):
+        """Returns a block object to compute the size(s) of groups."""
+        agg_specs = [
+            (ex.NullaryAggregation(agg_ops.SizeOp()), guid.generate_guid()),
+        ]
+        output_col_ids = [agg_spec[1] for agg_spec in agg_specs]
+        result_expr = self.expr.aggregate(agg_specs, by_column_ids, dropna=dropna)
+        names: typing.List[Label] = []
+        for by_col_id in by_column_ids:
+            if by_col_id in self.value_columns:
+                names.append(self.col_id_to_label[by_col_id])
+            else:
+                names.append(self.col_id_to_index_name[by_col_id])
+        return (
+            Block(
+                result_expr,
+                index_columns=by_column_ids,
+                column_labels=["size"],
+                index_labels=names,
+            ),
+            output_col_ids,
+        )
+
     def select_column(self, id: str) -> Block:
         return self.select_columns([id])
 

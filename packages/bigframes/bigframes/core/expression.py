@@ -47,6 +47,16 @@ class Aggregation(abc.ABC):
 
 
 @dataclasses.dataclass(frozen=True)
+class NullaryAggregation(Aggregation):
+    op: agg_ops.NullaryWindowOp = dataclasses.field()
+
+    def output_type(
+        self, input_types: dict[str, bigframes.dtypes.Dtype]
+    ) -> dtypes.ExpressionType:
+        return self.op.output_type()
+
+
+@dataclasses.dataclass(frozen=True)
 class UnaryAggregation(Aggregation):
     op: agg_ops.UnaryWindowOp = dataclasses.field()
     arg: Union[

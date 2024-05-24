@@ -104,6 +104,20 @@ class DataFrameGroupBy(vendored_pandas_groupby.DataFrameGroupBy):
                 dropna=self._dropna,
             )
 
+    def size(self) -> typing.Union[df.DataFrame, series.Series]:
+        agg_block, _ = self._block.aggregate_size(
+            by_column_ids=self._by_col_ids,
+            dropna=self._dropna,
+        )
+        agg_block = agg_block.with_column_labels(pd.Index(["size"]))
+        dataframe = df.DataFrame(agg_block)
+
+        if self._as_index:
+            series = dataframe["size"]
+            return series.rename(None)
+        else:
+            return self._convert_index(dataframe)
+
     def sum(self, numeric_only: bool = False, *args) -> df.DataFrame:
         if not numeric_only:
             self._raise_on_non_numeric("sum")
@@ -519,6 +533,13 @@ class SeriesGroupBy(vendored_pandas_groupby.SeriesGroupBy):
 
     def var(self, *args, **kwargs) -> series.Series:
         return self._aggregate(agg_ops.var_op)
+
+    def size(self) -> series.Series:
+        agg_block, _ = self._block.aggregate_size(
+            by_column_ids=self._by_col_ids,
+            dropna=self._dropna,
+        )
+        return series.Series(agg_block, name=self._value_name)
 
     def skew(self, *args, **kwargs) -> series.Series:
         block = block_ops.skew(self._block, [self._value_column], self._by_col_ids)
