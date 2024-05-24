@@ -24,7 +24,7 @@ import string
 import sys
 import tempfile
 import textwrap
-from typing import List, NamedTuple, Optional, Sequence, TYPE_CHECKING, Union
+from typing import cast, List, NamedTuple, Optional, Sequence, TYPE_CHECKING, Union
 import warnings
 
 import ibis
@@ -133,6 +133,8 @@ class RemoteFunctionClient:
         cloud_function_service_account,
         cloud_function_kms_key_name,
         cloud_function_docker_repository,
+        *,
+        session: Session,
     ):
         self._gcp_project_id = gcp_project_id
         self._cloud_function_region = cloud_function_region
@@ -145,6 +147,7 @@ class RemoteFunctionClient:
         self._cloud_function_service_account = cloud_function_service_account
         self._cloud_function_kms_key_name = cloud_function_kms_key_name
         self._cloud_function_docker_repository = cloud_function_docker_repository
+        self._session = session
 
     def create_bq_remote_function(
         self,
@@ -216,10 +219,8 @@ class RemoteFunctionClient:
             # This requires bigquery.datasets.create IAM permission
             self._bq_client.create_dataset(dataset, exists_ok=True)
 
-        # TODO: Use session._start_query() so we get progress bar
-        query_job = self._bq_client.query(create_function_ddl)  # Make an API request.
-        query_job.result()  # Wait for the job to complete.
-
+        # TODO(swast): plumb through the original, user-facing api_name.
+        _, query_job = self._session._start_query(create_function_ddl)
         logger.info(f"Created remote function {query_job.ddl_target_routine}")
 
     def get_cloud_function_fully_qualified_parent(self):
@@ -910,6 +911,7 @@ def remote_function(
     is_row_processor = False
 
     import bigframes.series
+    import bigframes.session
 
     if input_types == bigframes.series.Series:
         warnings.warn(
@@ -928,7 +930,7 @@ def remote_function(
     # Some defaults may be used from the session if not provided otherwise
     import bigframes.pandas as bpd
 
-    session = session or bpd.get_global_session()
+    session = cast(bigframes.session.Session, session or bpd.get_global_session())
 
     # A BigQuery client is required to perform BQ operations
     if not bigquery_client:
@@ -1040,6 +1042,7 @@ def remote_function(
             cloud_function_service_account,
             cloud_function_kms_key_name,
             cloud_function_docker_repository,
+            session=session,  # type: ignore
         )
 
         rf_name, cf_name = remote_function_client.provision_bq_remote_function(

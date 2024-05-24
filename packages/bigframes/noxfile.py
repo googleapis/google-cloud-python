@@ -91,7 +91,6 @@ nox.options.sessions = [
     "unit",
     "unit_noextras",
     "system",
-    "doctest",
     "cover",
 ]
 

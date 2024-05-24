@@ -99,9 +99,12 @@ def add_api_method(api_method_name):
         _api_methods = _api_methods[:MAX_LABELS_COUNT]
 
 
-def get_and_reset_api_methods():
+def get_and_reset_api_methods(dry_run: bool = False):
     global _lock
     with _lock:
         previous_api_methods = list(_api_methods)
-        _api_methods.clear()
+
+        # dry_run might not make a job resource, so only reset the log on real queries.
+        if not dry_run:
+            _api_methods.clear()
     return previous_api_methods

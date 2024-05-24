@@ -113,8 +113,10 @@ def get_table_metadata(
     # atomically.
     table = bqclient.get_table(table_ref)
 
+    # TODO(swast): Use session._start_query instead?
+    # TODO(swast): Use query_and_wait since we know these are small results.
     job_config = bigquery.QueryJobConfig()
-    job_config.labels["bigframes-api"] = api_name
+    bigframes.session._io.bigquery.add_labels(job_config, api_name=api_name)
     snapshot_timestamp = list(
         bqclient.query(
             "SELECT CURRENT_TIMESTAMP() AS `current_timestamp`",
@@ -283,57 +285,6 @@ def get_index_cols(
         index_cols = primary_keys
 
     return index_cols
-
-
-def get_time_travel_datetime_and_table_metadata(
-    bqclient: bigquery.Client,
-    table_ref: bigquery.TableReference,
-    *,
-    api_name: str,
-    cache: Dict[bigquery.TableReference, Tuple[datetime.datetime, bigquery.Table]],
-    use_cache: bool = True,
-) -> Tuple[datetime.datetime, bigquery.Table]:
-    cached_table = cache.get(table_ref)
-    if use_cache and cached_table is not None:
-        snapshot_timestamp, _ = cached_table
-
-        # Cache hit could be unexpected. See internal issue 329545805.
-        # Raise a warning with more information about how to avoid the
-        # problems with the cache.
-        warnings.warn(
-            f"Reading cached table from {snapshot_timestamp} to avoid "
-            "incompatibilies with previous reads of this table. To read "
-            "the latest version, set `use_cache=False` or close the "
-            "current session with Session.close() or "
-            "bigframes.pandas.close_session().",
-            # There are many layers before we get to (possibly) the user's code:
-            # pandas.read_gbq_table
-            # -> with_default_session
-            # -> Session.read_gbq_table
-            # -> _read_gbq_table
-            # -> _get_snapshot_sql_and_primary_key
-            # -> get_snapshot_datetime_and_table_metadata
-            stacklevel=7,
-        )
-        return cached_table
-
-    # TODO(swast): It's possible that the table metadata is changed between now
-    # and when we run the CURRENT_TIMESTAMP() query to see when we can time
-    # travel to. Find a way to fetch the table metadata and BQ's current time
-    # atomically.
-    table = bqclient.get_table(table_ref)
-
-    job_config = bigquery.QueryJobConfig()
-    job_config.labels["bigframes-api"] = api_name
-    snapshot_timestamp = list(
-        bqclient.query(
-            "SELECT CURRENT_TIMESTAMP() AS `current_timestamp`",
-            job_config=job_config,
-        ).result()
-    )[0][0]
-    cached_table = (snapshot_timestamp, table)
-    cache[table_ref] = cached_table
-    return cached_table
 
 
 def to_array_value_with_total_ordering(

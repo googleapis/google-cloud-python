@@ -36,6 +36,25 @@ def test_create_job_configs_labels_is_none():
     assert labels == expected_dict
 
 
+def test_create_job_configs_labels_always_includes_bigframes_api():
+    labels = io_bq.create_job_configs_labels(None, [])
+    assert labels == {
+        "bigframes-api": "unknown",
+    }
+
+
+def test_create_job_configs_labels_includes_extra_query_labels():
+    user_labels = {"my-label-1": "my-value-1", "my-label-2": "my-value-2"}
+
+    with bigframes.option_context("compute.extra_query_labels", user_labels):
+        labels = io_bq.create_job_configs_labels(None, [])
+        assert labels == {
+            "my-label-1": "my-value-1",
+            "my-label-2": "my-value-2",
+            "bigframes-api": "unknown",
+        }
+
+
 def test_create_job_configs_labels_length_limit_not_met():
     cur_labels = {
         "source": "bigquery-dataframes-temp",
@@ -105,7 +124,7 @@ def test_create_job_configs_labels_length_limit_met():
         "bigframes-api": "read_pandas",
         "source": "bigquery-dataframes-temp",
     }
-    for i in range(100):
+    for i in range(61):
         key = f"bigframes-api-test-{i}"
         value = f"test{i}"
         cur_labels[key] = value

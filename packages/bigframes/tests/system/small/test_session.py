@@ -545,18 +545,22 @@ def test_read_gbq_with_configuration(
 def test_read_gbq_with_custom_global_labels(
     session: bigframes.Session, scalars_table_id: str
 ):
-    bigframes.options.compute.assign_extra_query_labels(test1=1, test2="abc")
-    bigframes.options.compute.extra_query_labels["test3"] = False
+    # Ensure we use thread-local variables to avoid conflicts with parallel tests.
+    with bigframes.option_context("compute.extra_query_labels", {}):
+        bigframes.options.compute.assign_extra_query_labels(test1=1, test2="abc")
+        bigframes.options.compute.extra_query_labels["test3"] = False
 
-    job_labels = session.read_gbq(scalars_table_id).query_job.labels  # type:ignore
-    expected_labels = {"test1": "1", "test2": "abc", "test3": "false"}
+        job_labels = session.read_gbq(scalars_table_id).query_job.labels  # type:ignore
+        expected_labels = {"test1": "1", "test2": "abc", "test3": "false"}
 
-    assert all(job_labels.get(key) == value for key, value in expected_labels.items())
+        # All jobs should include a bigframes-api key. See internal issue 336521938.
+        assert "bigframes-api" in job_labels
 
-    del bigframes.options.compute.extra_query_labels["test1"]
-    del bigframes.options.compute.extra_query_labels["test2"]
-    del bigframes.options.compute.extra_query_labels["test3"]
+        assert all(
+            job_labels.get(key) == value for key, value in expected_labels.items()
+        )
 
+    # No labels outside of the option_context.
     assert len(bigframes.options.compute.extra_query_labels) == 0
 
 
