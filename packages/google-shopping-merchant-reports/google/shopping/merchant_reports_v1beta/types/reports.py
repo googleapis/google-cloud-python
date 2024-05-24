@@ -34,6 +34,7 @@ __protobuf__ = proto.module(
         "PriceInsightsProductView",
         "BestSellersProductClusterView",
         "BestSellersBrandView",
+        "NonProductPerformanceView",
         "CompetitiveVisibilityCompetitorView",
         "CompetitiveVisibilityTopMerchantView",
         "CompetitiveVisibilityBenchmarkView",
@@ -127,6 +128,9 @@ class ReportRow(proto.Message):
         product_performance_view (google.shopping.merchant_reports_v1beta.types.ProductPerformanceView):
             Fields available for query in ``product_performance_view``
             table.
+        non_product_performance_view (google.shopping.merchant_reports_v1beta.types.NonProductPerformanceView):
+            Fields available for query in
+            ``non_product_performance_view`` table.
         product_view (google.shopping.merchant_reports_v1beta.types.ProductView):
             Fields available for query in ``product_view`` table.
         price_competitiveness_product_view (google.shopping.merchant_reports_v1beta.types.PriceCompetitivenessProductView):
@@ -156,6 +160,11 @@ class ReportRow(proto.Message):
         proto.MESSAGE,
         number=1,
         message="ProductPerformanceView",
+    )
+    non_product_performance_view: "NonProductPerformanceView" = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message="NonProductPerformanceView",
     )
     product_view: "ProductView" = proto.Field(
         proto.MESSAGE,
@@ -643,7 +652,7 @@ class ProductView(proto.Message):
         shipping_label (str):
             Normalized `shipping
             label <https://support.google.com/merchants/answer/6324504>`__
-            specified in the feed.
+            specified in the data source.
 
             This field is a member of `oneof`_ ``_shipping_label``.
         gtin (MutableSequence[str]):
@@ -694,7 +703,7 @@ class ProductView(proto.Message):
 
         Here's an example of how the aggregated status is computed:
 
-        Free listings \| Shopping Ads \| Status
+        Free listings \| Shopping ads \| Status
         --------------|--------------|------------------------------
         Approved \| Approved \| ELIGIBLE Approved \| Pending \| ELIGIBLE
         Approved \| Disapproved \| ELIGIBLE_LIMITED Pending \| Pending \|
@@ -1368,7 +1377,35 @@ class PriceInsightsProductView(proto.Message):
             5% predicted increase in conversions).
 
             This field is a member of `oneof`_ ``_predicted_conversions_change_fraction``.
+        effectiveness (google.shopping.merchant_reports_v1beta.types.PriceInsightsProductView.Effectiveness):
+            The predicted effectiveness of applying the
+            price suggestion, bucketed.
     """
+
+    class Effectiveness(proto.Enum):
+        r"""Predicted effectiveness bucket.
+
+        Effectiveness indicates which products would benefit most from price
+        changes. This rating takes into consideration the performance boost
+        predicted by adjusting the sale price and the difference between
+        your current price and the suggested price. Price suggestions with
+        ``HIGH`` effectiveness are predicted to drive the largest increase
+        in performance.
+
+        Values:
+            EFFECTIVENESS_UNSPECIFIED (0):
+                Effectiveness is unknown.
+            LOW (1):
+                Effectiveness is low.
+            MEDIUM (2):
+                Effectiveness is medium.
+            HIGH (3):
+                Effectiveness is high.
+        """
+        EFFECTIVENESS_UNSPECIFIED = 0
+        LOW = 1
+        MEDIUM = 2
+        HIGH = 3
 
     id: str = proto.Field(
         proto.STRING,
@@ -1464,6 +1501,11 @@ class PriceInsightsProductView(proto.Message):
         proto.DOUBLE,
         number=19,
         optional=True,
+    )
+    effectiveness: Effectiveness = proto.Field(
+        proto.ENUM,
+        number=22,
+        enum=Effectiveness,
     )
 
 
@@ -1563,9 +1605,9 @@ class BestSellersProductClusterView(proto.Message):
             cluster.
         inventory_status (google.shopping.merchant_reports_v1beta.types.BestSellersProductClusterView.InventoryStatus):
             Whether the product cluster is ``IN_STOCK`` in your product
-            feed in at least one of the countries, ``OUT_OF_STOCK`` in
-            your product feed in all countries, or ``NOT_IN_INVENTORY``
-            at all.
+            data source in at least one of the countries,
+            ``OUT_OF_STOCK`` in your product data source in all
+            countries, or ``NOT_IN_INVENTORY`` at all.
 
             The field doesn't take the Best sellers report country
             filter into account.
@@ -1573,9 +1615,10 @@ class BestSellersProductClusterView(proto.Message):
             This field is a member of `oneof`_ ``_inventory_status``.
         brand_inventory_status (google.shopping.merchant_reports_v1beta.types.BestSellersProductClusterView.InventoryStatus):
             Whether there is at least one product of the brand currently
-            ``IN_STOCK`` in your product feed in at least one of the
-            countries, all products are ``OUT_OF_STOCK`` in your product
-            feed in all countries, or ``NOT_IN_INVENTORY``.
+            ``IN_STOCK`` in your product data source in at least one of
+            the countries, all products are ``OUT_OF_STOCK`` in your
+            product data source in all countries, or
+            ``NOT_IN_INVENTORY``.
 
             The field doesn't take the Best sellers report country
             filter into account.
@@ -1879,6 +1922,80 @@ class BestSellersBrandView(proto.Message):
             optional=True,
             enum="RelativeDemandChangeType.RelativeDemandChangeTypeEnum",
         )
+    )
+
+
+class NonProductPerformanceView(proto.Message):
+    r"""Fields available for query in ``non_product_performance_view``
+    table.
+
+    Performance data on images and online store links leading to your
+    non-product pages. This includes performance metrics (for example,
+    ``clicks``) and dimensions according to which performance metrics
+    are segmented (for example, ``date``).
+
+    Segment fields cannot be selected in queries without also selecting
+    at least one metric field.
+
+    Values are only set for fields requested explicitly in the request's
+    search query.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        date (google.type.date_pb2.Date):
+            Date in the merchant timezone to which metrics apply.
+            Segment.
+
+            Condition on ``date`` is required in the ``WHERE`` clause.
+        week (google.type.date_pb2.Date):
+            First day of the week (Monday) of the metrics
+            date in the merchant timezone. Segment.
+        clicks (int):
+            Number of clicks on images and online store
+            links leading to your non-product pages. Metric.
+
+            This field is a member of `oneof`_ ``_clicks``.
+        impressions (int):
+            Number of times images and online store links
+            leading to your non-product pages were shown.
+            Metric.
+
+            This field is a member of `oneof`_ ``_impressions``.
+        click_through_rate (float):
+            Click-through rate - the number of clicks (``clicks``)
+            divided by the number of impressions (``impressions``) of
+            images and online store links leading to your non-product
+            pages. Metric.
+
+            This field is a member of `oneof`_ ``_click_through_rate``.
+    """
+
+    date: date_pb2.Date = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=date_pb2.Date,
+    )
+    week: date_pb2.Date = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=date_pb2.Date,
+    )
+    clicks: int = proto.Field(
+        proto.INT64,
+        number=3,
+        optional=True,
+    )
+    impressions: int = proto.Field(
+        proto.INT64,
+        number=4,
+        optional=True,
+    )
+    click_through_rate: float = proto.Field(
+        proto.DOUBLE,
+        number=5,
+        optional=True,
     )
 
 

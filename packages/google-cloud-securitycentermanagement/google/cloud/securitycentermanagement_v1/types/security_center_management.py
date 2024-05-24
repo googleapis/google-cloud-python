@@ -29,6 +29,7 @@ import proto  # type: ignore
 __protobuf__ = proto.module(
     package="google.cloud.securitycentermanagement.v1",
     manifest={
+        "SecurityCenterService",
         "EffectiveSecurityHealthAnalyticsCustomModule",
         "ListEffectiveSecurityHealthAnalyticsCustomModulesRequest",
         "ListEffectiveSecurityHealthAnalyticsCustomModulesResponse",
@@ -61,8 +62,153 @@ __protobuf__ = proto.module(
         "DeleteEventThreatDetectionCustomModuleRequest",
         "ValidateEventThreatDetectionCustomModuleRequest",
         "ValidateEventThreatDetectionCustomModuleResponse",
+        "GetSecurityCenterServiceRequest",
+        "ListSecurityCenterServicesRequest",
+        "ListSecurityCenterServicesResponse",
+        "UpdateSecurityCenterServiceRequest",
     },
 )
+
+
+class SecurityCenterService(proto.Message):
+    r"""Represents a particular Security Command Center service. This
+    includes settings information such as top-level enablement in
+    addition to individual module settings. Service settings can be
+    configured at the organization, folder, or project level.
+    Service settings at the organization or folder level are
+    inherited by those in child folders and projects.
+
+    Attributes:
+        name (str):
+            Identifier. The name of the service.
+
+            Its format is:
+
+            -  organizations/{organization}/locations/{location}/securityCenterServices/{service}
+            -  folders/{folder}/locations/{location}/securityCenterServices/{service}
+            -  projects/{project}/locations/{location}/securityCenterServices/{service}
+
+            The possible values for id {service} are:
+
+            -  container-threat-detection
+            -  event-threat-detection
+            -  security-health-analytics
+            -  vm-threat-detection
+            -  web-security-scanner
+        intended_enablement_state (google.cloud.securitycentermanagement_v1.types.SecurityCenterService.EnablementState):
+            Optional. The intended state of enablement for the service
+            at its level of the resource hierarchy. A DISABLED state
+            will override all module enablement_states to DISABLED.
+        effective_enablement_state (google.cloud.securitycentermanagement_v1.types.SecurityCenterService.EnablementState):
+            Output only. The effective enablement state
+            for the service at its level of the resource
+            hierarchy. If the intended state is set to
+            INHERITED, the effective state will be inherited
+            from the enablement state of an ancestor. This
+            state may differ from the intended enablement
+            state due to billing eligibility or onboarding
+            status.
+        modules (MutableMapping[str, google.cloud.securitycentermanagement_v1.types.SecurityCenterService.ModuleSettings]):
+            Optional. The configurations including the
+            state of enablement for the service's different
+            modules. The absence of a module in the map
+            implies its configuration is inherited from its
+            parents.
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time the service was last
+            updated. This could be due to an explicit user
+            update or due to a side effect of another system
+            change such as billing subscription expiry.
+        service_config (google.protobuf.struct_pb2.Struct):
+            Optional. Additional service specific
+            configuration. Not all services will utilize
+            this field.
+    """
+
+    class EnablementState(proto.Enum):
+        r"""Represents the possible intended states of enablement for a
+        service or module.
+
+        Values:
+            ENABLEMENT_STATE_UNSPECIFIED (0):
+                Default value. This value is unused.
+            INHERITED (1):
+                State is inherited from the parent resource.
+                Not a valid effective enablement state.
+            ENABLED (2):
+                State is enabled.
+            DISABLED (3):
+                State is disabled.
+        """
+        ENABLEMENT_STATE_UNSPECIFIED = 0
+        INHERITED = 1
+        ENABLED = 2
+        DISABLED = 3
+
+    class ModuleSettings(proto.Message):
+        r"""The settings for individual modules.
+
+        Attributes:
+            intended_enablement_state (google.cloud.securitycentermanagement_v1.types.SecurityCenterService.EnablementState):
+                Optional. The intended state of enablement
+                for the module at its level of the resource
+                hierarchy.
+            effective_enablement_state (google.cloud.securitycentermanagement_v1.types.SecurityCenterService.EnablementState):
+                Output only. The effective enablement state
+                for the module at its level of the resource
+                hierarchy. If the intended state is set to
+                INHERITED, the effective state will be inherited
+                from the enablement state of an ancestor. This
+                state may
+                differ from the intended enablement state due to
+                billing eligibility or onboarding status.
+        """
+
+        intended_enablement_state: "SecurityCenterService.EnablementState" = (
+            proto.Field(
+                proto.ENUM,
+                number=1,
+                enum="SecurityCenterService.EnablementState",
+            )
+        )
+        effective_enablement_state: "SecurityCenterService.EnablementState" = (
+            proto.Field(
+                proto.ENUM,
+                number=2,
+                enum="SecurityCenterService.EnablementState",
+            )
+        )
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    intended_enablement_state: EnablementState = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=EnablementState,
+    )
+    effective_enablement_state: EnablementState = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=EnablementState,
+    )
+    modules: MutableMapping[str, ModuleSettings] = proto.MapField(
+        proto.STRING,
+        proto.MESSAGE,
+        number=4,
+        message=ModuleSettings,
+    )
+    update_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
+    )
+    service_config: struct_pb2.Struct = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=struct_pb2.Struct,
+    )
 
 
 class EffectiveSecurityHealthAnalyticsCustomModule(proto.Message):
@@ -80,13 +226,12 @@ class EffectiveSecurityHealthAnalyticsCustomModule(proto.Message):
 
     Attributes:
         name (str):
-            Identifier. The resource name of the custom module. Its
-            format is
-            "organizations/{organization}/locations/{location}/effectiveSecurityHealthAnalyticsCustomModules/{effective_security_health_analytics_custom_module}",
-            or
-            "folders/{folder}/locations/{location}/effectiveSecurityHealthAnalyticsCustomModules/{effective_security_health_analytics_custom_module}",
-            or
-            "projects/{project}/locations/{location}/effectiveSecurityHealthAnalyticsCustomModules/{effective_security_health_analytics_custom_module}".
+            Identifier. The full resource name of the custom module,
+            specified in one of the following formats:
+
+            -  ``organizations/organization/{location}/effectiveSecurityHealthAnalyticsCustomModules/{effective_security_health_analytics_custom_module}``
+            -  ``folders/folder/{location}/effectiveSecurityHealthAnalyticsCustomModules/{effective_security_health_analytics_custom_module}``
+            -  ``projects/project/{location}/effectiveSecurityHealthAnalyticsCustomModules/{effective_security_health_analytics_custom_module}``
         custom_config (google.cloud.securitycentermanagement_v1.types.CustomConfig):
             Output only. The user-specified configuration
             for the module.
@@ -143,12 +288,12 @@ class ListEffectiveSecurityHealthAnalyticsCustomModulesRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. Name of parent to list effective
-            custom modules. Its format is
-            "organizations/{organization}/locations/{location}",
-            "folders/{folder}/locations/{location}",
-            or
-            "projects/{project}/locations/{location}".
+            Required. Name of parent to list effective custom modules.
+            specified in one of the following formats:
+
+            -  ``organizations/{organization}/locations/{location}``
+            -  ``folders/{folder}/locations/{location}`` or
+               ``projects/{project}/locations/{location}``
         page_size (int):
             Optional. The maximum number of results to
             return in a single response. Default is 10,
@@ -208,13 +353,12 @@ class GetEffectiveSecurityHealthAnalyticsCustomModuleRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The resource name of the SHA custom module.
+            Required. The full resource name of the custom module,
+            specified in one of the following formats:
 
-            Its format is:
-
-            -  "organizations/{organization}/locations/{location}/effectiveSecurityHealthAnalyticsCustomModules/{module_id}".
-            -  "folders/{folder}/locations/{location}/effectiveSecurityHealthAnalyticsCustomModules/{module_id}".
-            -  "projects/{project}/locations/{location}/effectiveSecurityHealthAnalyticsCustomModules/{module_id}".
+            -  ``organizations/organization/{location}/effectiveSecurityHealthAnalyticsCustomModules/{effective_security_health_analytics_custom_module}``
+            -  ``folders/folder/{location}/effectiveSecurityHealthAnalyticsCustomModules/{effective_security_health_analytics_custom_module}``
+            -  ``projects/project/{location}/effectiveSecurityHealthAnalyticsCustomModules/{effective_security_health_analytics_custom_module}``
     """
 
     name: str = proto.Field(
@@ -233,16 +377,12 @@ class SecurityHealthAnalyticsCustomModule(proto.Message):
 
     Attributes:
         name (str):
-            Identifier. The resource name of the custom module. Its
-            format is
-            "organizations/{organization}/locations/{location}/securityHealthAnalyticsCustomModules/{security_health_analytics_custom_module}",
-            or
-            "folders/{folder}/locations/{location}/securityHealthAnalyticsCustomModules/{security_health_analytics_custom_module}",
-            or
-            "projects/{project}/locations/{location}/securityHealthAnalyticsCustomModules/{security_health_analytics_custom_module}"
+            Identifier. The full resource name of the custom module,
+            specified in one of the following formats:
 
-            The id {customModule} is server-generated and is not user
-            settable. It will be a numeric id containing 1-20 digits.
+            -  ``organizations/{organization}/locations/{location}/securityHealthAnalyticsCustomModules/{security_health_analytics_custom_module}``
+            -  ``folders/{folder}/locations/{location}/securityHealthAnalyticsCustomModules/{security_health_analytics_custom_module}``
+            -  ``projects/{project}/locations/{location}/securityHealthAnalyticsCustomModules/{security_health_analytics_custom_module}``
         display_name (str):
             Optional. The display name of the Security
             Health Analytics custom module. This display
@@ -485,12 +625,13 @@ class ListSecurityHealthAnalyticsCustomModulesRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. Name of parent to list custom
-            modules. Its format is
-            "organizations/{organization}/locations/{location}",
-            "folders/{folder}/locations/{location}",
-            or
-            "projects/{project}/locations/{location}".
+            Required. Name of parent organization, folder, or project in
+            which to list custom modules, specified in one of the
+            following formats:
+
+            -  ``organizations/{organization}/locations/{location}``
+            -  ``folders/{folder}/locations/{location}``
+            -  ``projects/{project}/locations/{location}``
         page_size (int):
             Optional. The maximum number of results to
             return in a single response. Default is 10,
@@ -550,12 +691,13 @@ class ListDescendantSecurityHealthAnalyticsCustomModulesRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. Name of parent to list custom
-            modules. Its format is
-            "organizations/{organization}/locations/{location}",
-            "folders/{folder}/locations/{location}",
-            or
-            "projects/{project}/locations/{location}".
+            Required. Name of the parent organization, folder, or
+            project in which to list custom modules, specified in one of
+            the following formats:
+
+            -  ``organizations/{organization}/locations/{location}``
+            -  ``folders/{folder}/locations/{location}``
+            -  ``projects/{project}/locations/{location}``
         page_size (int):
             Optional. The maximum number of results to
             return in a single response. Default is 10,
@@ -628,12 +770,13 @@ class CreateSecurityHealthAnalyticsCustomModuleRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. Name of the parent for the module.
-            Its format is
-            "organizations/{organization}/locations/{location}",
-            "folders/{folder}/locations/{location}",
-            or
-            "projects/{project}/locations/{location}".
+            Required. Name of the parent organization, folder, or
+            project of the module, specified in one of the following
+            formats:
+
+            -  ``organizations/{organization}/locations/{location}``
+            -  ``folders/{folder}/locations/{location}``
+            -  ``projects/{project}/locations/{location}``
         security_health_analytics_custom_module (google.cloud.securitycentermanagement_v1.types.SecurityHealthAnalyticsCustomModule):
             Required. The resource being created
         validate_only (bool):
@@ -720,9 +863,9 @@ class DeleteSecurityHealthAnalyticsCustomModuleRequest(proto.Message):
 
             Its format is:
 
-            -  "organizations/{organization}/locations/{location}/securityHealthAnalyticsCustomModules/{security_health_analytics_custom_module}".
-            -  "folders/{folder}/locations/{location}/securityHealthAnalyticsCustomModules/{security_health_analytics_custom_module}".
-            -  "projects/{project}/locations/{location}/securityHealthAnalyticsCustomModules/{security_health_analytics_custom_module}".
+            -  ``organizations/{organization}/locations/{location}/securityHealthAnalyticsCustomModules/{security_health_analytics_custom_module}``.
+            -  ``folders/{folder}/locations/{location}/securityHealthAnalyticsCustomModules/{security_health_analytics_custom_module}``.
+            -  ``projects/{project}/locations/{location}/securityHealthAnalyticsCustomModules/{security_health_analytics_custom_module}``.
         validate_only (bool):
             Optional. When set to true, only validations
             (including IAM checks) will done for the request
@@ -824,15 +967,15 @@ class SimulatedFinding(proto.Message):
             Identifier. The `relative resource
             name <https://cloud.google.com/apis/design/resource_names#relative_resource_name>`__
             of the finding. Example:
-            "organizations/{organization_id}/sources/{source_id}/findings/{finding_id}",
-            "folders/{folder_id}/sources/{source_id}/findings/{finding_id}",
-            "projects/{project_id}/sources/{source_id}/findings/{finding_id}".
+            ``organizations/{organization_id}/sources/{source_id}/findings/{finding_id}``,
+            ``folders/{folder_id}/sources/{source_id}/findings/{finding_id}``,
+            ``projects/{project_id}/sources/{source_id}/findings/{finding_id}``.
         parent (str):
             The relative resource name of the source the finding belongs
             to. See:
             https://cloud.google.com/apis/design/resource_names#relative_resource_name
             This field is immutable after creation time. For example:
-            "organizations/{organization_id}/sources/{source_id}".
+            ``organizations/{organization_id}/sources/{source_id}``
         resource_name (str):
             For findings on Google Cloud resources, the full resource
             name of the Google Cloud resource this finding is for. See:
@@ -1133,9 +1276,9 @@ class EffectiveEventThreatDetectionCustomModule(proto.Message):
 
             Its format is:
 
-            -  "organizations/{organization}/locations/{location}/effectiveEventThreatDetectionCustomModules/{effective_event_threat_detection_custom_module}".
-            -  "folders/{folder}/locations/{location}/effectiveEventThreatDetectionCustomModules/{effective_event_threat_detection_custom_module}".
-            -  "projects/{project}/locations/{location}/effectiveEventThreatDetectionCustomModules/{effective_event_threat_detection_custom_module}".
+            -  ``organizations/{organization}/locations/{location}/effectiveEventThreatDetectionCustomModules/{effective_event_threat_detection_custom_module}``.
+            -  ``folders/{folder}/locations/{location}/effectiveEventThreatDetectionCustomModules/{effective_event_threat_detection_custom_module}``.
+            -  ``projects/{project}/locations/{location}/effectiveEventThreatDetectionCustomModules/{effective_event_threat_detection_custom_module}``.
         config (google.protobuf.struct_pb2.Struct):
             Output only. Config for the effective module.
         enablement_state (google.cloud.securitycentermanagement_v1.types.EffectiveEventThreatDetectionCustomModule.EnablementState):
@@ -1200,12 +1343,11 @@ class ListEffectiveEventThreatDetectionCustomModulesRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. Name of parent to list effective
-            custom modules. Its format is
-            "organizations/{organization}/locations/{location}",
-            "folders/{folder}/locations/{location}",
-            or
-            "projects/{project}/locations/{location}".
+            Required. Name of parent to list effective custom modules.
+            Its format is
+            ``organizations/{organization}/locations/{location}``,
+            ``folders/{folder}/locations/{location}``, or
+            ``projects/{project}/locations/{location}``
         page_size (int):
             Optional. The maximum number of results to
             return in a single response. Default is 10,
@@ -1269,9 +1411,9 @@ class GetEffectiveEventThreatDetectionCustomModuleRequest(proto.Message):
 
             Its format is:
 
-            -  "organizations/{organization}/locations/{location}/effectiveEventThreatDetectionCustomModules/{effective_event_threat_detection_custom_module}".
-            -  "folders/{folder}/locations/{location}/effectiveEventThreatDetectionCustomModules/{effective_event_threat_detection_custom_module}".
-            -  "projects/{project}/locations/{location}/effectiveEventThreatDetectionCustomModules/{effective_event_threat_detection_custom_module}".
+            -  ``organizations/{organization}/locations/{location}/effectiveEventThreatDetectionCustomModules/{effective_event_threat_detection_custom_module}``.
+            -  ``folders/{folder}/locations/{location}/effectiveEventThreatDetectionCustomModules/{effective_event_threat_detection_custom_module}``.
+            -  ``projects/{project}/locations/{location}/effectiveEventThreatDetectionCustomModules/{effective_event_threat_detection_custom_module}``.
     """
 
     name: str = proto.Field(
@@ -1292,9 +1434,9 @@ class EventThreatDetectionCustomModule(proto.Message):
 
             Its format is:
 
-            -  "organizations/{organization}/locations/{location}/eventThreatDetectionCustomModules/{event_threat_detection_custom_module}".
-            -  "folders/{folder}/locations/{location}/eventThreatDetectionCustomModules/{event_threat_detection_custom_module}".
-            -  "projects/{project}/locations/{location}/eventThreatDetectionCustomModules/{event_threat_detection_custom_module}".
+            -  ``organizations/{organization}/locations/{location}/eventThreatDetectionCustomModules/{event_threat_detection_custom_module}``.
+            -  ``folders/{folder}/locations/{location}/eventThreatDetectionCustomModules/{event_threat_detection_custom_module}``.
+            -  ``projects/{project}/locations/{location}/eventThreatDetectionCustomModules/{event_threat_detection_custom_module}``.
         config (google.protobuf.struct_pb2.Struct):
             Optional. Config for the module. For the
             resident module, its config value is defined at
@@ -1397,12 +1539,10 @@ class ListEventThreatDetectionCustomModulesRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. Name of parent to list custom
-            modules. Its format is
-            "organizations/{organization}/locations/{location}",
-            "folders/{folder}/locations/{location}",
-            or
-            "projects/{project}/locations/{location}".
+            Required. Name of parent to list custom modules. Its format
+            is ``organizations/{organization}/locations/{location}``,
+            ``folders/{folder}/locations/{location}``, or
+            ``projects/{project}/locations/{location}``
         page_size (int):
             Optional. The maximum number of modules to
             return. The service may return fewer than this
@@ -1468,12 +1608,10 @@ class ListDescendantEventThreatDetectionCustomModulesRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. Name of parent to list custom
-            modules. Its format is
-            "organizations/{organization}/locations/{location}",
-            "folders/{folder}/locations/{location}",
-            or
-            "projects/{project}/locations/{location}".
+            Required. Name of parent to list custom modules. Its format
+            is ``organizations/{organization}/locations/{location}``,
+            ``folders/{folder}/locations/{location}``, or
+            ``projects/{project}/locations/{location}``
         page_size (int):
             Optional. The maximum number of modules to
             return. The service may return fewer than this
@@ -1537,9 +1675,9 @@ class GetEventThreatDetectionCustomModuleRequest(proto.Message):
 
             Its format is:
 
-            -  "organizations/{organization}/locations/{location}/eventThreatDetectionCustomModules/{event_threat_detection_custom_module}".
-            -  "folders/{folder}/locations/{location}/eventThreatDetectionCustomModules/{event_threat_detection_custom_module}".
-            -  "projects/{project}/locations/{location}/eventThreatDetectionCustomModules/{event_threat_detection_custom_module}".
+            -  ``organizations/{organization}/locations/{location}/eventThreatDetectionCustomModules/{event_threat_detection_custom_module}``.
+            -  ``folders/{folder}/locations/{location}/eventThreatDetectionCustomModules/{event_threat_detection_custom_module}``.
+            -  ``projects/{project}/locations/{location}/eventThreatDetectionCustomModules/{event_threat_detection_custom_module}``.
     """
 
     name: str = proto.Field(
@@ -1553,12 +1691,10 @@ class CreateEventThreatDetectionCustomModuleRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. Name of parent for the module. Its
-            format is
-            "organizations/{organization}/locations/{location}",
-            "folders/{folder}/locations/{location}",
-            or
-            "projects/{project}/locations/{location}".
+            Required. Name of parent for the module. Its format is
+            ``organizations/{organization}/locations/{location}``,
+            ``folders/{folder}/locations/{location}``, or
+            ``projects/{project}/locations/{location}``
         event_threat_detection_custom_module (google.cloud.securitycentermanagement_v1.types.EventThreatDetectionCustomModule):
             Required. The module to create. The
             event_threat_detection_custom_module.name will be ignored
@@ -1646,9 +1782,9 @@ class DeleteEventThreatDetectionCustomModuleRequest(proto.Message):
 
             Its format is:
 
-            -  "organizations/{organization}/locations/{location}/eventThreatDetectionCustomModules/{event_threat_detection_custom_module}".
-            -  "folders/{folder}/locations/{location}/eventThreatDetectionCustomModules/{event_threat_detection_custom_module}".
-            -  "projects/{project}/locations/{location}/eventThreatDetectionCustomModules/{event_threat_detection_custom_module}".
+            -  ``organizations/{organization}/locations/{location}/eventThreatDetectionCustomModules/{event_threat_detection_custom_module}``.
+            -  ``folders/{folder}/locations/{location}/eventThreatDetectionCustomModules/{event_threat_detection_custom_module}``.
+            -  ``projects/{project}/locations/{location}/eventThreatDetectionCustomModules/{event_threat_detection_custom_module}``.
         validate_only (bool):
             Optional. When set to true, only validations
             (including IAM checks) will done for the request
@@ -1682,7 +1818,7 @@ class ValidateEventThreatDetectionCustomModuleRequest(proto.Message):
 
             Its format is:
 
-            -  "organizations/{organization}/locations/{location}".
+            -  ``organizations/{organization}/locations/{location}``.
         raw_text (str):
             Required. The raw text of the module's
             contents. Used to generate error messages.
@@ -1791,6 +1927,141 @@ class ValidateEventThreatDetectionCustomModuleResponse(proto.Message):
         proto.MESSAGE,
         number=2,
         message=CustomModuleValidationError,
+    )
+
+
+class GetSecurityCenterServiceRequest(proto.Message):
+    r"""Request message for getting a Security Command Center
+    service.
+
+    Attributes:
+        name (str):
+            Required. The Security Command Center service to retrieve.
+
+            Formats:
+
+            -  organizations/{organization}/locations/{location}/securityCenterServices/{service}
+            -  folders/{folder}/locations/{location}/securityCenterServices/{service}
+            -  projects/{project}/locations/{location}/securityCenterServices/{service}
+
+            The possible values for id {service} are:
+
+            -  container-threat-detection
+            -  event-threat-detection
+            -  security-health-analytics
+            -  vm-threat-detection
+            -  web-security-scanner
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class ListSecurityCenterServicesRequest(proto.Message):
+    r"""Request message for listing Security Command Center services.
+
+    Attributes:
+        parent (str):
+            Required. The name of the parent to list Security Command
+            Center services.
+
+            Formats:
+
+            -  organizations/{organization}/locations/{location}
+            -  folders/{folder}/locations/{location}
+            -  projects/{project}/locations/{location}
+        page_size (int):
+            Optional. The maximum number of results to
+            return in a single response. Default is 10,
+            minimum is 1, maximum is 1000.
+        page_token (str):
+            Optional. The value returned by the last call
+            indicating a continuation.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class ListSecurityCenterServicesResponse(proto.Message):
+    r"""Response message for listing Security Command Center
+    services.
+
+    Attributes:
+        security_center_services (MutableSequence[google.cloud.securitycentermanagement_v1.types.SecurityCenterService]):
+            The list of services.
+        next_page_token (str):
+            A token identifying a page of results the
+            server should return.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    security_center_services: MutableSequence[
+        "SecurityCenterService"
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="SecurityCenterService",
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class UpdateSecurityCenterServiceRequest(proto.Message):
+    r"""Request message for updating a Security Command Center
+    service.
+
+    Attributes:
+        security_center_service (google.cloud.securitycentermanagement_v1.types.SecurityCenterService):
+            Required. The updated service.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Required. The list of fields to be updated. Possible values:
+
+            -  "intended_enablement_state"
+            -  "modules".
+        validate_only (bool):
+            Optional. When set to true, only validations
+            (including IAM checks) will done for the request
+            (service will not be updated). An OK response
+            indicates the request is valid while an error
+            response indicates the request is invalid. Note
+            that a subsequent request to actually update the
+            service could still fail because 1. the state
+            could have changed (e.g. IAM permission lost) or
+            2. A failure occurred while trying to delete the
+                module.
+    """
+
+    security_center_service: "SecurityCenterService" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="SecurityCenterService",
+    )
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
+    )
+    validate_only: bool = proto.Field(
+        proto.BOOL,
+        number=3,
     )
 
 

@@ -338,6 +338,21 @@ class SecurityCenterManagementTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.get_security_center_service: gapic_v1.method.wrap_method(
+                self.get_security_center_service,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_security_center_services: gapic_v1.method.wrap_method(
+                self.list_security_center_services,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_security_center_service: gapic_v1.method.wrap_method(
+                self.update_security_center_service,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -587,6 +602,42 @@ class SecurityCenterManagementTransport(abc.ABC):
             Awaitable[
                 security_center_management.ValidateEventThreatDetectionCustomModuleResponse
             ],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_security_center_service(
+        self,
+    ) -> Callable[
+        [security_center_management.GetSecurityCenterServiceRequest],
+        Union[
+            security_center_management.SecurityCenterService,
+            Awaitable[security_center_management.SecurityCenterService],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_security_center_services(
+        self,
+    ) -> Callable[
+        [security_center_management.ListSecurityCenterServicesRequest],
+        Union[
+            security_center_management.ListSecurityCenterServicesResponse,
+            Awaitable[security_center_management.ListSecurityCenterServicesResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_security_center_service(
+        self,
+    ) -> Callable[
+        [security_center_management.UpdateSecurityCenterServiceRequest],
+        Union[
+            security_center_management.SecurityCenterService,
+            Awaitable[security_center_management.SecurityCenterService],
         ],
     ]:
         raise NotImplementedError()

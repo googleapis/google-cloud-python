@@ -313,6 +313,13 @@ class BackupPlan(proto.Message):
 
                 Default (empty): Config backup artifacts will
                 not be encrypted.
+            permissive_mode (bool):
+                Optional. If false, Backups will fail when
+                Backup for GKE detects Kubernetes configuration
+                that is non-standard or requires additional
+                setup to restore.
+
+                Default: False
         """
 
         all_namespaces: bool = proto.Field(
@@ -344,6 +351,10 @@ class BackupPlan(proto.Message):
             proto.MESSAGE,
             number=6,
             message=common.EncryptionKey,
+        )
+        permissive_mode: bool = proto.Field(
+            proto.BOOL,
+            number=7,
         )
 
     name: str = proto.Field(
@@ -474,9 +485,10 @@ class ExclusionWindow(proto.Message):
             Required. Specifies the start time of the
             window using time of the day in UTC.
         duration (google.protobuf.duration_pb2.Duration):
-            Required. Specifies duration of the window. Restrictions for
-            duration based on the recurrence type to allow some time for
-            backup to happen:
+            Required. Specifies duration of the window. Duration must be
+            >= 5 minutes and < (target RPO - 20 minutes). Additional
+            restrictions based on the recurrence type to allow some time
+            for backup to happen:
 
             -  single_occurrence_date: no restriction, but UI may warn
                about this when duration >= target RPO
