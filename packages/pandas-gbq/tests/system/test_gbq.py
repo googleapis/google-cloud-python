@@ -5,21 +5,19 @@
 # -*- coding: utf-8 -*-
 
 import datetime
-import packaging.version
 import sys
 
 import numpy as np
+import packaging.version
 import pandas
+from pandas import DataFrame
 import pandas.api.types
 import pandas.testing as tm
-from pandas import DataFrame
-
-import pytz
 import pytest
+import pytz
 
 from pandas_gbq import gbq
 import pandas_gbq.schema
-
 
 TABLE_ID = "new_test"
 PANDAS_VERSION = packaging.version.parse(pandas.__version__)

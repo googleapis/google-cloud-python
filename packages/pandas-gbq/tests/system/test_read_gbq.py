@@ -5,17 +5,16 @@
 import collections
 import datetime
 import decimal
-import packaging.version
 import random
 
 import db_dtypes
 from google.cloud import bigquery
+import packaging.version
 import pandas
 import pandas.testing
 import pytest
 
 from pandas_gbq.features import FEATURES
-
 
 QueryTestCase = collections.namedtuple(
     "QueryTestCase",

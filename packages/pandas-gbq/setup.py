@@ -10,7 +10,6 @@ import os
 
 import setuptools
 
-
 # Package metadata.
 
 name = "pandas-gbq"

@@ -6,7 +6,6 @@
 
 import pandas
 import pandas.testing
-
 import pytest
 
 

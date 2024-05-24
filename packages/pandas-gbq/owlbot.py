@@ -55,7 +55,7 @@ s.move(
         # creating clients, not the end user.
         "docs/multiprocessing.rst",
         "noxfile.py",
-	"README.rst",
+        "README.rst",
         # exclude .kokoro/build.sh which is customized due to support for conda
         ".kokoro/build.sh",
     ],
@@ -66,7 +66,9 @@ s.move(
 # ----------------------------------------------------------------------------
 
 s.replace(
-    [".github/header-checker-lint.yml"], '"Google LLC"', '"pandas-gbq Authors"',
+    [".github/header-checker-lint.yml"],
+    '"Google LLC"',
+    '"pandas-gbq Authors"',
 )
 
 # ----------------------------------------------------------------------------
@@ -79,6 +81,6 @@ python.py_samples(skip_readmes=True)
 # Final cleanup
 # ----------------------------------------------------------------------------
 
-s.shell.run(["nox", "-s", "blacken"], hide_output=False)
+s.shell.run(["nox", "-s", "format"], hide_output=False)
 for noxfile in REPO_ROOT.glob("samples/**/noxfile.py"):
-    s.shell.run(["nox", "-s", "blacken"], cwd=noxfile.parent, hide_output=False)
+    s.shell.run(["nox", "-s", "format"], cwd=noxfile.parent, hide_output=False)

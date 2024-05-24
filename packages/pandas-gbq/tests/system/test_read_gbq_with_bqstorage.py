@@ -9,7 +9,6 @@ import uuid
 
 import pytest
 
-
 pytest.importorskip("google.cloud.bigquery", minversion="1.24.0")
 
 

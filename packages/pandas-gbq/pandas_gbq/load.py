@@ -9,9 +9,9 @@ import io
 from typing import Any, Callable, Dict, List, Optional
 
 import db_dtypes
+from google.cloud import bigquery
 import pandas
 import pyarrow.lib
-from google.cloud import bigquery
 
 from pandas_gbq import exceptions
 import pandas_gbq.schema

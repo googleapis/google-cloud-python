@@ -6,7 +6,6 @@ from google.cloud import bigquery
 import pytest
 import test_utils.prefixer
 
-
 prefixer = test_utils.prefixer.Prefixer("python-bigquery-pandas", "samples/snippets")
 
 

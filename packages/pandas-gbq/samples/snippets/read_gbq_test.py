@@ -4,8 +4,7 @@
 
 """System tests for read_gbq code samples."""
 
-from . import read_gbq_legacy
-from . import read_gbq_simple
+from . import read_gbq_legacy, read_gbq_simple
 
 
 def test_read_gbq_legacy(project_id):

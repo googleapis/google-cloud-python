@@ -14,7 +14,6 @@ def main(project_id, table_id):
 
     # TODO: Set project_id to your Google Cloud Platform project ID.
     # project_id = "my-project"
-
     # TODO: Set table_id to the full destination table ID (including the
     #       dataset ID).
     # table_id = 'my_dataset.my_table'

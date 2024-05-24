@@ -2,16 +2,15 @@
 # Use of this source code is governed by a BSD-style
 # license that can be found in the LICENSE file.
 
+import collections
 import datetime
 import decimal
-import collections
 import random
 
 import db_dtypes
 import pandas
 import pandas.testing
 import pytest
-
 
 pytest.importorskip("google.cloud.bigquery", minversion="1.24.0")
 

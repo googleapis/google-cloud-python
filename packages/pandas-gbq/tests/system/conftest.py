@@ -2,14 +2,13 @@
 # Use of this source code is governed by a BSD-style
 # license that can be found in the LICENSE file.
 
-import os
 import functools
+import os
 import pathlib
 
 from google.cloud import bigquery
 import pytest
 import test_utils.prefixer
-
 
 prefixer = test_utils.prefixer.Prefixer("python-bigquery-pandas", "tests/system")
 

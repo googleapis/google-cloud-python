@@ -15,8 +15,7 @@ import pandas
 import pandas.testing
 import pytest
 
-from pandas_gbq import exceptions
-from pandas_gbq import load
+from pandas_gbq import exceptions, load
 
 
 def load_method(bqclient, api_method):

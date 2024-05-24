@@ -14,7 +14,6 @@ from google.cloud import bigquery
 
 import pandas_gbq.exceptions
 
-
 logger = logging.getLogger(__name__)
 
 

@@ -2,8 +2,8 @@
 # Use of this source code is governed by a BSD-style
 # license that can be found in the LICENSE file.
 
-import google.cloud.bigquery
 import google.api_core.exceptions
+import google.cloud.bigquery
 from pandas import DataFrame
 import pytest
 

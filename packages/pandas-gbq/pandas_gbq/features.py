@@ -54,8 +54,8 @@ class Features:
 
     @property
     def pandas_installed_version(self):
-        import pandas
         import packaging.version
+        import pandas
 
         if self._pandas_installed_version is not None:
             return self._pandas_installed_version

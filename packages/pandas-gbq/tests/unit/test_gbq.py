@@ -25,7 +25,6 @@ import pandas_gbq.exceptions
 import pandas_gbq.features
 from pandas_gbq.features import FEATURES
 
-
 pytestmark = pytest.mark.filterwarnings("ignore:credentials from Google Cloud SDK")
 
 

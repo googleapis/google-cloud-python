@@ -268,8 +268,8 @@ class GbqConnector(object):
         client_secret=None,
     ):
         global context
-        from google.api_core.exceptions import GoogleAPIError
-        from google.api_core.exceptions import ClientError
+        from google.api_core.exceptions import ClientError, GoogleAPIError
+
         from pandas_gbq import auth
 
         self.http_error = (ClientError, GoogleAPIError)
@@ -1244,8 +1244,7 @@ class _Table(GbqConnector):
 
     def _table_ref(self, table_id):
         """Return a BigQuery client library table reference"""
-        from google.cloud.bigquery import DatasetReference
-        from google.cloud.bigquery import TableReference
+        from google.cloud.bigquery import DatasetReference, TableReference
 
         return TableReference(
             DatasetReference(self.project_id, self.dataset_id), table_id
@@ -1286,9 +1285,7 @@ class _Table(GbqConnector):
             Use the generate_bq_schema to generate your table schema from a
             dataframe.
         """
-        from google.cloud.bigquery import DatasetReference
-        from google.cloud.bigquery import Table
-        from google.cloud.bigquery import TableReference
+        from google.cloud.bigquery import DatasetReference, Table, TableReference
 
         if self.exists(table_id):
             raise TableCreationError("Table {0} already exists".format(table_id))

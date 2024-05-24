@@ -4,8 +4,8 @@
 
 from __future__ import annotations
 
-import datetime
 import concurrent.futures
+import datetime
 from unittest import mock
 
 import freezegun
