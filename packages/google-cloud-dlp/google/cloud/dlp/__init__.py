@@ -211,6 +211,7 @@ from google.cloud.dlp_v2.types.dlp import (
     SearchConnectionsRequest,
     SearchConnectionsResponse,
     SecretManagerCredential,
+    SecretsDiscoveryTarget,
     StatisticalTable,
     StorageMetadataLabel,
     StoredInfoType,
@@ -273,6 +274,7 @@ from google.cloud.dlp_v2.types.storage import (
     StorageConfig,
     StoredType,
     TableOptions,
+    TableReference,
 )
 
 __all__ = (
@@ -453,6 +455,7 @@ __all__ = (
     "SearchConnectionsRequest",
     "SearchConnectionsResponse",
     "SecretManagerCredential",
+    "SecretsDiscoveryTarget",
     "StatisticalTable",
     "StorageMetadataLabel",
     "StoredInfoType",
@@ -526,6 +529,7 @@ __all__ = (
     "StorageConfig",
     "StoredType",
     "TableOptions",
+    "TableReference",
     "FileType",
     "Likelihood",
 )

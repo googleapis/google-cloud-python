@@ -193,6 +193,7 @@ __protobuf__ = proto.module(
         "DatabaseResourceReference",
         "DiscoveryCloudSqlConditions",
         "DiscoveryCloudSqlGenerationCadence",
+        "SecretsDiscoveryTarget",
         "DiscoveryStartingLocation",
         "DlpJob",
         "GetDlpJobRequest",
@@ -646,9 +647,9 @@ class ResourceVisibility(proto.Enum):
             Visible to any user.
         RESOURCE_VISIBILITY_INCONCLUSIVE (15):
             May contain public items.
-            For example, if a GCS bucket has uniform bucket
-            level access disabled, some objects inside it
-            may be public.
+            For example, if a Cloud Storage bucket has
+            uniform bucket level access disabled, some
+            objects inside it may be public.
         RESOURCE_VISIBILITY_RESTRICTED (20):
             Visible only to specific users.
     """
@@ -744,10 +745,12 @@ class ConnectionState(proto.Enum):
             again until it is set to AVAILABLE.
 
             If the resolution requires external action, then
-            a request to set the status to AVAILABLE will
-            mark this connection for use. Otherwise, any
-            changes to the connection properties will
-            automatically mark it as AVAILABLE.
+            the client must send a request to set the status
+            to AVAILABLE when the connection is ready for
+            use. If the resolution doesn't require external
+            action, then any changes to the connection
+            properties will automatically mark it as
+            AVAILABLE.
     """
     CONNECTION_STATE_UNSPECIFIED = 0
     MISSING_CREDENTIALS = 1
@@ -2511,9 +2514,9 @@ class InspectDataSourceDetails(proto.Message):
                 Statistics of how many instances of each info
                 type were found during inspect job.
             num_rows_processed (int):
-                Number of rows scanned post sampling and time
-                filtering (Applicable for row based stores such
-                as BigQuery).
+                Number of rows scanned after sampling and
+                time filtering (applicable for row based stores
+                such as BigQuery).
             hybrid_stats (google.cloud.dlp_v2.types.HybridInspectStatistics):
                 Statistics related to the processing of
                 hybrid inspect.
@@ -2832,6 +2835,8 @@ class InfoTypeCategory(proto.Message):
                 The infoType is typically used in Argentina.
             AUSTRALIA (3):
                 The infoType is typically used in Australia.
+            AZERBAIJAN (48):
+                The infoType is typically used in Azerbaijan.
             BELGIUM (4):
                 The infoType is typically used in Belgium.
             BRAZIL (5):
@@ -2932,6 +2937,7 @@ class InfoTypeCategory(proto.Message):
         GLOBAL = 1
         ARGENTINA = 2
         AUSTRALIA = 3
+        AZERBAIJAN = 48
         BELGIUM = 4
         BRAZIL = 5
         CANADA = 6
@@ -6413,7 +6419,7 @@ class Error(proto.Message):
 
 
 class JobTrigger(proto.Message):
-    r"""Contains a configuration to make api calls on a repeating
+    r"""Contains a configuration to make API calls on a repeating
     basis. See
     https://cloud.google.com/sensitive-data-protection/docs/concepts-job-triggers
     to learn more.
@@ -7735,14 +7741,10 @@ class DataProfileAction(proto.Message):
             NEW_PROFILE (1):
                 New profile (not a re-profile).
             CHANGED_PROFILE (2):
-                Changed one of the following profile metrics:
-
-                -  Data risk score
-                -  Sensitivity score
-                -  Resource visibility
-                -  Encryption type
-                -  Predicted infoTypes
-                -  Other infoTypes
+                One of the following profile metrics changed:
+                Data risk score, Sensitivity score, Resource
+                visibility, Encryption type, Predicted
+                infoTypes, Other infoTypes
             SCORE_INCREASED (3):
                 Table data risk score or sensitivity score
                 increased.
@@ -8193,6 +8195,14 @@ class DiscoveryTarget(proto.Message):
             target to match a table will be the one applied.
 
             This field is a member of `oneof`_ ``target``.
+        secrets_target (google.cloud.dlp_v2.types.SecretsDiscoveryTarget):
+            Discovery target that looks for credentials
+            and secrets stored in cloud resource metadata
+            and reports them as vulnerabilities to Security
+            Command Center. Only one target of this type is
+            allowed.
+
+            This field is a member of `oneof`_ ``target``.
     """
 
     big_query_target: "BigQueryDiscoveryTarget" = proto.Field(
@@ -8206,6 +8216,12 @@ class DiscoveryTarget(proto.Message):
         number=2,
         oneof="target",
         message="CloudSqlDiscoveryTarget",
+    )
+    secrets_target: "SecretsDiscoveryTarget" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        oneof="target",
+        message="SecretsDiscoveryTarget",
     )
 
 
@@ -8298,6 +8314,13 @@ class DiscoveryBigQueryFilter(proto.Message):
             one will be added automatically.
 
             This field is a member of `oneof`_ ``filter``.
+        table_reference (google.cloud.dlp_v2.types.TableReference):
+            The table to scan. Discovery configurations
+            including this can only include one
+            DiscoveryTarget (the DiscoveryTarget with this
+            TableReference).
+
+            This field is a member of `oneof`_ ``filter``.
     """
 
     class AllOtherBigQueryTables(proto.Message):
@@ -8318,6 +8341,12 @@ class DiscoveryBigQueryFilter(proto.Message):
         number=2,
         oneof="filter",
         message=AllOtherBigQueryTables,
+    )
+    table_reference: storage.TableReference = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        oneof="filter",
+        message=storage.TableReference,
     )
 
 
@@ -8669,8 +8698,8 @@ class DatabaseResourceRegex(proto.Message):
     Attributes:
         project_id_regex (str):
             For organizations, if unset, will match all
-            projects. Has no effect for Data Profile
-            configurations created within a project.
+            projects. Has no effect for configurations
+            created within a project.
         instance_regex (str):
             Regex to test the instance name against. If
             empty, all instances match.
@@ -8714,10 +8743,16 @@ class DatabaseResourceReference(proto.Message):
     Attributes:
         project_id (str):
             Required. If within a project-level config,
-            then this must match the config's project id.
+            then this must match the config's project ID.
         instance (str):
             Required. The instance where this resource is
-            located. For example: Cloud SQL's instance id.
+            located. For example: Cloud SQL instance ID.
+        database (str):
+            Required. Name of a database within the
+            instance.
+        database_resource (str):
+            Required. Name of a database resource, for
+            example, a table within the database.
     """
 
     project_id: str = proto.Field(
@@ -8727,6 +8762,14 @@ class DatabaseResourceReference(proto.Message):
     instance: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    database: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    database_resource: str = proto.Field(
+        proto.STRING,
+        number=4,
     )
 
 
@@ -8754,9 +8797,9 @@ class DiscoveryCloudSqlConditions(proto.Message):
             ALL_SUPPORTED_DATABASE_ENGINES (1):
                 Include all supported database engines.
             MYSQL (2):
-                MySql database.
+                MySQL database.
             POSTGRES (3):
-                PostGres database.
+                PostgreSQL database.
         """
         DATABASE_ENGINE_UNSPECIFIED = 0
         ALL_SUPPORTED_DATABASE_ENGINES = 1
@@ -8805,11 +8848,11 @@ class DiscoveryCloudSqlGenerationCadence(proto.Message):
             SQL tables can't trigger reprofiling. If you set
             this field, profiles are refreshed at this
             frequency regardless of whether the underlying
-            tables have changes. Defaults to never.
+            tables have changed. Defaults to never.
     """
 
     class SchemaModifiedCadence(proto.Message):
-        r"""How frequency to modify the profile when the table's schema
+        r"""How frequently to modify the profile when the table's schema
         is modified.
 
         Attributes:
@@ -8828,7 +8871,7 @@ class DiscoveryCloudSqlGenerationCadence(proto.Message):
                 SQL_SCHEMA_MODIFICATION_UNSPECIFIED (0):
                     Unused.
                 NEW_COLUMNS (1):
-                    New columns has appeared.
+                    New columns have appeared.
                 REMOVED_COLUMNS (2):
                     Columns have been removed from the table.
             """
@@ -8859,6 +8902,24 @@ class DiscoveryCloudSqlGenerationCadence(proto.Message):
         number=2,
         enum="DataProfileUpdateFrequency",
     )
+
+
+class SecretsDiscoveryTarget(proto.Message):
+    r"""Discovery target for credentials and secrets in cloud resource
+    metadata.
+
+    This target does not include any filtering or frequency controls.
+    Cloud DLP will scan cloud resource metadata for secrets daily.
+
+    No inspect template should be included in the discovery config for a
+    security benchmarks scan. Instead, the built-in list of secrets and
+    credentials infoTypes will be used (see
+    https://cloud.google.com/sensitive-data-protection/docs/infotypes-reference#credentials_and_secrets).
+
+    Credentials and secrets discovered will be reported as
+    vulnerabilities to Security Command Center.
+
+    """
 
 
 class DiscoveryStartingLocation(proto.Message):
@@ -11399,7 +11460,7 @@ class ListConnectionsRequest(proto.Message):
             other request fields must match the original
             request.
         filter (str):
-            Optional. \* Supported fields/values - ``state`` -
+            Optional. Supported field/value: ``state`` -
             MISSING|AVAILABLE|ERROR
     """
 
@@ -11437,7 +11498,7 @@ class SearchConnectionsRequest(proto.Message):
             other request fields must match the original
             request.
         filter (str):
-            Optional. \* Supported fields/values - ``state`` -
+            Optional. Supported field/value: - ``state`` -
             MISSING|AVAILABLE|ERROR
     """
 
@@ -11634,9 +11695,9 @@ class SecretManagerCredential(proto.Message):
 
 
 class CloudSqlIamCredential(proto.Message):
-    r"""Use IAM auth to connect. This requires the Cloud SQL IAM
-    feature to be enabled on the instance, which is not the default
-    for Cloud SQL. See
+    r"""Use IAM authentication to connect. This requires the Cloud
+    SQL IAM feature to be enabled on the instance, which is not the
+    default for Cloud SQL. See
     https://cloud.google.com/sql/docs/postgres/authentication and
     https://cloud.google.com/sql/docs/mysql/authentication.
 
@@ -11692,11 +11753,11 @@ class CloudSqlProperties(proto.Message):
         Values:
             DATABASE_ENGINE_UNKNOWN (0):
                 An engine that is not currently supported by
-                SDP.
+                Sensitive Data Protection.
             DATABASE_ENGINE_MYSQL (1):
                 Cloud SQL for MySQL instance.
             DATABASE_ENGINE_POSTGRES (2):
-                Cloud SQL for Postgres instance.
+                Cloud SQL for PostgreSQL instance.
         """
         DATABASE_ENGINE_UNKNOWN = 0
         DATABASE_ENGINE_MYSQL = 1
