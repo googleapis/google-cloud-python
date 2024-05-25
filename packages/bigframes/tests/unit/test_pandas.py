@@ -50,7 +50,7 @@ def all_session_methods():
     [(method_name,) for method_name in all_session_methods()],
 )
 def test_method_matches_session(method_name: str):
-    if sys.version_info <= (3, 10):
+    if sys.version_info < (3, 10):
         pytest.skip(
             "Need Python 3.10 to reconcile deferred annotations."
         )  # pragma: no cover

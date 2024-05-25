@@ -18,9 +18,9 @@ import logging
 import math
 import pathlib
 import textwrap
+import traceback
 import typing
 from typing import Dict, Generator, Optional
-import warnings
 
 import google.api_core.exceptions
 import google.cloud.bigquery as bigquery
@@ -1097,54 +1097,54 @@ def cleanup_cloud_functions(session, cloudfunctions_client, dataset_id_permanent
         session.bqclient, dataset_id_permanent
     )
     delete_count = 0
-    for cloud_function in tests.system.utils.get_cloud_functions(
-        cloudfunctions_client,
-        session.bqclient.project,
-        session.bqclient.location,
-        name_prefix="bigframes-",
-    ):
-        # Ignore bigframes cloud functions referred by the remote functions in
-        # the permanent dataset
-        if cloud_function.service_config.uri in permanent_endpoints:
-            continue
+    try:
+        for cloud_function in tests.system.utils.get_cloud_functions(
+            cloudfunctions_client,
+            session.bqclient.project,
+            session.bqclient.location,
+            name_prefix="bigframes-",
+        ):
+            # Ignore bigframes cloud functions referred by the remote functions in
+            # the permanent dataset
+            if cloud_function.service_config.uri in permanent_endpoints:
+                continue
 
-        # Ignore the functions less than one day old
-        age = datetime.now() - datetime.fromtimestamp(
-            cloud_function.update_time.timestamp()
-        )
-        if age.days <= 0:
-            continue
-
-        # Go ahead and delete
-        try:
-            tests.system.utils.delete_cloud_function(
-                cloudfunctions_client, cloud_function.name
+            # Ignore the functions less than one day old
+            age = datetime.now() - datetime.fromtimestamp(
+                cloud_function.update_time.timestamp()
             )
-            delete_count += 1
-            if delete_count >= MAX_NUM_FUNCTIONS_TO_DELETE_PER_SESSION:
-                break
-        except google.api_core.exceptions.NotFound:
-            # This can happen when multiple pytest sessions are running in
-            # parallel. Two or more sessions may discover the same cloud
-            # function, but only one of them would be able to delete it
-            # successfully, while the other instance will run into this
-            # exception. Ignore this exception.
-            pass
-        except Exception as exc:
-            # Don't fail the tests for unknown exceptions.
-            #
-            # This can happen if we are hitting GCP limits, e.g.
-            # google.api_core.exceptions.ResourceExhausted: 429 Quota exceeded
-            # for quota metric 'Per project mutation requests' and limit
-            # 'Per project mutation requests per minute per region' of service
-            # 'cloudfunctions.googleapis.com' for consumer
-            # 'project_number:1084210331973'.
-            # [reason: "RATE_LIMIT_EXCEEDED" domain: "googleapis.com" ...
-            #
-            # It can also happen occasionally with
-            # google.api_core.exceptions.ServiceUnavailable when there is some
-            # backend flakiness.
-            #
-            # Let's stop further clean up and leave it to later.
-            warnings.warn(f"Cloud functions cleanup failed: {str(exc)}")
-            break
+            if age.days <= 0:
+                continue
+
+            # Go ahead and delete
+            try:
+                tests.system.utils.delete_cloud_function(
+                    cloudfunctions_client, cloud_function.name
+                )
+                delete_count += 1
+                if delete_count >= MAX_NUM_FUNCTIONS_TO_DELETE_PER_SESSION:
+                    break
+            except google.api_core.exceptions.NotFound:
+                # This can happen when multiple pytest sessions are running in
+                # parallel. Two or more sessions may discover the same cloud
+                # function, but only one of them would be able to delete it
+                # successfully, while the other instance will run into this
+                # exception. Ignore this exception.
+                pass
+    except Exception as exc:
+        # Don't fail the tests for unknown exceptions.
+        #
+        # This can happen if we are hitting GCP limits, e.g.
+        # google.api_core.exceptions.ResourceExhausted: 429 Quota exceeded
+        # for quota metric 'Per project mutation requests' and limit
+        # 'Per project mutation requests per minute per region' of service
+        # 'cloudfunctions.googleapis.com' for consumer
+        # 'project_number:1084210331973'.
+        # [reason: "RATE_LIMIT_EXCEEDED" domain: "googleapis.com" ...
+        #
+        # It can also happen occasionally with
+        # google.api_core.exceptions.ServiceUnavailable when there is some
+        # backend flakiness.
+        #
+        # Let's stop further clean up and leave it to later.
+        traceback.print_exception(exc)

@@ -1183,8 +1183,8 @@ class Series(NDFrame):  # type: ignore[misc]
         to potentially reuse a previously deployed `remote_function` from
         the same user defined function.
 
-            >>> @bpd.remote_function(int, float, reuse=False)
-            ... def minutes_to_hours(x):
+            >>> @bpd.remote_function(reuse=False)
+            ... def minutes_to_hours(x: int) -> float:
             ...     return x/60
 
             >>> minutes = bpd.Series([0, 30, 60, 90, 120])
@@ -1210,12 +1210,10 @@ class Series(NDFrame):  # type: ignore[misc]
         `packages` param.
 
             >>> @bpd.remote_function(
-            ...     str,
-            ...     str,
             ...     reuse=False,
             ...     packages=["cryptography"],
             ... )
-            ... def get_hash(input):
+            ... def get_hash(input: str) -> str:
             ...     from cryptography.fernet import Fernet
             ...
             ...     # handle missing value
@@ -3452,8 +3450,8 @@ class Series(NDFrame):  # type: ignore[misc]
         condition is evaluated based on a complicated business logic which cannot
         be expressed in form of a Series.
 
-            >>> @bpd.remote_function(str, bool, reuse=False)
-            ... def should_mask(name):
+            >>> @bpd.remote_function(reuse=False)
+            ... def should_mask(name: str) -> bool:
             ...     hash = 0
             ...     for char_ in name:
             ...         hash += ord(char_)
@@ -3971,8 +3969,8 @@ class Series(NDFrame):  # type: ignore[misc]
 
         It also accepts a remote function:
 
-            >>> @bpd.remote_function(str, str)
-            ... def my_mapper(val):
+            >>> @bpd.remote_function
+            ... def my_mapper(val: str) -> str:
             ...     vowels = ["a", "e", "i", "o", "u"]
             ...     if val:
             ...         return "".join([

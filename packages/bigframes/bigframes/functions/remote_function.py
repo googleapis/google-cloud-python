@@ -24,7 +24,17 @@ import string
 import sys
 import tempfile
 import textwrap
-from typing import cast, List, NamedTuple, Optional, Sequence, TYPE_CHECKING, Union
+from typing import (
+    Any,
+    cast,
+    List,
+    Mapping,
+    NamedTuple,
+    Optional,
+    Sequence,
+    TYPE_CHECKING,
+    Union,
+)
 import warnings
 
 import ibis
@@ -736,8 +746,8 @@ def get_routine_reference(
 # which has moved as @js to the ibis package
 # https://github.com/ibis-project/ibis/blob/master/ibis/backends/bigquery/udf/__init__.py
 def remote_function(
-    input_types: Union[type, Sequence[type]],
-    output_type: type,
+    input_types: Union[None, type, Sequence[type]] = None,
+    output_type: Optional[type] = None,
     session: Optional[Session] = None,
     bigquery_client: Optional[bigquery.Client] = None,
     bigquery_connection_client: Optional[
@@ -801,11 +811,11 @@ def remote_function(
                `$ gcloud projects add-iam-policy-binding PROJECT_ID --member="serviceAccount:CONNECTION_SERVICE_ACCOUNT_ID" --role="roles/run.invoker"`.
 
     Args:
-        input_types (type or sequence(type)):
+        input_types (None, type, or sequence(type)):
             For scalar user defined function it should be the input type or
             sequence of input types. For row processing user defined function,
             type `Series` should be specified.
-        output_type (type):
+        output_type (Optional[type]):
             Data type of the output in the user defined function.
         session (bigframes.Session, Optional):
             BigQuery DataFrames session to use for getting default project,
@@ -908,27 +918,10 @@ def remote_function(
             service(s) that are on a VPC network. See for more details
             https://cloud.google.com/functions/docs/networking/connecting-vpc.
     """
-    is_row_processor = False
-
-    import bigframes.series
-    import bigframes.session
-
-    if input_types == bigframes.series.Series:
-        warnings.warn(
-            "input_types=Series scenario is in preview.",
-            stacklevel=1,
-            category=bigframes.exceptions.PreviewWarning,
-        )
-
-        # we will model the row as a json serialized string containing the data
-        # and the metadata representing the row
-        input_types = [str]
-        is_row_processor = True
-    elif isinstance(input_types, type):
-        input_types = [input_types]
-
     # Some defaults may be used from the session if not provided otherwise
     import bigframes.pandas as bpd
+    import bigframes.series
+    import bigframes.session
 
     session = cast(bigframes.session.Session, session or bpd.get_global_session())
 
@@ -1021,10 +1014,61 @@ def remote_function(
     bq_connection_manager = None if session is None else session.bqconnectionmanager
 
     def wrapper(f):
+        nonlocal input_types, output_type
+
         if not callable(f):
             raise TypeError("f must be callable, got {}".format(f))
 
-        signature = inspect.signature(f)
+        if sys.version_info >= (3, 10):
+            # Add `eval_str = True` so that deferred annotations are turned into their
+            # corresponding type objects. Need Python 3.10 for eval_str parameter.
+            # https://docs.python.org/3/library/inspect.html#inspect.signature
+            signature_kwargs: Mapping[str, Any] = {"eval_str": True}
+        else:
+            signature_kwargs = {}
+
+        signature = inspect.signature(
+            f,
+            **signature_kwargs,
+        )
+
+        # Try to get input types via type annotations.
+        if input_types is None:
+            input_types = []
+            for parameter in signature.parameters.values():
+                if (param_type := parameter.annotation) is inspect.Signature.empty:
+                    raise ValueError(
+                        "'input_types' was not set and parameter "
+                        f"'{parameter.name}' is missing a type annotation. "
+                        "Types are required to use @remote_function."
+                    )
+                input_types.append(param_type)
+
+        if output_type is None:
+            if (output_type := signature.return_annotation) is inspect.Signature.empty:
+                raise ValueError(
+                    "'output_type' was not set and function is missing a "
+                    "return type annotation. Types are required to use "
+                    "@remote_function."
+                )
+
+        # The function will actually be receiving a pandas Series, but allow both
+        # BigQuery DataFrames and pandas object types for compatibility.
+        is_row_processor = False
+        if input_types == bigframes.series.Series or input_types == pandas.Series:
+            warnings.warn(
+                "input_types=Series scenario is in preview.",
+                stacklevel=1,
+                category=bigframes.exceptions.PreviewWarning,
+            )
+
+            # we will model the row as a json serialized string containing the data
+            # and the metadata representing the row
+            input_types = [str]
+            is_row_processor = True
+        elif isinstance(input_types, type):
+            input_types = [input_types]
+
         # TODO(b/340898611): fix type error
         ibis_signature = ibis_signature_from_python_signature(
             signature, input_types, output_type  # type: ignore
