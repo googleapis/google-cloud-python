@@ -22,6 +22,7 @@ from .services.completion_service import (
     CompletionServiceAsyncClient,
     CompletionServiceClient,
 )
+from .services.control_service import ControlServiceAsyncClient, ControlServiceClient
 from .services.conversational_search_service import (
     ConversationalSearchServiceAsyncClient,
     ConversationalSearchServiceClient,
@@ -32,6 +33,12 @@ from .services.data_store_service import (
 )
 from .services.document_service import DocumentServiceAsyncClient, DocumentServiceClient
 from .services.engine_service import EngineServiceAsyncClient, EngineServiceClient
+from .services.grounded_generation_service import (
+    GroundedGenerationServiceAsyncClient,
+    GroundedGenerationServiceClient,
+)
+from .services.project_service import ProjectServiceAsyncClient, ProjectServiceClient
+from .services.rank_service import RankServiceAsyncClient, RankServiceClient
 from .services.recommendation_service import (
     RecommendationServiceAsyncClient,
     RecommendationServiceClient,
@@ -46,17 +53,28 @@ from .services.user_event_service import (
     UserEventServiceAsyncClient,
     UserEventServiceClient,
 )
+from .types.answer import Answer
 from .types.common import (
     CustomAttribute,
     IndustryVertical,
     Interval,
     SearchAddOn,
     SearchTier,
+    SearchUseCase,
     SolutionType,
     UserInfo,
 )
 from .types.completion import SuggestionDenyListEntry
 from .types.completion_service import CompleteQueryRequest, CompleteQueryResponse
+from .types.control import Condition, Control
+from .types.control_service import (
+    CreateControlRequest,
+    DeleteControlRequest,
+    GetControlRequest,
+    ListControlsRequest,
+    ListControlsResponse,
+    UpdateControlRequest,
+)
 from .types.conversation import (
     Conversation,
     ConversationContext,
@@ -65,14 +83,23 @@ from .types.conversation import (
     TextInput,
 )
 from .types.conversational_search_service import (
+    AnswerQueryRequest,
+    AnswerQueryResponse,
     ConverseConversationRequest,
     ConverseConversationResponse,
     CreateConversationRequest,
+    CreateSessionRequest,
     DeleteConversationRequest,
+    DeleteSessionRequest,
+    GetAnswerRequest,
     GetConversationRequest,
+    GetSessionRequest,
     ListConversationsRequest,
     ListConversationsResponse,
+    ListSessionsRequest,
+    ListSessionsResponse,
     UpdateConversationRequest,
+    UpdateSessionRequest,
 )
 from .types.data_store import DataStore
 from .types.data_store_service import (
@@ -86,6 +113,7 @@ from .types.data_store_service import (
     UpdateDataStoreRequest,
 )
 from .types.document import Document
+from .types.document_processing_config import DocumentProcessingConfig
 from .types.document_service import (
     CreateDocumentRequest,
     DeleteDocumentRequest,
@@ -105,6 +133,12 @@ from .types.engine_service import (
     ListEnginesResponse,
     UpdateEngineRequest,
 )
+from .types.grounded_generation_service import (
+    CheckGroundingRequest,
+    CheckGroundingResponse,
+    CheckGroundingSpec,
+)
+from .types.grounding import FactChunk, GroundingFact
 from .types.import_config import (
     BigQuerySource,
     BigtableOptions,
@@ -125,6 +159,8 @@ from .types.import_config import (
     ImportUserEventsResponse,
     SpannerSource,
 )
+from .types.project import Project
+from .types.project_service import ProvisionProjectMetadata, ProvisionProjectRequest
 from .types.purge_config import (
     PurgeDocumentsMetadata,
     PurgeDocumentsRequest,
@@ -133,6 +169,7 @@ from .types.purge_config import (
     PurgeSuggestionDenyListEntriesRequest,
     PurgeSuggestionDenyListEntriesResponse,
 )
+from .types.rank_service import RankingRecord, RankRequest, RankResponse
 from .types.recommendation_service import RecommendRequest, RecommendResponse
 from .types.schema import Schema
 from .types.schema_service import (
@@ -147,6 +184,7 @@ from .types.schema_service import (
     UpdateSchemaRequest,
 )
 from .types.search_service import SearchRequest, SearchResponse
+from .types.session import Query, Session
 from .types.site_search_engine import SiteSearchEngine, SiteVerificationInfo, TargetSite
 from .types.site_search_engine_service import (
     BatchCreateTargetSiteMetadata,
@@ -191,15 +229,22 @@ from .types.user_event_service import CollectUserEventRequest, WriteUserEventReq
 
 __all__ = (
     "CompletionServiceAsyncClient",
+    "ControlServiceAsyncClient",
     "ConversationalSearchServiceAsyncClient",
     "DataStoreServiceAsyncClient",
     "DocumentServiceAsyncClient",
     "EngineServiceAsyncClient",
+    "GroundedGenerationServiceAsyncClient",
+    "ProjectServiceAsyncClient",
+    "RankServiceAsyncClient",
     "RecommendationServiceAsyncClient",
     "SchemaServiceAsyncClient",
     "SearchServiceAsyncClient",
     "SiteSearchEngineServiceAsyncClient",
     "UserEventServiceAsyncClient",
+    "Answer",
+    "AnswerQueryRequest",
+    "AnswerQueryResponse",
     "BatchCreateTargetSiteMetadata",
     "BatchCreateTargetSitesRequest",
     "BatchCreateTargetSitesResponse",
@@ -209,18 +254,25 @@ __all__ = (
     "BigQuerySource",
     "BigtableOptions",
     "BigtableSource",
+    "CheckGroundingRequest",
+    "CheckGroundingResponse",
+    "CheckGroundingSpec",
     "CloudSqlSource",
     "CollectUserEventRequest",
     "CompleteQueryRequest",
     "CompleteQueryResponse",
     "CompletionInfo",
     "CompletionServiceClient",
+    "Condition",
+    "Control",
+    "ControlServiceClient",
     "Conversation",
     "ConversationContext",
     "ConversationMessage",
     "ConversationalSearchServiceClient",
     "ConverseConversationRequest",
     "ConverseConversationResponse",
+    "CreateControlRequest",
     "CreateConversationRequest",
     "CreateDataStoreMetadata",
     "CreateDataStoreRequest",
@@ -229,11 +281,13 @@ __all__ = (
     "CreateEngineRequest",
     "CreateSchemaMetadata",
     "CreateSchemaRequest",
+    "CreateSessionRequest",
     "CreateTargetSiteMetadata",
     "CreateTargetSiteRequest",
     "CustomAttribute",
     "DataStore",
     "DataStoreServiceClient",
+    "DeleteControlRequest",
     "DeleteConversationRequest",
     "DeleteDataStoreMetadata",
     "DeleteDataStoreRequest",
@@ -242,6 +296,7 @@ __all__ = (
     "DeleteEngineRequest",
     "DeleteSchemaMetadata",
     "DeleteSchemaRequest",
+    "DeleteSessionRequest",
     "DeleteTargetSiteMetadata",
     "DeleteTargetSiteRequest",
     "DisableAdvancedSiteSearchMetadata",
@@ -249,24 +304,31 @@ __all__ = (
     "DisableAdvancedSiteSearchResponse",
     "Document",
     "DocumentInfo",
+    "DocumentProcessingConfig",
     "DocumentServiceClient",
     "EnableAdvancedSiteSearchMetadata",
     "EnableAdvancedSiteSearchRequest",
     "EnableAdvancedSiteSearchResponse",
     "Engine",
     "EngineServiceClient",
+    "FactChunk",
     "FetchDomainVerificationStatusRequest",
     "FetchDomainVerificationStatusResponse",
     "FhirStoreSource",
     "FirestoreSource",
     "GcsSource",
+    "GetAnswerRequest",
+    "GetControlRequest",
     "GetConversationRequest",
     "GetDataStoreRequest",
     "GetDocumentRequest",
     "GetEngineRequest",
     "GetSchemaRequest",
+    "GetSessionRequest",
     "GetSiteSearchEngineRequest",
     "GetTargetSiteRequest",
+    "GroundedGenerationServiceClient",
+    "GroundingFact",
     "ImportDocumentsMetadata",
     "ImportDocumentsRequest",
     "ImportDocumentsResponse",
@@ -279,6 +341,8 @@ __all__ = (
     "ImportUserEventsResponse",
     "IndustryVertical",
     "Interval",
+    "ListControlsRequest",
+    "ListControlsResponse",
     "ListConversationsRequest",
     "ListConversationsResponse",
     "ListDataStoresRequest",
@@ -289,17 +353,28 @@ __all__ = (
     "ListEnginesResponse",
     "ListSchemasRequest",
     "ListSchemasResponse",
+    "ListSessionsRequest",
+    "ListSessionsResponse",
     "ListTargetSitesRequest",
     "ListTargetSitesResponse",
     "MediaInfo",
     "PageInfo",
     "PanelInfo",
+    "Project",
+    "ProjectServiceClient",
+    "ProvisionProjectMetadata",
+    "ProvisionProjectRequest",
     "PurgeDocumentsMetadata",
     "PurgeDocumentsRequest",
     "PurgeDocumentsResponse",
     "PurgeSuggestionDenyListEntriesMetadata",
     "PurgeSuggestionDenyListEntriesRequest",
     "PurgeSuggestionDenyListEntriesResponse",
+    "Query",
+    "RankRequest",
+    "RankResponse",
+    "RankServiceClient",
+    "RankingRecord",
     "RecommendRequest",
     "RecommendResponse",
     "RecommendationServiceClient",
@@ -315,6 +390,8 @@ __all__ = (
     "SearchResponse",
     "SearchServiceClient",
     "SearchTier",
+    "SearchUseCase",
+    "Session",
     "SiteSearchEngine",
     "SiteSearchEngineServiceClient",
     "SiteVerificationInfo",
@@ -324,12 +401,14 @@ __all__ = (
     "TargetSite",
     "TextInput",
     "TransactionInfo",
+    "UpdateControlRequest",
     "UpdateConversationRequest",
     "UpdateDataStoreRequest",
     "UpdateDocumentRequest",
     "UpdateEngineRequest",
     "UpdateSchemaMetadata",
     "UpdateSchemaRequest",
+    "UpdateSessionRequest",
     "UpdateTargetSiteMetadata",
     "UpdateTargetSiteRequest",
     "UserEvent",

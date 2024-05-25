@@ -40,7 +40,7 @@ __protobuf__ = proto.module(
 
 class UserEvent(proto.Message):
     r"""UserEvent captures all metadata information Discovery Engine
-    API needs to know about how end users interact with customers'
+    API needs to know about how end users interact with your
     website.
 
     Attributes:
@@ -89,6 +89,26 @@ class UserEvent(proto.Message):
             to use Google Analytics `Client
             ID <https://developers.google.com/analytics/devguides/collection/analyticsjs/field-reference#clientId>`__
             for this field.
+        engine (str):
+            The [Engine][google.cloud.discoveryengine.v1.Engine]
+            resource name, in the form of
+            ``projects/{project}/locations/{location}/collections/{collection_id}/engines/{engine_id}``.
+
+            Optional. Only required for
+            [Engine][google.cloud.discoveryengine.v1.Engine] produced
+            user events. For example, user events from blended search.
+        data_store (str):
+            The [DataStore][google.cloud.discoveryengine.v1.DataStore]
+            resource full name, of the form
+            ``projects/{project}/locations/{location}/collections/{collection_id}/dataStores/{data_store_id}``.
+
+            Optional. Only required for user events whose data store
+            can't by determined by
+            [UserEvent.engine][google.cloud.discoveryengine.v1.UserEvent.engine]
+            or
+            [UserEvent.documents][google.cloud.discoveryengine.v1.UserEvent.documents].
+            If data store is set in the parent of write/import/collect
+            user event requests, this field can be omitted.
         event_time (google.protobuf.timestamp_pb2.Timestamp):
             Only required for
             [UserEventService.ImportUserEvents][google.cloud.discoveryengine.v1.UserEventService.ImportUserEvents]
@@ -217,8 +237,7 @@ class UserEvent(proto.Message):
             A list of identifiers for the independent
             experiment groups this user event belongs to.
             This is used to distinguish between user events
-            associated with different experiment setups on
-            the customer end.
+            associated with different experiment setups.
         promotion_ids (MutableSequence[str]):
             The promotion IDs if this is an event
             associated with promotions. Currently, this
@@ -263,6 +282,14 @@ class UserEvent(proto.Message):
     user_pseudo_id: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    engine: str = proto.Field(
+        proto.STRING,
+        number=19,
+    )
+    data_store: str = proto.Field(
+        proto.STRING,
+        number=20,
     )
     event_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
@@ -631,8 +658,8 @@ class DocumentInfo(proto.Message):
             Quantity of the Document associated with the user event.
             Defaults to 1.
 
-            For example, this field will be 2 if two quantities of the
-            same Document are involved in a ``add-to-cart`` event.
+            For example, this field is 2 if two quantities of the same
+            Document are involved in a ``add-to-cart`` event.
 
             Required for events of the following event types:
 

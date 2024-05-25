@@ -20,7 +20,11 @@ from typing import MutableMapping, MutableSequence
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.discoveryengine_v1.types import common, schema
+from google.cloud.discoveryengine_v1.types import (
+    document_processing_config as gcd_document_processing_config,
+)
+from google.cloud.discoveryengine_v1.types import common
+from google.cloud.discoveryengine_v1.types import schema
 
 __protobuf__ = proto.module(
     package="google.cloud.discoveryengine.v1",
@@ -72,6 +76,9 @@ class DataStore(proto.Message):
             Output only. Timestamp the
             [DataStore][google.cloud.discoveryengine.v1.DataStore] was
             created at.
+        document_processing_config (google.cloud.discoveryengine_v1.types.DocumentProcessingConfig):
+            Configuration for Document understanding and
+            enrichment.
         starting_schema (google.cloud.discoveryengine_v1.types.Schema):
             The start schema to use for this
             [DataStore][google.cloud.discoveryengine.v1.DataStore] when
@@ -143,6 +150,11 @@ class DataStore(proto.Message):
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
+    )
+    document_processing_config: gcd_document_processing_config.DocumentProcessingConfig = proto.Field(
+        proto.MESSAGE,
+        number=27,
+        message=gcd_document_processing_config.DocumentProcessingConfig,
     )
     starting_schema: schema.Schema = proto.Field(
         proto.MESSAGE,

@@ -116,7 +116,7 @@ class Engine(proto.Message):
             restriction of the Engine industry vertical is based on
             [DataStore][google.cloud.discoveryengine.v1.DataStore]: If
             unspecified, default to ``GENERIC``. Vertical on Engine has
-            to match vertical of the DataStore liniked to the engine.
+            to match vertical of the DataStore linked to the engine.
         common_config (google.cloud.discoveryengine_v1.types.Engine.CommonConfig):
             Common config spec that specifies the
             metadata of the engine.
@@ -252,10 +252,9 @@ class Engine(proto.Message):
 
         Attributes:
             company_name (str):
-                Immutable. The name of the company, business
-                or entity that is associated with the engine.
-                Setting this may help improve LLM related
-                features.
+                The name of the company, business or entity
+                that is associated with the engine. Setting this
+                may help improve LLM related features.
         """
 
         company_name: str = proto.Field(

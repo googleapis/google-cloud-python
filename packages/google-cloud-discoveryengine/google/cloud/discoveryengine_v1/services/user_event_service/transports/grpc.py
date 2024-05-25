@@ -320,7 +320,7 @@ class UserEventServiceGrpcTransport(UserEventServiceTransport):
     ) -> Callable[[import_config.ImportUserEventsRequest], operations_pb2.Operation]:
         r"""Return a callable for the import user events method over gRPC.
 
-        Bulk import of User events. Request processing might
+        Bulk import of user events. Request processing might
         be synchronous. Events that already exist are skipped.
         Use this method for backfilling historical user events.
 
@@ -349,6 +349,23 @@ class UserEventServiceGrpcTransport(UserEventServiceTransport):
 
     def close(self):
         self.grpc_channel.close()
+
+    @property
+    def cancel_operation(
+        self,
+    ) -> Callable[[operations_pb2.CancelOperationRequest], None]:
+        r"""Return a callable for the cancel_operation method over gRPC."""
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "cancel_operation" not in self._stubs:
+            self._stubs["cancel_operation"] = self.grpc_channel.unary_unary(
+                "/google.longrunning.Operations/CancelOperation",
+                request_serializer=operations_pb2.CancelOperationRequest.SerializeToString,
+                response_deserializer=None,
+            )
+        return self._stubs["cancel_operation"]
 
     @property
     def get_operation(

@@ -413,8 +413,7 @@ class DocumentServiceGrpcAsyncIOTransport(DocumentServiceTransport):
 
         Bulk import of multiple
         [Document][google.cloud.discoveryengine.v1.Document]s. Request
-        processing may be synchronous. Non-existing items will be
-        created.
+        processing may be synchronous. Non-existing items are created.
 
         Note: It is possible for a subset of the
         [Document][google.cloud.discoveryengine.v1.Document]s to be
@@ -535,6 +534,23 @@ class DocumentServiceGrpcAsyncIOTransport(DocumentServiceTransport):
 
     def close(self):
         return self.grpc_channel.close()
+
+    @property
+    def cancel_operation(
+        self,
+    ) -> Callable[[operations_pb2.CancelOperationRequest], None]:
+        r"""Return a callable for the cancel_operation method over gRPC."""
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "cancel_operation" not in self._stubs:
+            self._stubs["cancel_operation"] = self.grpc_channel.unary_unary(
+                "/google.longrunning.Operations/CancelOperation",
+                request_serializer=operations_pb2.CancelOperationRequest.SerializeToString,
+                response_deserializer=None,
+            )
+        return self._stubs["cancel_operation"]
 
     @property
     def get_operation(
