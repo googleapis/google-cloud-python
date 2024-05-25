@@ -1896,6 +1896,7 @@ def test_recommendation_service_base_transport():
     methods = (
         "recommend",
         "get_operation",
+        "cancel_operation",
         "list_operations",
     )
     for method in methods:
@@ -2288,12 +2289,38 @@ def test_recommendation_service_transport_channel_mtls_with_adc(transport_class)
             assert transport.grpc_channel == mock_grpc_channel
 
 
-def test_document_path():
+def test_data_store_path():
     project = "squid"
     location = "clam"
     data_store = "whelk"
-    branch = "octopus"
-    document = "oyster"
+    expected = "projects/{project}/locations/{location}/dataStores/{data_store}".format(
+        project=project,
+        location=location,
+        data_store=data_store,
+    )
+    actual = RecommendationServiceClient.data_store_path(project, location, data_store)
+    assert expected == actual
+
+
+def test_parse_data_store_path():
+    expected = {
+        "project": "octopus",
+        "location": "oyster",
+        "data_store": "nudibranch",
+    }
+    path = RecommendationServiceClient.data_store_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = RecommendationServiceClient.parse_data_store_path(path)
+    assert expected == actual
+
+
+def test_document_path():
+    project = "cuttlefish"
+    location = "mussel"
+    data_store = "winkle"
+    branch = "nautilus"
+    document = "scallop"
     expected = "projects/{project}/locations/{location}/dataStores/{data_store}/branches/{branch}/documents/{document}".format(
         project=project,
         location=location,
@@ -2309,11 +2336,11 @@ def test_document_path():
 
 def test_parse_document_path():
     expected = {
-        "project": "nudibranch",
-        "location": "cuttlefish",
-        "data_store": "mussel",
-        "branch": "winkle",
-        "document": "nautilus",
+        "project": "abalone",
+        "location": "squid",
+        "data_store": "clam",
+        "branch": "whelk",
+        "document": "octopus",
     }
     path = RecommendationServiceClient.document_path(**expected)
 
@@ -2322,11 +2349,42 @@ def test_parse_document_path():
     assert expected == actual
 
 
+def test_engine_path():
+    project = "oyster"
+    location = "nudibranch"
+    collection = "cuttlefish"
+    engine = "mussel"
+    expected = "projects/{project}/locations/{location}/collections/{collection}/engines/{engine}".format(
+        project=project,
+        location=location,
+        collection=collection,
+        engine=engine,
+    )
+    actual = RecommendationServiceClient.engine_path(
+        project, location, collection, engine
+    )
+    assert expected == actual
+
+
+def test_parse_engine_path():
+    expected = {
+        "project": "winkle",
+        "location": "nautilus",
+        "collection": "scallop",
+        "engine": "abalone",
+    }
+    path = RecommendationServiceClient.engine_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = RecommendationServiceClient.parse_engine_path(path)
+    assert expected == actual
+
+
 def test_serving_config_path():
-    project = "scallop"
-    location = "abalone"
-    data_store = "squid"
-    serving_config = "clam"
+    project = "squid"
+    location = "clam"
+    data_store = "whelk"
+    serving_config = "octopus"
     expected = "projects/{project}/locations/{location}/dataStores/{data_store}/servingConfigs/{serving_config}".format(
         project=project,
         location=location,
@@ -2341,10 +2399,10 @@ def test_serving_config_path():
 
 def test_parse_serving_config_path():
     expected = {
-        "project": "whelk",
-        "location": "octopus",
-        "data_store": "oyster",
-        "serving_config": "nudibranch",
+        "project": "oyster",
+        "location": "nudibranch",
+        "data_store": "cuttlefish",
+        "serving_config": "mussel",
     }
     path = RecommendationServiceClient.serving_config_path(**expected)
 
@@ -2354,7 +2412,7 @@ def test_parse_serving_config_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "cuttlefish"
+    billing_account = "winkle"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -2364,7 +2422,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "mussel",
+        "billing_account": "nautilus",
     }
     path = RecommendationServiceClient.common_billing_account_path(**expected)
 
@@ -2374,7 +2432,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "winkle"
+    folder = "scallop"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -2384,7 +2442,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "nautilus",
+        "folder": "abalone",
     }
     path = RecommendationServiceClient.common_folder_path(**expected)
 
@@ -2394,7 +2452,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "scallop"
+    organization = "squid"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -2404,7 +2462,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "abalone",
+        "organization": "clam",
     }
     path = RecommendationServiceClient.common_organization_path(**expected)
 
@@ -2414,7 +2472,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "squid"
+    project = "whelk"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -2424,7 +2482,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "clam",
+        "project": "octopus",
     }
     path = RecommendationServiceClient.common_project_path(**expected)
 
@@ -2434,8 +2492,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "whelk"
-    location = "octopus"
+    project = "oyster"
+    location = "nudibranch"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -2446,8 +2504,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "oyster",
-        "location": "nudibranch",
+        "project": "cuttlefish",
+        "location": "mussel",
     }
     path = RecommendationServiceClient.common_location_path(**expected)
 
@@ -2491,6 +2549,64 @@ async def test_transport_close_async():
         async with client:
             close.assert_not_called()
         close.assert_called_once()
+
+
+def test_cancel_operation_rest_bad_request(
+    transport: str = "rest", request_type=operations_pb2.CancelOperationRequest
+):
+    client = RecommendationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/operations/sample2"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.cancel_operation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.CancelOperationRequest,
+        dict,
+    ],
+)
+def test_cancel_operation_rest(request_type):
+    client = RecommendationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request_init = {"name": "projects/sample1/operations/sample2"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = "{}"
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        response = client.cancel_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
 
 
 def test_get_operation_rest_bad_request(
@@ -2605,6 +2721,145 @@ def test_list_operations_rest(request_type):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, operations_pb2.ListOperationsResponse)
+
+
+def test_cancel_operation(transport: str = "grpc"):
+    client = RecommendationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = operations_pb2.CancelOperationRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+        response = client.cancel_operation(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.asyncio
+async def test_cancel_operation_async(transport: str = "grpc_asyncio"):
+    client = RecommendationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = operations_pb2.CancelOperationRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.cancel_operation(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_cancel_operation_field_headers():
+    client = RecommendationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = operations_pb2.CancelOperationRequest()
+    request.name = "locations"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
+        call.return_value = None
+
+        client.cancel_operation(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=locations",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_cancel_operation_field_headers_async():
+    client = RecommendationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = operations_pb2.CancelOperationRequest()
+    request.name = "locations"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.cancel_operation(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=locations",
+    ) in kw["metadata"]
+
+
+def test_cancel_operation_from_dict():
+    client = RecommendationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        response = client.cancel_operation(
+            request={
+                "name": "locations",
+            }
+        )
+        call.assert_called()
+
+
+@pytest.mark.asyncio
+async def test_cancel_operation_from_dict_async():
+    client = RecommendationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.cancel_operation(
+            request={
+                "name": "locations",
+            }
+        )
+        call.assert_called()
 
 
 def test_get_operation(transport: str = "grpc"):

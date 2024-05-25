@@ -28,8 +28,11 @@ import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
 
 from google.cloud.discoveryengine_v1.types import conversation as gcd_conversation
+from google.cloud.discoveryengine_v1.types import answer
 from google.cloud.discoveryengine_v1.types import conversation
 from google.cloud.discoveryengine_v1.types import conversational_search_service
+from google.cloud.discoveryengine_v1.types import session
+from google.cloud.discoveryengine_v1.types import session as gcd_session
 
 from .base import DEFAULT_CLIENT_INFO, ConversationalSearchServiceTransport
 from .grpc import ConversationalSearchServiceGrpcTransport
@@ -432,6 +435,218 @@ class ConversationalSearchServiceGrpcAsyncIOTransport(
             )
         return self._stubs["list_conversations"]
 
+    @property
+    def answer_query(
+        self,
+    ) -> Callable[
+        [conversational_search_service.AnswerQueryRequest],
+        Awaitable[conversational_search_service.AnswerQueryResponse],
+    ]:
+        r"""Return a callable for the answer query method over gRPC.
+
+        Answer query method.
+
+        Returns:
+            Callable[[~.AnswerQueryRequest],
+                    Awaitable[~.AnswerQueryResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "answer_query" not in self._stubs:
+            self._stubs["answer_query"] = self.grpc_channel.unary_unary(
+                "/google.cloud.discoveryengine.v1.ConversationalSearchService/AnswerQuery",
+                request_serializer=conversational_search_service.AnswerQueryRequest.serialize,
+                response_deserializer=conversational_search_service.AnswerQueryResponse.deserialize,
+            )
+        return self._stubs["answer_query"]
+
+    @property
+    def get_answer(
+        self,
+    ) -> Callable[
+        [conversational_search_service.GetAnswerRequest], Awaitable[answer.Answer]
+    ]:
+        r"""Return a callable for the get answer method over gRPC.
+
+        Gets a Answer.
+
+        Returns:
+            Callable[[~.GetAnswerRequest],
+                    Awaitable[~.Answer]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_answer" not in self._stubs:
+            self._stubs["get_answer"] = self.grpc_channel.unary_unary(
+                "/google.cloud.discoveryengine.v1.ConversationalSearchService/GetAnswer",
+                request_serializer=conversational_search_service.GetAnswerRequest.serialize,
+                response_deserializer=answer.Answer.deserialize,
+            )
+        return self._stubs["get_answer"]
+
+    @property
+    def create_session(
+        self,
+    ) -> Callable[
+        [conversational_search_service.CreateSessionRequest],
+        Awaitable[gcd_session.Session],
+    ]:
+        r"""Return a callable for the create session method over gRPC.
+
+        Creates a Session.
+
+        If the [Session][google.cloud.discoveryengine.v1.Session] to
+        create already exists, an ALREADY_EXISTS error is returned.
+
+        Returns:
+            Callable[[~.CreateSessionRequest],
+                    Awaitable[~.Session]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_session" not in self._stubs:
+            self._stubs["create_session"] = self.grpc_channel.unary_unary(
+                "/google.cloud.discoveryengine.v1.ConversationalSearchService/CreateSession",
+                request_serializer=conversational_search_service.CreateSessionRequest.serialize,
+                response_deserializer=gcd_session.Session.deserialize,
+            )
+        return self._stubs["create_session"]
+
+    @property
+    def delete_session(
+        self,
+    ) -> Callable[
+        [conversational_search_service.DeleteSessionRequest], Awaitable[empty_pb2.Empty]
+    ]:
+        r"""Return a callable for the delete session method over gRPC.
+
+        Deletes a Session.
+
+        If the [Session][google.cloud.discoveryengine.v1.Session] to
+        delete does not exist, a NOT_FOUND error is returned.
+
+        Returns:
+            Callable[[~.DeleteSessionRequest],
+                    Awaitable[~.Empty]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_session" not in self._stubs:
+            self._stubs["delete_session"] = self.grpc_channel.unary_unary(
+                "/google.cloud.discoveryengine.v1.ConversationalSearchService/DeleteSession",
+                request_serializer=conversational_search_service.DeleteSessionRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
+            )
+        return self._stubs["delete_session"]
+
+    @property
+    def update_session(
+        self,
+    ) -> Callable[
+        [conversational_search_service.UpdateSessionRequest],
+        Awaitable[gcd_session.Session],
+    ]:
+        r"""Return a callable for the update session method over gRPC.
+
+        Updates a Session.
+
+        [Session][google.cloud.discoveryengine.v1.Session] action type
+        cannot be changed. If the
+        [Session][google.cloud.discoveryengine.v1.Session] to update
+        does not exist, a NOT_FOUND error is returned.
+
+        Returns:
+            Callable[[~.UpdateSessionRequest],
+                    Awaitable[~.Session]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_session" not in self._stubs:
+            self._stubs["update_session"] = self.grpc_channel.unary_unary(
+                "/google.cloud.discoveryengine.v1.ConversationalSearchService/UpdateSession",
+                request_serializer=conversational_search_service.UpdateSessionRequest.serialize,
+                response_deserializer=gcd_session.Session.deserialize,
+            )
+        return self._stubs["update_session"]
+
+    @property
+    def get_session(
+        self,
+    ) -> Callable[
+        [conversational_search_service.GetSessionRequest], Awaitable[session.Session]
+    ]:
+        r"""Return a callable for the get session method over gRPC.
+
+        Gets a Session.
+
+        Returns:
+            Callable[[~.GetSessionRequest],
+                    Awaitable[~.Session]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_session" not in self._stubs:
+            self._stubs["get_session"] = self.grpc_channel.unary_unary(
+                "/google.cloud.discoveryengine.v1.ConversationalSearchService/GetSession",
+                request_serializer=conversational_search_service.GetSessionRequest.serialize,
+                response_deserializer=session.Session.deserialize,
+            )
+        return self._stubs["get_session"]
+
+    @property
+    def list_sessions(
+        self,
+    ) -> Callable[
+        [conversational_search_service.ListSessionsRequest],
+        Awaitable[conversational_search_service.ListSessionsResponse],
+    ]:
+        r"""Return a callable for the list sessions method over gRPC.
+
+        Lists all Sessions by their parent
+        [DataStore][google.cloud.discoveryengine.v1.DataStore].
+
+        Returns:
+            Callable[[~.ListSessionsRequest],
+                    Awaitable[~.ListSessionsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_sessions" not in self._stubs:
+            self._stubs["list_sessions"] = self.grpc_channel.unary_unary(
+                "/google.cloud.discoveryengine.v1.ConversationalSearchService/ListSessions",
+                request_serializer=conversational_search_service.ListSessionsRequest.serialize,
+                response_deserializer=conversational_search_service.ListSessionsResponse.deserialize,
+            )
+        return self._stubs["list_sessions"]
+
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
@@ -465,10 +680,62 @@ class ConversationalSearchServiceGrpcAsyncIOTransport(
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.answer_query: gapic_v1.method_async.wrap_method(
+                self.answer_query,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_answer: gapic_v1.method_async.wrap_method(
+                self.get_answer,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_session: gapic_v1.method_async.wrap_method(
+                self.create_session,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_session: gapic_v1.method_async.wrap_method(
+                self.delete_session,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_session: gapic_v1.method_async.wrap_method(
+                self.update_session,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_session: gapic_v1.method_async.wrap_method(
+                self.get_session,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_sessions: gapic_v1.method_async.wrap_method(
+                self.list_sessions,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
         return self.grpc_channel.close()
+
+    @property
+    def cancel_operation(
+        self,
+    ) -> Callable[[operations_pb2.CancelOperationRequest], None]:
+        r"""Return a callable for the cancel_operation method over gRPC."""
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "cancel_operation" not in self._stubs:
+            self._stubs["cancel_operation"] = self.grpc_channel.unary_unary(
+                "/google.longrunning.Operations/CancelOperation",
+                request_serializer=operations_pb2.CancelOperationRequest.SerializeToString,
+                response_deserializer=None,
+            )
+        return self._stubs["cancel_operation"]
 
     @property
     def get_operation(

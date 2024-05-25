@@ -69,11 +69,110 @@
         }
       }
     },
+    "ControlService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "ControlServiceClient",
+          "rpcs": {
+            "CreateControl": {
+              "methods": [
+                "create_control"
+              ]
+            },
+            "DeleteControl": {
+              "methods": [
+                "delete_control"
+              ]
+            },
+            "GetControl": {
+              "methods": [
+                "get_control"
+              ]
+            },
+            "ListControls": {
+              "methods": [
+                "list_controls"
+              ]
+            },
+            "UpdateControl": {
+              "methods": [
+                "update_control"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "ControlServiceAsyncClient",
+          "rpcs": {
+            "CreateControl": {
+              "methods": [
+                "create_control"
+              ]
+            },
+            "DeleteControl": {
+              "methods": [
+                "delete_control"
+              ]
+            },
+            "GetControl": {
+              "methods": [
+                "get_control"
+              ]
+            },
+            "ListControls": {
+              "methods": [
+                "list_controls"
+              ]
+            },
+            "UpdateControl": {
+              "methods": [
+                "update_control"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "ControlServiceClient",
+          "rpcs": {
+            "CreateControl": {
+              "methods": [
+                "create_control"
+              ]
+            },
+            "DeleteControl": {
+              "methods": [
+                "delete_control"
+              ]
+            },
+            "GetControl": {
+              "methods": [
+                "get_control"
+              ]
+            },
+            "ListControls": {
+              "methods": [
+                "list_controls"
+              ]
+            },
+            "UpdateControl": {
+              "methods": [
+                "update_control"
+              ]
+            }
+          }
+        }
+      }
+    },
     "ConversationalSearchService": {
       "clients": {
         "grpc": {
           "libraryClient": "ConversationalSearchServiceClient",
           "rpcs": {
+            "AnswerQuery": {
+              "methods": [
+                "answer_query"
+              ]
+            },
             "ConverseConversation": {
               "methods": [
                 "converse_conversation"
@@ -84,9 +183,24 @@
                 "create_conversation"
               ]
             },
+            "CreateSession": {
+              "methods": [
+                "create_session"
+              ]
+            },
             "DeleteConversation": {
               "methods": [
                 "delete_conversation"
+              ]
+            },
+            "DeleteSession": {
+              "methods": [
+                "delete_session"
+              ]
+            },
+            "GetAnswer": {
+              "methods": [
+                "get_answer"
               ]
             },
             "GetConversation": {
@@ -94,14 +208,29 @@
                 "get_conversation"
               ]
             },
+            "GetSession": {
+              "methods": [
+                "get_session"
+              ]
+            },
             "ListConversations": {
               "methods": [
                 "list_conversations"
               ]
             },
+            "ListSessions": {
+              "methods": [
+                "list_sessions"
+              ]
+            },
             "UpdateConversation": {
               "methods": [
                 "update_conversation"
+              ]
+            },
+            "UpdateSession": {
+              "methods": [
+                "update_session"
               ]
             }
           }
@@ -109,6 +238,11 @@
         "grpc-async": {
           "libraryClient": "ConversationalSearchServiceAsyncClient",
           "rpcs": {
+            "AnswerQuery": {
+              "methods": [
+                "answer_query"
+              ]
+            },
             "ConverseConversation": {
               "methods": [
                 "converse_conversation"
@@ -119,9 +253,24 @@
                 "create_conversation"
               ]
             },
+            "CreateSession": {
+              "methods": [
+                "create_session"
+              ]
+            },
             "DeleteConversation": {
               "methods": [
                 "delete_conversation"
+              ]
+            },
+            "DeleteSession": {
+              "methods": [
+                "delete_session"
+              ]
+            },
+            "GetAnswer": {
+              "methods": [
+                "get_answer"
               ]
             },
             "GetConversation": {
@@ -129,14 +278,29 @@
                 "get_conversation"
               ]
             },
+            "GetSession": {
+              "methods": [
+                "get_session"
+              ]
+            },
             "ListConversations": {
               "methods": [
                 "list_conversations"
               ]
             },
+            "ListSessions": {
+              "methods": [
+                "list_sessions"
+              ]
+            },
             "UpdateConversation": {
               "methods": [
                 "update_conversation"
+              ]
+            },
+            "UpdateSession": {
+              "methods": [
+                "update_session"
               ]
             }
           }
@@ -144,6 +308,11 @@
         "rest": {
           "libraryClient": "ConversationalSearchServiceClient",
           "rpcs": {
+            "AnswerQuery": {
+              "methods": [
+                "answer_query"
+              ]
+            },
             "ConverseConversation": {
               "methods": [
                 "converse_conversation"
@@ -154,9 +323,24 @@
                 "create_conversation"
               ]
             },
+            "CreateSession": {
+              "methods": [
+                "create_session"
+              ]
+            },
             "DeleteConversation": {
               "methods": [
                 "delete_conversation"
+              ]
+            },
+            "DeleteSession": {
+              "methods": [
+                "delete_session"
+              ]
+            },
+            "GetAnswer": {
+              "methods": [
+                "get_answer"
               ]
             },
             "GetConversation": {
@@ -164,14 +348,29 @@
                 "get_conversation"
               ]
             },
+            "GetSession": {
+              "methods": [
+                "get_session"
+              ]
+            },
             "ListConversations": {
               "methods": [
                 "list_conversations"
               ]
             },
+            "ListSessions": {
+              "methods": [
+                "list_sessions"
+              ]
+            },
             "UpdateConversation": {
               "methods": [
                 "update_conversation"
+              ]
+            },
+            "UpdateSession": {
+              "methods": [
+                "update_session"
               ]
             }
           }
@@ -484,6 +683,108 @@
             "UpdateEngine": {
               "methods": [
                 "update_engine"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "GroundedGenerationService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "GroundedGenerationServiceClient",
+          "rpcs": {
+            "CheckGrounding": {
+              "methods": [
+                "check_grounding"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "GroundedGenerationServiceAsyncClient",
+          "rpcs": {
+            "CheckGrounding": {
+              "methods": [
+                "check_grounding"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "GroundedGenerationServiceClient",
+          "rpcs": {
+            "CheckGrounding": {
+              "methods": [
+                "check_grounding"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "ProjectService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "ProjectServiceClient",
+          "rpcs": {
+            "ProvisionProject": {
+              "methods": [
+                "provision_project"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "ProjectServiceAsyncClient",
+          "rpcs": {
+            "ProvisionProject": {
+              "methods": [
+                "provision_project"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "ProjectServiceClient",
+          "rpcs": {
+            "ProvisionProject": {
+              "methods": [
+                "provision_project"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "RankService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "RankServiceClient",
+          "rpcs": {
+            "Rank": {
+              "methods": [
+                "rank"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "RankServiceAsyncClient",
+          "rpcs": {
+            "Rank": {
+              "methods": [
+                "rank"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "RankServiceClient",
+          "rpcs": {
+            "Rank": {
+              "methods": [
+                "rank"
               ]
             }
           }
