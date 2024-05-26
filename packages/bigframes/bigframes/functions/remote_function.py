@@ -1013,11 +1013,11 @@ def remote_function(
 
     bq_connection_manager = None if session is None else session.bqconnectionmanager
 
-    def wrapper(f):
+    def wrapper(func):
         nonlocal input_types, output_type
 
-        if not callable(f):
-            raise TypeError("f must be callable, got {}".format(f))
+        if not callable(func):
+            raise TypeError("f must be callable, got {}".format(func))
 
         if sys.version_info >= (3, 10):
             # Add `eval_str = True` so that deferred annotations are turned into their
@@ -1028,7 +1028,7 @@ def remote_function(
             signature_kwargs = {}
 
         signature = inspect.signature(
-            f,
+            func,
             **signature_kwargs,
         )
 
@@ -1089,8 +1089,23 @@ def remote_function(
             session=session,  # type: ignore
         )
 
+        # In the unlikely case where the user is trying to re-deploy the same
+        # function, cleanup the attributes we add below, first. This prevents
+        # the pickle from having dependencies that might not otherwise be
+        # present such as ibis or pandas.
+        def try_delattr(attr):
+            try:
+                delattr(func, attr)
+            except AttributeError:
+                pass
+
+        try_delattr("bigframes_cloud_function")
+        try_delattr("bigframes_remote_function")
+        try_delattr("output_dtype")
+        try_delattr("ibis_node")
+
         rf_name, cf_name = remote_function_client.provision_bq_remote_function(
-            f,
+            func,
             ibis_signature.input_types,
             ibis_signature.output_type,
             reuse,
@@ -1105,19 +1120,20 @@ def remote_function(
 
         # TODO: Move ibis logic to compiler step
         node = ibis.udf.scalar.builtin(
-            f,
+            func,
             name=rf_name,
             schema=f"{dataset_ref.project}.{dataset_ref.dataset_id}",
             signature=(ibis_signature.input_types, ibis_signature.output_type),
         )
-        node.bigframes_cloud_function = (
+        func.bigframes_cloud_function = (
             remote_function_client.get_cloud_function_fully_qualified_name(cf_name)
         )
-        node.bigframes_remote_function = str(dataset_ref.routine(rf_name))  # type: ignore
-        node.output_dtype = bigframes.dtypes.ibis_dtype_to_bigframes_dtype(
+        func.bigframes_remote_function = str(dataset_ref.routine(rf_name))  # type: ignore
+        func.output_dtype = bigframes.dtypes.ibis_dtype_to_bigframes_dtype(
             ibis_signature.output_type
         )
-        return node
+        func.ibis_node = node
+        return func
 
     return wrapper
 
@@ -1168,19 +1184,23 @@ def read_gbq_function(
 
     # The name "args" conflicts with the Ibis operator, so we use
     # non-standard names for the arguments here.
-    def node(*ignored_args, **ignored_kwargs):
+    def func(*ignored_args, **ignored_kwargs):
         f"""Remote function {str(routine_ref)}."""
+        # TODO(swast): Construct an ibis client from bigquery_client and
+        # execute node via a query.
 
     # TODO: Move ibis logic to compiler step
-    node.__name__ = routine_ref.routine_id
+    func.__name__ = routine_ref.routine_id
+
     node = ibis.udf.scalar.builtin(
-        node,
+        func,
         name=routine_ref.routine_id,
         schema=f"{routine_ref.project}.{routine_ref.dataset_id}",
         signature=(ibis_signature.input_types, ibis_signature.output_type),
     )
-    node.bigframes_remote_function = str(routine_ref)  # type: ignore
-    node.output_dtype = bigframes.dtypes.ibis_dtype_to_bigframes_dtype(  # type: ignore
+    func.bigframes_remote_function = str(routine_ref)  # type: ignore
+    func.output_dtype = bigframes.dtypes.ibis_dtype_to_bigframes_dtype(  # type: ignore
         ibis_signature.output_type
     )
-    return node
+    func.ibis_node = node  # type: ignore
+    return func

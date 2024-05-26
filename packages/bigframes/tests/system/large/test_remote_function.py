@@ -194,6 +194,9 @@ def test_remote_function_stringify_with_ibis(
         def stringify(x):
             return f"I got {x}"
 
+        # Function should work locally.
+        assert stringify(42) == "I got 42"
+
         _, dataset_name, table_name = scalars_table_id.split(".")
         if not ibis_client.dataset:
             ibis_client.dataset = dataset_name
@@ -205,7 +208,7 @@ def test_remote_function_stringify_with_ibis(
         pandas_df_orig = bigquery_client.query(sql).to_dataframe()
 
         col = table[col_name]
-        col_2x = stringify(col).name("int64_str_col")
+        col_2x = stringify.ibis_node(col).name("int64_str_col")
         table = table.mutate([col_2x])
         sql = table.compile()
         pandas_df_new = bigquery_client.query(sql).to_dataframe()

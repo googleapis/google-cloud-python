@@ -856,11 +856,12 @@ def to_timestamp_op_impl(x: ibis_types.Value, op: ops.ToTimestampOp):
 
 @scalar_op_compiler.register_unary_op(ops.RemoteFunctionOp, pass_op=True)
 def remote_function_op_impl(x: ibis_types.Value, op: ops.RemoteFunctionOp):
-    if not hasattr(op.func, "bigframes_remote_function"):
+    ibis_node = getattr(op.func, "ibis_node", None)
+    if ibis_node is None:
         raise TypeError(
             f"only a bigframes remote function is supported as a callable. {constants.FEEDBACK_LINK}"
         )
-    x_transformed = op.func(x)
+    x_transformed = ibis_node(x)
     if not op.apply_on_null:
         x_transformed = ibis.case().when(x.isnull(), x).else_(x_transformed).end()
     return x_transformed
@@ -1342,11 +1343,12 @@ def minimum_impl(
 def binary_remote_function_op_impl(
     x: ibis_types.Value, y: ibis_types.Value, op: ops.BinaryRemoteFunctionOp
 ):
-    if not hasattr(op.func, "bigframes_remote_function"):
+    ibis_node = getattr(op.func, "ibis_node", None)
+    if ibis_node is None:
         raise TypeError(
             f"only a bigframes remote function is supported as a callable. {constants.FEEDBACK_LINK}"
         )
-    x_transformed = op.func(x, y)
+    x_transformed = ibis_node(x, y)
     return x_transformed
 
 

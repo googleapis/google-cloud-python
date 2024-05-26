@@ -67,7 +67,7 @@ def bq_cf_connection_location_project(bigquery_client) -> str:
 
 @pytest.fixture(scope="module")
 def bq_cf_connection_location_project_mismatched() -> str:
-    """Pre-created BQ connection in the migframes-metrics project in US location,
+    """Pre-created BQ connection in the bigframes-metrics project in US location,
     in format PROJECT_ID.LOCATION.CONNECTION_NAME, used to invoke cloud function.
 
     $ bq show --connection --location=us --project_id=PROJECT_ID bigframes-rf-conn
@@ -108,11 +108,15 @@ def test_remote_function_direct_no_session_param(
         reuse=True,
     )
     def square(x):
-        # This executes on a remote function, where coverage isn't tracked.
-        return x * x  # pragma: NO COVER
+        return x * x
 
-    assert square.bigframes_remote_function
-    assert square.bigframes_cloud_function
+    # Function should still work normally.
+    assert square(2) == 4
+
+    # Function should have extra metadata attached for remote execution.
+    assert hasattr(square, "bigframes_remote_function")
+    assert hasattr(square, "bigframes_cloud_function")
+    assert hasattr(square, "ibis_node")
 
     scalars_df, scalars_pandas_df = scalars_dfs
 
@@ -161,8 +165,10 @@ def test_remote_function_direct_no_session_param_location_specified(
         reuse=True,
     )
     def square(x):
-        # This executes on a remote function, where coverage isn't tracked.
-        return x * x  # pragma: NO COVER
+        return x * x
+
+    # Function should still work normally.
+    assert square(2) == 4
 
     scalars_df, scalars_pandas_df = scalars_dfs
 
@@ -197,7 +203,10 @@ def test_remote_function_direct_no_session_param_location_mismatched(
     dataset_id_permanent,
     bq_cf_connection_location_mismatched,
 ):
-    with pytest.raises(ValueError):
+    with pytest.raises(
+        ValueError,
+        match=re.escape("The location does not match BigQuery connection location:"),
+    ):
 
         @rf.remote_function(
             [int],
@@ -212,7 +221,8 @@ def test_remote_function_direct_no_session_param_location_mismatched(
             reuse=True,
         )
         def square(x):
-            # This executes on a remote function, where coverage isn't tracked.
+            # Not expected to reach this code, as the location of the
+            # connection doesn't match the location of the dataset.
             return x * x  # pragma: NO COVER
 
 
@@ -239,8 +249,10 @@ def test_remote_function_direct_no_session_param_location_project_specified(
         reuse=True,
     )
     def square(x):
-        # This executes on a remote function, where coverage isn't tracked.
-        return x * x  # pragma: NO COVER
+        return x * x
+
+    # Function should still work normally.
+    assert square(2) == 4
 
     scalars_df, scalars_pandas_df = scalars_dfs
 
@@ -275,7 +287,12 @@ def test_remote_function_direct_no_session_param_project_mismatched(
     dataset_id_permanent,
     bq_cf_connection_location_project_mismatched,
 ):
-    with pytest.raises(ValueError):
+    with pytest.raises(
+        ValueError,
+        match=re.escape(
+            "The project_id does not match BigQuery connection gcp_project_id:"
+        ),
+    ):
 
         @rf.remote_function(
             [int],
@@ -290,7 +307,8 @@ def test_remote_function_direct_no_session_param_project_mismatched(
             reuse=True,
         )
         def square(x):
-            # This executes on a remote function, where coverage isn't tracked.
+            # Not expected to reach this code, as the project of the
+            # connection doesn't match the project of the dataset.
             return x * x  # pragma: NO COVER
 
 
@@ -302,8 +320,10 @@ def test_remote_function_direct_session_param(session_with_bq_connection, scalar
         session=session_with_bq_connection,
     )
     def square(x):
-        # This executes on a remote function, where coverage isn't tracked.
-        return x * x  # pragma: NO COVER
+        return x * x
+
+    # Function should still work normally.
+    assert square(2) == 4
 
     scalars_df, scalars_pandas_df = scalars_dfs
 
@@ -340,8 +360,10 @@ def test_remote_function_via_session_default(session_with_bq_connection, scalars
     # cloud function would be common and quickly reused.
     @session_with_bq_connection.remote_function([int], int)
     def square(x):
-        # This executes on a remote function, where coverage isn't tracked.
-        return x * x  # pragma: NO COVER
+        return x * x
+
+    # Function should still work normally.
+    assert square(2) == 4
 
     scalars_df, scalars_pandas_df = scalars_dfs
 
@@ -380,8 +402,10 @@ def test_remote_function_via_session_with_overrides(
         reuse=True,
     )
     def square(x):
-        # This executes on a remote function, where coverage isn't tracked.
-        return x * x  # pragma: NO COVER
+        return x * x
+
+    # Function should still work normally.
+    assert square(2) == 4
 
     scalars_df, scalars_pandas_df = scalars_dfs
 
@@ -508,7 +532,7 @@ def test_skip_bq_connection_check(dataset_id_permanent):
 
         @session.remote_function([int], int, dataset=dataset_id_permanent)
         def add_one(x):
-            # This executes on a remote function, where coverage isn't tracked.
+            # Not expected to reach this code, as the connection doesn't exist.
             return x + 1  # pragma: NO COVER
 
 
@@ -546,8 +570,10 @@ def test_read_gbq_function_like_original(
         reuse=True,
     )
     def square1(x):
-        # This executes on a remote function, where coverage isn't tracked.
-        return x * x  # pragma: NO COVER
+        return x * x
+
+    # Function should still work normally.
+    assert square1(2) == 4
 
     square2 = rf.read_gbq_function(
         function_name=square1.bigframes_remote_function,
