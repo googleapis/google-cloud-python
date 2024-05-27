@@ -51,6 +51,7 @@ from google.maps.places_v1.services.places import (
     transports,
 )
 from google.maps.places_v1.types import (
+    contextual_content,
     ev_charging,
     fuel_options,
     geometry,

@@ -20,6 +20,8 @@ __version__ = package_version.__version__
 
 from .services.places import PlacesAsyncClient, PlacesClient
 from .types.attribution import AuthorAttribution
+from .types.content_block import ContentBlock
+from .types.contextual_content import ContextualContent
 from .types.ev_charging import EVChargeOptions, EVConnectorType
 from .types.fuel_options import FuelOptions
 from .types.geometry import Circle
@@ -36,6 +38,7 @@ from .types.places_service import (
     SearchTextRequest,
     SearchTextResponse,
 )
+from .types.reference import References
 from .types.review import Review
 
 __all__ = (
@@ -44,6 +47,8 @@ __all__ = (
     "AutocompletePlacesRequest",
     "AutocompletePlacesResponse",
     "Circle",
+    "ContentBlock",
+    "ContextualContent",
     "EVChargeOptions",
     "EVConnectorType",
     "FuelOptions",
@@ -54,6 +59,7 @@ __all__ = (
     "Place",
     "PlacesClient",
     "PriceLevel",
+    "References",
     "Review",
     "SearchNearbyRequest",
     "SearchNearbyResponse",
