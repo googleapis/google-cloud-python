@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-dlp/#history
 
+## [3.18.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dlp-v3.17.0...google-cloud-dlp-v3.18.0) (2024-05-27)
+
+
+### Features
+
+* add secrets discovery support ([dec2866](https://github.com/googleapis/google-cloud-python/commit/dec2866236f474691c432c4950dc7bf9ba33dac2))
+
+
+### Documentation
+
+* Updated method documentation ([dec2866](https://github.com/googleapis/google-cloud-python/commit/dec2866236f474691c432c4950dc7bf9ba33dac2))
+
 ## [3.17.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dlp-v3.16.0...google-cloud-dlp-v3.17.0) (2024-05-07)
 
 

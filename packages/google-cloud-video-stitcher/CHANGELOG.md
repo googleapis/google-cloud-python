@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.7.10](https://github.com/googleapis/google-cloud-python/compare/google-cloud-video-stitcher-v0.7.9...google-cloud-video-stitcher-v0.7.10) (2024-05-27)
+
+
+### Features
+
+* add apis for Create, Read, Update, Delete for VODConfigs  ([d100eea](https://github.com/googleapis/google-cloud-python/commit/d100eea3c950a8ed40ec33230bd2af163616332b))
+* added adtracking to Livesession ([d100eea](https://github.com/googleapis/google-cloud-python/commit/d100eea3c950a8ed40ec33230bd2af163616332b))
+* added fetchoptions with custom headers for Live and VODConfigs ([d100eea](https://github.com/googleapis/google-cloud-python/commit/d100eea3c950a8ed40ec33230bd2af163616332b))
+* added targetting parameter support to Livesession ([d100eea](https://github.com/googleapis/google-cloud-python/commit/d100eea3c950a8ed40ec33230bd2af163616332b))
+* added token config for MediaCdnKey ([d100eea](https://github.com/googleapis/google-cloud-python/commit/d100eea3c950a8ed40ec33230bd2af163616332b))
+* allowed usage for VODConfigs in VODSession ([d100eea](https://github.com/googleapis/google-cloud-python/commit/d100eea3c950a8ed40ec33230bd2af163616332b))
+
 ## [0.7.9](https://github.com/googleapis/google-cloud-python/compare/google-cloud-video-stitcher-v0.7.8...google-cloud-video-stitcher-v0.7.9) (2024-03-05)
 
 

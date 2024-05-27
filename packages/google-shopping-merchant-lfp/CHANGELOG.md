@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.1](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-lfp-v0.1.0...google-shopping-merchant-lfp-v0.1.1) (2024-05-27)
+
+
+### Documentation
+
+* change in wording : feed specification -&gt; data specification ([57704b4](https://github.com/googleapis/google-cloud-python/commit/57704b4dec3397ad91e76f338c03e7e955ffcfa9))
+
 ## 0.1.0 (2024-04-17)
 
 

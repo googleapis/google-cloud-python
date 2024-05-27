@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.11.12](https://github.com/googleapis/google-cloud-python/compare/google-cloud-discoveryengine-v0.11.11...google-cloud-discoveryengine-v0.11.12) (2024-05-27)
+
+
+### Features
+
+* add control service APIs ([ef8e38a](https://github.com/googleapis/google-cloud-python/commit/ef8e38a8552601c3605bf8768d72b437737c16d5))
+* promote answer APIs to v1 GA ([ef8e38a](https://github.com/googleapis/google-cloud-python/commit/ef8e38a8552601c3605bf8768d72b437737c16d5))
+* promote grounding check APIs to v1 GA ([ef8e38a](https://github.com/googleapis/google-cloud-python/commit/ef8e38a8552601c3605bf8768d72b437737c16d5))
+* promote ranking APIs to v1 GA ([ef8e38a](https://github.com/googleapis/google-cloud-python/commit/ef8e38a8552601c3605bf8768d72b437737c16d5))
+* support cancelling import operations ([ef8e38a](https://github.com/googleapis/google-cloud-python/commit/ef8e38a8552601c3605bf8768d72b437737c16d5))
+* support writing user events for blended engines ([ef8e38a](https://github.com/googleapis/google-cloud-python/commit/ef8e38a8552601c3605bf8768d72b437737c16d5))
+
+
+### Documentation
+
+* keep the API doc up-to-date with recent changes ([ef8e38a](https://github.com/googleapis/google-cloud-python/commit/ef8e38a8552601c3605bf8768d72b437737c16d5))
+
 ## [0.11.11](https://github.com/googleapis/google-cloud-python/compare/google-cloud-discoveryengine-v0.11.10...google-cloud-discoveryengine-v0.11.11) (2024-04-15)
 
 
