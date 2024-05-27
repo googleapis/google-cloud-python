@@ -2038,10 +2038,11 @@ class UpdateSecurityCenterServiceRequest(proto.Message):
             indicates the request is valid while an error
             response indicates the request is invalid. Note
             that a subsequent request to actually update the
-            service could still fail because 1. the state
-            could have changed (e.g. IAM permission lost) or
+            service could still fail because:
+
+            1. The state could have changed (e.g. IAM permission lost) or
             2. A failure occurred while trying to delete the
-                module.
+               module.
     """
 
     security_center_service: "SecurityCenterService" = proto.Field(
