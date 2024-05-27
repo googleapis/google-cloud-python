@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.5.9](https://github.com/googleapis/google-cloud-python/compare/google-cloud-gke-backup-v0.5.8...google-cloud-gke-backup-v0.5.9) (2024-05-27)
+
+
+### Features
+
+* add fine-grained restore ([9268d28](https://github.com/googleapis/google-cloud-python/commit/9268d284f74af2398f50c3faf7af3278337d3f75))
+* add gitops ([9268d28](https://github.com/googleapis/google-cloud-python/commit/9268d284f74af2398f50c3faf7af3278337d3f75))
+* add restore order ([9268d28](https://github.com/googleapis/google-cloud-python/commit/9268d284f74af2398f50c3faf7af3278337d3f75))
+* add strict-permissive mode ([9268d28](https://github.com/googleapis/google-cloud-python/commit/9268d284f74af2398f50c3faf7af3278337d3f75))
+* add volume restore flexibility ([9268d28](https://github.com/googleapis/google-cloud-python/commit/9268d284f74af2398f50c3faf7af3278337d3f75))
+
+
+### Documentation
+
+* update duration comment to include new validation from smart scheduling ([9268d28](https://github.com/googleapis/google-cloud-python/commit/9268d284f74af2398f50c3faf7af3278337d3f75))
+
 ## [0.5.8](https://github.com/googleapis/google-cloud-python/compare/google-cloud-gke-backup-v0.5.7...google-cloud-gke-backup-v0.5.8) (2024-03-26)
 
 

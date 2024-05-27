@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.1.7](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-reports-v0.1.6...google-shopping-merchant-reports-v0.1.7) (2024-05-27)
+
+
+### Features
+
+* add a new enum `Effectiveness` ([0da7370](https://github.com/googleapis/google-cloud-python/commit/0da7370d5d21557bb0c04b8c9b1c46c9a583ad1d))
+* add a new field `effectiveness` to message `.google.shopping.merchant.reports.v1beta.PriceInsightsProductView` ([0da7370](https://github.com/googleapis/google-cloud-python/commit/0da7370d5d21557bb0c04b8c9b1c46c9a583ad1d))
+* add non_product_performance_view table to Reports sub-API ([0da7370](https://github.com/googleapis/google-cloud-python/commit/0da7370d5d21557bb0c04b8c9b1c46c9a583ad1d))
+
 ## [0.1.6](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-reports-v0.1.5...google-shopping-merchant-reports-v0.1.6) (2024-04-15)
 
 
