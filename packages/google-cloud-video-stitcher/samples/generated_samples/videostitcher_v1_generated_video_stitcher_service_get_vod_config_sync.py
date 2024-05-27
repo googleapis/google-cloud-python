@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for CreateVodSession
+# Snippet for GetVodConfig
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-video-stitcher
 
 
-# [START videostitcher_v1_generated_VideoStitcherService_CreateVodSession_sync]
+# [START videostitcher_v1_generated_VideoStitcherService_GetVodConfig_sync]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
 # It will require modifications to work:
@@ -34,23 +34,19 @@
 from google.cloud.video import stitcher_v1
 
 
-def sample_create_vod_session():
+def sample_get_vod_config():
     # Create a client
     client = stitcher_v1.VideoStitcherServiceClient()
 
     # Initialize request argument(s)
-    vod_session = stitcher_v1.VodSession()
-    vod_session.ad_tracking = "SERVER"
-
-    request = stitcher_v1.CreateVodSessionRequest(
-        parent="parent_value",
-        vod_session=vod_session,
+    request = stitcher_v1.GetVodConfigRequest(
+        name="name_value",
     )
 
     # Make the request
-    response = client.create_vod_session(request=request)
+    response = client.get_vod_config(request=request)
 
     # Handle the response
     print(response)
 
-# [END videostitcher_v1_generated_VideoStitcherService_CreateVodSession_sync]
+# [END videostitcher_v1_generated_VideoStitcherService_GetVodConfig_sync]

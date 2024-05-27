@@ -34,6 +34,7 @@ from google.cloud.video.stitcher_v1.types import (
     slates,
     stitch_details,
     video_stitcher_service,
+    vod_configs,
 )
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
@@ -253,6 +254,36 @@ class VideoStitcherServiceTransport(abc.ABC):
             self.delete_live_config: gapic_v1.method.wrap_method(
                 self.delete_live_config,
                 default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.update_live_config: gapic_v1.method.wrap_method(
+                self.update_live_config,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_vod_config: gapic_v1.method.wrap_method(
+                self.create_vod_config,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_vod_configs: gapic_v1.method.wrap_method(
+                self.list_vod_configs,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_vod_config: gapic_v1.method.wrap_method(
+                self.get_vod_config,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_vod_config: gapic_v1.method.wrap_method(
+                self.delete_vod_config,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_vod_config: gapic_v1.method.wrap_method(
+                self.update_vod_config,
+                default_timeout=None,
                 client_info=client_info,
             ),
         }
@@ -505,6 +536,63 @@ class VideoStitcherServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [video_stitcher_service.DeleteLiveConfigRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_live_config(
+        self,
+    ) -> Callable[
+        [video_stitcher_service.UpdateLiveConfigRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_vod_config(
+        self,
+    ) -> Callable[
+        [video_stitcher_service.CreateVodConfigRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_vod_configs(
+        self,
+    ) -> Callable[
+        [video_stitcher_service.ListVodConfigsRequest],
+        Union[
+            video_stitcher_service.ListVodConfigsResponse,
+            Awaitable[video_stitcher_service.ListVodConfigsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_vod_config(
+        self,
+    ) -> Callable[
+        [video_stitcher_service.GetVodConfigRequest],
+        Union[vod_configs.VodConfig, Awaitable[vod_configs.VodConfig]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_vod_config(
+        self,
+    ) -> Callable[
+        [video_stitcher_service.DeleteVodConfigRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_vod_config(
+        self,
+    ) -> Callable[
+        [video_stitcher_service.UpdateVodConfigRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
