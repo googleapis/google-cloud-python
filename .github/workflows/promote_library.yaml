@@ -1,0 +1,54 @@
+
+name: A workflow for updating the release level of packages from preview to stable
+
+# Controls when the action will run.
+
+on:
+  workflow_dispatch:
+  # TODO: enable this on a schedule
+  # schedule:
+  #   # * is a special character in YAML so you have to quote this string
+  #   # Run this Github Action every Monday at 7 AM UTC
+  #   - cron:  '0 7 * * 1'
+
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    permissions:
+      pull-requests: write # for googleapis/code-suggester
+    name: Update package release levels
+    runs-on: ubuntu-latest
+    # don't run the workflow on forks of googleapis/google-cloud-python
+    if: ${{github.repository == 'googleapis/google-cloud-python'}}
+    steps:
+      - uses: actions/checkout@v4
+        # Use a fetch-depth of 2
+        # See https://github.com/googleapis/google-cloud-python/issues/12013
+        # and https://github.com/actions/checkout#checkout-head.
+        with:
+          fetch-depth: 2
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.11
+      - name: Run promote_library.py
+        run: python3 promote_library.py
+        working-directory: ./scripts/promote_library
+      - uses: googleapis/code-suggester@v4
+        env:
+          ACCESS_TOKEN: ${{ secrets.YOSHI_CODE_BOT_TOKEN }}
+        with:
+          command: pr
+          force: true
+          upstream_owner: googleapis
+          upstream_repo: google-cloud-python
+          # Use BEGIN_COMMIT_OVERRIDE/END_COMMIT_OVERRIDE to ensure
+          # that the library is bumped to 1.0.0
+          description: 'BEGIN_COMMIT_OVERRIDE\nfeat: bump release level to production/stable\n\nRelease-As: 1.0.0\nEND_COMMIT_OVERRIDE\n'
+          title: 'feat: bump release level to production/stable'
+          message: 'feat: bump release level to production/stable'
+          branch: update-release-level
+          git_dir: '.'
