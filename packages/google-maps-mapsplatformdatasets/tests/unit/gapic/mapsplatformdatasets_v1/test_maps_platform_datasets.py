@@ -2470,6 +2470,7 @@ def test_list_datasets_non_empty_request_with_auto_populated_field():
     request = maps_platform_datasets.ListDatasetsRequest(
         parent="parent_value",
         page_token="page_token_value",
+        tag="tag_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2483,6 +2484,7 @@ def test_list_datasets_non_empty_request_with_auto_populated_field():
         assert args[0] == maps_platform_datasets.ListDatasetsRequest(
             parent="parent_value",
             page_token="page_token_value",
+            tag="tag_value",
         )
 
 
@@ -4534,6 +4536,7 @@ def test_list_datasets_rest_required_fields(
         (
             "page_size",
             "page_token",
+            "tag",
         )
     )
     jsonified_request.update(unset_fields)
@@ -4594,6 +4597,7 @@ def test_list_datasets_rest_unset_required_fields():
             (
                 "pageSize",
                 "pageToken",
+                "tag",
             )
         )
         & set(("parent",))

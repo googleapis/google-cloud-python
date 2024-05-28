@@ -242,7 +242,7 @@ class MapsPlatformDatasetsGrpcTransport(MapsPlatformDatasetsTransport):
     ) -> Callable[[maps_platform_datasets.CreateDatasetRequest], gmm_dataset.Dataset]:
         r"""Return a callable for the create dataset method over gRPC.
 
-        Create a new dataset for the specified project.
+        Creates a new dataset for the specified project.
 
         Returns:
             Callable[[~.CreateDatasetRequest],
@@ -270,7 +270,7 @@ class MapsPlatformDatasetsGrpcTransport(MapsPlatformDatasetsTransport):
     ]:
         r"""Return a callable for the update dataset metadata method over gRPC.
 
-        Update the metadata for the dataset.
+        Updates the metadata for the dataset.
 
         Returns:
             Callable[[~.UpdateDatasetMetadataRequest],
@@ -296,7 +296,7 @@ class MapsPlatformDatasetsGrpcTransport(MapsPlatformDatasetsTransport):
     ) -> Callable[[maps_platform_datasets.GetDatasetRequest], dataset.Dataset]:
         r"""Return a callable for the get dataset method over gRPC.
 
-        Get the dataset.
+        Gets the dataset.
 
         Returns:
             Callable[[~.GetDatasetRequest],
@@ -325,7 +325,7 @@ class MapsPlatformDatasetsGrpcTransport(MapsPlatformDatasetsTransport):
     ]:
         r"""Return a callable for the list datasets method over gRPC.
 
-        List all the datasets for the specified project.
+        Lists all the datasets for the specified project.
 
         Returns:
             Callable[[~.ListDatasetsRequest],
@@ -351,7 +351,7 @@ class MapsPlatformDatasetsGrpcTransport(MapsPlatformDatasetsTransport):
     ) -> Callable[[maps_platform_datasets.DeleteDatasetRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete dataset method over gRPC.
 
-        Delete the specified dataset .
+        Deletes the specified dataset.
 
         Returns:
             Callable[[~.DeleteDatasetRequest],
