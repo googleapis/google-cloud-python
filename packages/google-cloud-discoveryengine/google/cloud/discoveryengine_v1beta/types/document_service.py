@@ -83,7 +83,7 @@ class ListDocumentsRequest(proto.Message):
             Maximum number of
             [Document][google.cloud.discoveryengine.v1beta.Document]s to
             return. If unspecified, defaults to 100. The maximum allowed
-            value is 1000. Values above 1000 will be coerced to 1000.
+            value is 1000. Values above 1000 are set to 1000.
 
             If this field is negative, an ``INVALID_ARGUMENT`` error is
             returned.
@@ -161,7 +161,7 @@ class CreateDocumentRequest(proto.Message):
         document_id (str):
             Required. The ID to use for the
             [Document][google.cloud.discoveryengine.v1beta.Document],
-            which will become the final component of the
+            which becomes the final component of the
             [Document.name][google.cloud.discoveryengine.v1beta.Document.name].
 
             If the caller does not have permission to create the
@@ -216,15 +216,15 @@ class UpdateDocumentRequest(proto.Message):
             [allow_missing][google.cloud.discoveryengine.v1beta.UpdateDocumentRequest.allow_missing]
             is not set, a ``NOT_FOUND`` error is returned.
         allow_missing (bool):
-            If set to true, and the
+            If set to ``true`` and the
             [Document][google.cloud.discoveryengine.v1beta.Document] is
             not found, a new
-            [Document][google.cloud.discoveryengine.v1beta.Document]
-            will be created.
+            [Document][google.cloud.discoveryengine.v1beta.Document] is
+            be created.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Indicates which fields in the provided
-            imported 'document' to update. If not set, will
-            by default update all fields.
+            imported 'document' to update. If not set, by
+            default updates all fields.
     """
 
     document: gcd_document.Document = proto.Field(

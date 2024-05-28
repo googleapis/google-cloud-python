@@ -75,6 +75,8 @@ class TargetSite(proto.Message):
         generated_uri_pattern (str):
             Output only. This is system-generated based on the
             provided_uri_pattern.
+        root_domain_uri (str):
+            Output only. Root domain of the provided_uri_pattern.
         site_verification_info (google.cloud.discoveryengine_v1beta.types.SiteVerificationInfo):
             Output only. Site ownership and validity
             verification status.
@@ -187,6 +189,10 @@ class TargetSite(proto.Message):
     generated_uri_pattern: str = proto.Field(
         proto.STRING,
         number=4,
+    )
+    root_domain_uri: str = proto.Field(
+        proto.STRING,
+        number=10,
     )
     site_verification_info: "SiteVerificationInfo" = proto.Field(
         proto.MESSAGE,

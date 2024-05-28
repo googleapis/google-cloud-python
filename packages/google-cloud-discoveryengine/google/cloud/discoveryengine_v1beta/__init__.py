@@ -22,6 +22,7 @@ from .services.completion_service import (
     CompletionServiceAsyncClient,
     CompletionServiceClient,
 )
+from .services.control_service import ControlServiceAsyncClient, ControlServiceClient
 from .services.conversational_search_service import (
     ConversationalSearchServiceAsyncClient,
     ConversationalSearchServiceClient,
@@ -36,6 +37,7 @@ from .services.grounded_generation_service import (
     GroundedGenerationServiceAsyncClient,
     GroundedGenerationServiceClient,
 )
+from .services.project_service import ProjectServiceAsyncClient, ProjectServiceClient
 from .services.rank_service import RankServiceAsyncClient, RankServiceClient
 from .services.recommendation_service import (
     RecommendationServiceAsyncClient,
@@ -68,11 +70,21 @@ from .types.common import (
     Interval,
     SearchAddOn,
     SearchTier,
+    SearchUseCase,
     SolutionType,
     UserInfo,
 )
 from .types.completion import SuggestionDenyListEntry
 from .types.completion_service import CompleteQueryRequest, CompleteQueryResponse
+from .types.control import Condition, Control
+from .types.control_service import (
+    CreateControlRequest,
+    DeleteControlRequest,
+    GetControlRequest,
+    ListControlsRequest,
+    ListControlsResponse,
+    UpdateControlRequest,
+)
 from .types.conversation import (
     Conversation,
     ConversationContext,
@@ -99,6 +111,7 @@ from .types.conversational_search_service import (
     UpdateConversationRequest,
     UpdateSessionRequest,
 )
+from .types.custom_tuning_model import CustomTuningModel
 from .types.data_store import DataStore
 from .types.data_store_service import (
     CreateDataStoreMetadata,
@@ -162,6 +175,8 @@ from .types.import_config import (
     ImportUserEventsResponse,
     SpannerSource,
 )
+from .types.project import Project
+from .types.project_service import ProvisionProjectMetadata, ProvisionProjectRequest
 from .types.purge_config import (
     PurgeDocumentsMetadata,
     PurgeDocumentsRequest,
@@ -186,6 +201,8 @@ from .types.schema_service import (
 )
 from .types.search_service import SearchRequest, SearchResponse
 from .types.search_tuning_service import (
+    ListCustomModelsRequest,
+    ListCustomModelsResponse,
     TrainCustomModelMetadata,
     TrainCustomModelRequest,
     TrainCustomModelResponse,
@@ -242,11 +259,13 @@ from .types.user_event_service import CollectUserEventRequest, WriteUserEventReq
 
 __all__ = (
     "CompletionServiceAsyncClient",
+    "ControlServiceAsyncClient",
     "ConversationalSearchServiceAsyncClient",
     "DataStoreServiceAsyncClient",
     "DocumentServiceAsyncClient",
     "EngineServiceAsyncClient",
     "GroundedGenerationServiceAsyncClient",
+    "ProjectServiceAsyncClient",
     "RankServiceAsyncClient",
     "RecommendationServiceAsyncClient",
     "SchemaServiceAsyncClient",
@@ -276,12 +295,16 @@ __all__ = (
     "CompleteQueryResponse",
     "CompletionInfo",
     "CompletionServiceClient",
+    "Condition",
+    "Control",
+    "ControlServiceClient",
     "Conversation",
     "ConversationContext",
     "ConversationMessage",
     "ConversationalSearchServiceClient",
     "ConverseConversationRequest",
     "ConverseConversationResponse",
+    "CreateControlRequest",
     "CreateConversationRequest",
     "CreateDataStoreMetadata",
     "CreateDataStoreRequest",
@@ -294,8 +317,10 @@ __all__ = (
     "CreateTargetSiteMetadata",
     "CreateTargetSiteRequest",
     "CustomAttribute",
+    "CustomTuningModel",
     "DataStore",
     "DataStoreServiceClient",
+    "DeleteControlRequest",
     "DeleteConversationRequest",
     "DeleteDataStoreMetadata",
     "DeleteDataStoreRequest",
@@ -328,6 +353,7 @@ __all__ = (
     "FirestoreSource",
     "GcsSource",
     "GetAnswerRequest",
+    "GetControlRequest",
     "GetConversationRequest",
     "GetDataStoreRequest",
     "GetDocumentRequest",
@@ -351,8 +377,12 @@ __all__ = (
     "ImportUserEventsResponse",
     "IndustryVertical",
     "Interval",
+    "ListControlsRequest",
+    "ListControlsResponse",
     "ListConversationsRequest",
     "ListConversationsResponse",
+    "ListCustomModelsRequest",
+    "ListCustomModelsResponse",
     "ListDataStoresRequest",
     "ListDataStoresResponse",
     "ListDocumentsRequest",
@@ -371,6 +401,10 @@ __all__ = (
     "PageInfo",
     "PanelInfo",
     "PauseEngineRequest",
+    "Project",
+    "ProjectServiceClient",
+    "ProvisionProjectMetadata",
+    "ProvisionProjectRequest",
     "PurgeDocumentsMetadata",
     "PurgeDocumentsRequest",
     "PurgeDocumentsResponse",
@@ -399,6 +433,7 @@ __all__ = (
     "SearchServiceClient",
     "SearchTier",
     "SearchTuningServiceClient",
+    "SearchUseCase",
     "ServingConfig",
     "ServingConfigServiceClient",
     "Session",
@@ -417,6 +452,7 @@ __all__ = (
     "TuneEngineMetadata",
     "TuneEngineRequest",
     "TuneEngineResponse",
+    "UpdateControlRequest",
     "UpdateConversationRequest",
     "UpdateDataStoreRequest",
     "UpdateDocumentRequest",

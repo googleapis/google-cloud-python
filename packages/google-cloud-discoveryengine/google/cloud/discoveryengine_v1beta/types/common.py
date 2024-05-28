@@ -24,6 +24,7 @@ __protobuf__ = proto.module(
     manifest={
         "IndustryVertical",
         "SolutionType",
+        "SearchUseCase",
         "SearchTier",
         "SearchAddOn",
         "Interval",
@@ -80,6 +81,26 @@ class SolutionType(proto.Enum):
     SOLUTION_TYPE_SEARCH = 2
     SOLUTION_TYPE_CHAT = 3
     SOLUTION_TYPE_GENERATIVE_CHAT = 4
+
+
+class SearchUseCase(proto.Enum):
+    r"""Defines a further subdivision of ``SolutionType``. Specifically
+    applies to
+    [SOLUTION_TYPE_SEARCH][google.cloud.discoveryengine.v1beta.SolutionType.SOLUTION_TYPE_SEARCH].
+
+    Values:
+        SEARCH_USE_CASE_UNSPECIFIED (0):
+            Value used when unset. Will not occur in CSS.
+        SEARCH_USE_CASE_SEARCH (1):
+            Search use case. Expects the traffic has a non-empty
+            [query][google.cloud.discoveryengine.v1beta.SearchRequest.query].
+        SEARCH_USE_CASE_BROWSE (2):
+            Browse use case. Expects the traffic has an empty
+            [query][google.cloud.discoveryengine.v1beta.SearchRequest.query].
+    """
+    SEARCH_USE_CASE_UNSPECIFIED = 0
+    SEARCH_USE_CASE_SEARCH = 1
+    SEARCH_USE_CASE_BROWSE = 2
 
 
 class SearchTier(proto.Enum):

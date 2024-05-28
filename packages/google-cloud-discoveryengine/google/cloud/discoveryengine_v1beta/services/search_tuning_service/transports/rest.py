@@ -72,6 +72,14 @@ class SearchTuningServiceRestInterceptor:
 
     .. code-block:: python
         class MyCustomSearchTuningServiceInterceptor(SearchTuningServiceRestInterceptor):
+            def pre_list_custom_models(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_custom_models(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_train_custom_model(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -85,6 +93,31 @@ class SearchTuningServiceRestInterceptor:
 
 
     """
+
+    def pre_list_custom_models(
+        self,
+        request: search_tuning_service.ListCustomModelsRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        search_tuning_service.ListCustomModelsRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for list_custom_models
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the SearchTuningService server.
+        """
+        return request, metadata
+
+    def post_list_custom_models(
+        self, response: search_tuning_service.ListCustomModelsResponse
+    ) -> search_tuning_service.ListCustomModelsResponse:
+        """Post-rpc interceptor for list_custom_models
+
+        Override in a subclass to manipulate the response
+        after it is returned by the SearchTuningService server but before
+        it is returned to user code.
+        """
+        return response
 
     def pre_train_custom_model(
         self,
@@ -104,6 +137,27 @@ class SearchTuningServiceRestInterceptor:
         self, response: operations_pb2.Operation
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for train_custom_model
+
+        Override in a subclass to manipulate the response
+        after it is returned by the SearchTuningService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_cancel_operation(
+        self,
+        request: operations_pb2.CancelOperationRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for cancel_operation
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the SearchTuningService server.
+        """
+        return request, metadata
+
+    def post_cancel_operation(self, response: None) -> None:
+        """Post-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the response
         after it is returned by the SearchTuningService server but before
@@ -265,6 +319,18 @@ class SearchTuningServiceRestTransport(SearchTuningServiceTransport):
         # Only create a new client if we do not already have one.
         if self._operations_client is None:
             http_options: Dict[str, List[Dict[str, str]]] = {
+                "google.longrunning.Operations.CancelOperation": [
+                    {
+                        "method": "post",
+                        "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*/operations/*}:cancel",
+                        "body": "*",
+                    },
+                    {
+                        "method": "post",
+                        "uri": "/v1beta/{name=projects/*/locations/*/dataStores/*/branches/*/operations/*}:cancel",
+                        "body": "*",
+                    },
+                ],
                 "google.longrunning.Operations.GetOperation": [
                     {
                         "method": "get",
@@ -399,6 +465,98 @@ class SearchTuningServiceRestTransport(SearchTuningServiceTransport):
         # Return the client from cache.
         return self._operations_client
 
+    class _ListCustomModels(SearchTuningServiceRestStub):
+        def __hash__(self):
+            return hash("ListCustomModels")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: search_tuning_service.ListCustomModelsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> search_tuning_service.ListCustomModelsResponse:
+            r"""Call the list custom models method over HTTP.
+
+            Args:
+                request (~.search_tuning_service.ListCustomModelsRequest):
+                    The request object. Request message for
+                [SearchTuningService.ListCustomModels][google.cloud.discoveryengine.v1beta.SearchTuningService.ListCustomModels]
+                method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.search_tuning_service.ListCustomModelsResponse:
+                    Response message for
+                [SearchTuningService.ListCustomModels][google.cloud.discoveryengine.v1beta.SearchTuningService.ListCustomModels]
+                method.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1beta/{data_store=projects/*/locations/*/collections/*/dataStores/*}/customModels",
+                },
+            ]
+            request, metadata = self._interceptor.pre_list_custom_models(
+                request, metadata
+            )
+            pb_request = search_tuning_service.ListCustomModelsRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = search_tuning_service.ListCustomModelsResponse()
+            pb_resp = search_tuning_service.ListCustomModelsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_list_custom_models(resp)
+            return resp
+
     class _TrainCustomModel(SearchTuningServiceRestStub):
         def __hash__(self):
             return hash("TrainCustomModel")
@@ -497,6 +655,17 @@ class SearchTuningServiceRestTransport(SearchTuningServiceTransport):
             return resp
 
     @property
+    def list_custom_models(
+        self,
+    ) -> Callable[
+        [search_tuning_service.ListCustomModelsRequest],
+        search_tuning_service.ListCustomModelsResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListCustomModels(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def train_custom_model(
         self,
     ) -> Callable[
@@ -505,6 +674,76 @@ class SearchTuningServiceRestTransport(SearchTuningServiceTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._TrainCustomModel(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def cancel_operation(self):
+        return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
+
+    class _CancelOperation(SearchTuningServiceRestStub):
+        def __call__(
+            self,
+            request: operations_pb2.CancelOperationRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> None:
+            r"""Call the cancel operation method over HTTP.
+
+            Args:
+                request (operations_pb2.CancelOperationRequest):
+                    The request object for CancelOperation method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*/operations/*}:cancel",
+                    "body": "*",
+                },
+                {
+                    "method": "post",
+                    "uri": "/v1beta/{name=projects/*/locations/*/dataStores/*/branches/*/operations/*}:cancel",
+                    "body": "*",
+                },
+            ]
+
+            request, metadata = self._interceptor.pre_cancel_operation(
+                request, metadata
+            )
+            request_kwargs = json_format.MessageToDict(request)
+            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+            body = json.dumps(transcoded_request["body"])
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            return self._interceptor.post_cancel_operation(None)
 
     @property
     def get_operation(self):
