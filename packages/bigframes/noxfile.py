@@ -800,33 +800,57 @@ def notebook(session: nox.Session):
     for process in processes:
         process.join()
 
-    # when run via pytest, notebooks output a .bytesprocessed report
+    # when the environment variable is set as it is above,
+    # notebooks output a .bytesprocessed and .slotmillis report
     # collect those reports and print a summary
-    _print_bytes_processed_report()
+    _print_performance_report()
 
 
-def _print_bytes_processed_report():
-    """Add an informational report about http queries and bytes
-    processed to the testlog output for purposes of measuring
-    bigquery-related performance changes.
+def _print_performance_report():
+    """Add an informational report about http queries, bytes
+    processed, and slot time to the testlog output for purposes
+    of measuring bigquery-related performance changes.
     """
     print("---BIGQUERY USAGE REPORT---")
-    cumulative_queries = 0
-    cumulative_bytes = 0
-    for report in Path("notebooks/").glob("*/*.bytesprocessed"):
-        with open(report, "r") as f:
-            filename = report.stem
-            lines = f.read().splitlines()
+    results_dict = {}
+    for bytes_report in Path("notebooks/").glob("*/*.bytesprocessed"):
+        with open(bytes_report, "r") as bytes_file:
+            filename = bytes_report.stem
+            lines = bytes_file.read().splitlines()
             query_count = len(lines)
             total_bytes = sum([int(line) for line in lines])
-            format_string = f"{filename} - query count: {query_count}, bytes processed sum: {total_bytes}"
-            print(format_string)
-            cumulative_bytes += total_bytes
-            cumulative_queries += query_count
-    print(
-        "---total queries: {total_queries}, total bytes: {total_bytes}---".format(
-            total_queries=cumulative_queries, total_bytes=cumulative_bytes
+            results_dict[filename] = [query_count, total_bytes]
+    for millis_report in Path("notebooks/").glob("*/*.slotmillis"):
+        with open(millis_report, "r") as millis_file:
+            filename = millis_report.stem
+            lines = millis_file.read().splitlines()
+            total_slot_millis = sum([int(line) for line in lines])
+            results_dict[filename] += [total_slot_millis]
+
+    cumulative_queries = 0
+    cumulative_bytes = 0
+    cumulative_slot_millis = 0
+    for results in results_dict.values():
+        if len(results) != 3:
+            raise IOError(
+                "Mismatch in performance logging output. "
+                "Expected one .bytesprocessed and one .slotmillis "
+                "file for each notebook."
+            )
+        query_count, total_bytes, total_slot_millis = results
+        cumulative_queries += query_count
+        cumulative_bytes += total_bytes
+        cumulative_slot_millis += total_slot_millis
+        print(
+            f"{filename} - query count: {query_count},"
+            f" bytes processed sum: {total_bytes},"
+            f" slot millis sum: {total_slot_millis}"
         )
+
+    print(
+        f"---total queries: {cumulative_queries}, "
+        f"total bytes: {cumulative_bytes}, "
+        f"total slot millis: {cumulative_slot_millis}---"
     )
 
 
