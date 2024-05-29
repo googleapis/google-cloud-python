@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-container/#history
 
+## [2.46.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-container-v2.45.0...google-cloud-container-v2.46.0) (2024-05-29)
+
+
+### Features
+
+* A new message `HugepagesConfig` is added ([e0c6241](https://github.com/googleapis/google-cloud-python/commit/e0c6241e3c93cba3529288744fd73cc1cd1dfcb0))
+
+
+### Documentation
+
+* A comment for field `desired_in_transit_encryption_config` in message `.google.container.v1beta1.ClusterUpdate` is changed ([e0c6241](https://github.com/googleapis/google-cloud-python/commit/e0c6241e3c93cba3529288744fd73cc1cd1dfcb0))
+* A comment for field `desired_private_cluster_config` in message `.google.container.v1beta1.ClusterUpdate` is changed ([e0c6241](https://github.com/googleapis/google-cloud-python/commit/e0c6241e3c93cba3529288744fd73cc1cd1dfcb0))
+
 ## [2.45.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-container-v2.44.0...google-cloud-container-v2.45.0) (2024-03-27)
 
 

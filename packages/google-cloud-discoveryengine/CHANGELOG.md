@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.11.13](https://github.com/googleapis/google-cloud-python/compare/google-cloud-discoveryengine-v0.11.12...google-cloud-discoveryengine-v0.11.13) (2024-05-29)
+
+
+### Features
+
+* add control service APIs ([5980ee6](https://github.com/googleapis/google-cloud-python/commit/5980ee6c11023b02e231f09aab134a07b64c745a))
+* add custom model list API ([5980ee6](https://github.com/googleapis/google-cloud-python/commit/5980ee6c11023b02e231f09aab134a07b64c745a))
+* add provision project API ([5980ee6](https://github.com/googleapis/google-cloud-python/commit/5980ee6c11023b02e231f09aab134a07b64c745a))
+* return relevance score for chunk based search (alpha only) ([5980ee6](https://github.com/googleapis/google-cloud-python/commit/5980ee6c11023b02e231f09aab134a07b64c745a))
+* support cancelling import operations ([5980ee6](https://github.com/googleapis/google-cloud-python/commit/5980ee6c11023b02e231f09aab134a07b64c745a))
+* support multiple parent patterns for controls ([5980ee6](https://github.com/googleapis/google-cloud-python/commit/5980ee6c11023b02e231f09aab134a07b64c745a))
+* support writing user events for blended engines ([5980ee6](https://github.com/googleapis/google-cloud-python/commit/5980ee6c11023b02e231f09aab134a07b64c745a))
+
+
+### Documentation
+
+* keep the API doc up-to-date with recent changes ([5980ee6](https://github.com/googleapis/google-cloud-python/commit/5980ee6c11023b02e231f09aab134a07b64c745a))
+
 ## [0.11.12](https://github.com/googleapis/google-cloud-python/compare/google-cloud-discoveryengine-v0.11.11...google-cloud-discoveryengine-v0.11.12) (2024-05-27)
 
 
