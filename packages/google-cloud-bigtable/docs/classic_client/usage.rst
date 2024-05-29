@@ -1,10 +1,15 @@
-Using the Sync Client
-=====================
+Classic Client
+==============
 
 .. toctree::
   :maxdepth: 2
 
   client-intro
+
+  instance-api
+  table-api
+  data-api
+
   client
   cluster
   instance
