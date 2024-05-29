@@ -28,7 +28,7 @@ _BACKUP_NAME_RE = re.compile(
     r"^projects/(?P<project>[^/]+)/"
     r"instances/(?P<instance_id>[a-z][-a-z0-9]*)/"
     r"clusters/(?P<cluster_id>[a-z][-a-z0-9]*)/"
-    r"backups/(?P<backup_id>[a-z][a-z0-9_\-]*[a-z0-9])$"
+    r"backups/(?P<backup_id>[_a-zA-Z0-9][-_.a-zA-Z0-9]*)$"
 )
 
 _TABLE_NAME_RE = re.compile(
