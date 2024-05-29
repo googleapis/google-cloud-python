@@ -271,6 +271,30 @@ class TestClient(unittest.TestCase):
         self.assertIsInstance(client._default_load_job_config, LoadJobConfig)
         self.assertTrue(client._default_load_job_config.create_session)
 
+    def test__call_api_extra_headers(self):
+        # Note: We test at a lower layer to ensure that extra headers are
+        # populated when we actually make the call in requests.
+        # Arrange
+        http = mock.create_autospec(requests.Session, instance=True)
+        http.is_mtls = False
+        response = mock.create_autospec(requests.Response, instance=True)
+        response.status_code = 200
+        http.request.return_value = response
+        creds = _make_credentials()
+        client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
+
+        # Act
+        client._connection.extra_headers = {"x-goog-request-reason": "because-friday"}
+        client._call_api(
+            retry=None, method="GET", path="/bigquery/v2/projects/my-proj/jobs/my-job"
+        )
+
+        # Assert
+        http.request.assert_called_once()
+        _, kwargs = http.request.call_args
+        headers = kwargs["headers"]
+        assert headers["x-goog-request-reason"] == "because-friday"
+
     def test__call_api_applying_custom_retry_on_timeout(self):
         from concurrent.futures import TimeoutError
         from google.cloud.bigquery.retry import DEFAULT_RETRY
