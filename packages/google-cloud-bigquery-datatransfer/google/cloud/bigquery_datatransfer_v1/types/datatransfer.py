@@ -502,7 +502,7 @@ class CreateTransferConfigRequest(proto.Message):
             .. raw:: html
 
                 <pre class="prettyprint" suppresswarning="true">
-                https://www.gstatic.com/bigquerydatatransfer/oauthz/auth?redirect_uri=urn:ietf:wg:oauth:2.0:oob&response_type=authorization_code&client_id=<var>client_id</var>&scope=<var>data_source_scopes</var>
+                https://bigquery.cloud.google.com/datatransfer/oauthz/auth?redirect_uri=urn:ietf:wg:oauth:2.0:oob&response_type=authorization_code&client_id=<var>client_id</var>&scope=<var>data_source_scopes</var>
                 </pre>
 
             -  The client_id is the OAuth client_id of the a data source
@@ -523,7 +523,7 @@ class CreateTransferConfigRequest(proto.Message):
             .. raw:: html
 
                 <pre class="prettyprint" suppresswarning="true">
-                https://www.gstatic.com/bigquerydatatransfer/oauthz/auth?redirect_uri=urn:ietf:wg:oauth:2.0:oob&response_type=version_info&client_id=<var>client_id</var>&scope=<var>data_source_scopes</var>
+                https://bigquery.cloud.google.com/datatransfer/oauthz/auth?redirect_uri=urn:ietf:wg:oauth:2.0:oob&response_type=version_info&client_id=<var>client_id</var>&scope=<var>data_source_scopes</var>
                 </pre>
 
             -  The client_id is the OAuth client_id of the a data source
@@ -589,7 +589,7 @@ class UpdateTransferConfigRequest(proto.Message):
             .. raw:: html
 
                 <pre class="prettyprint" suppresswarning="true">
-                https://www.gstatic.com/bigquerydatatransfer/oauthz/auth?redirect_uri=urn:ietf:wg:oauth:2.0:oob&response_type=authorization_code&client_id=<var>client_id</var>&scope=<var>data_source_scopes</var>
+                https://bigquery.cloud.google.com/datatransfer/oauthz/auth?redirect_uri=urn:ietf:wg:oauth:2.0:oob&response_type=authorization_code&client_id=<var>client_id</var>&scope=<var>data_source_scopes</var>
                 </pre>
 
             -  The client_id is the OAuth client_id of the a data source
@@ -613,7 +613,7 @@ class UpdateTransferConfigRequest(proto.Message):
             .. raw:: html
 
                 <pre class="prettyprint" suppresswarning="true">
-                https://www.gstatic.com/bigquerydatatransfer/oauthz/auth?redirect_uri=urn:ietf:wg:oauth:2.0:oob&response_type=version_info&client_id=<var>client_id</var>&scope=<var>data_source_scopes</var>
+                https://bigquery.cloud.google.com/datatransfer/oauthz/auth?redirect_uri=urn:ietf:wg:oauth:2.0:oob&response_type=version_info&client_id=<var>client_id</var>&scope=<var>data_source_scopes</var>
                 </pre>
 
             -  The client_id is the OAuth client_id of the a data source
