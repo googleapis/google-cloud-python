@@ -527,15 +527,9 @@ def prerelease_deps(session):
         "requests",
     ]
     session.install(*other_deps)
-    session.run("python", "-m", "pip", "freeze")
 
     # Print out package versions.
     session.run("python", "-m", "pip", "freeze")
-
-    session.run(
-        "python", "-c", "import google.protobuf; print(google.protobuf.__version__)"
-    )
-    session.run("python", "-c", "import grpc; print(grpc.__version__)")
 
     session.run("py.test", "tests/unit")
 
