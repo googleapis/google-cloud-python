@@ -23,6 +23,10 @@ _MAX_INCREMENT_VALUE = (1 << 63) - 1
 
 
 class ReadModifyWriteRule(abc.ABC):
+    """
+    Abstract base class for read-modify-write rules.
+    """
+
     def __init__(self, family: str, qualifier: bytes | str):
         qualifier = (
             qualifier if isinstance(qualifier, bytes) else qualifier.encode("utf-8")
@@ -39,6 +43,23 @@ class ReadModifyWriteRule(abc.ABC):
 
 
 class IncrementRule(ReadModifyWriteRule):
+    """
+    Rule to increment a cell's value.
+
+    Args:
+        family (str):
+            The family name of the cell to increment.
+        qualifier (bytes | str):
+            The qualifier of the cell to increment.
+        increment_amount (int):
+            The amount to increment the cell's value. Must be between -2**63 and 2**63 (64-bit signed int).
+    Raises:
+        TypeError:
+            If increment_amount is not an integer.
+        ValueError:
+            If increment_amount is not between -2**63 and 2**63 (64-bit signed int).
+    """
+
     def __init__(self, family: str, qualifier: bytes | str, increment_amount: int = 1):
         if not isinstance(increment_amount, int):
             raise TypeError("increment_amount must be an integer")
@@ -58,6 +79,20 @@ class IncrementRule(ReadModifyWriteRule):
 
 
 class AppendValueRule(ReadModifyWriteRule):
+    """
+    Rule to append a value to a cell's value.
+
+    Args:
+        family (str):
+            The family name of the cell to append to.
+        qualifier (bytes | str):
+            The qualifier of the cell to append to.
+        append_value (bytes | str):
+            The value to append to the cell's value.
+    Raises:
+        TypeError: If append_value is not bytes or str.
+    """
+
     def __init__(self, family: str, qualifier: bytes | str, append_value: bytes | str):
         append_value = (
             append_value.encode("utf-8")

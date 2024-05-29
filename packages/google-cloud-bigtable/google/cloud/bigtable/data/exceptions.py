@@ -142,10 +142,12 @@ class MutationsExceptionGroup(_BigtableExceptionGroup):
         Format a message for the exception group
 
         Args:
-          - excs: the exceptions in the group
-          - total_entries: the total number of entries attempted, successful or not
-          - exc_count: the number of exceptions associated with the request
-             if None, this will be len(excs)
+            excs: the exceptions in the group
+            total_entries: the total number of entries attempted, successful or not
+            exc_count: the number of exceptions associated with the request
+                if None, this will be len(excs)
+        Returns:
+            str: the formatted message
         """
         exc_count = exc_count if exc_count is not None else len(excs)
         entry_str = "entry" if exc_count == 1 else "entries"
@@ -156,10 +158,10 @@ class MutationsExceptionGroup(_BigtableExceptionGroup):
     ):
         """
         Args:
-          - excs: the exceptions in the group
-          - total_entries: the total number of entries attempted, successful or not
-          - message: the message for the exception group. If None, a default message
-              will be generated
+            excs: the exceptions in the group
+            total_entries: the total number of entries attempted, successful or not
+            message: the message for the exception group. If None, a default message
+                will be generated
         """
         message = (
             message
@@ -174,9 +176,11 @@ class MutationsExceptionGroup(_BigtableExceptionGroup):
     ):
         """
         Args:
-          - excs: the exceptions in the group
-          - total_entries: the total number of entries attempted, successful or not
-          - message: the message for the exception group. If None, a default message
+            excs: the exceptions in the group
+            total_entries: the total number of entries attempted, successful or not
+            message: the message for the exception group. If None, a default message
+        Returns:
+            MutationsExceptionGroup: the new instance
         """
         message = (
             message if message is not None else cls._format_message(excs, total_entries)
@@ -200,12 +204,14 @@ class MutationsExceptionGroup(_BigtableExceptionGroup):
         describe the number of exceptions that were truncated.
 
         Args:
-          - first_list: the set of oldest exceptions to add to the ExceptionGroup
-          - last_list: the set of newest exceptions to add to the ExceptionGroup
-          - total_excs: the total number of exceptions associated with the request
-             Should be len(first_list) + len(last_list) + number of dropped exceptions
-             in the middle
-          - entry_count: the total number of entries attempted, successful or not
+            first_list: the set of oldest exceptions to add to the ExceptionGroup
+            last_list: the set of newest exceptions to add to the ExceptionGroup
+            total_excs: the total number of exceptions associated with the request
+                Should be len(first_list) + len(last_list) + number of dropped exceptions
+                in the middle
+            entry_count: the total number of entries attempted, successful or not
+        Returns:
+            MutationsExceptionGroup: the new instance
         """
         first_count, last_count = len(first_list), len(last_list)
         if first_count + last_count >= total_excs:

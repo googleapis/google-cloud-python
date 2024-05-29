@@ -56,6 +56,14 @@ class _MutateRowsOperationAsync:
 
     Errors are exposed as a MutationsExceptionGroup, which contains a list of
     exceptions organized by the related failed mutation entries.
+
+    Args:
+        gapic_client: the client to use for the mutate_rows call
+        table: the table associated with the request
+        mutation_entries: a list of RowMutationEntry objects to send to the server
+        operation_timeout: the timeout to use for the entire operation, in seconds.
+        attempt_timeout: the timeout to use for each mutate_rows attempt, in seconds.
+            If not specified, the request will run until operation_timeout is reached.
     """
 
     def __init__(
@@ -67,15 +75,6 @@ class _MutateRowsOperationAsync:
         attempt_timeout: float | None,
         retryable_exceptions: Sequence[type[Exception]] = (),
     ):
-        """
-        Args:
-          - gapic_client: the client to use for the mutate_rows call
-          - table: the table associated with the request
-          - mutation_entries: a list of RowMutationEntry objects to send to the server
-          - operation_timeout: the timeout to use for the entire operation, in seconds.
-          - attempt_timeout: the timeout to use for each mutate_rows attempt, in seconds.
-              If not specified, the request will run until operation_timeout is reached.
-        """
         # check that mutations are within limits
         total_mutations = sum(len(entry.mutations) for entry in mutation_entries)
         if total_mutations > _MUTATE_ROWS_REQUEST_MUTATION_LIMIT:
@@ -121,7 +120,7 @@ class _MutateRowsOperationAsync:
         Start the operation, and run until completion
 
         Raises:
-          - MutationsExceptionGroup: if any mutations failed
+            MutationsExceptionGroup: if any mutations failed
         """
         try:
             # trigger mutate_rows
@@ -157,9 +156,9 @@ class _MutateRowsOperationAsync:
         Run a single attempt of the mutate_rows rpc.
 
         Raises:
-          - _MutateRowsIncomplete: if there are failed mutations eligible for
-              retry after the attempt is complete
-          - GoogleAPICallError: if the gapic rpc fails
+            _MutateRowsIncomplete: if there are failed mutations eligible for
+                retry after the attempt is complete
+            GoogleAPICallError: if the gapic rpc fails
         """
         request_entries = [self.mutations[idx].proto for idx in self.remaining_indices]
         # track mutations in this request that have not been finalized yet
@@ -213,8 +212,8 @@ class _MutateRowsOperationAsync:
         retryable.
 
         Args:
-          - idx: the index of the mutation that failed
-          - exc: the exception to add to the list
+            idx: the index of the mutation that failed
+            exc: the exception to add to the list
         """
         entry = self.mutations[idx].entry
         self.errors.setdefault(idx, []).append(exc)

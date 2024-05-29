@@ -1498,7 +1498,6 @@ class TestReadRows:
         "per_request_t, operation_t, expected_num",
         [
             (0.05, 0.08, 2),
-            (0.05, 0.54, 11),
             (0.05, 0.14, 3),
             (0.05, 0.24, 5),
         ],

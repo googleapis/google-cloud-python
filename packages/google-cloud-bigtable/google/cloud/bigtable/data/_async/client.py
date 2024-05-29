@@ -116,8 +116,8 @@ class BigtableDataClientAsync(ClientWithProject):
                 Client options used to set user options
                 on the client. API Endpoint should be set through client_options.
         Raises:
-          - RuntimeError if called outside of an async context (no running event loop)
-          - ValueError if pool_size is less than 1
+          RuntimeError: if called outside of an async context (no running event loop)
+          ValueError: if pool_size is less than 1
         """
         # set up transport in registry
         transport_str = f"pooled_grpc_asyncio_{pool_size}"
@@ -199,8 +199,9 @@ class BigtableDataClientAsync(ClientWithProject):
     def _start_background_channel_refresh(self) -> None:
         """
         Starts a background task to ping and warm each channel in the pool
+
         Raises:
-          - RuntimeError if not called in an asyncio event loop
+          RuntimeError: if not called in an asyncio event loop
         """
         if not self._channel_refresh_tasks and not self._emulator_host:
             # raise RuntimeError if there is no event loop
@@ -234,10 +235,10 @@ class BigtableDataClientAsync(ClientWithProject):
         Pings each Bigtable instance registered in `_active_instances` on the client
 
         Args:
-            - channel: grpc channel to warm
-            - instance_key: if provided, only warm the instance associated with the key
+            channel: grpc channel to warm
+            instance_key: if provided, only warm the instance associated with the key
         Returns:
-            - sequence of results or exceptions from the ping requests
+            list[BaseException | None]: sequence of results or exceptions from the ping requests
         """
         instance_list = (
             [instance_key] if instance_key is not None else self._active_instances
@@ -323,10 +324,10 @@ class BigtableDataClientAsync(ClientWithProject):
         Channels will not be refreshed unless at least one instance is registered
 
         Args:
-          - instance_id: id of the instance to register.
-          - owner: table that owns the instance. Owners will be tracked in
-            _instance_owners, and instances will only be unregistered when all
-            owners call _remove_instance_registration
+          instance_id: id of the instance to register.
+          owner: table that owns the instance. Owners will be tracked in
+              _instance_owners, and instances will only be unregistered when all
+              owners call _remove_instance_registration
         """
         instance_name = self._gapic_client.instance_path(self.project, instance_id)
         instance_key = _WarmedInstanceKey(
@@ -354,12 +355,12 @@ class BigtableDataClientAsync(ClientWithProject):
         If instance_id is not registered, or is still in use by other tables, returns False
 
         Args:
-            - instance_id: id of the instance to remove
-            - owner: table that owns the instance. Owners will be tracked in
+            instance_id: id of the instance to remove
+            owner: table that owns the instance. Owners will be tracked in
               _instance_owners, and instances will only be unregistered when all
               owners call _remove_instance_registration
         Returns:
-            - True if instance was removed
+            bool: True if instance was removed, else False
         """
         instance_name = self._gapic_client.instance_path(self.project, instance_id)
         instance_key = _WarmedInstanceKey(
@@ -408,6 +409,10 @@ class BigtableDataClientAsync(ClientWithProject):
             default_retryable_errors: a list of errors that will be retried if
                 encountered during all other operations.
                 Defaults to 4 (DeadlineExceeded) and 14 (ServiceUnavailable)
+        Returns:
+            TableAsync: a table instance for making data API requests
+        Raises:
+            RuntimeError: if called outside of an async context (no running event loop)
         """
         return TableAsync(self, instance_id, table_id, *args, **kwargs)
 
@@ -490,7 +495,7 @@ class TableAsync:
                 encountered during all other operations.
                 Defaults to 4 (DeadlineExceeded) and 14 (ServiceUnavailable)
         Raises:
-          - RuntimeError if called outside of an async context (no running event loop)
+            RuntimeError: if called outside of an async context (no running event loop)
         """
         # NOTE: any changes to the signature of this method should also be reflected
         # in client.get_table()
@@ -564,24 +569,24 @@ class TableAsync:
         retryable_errors list until operation_timeout is reached.
 
         Args:
-            - query: contains details about which rows to return
-            - operation_timeout: the time budget for the entire operation, in seconds.
+            query: contains details about which rows to return
+            operation_timeout: the time budget for the entire operation, in seconds.
                  Failed requests will be retried within the budget.
                  Defaults to the Table's default_read_rows_operation_timeout
-            - attempt_timeout: the time budget for an individual network request, in seconds.
+            attempt_timeout: the time budget for an individual network request, in seconds.
                 If it takes longer than this time to complete, the request will be cancelled with
                 a DeadlineExceeded exception, and a retry will be attempted.
                 Defaults to the Table's default_read_rows_attempt_timeout.
                 If None, defaults to operation_timeout.
-            - retryable_errors: a list of errors that will be retried if encountered.
+            retryable_errors: a list of errors that will be retried if encountered.
                 Defaults to the Table's default_read_rows_retryable_errors
         Returns:
-            - an asynchronous iterator that yields rows returned by the query
+            AsyncIterable[Row]: an asynchronous iterator that yields rows returned by the query
         Raises:
-            - DeadlineExceeded: raised after operation timeout
+            google.api_core.exceptions.DeadlineExceeded: raised after operation timeout
                 will be chained with a RetryExceptionGroup containing GoogleAPIError exceptions
                 from any retries that failed
-            - GoogleAPIError: raised if the request encounters an unrecoverable error
+            google.api_core.exceptions.GoogleAPIError: raised if the request encounters an unrecoverable error
         """
         operation_timeout, attempt_timeout = _get_timeouts(
             operation_timeout, attempt_timeout, self
@@ -615,26 +620,26 @@ class TableAsync:
         retryable_errors list until operation_timeout is reached.
 
         Args:
-            - query: contains details about which rows to return
-            - operation_timeout: the time budget for the entire operation, in seconds.
+            query: contains details about which rows to return
+            operation_timeout: the time budget for the entire operation, in seconds.
                  Failed requests will be retried within the budget.
                  Defaults to the Table's default_read_rows_operation_timeout
-            - attempt_timeout: the time budget for an individual network request, in seconds.
+            attempt_timeout: the time budget for an individual network request, in seconds.
                 If it takes longer than this time to complete, the request will be cancelled with
                 a DeadlineExceeded exception, and a retry will be attempted.
                 Defaults to the Table's default_read_rows_attempt_timeout.
                 If None, defaults to operation_timeout.
                 If None, defaults to the Table's default_read_rows_attempt_timeout,
                 or the operation_timeout if that is also None.
-            - retryable_errors: a list of errors that will be retried if encountered.
+            retryable_errors: a list of errors that will be retried if encountered.
                 Defaults to the Table's default_read_rows_retryable_errors.
         Returns:
-            - a list of Rows returned by the query
+            list[Row]: a list of Rows returned by the query
         Raises:
-            - DeadlineExceeded: raised after operation timeout
+            google.api_core.exceptions.DeadlineExceeded: raised after operation timeout
                 will be chained with a RetryExceptionGroup containing GoogleAPIError exceptions
                 from any retries that failed
-            - GoogleAPIError: raised if the request encounters an unrecoverable error
+            google.api_core.exceptions.GoogleAPIError: raised if the request encounters an unrecoverable error
         """
         row_generator = await self.read_rows_stream(
             query,
@@ -661,24 +666,24 @@ class TableAsync:
         retryable_errors list until operation_timeout is reached.
 
         Args:
-            - query: contains details about which rows to return
-            - operation_timeout: the time budget for the entire operation, in seconds.
+            query: contains details about which rows to return
+            operation_timeout: the time budget for the entire operation, in seconds.
                  Failed requests will be retried within the budget.
                  Defaults to the Table's default_read_rows_operation_timeout
-            - attempt_timeout: the time budget for an individual network request, in seconds.
+            attempt_timeout: the time budget for an individual network request, in seconds.
                 If it takes longer than this time to complete, the request will be cancelled with
                 a DeadlineExceeded exception, and a retry will be attempted.
                 Defaults to the Table's default_read_rows_attempt_timeout.
                 If None, defaults to operation_timeout.
-            - retryable_errors: a list of errors that will be retried if encountered.
+            retryable_errors: a list of errors that will be retried if encountered.
                 Defaults to the Table's default_read_rows_retryable_errors.
         Returns:
-            - a Row object if the row exists, otherwise None
+            Row | None: a Row object if the row exists, otherwise None
         Raises:
-            - DeadlineExceeded: raised after operation timeout
+            google.api_core.exceptions.DeadlineExceeded: raised after operation timeout
                 will be chained with a RetryExceptionGroup containing GoogleAPIError exceptions
                 from any retries that failed
-            - GoogleAPIError: raised if the request encounters an unrecoverable error
+            google.api_core.exceptions.GoogleAPIError: raised if the request encounters an unrecoverable error
         """
         if row_key is None:
             raise ValueError("row_key must be string or bytes")
@@ -716,20 +721,22 @@ class TableAsync:
         ```
 
         Args:
-            - sharded_query: a sharded query to execute
-            - operation_timeout: the time budget for the entire operation, in seconds.
+            sharded_query: a sharded query to execute
+            operation_timeout: the time budget for the entire operation, in seconds.
                  Failed requests will be retried within the budget.
                  Defaults to the Table's default_read_rows_operation_timeout
-            - attempt_timeout: the time budget for an individual network request, in seconds.
+            attempt_timeout: the time budget for an individual network request, in seconds.
                 If it takes longer than this time to complete, the request will be cancelled with
                 a DeadlineExceeded exception, and a retry will be attempted.
                 Defaults to the Table's default_read_rows_attempt_timeout.
                 If None, defaults to operation_timeout.
-            - retryable_errors: a list of errors that will be retried if encountered.
+            retryable_errors: a list of errors that will be retried if encountered.
                 Defaults to the Table's default_read_rows_retryable_errors.
+        Returns:
+            list[Row]: a list of Rows returned by the query
         Raises:
-            - ShardedReadRowsExceptionGroup: if any of the queries failed
-            - ValueError: if the query_list is empty
+            ShardedReadRowsExceptionGroup: if any of the queries failed
+            ValueError: if the query_list is empty
         """
         if not sharded_query:
             raise ValueError("empty sharded_query")
@@ -796,24 +803,24 @@ class TableAsync:
         uses the filters: chain(limit cells per row = 1, strip value)
 
         Args:
-            - row_key: the key of the row to check
-            - operation_timeout: the time budget for the entire operation, in seconds.
+            row_key: the key of the row to check
+            operation_timeout: the time budget for the entire operation, in seconds.
                  Failed requests will be retried within the budget.
                  Defaults to the Table's default_read_rows_operation_timeout
-            - attempt_timeout: the time budget for an individual network request, in seconds.
+            attempt_timeout: the time budget for an individual network request, in seconds.
                 If it takes longer than this time to complete, the request will be cancelled with
                 a DeadlineExceeded exception, and a retry will be attempted.
                 Defaults to the Table's default_read_rows_attempt_timeout.
                 If None, defaults to operation_timeout.
-            - retryable_errors: a list of errors that will be retried if encountered.
+            retryable_errors: a list of errors that will be retried if encountered.
                 Defaults to the Table's default_read_rows_retryable_errors.
         Returns:
-            - a bool indicating whether the row exists
+            bool: a bool indicating whether the row exists
         Raises:
-            - DeadlineExceeded: raised after operation timeout
+            google.api_core.exceptions.DeadlineExceeded: raised after operation timeout
                 will be chained with a RetryExceptionGroup containing GoogleAPIError exceptions
                 from any retries that failed
-            - GoogleAPIError: raised if the request encounters an unrecoverable error
+            google.api_core.exceptions.GoogleAPIError: raised if the request encounters an unrecoverable error
         """
         if row_key is None:
             raise ValueError("row_key must be string or bytes")
@@ -847,26 +854,26 @@ class TableAsync:
         requests will call sample_row_keys internally for this purpose when sharding is enabled
 
         RowKeySamples is simply a type alias for list[tuple[bytes, int]]; a list of
-            row_keys, along with offset positions in the table
+        row_keys, along with offset positions in the table
 
         Args:
-            - operation_timeout: the time budget for the entire operation, in seconds.
+            operation_timeout: the time budget for the entire operation, in seconds.
                 Failed requests will be retried within the budget.i
                 Defaults to the Table's default_operation_timeout
-            - attempt_timeout: the time budget for an individual network request, in seconds.
+            attempt_timeout: the time budget for an individual network request, in seconds.
                 If it takes longer than this time to complete, the request will be cancelled with
                 a DeadlineExceeded exception, and a retry will be attempted.
                 Defaults to the Table's default_attempt_timeout.
                 If None, defaults to operation_timeout.
-            - retryable_errors: a list of errors that will be retried if encountered.
+            retryable_errors: a list of errors that will be retried if encountered.
                 Defaults to the Table's default_retryable_errors.
         Returns:
-            - a set of RowKeySamples the delimit contiguous sections of the table
+            RowKeySamples: a set of RowKeySamples the delimit contiguous sections of the table
         Raises:
-            - DeadlineExceeded: raised after operation timeout
+            google.api_core.exceptions.DeadlineExceeded: raised after operation timeout
                 will be chained with a RetryExceptionGroup containing GoogleAPIError exceptions
                 from any retries that failed
-            - GoogleAPIError: raised if the request encounters an unrecoverable error
+            google.api_core.exceptions.GoogleAPIError: raised if the request encounters an unrecoverable error
         """
         # prepare timeouts
         operation_timeout, attempt_timeout = _get_timeouts(
@@ -922,22 +929,22 @@ class TableAsync:
         to avoid excess network calls
 
         Args:
-          - flush_interval: Automatically flush every flush_interval seconds. If None,
+          flush_interval: Automatically flush every flush_interval seconds. If None,
               a table default will be used
-          - flush_limit_mutation_count: Flush immediately after flush_limit_mutation_count
+          flush_limit_mutation_count: Flush immediately after flush_limit_mutation_count
               mutations are added across all entries. If None, this limit is ignored.
-          - flush_limit_bytes: Flush immediately after flush_limit_bytes bytes are added.
-          - flow_control_max_mutation_count: Maximum number of inflight mutations.
-          - flow_control_max_bytes: Maximum number of inflight bytes.
-          - batch_operation_timeout: timeout for each mutate_rows operation, in seconds.
+          flush_limit_bytes: Flush immediately after flush_limit_bytes bytes are added.
+          flow_control_max_mutation_count: Maximum number of inflight mutations.
+          flow_control_max_bytes: Maximum number of inflight bytes.
+          batch_operation_timeout: timeout for each mutate_rows operation, in seconds.
               Defaults to the Table's default_mutate_rows_operation_timeout
-          - batch_attempt_timeout: timeout for each individual request, in seconds.
+          batch_attempt_timeout: timeout for each individual request, in seconds.
               Defaults to the Table's default_mutate_rows_attempt_timeout.
               If None, defaults to batch_operation_timeout.
-          - batch_retryable_errors: a list of errors that will be retried if encountered.
+          batch_retryable_errors: a list of errors that will be retried if encountered.
               Defaults to the Table's default_mutate_rows_retryable_errors.
         Returns:
-            - a MutationsBatcherAsync context manager that can batch requests
+            MutationsBatcherAsync: a MutationsBatcherAsync context manager that can batch requests
         """
         return MutationsBatcherAsync(
             self,
@@ -971,26 +978,26 @@ class TableAsync:
         retried on server failure. Non-idempotent operations will not.
 
         Args:
-          - row_key: the row to apply mutations to
-          - mutations: the set of mutations to apply to the row
-          - operation_timeout: the time budget for the entire operation, in seconds.
-              Failed requests will be retried within the budget.
-              Defaults to the Table's default_operation_timeout
-          - attempt_timeout: the time budget for an individual network request, in seconds.
-              If it takes longer than this time to complete, the request will be cancelled with
-              a DeadlineExceeded exception, and a retry will be attempted.
-              Defaults to the Table's default_attempt_timeout.
-              If None, defaults to operation_timeout.
-          - retryable_errors: a list of errors that will be retried if encountered.
-              Only idempotent mutations will be retried. Defaults to the Table's
-              default_retryable_errors.
+            row_key: the row to apply mutations to
+            mutations: the set of mutations to apply to the row
+            operation_timeout: the time budget for the entire operation, in seconds.
+                Failed requests will be retried within the budget.
+                Defaults to the Table's default_operation_timeout
+            attempt_timeout: the time budget for an individual network request, in seconds.
+                If it takes longer than this time to complete, the request will be cancelled with
+                a DeadlineExceeded exception, and a retry will be attempted.
+                Defaults to the Table's default_attempt_timeout.
+                If None, defaults to operation_timeout.
+            retryable_errors: a list of errors that will be retried if encountered.
+                Only idempotent mutations will be retried. Defaults to the Table's
+                default_retryable_errors.
         Raises:
-           - DeadlineExceeded: raised after operation timeout
-               will be chained with a RetryExceptionGroup containing all
-               GoogleAPIError exceptions from any retries that failed
-           - GoogleAPIError: raised on non-idempotent operations that cannot be
-               safely retried.
-          - ValueError if invalid arguments are provided
+            google.api_core.exceptions.DeadlineExceeded: raised after operation timeout
+                will be chained with a RetryExceptionGroup containing all
+                GoogleAPIError exceptions from any retries that failed
+            google.api_core.exceptions.GoogleAPIError: raised on non-idempotent operations that cannot be
+                safely retried.
+            ValueError: if invalid arguments are provided
         """
         operation_timeout, attempt_timeout = _get_timeouts(
             operation_timeout, attempt_timeout, self
@@ -1051,23 +1058,23 @@ class TableAsync:
         raised exception group
 
         Args:
-            - mutation_entries: the batches of mutations to apply
+            mutation_entries: the batches of mutations to apply
                 Each entry will be applied atomically, but entries will be applied
                 in arbitrary order
-            - operation_timeout: the time budget for the entire operation, in seconds.
+            operation_timeout: the time budget for the entire operation, in seconds.
                 Failed requests will be retried within the budget.
                 Defaults to the Table's default_mutate_rows_operation_timeout
-            - attempt_timeout: the time budget for an individual network request, in seconds.
+            attempt_timeout: the time budget for an individual network request, in seconds.
                 If it takes longer than this time to complete, the request will be cancelled with
                 a DeadlineExceeded exception, and a retry will be attempted.
                 Defaults to the Table's default_mutate_rows_attempt_timeout.
                 If None, defaults to operation_timeout.
-            - retryable_errors: a list of errors that will be retried if encountered.
+            retryable_errors: a list of errors that will be retried if encountered.
                 Defaults to the Table's default_mutate_rows_retryable_errors
         Raises:
-            - MutationsExceptionGroup if one or more mutations fails
+            MutationsExceptionGroup: if one or more mutations fails
                 Contains details about any failed entries in .exceptions
-            - ValueError if invalid arguments are provided
+            ValueError: if invalid arguments are provided
         """
         operation_timeout, attempt_timeout = _get_timeouts(
             operation_timeout, attempt_timeout, self
@@ -1099,31 +1106,31 @@ class TableAsync:
         Non-idempotent operation: will not be retried
 
         Args:
-            - row_key: the key of the row to mutate
-            - predicate: the filter to be applied to the contents of the specified row.
+            row_key: the key of the row to mutate
+            predicate: the filter to be applied to the contents of the specified row.
                 Depending on whether or not any results  are yielded,
                 either true_case_mutations or false_case_mutations will be executed.
                 If None, checks that the row contains any values at all.
-            - true_case_mutations:
+            true_case_mutations:
                 Changes to be atomically applied to the specified row if
                 predicate yields at least one cell when
                 applied to row_key. Entries are applied in order,
                 meaning that earlier mutations can be masked by later
                 ones. Must contain at least one entry if
                 false_case_mutations is empty, and at most 100000.
-            - false_case_mutations:
+            false_case_mutations:
                 Changes to be atomically applied to the specified row if
                 predicate_filter does not yield any cells when
                 applied to row_key. Entries are applied in order,
                 meaning that earlier mutations can be masked by later
                 ones. Must contain at least one entry if
                 `true_case_mutations` is empty, and at most 100000.
-            - operation_timeout: the time budget for the entire operation, in seconds.
+            operation_timeout: the time budget for the entire operation, in seconds.
                 Failed requests will not be retried. Defaults to the Table's default_operation_timeout
         Returns:
-            - bool indicating whether the predicate was true or false
+            bool indicating whether the predicate was true or false
         Raises:
-            - GoogleAPIError exceptions from grpc call
+            google.api_core.exceptions.GoogleAPIError: exceptions from grpc call
         """
         operation_timeout, _ = _get_timeouts(operation_timeout, None, self)
         if true_case_mutations is not None and not isinstance(
@@ -1167,19 +1174,18 @@ class TableAsync:
         Non-idempotent operation: will not be retried
 
         Args:
-            - row_key: the key of the row to apply read/modify/write rules to
-            - rules: A rule or set of rules to apply to the row.
+            row_key: the key of the row to apply read/modify/write rules to
+            rules: A rule or set of rules to apply to the row.
                 Rules are applied in order, meaning that earlier rules will affect the
                 results of later ones.
-            - operation_timeout: the time budget for the entire operation, in seconds.
+            operation_timeout: the time budget for the entire operation, in seconds.
                 Failed requests will not be retried.
                 Defaults to the Table's default_operation_timeout.
         Returns:
-            - Row: containing cell data that was modified as part of the
-                operation
+            Row: a Row containing cell data that was modified as part of the operation
         Raises:
-            - GoogleAPIError exceptions from grpc call
-            - ValueError if invalid arguments are provided
+            google.api_core.exceptions.GoogleAPIError: exceptions from grpc call
+            ValueError: if invalid arguments are provided
         """
         operation_timeout, _ = _get_timeouts(operation_timeout, None, self)
         if operation_timeout <= 0:

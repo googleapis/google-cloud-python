@@ -59,6 +59,13 @@ class _ReadRowsOperationAsync:
 
     ReadRowsOperation(request, client) handles row merging logic end-to-end, including
     performing retries on stream errors.
+
+    Args:
+        query: The query to execute
+        table: The table to send the request to
+        operation_timeout: The total time to allow for the operation, in seconds
+        attempt_timeout: The time to allow for each individual attempt, in seconds
+        retryable_exceptions: A list of exceptions that should trigger a retry
     """
 
     __slots__ = (
@@ -104,6 +111,9 @@ class _ReadRowsOperationAsync:
     def start_operation(self) -> AsyncGenerator[Row, None]:
         """
         Start the read_rows operation, retrying on retryable errors.
+
+        Yields:
+            Row: The next row in the stream
         """
         return retries.retry_target_stream_async(
             self._read_rows_attempt,
@@ -119,6 +129,9 @@ class _ReadRowsOperationAsync:
         This function is intended to be wrapped by retry logic,
         which will call this function until it succeeds or
         a non-retryable error is raised.
+
+        Yields:
+            Row: The next row in the stream
         """
         # revise request keys and ranges between attempts
         if self._last_yielded_row_key is not None:
@@ -151,6 +164,11 @@ class _ReadRowsOperationAsync:
     ) -> AsyncGenerator[ReadRowsResponsePB.CellChunk, None]:
         """
         process chunks out of raw read_rows stream
+
+        Args:
+            stream: the raw read_rows stream from the gapic client
+        Yields:
+            ReadRowsResponsePB.CellChunk: the next chunk in the stream
         """
         async for resp in await stream:
             # extract proto from proto-plus wrapper
@@ -195,9 +213,14 @@ class _ReadRowsOperationAsync:
     @staticmethod
     async def merge_rows(
         chunks: AsyncGenerator[ReadRowsResponsePB.CellChunk, None] | None
-    ):
+    ) -> AsyncGenerator[Row, None]:
         """
         Merge chunks into rows
+
+        Args:
+            chunks: the chunk stream to merge
+        Yields:
+            Row: the next row in the stream
         """
         if chunks is None:
             return
@@ -311,10 +334,12 @@ class _ReadRowsOperationAsync:
         Revise the rows in the request to avoid ones we've already processed.
 
         Args:
-          - row_set: the row set from the request
-          - last_seen_row_key: the last row key encountered
+            row_set: the row set from the request
+            last_seen_row_key: the last row key encountered
+        Returns:
+            RowSetPB: the new rowset after adusting for the last seen key
         Raises:
-          - _RowSetComplete: if there are no rows left to process after the revision
+            _RowSetComplete: if there are no rows left to process after the revision
         """
         # if user is doing a whole table scan, start a new one with the last seen key
         if row_set is None or (not row_set.row_ranges and row_set.row_keys is not None):

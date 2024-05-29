@@ -44,15 +44,15 @@ class RowRange:
     ):
         """
         Args:
-          - start_key: The start key of the range. If empty, the range is unbounded on the left.
-          - end_key: The end key of the range. If empty, the range is unbounded on the right.
-          - start_is_inclusive: Whether the start key is inclusive. If None, the start key is
+            start_key: The start key of the range. If empty, the range is unbounded on the left.
+            end_key: The end key of the range. If empty, the range is unbounded on the right.
+            start_is_inclusive: Whether the start key is inclusive. If None, the start key is
                 inclusive.
-          - end_is_inclusive: Whether the end key is inclusive. If None, the end key is not inclusive.
+            end_is_inclusive: Whether the end key is inclusive. If None, the end key is not inclusive.
         Raises:
-          - ValueError: if start_key is greater than end_key, or start_is_inclusive,
-              or end_is_inclusive is set when the corresponding key is None,
-              or start_key or end_key is not a string or bytes.
+            ValueError: if start_key is greater than end_key, or start_is_inclusive
+            ValueError: if end_is_inclusive is set when the corresponding key is None
+            ValueError: if start_key or end_key is not a string or bytes.
         """
         # convert empty key inputs to None for consistency
         start_key = None if not start_key else start_key
@@ -100,39 +100,69 @@ class RowRange:
     def end_key(self) -> bytes | None:
         """
         Returns the end key of the range. If None, the range is unbounded on the right.
+
+        Returns:
+            bytes | None: The end key of the range, or None if the range is unbounded on the right.
         """
         return self._pb.end_key_closed or self._pb.end_key_open or None
 
     @property
     def start_is_inclusive(self) -> bool:
         """
-        Returns whether the range is inclusive of the start key.
-        Returns True if the range is unbounded on the left.
+        Indicates if the range is inclusive of the start key.
+
+        If the range is unbounded on the left, this will return True.
+
+        Returns:
+            bool: Whether the range is inclusive of the start key.
         """
         return not bool(self._pb.start_key_open)
 
     @property
     def end_is_inclusive(self) -> bool:
         """
-        Returns whether the range is inclusive of the end key.
-        Returns True if the range is unbounded on the right.
+        Indicates if the range is inclusive of the end key.
+
+        If the range is unbounded on the right, this will return True.
+
+        Returns:
+            bool: Whether the range is inclusive of the end key.
         """
         return not bool(self._pb.end_key_open)
 
     def _to_pb(self) -> RowRangePB:
-        """Converts this object to a protobuf"""
+        """
+        Converts this object to a protobuf
+
+        Returns:
+            RowRangePB: The protobuf representation of this object
+        """
         return self._pb
 
     @classmethod
     def _from_pb(cls, data: RowRangePB) -> RowRange:
-        """Creates a RowRange from a protobuf"""
+        """
+        Creates a RowRange from a protobuf
+
+        Args:
+            data (RowRangePB): The protobuf to convert
+        Returns:
+            RowRange: The converted RowRange
+        """
         instance = cls()
         instance._pb = data
         return instance
 
     @classmethod
     def _from_dict(cls, data: dict[str, bytes | str]) -> RowRange:
-        """Creates a RowRange from a protobuf"""
+        """
+        Creates a RowRange from a protobuf
+
+        Args:
+            data (dict[str, bytes | str]): The dictionary to convert
+        Returns:
+            RowRange: The converted RowRange
+        """
         formatted_data = {
             k: v.encode() if isinstance(v, str) else v for k, v in data.items()
         }
@@ -144,6 +174,9 @@ class RowRange:
         """
         Empty RowRanges (representing a full table scan) are falsy, because
         they can be substituted with None. Non-empty RowRanges are truthy.
+
+        Returns:
+            bool: True if the RowRange is not empty, False otherwise
         """
         return bool(
             self._pb.start_key_closed
@@ -160,7 +193,11 @@ class RowRange:
     def __str__(self) -> str:
         """
         Represent range as a string, e.g. "[b'a', b'z)"
+
         Unbounded start or end keys are represented as "-inf" or "+inf"
+
+        Returns:
+            str: The string representation of the range
         """
         left = "[" if self.start_is_inclusive else "("
         right = "]" if self.end_is_inclusive else ")"
@@ -199,12 +236,12 @@ class ReadRowsQuery:
         Create a new ReadRowsQuery
 
         Args:
-          - row_keys: row keys to include in the query
+            row_keys: row keys to include in the query
                 a query can contain multiple keys, but ranges should be preferred
-          - row_ranges: ranges of rows to include in the query
-          - limit: the maximum number of rows to return. None or 0 means no limit
+            row_ranges: ranges of rows to include in the query
+            limit: the maximum number of rows to return. None or 0 means no limit
                 default: None (no limit)
-          - row_filter: a RowFilter to apply to the query
+            row_filter: a RowFilter to apply to the query
         """
         if row_keys is None:
             row_keys = []
@@ -223,14 +260,34 @@ class ReadRowsQuery:
 
     @property
     def row_keys(self) -> list[bytes]:
+        """
+        Return the row keys in this query
+
+        Returns:
+            list[bytes]: the row keys in this query
+        """
         return list(self._row_set.row_keys)
 
     @property
     def row_ranges(self) -> list[RowRange]:
+        """
+        Return the row ranges in this query
+
+        Returns:
+            list[RowRange]: the row ranges in this query
+        """
         return [RowRange._from_pb(r) for r in self._row_set.row_ranges]
 
     @property
     def limit(self) -> int | None:
+        """
+        Return the maximum number of rows to return by this query
+
+        None or 0 means no limit
+
+        Returns:
+            int | None: the maximum number of rows to return by this query
+        """
         return self._limit or None
 
     @limit.setter
@@ -241,11 +298,9 @@ class ReadRowsQuery:
         None or 0 means no limit
 
         Args:
-          - new_limit: the new limit to apply to this query
-        Returns:
-          - a reference to this query for chaining
+            new_limit: the new limit to apply to this query
         Raises:
-          - ValueError if new_limit is < 0
+            ValueError: if new_limit is < 0
         """
         if new_limit is not None and new_limit < 0:
             raise ValueError("limit must be >= 0")
@@ -253,6 +308,12 @@ class ReadRowsQuery:
 
     @property
     def filter(self) -> RowFilter | None:
+        """
+        Return the RowFilter applied to this query
+
+        Returns:
+            RowFilter | None: the RowFilter applied to this query
+        """
         return self._filter
 
     @filter.setter
@@ -261,9 +322,7 @@ class ReadRowsQuery:
         Set a RowFilter to apply to this query
 
         Args:
-          - row_filter: a RowFilter to apply to this query
-        Returns:
-          - a reference to this query for chaining
+            row_filter: a RowFilter to apply to this query
         """
         self._filter = row_filter
 
@@ -274,11 +333,9 @@ class ReadRowsQuery:
         A query can contain multiple keys, but ranges should be preferred
 
         Args:
-          - row_key: a key to add to this query
-        Returns:
-          - a reference to this query for chaining
+            row_key: a key to add to this query
         Raises:
-          - ValueError if an input is not a string or bytes
+            ValueError: if an input is not a string or bytes
         """
         if isinstance(row_key, str):
             row_key = row_key.encode()
@@ -295,7 +352,7 @@ class ReadRowsQuery:
         Add a range of row keys to this query.
 
         Args:
-          - row_range: a range of row keys to add to this query
+            row_range: a range of row keys to add to this query
         """
         if row_range not in self.row_ranges:
             self._row_set.row_ranges.append(row_range._pb)
@@ -305,10 +362,12 @@ class ReadRowsQuery:
         Split this query into multiple queries that can be evenly distributed
         across nodes and run in parallel
 
+        Args:
+            shard_keys: a list of row keys that define the boundaries of segments.
         Returns:
-            - a ShardedQuery that can be used in sharded_read_rows calls
+            ShardedQuery: a ShardedQuery that can be used in sharded_read_rows calls
         Raises:
-            - AttributeError if the query contains a limit
+            AttributeError: if the query contains a limit
         """
         if self.limit is not None:
             raise AttributeError("Cannot shard query with a limit")
@@ -357,11 +416,11 @@ class ReadRowsQuery:
         segments of the key-space, determined by split_points
 
         Args:
-          - orig_range: a row range to split
-          - split_points: a list of row keys that define the boundaries of segments.
+            orig_range: a row range to split
+            split_points: a list of row keys that define the boundaries of segments.
                 each point represents the inclusive end of a segment
         Returns:
-          - a list of tuples, containing a segment index and a new sub-range.
+            list[tuple[int, RowRange]]: a list of tuples, containing a segment index and a new sub-range.
         """
         # 1. find the index of the segment the start key belongs to
         if orig_range.start_key is None:
@@ -446,6 +505,11 @@ class ReadRowsQuery:
         RowRanges are equal if they have the same row keys, row ranges,
         filter and limit, or if they both represent a full scan with the
         same filter and limit
+
+        Args:
+            other: the object to compare to
+        Returns:
+            bool: True if the objects are equal, False otherwise
         """
         if not isinstance(other, ReadRowsQuery):
             return False
