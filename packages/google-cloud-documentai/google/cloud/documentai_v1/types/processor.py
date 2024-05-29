@@ -72,6 +72,10 @@ class ProcessorVersion(proto.Message):
         model_type (google.cloud.documentai_v1.types.ProcessorVersion.ModelType):
             Output only. The model type of this processor
             version.
+        satisfies_pzs (bool):
+            Output only. Reserved for future use.
+        satisfies_pzi (bool):
+            Output only. Reserved for future use.
     """
 
     class State(proto.Enum):
@@ -201,6 +205,14 @@ class ProcessorVersion(proto.Message):
         number=15,
         enum=ModelType,
     )
+    satisfies_pzs: bool = proto.Field(
+        proto.BOOL,
+        number=16,
+    )
+    satisfies_pzi: bool = proto.Field(
+        proto.BOOL,
+        number=17,
+    )
 
 
 class ProcessorVersionAlias(proto.Message):
@@ -256,6 +268,10 @@ class Processor(proto.Message):
             The `KMS
             key <https://cloud.google.com/security-key-management>`__
             used for encryption and decryption in CMEK scenarios.
+        satisfies_pzs (bool):
+            Output only. Reserved for future use.
+        satisfies_pzi (bool):
+            Output only. Reserved for future use.
     """
 
     class State(proto.Enum):
@@ -343,6 +359,14 @@ class Processor(proto.Message):
     kms_key_name: str = proto.Field(
         proto.STRING,
         number=8,
+    )
+    satisfies_pzs: bool = proto.Field(
+        proto.BOOL,
+        number=12,
+    )
+    satisfies_pzi: bool = proto.Field(
+        proto.BOOL,
+        number=13,
     )
 
 
