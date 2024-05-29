@@ -213,6 +213,22 @@ def mypy(session):
     )
 
 
+# add customization to docfx
+docfx_postprocess = """
+    # Customization: Add extra sections to the table of contents for the Classic vs Async clients
+    session.install("pyyaml")
+    session.run("python", "docs/scripts/patch_devsite_toc.py")
+"""
+
+place_before(
+    "noxfile.py",
+    "@nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)\n"
+    "def prerelease_deps(session):",
+    docfx_postprocess,
+    escape="()"
+)
+
+
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def lint_setup_py(session):
 ''',
