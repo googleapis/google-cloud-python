@@ -369,3 +369,22 @@ def test_cast_dataframe_for_parquet_w_null_fields():
     schema = {"fields": None}
     result = load.cast_dataframe_for_parquet(dataframe, schema)
     pandas.testing.assert_frame_equal(result, expected)
+
+
+# Verifies null numerics are properly handled
+# https://github.com/googleapis/python-bigquery-pandas/issues/719
+def test_cast_dataframe_for_parquet_w_null_numerics():
+    from decimal import Decimal
+
+    nans = pandas.Series([Decimal("3.14"), Decimal("nan"), None, pandas.NA])
+    dataframe = pandas.DataFrame({"A": nans})
+
+    schema = {"fields": [{"name": "A", "type": "BIGNUMERIC"}]}
+    result = load.cast_dataframe_for_parquet(dataframe, schema)
+
+    # pandas.testing.assert_frame_equal() doesn't distinguish Decimal("NaN")
+    # vs. None, verify Decimal("NaN") directly.
+    # https://github.com/pandas-dev/pandas/issues/18463
+    assert result["A"][1].is_nan()
+    assert result["A"][2].is_nan()
+    assert result["A"][3].is_nan()
