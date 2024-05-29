@@ -3,10 +3,9 @@ from __future__ import annotations
 
 from typing import Callable, Iterator, Literal, Optional, TYPE_CHECKING
 
+import bigframes_vendored.constants as constants
 from bigframes_vendored.pandas.core import indexing
 import bigframes_vendored.pandas.core.common as common
-
-import bigframes.constants as constants
 
 if TYPE_CHECKING:
     from bigframes_vendored.pandas.pandas._typing import T

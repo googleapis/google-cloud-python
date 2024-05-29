@@ -652,8 +652,8 @@ read_parquet.__doc__ = inspect.getdoc(bigframes.session.Session.read_parquet)
 
 
 def remote_function(
-    input_types: Union[type, Sequence[type]],
-    output_type: type,
+    input_types: Union[None, type, Sequence[type]] = None,
+    output_type: Optional[type] = None,
     dataset: Optional[str] = None,
     bigquery_connection: Optional[str] = None,
     reuse: bool = True,
