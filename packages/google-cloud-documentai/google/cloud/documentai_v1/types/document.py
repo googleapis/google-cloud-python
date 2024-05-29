@@ -103,6 +103,10 @@ class Document(proto.Message):
         revisions (MutableSequence[google.cloud.documentai_v1.types.Document.Revision]):
             Placeholder. Revision history of this
             document.
+        document_layout (google.cloud.documentai_v1.types.Document.DocumentLayout):
+            Parsed layout of the document.
+        chunked_document (google.cloud.documentai_v1.types.Document.ChunkedDocument):
+            Document chunked based on chunking config.
     """
 
     class ShardInfo(proto.Message):
@@ -1810,6 +1814,374 @@ class Document(proto.Message):
             message="Document.Provenance",
         )
 
+    class DocumentLayout(proto.Message):
+        r"""Represents the parsed layout of a document as a collection of
+        blocks that the document is divided into.
+
+        Attributes:
+            blocks (MutableSequence[google.cloud.documentai_v1.types.Document.DocumentLayout.DocumentLayoutBlock]):
+                List of blocks in the document.
+        """
+
+        class DocumentLayoutBlock(proto.Message):
+            r"""Represents a block. A block could be one of the various types
+            (text, table, list) supported.
+
+            This message has `oneof`_ fields (mutually exclusive fields).
+            For each oneof, at most one member field can be set at the same time.
+            Setting any member of the oneof automatically clears all other
+            members.
+
+            .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+            Attributes:
+                text_block (google.cloud.documentai_v1.types.Document.DocumentLayout.DocumentLayoutBlock.LayoutTextBlock):
+                    Block consisting of text content.
+
+                    This field is a member of `oneof`_ ``block``.
+                table_block (google.cloud.documentai_v1.types.Document.DocumentLayout.DocumentLayoutBlock.LayoutTableBlock):
+                    Block consisting of table content/structure.
+
+                    This field is a member of `oneof`_ ``block``.
+                list_block (google.cloud.documentai_v1.types.Document.DocumentLayout.DocumentLayoutBlock.LayoutListBlock):
+                    Block consisting of list content/structure.
+
+                    This field is a member of `oneof`_ ``block``.
+                block_id (str):
+                    ID of the block.
+                page_span (google.cloud.documentai_v1.types.Document.DocumentLayout.DocumentLayoutBlock.LayoutPageSpan):
+                    Page span of the block.
+            """
+
+            class LayoutPageSpan(proto.Message):
+                r"""Represents where the block starts and ends in the document.
+
+                Attributes:
+                    page_start (int):
+                        Page where block starts in the document.
+                    page_end (int):
+                        Page where block ends in the document.
+                """
+
+                page_start: int = proto.Field(
+                    proto.INT32,
+                    number=1,
+                )
+                page_end: int = proto.Field(
+                    proto.INT32,
+                    number=2,
+                )
+
+            class LayoutTextBlock(proto.Message):
+                r"""Represents a text type block.
+
+                Attributes:
+                    text (str):
+                        Text content stored in the block.
+                    type_ (str):
+                        Type of the text in the block. Available options are:
+                        ``paragraph``, ``subtitle``, ``heading-1``, ``heading-2``,
+                        ``heading-3``, ``heading-4``, ``heading-5``, ``header``,
+                        ``footer``.
+                    blocks (MutableSequence[google.cloud.documentai_v1.types.Document.DocumentLayout.DocumentLayoutBlock]):
+                        A text block could further have child blocks.
+                        Repeated blocks support further hierarchies and
+                        nested blocks.
+                """
+
+                text: str = proto.Field(
+                    proto.STRING,
+                    number=1,
+                )
+                type_: str = proto.Field(
+                    proto.STRING,
+                    number=2,
+                )
+                blocks: MutableSequence[
+                    "Document.DocumentLayout.DocumentLayoutBlock"
+                ] = proto.RepeatedField(
+                    proto.MESSAGE,
+                    number=3,
+                    message="Document.DocumentLayout.DocumentLayoutBlock",
+                )
+
+            class LayoutTableBlock(proto.Message):
+                r"""Represents a table type block.
+
+                Attributes:
+                    header_rows (MutableSequence[google.cloud.documentai_v1.types.Document.DocumentLayout.DocumentLayoutBlock.LayoutTableRow]):
+                        Header rows at the top of the table.
+                    body_rows (MutableSequence[google.cloud.documentai_v1.types.Document.DocumentLayout.DocumentLayoutBlock.LayoutTableRow]):
+                        Body rows containing main table content.
+                    caption (str):
+                        Table caption/title.
+                """
+
+                header_rows: MutableSequence[
+                    "Document.DocumentLayout.DocumentLayoutBlock.LayoutTableRow"
+                ] = proto.RepeatedField(
+                    proto.MESSAGE,
+                    number=1,
+                    message="Document.DocumentLayout.DocumentLayoutBlock.LayoutTableRow",
+                )
+                body_rows: MutableSequence[
+                    "Document.DocumentLayout.DocumentLayoutBlock.LayoutTableRow"
+                ] = proto.RepeatedField(
+                    proto.MESSAGE,
+                    number=2,
+                    message="Document.DocumentLayout.DocumentLayoutBlock.LayoutTableRow",
+                )
+                caption: str = proto.Field(
+                    proto.STRING,
+                    number=3,
+                )
+
+            class LayoutTableRow(proto.Message):
+                r"""Represents a row in a table.
+
+                Attributes:
+                    cells (MutableSequence[google.cloud.documentai_v1.types.Document.DocumentLayout.DocumentLayoutBlock.LayoutTableCell]):
+                        A table row is a list of table cells.
+                """
+
+                cells: MutableSequence[
+                    "Document.DocumentLayout.DocumentLayoutBlock.LayoutTableCell"
+                ] = proto.RepeatedField(
+                    proto.MESSAGE,
+                    number=1,
+                    message="Document.DocumentLayout.DocumentLayoutBlock.LayoutTableCell",
+                )
+
+            class LayoutTableCell(proto.Message):
+                r"""Represents a cell in a table row.
+
+                Attributes:
+                    blocks (MutableSequence[google.cloud.documentai_v1.types.Document.DocumentLayout.DocumentLayoutBlock]):
+                        A table cell is a list of blocks.
+                        Repeated blocks support further hierarchies and
+                        nested blocks.
+                    row_span (int):
+                        How many rows this cell spans.
+                    col_span (int):
+                        How many columns this cell spans.
+                """
+
+                blocks: MutableSequence[
+                    "Document.DocumentLayout.DocumentLayoutBlock"
+                ] = proto.RepeatedField(
+                    proto.MESSAGE,
+                    number=1,
+                    message="Document.DocumentLayout.DocumentLayoutBlock",
+                )
+                row_span: int = proto.Field(
+                    proto.INT32,
+                    number=2,
+                )
+                col_span: int = proto.Field(
+                    proto.INT32,
+                    number=3,
+                )
+
+            class LayoutListBlock(proto.Message):
+                r"""Represents a list type block.
+
+                Attributes:
+                    list_entries (MutableSequence[google.cloud.documentai_v1.types.Document.DocumentLayout.DocumentLayoutBlock.LayoutListEntry]):
+                        List entries that constitute a list block.
+                    type_ (str):
+                        Type of the list_entries (if exist). Available options are
+                        ``ordered`` and ``unordered``.
+                """
+
+                list_entries: MutableSequence[
+                    "Document.DocumentLayout.DocumentLayoutBlock.LayoutListEntry"
+                ] = proto.RepeatedField(
+                    proto.MESSAGE,
+                    number=1,
+                    message="Document.DocumentLayout.DocumentLayoutBlock.LayoutListEntry",
+                )
+                type_: str = proto.Field(
+                    proto.STRING,
+                    number=2,
+                )
+
+            class LayoutListEntry(proto.Message):
+                r"""Represents an entry in the list.
+
+                Attributes:
+                    blocks (MutableSequence[google.cloud.documentai_v1.types.Document.DocumentLayout.DocumentLayoutBlock]):
+                        A list entry is a list of blocks.
+                        Repeated blocks support further hierarchies and
+                        nested blocks.
+                """
+
+                blocks: MutableSequence[
+                    "Document.DocumentLayout.DocumentLayoutBlock"
+                ] = proto.RepeatedField(
+                    proto.MESSAGE,
+                    number=1,
+                    message="Document.DocumentLayout.DocumentLayoutBlock",
+                )
+
+            text_block: "Document.DocumentLayout.DocumentLayoutBlock.LayoutTextBlock" = proto.Field(
+                proto.MESSAGE,
+                number=2,
+                oneof="block",
+                message="Document.DocumentLayout.DocumentLayoutBlock.LayoutTextBlock",
+            )
+            table_block: "Document.DocumentLayout.DocumentLayoutBlock.LayoutTableBlock" = proto.Field(
+                proto.MESSAGE,
+                number=3,
+                oneof="block",
+                message="Document.DocumentLayout.DocumentLayoutBlock.LayoutTableBlock",
+            )
+            list_block: "Document.DocumentLayout.DocumentLayoutBlock.LayoutListBlock" = proto.Field(
+                proto.MESSAGE,
+                number=4,
+                oneof="block",
+                message="Document.DocumentLayout.DocumentLayoutBlock.LayoutListBlock",
+            )
+            block_id: str = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+            page_span: "Document.DocumentLayout.DocumentLayoutBlock.LayoutPageSpan" = proto.Field(
+                proto.MESSAGE,
+                number=5,
+                message="Document.DocumentLayout.DocumentLayoutBlock.LayoutPageSpan",
+            )
+
+        blocks: MutableSequence[
+            "Document.DocumentLayout.DocumentLayoutBlock"
+        ] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="Document.DocumentLayout.DocumentLayoutBlock",
+        )
+
+    class ChunkedDocument(proto.Message):
+        r"""Represents the chunks that the document is divided into.
+
+        Attributes:
+            chunks (MutableSequence[google.cloud.documentai_v1.types.Document.ChunkedDocument.Chunk]):
+                List of chunks.
+        """
+
+        class Chunk(proto.Message):
+            r"""Represents a chunk.
+
+            Attributes:
+                chunk_id (str):
+                    ID of the chunk.
+                source_block_ids (MutableSequence[str]):
+                    Unused.
+                content (str):
+                    Text content of the chunk.
+                page_span (google.cloud.documentai_v1.types.Document.ChunkedDocument.Chunk.ChunkPageSpan):
+                    Page span of the chunk.
+                page_headers (MutableSequence[google.cloud.documentai_v1.types.Document.ChunkedDocument.Chunk.ChunkPageHeader]):
+                    Page headers associated with the chunk.
+                page_footers (MutableSequence[google.cloud.documentai_v1.types.Document.ChunkedDocument.Chunk.ChunkPageFooter]):
+                    Page footers associated with the chunk.
+            """
+
+            class ChunkPageSpan(proto.Message):
+                r"""Represents where the chunk starts and ends in the document.
+
+                Attributes:
+                    page_start (int):
+                        Page where chunk starts in the document.
+                    page_end (int):
+                        Page where chunk ends in the document.
+                """
+
+                page_start: int = proto.Field(
+                    proto.INT32,
+                    number=1,
+                )
+                page_end: int = proto.Field(
+                    proto.INT32,
+                    number=2,
+                )
+
+            class ChunkPageHeader(proto.Message):
+                r"""Represents the page header associated with the chunk.
+
+                Attributes:
+                    text (str):
+                        Header in text format.
+                    page_span (google.cloud.documentai_v1.types.Document.ChunkedDocument.Chunk.ChunkPageSpan):
+                        Page span of the header.
+                """
+
+                text: str = proto.Field(
+                    proto.STRING,
+                    number=1,
+                )
+                page_span: "Document.ChunkedDocument.Chunk.ChunkPageSpan" = proto.Field(
+                    proto.MESSAGE,
+                    number=2,
+                    message="Document.ChunkedDocument.Chunk.ChunkPageSpan",
+                )
+
+            class ChunkPageFooter(proto.Message):
+                r"""Represents the page footer associated with the chunk.
+
+                Attributes:
+                    text (str):
+                        Footer in text format.
+                    page_span (google.cloud.documentai_v1.types.Document.ChunkedDocument.Chunk.ChunkPageSpan):
+                        Page span of the footer.
+                """
+
+                text: str = proto.Field(
+                    proto.STRING,
+                    number=1,
+                )
+                page_span: "Document.ChunkedDocument.Chunk.ChunkPageSpan" = proto.Field(
+                    proto.MESSAGE,
+                    number=2,
+                    message="Document.ChunkedDocument.Chunk.ChunkPageSpan",
+                )
+
+            chunk_id: str = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+            source_block_ids: MutableSequence[str] = proto.RepeatedField(
+                proto.STRING,
+                number=2,
+            )
+            content: str = proto.Field(
+                proto.STRING,
+                number=3,
+            )
+            page_span: "Document.ChunkedDocument.Chunk.ChunkPageSpan" = proto.Field(
+                proto.MESSAGE,
+                number=4,
+                message="Document.ChunkedDocument.Chunk.ChunkPageSpan",
+            )
+            page_headers: MutableSequence[
+                "Document.ChunkedDocument.Chunk.ChunkPageHeader"
+            ] = proto.RepeatedField(
+                proto.MESSAGE,
+                number=5,
+                message="Document.ChunkedDocument.Chunk.ChunkPageHeader",
+            )
+            page_footers: MutableSequence[
+                "Document.ChunkedDocument.Chunk.ChunkPageFooter"
+            ] = proto.RepeatedField(
+                proto.MESSAGE,
+                number=6,
+                message="Document.ChunkedDocument.Chunk.ChunkPageFooter",
+            )
+
+        chunks: MutableSequence["Document.ChunkedDocument.Chunk"] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="Document.ChunkedDocument.Chunk",
+        )
+
     uri: str = proto.Field(
         proto.STRING,
         number=1,
@@ -1867,6 +2239,16 @@ class Document(proto.Message):
         proto.MESSAGE,
         number=13,
         message=Revision,
+    )
+    document_layout: DocumentLayout = proto.Field(
+        proto.MESSAGE,
+        number=17,
+        message=DocumentLayout,
+    )
+    chunked_document: ChunkedDocument = proto.Field(
+        proto.MESSAGE,
+        number=18,
+        message=ChunkedDocument,
     )
 
 
