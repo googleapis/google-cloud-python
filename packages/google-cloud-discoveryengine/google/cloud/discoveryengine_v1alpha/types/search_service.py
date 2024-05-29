@@ -93,8 +93,12 @@ class SearchRequest(proto.Message):
             If this field is negative, an ``INVALID_ARGUMENT`` is
             returned.
         data_store_specs (MutableSequence[google.cloud.discoveryengine_v1alpha.types.SearchRequest.DataStoreSpec]):
-            A list of data store specs to apply on a
-            search call.
+            Specs defining dataStores to filter on in a
+            search call and configurations for those
+            dataStores. This is only considered for engines
+            with multiple dataStores use case. For single
+            dataStore within an engine, they should use the
+            specs at the top level.
         filter (str):
             The filter syntax consists of an expression language for
             constructing a predicate from one or more fields of the
@@ -133,8 +137,9 @@ class SearchRequest(proto.Message):
             ordered by a field in an
             [Document][google.cloud.discoveryengine.v1alpha.Document]
             object. Leave it unset if ordered by relevance. ``order_by``
-            expression is case-sensitive. For more information on
-            ordering, see
+            expression is case-sensitive.
+
+            For more information on ordering for retail search, see
             `Ordering <https://cloud.google.com/retail/docs/filter-and-order#order>`__
 
             If this field is unrecognizable, an ``INVALID_ARGUMENT`` is
@@ -153,7 +158,7 @@ class SearchRequest(proto.Message):
         boost_spec (google.cloud.discoveryengine_v1alpha.types.SearchRequest.BoostSpec):
             Boost specification to boost certain documents. For more
             information on boosting, see
-            `Boosting <https://cloud.google.com/retail/docs/boosting#boost>`__
+            `Boosting <https://cloud.google.com/generative-ai-app-builder/docs/boost-search-results>`__
         params (MutableMapping[str, google.protobuf.struct_pb2.Value]):
             Additional search parameters.
 
@@ -161,7 +166,8 @@ class SearchRequest(proto.Message):
 
             -  ``user_country_code``: string. Default empty. If set to
                non-empty, results are restricted or boosted based on the
-               location provided. Example: user_country_code: "au"
+               location provided. For example,
+               ``user_country_code: "au"``
 
                For available codes see `Country
                Codes <https://developers.google.com/custom-search/docs/json_api_reference#countryCodes>`__
@@ -169,7 +175,7 @@ class SearchRequest(proto.Message):
             -  ``search_type``: double. Default empty. Enables
                non-webpage searching depending on the value. The only
                valid non-default value is 1, which enables image
-               searching. Example: search_type: 1
+               searching. For example, ``search_type: 1``
         query_expansion_spec (google.cloud.discoveryengine_v1alpha.types.SearchRequest.QueryExpansionSpec):
             The query expansion specification that
             specifies the conditions under which query
@@ -281,7 +287,10 @@ class SearchRequest(proto.Message):
         )
 
     class DataStoreSpec(proto.Message):
-        r"""A struct to define data stores to filter on in a search call.
+        r"""A struct to define data stores to filter on in a search call and
+        configurations for those data stores. A maximum of 1 DataStoreSpec
+        per data_store is allowed. Otherwise, an ``INVALID_ARGUMENT`` error
+        is returned.
 
         Attributes:
             data_store (str):
@@ -303,9 +312,9 @@ class SearchRequest(proto.Message):
             facet_key (google.cloud.discoveryengine_v1alpha.types.SearchRequest.FacetSpec.FacetKey):
                 Required. The facet key specification.
             limit (int):
-                Maximum of facet values that should be returned for this
-                facet. If unspecified, defaults to 20. The maximum allowed
-                value is 300. Values above 300 are coerced to 300.
+                Maximum facet values that are returned for this facet. If
+                unspecified, defaults to 20. The maximum allowed value is
+                300. Values above 300 are coerced to 300.
 
                 If this field is negative, an ``INVALID_ARGUMENT`` is
                 returned.
@@ -407,7 +416,7 @@ class SearchRequest(proto.Message):
                     2021". Only supported on textual fields. Maximum
                     is 10.
                 contains (MutableSequence[str]):
-                    Only get facet values that contains the given
+                    Only get facet values that contain the given
                     strings. For example, suppose "category" has
                     three values "Action > 2022", "Action > 2021"
                     and "Sci-Fi > 2022". If set "contains" to
@@ -585,7 +594,7 @@ class SearchRequest(proto.Message):
                             datetime field specified. The value must be formatted as an
                             XSD ``dayTimeDuration`` value (a restricted subset of an ISO
                             8601 duration value). The pattern for this is:
-                            ``[nD][T[nH][nM][nS]]``. E.g. ``5D``, ``3DT12H30M``,
+                            ``[nD][T[nH][nM][nS]]``. For example, ``5D``, ``3DT12H30M``,
                             ``T24H``.
                     """
                     ATTRIBUTE_TYPE_UNSPECIFIED = 0
@@ -732,8 +741,8 @@ class SearchRequest(proto.Message):
 
         Attributes:
             mode (google.cloud.discoveryengine_v1alpha.types.SearchRequest.SpellCorrectionSpec.Mode):
-                The mode under which spell correction should take effect to
-                replace the original search query. Default to
+                The mode under which spell correction replaces the original
+                search query. Defaults to
                 [Mode.AUTO][google.cloud.discoveryengine.v1alpha.SearchRequest.SpellCorrectionSpec.Mode.AUTO].
         """
 
@@ -747,10 +756,10 @@ class SearchRequest(proto.Message):
                     behavior defaults to
                     [Mode.AUTO][google.cloud.discoveryengine.v1alpha.SearchRequest.SpellCorrectionSpec.Mode.AUTO].
                 SUGGESTION_ONLY (1):
-                    Search API will try to find a spell suggestion if there is
-                    any and put in the
+                    Search API tries to find a spelling suggestion. If a
+                    suggestion is found, it is put in the
                     [SearchResponse.corrected_query][google.cloud.discoveryengine.v1alpha.SearchResponse.corrected_query].
-                    The spell suggestion will not be used as the search query.
+                    The spelling suggestion won't be used as the search query.
                 AUTO (2):
                     Automatic spell correction built by the
                     Search API. Search will be based on the
@@ -782,12 +791,7 @@ class SearchRequest(proto.Message):
                 be no extractive answer in the search response.
             search_result_mode (google.cloud.discoveryengine_v1alpha.types.SearchRequest.ContentSearchSpec.SearchResultMode):
                 Specifies the search result mode. If unspecified, the search
-                result mode is based on
-                [DataStore.DocumentProcessingConfig.chunking_config][]:
-
-                -  If [DataStore.DocumentProcessingConfig.chunking_config][]
-                   is specified, it defaults to ``CHUNKS``.
-                -  Otherwise, it defaults to ``DOCUMENTS``.
+                result mode defaults to ``DOCUMENTS``.
             chunk_spec (google.cloud.discoveryengine_v1alpha.types.SearchRequest.ContentSearchSpec.ChunkSpec):
                 Specifies the chunk spec to be returned from the search
                 response. Only available if the
@@ -798,12 +802,7 @@ class SearchRequest(proto.Message):
 
         class SearchResultMode(proto.Enum):
             r"""Specifies the search result mode. If unspecified, the search result
-            mode is based on
-            [DataStore.DocumentProcessingConfig.chunking_config][]:
-
-            -  If [DataStore.DocumentProcessingConfig.chunking_config][] is
-               specified, it defaults to ``CHUNKS``.
-            -  Otherwise, it defaults to ``DOCUMENTS``.
+            mode defaults to ``DOCUMENTS``.
 
             Values:
                 SEARCH_RESULT_MODE_UNSPECIFIED (0):
@@ -1360,9 +1359,8 @@ class SearchResponse(proto.Message):
                 of the searched
                 [Document][google.cloud.discoveryengine.v1alpha.Document].
             document (google.cloud.discoveryengine_v1alpha.types.Document):
-                The document data snippet in the search
-                response. Only fields that are marked as
-                retrievable are populated.
+                The document data snippet in the search response. Only
+                fields that are marked as ``retrievable`` are populated.
             chunk (google.cloud.discoveryengine_v1alpha.types.Chunk):
                 The chunk data in the search response if the
                 [SearchRequest.ContentSearchSpec.search_result_mode][google.cloud.discoveryengine.v1alpha.SearchRequest.ContentSearchSpec.search_result_mode]
@@ -1398,8 +1396,8 @@ class SearchResponse(proto.Message):
 
         Attributes:
             key (str):
-                The key for this facet. E.g., "colors" or "price". It
-                matches
+                The key for this facet. For example, ``"colors"`` or
+                ``"price"``. It matches
                 [SearchRequest.FacetSpec.FacetKey.key][google.cloud.discoveryengine.v1alpha.SearchRequest.FacetSpec.FacetKey.key].
             values (MutableSequence[google.cloud.discoveryengine_v1alpha.types.SearchResponse.Facet.FacetValue]):
                 The facet values for this field.
@@ -1482,10 +1480,11 @@ class SearchResponse(proto.Message):
 
             Attributes:
                 attribute_key (str):
-                    Attribute key used to refine the results e.g. 'movie_type'.
+                    Attribute key used to refine the results. For example,
+                    ``"movie_type"``.
                 attribute_value (str):
-                    Attribute value used to refine the results
-                    e.g. 'drama'.
+                    Attribute value used to refine the results. For example,
+                    ``"drama"``.
             """
 
             attribute_key: str = proto.Field(
@@ -1510,7 +1509,7 @@ class SearchResponse(proto.Message):
         )
 
     class Summary(proto.Message):
-        r"""Summary of the top N search result specified by the summary
+        r"""Summary of the top N search results specified by the summary
         spec.
 
         Attributes:

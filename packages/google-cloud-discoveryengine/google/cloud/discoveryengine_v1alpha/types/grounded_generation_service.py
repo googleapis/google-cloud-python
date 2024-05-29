@@ -65,12 +65,35 @@ class CheckGroundingRequest(proto.Message):
             Required. The resource name of the grounding config, such as
             ``projects/*/locations/global/groundingConfigs/default_grounding_config``.
         answer_candidate (str):
-            Answer candidate to check.
+            Answer candidate to check. Can have a maximum
+            length of 1024 characters.
         facts (MutableSequence[google.cloud.discoveryengine_v1alpha.types.GroundingFact]):
             List of facts for the grounding check.
             We support up to 200 facts.
         grounding_spec (google.cloud.discoveryengine_v1alpha.types.CheckGroundingSpec):
             Configuration of the grounding check.
+        user_labels (MutableMapping[str, str]):
+            The user labels applied to a resource must meet the
+            following requirements:
+
+            -  Each resource can have multiple labels, up to a maximum
+               of 64.
+            -  Each label must be a key-value pair.
+            -  Keys have a minimum length of 1 character and a maximum
+               length of 63 characters and cannot be empty. Values can
+               be empty and have a maximum length of 63 characters.
+            -  Keys and values can contain only lowercase letters,
+               numeric characters, underscores, and dashes. All
+               characters must use UTF-8 encoding, and international
+               characters are allowed.
+            -  The key portion of a label must be unique. However, you
+               can use the same key with multiple resources.
+            -  Keys must start with a lowercase letter or international
+               character.
+
+            See `Google Cloud
+            Document <https://cloud.google.com/resource-manager/docs/creating-managing-labels#requirements>`__
+            for more details.
     """
 
     grounding_config: str = proto.Field(
@@ -90,6 +113,11 @@ class CheckGroundingRequest(proto.Message):
         proto.MESSAGE,
         number=4,
         message="CheckGroundingSpec",
+    )
+    user_labels: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=5,
     )
 
 
@@ -145,6 +173,18 @@ class CheckGroundingResponse(proto.Message):
                 means that cited_chunks[1], cited_chunks[3], cited_chunks[4]
                 are the facts cited supporting for the claim. A citation to
                 a fact indicates that the claim is supported by the fact.
+            grounding_check_required (bool):
+                Indicates that this claim required grounding check. When the
+                system decided this claim doesn't require
+                attribution/grounding check, this field will be set to
+                false. In that case, no grounding check was done for the
+                claim and therefore
+                [citation_indices][google.cloud.discoveryengine.v1alpha.CheckGroundingResponse.Claim.citation_indices],
+                and
+                [anti_citation_indices][google.cloud.discoveryengine.v1alpha.CheckGroundingResponse.Claim.anti_citation_indices]
+                should not be returned.
+
+                This field is a member of `oneof`_ ``_grounding_check_required``.
         """
 
         start_pos: int = proto.Field(
@@ -164,6 +204,11 @@ class CheckGroundingResponse(proto.Message):
         citation_indices: MutableSequence[int] = proto.RepeatedField(
             proto.INT32,
             number=4,
+        )
+        grounding_check_required: bool = proto.Field(
+            proto.BOOL,
+            number=6,
+            optional=True,
         )
 
     support_score: float = proto.Field(

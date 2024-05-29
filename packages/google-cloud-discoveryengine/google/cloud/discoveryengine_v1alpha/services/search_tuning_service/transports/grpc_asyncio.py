@@ -285,6 +285,35 @@ class SearchTuningServiceGrpcAsyncIOTransport(SearchTuningServiceTransport):
             )
         return self._stubs["train_custom_model"]
 
+    @property
+    def list_custom_models(
+        self,
+    ) -> Callable[
+        [search_tuning_service.ListCustomModelsRequest],
+        Awaitable[search_tuning_service.ListCustomModelsResponse],
+    ]:
+        r"""Return a callable for the list custom models method over gRPC.
+
+        Gets a list of all the custom models.
+
+        Returns:
+            Callable[[~.ListCustomModelsRequest],
+                    Awaitable[~.ListCustomModelsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_custom_models" not in self._stubs:
+            self._stubs["list_custom_models"] = self.grpc_channel.unary_unary(
+                "/google.cloud.discoveryengine.v1alpha.SearchTuningService/ListCustomModels",
+                request_serializer=search_tuning_service.ListCustomModelsRequest.serialize,
+                response_deserializer=search_tuning_service.ListCustomModelsResponse.deserialize,
+            )
+        return self._stubs["list_custom_models"]
+
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
@@ -293,10 +322,32 @@ class SearchTuningServiceGrpcAsyncIOTransport(SearchTuningServiceTransport):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.list_custom_models: gapic_v1.method_async.wrap_method(
+                self.list_custom_models,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
         return self.grpc_channel.close()
+
+    @property
+    def cancel_operation(
+        self,
+    ) -> Callable[[operations_pb2.CancelOperationRequest], None]:
+        r"""Return a callable for the cancel_operation method over gRPC."""
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "cancel_operation" not in self._stubs:
+            self._stubs["cancel_operation"] = self.grpc_channel.unary_unary(
+                "/google.longrunning.Operations/CancelOperation",
+                request_serializer=operations_pb2.CancelOperationRequest.SerializeToString,
+                response_deserializer=None,
+            )
+        return self._stubs["cancel_operation"]
 
     @property
     def get_operation(

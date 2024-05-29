@@ -1190,6 +1190,8 @@ def test_write_user_event(request_type, transport: str = "grpc"):
         call.return_value = user_event.UserEvent(
             event_type="event_type_value",
             user_pseudo_id="user_pseudo_id_value",
+            engine="engine_value",
+            data_store="data_store_value",
             direct_user_request=True,
             session_id="session_id_value",
             attribution_token="attribution_token_value",
@@ -1209,6 +1211,8 @@ def test_write_user_event(request_type, transport: str = "grpc"):
     assert isinstance(response, user_event.UserEvent)
     assert response.event_type == "event_type_value"
     assert response.user_pseudo_id == "user_pseudo_id_value"
+    assert response.engine == "engine_value"
+    assert response.data_store == "data_store_value"
     assert response.direct_user_request is True
     assert response.session_id == "session_id_value"
     assert response.attribution_token == "attribution_token_value"
@@ -1317,6 +1321,8 @@ async def test_write_user_event_empty_call_async():
             user_event.UserEvent(
                 event_type="event_type_value",
                 user_pseudo_id="user_pseudo_id_value",
+                engine="engine_value",
+                data_store="data_store_value",
                 direct_user_request=True,
                 session_id="session_id_value",
                 attribution_token="attribution_token_value",
@@ -1398,6 +1404,8 @@ async def test_write_user_event_async(
             user_event.UserEvent(
                 event_type="event_type_value",
                 user_pseudo_id="user_pseudo_id_value",
+                engine="engine_value",
+                data_store="data_store_value",
                 direct_user_request=True,
                 session_id="session_id_value",
                 attribution_token="attribution_token_value",
@@ -1418,6 +1426,8 @@ async def test_write_user_event_async(
     assert isinstance(response, user_event.UserEvent)
     assert response.event_type == "event_type_value"
     assert response.user_pseudo_id == "user_pseudo_id_value"
+    assert response.engine == "engine_value"
+    assert response.data_store == "data_store_value"
     assert response.direct_user_request is True
     assert response.session_id == "session_id_value"
     assert response.attribution_token == "attribution_token_value"
@@ -2435,6 +2445,8 @@ def test_write_user_event_rest(request_type):
     request_init["user_event"] = {
         "event_type": "event_type_value",
         "user_pseudo_id": "user_pseudo_id_value",
+        "engine": "engine_value",
+        "data_store": "data_store_value",
         "event_time": {"seconds": 751, "nanos": 543},
         "user_info": {"user_id": "user_id_value", "user_agent": "user_agent_value"},
         "direct_user_request": True,
@@ -2562,6 +2574,8 @@ def test_write_user_event_rest(request_type):
         return_value = user_event.UserEvent(
             event_type="event_type_value",
             user_pseudo_id="user_pseudo_id_value",
+            engine="engine_value",
+            data_store="data_store_value",
             direct_user_request=True,
             session_id="session_id_value",
             attribution_token="attribution_token_value",
@@ -2585,6 +2599,8 @@ def test_write_user_event_rest(request_type):
     assert isinstance(response, user_event.UserEvent)
     assert response.event_type == "event_type_value"
     assert response.user_pseudo_id == "user_pseudo_id_value"
+    assert response.engine == "engine_value"
+    assert response.data_store == "data_store_value"
     assert response.direct_user_request is True
     assert response.session_id == "session_id_value"
     assert response.attribution_token == "attribution_token_value"
@@ -2658,6 +2674,8 @@ def test_write_user_event_rest_required_fields(
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
     ).write_user_event._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("write_async",))
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -2713,7 +2731,7 @@ def test_write_user_event_rest_unset_required_fields():
 
     unset_fields = transport.write_user_event._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(())
+        set(("writeAsync",))
         & set(
             (
                 "parent",
@@ -3741,6 +3759,7 @@ def test_user_event_service_base_transport():
         "purge_user_events",
         "import_user_events",
         "get_operation",
+        "cancel_operation",
         "list_operations",
     )
     for method in methods:
@@ -4256,8 +4275,37 @@ def test_parse_document_path():
     assert expected == actual
 
 
+def test_engine_path():
+    project = "oyster"
+    location = "nudibranch"
+    collection = "cuttlefish"
+    engine = "mussel"
+    expected = "projects/{project}/locations/{location}/collections/{collection}/engines/{engine}".format(
+        project=project,
+        location=location,
+        collection=collection,
+        engine=engine,
+    )
+    actual = UserEventServiceClient.engine_path(project, location, collection, engine)
+    assert expected == actual
+
+
+def test_parse_engine_path():
+    expected = {
+        "project": "winkle",
+        "location": "nautilus",
+        "collection": "scallop",
+        "engine": "abalone",
+    }
+    path = UserEventServiceClient.engine_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = UserEventServiceClient.parse_engine_path(path)
+    assert expected == actual
+
+
 def test_common_billing_account_path():
-    billing_account = "oyster"
+    billing_account = "squid"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -4267,7 +4315,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "nudibranch",
+        "billing_account": "clam",
     }
     path = UserEventServiceClient.common_billing_account_path(**expected)
 
@@ -4277,7 +4325,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "cuttlefish"
+    folder = "whelk"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -4287,7 +4335,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "mussel",
+        "folder": "octopus",
     }
     path = UserEventServiceClient.common_folder_path(**expected)
 
@@ -4297,7 +4345,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "winkle"
+    organization = "oyster"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -4307,7 +4355,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "nautilus",
+        "organization": "nudibranch",
     }
     path = UserEventServiceClient.common_organization_path(**expected)
 
@@ -4317,7 +4365,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "scallop"
+    project = "cuttlefish"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -4327,7 +4375,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "abalone",
+        "project": "mussel",
     }
     path = UserEventServiceClient.common_project_path(**expected)
 
@@ -4337,8 +4385,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "squid"
-    location = "clam"
+    project = "winkle"
+    location = "nautilus"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -4349,8 +4397,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "whelk",
-        "location": "octopus",
+        "project": "scallop",
+        "location": "abalone",
     }
     path = UserEventServiceClient.common_location_path(**expected)
 
@@ -4394,6 +4442,69 @@ async def test_transport_close_async():
         async with client:
             close.assert_not_called()
         close.assert_called_once()
+
+
+def test_cancel_operation_rest_bad_request(
+    transport: str = "rest", request_type=operations_pb2.CancelOperationRequest
+):
+    client = UserEventServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    request = request_type()
+    request = json_format.ParseDict(
+        {
+            "name": "projects/sample1/locations/sample2/collections/sample3/dataStores/sample4/branches/sample5/operations/sample6"
+        },
+        request,
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.cancel_operation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.CancelOperationRequest,
+        dict,
+    ],
+)
+def test_cancel_operation_rest(request_type):
+    client = UserEventServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request_init = {
+        "name": "projects/sample1/locations/sample2/collections/sample3/dataStores/sample4/branches/sample5/operations/sample6"
+    }
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = "{}"
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        response = client.cancel_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
 
 
 def test_get_operation_rest_bad_request(
@@ -4520,6 +4631,145 @@ def test_list_operations_rest(request_type):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, operations_pb2.ListOperationsResponse)
+
+
+def test_cancel_operation(transport: str = "grpc"):
+    client = UserEventServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = operations_pb2.CancelOperationRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+        response = client.cancel_operation(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.asyncio
+async def test_cancel_operation_async(transport: str = "grpc_asyncio"):
+    client = UserEventServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = operations_pb2.CancelOperationRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.cancel_operation(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_cancel_operation_field_headers():
+    client = UserEventServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = operations_pb2.CancelOperationRequest()
+    request.name = "locations"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
+        call.return_value = None
+
+        client.cancel_operation(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=locations",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_cancel_operation_field_headers_async():
+    client = UserEventServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = operations_pb2.CancelOperationRequest()
+    request.name = "locations"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.cancel_operation(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=locations",
+    ) in kw["metadata"]
+
+
+def test_cancel_operation_from_dict():
+    client = UserEventServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        response = client.cancel_operation(
+            request={
+                "name": "locations",
+            }
+        )
+        call.assert_called()
+
+
+@pytest.mark.asyncio
+async def test_cancel_operation_from_dict_async():
+    client = UserEventServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.cancel_operation(
+            request={
+                "name": "locations",
+            }
+        )
+        call.assert_called()
 
 
 def test_get_operation(transport: str = "grpc"):

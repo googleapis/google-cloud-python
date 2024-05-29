@@ -30,11 +30,21 @@ from .common import (
     Principal,
     SearchAddOn,
     SearchTier,
+    SearchUseCase,
     SolutionType,
     UserInfo,
 )
 from .completion import SuggestionDenyListEntry
 from .completion_service import CompleteQueryRequest, CompleteQueryResponse
+from .control import Condition, Control
+from .control_service import (
+    CreateControlRequest,
+    DeleteControlRequest,
+    GetControlRequest,
+    ListControlsRequest,
+    ListControlsResponse,
+    UpdateControlRequest,
+)
 from .conversation import (
     Conversation,
     ConversationContext,
@@ -61,6 +71,7 @@ from .conversational_search_service import (
     UpdateConversationRequest,
     UpdateSessionRequest,
 )
+from .custom_tuning_model import CustomTuningModel
 from .data_store import DataStore
 from .data_store_service import (
     CreateDataStoreMetadata,
@@ -167,6 +178,8 @@ from .schema_service import (
 )
 from .search_service import SearchRequest, SearchResponse
 from .search_tuning_service import (
+    ListCustomModelsRequest,
+    ListCustomModelsResponse,
     TrainCustomModelMetadata,
     TrainCustomModelRequest,
     TrainCustomModelResponse,
@@ -242,10 +255,19 @@ __all__ = (
     "IndustryVertical",
     "SearchAddOn",
     "SearchTier",
+    "SearchUseCase",
     "SolutionType",
     "SuggestionDenyListEntry",
     "CompleteQueryRequest",
     "CompleteQueryResponse",
+    "Condition",
+    "Control",
+    "CreateControlRequest",
+    "DeleteControlRequest",
+    "GetControlRequest",
+    "ListControlsRequest",
+    "ListControlsResponse",
+    "UpdateControlRequest",
     "Conversation",
     "ConversationContext",
     "ConversationMessage",
@@ -268,6 +290,7 @@ __all__ = (
     "ListSessionsResponse",
     "UpdateConversationRequest",
     "UpdateSessionRequest",
+    "CustomTuningModel",
     "DataStore",
     "CreateDataStoreMetadata",
     "CreateDataStoreRequest",
@@ -362,6 +385,8 @@ __all__ = (
     "UpdateSchemaRequest",
     "SearchRequest",
     "SearchResponse",
+    "ListCustomModelsRequest",
+    "ListCustomModelsResponse",
     "TrainCustomModelMetadata",
     "TrainCustomModelRequest",
     "TrainCustomModelResponse",
