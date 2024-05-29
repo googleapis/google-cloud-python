@@ -49,6 +49,10 @@ class Row:
 
         Row objects are not intended to be created by users.
         They are returned by the Bigtable backend.
+
+        Args:
+            key (bytes): Row key
+            cells (list[Cell]): List of cells in the row
         """
         self.row_key = key
         self.cells: list[Cell] = cells
@@ -65,6 +69,9 @@ class Row:
         Returns an index of cells associated with each family and qualifier.
 
         The index is lazily created when needed
+
+        Returns:
+            OrderedDict: Index of cells
         """
         if self._index_data is None:
             self._index_data = OrderedDict()
@@ -81,6 +88,11 @@ class Row:
 
         Row objects are not intended to be created by users.
         They are returned by the Bigtable backend.
+
+        Args:
+            row_pb (RowPB): Protobuf representation of the row
+        Returns:
+            Row: Row object created from the protobuf representation
         """
         row_key: bytes = row_pb.key
         cell_list: list[Cell] = []
@@ -112,6 +124,14 @@ class Row:
         Can also be accessed through indexing:
           cells = row["family", "qualifier"]
           cells = row["family"]
+
+        Args:
+            family: family to filter cells by
+            qualifier: qualifier to filter cells by
+        Returns:
+            list[Cell]: List of cells in the row matching the filter
+        Raises:
+            ValueError: If family or qualifier is not found in the row
         """
         if family is None:
             if qualifier is not None:
@@ -137,6 +157,13 @@ class Row:
     def _get_all_from_family(self, family: str) -> Generator[Cell, None, None]:
         """
         Returns all cells in the row for the family_id
+
+        Args:
+            family: family to filter cells by
+        Yields:
+            Cell: cells in the row for the family_id
+        Raises:
+            ValueError: If family is not found in the row
         """
         if family not in self._index:
             raise ValueError(f"Family '{family}' not found in row '{self.row_key!r}'")
@@ -153,6 +180,9 @@ class Row:
               (family='fam', qualifier=b'col'): [b'value', (+1 more),],
               (family='fam', qualifier=b'col2'): [b'other'],
             }
+
+        Returns:
+            str: Human-readable string representation of the row
         """
         output = ["{"]
         for family, qualifier in self._get_column_components():
@@ -201,6 +231,9 @@ class Row:
     def __iter__(self):
         """
         Allow iterating over all cells in the row
+
+        Returns:
+            Iterator: Iterator over the cells in the row
         """
         return iter(self.cells)
 
@@ -210,6 +243,11 @@ class Row:
 
         Works for both cells in the internal list, and `family` or
         `(family, qualifier)` pairs associated with the cells
+
+        Args:
+            item: item to check for in the row
+        Returns:
+            bool: True if item is in the row, False otherwise
         """
         if isinstance(item, _family_type):
             return item in self._index
@@ -266,7 +304,10 @@ class Row:
 
     def __len__(self):
         """
-        Implements `len()` operator
+        Returns the number of cells in the row
+
+        Returns:
+            int: Number of cells in the row
         """
         return len(self.cells)
 
@@ -275,12 +316,18 @@ class Row:
         Returns a list of (family, qualifier) pairs associated with the cells
 
         Pairs can be used for indexing
+
+        Returns:
+            list[tuple[str, bytes]]: List of (family, qualifier) pairs
         """
         return [(f, q) for f in self._index for q in self._index[f]]
 
     def __eq__(self, other):
         """
         Implements `==` operator
+
+        Returns:
+            bool: True if rows are equal, False otherwise
         """
         # for performance reasons, check row metadata
         # before checking individual cells
@@ -307,6 +354,9 @@ class Row:
     def __ne__(self, other) -> bool:
         """
         Implements `!=` operator
+
+        Returns:
+            bool: True if rows are not equal, False otherwise
         """
         return not self == other
 
@@ -319,6 +369,14 @@ class Cell:
     Does not represent all data contained in the cell, only data returned by a
     query.
     Expected to be read-only to users, and written by backend
+
+    Args:
+        value: the byte string value of the cell
+        row_key: the row key of the cell
+        family: the family associated with the cell
+        qualifier: the column qualifier associated with the cell
+        timestamp_micros: the timestamp of the cell in microseconds
+        labels: the list of labels associated with the cell
     """
 
     __slots__ = (
@@ -339,12 +397,8 @@ class Cell:
         timestamp_micros: int,
         labels: list[str] | None = None,
     ):
-        """
-        Cell constructor
-
-        Cell objects are not intended to be constructed by users.
-        They are returned by the Bigtable backend.
-        """
+        # Cell objects are not intended to be constructed by users.
+        # They are returned by the Bigtable backend.
         self.value = value
         self.row_key = row_key
         self.family = family
@@ -359,6 +413,9 @@ class Cell:
         Allows casting cell to int
         Interprets value as a 64-bit big-endian signed integer, as expected by
         ReadModifyWrite increment rule
+
+        Returns:
+            int: Value of the cell as a 64-bit big-endian signed integer
         """
         return int.from_bytes(self.value, byteorder="big", signed=True)
 
@@ -368,6 +425,9 @@ class Cell:
         proto format
 
         https://cloud.google.com/bigtable/docs/reference/data/rpc/google.bigtable.v2#cell
+
+        Returns:
+            dict: Dictionary representation of the cell
         """
         cell_dict: dict[str, Any] = {
             "value": self.value,
@@ -381,12 +441,18 @@ class Cell:
         """
         Allows casting cell to str
         Prints encoded byte string, same as printing value directly.
+
+        Returns:
+            str: Encoded byte string of the value
         """
         return str(self.value)
 
     def __repr__(self):
         """
         Returns a string representation of the cell
+
+        Returns:
+            str: String representation of the cell
         """
         return f"Cell(value={self.value!r}, row_key={self.row_key!r}, family='{self.family}', qualifier={self.qualifier!r}, timestamp_micros={self.timestamp_micros}, labels={self.labels})"
 
@@ -395,9 +461,16 @@ class Cell:
     def __lt__(self, other) -> bool:
         """
         Implements `<` operator
+
+        Args:
+            other: Cell to compare with
+        Returns:
+            bool: True if this cell is less than the other cell, False otherwise
+        Raises:
+            NotImplementedError: If other is not a Cell
         """
         if not isinstance(other, Cell):
-            return NotImplemented
+            raise NotImplementedError
         this_ordering = (
             self.family,
             self.qualifier,
@@ -417,9 +490,14 @@ class Cell:
     def __eq__(self, other) -> bool:
         """
         Implements `==` operator
+
+        Args:
+            other: Cell to compare with
+        Returns:
+            bool: True if cells are equal, False otherwise
         """
         if not isinstance(other, Cell):
-            return NotImplemented
+            return False
         return (
             self.row_key == other.row_key
             and self.family == other.family
@@ -433,12 +511,20 @@ class Cell:
     def __ne__(self, other) -> bool:
         """
         Implements `!=` operator
+
+        Args:
+            other: Cell to compare with
+        Returns:
+            bool: True if cells are not equal, False otherwise
         """
         return not self == other
 
     def __hash__(self):
         """
         Implements `hash()` function to fingerprint cell
+
+        Returns:
+            int: hash value of the cell
         """
         return hash(
             (

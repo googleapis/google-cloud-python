@@ -33,36 +33,75 @@ _MUTATE_ROWS_REQUEST_MUTATION_LIMIT = 100_000
 
 
 class Mutation(ABC):
-    """Model class for mutations"""
+    """
+    Abstract base class for mutations.
+
+    This class defines the interface for different types of mutations that can be
+    applied to Bigtable rows.
+    """
 
     @abstractmethod
     def _to_dict(self) -> dict[str, Any]:
+        """
+        Convert the mutation to a dictionary representation.
+
+        Returns:
+            dict[str, Any]: A dictionary representation of the mutation.
+        """
         raise NotImplementedError
 
     def _to_pb(self) -> data_pb.Mutation:
         """
-        Convert the mutation to protobuf
+        Convert the mutation to a protobuf representation.
+
+        Returns:
+            Mutation: A protobuf representation of the mutation.
         """
         return data_pb.Mutation(**self._to_dict())
 
     def is_idempotent(self) -> bool:
         """
         Check if the mutation is idempotent
-        If false, the mutation will not be retried
+
+        Idempotent mutations can be safely retried on failure.
+
+        Returns:
+            bool: True if the mutation is idempotent, False otherwise.
         """
         return True
 
     def __str__(self) -> str:
+        """
+        Return a string representation of the mutation.
+
+        Returns:
+            str: A string representation of the mutation.
+        """
         return str(self._to_dict())
 
     def size(self) -> int:
         """
         Get the size of the mutation in bytes
+
+        Returns:
+            int: The size of the mutation in bytes.
         """
         return getsizeof(self._to_dict())
 
     @classmethod
     def _from_dict(cls, input_dict: dict[str, Any]) -> Mutation:
+        """
+        Create a `Mutation` instance from a dictionary representation.
+
+        Args:
+            input_dict (dict[str, Any]): A dictionary representation of the mutation.
+
+        Returns:
+            Mutation: A Mutation instance created from the dictionary.
+
+        Raises:
+            ValueError: If the input dictionary is invalid or does not represent a valid mutation type.
+        """
         instance: Mutation | None = None
         try:
             if "set_cell" in input_dict:
@@ -96,6 +135,25 @@ class Mutation(ABC):
 
 
 class SetCell(Mutation):
+    """
+    Mutation to set the value of a cell.
+
+    Args:
+        family (str): The name of the column family to which the new cell belongs.
+        qualifier (bytes | str): The column qualifier of the new cell.
+        new_value (bytes | str | int): The value of the new cell.
+        timestamp_micros (int | None): The timestamp of the new cell. If `None`,
+            the current timestamp will be used. Timestamps will be sent with
+            millisecond precision. Extra precision will be truncated. If -1, the
+            server will assign a timestamp. Note that `SetCell` mutations with
+            server-side timestamps are non-idempotent operations and will not be retried.
+
+    Raises:
+        TypeError: If `qualifier` is not `bytes` or `str`.
+        TypeError: If `new_value` is not `bytes`, `str`, or `int`.
+        ValueError: If `timestamp_micros` is less than `_SERVER_SIDE_TIMESTAMP`.
+    """
+
     def __init__(
         self,
         family: str,
@@ -103,18 +161,6 @@ class SetCell(Mutation):
         new_value: bytes | str | int,
         timestamp_micros: int | None = None,
     ):
-        """
-        Mutation to set the value of a cell
-
-        Args:
-          - family: The name of the column family to which the new cell belongs.
-          - qualifier: The column qualifier of the new cell.
-          - new_value: The value of the new cell. str or int input will be converted to bytes
-          - timestamp_micros: The timestamp of the new cell. If None, the current timestamp will be used.
-              Timestamps will be sent with milisecond-percision. Extra precision will be truncated.
-              If -1, the server will assign a timestamp. Note that SetCell mutations with server-side
-              timestamps are non-idempotent operations and will not be retried.
-        """
         qualifier = qualifier.encode() if isinstance(qualifier, str) else qualifier
         if not isinstance(qualifier, bytes):
             raise TypeError("qualifier must be bytes or str")
@@ -142,7 +188,6 @@ class SetCell(Mutation):
         self.timestamp_micros = timestamp_micros
 
     def _to_dict(self) -> dict[str, Any]:
-        """Convert the mutation to a dictionary representation"""
         return {
             "set_cell": {
                 "family_name": self.family,
@@ -153,12 +198,26 @@ class SetCell(Mutation):
         }
 
     def is_idempotent(self) -> bool:
-        """Check if the mutation is idempotent"""
         return self.timestamp_micros != _SERVER_SIDE_TIMESTAMP
 
 
 @dataclass
 class DeleteRangeFromColumn(Mutation):
+    """
+    Mutation to delete a range of cells from a column.
+
+    Args:
+        family (str): The name of the column family.
+         qualifier (bytes): The column qualifier.
+        start_timestamp_micros (int | None): The start timestamp of the range to
+            delete. `None` represents 0. Defaults to `None`.
+        end_timestamp_micros (int | None): The end timestamp of the range to
+            delete. `None` represents infinity. Defaults to `None`.
+
+    Raises:
+        ValueError: If `start_timestamp_micros` is greater than `end_timestamp_micros`.
+    """
+
     family: str
     qualifier: bytes
     # None represents 0
@@ -191,6 +250,13 @@ class DeleteRangeFromColumn(Mutation):
 
 @dataclass
 class DeleteAllFromFamily(Mutation):
+    """
+    Mutation to delete all cells from a column family.
+
+    Args:
+        family_to_delete (str): The name of the column family to delete.
+    """
+
     family_to_delete: str
 
     def _to_dict(self) -> dict[str, Any]:
@@ -203,6 +269,10 @@ class DeleteAllFromFamily(Mutation):
 
 @dataclass
 class DeleteAllFromRow(Mutation):
+    """
+    Mutation to delete all cells from a row.
+    """
+
     def _to_dict(self) -> dict[str, Any]:
         return {
             "delete_from_row": {},
@@ -210,6 +280,22 @@ class DeleteAllFromRow(Mutation):
 
 
 class RowMutationEntry:
+    """
+    A single entry in a `MutateRows` request.
+
+    This class represents a set of mutations to apply to a specific row in a
+    Bigtable table.
+
+    Args:
+        row_key (bytes | str): The key of the row to mutate.
+        mutations (Mutation | list[Mutation]): The mutation or list of mutations to apply
+            to the row.
+
+    Raises:
+        ValueError: If `mutations` is empty or contains more than
+            `_MUTATE_ROWS_REQUEST_MUTATION_LIMIT` mutations.
+    """
+
     def __init__(self, row_key: bytes | str, mutations: Mutation | list[Mutation]):
         if isinstance(row_key, str):
             row_key = row_key.encode("utf-8")
@@ -225,29 +311,58 @@ class RowMutationEntry:
         self.mutations = tuple(mutations)
 
     def _to_dict(self) -> dict[str, Any]:
+        """
+        Convert the mutation entry to a dictionary representation.
+
+        Returns:
+            dict[str, Any]: A dictionary representation of the mutation entry
+        """
         return {
             "row_key": self.row_key,
             "mutations": [mutation._to_dict() for mutation in self.mutations],
         }
 
     def _to_pb(self) -> types_pb.MutateRowsRequest.Entry:
+        """
+        Convert the mutation entry to a protobuf representation.
+
+        Returns:
+            MutateRowsRequest.Entry: A protobuf representation of the mutation entry.
+        """
         return types_pb.MutateRowsRequest.Entry(
             row_key=self.row_key,
             mutations=[mutation._to_pb() for mutation in self.mutations],
         )
 
     def is_idempotent(self) -> bool:
-        """Check if the mutation is idempotent"""
+        """
+        Check if all mutations in the entry are idempotent.
+
+        Returns:
+            bool: True if all mutations in the entry are idempotent, False otherwise.
+        """
         return all(mutation.is_idempotent() for mutation in self.mutations)
 
     def size(self) -> int:
         """
-        Get the size of the mutation in bytes
+        Get the size of the mutation entry in bytes.
+
+        Returns:
+            int: The size of the mutation entry in bytes.
         """
         return getsizeof(self._to_dict())
 
     @classmethod
     def _from_dict(cls, input_dict: dict[str, Any]) -> RowMutationEntry:
+        """
+        Create a `RowMutationEntry` instance from a dictionary representation.
+
+        Args:
+            input_dict (dict[str, Any]): A dictionary representation of the mutation entry.
+
+        Returns:
+            RowMutationEntry: A RowMutationEntry instance created from the dictionary.
+        """
         return RowMutationEntry(
             row_key=input_dict["row_key"],
             mutations=[

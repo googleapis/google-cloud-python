@@ -83,11 +83,11 @@ def _attempt_timeout_generator(
     at which point it will return the remaining time in the operation_timeout.
 
     Args:
-      - per_request_timeout: The timeout value to use for each request, in seconds.
+        per_request_timeout: The timeout value to use for each request, in seconds.
             If None, the operation_timeout will be used for each request.
-      - operation_timeout: The timeout value to use for the entire operationm in seconds.
+        operation_timeout: The timeout value to use for the entire operationm in seconds.
     Yields:
-      - The timeout value to use for the next request, in seonds
+        float: The timeout value to use for the next request, in seonds
     """
     per_request_timeout = (
         per_request_timeout if per_request_timeout is not None else operation_timeout
@@ -106,12 +106,13 @@ def _retry_exception_factory(
     Build retry error based on exceptions encountered during operation
 
     Args:
-      - exc_list: list of exceptions encountered during operation
-      - is_timeout: whether the operation failed due to timeout
-      - timeout_val: the operation timeout value in seconds, for constructing
+        exc_list: list of exceptions encountered during operation
+        is_timeout: whether the operation failed due to timeout
+        timeout_val: the operation timeout value in seconds, for constructing
             the error message
     Returns:
-      - tuple of the exception to raise, and a cause exception if applicable
+        tuple[Exception, Exception|None]:
+            tuple of the exception to raise, and a cause exception if applicable
     """
     if reason == RetryFailureReason.TIMEOUT:
         timeout_val_str = f"of {timeout_val:0.1f}s " if timeout_val is not None else ""
@@ -144,11 +145,11 @@ def _get_timeouts(
     resulting timeouts are invalid.
 
     Args:
-        - operation: The timeout value to use for the entire operation, in seconds.
-        - attempt: The timeout value to use for each attempt, in seconds.
-        - table: The table to use for default values.
+        operation: The timeout value to use for the entire operation, in seconds.
+        attempt: The timeout value to use for each attempt, in seconds.
+        table: The table to use for default values.
     Returns:
-        - A tuple of (operation_timeout, attempt_timeout)
+        typle[float, float]: A tuple of (operation_timeout, attempt_timeout)
     """
     # load table defaults if necessary
     if operation == TABLE_DEFAULT.DEFAULT:
@@ -185,11 +186,11 @@ def _validate_timeouts(
     an exception if they are not.
 
     Args:
-      - operation_timeout: The timeout value to use for the entire operation, in seconds.
-      - attempt_timeout: The timeout value to use for each attempt, in seconds.
-      - allow_none: If True, attempt_timeout can be None. If False, None values will raise an exception.
+        operation_timeout: The timeout value to use for the entire operation, in seconds.
+        attempt_timeout: The timeout value to use for each attempt, in seconds.
+        allow_none: If True, attempt_timeout can be None. If False, None values will raise an exception.
     Raises:
-      - ValueError if operation_timeout or attempt_timeout are invalid.
+        ValueError: if operation_timeout or attempt_timeout are invalid.
     """
     if operation_timeout is None:
         raise ValueError("operation_timeout cannot be None")
@@ -206,6 +207,16 @@ def _get_retryable_errors(
     call_codes: Sequence["grpc.StatusCode" | int | type[Exception]] | TABLE_DEFAULT,
     table: "TableAsync",
 ) -> list[type[Exception]]:
+    """
+    Convert passed in retryable error codes to a list of exception types.
+
+    Args:
+        call_codes: The error codes to convert. Can be a list of grpc.StatusCode values,
+            int values, or Exception types, or a TABLE_DEFAULT value.
+        table: The table to use for default values.
+    Returns:
+        list[type[Exception]]: A list of exception types to retry on.
+    """
     # load table defaults if necessary
     if call_codes == TABLE_DEFAULT.DEFAULT:
         call_codes = table.default_retryable_errors
