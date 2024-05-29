@@ -41,7 +41,7 @@ class CreateDatasetRequest(proto.Message):
     Attributes:
         parent (str):
             Required. Parent project that will own the
-            dataset. Format: projects/{$project}
+            dataset. Format: projects/{project}
         dataset (google.maps.mapsplatformdatasets_v1.types.Dataset):
             Required. The dataset version to create.
     """
@@ -62,12 +62,12 @@ class UpdateDatasetMetadataRequest(proto.Message):
 
     Attributes:
         dataset (google.maps.mapsplatformdatasets_v1.types.Dataset):
-            Required. The dataset to update. The dataset's name is used
-            to identify the dataset to be updated. The name has the
-            format: projects/{project}/datasets/{dataset_id}
+            Required. Resource name of the dataset to update. Format:
+            projects/{project}/datasets/{dataset_id}
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            The list of fields to be updated. Support the value "*" for
-            full replacement.
+            The list of fields to be updated.
+
+            The value "*" is used for full replacement (default).
     """
 
     dataset: gmm_dataset.Dataset = proto.Field(
@@ -87,8 +87,14 @@ class GetDatasetRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. Resource name.
+            Required. Resource name. Format:
             projects/{project}/datasets/{dataset_id}
+
+            Can also fetch some special versions by appending "@" and a
+            tag. Format: projects/{project}/datasets/{dataset_id}@{tag}
+
+            Tag "active": The info of the latest completed version will
+            be included, and NOT_FOUND if the dataset does not have one.
     """
 
     name: str = proto.Field(
@@ -103,15 +109,29 @@ class ListDatasetsRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The name of the project to list all
-            the datasets for.
+            the datasets for. Format: projects/{project}
         page_size (int):
-            The maximum number of versions to return per
-            page. If unspecified (or zero), all datasets
-            will be returned.
+            The maximum number of datasets to return per
+            page.
+            If unspecified (or zero), all datasets will be
+            returned.
         page_token (str):
             The page token, received from a previous
             ListDatasets call. Provide this to retrieve the
             subsequent page.
+        tag (str):
+            The tag that specifies the desired version
+            for each dataset.
+            Note that when pagination is also specified,
+            some filtering can happen after pagination,
+            which may cause the response to contain fewer
+            datasets than the page size, even if it's not
+            the last page.
+
+            Tag "active": Each dataset in the response will
+            include the info of its latest completed
+            version, and the dataset will be skipped if it
+            does not have one.
     """
 
     parent: str = proto.Field(
@@ -126,18 +146,23 @@ class ListDatasetsRequest(proto.Message):
         proto.STRING,
         number=3,
     )
+    tag: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class ListDatasetsResponse(proto.Message):
-    r"""Response to list datasets for the project.
+    r"""Response object of ListDatasets.
 
     Attributes:
         datasets (MutableSequence[google.maps.mapsplatformdatasets_v1.types.Dataset]):
             All the datasets for the project.
         next_page_token (str):
             A token that can be sent as ``page_token`` to retrieve the
-            next page. If this field is omitted, there are no subsequent
-            pages.
+            next page.
+
+            If this field is omitted, there are no subsequent pages.
     """
 
     @property
@@ -158,11 +183,10 @@ class ListDatasetsResponse(proto.Message):
 class DeleteDatasetRequest(proto.Message):
     r"""Request to delete a dataset.
 
-    The dataset to be deleted.
-
     Attributes:
         name (str):
-            Required. Format: projects/${project}/datasets/{dataset_id}
+            Required. The name of the dataset to delete. Format:
+            projects/{project}/datasets/{dataset_id}
     """
 
     name: str = proto.Field(

@@ -42,7 +42,7 @@ class mapsplatformdatasetsCallTransformer(cst.CSTTransformer):
         'create_dataset': ('parent', 'dataset', ),
         'delete_dataset': ('name', ),
         'get_dataset': ('name', ),
-        'list_datasets': ('parent', 'page_size', 'page_token', ),
+        'list_datasets': ('parent', 'page_size', 'page_token', 'tag', ),
         'update_dataset_metadata': ('dataset', 'update_mask', ),
     }
 

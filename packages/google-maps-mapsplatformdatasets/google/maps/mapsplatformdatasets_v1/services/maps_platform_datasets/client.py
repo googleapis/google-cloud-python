@@ -695,7 +695,7 @@ class MapsPlatformDatasetsClient(metaclass=MapsPlatformDatasetsClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gmm_dataset.Dataset:
-        r"""Create a new dataset for the specified project.
+        r"""Creates a new dataset for the specified project.
 
         .. code-block:: python
 
@@ -729,7 +729,7 @@ class MapsPlatformDatasetsClient(metaclass=MapsPlatformDatasetsClientMeta):
             parent (str):
                 Required. Parent project that will
                 own the dataset. Format:
-                projects/{$project}
+                projects/{project}
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -749,7 +749,7 @@ class MapsPlatformDatasetsClient(metaclass=MapsPlatformDatasetsClientMeta):
 
         Returns:
             google.maps.mapsplatformdatasets_v1.types.Dataset:
-                A representation of a Maps Dataset
+                A representation of a dataset
                 resource.
 
         """
@@ -810,7 +810,7 @@ class MapsPlatformDatasetsClient(metaclass=MapsPlatformDatasetsClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gmm_dataset.Dataset:
-        r"""Update the metadata for the dataset.
+        r"""Updates the metadata for the dataset.
 
         .. code-block:: python
 
@@ -842,16 +842,16 @@ class MapsPlatformDatasetsClient(metaclass=MapsPlatformDatasetsClientMeta):
                 The request object. Request to update the metadata fields
                 of the dataset.
             dataset (google.maps.mapsplatformdatasets_v1.types.Dataset):
-                Required. The dataset to update. The dataset's name is
-                used to identify the dataset to be updated. The name has
-                the format: projects/{project}/datasets/{dataset_id}
+                Required. Resource name of the dataset to update.
+                Format: projects/{project}/datasets/{dataset_id}
 
                 This corresponds to the ``dataset`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
-                The list of fields to be updated. Support the value "*"
-                for full replacement.
+                The list of fields to be updated.
+
+                The value "*" is used for full replacement (default).
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -864,7 +864,7 @@ class MapsPlatformDatasetsClient(metaclass=MapsPlatformDatasetsClientMeta):
 
         Returns:
             google.maps.mapsplatformdatasets_v1.types.Dataset:
-                A representation of a Maps Dataset
+                A representation of a dataset
                 resource.
 
         """
@@ -924,7 +924,7 @@ class MapsPlatformDatasetsClient(metaclass=MapsPlatformDatasetsClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dataset.Dataset:
-        r"""Get the dataset.
+        r"""Gets the dataset.
 
         .. code-block:: python
 
@@ -956,8 +956,16 @@ class MapsPlatformDatasetsClient(metaclass=MapsPlatformDatasetsClientMeta):
             request (Union[google.maps.mapsplatformdatasets_v1.types.GetDatasetRequest, dict]):
                 The request object. Request to get the specified dataset.
             name (str):
-                Required. Resource name.
+                Required. Resource name. Format:
                 projects/{project}/datasets/{dataset_id}
+
+                Can also fetch some special versions by appending "@"
+                and a tag. Format:
+                projects/{project}/datasets/{dataset_id}@{tag}
+
+                Tag "active": The info of the latest completed version
+                will be included, and NOT_FOUND if the dataset does not
+                have one.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -970,7 +978,7 @@ class MapsPlatformDatasetsClient(metaclass=MapsPlatformDatasetsClientMeta):
 
         Returns:
             google.maps.mapsplatformdatasets_v1.types.Dataset:
-                A representation of a Maps Dataset
+                A representation of a dataset
                 resource.
 
         """
@@ -1028,7 +1036,7 @@ class MapsPlatformDatasetsClient(metaclass=MapsPlatformDatasetsClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListDatasetsPager:
-        r"""List all the datasets for the specified project.
+        r"""Lists all the datasets for the specified project.
 
         .. code-block:: python
 
@@ -1063,7 +1071,8 @@ class MapsPlatformDatasetsClient(metaclass=MapsPlatformDatasetsClientMeta):
                 project.
             parent (str):
                 Required. The name of the project to
-                list all the datasets for.
+                list all the datasets for. Format:
+                projects/{project}
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1076,8 +1085,8 @@ class MapsPlatformDatasetsClient(metaclass=MapsPlatformDatasetsClientMeta):
 
         Returns:
             google.maps.mapsplatformdatasets_v1.services.maps_platform_datasets.pagers.ListDatasetsPager:
-                Response to list datasets for the
-                project.
+                Response object of ListDatasets.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -1146,7 +1155,7 @@ class MapsPlatformDatasetsClient(metaclass=MapsPlatformDatasetsClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
-        r"""Delete the specified dataset .
+        r"""Deletes the specified dataset.
 
         .. code-block:: python
 
@@ -1174,11 +1183,9 @@ class MapsPlatformDatasetsClient(metaclass=MapsPlatformDatasetsClientMeta):
         Args:
             request (Union[google.maps.mapsplatformdatasets_v1.types.DeleteDatasetRequest, dict]):
                 The request object. Request to delete a dataset.
-
-                The dataset to be deleted.
             name (str):
-                Required. Format:
-                projects/${project}/datasets/{dataset_id}
+                Required. The name of the dataset to delete. Format:
+                projects/{project}/datasets/{dataset_id}
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
