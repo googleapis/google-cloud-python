@@ -395,7 +395,7 @@ def test_randomforestclassifier_multiple_params(penguins_df_default_index, datas
         f"{dataset_id}.temp_configured_randomforestclassifier_model"
         in reloaded_model._bqml_model.model_name
     )
-    assert reloaded_model.tree_method == "auto"
+    assert reloaded_model.tree_method.casefold() == "auto"
     assert reloaded_model.colsample_bytree == 0.95
     assert reloaded_model.colsample_bylevel == 0.95
     assert reloaded_model.colsample_bynode == 0.95

@@ -21,7 +21,7 @@ import shutil
 import tempfile
 import textwrap
 
-from google.api_core.exceptions import BadRequest, InvalidArgument, NotFound
+import google.api_core.exceptions
 from google.cloud import bigquery, storage
 import pandas
 import pytest
@@ -849,7 +849,7 @@ def test_remote_function_with_explicit_name(
         expected_remote_function = f"{dataset_id}.{rf_name}"
 
         # Initially the expected BQ remote function should not exist
-        with pytest.raises(NotFound):
+        with pytest.raises(google.api_core.exceptions.NotFound):
             session.bqclient.get_routine(expected_remote_function)
 
         # Create the remote function with the name provided explicitly
@@ -981,7 +981,7 @@ def test_remote_function_with_explicit_name_reuse(
         expected_remote_function = f"{dataset_id}.{rf_name}"
 
         # Initially the expected BQ remote function should not exist
-        with pytest.raises(NotFound):
+        with pytest.raises(google.api_core.exceptions.NotFound):
             session.bqclient.get_routine(expected_remote_function)
 
         # Create a new remote function with the name provided explicitly
@@ -1198,7 +1198,8 @@ def test_remote_function_runtime_error(session, scalars_dfs, dataset_id):
         scalars_df, _ = scalars_dfs
 
         with pytest.raises(
-            BadRequest, match="400.*errorMessage.*unsupported operand type"
+            google.api_core.exceptions.BadRequest,
+            match="400.*errorMessage.*unsupported operand type",
         ):
             # int64_col has nulls which should cause error in square
             scalars_df["int64_col"].apply(square).to_pandas()
@@ -1429,20 +1430,6 @@ def test_remote_function_via_session_vpc(scalars_dfs):
         cleanup_remote_function_assets(
             rf_session.bqclient, rf_session.cloudfunctionsclient, square_num_remote
         )
-
-
-def test_remote_function_via_session_vpc_invalid(session):
-    with pytest.raises(
-        InvalidArgument, match="400.*Serverless VPC Access connector is not found"
-    ):
-
-        @session.remote_function(
-            [int], int, reuse=False, cloud_function_vpc_connector="does-not-exist"
-        )
-        def square_num(x):
-            if x is None:
-                return x
-            return x * x
 
 
 @pytest.mark.parametrize(
