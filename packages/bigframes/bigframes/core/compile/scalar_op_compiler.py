@@ -375,6 +375,16 @@ def abs_op_impl(x: ibis_types.Value):
     return typing.cast(ibis_types.NumericValue, x).abs()
 
 
+@scalar_op_compiler.register_unary_op(ops.pos_op)
+def pos_op_impl(x: ibis_types.Value):
+    return typing.cast(ibis_types.NumericValue, x)
+
+
+@scalar_op_compiler.register_unary_op(ops.neg_op)
+def neg_op_impl(x: ibis_types.Value):
+    return typing.cast(ibis_types.NumericValue, x).negate()
+
+
 @scalar_op_compiler.register_unary_op(ops.sqrt_op)
 def sqrt_op_impl(x: ibis_types.Value):
     numeric_value = typing.cast(ibis_types.NumericValue, x)
@@ -975,6 +985,16 @@ def or_op(
     if isinstance(y, ibis_types.NullScalar):
         return _null_or_value(x, x == ibis.literal(True))
     return typing.cast(ibis_types.BooleanValue, x) | typing.cast(
+        ibis_types.BooleanValue, y
+    )
+
+
+@scalar_op_compiler.register_binary_op(ops.xor_op)
+def xor_op(
+    x: ibis_types.Value,
+    y: ibis_types.Value,
+):
+    return typing.cast(ibis_types.BooleanValue, x) ^ typing.cast(
         ibis_types.BooleanValue, y
     )
 

@@ -1699,6 +1699,22 @@ def test_df_abs(scalars_dfs):
     assert_pandas_df_equal(bf_result, pd_result)
 
 
+def test_df_pos(scalars_dfs):
+    scalars_df, scalars_pandas_df = scalars_dfs
+    bf_result = (+scalars_df[["int64_col", "numeric_col"]]).to_pandas()
+    pd_result = +scalars_pandas_df[["int64_col", "numeric_col"]]
+
+    assert_pandas_df_equal(pd_result, bf_result)
+
+
+def test_df_neg(scalars_dfs):
+    scalars_df, scalars_pandas_df = scalars_dfs
+    bf_result = (-scalars_df[["int64_col", "numeric_col"]]).to_pandas()
+    pd_result = -scalars_pandas_df[["int64_col", "numeric_col"]]
+
+    assert_pandas_df_equal(pd_result, bf_result)
+
+
 def test_df_invert(scalars_dfs):
     scalars_df, scalars_pandas_df = scalars_dfs
     columns = ["int64_col", "bool_col"]

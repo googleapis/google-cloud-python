@@ -357,6 +357,36 @@ def test_abs(scalars_dfs, col_name):
 @pytest.mark.parametrize(
     ("col_name",),
     (
+        ("float64_col",),
+        ("int64_too",),
+    ),
+)
+def test_series_pos(scalars_dfs, col_name):
+    scalars_df, scalars_pandas_df = scalars_dfs
+    bf_result = (+scalars_df[col_name]).to_pandas()
+    pd_result = +scalars_pandas_df[col_name]
+
+    assert_series_equal(pd_result, bf_result)
+
+
+@pytest.mark.parametrize(
+    ("col_name",),
+    (
+        ("float64_col",),
+        ("int64_too",),
+    ),
+)
+def test_series_neg(scalars_dfs, col_name):
+    scalars_df, scalars_pandas_df = scalars_dfs
+    bf_result = (-scalars_df[col_name]).to_pandas()
+    pd_result = -scalars_pandas_df[col_name]
+
+    assert_series_equal(pd_result, bf_result)
+
+
+@pytest.mark.parametrize(
+    ("col_name",),
+    (
         ("bool_col",),
         ("int64_col",),
     ),
@@ -678,10 +708,12 @@ def test_series_pow_scalar_reverse(scalars_dfs):
     [
         (lambda x, y: x & y),
         (lambda x, y: x | y),
+        (lambda x, y: x ^ y),
     ],
     ids=[
         "and",
         "or",
+        "xor",
     ],
 )
 @pytest.mark.parametrize(("other_scalar"), [True, False, pd.NA])
@@ -714,6 +746,7 @@ def test_series_bool_bool_operators_scalar(
         (lambda x, y: x // y),
         (lambda x, y: x & y),
         (lambda x, y: x | y),
+        (lambda x, y: x ^ y),
     ],
     ids=[
         "add",
@@ -728,6 +761,7 @@ def test_series_bool_bool_operators_scalar(
         "floordivide",
         "bitwise_and",
         "bitwise_or",
+        "bitwise_xor",
     ],
 )
 def test_series_int_int_operators_series(scalars_dfs, operator):

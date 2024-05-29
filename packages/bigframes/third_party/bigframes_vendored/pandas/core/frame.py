@@ -3555,6 +3555,42 @@ class DataFrame(generic.NDFrame):
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
+    def __and__(self, other):
+        """Get bitwise AND of DataFrame and other, element-wise, using operator `&`.
+
+        Args:
+            other (scalar, Series or DataFrame):
+                Object to bitwise AND with the DataFrame.
+
+        Returns:
+            bigframes.dataframe.DataFrame: The result of the operation.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    def __or__(self, other):
+        """Get bitwise OR of DataFrame and other, element-wise, using operator `|`.
+
+        Args:
+            other (scalar, Series or DataFrame):
+                Object to bitwise OR with the DataFrame.
+
+        Returns:
+            bigframes.dataframe.DataFrame: The result of the operation.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    def __xor__(self, other):
+        """Get bitwise XOR of DataFrame and other, element-wise, using operator `^`.
+
+        Args:
+            other (scalar, Series or DataFrame):
+                Object to bitwise XOR with the DataFrame.
+
+        Returns:
+            bigframes.dataframe.DataFrame: The result of the operation.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
     def combine(
         self, other, func, fill_value=None, overwrite: bool = True
     ) -> DataFrame:

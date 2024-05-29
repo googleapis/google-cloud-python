@@ -668,6 +668,13 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
 
     __ror__ = __or__
 
+    def __xor__(self, other: bool | int | Series) -> Series:
+        return self._apply_binary_op(other, ops.xor_op)
+
+    __or__.__doc__ = inspect.getdoc(vendored_pandas_series.Series.__xor__)
+
+    __rxor__ = __xor__
+
     def __add__(self, other: float | int | Series) -> Series:
         return self.add(other)
 
@@ -1035,6 +1042,12 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         return self._apply_unary_op(ops.invert_op)
 
     __invert__.__doc__ = inspect.getdoc(vendored_pandas_series.Series.__invert__)
+
+    def __pos__(self) -> Series:
+        return self._apply_unary_op(ops.pos_op)
+
+    def __neg__(self) -> Series:
+        return self._apply_unary_op(ops.neg_op)
 
     def eq(self, other: object) -> Series:
         # TODO: enforce stricter alignment

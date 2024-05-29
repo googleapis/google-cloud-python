@@ -4224,7 +4224,7 @@ class Series(NDFrame):  # type: ignore[misc]
                 Object to bitwise AND with the Series.
 
         Returns:
-            Series: The result of the operation.
+            bigframes.series.Series: The result of the operation.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
@@ -4262,7 +4262,45 @@ class Series(NDFrame):  # type: ignore[misc]
                 Object to bitwise OR with the Series.
 
         Returns:
-            Series: The result of the operation.
+            bigframes.series.Series: The result of the operation.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    def __xor__(self, other):
+        """Get bitwise XOR of Series and other, element-wise, using operator `^`.
+
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> s = bpd.Series([0, 1, 2, 3])
+
+        You can operate with a scalar.
+
+            >>> s ^ 6
+            0    6
+            1    7
+            2    4
+            3    5
+            dtype: Int64
+
+        You can operate with another Series.
+
+            >>> s1 = bpd.Series([5, 6, 7, 8])
+            >>> s ^ s1
+            0     5
+            1     7
+            2     5
+            3    11
+            dtype: Int64
+
+        Args:
+            other (scalar or Series):
+                Object to bitwise XOR with the Series.
+
+        Returns:
+            bigframes.series.Series: The result of the operation.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 

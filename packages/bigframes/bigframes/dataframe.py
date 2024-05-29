@@ -1112,6 +1112,33 @@ class DataFrame(vendored_pandas_frame.DataFrame):
 
     __rpow__.__doc__ = inspect.getdoc(vendored_pandas_frame.DataFrame.__rpow__)
 
+    def __and__(self, other: bool | int | bigframes.series.Series) -> DataFrame:
+        return self._apply_binop(other, ops.and_op)
+
+    __and__.__doc__ = inspect.getdoc(vendored_pandas_frame.DataFrame.__and__)
+
+    __rand__ = __and__
+
+    def __or__(self, other: bool | int | bigframes.series.Series) -> DataFrame:
+        return self._apply_binop(other, ops.or_op)
+
+    __or__.__doc__ = inspect.getdoc(vendored_pandas_frame.DataFrame.__or__)
+
+    __ror__ = __or__
+
+    def __xor__(self, other: bool | int | bigframes.series.Series) -> DataFrame:
+        return self._apply_binop(other, ops.xor_op)
+
+    __xor__.__doc__ = inspect.getdoc(vendored_pandas_frame.DataFrame.__xor__)
+
+    __rxor__ = __xor__
+
+    def __pos__(self) -> DataFrame:
+        return self._apply_unary_op(ops.pos_op)
+
+    def __neg__(self) -> DataFrame:
+        return self._apply_unary_op(ops.neg_op)
+
     def align(
         self,
         other: typing.Union[DataFrame, bigframes.series.Series],
