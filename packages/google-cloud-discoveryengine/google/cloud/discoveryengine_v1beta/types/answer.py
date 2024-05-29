@@ -17,6 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -34,7 +35,7 @@ class Answer(proto.Message):
     Attributes:
         name (str):
             Immutable. Fully qualified name
-            ``project/*/locations/global/collections/{collection}/engines/{engine}/sessions/*/answers/*``
+            ``projects/{project}/locations/global/collections/{collection}/engines/{engine}/sessions/*/answers/*``
         state (google.cloud.discoveryengine_v1beta.types.Answer.State):
             The state of the answer generation.
         answer_text (str):
@@ -180,6 +181,10 @@ class Answer(proto.Message):
                 chunk_contents (MutableSequence[google.cloud.discoveryengine_v1beta.types.Answer.Reference.UnstructuredDocumentInfo.ChunkContent]):
                     List of cited chunk contents derived from
                     document content.
+                struct_data (google.protobuf.struct_pb2.Struct):
+                    The structured JSON metadata for the
+                    document. It is populated from the struct data
+                    from the Chunk in search result.
             """
 
             class ChunkContent(proto.Message):
@@ -220,6 +225,11 @@ class Answer(proto.Message):
                 number=4,
                 message="Answer.Reference.UnstructuredDocumentInfo.ChunkContent",
             )
+            struct_data: struct_pb2.Struct = proto.Field(
+                proto.MESSAGE,
+                number=5,
+                message=struct_pb2.Struct,
+            )
 
         class ChunkInfo(proto.Message):
             r"""Chunk information.
@@ -251,6 +261,10 @@ class Answer(proto.Message):
                         Title.
                     page_identifier (str):
                         Page identifier.
+                    struct_data (google.protobuf.struct_pb2.Struct):
+                        The structured JSON metadata for the
+                        document. It is populated from the struct data
+                        from the Chunk in search result.
                 """
 
                 document: str = proto.Field(
@@ -268,6 +282,11 @@ class Answer(proto.Message):
                 page_identifier: str = proto.Field(
                     proto.STRING,
                     number=4,
+                )
+                struct_data: struct_pb2.Struct = proto.Field(
+                    proto.MESSAGE,
+                    number=5,
+                    message=struct_pb2.Struct,
                 )
 
             chunk: str = proto.Field(

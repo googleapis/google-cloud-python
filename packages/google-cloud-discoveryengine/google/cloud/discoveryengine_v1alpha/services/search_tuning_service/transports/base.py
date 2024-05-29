@@ -133,6 +133,11 @@ class SearchTuningServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.list_custom_models: gapic_v1.method.wrap_method(
+                self.list_custom_models,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -159,6 +164,18 @@ class SearchTuningServiceTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def list_custom_models(
+        self,
+    ) -> Callable[
+        [search_tuning_service.ListCustomModelsRequest],
+        Union[
+            search_tuning_service.ListCustomModelsResponse,
+            Awaitable[search_tuning_service.ListCustomModelsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def list_operations(
         self,
     ) -> Callable[
@@ -177,6 +194,12 @@ class SearchTuningServiceTransport(abc.ABC):
         [operations_pb2.GetOperationRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
+        raise NotImplementedError()
+
+    @property
+    def cancel_operation(
+        self,
+    ) -> Callable[[operations_pb2.CancelOperationRequest], None,]:
         raise NotImplementedError()
 
     @property

@@ -21,16 +21,60 @@ from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.discoveryengine_v1alpha.types import import_config
+from google.cloud.discoveryengine_v1alpha.types import (
+    custom_tuning_model,
+    import_config,
+)
 
 __protobuf__ = proto.module(
     package="google.cloud.discoveryengine.v1alpha",
     manifest={
+        "ListCustomModelsRequest",
+        "ListCustomModelsResponse",
         "TrainCustomModelRequest",
         "TrainCustomModelResponse",
         "TrainCustomModelMetadata",
     },
 )
+
+
+class ListCustomModelsRequest(proto.Message):
+    r"""Request message for
+    [SearchTuningService.ListCustomModels][google.cloud.discoveryengine.v1alpha.SearchTuningService.ListCustomModels]
+    method.
+
+    Attributes:
+        data_store (str):
+            Required. The resource name of the parent Data Store, such
+            as
+            ``projects/*/locations/global/collections/default_collection/dataStores/default_data_store``.
+            This field is used to identify the data store where to fetch
+            the models from.
+    """
+
+    data_store: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class ListCustomModelsResponse(proto.Message):
+    r"""Response message for
+    [SearchTuningService.ListCustomModels][google.cloud.discoveryengine.v1alpha.SearchTuningService.ListCustomModels]
+    method.
+
+    Attributes:
+        models (MutableSequence[google.cloud.discoveryengine_v1alpha.types.CustomTuningModel]):
+            List of custom tuning models.
+    """
+
+    models: MutableSequence[
+        custom_tuning_model.CustomTuningModel
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=custom_tuning_model.CustomTuningModel,
+    )
 
 
 class TrainCustomModelRequest(proto.Message):
@@ -59,6 +103,8 @@ class TrainCustomModelRequest(proto.Message):
         error_config (google.cloud.discoveryengine_v1alpha.types.ImportErrorConfig):
             The desired location of errors incurred
             during the data ingestion and training.
+        model_id (str):
+            If not provided, a UUID will be generated.
     """
 
     class GcsTrainingInput(proto.Message):
@@ -137,6 +183,10 @@ class TrainCustomModelRequest(proto.Message):
         number=4,
         message=import_config.ImportErrorConfig,
     )
+    model_id: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
 
 
 class TrainCustomModelResponse(proto.Message):
@@ -166,6 +216,9 @@ class TrainCustomModelResponse(proto.Message):
             -  **ready**: The model is ready for serving.
         metrics (MutableMapping[str, float]):
             The metrics of the trained model.
+        model_name (str):
+            Fully qualified name of the
+            CustomTuningModel.
     """
 
     error_samples: MutableSequence[status_pb2.Status] = proto.RepeatedField(
@@ -186,6 +239,10 @@ class TrainCustomModelResponse(proto.Message):
         proto.STRING,
         proto.DOUBLE,
         number=4,
+    )
+    model_name: str = proto.Field(
+        proto.STRING,
+        number=5,
     )
 
 

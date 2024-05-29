@@ -35,7 +35,7 @@ class Session(proto.Message):
     Attributes:
         name (str):
             Immutable. Fully qualified name
-            ``project/*/locations/global/collections/{collection}/engines/{engine}/sessions/*``
+            ``projects/{project}/locations/global/collections/{collection}/engines/{engine}/sessions/*``
         state (google.cloud.discoveryengine_v1beta.types.Session.State):
             The state of the session.
         user_pseudo_id (str):
@@ -70,6 +70,8 @@ class Session(proto.Message):
             answer (str):
                 The resource name of the answer to the user
                 query.
+                Only set if the answer generation (/answer API
+                call) happened in this turn.
         """
 
         query: "Query" = proto.Field(

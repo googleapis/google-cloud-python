@@ -70,6 +70,8 @@ class Session(proto.Message):
             answer (str):
                 The resource name of the answer to the user
                 query.
+                Only set if the answer generation (/answer API
+                call) happened in this turn.
         """
 
         query: "Query" = proto.Field(

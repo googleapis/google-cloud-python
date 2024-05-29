@@ -175,8 +175,8 @@ class ListDataStoresRequest(proto.Message):
             must match the call that provided the page token. Otherwise,
             an INVALID_ARGUMENT error is returned.
         filter (str):
-            Filter by solution type. For example: filter =
-            'solution_type:SOLUTION_TYPE_SEARCH'
+            Filter by solution type . For example:
+            ``filter = 'solution_type:SOLUTION_TYPE_SEARCH'``
     """
 
     parent: str = proto.Field(

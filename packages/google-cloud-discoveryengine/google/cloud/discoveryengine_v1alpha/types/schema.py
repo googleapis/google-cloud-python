@@ -247,6 +247,20 @@ class FieldConfig(proto.Message):
             METATAGS, we will only index ``<author, a>``; if this enum
             is not set, we will merge them and index
             ``<author, [a, b]>``.
+        schema_org_paths (MutableSequence[str]):
+            Field paths for indexing custom attribute from schema.org
+            data. More details of schema.org and its defined types can
+            be found at `schema.org <https://schema.org>`__.
+
+            It is only used on advanced site search schema.
+
+            Currently only support full path from root. The full path to
+            a field is constructed by concatenating field names,
+            starting from ``_root``, with a period ``.`` as the
+            delimiter. Examples:
+
+            -  Publish date of the root: \_root.datePublished
+            -  Publish date of the reviews: \_root.review.datePublished
     """
 
     class FieldType(proto.Enum):
@@ -266,9 +280,31 @@ class FieldConfig(proto.Message):
             BOOLEAN (5):
                 Field value type is Boolean.
             GEOLOCATION (6):
-                Field value type is Geolocation.
+                Field value type is Geolocation. Geolocation is expressed as
+                an object with the following keys:
+
+                -  ``id``: a string representing the location id
+                -  ``longitude``: a number representing the longitude
+                   coordinate of the location
+                -  ``latitude``: a number repesenting the latitude
+                   coordinate of the location
+                -  ``address``: a string representing the full address of
+                   the location
+
+                ``latitude`` and ``longitude`` must always be provided
+                together. At least one of a) ``address`` or b)
+                ``latitude``-``longitude`` pair must be provided.
             DATETIME (7):
-                Field value type is Datetime.
+                Field value type is Datetime. Datetime can be expressed as
+                either:
+
+                -  a number representing milliseconds-since-the-epoch
+                -  a string representing milliseconds-since-the-epoch. e.g.
+                   ``"1420070400001"``
+                -  a string representing the `ISO
+                   8601 <https://en.wikipedia.org/wiki/ISO_8601>`__ date or
+                   date and time. e.g. ``"2015-01-01"`` or
+                   ``"2015-01-01T12:10:30Z"``
         """
         FIELD_TYPE_UNSPECIFIED = 0
         OBJECT = 1
@@ -387,10 +423,13 @@ class FieldConfig(proto.Message):
                 Retrieve value from meta tag.
             PAGEMAP (2):
                 Retrieve value from page map.
+            SCHEMA_ORG (4):
+                Retrieve value from schema.org data.
         """
         ADVANCED_SITE_SEARCH_DATA_SOURCE_UNSPECIFIED = 0
         METATAGS = 1
         PAGEMAP = 2
+        SCHEMA_ORG = 4
 
     field_path: str = proto.Field(
         proto.STRING,
@@ -441,6 +480,10 @@ class FieldConfig(proto.Message):
         proto.ENUM,
         number=10,
         enum=AdvancedSiteSearchDataSource,
+    )
+    schema_org_paths: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=11,
     )
 
 

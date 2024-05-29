@@ -66,6 +66,9 @@ class FactChunk(proto.Message):
             GroundingFacts provided in the request then this
             field will contain the index of the specific
             fact from which this chunk was retrieved.
+        index (int):
+            The index of this chunk. Currently, only used
+            for the streaming mode.
         source_metadata (MutableMapping[str, str]):
             More fine-grained information for the source
             reference.
@@ -78,6 +81,10 @@ class FactChunk(proto.Message):
     source: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    index: int = proto.Field(
+        proto.INT32,
+        number=4,
     )
     source_metadata: MutableMapping[str, str] = proto.MapField(
         proto.STRING,

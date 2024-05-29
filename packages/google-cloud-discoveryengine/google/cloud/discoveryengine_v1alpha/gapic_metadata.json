@@ -167,6 +167,100 @@
         }
       }
     },
+    "ControlService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "ControlServiceClient",
+          "rpcs": {
+            "CreateControl": {
+              "methods": [
+                "create_control"
+              ]
+            },
+            "DeleteControl": {
+              "methods": [
+                "delete_control"
+              ]
+            },
+            "GetControl": {
+              "methods": [
+                "get_control"
+              ]
+            },
+            "ListControls": {
+              "methods": [
+                "list_controls"
+              ]
+            },
+            "UpdateControl": {
+              "methods": [
+                "update_control"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "ControlServiceAsyncClient",
+          "rpcs": {
+            "CreateControl": {
+              "methods": [
+                "create_control"
+              ]
+            },
+            "DeleteControl": {
+              "methods": [
+                "delete_control"
+              ]
+            },
+            "GetControl": {
+              "methods": [
+                "get_control"
+              ]
+            },
+            "ListControls": {
+              "methods": [
+                "list_controls"
+              ]
+            },
+            "UpdateControl": {
+              "methods": [
+                "update_control"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "ControlServiceClient",
+          "rpcs": {
+            "CreateControl": {
+              "methods": [
+                "create_control"
+              ]
+            },
+            "DeleteControl": {
+              "methods": [
+                "delete_control"
+              ]
+            },
+            "GetControl": {
+              "methods": [
+                "get_control"
+              ]
+            },
+            "ListControls": {
+              "methods": [
+                "list_controls"
+              ]
+            },
+            "UpdateControl": {
+              "methods": [
+                "update_control"
+              ]
+            }
+          }
+        }
+      }
+    },
     "ConversationalSearchService": {
       "clients": {
         "grpc": {
@@ -1116,6 +1210,11 @@
         "grpc": {
           "libraryClient": "SearchTuningServiceClient",
           "rpcs": {
+            "ListCustomModels": {
+              "methods": [
+                "list_custom_models"
+              ]
+            },
             "TrainCustomModel": {
               "methods": [
                 "train_custom_model"
@@ -1126,6 +1225,11 @@
         "grpc-async": {
           "libraryClient": "SearchTuningServiceAsyncClient",
           "rpcs": {
+            "ListCustomModels": {
+              "methods": [
+                "list_custom_models"
+              ]
+            },
             "TrainCustomModel": {
               "methods": [
                 "train_custom_model"
@@ -1136,6 +1240,11 @@
         "rest": {
           "libraryClient": "SearchTuningServiceClient",
           "rpcs": {
+            "ListCustomModels": {
+              "methods": [
+                "list_custom_models"
+              ]
+            },
             "TrainCustomModel": {
               "methods": [
                 "train_custom_model"

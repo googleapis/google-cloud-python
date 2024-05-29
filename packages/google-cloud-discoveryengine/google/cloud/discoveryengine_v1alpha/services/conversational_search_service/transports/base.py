@@ -361,6 +361,12 @@ class ConversationalSearchServiceTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def cancel_operation(
+        self,
+    ) -> Callable[[operations_pb2.CancelOperationRequest], None,]:
+        raise NotImplementedError()
+
+    @property
     def kind(self) -> str:
         raise NotImplementedError()
 

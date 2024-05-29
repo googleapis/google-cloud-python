@@ -69,6 +69,100 @@
         }
       }
     },
+    "ControlService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "ControlServiceClient",
+          "rpcs": {
+            "CreateControl": {
+              "methods": [
+                "create_control"
+              ]
+            },
+            "DeleteControl": {
+              "methods": [
+                "delete_control"
+              ]
+            },
+            "GetControl": {
+              "methods": [
+                "get_control"
+              ]
+            },
+            "ListControls": {
+              "methods": [
+                "list_controls"
+              ]
+            },
+            "UpdateControl": {
+              "methods": [
+                "update_control"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "ControlServiceAsyncClient",
+          "rpcs": {
+            "CreateControl": {
+              "methods": [
+                "create_control"
+              ]
+            },
+            "DeleteControl": {
+              "methods": [
+                "delete_control"
+              ]
+            },
+            "GetControl": {
+              "methods": [
+                "get_control"
+              ]
+            },
+            "ListControls": {
+              "methods": [
+                "list_controls"
+              ]
+            },
+            "UpdateControl": {
+              "methods": [
+                "update_control"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "ControlServiceClient",
+          "rpcs": {
+            "CreateControl": {
+              "methods": [
+                "create_control"
+              ]
+            },
+            "DeleteControl": {
+              "methods": [
+                "delete_control"
+              ]
+            },
+            "GetControl": {
+              "methods": [
+                "get_control"
+              ]
+            },
+            "ListControls": {
+              "methods": [
+                "list_controls"
+              ]
+            },
+            "UpdateControl": {
+              "methods": [
+                "update_control"
+              ]
+            }
+          }
+        }
+      }
+    },
     "ConversationalSearchService": {
       "clients": {
         "grpc": {
@@ -674,6 +768,40 @@
         }
       }
     },
+    "ProjectService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "ProjectServiceClient",
+          "rpcs": {
+            "ProvisionProject": {
+              "methods": [
+                "provision_project"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "ProjectServiceAsyncClient",
+          "rpcs": {
+            "ProvisionProject": {
+              "methods": [
+                "provision_project"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "ProjectServiceClient",
+          "rpcs": {
+            "ProvisionProject": {
+              "methods": [
+                "provision_project"
+              ]
+            }
+          }
+        }
+      }
+    },
     "RankService": {
       "clients": {
         "grpc": {
@@ -875,6 +1003,11 @@
         "grpc": {
           "libraryClient": "SearchTuningServiceClient",
           "rpcs": {
+            "ListCustomModels": {
+              "methods": [
+                "list_custom_models"
+              ]
+            },
             "TrainCustomModel": {
               "methods": [
                 "train_custom_model"
@@ -885,6 +1018,11 @@
         "grpc-async": {
           "libraryClient": "SearchTuningServiceAsyncClient",
           "rpcs": {
+            "ListCustomModels": {
+              "methods": [
+                "list_custom_models"
+              ]
+            },
             "TrainCustomModel": {
               "methods": [
                 "train_custom_model"
@@ -895,6 +1033,11 @@
         "rest": {
           "libraryClient": "SearchTuningServiceClient",
           "rpcs": {
+            "ListCustomModels": {
+              "methods": [
+                "list_custom_models"
+              ]
+            },
             "TrainCustomModel": {
               "methods": [
                 "train_custom_model"

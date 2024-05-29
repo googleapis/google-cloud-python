@@ -24,6 +24,12 @@ from google.cloud.discoveryengine_v1beta.services.completion_service.async_clien
 from google.cloud.discoveryengine_v1beta.services.completion_service.client import (
     CompletionServiceClient,
 )
+from google.cloud.discoveryengine_v1beta.services.control_service.async_client import (
+    ControlServiceAsyncClient,
+)
+from google.cloud.discoveryengine_v1beta.services.control_service.client import (
+    ControlServiceClient,
+)
 from google.cloud.discoveryengine_v1beta.services.conversational_search_service.async_client import (
     ConversationalSearchServiceAsyncClient,
 )
@@ -53,6 +59,12 @@ from google.cloud.discoveryengine_v1beta.services.grounded_generation_service.as
 )
 from google.cloud.discoveryengine_v1beta.services.grounded_generation_service.client import (
     GroundedGenerationServiceClient,
+)
+from google.cloud.discoveryengine_v1beta.services.project_service.async_client import (
+    ProjectServiceAsyncClient,
+)
+from google.cloud.discoveryengine_v1beta.services.project_service.client import (
+    ProjectServiceClient,
 )
 from google.cloud.discoveryengine_v1beta.services.rank_service.async_client import (
     RankServiceAsyncClient,
@@ -111,6 +123,7 @@ from google.cloud.discoveryengine_v1beta.types.common import (
     Interval,
     SearchAddOn,
     SearchTier,
+    SearchUseCase,
     SolutionType,
     UserInfo,
 )
@@ -118,6 +131,15 @@ from google.cloud.discoveryengine_v1beta.types.completion import SuggestionDenyL
 from google.cloud.discoveryengine_v1beta.types.completion_service import (
     CompleteQueryRequest,
     CompleteQueryResponse,
+)
+from google.cloud.discoveryengine_v1beta.types.control import Condition, Control
+from google.cloud.discoveryengine_v1beta.types.control_service import (
+    CreateControlRequest,
+    DeleteControlRequest,
+    GetControlRequest,
+    ListControlsRequest,
+    ListControlsResponse,
+    UpdateControlRequest,
 )
 from google.cloud.discoveryengine_v1beta.types.conversation import (
     Conversation,
@@ -144,6 +166,9 @@ from google.cloud.discoveryengine_v1beta.types.conversational_search_service imp
     ListSessionsResponse,
     UpdateConversationRequest,
     UpdateSessionRequest,
+)
+from google.cloud.discoveryengine_v1beta.types.custom_tuning_model import (
+    CustomTuningModel,
 )
 from google.cloud.discoveryengine_v1beta.types.data_store import DataStore
 from google.cloud.discoveryengine_v1beta.types.data_store_service import (
@@ -210,6 +235,11 @@ from google.cloud.discoveryengine_v1beta.types.import_config import (
     ImportUserEventsResponse,
     SpannerSource,
 )
+from google.cloud.discoveryengine_v1beta.types.project import Project
+from google.cloud.discoveryengine_v1beta.types.project_service import (
+    ProvisionProjectMetadata,
+    ProvisionProjectRequest,
+)
 from google.cloud.discoveryengine_v1beta.types.purge_config import (
     PurgeDocumentsMetadata,
     PurgeDocumentsRequest,
@@ -244,6 +274,8 @@ from google.cloud.discoveryengine_v1beta.types.search_service import (
     SearchResponse,
 )
 from google.cloud.discoveryengine_v1beta.types.search_tuning_service import (
+    ListCustomModelsRequest,
+    ListCustomModelsResponse,
     TrainCustomModelMetadata,
     TrainCustomModelRequest,
     TrainCustomModelResponse,
@@ -308,6 +340,8 @@ from google.cloud.discoveryengine_v1beta.types.user_event_service import (
 __all__ = (
     "CompletionServiceClient",
     "CompletionServiceAsyncClient",
+    "ControlServiceClient",
+    "ControlServiceAsyncClient",
     "ConversationalSearchServiceClient",
     "ConversationalSearchServiceAsyncClient",
     "DataStoreServiceClient",
@@ -318,6 +352,8 @@ __all__ = (
     "EngineServiceAsyncClient",
     "GroundedGenerationServiceClient",
     "GroundedGenerationServiceAsyncClient",
+    "ProjectServiceClient",
+    "ProjectServiceAsyncClient",
     "RankServiceClient",
     "RankServiceAsyncClient",
     "RecommendationServiceClient",
@@ -343,10 +379,19 @@ __all__ = (
     "IndustryVertical",
     "SearchAddOn",
     "SearchTier",
+    "SearchUseCase",
     "SolutionType",
     "SuggestionDenyListEntry",
     "CompleteQueryRequest",
     "CompleteQueryResponse",
+    "Condition",
+    "Control",
+    "CreateControlRequest",
+    "DeleteControlRequest",
+    "GetControlRequest",
+    "ListControlsRequest",
+    "ListControlsResponse",
+    "UpdateControlRequest",
     "Conversation",
     "ConversationContext",
     "ConversationMessage",
@@ -369,6 +414,7 @@ __all__ = (
     "ListSessionsResponse",
     "UpdateConversationRequest",
     "UpdateSessionRequest",
+    "CustomTuningModel",
     "DataStore",
     "CreateDataStoreMetadata",
     "CreateDataStoreRequest",
@@ -423,6 +469,9 @@ __all__ = (
     "ImportUserEventsRequest",
     "ImportUserEventsResponse",
     "SpannerSource",
+    "Project",
+    "ProvisionProjectMetadata",
+    "ProvisionProjectRequest",
     "PurgeDocumentsMetadata",
     "PurgeDocumentsRequest",
     "PurgeDocumentsResponse",
@@ -446,6 +495,8 @@ __all__ = (
     "UpdateSchemaRequest",
     "SearchRequest",
     "SearchResponse",
+    "ListCustomModelsRequest",
+    "ListCustomModelsResponse",
     "TrainCustomModelMetadata",
     "TrainCustomModelRequest",
     "TrainCustomModelResponse",
