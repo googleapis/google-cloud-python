@@ -144,6 +144,23 @@ def test_dataframe_groupby_agg_list(scalars_df_index, scalars_pandas_df_index):
     pd.testing.assert_frame_equal(pd_result, bf_result_computed, check_dtype=False)
 
 
+def test_dataframe_groupby_agg_list_w_column_multi_index(
+    scalars_df_index, scalars_pandas_df_index
+):
+    columns = ["int64_too", "string_col", "bool_col"]
+    multi_columns = pd.MultiIndex.from_tuples(zip(["a", "b", "a"], columns))
+    bf_df = scalars_df_index[columns].copy()
+    bf_df.columns = multi_columns
+    pd_df = scalars_pandas_df_index[columns].copy()
+    pd_df.columns = multi_columns
+
+    bf_result = bf_df.groupby(level=0).agg(["count", "min"])
+    pd_result = pd_df.groupby(level=0).agg(["count", "min"])
+
+    bf_result_computed = bf_result.to_pandas()
+    pd.testing.assert_frame_equal(pd_result, bf_result_computed, check_dtype=False)
+
+
 @pytest.mark.parametrize(
     ("as_index"),
     [

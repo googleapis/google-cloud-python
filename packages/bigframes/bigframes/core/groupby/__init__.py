@@ -339,9 +339,30 @@ class DataFrameGroupBy(vendored_pandas_groupby.DataFrameGroupBy):
             for col_id in self._aggregated_columns()
             for f in func
         ]
-        column_labels = [
-            (col_id, f) for col_id in self._aggregated_columns() for f in func
-        ]
+
+        if self._block.column_labels.nlevels > 1:
+            # Restructure MultiIndex for proper format: (idx1, idx2, func)
+            # rather than ((idx1, idx2), func).
+            aggregated_columns = pd.MultiIndex.from_tuples(
+                [
+                    self._block.col_id_to_label[col_id]
+                    for col_id in self._aggregated_columns()
+                ],
+                names=[*self._block.column_labels.names],
+            ).to_frame(index=False)
+
+            column_labels = [
+                tuple(col_id) + (f,)
+                for col_id in aggregated_columns.to_numpy()
+                for f in func
+            ]
+        else:
+            column_labels = [
+                (self._block.col_id_to_label[col_id], f)
+                for col_id in self._aggregated_columns()
+                for f in func
+            ]
+
         agg_block, _ = self._block.aggregate(
             by_column_ids=self._by_col_ids,
             aggregations=aggregations,

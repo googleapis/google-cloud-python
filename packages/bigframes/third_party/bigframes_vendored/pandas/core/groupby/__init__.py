@@ -1092,6 +1092,17 @@ class DataFrameGroupBy(GroupBy):
             <BLANKLINE>
             [2 rows x 2 columns]
 
+        Multiple aggregations
+
+            >>> df.groupby('A').agg(['min', 'max'])
+                B             C
+                   min max       min       max
+            A
+            1        1   2  0.227877  0.362838
+            2        3   4  -0.56286  1.267767
+            <BLANKLINE>
+            [2 rows x 4 columns]
+
         Args:
             func (function, str, list, dict or None):
                 Function to use for aggregating the data.
@@ -1139,6 +1150,17 @@ class DataFrameGroupBy(GroupBy):
             2  3  -0.56286
             <BLANKLINE>
             [2 rows x 2 columns]
+
+        Multiple aggregations
+
+            >>> df.groupby('A').agg(['min', 'max'])
+                B             C
+                   min max       min       max
+            A
+            1        1   2  0.227877  0.362838
+            2        3   4  -0.56286  1.267767
+            <BLANKLINE>
+            [2 rows x 4 columns]
 
         Args:
             func (function, str, list, dict or None):
