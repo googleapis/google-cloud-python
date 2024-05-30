@@ -133,17 +133,28 @@ def test_init_w_api_endpoint(creds):
     client_options = {"api_endpoint": "testendpoint.google.com"}
     client = publisher.Client(client_options=client_options, credentials=creds)
 
+    # Behavior to include dns prefix changed in gRPCv1.63
+    grpc_major, grpc_minor = [int(part) for part in grpc.__version__.split(".")[0:2]]
+    if grpc_major > 1 or (grpc_major == 1 and grpc_minor >= 63):
+        _EXPECTED_TARGET = "dns:///testendpoint.google.com:443"
+    else:
+        _EXPECTED_TARGET = "testendpoint.google.com:443"
     assert (client._transport.grpc_channel._channel.target()).decode(
         "utf-8"
-    ) == "testendpoint.google.com:443"
+    ) == _EXPECTED_TARGET
 
 
 def test_init_w_empty_client_options(creds):
     client = publisher.Client(client_options={}, credentials=creds)
-
+    # Behavior to include dns prefix changed in gRPCv1.63
+    grpc_major, grpc_minor = [int(part) for part in grpc.__version__.split(".")[0:2]]
+    if grpc_major > 1 or (grpc_major == 1 and grpc_minor >= 63):
+        _EXPECTED_TARGET = "dns:///pubsub.googleapis.com:443"
+    else:
+        _EXPECTED_TARGET = "pubsub.googleapis.com:443"
     assert (client._transport.grpc_channel._channel.target()).decode(
         "utf-8"
-    ) == publisher_client.PublisherClient.SERVICE_ADDRESS
+    ) == _EXPECTED_TARGET
 
 
 def test_init_client_options_pass_through():
@@ -182,7 +193,13 @@ def test_init_emulator(monkeypatch):
     # Sadly, there seems to be no good way to do this without poking at
     # the private API of gRPC.
     channel = client._transport.publish._channel
-    assert channel.target().decode("utf8") == "/foo/bar:123"
+    # Behavior to include dns prefix changed in gRPCv1.63
+    grpc_major, grpc_minor = [int(part) for part in grpc.__version__.split(".")[0:2]]
+    if grpc_major > 1 or (grpc_major == 1 and grpc_minor >= 63):
+        _EXPECTED_TARGET = "dns:////foo/bar:123"
+    else:
+        _EXPECTED_TARGET = "/foo/bar:123"
+    assert channel.target().decode("utf8") == _EXPECTED_TARGET
 
 
 def test_message_ordering_enabled(creds):

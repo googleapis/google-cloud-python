@@ -66,17 +66,28 @@ def test_init_w_api_endpoint(creds):
     client_options = {"api_endpoint": "testendpoint.google.com"}
     client = subscriber.Client(client_options=client_options, credentials=creds)
 
+    # Behavior to include dns prefix changed in gRPCv1.63
+    grpc_major, grpc_minor = [int(part) for part in grpc.__version__.split(".")[0:2]]
+    if grpc_major > 1 or (grpc_major == 1 and grpc_minor >= 63):
+        _EXPECTED_TARGET = "dns:///testendpoint.google.com:443"
+    else:
+        _EXPECTED_TARGET = "testendpoint.google.com:443"
     assert (client._transport.grpc_channel._channel.target()).decode(
         "utf-8"
-    ) == "testendpoint.google.com:443"
+    ) == _EXPECTED_TARGET
 
 
 def test_init_w_empty_client_options(creds):
     client = subscriber.Client(client_options={}, credentials=creds)
-
+    # Behavior to include dns prefix changed in gRPCv1.63
+    grpc_major, grpc_minor = [int(part) for part in grpc.__version__.split(".")[0:2]]
+    if grpc_major > 1 or (grpc_major == 1 and grpc_minor >= 63):
+        _EXPECTED_TARGET = "dns:///pubsub.googleapis.com:443"
+    else:
+        _EXPECTED_TARGET = "pubsub.googleapis.com:443"
     assert (client._transport.grpc_channel._channel.target()).decode(
         "utf-8"
-    ) == subscriber_client.SubscriberClient.SERVICE_ADDRESS
+    ) == _EXPECTED_TARGET
 
 
 def test_init_client_options_pass_through():
@@ -115,7 +126,13 @@ def test_init_emulator(monkeypatch):
     # Sadly, there seems to be no good way to do this without poking at
     # the private API of gRPC.
     channel = client._transport.pull._channel
-    assert channel.target().decode("utf8") == "/baz/bacon:123"
+    # Behavior to include dns prefix changed in gRPCv1.63
+    grpc_major, grpc_minor = [int(part) for part in grpc.__version__.split(".")[0:2]]
+    if grpc_major > 1 or (grpc_major == 1 and grpc_minor >= 63):
+        _EXPECTED_TARGET = "dns:////baz/bacon:123"
+    else:
+        _EXPECTED_TARGET = "/baz/bacon:123"
+    assert channel.target().decode("utf8") == _EXPECTED_TARGET
 
 
 def test_class_method_factory():
