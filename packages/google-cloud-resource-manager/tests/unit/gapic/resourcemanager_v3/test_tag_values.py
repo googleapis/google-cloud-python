@@ -1439,10 +1439,10 @@ def test_list_tag_values_pager(transport_name: str = "grpc"):
             RuntimeError,
         )
 
-        metadata = ()
+        expected_metadata = ()
         pager = client.list_tag_values(request={})
 
-        assert pager._metadata == metadata
+        assert pager._metadata == expected_metadata
 
         results = list(pager)
         assert len(results) == 6
