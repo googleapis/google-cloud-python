@@ -49,12 +49,12 @@ class Type(proto.Message):
        original typed value? Note that Bigtable will always sort data
        based on the raw encoded value, *not* the decoded type.
 
-       -  Example: STRING values sort in the same order as their UTF-8
+       -  Example: BYTES values sort in the same order as their raw
           encodings.
        -  Counterexample: Encoding INT64 to a fixed-width STRING does
           *not* preserve sort order when dealing with negative numbers.
           INT64(1) > INT64(-1), but STRING("-00001") > STRING("00001).
-       -  The overall encoding chain sorts naturally if *every* link
+       -  The overall encoding chain has this property if *every* link
           does.
 
     -  Self-delimiting: If we concatenate two encoded values, can we
@@ -65,8 +65,8 @@ class Type(proto.Message):
           by a sign.
        -  Counterexample: If we concatenate two UTF-8 encoded STRINGs,
           we have no way to tell where the first one ends.
-       -  The overall encoding chain is self-delimiting if *any* link
-          is.
+       -  The overall encoding chain has this property if *any* link
+          does.
 
     -  Compatibility: Which other systems have matching encoding
        schemes? For example, does this encoding have a GoogleSQL
@@ -82,6 +82,10 @@ class Type(proto.Message):
     Attributes:
         bytes_type (google.cloud.bigtable_admin_v2.types.Type.Bytes):
             Bytes
+
+            This field is a member of `oneof`_ ``kind``.
+        string_type (google.cloud.bigtable_admin_v2.types.Type.String):
+            String
 
             This field is a member of `oneof`_ ``kind``.
         int64_type (google.cloud.bigtable_admin_v2.types.Type.Int64):
@@ -135,6 +139,54 @@ class Type(proto.Message):
             proto.MESSAGE,
             number=1,
             message="Type.Bytes.Encoding",
+        )
+
+    class String(proto.Message):
+        r"""String Values of type ``String`` are stored in
+        ``Value.string_value``.
+
+        Attributes:
+            encoding (google.cloud.bigtable_admin_v2.types.Type.String.Encoding):
+                The encoding to use when converting to/from
+                lower level types.
+        """
+
+        class Encoding(proto.Message):
+            r"""Rules used to convert to/from lower level types.
+
+            .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+            Attributes:
+                utf8_raw (google.cloud.bigtable_admin_v2.types.Type.String.Encoding.Utf8Raw):
+                    Use ``Utf8Raw`` encoding.
+
+                    This field is a member of `oneof`_ ``encoding``.
+            """
+
+            class Utf8Raw(proto.Message):
+                r"""UTF-8 encoding
+
+                -  Natural sort? No (ASCII characters only)
+                -  Self-delimiting? No
+                -  Compatibility?
+
+                   -  BigQuery Federation ``TEXT`` encoding
+                   -  HBase ``Bytes.toBytes``
+                   -  Java ``String#getBytes(StandardCharsets.UTF_8)``
+
+                """
+
+            utf8_raw: "Type.String.Encoding.Utf8Raw" = proto.Field(
+                proto.MESSAGE,
+                number=1,
+                oneof="encoding",
+                message="Type.String.Encoding.Utf8Raw",
+            )
+
+        encoding: "Type.String.Encoding" = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message="Type.String.Encoding",
         )
 
     class Int64(proto.Message):
@@ -249,6 +301,12 @@ class Type(proto.Message):
         number=1,
         oneof="kind",
         message=Bytes,
+    )
+    string_type: String = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="kind",
+        message=String,
     )
     int64_type: Int64 = proto.Field(
         proto.MESSAGE,
