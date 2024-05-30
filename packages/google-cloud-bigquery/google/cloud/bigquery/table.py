@@ -1724,6 +1724,10 @@ class RowIterator(HTTPIterator):
         try:
             _versions_helpers.BQ_STORAGE_VERSIONS.try_import(raise_if_error=True)
         except bq_exceptions.BigQueryStorageNotFoundError:
+            warnings.warn(
+                "BigQuery Storage module not found, fetch data with the REST "
+                "endpoint instead."
+            )
             return False
         except bq_exceptions.LegacyBigQueryStorageError as exc:
             warnings.warn(str(exc))

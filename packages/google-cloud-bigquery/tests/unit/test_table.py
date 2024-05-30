@@ -2360,23 +2360,29 @@ class TestRowIterator(unittest.TestCase):
         )
         self.assertFalse(result)
 
-    def test__should_use_bqstorage_returns_false_if_missing_dependency(self):
+    def test__should_use_bqstorage_returns_false_w_warning_if_missing_dependency(self):
         iterator = self._make_one(first_page_response=None)  # not cached
-
+ 
         def fail_bqstorage_import(name, globals, locals, fromlist, level):
+            """Returns True if bigquery_storage has been imported."""
             # NOTE: *very* simplified, assuming a straightforward absolute import
             return "bigquery_storage" in name or (
                 fromlist is not None and "bigquery_storage" in fromlist
             )
-
+        # maybe_fail_import() returns ImportError if the predicate is True
         no_bqstorage = maybe_fail_import(predicate=fail_bqstorage_import)
 
-        with no_bqstorage:
+        with no_bqstorage, warnings.catch_warnings(record=True) as warned:
             result = iterator._should_use_bqstorage(
                 bqstorage_client=None, create_bqstorage_client=True
             )
 
         self.assertFalse(result)
+
+        matching_warnings = [
+            warning for warning in warned if "Storage module not found" in str(warning)
+        ]
+        assert matching_warnings, "Dependency not found warning not raised."
 
     def test__should_use_bqstorage_returns_false_w_warning_if_obsolete_version(self):
         pytest.importorskip("google.cloud.bigquery_storage")
