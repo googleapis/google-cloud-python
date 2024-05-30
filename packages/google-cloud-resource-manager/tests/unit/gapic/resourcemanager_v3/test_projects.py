@@ -1816,10 +1816,10 @@ def test_list_projects_pager(transport_name: str = "grpc"):
             RuntimeError,
         )
 
-        metadata = ()
+        expected_metadata = ()
         pager = client.list_projects(request={})
 
-        assert pager._metadata == metadata
+        assert pager._metadata == expected_metadata
 
         results = list(pager)
         assert len(results) == 6
@@ -2313,10 +2313,10 @@ def test_search_projects_pager(transport_name: str = "grpc"):
             RuntimeError,
         )
 
-        metadata = ()
+        expected_metadata = ()
         pager = client.search_projects(request={})
 
-        assert pager._metadata == metadata
+        assert pager._metadata == expected_metadata
 
         results = list(pager)
         assert len(results) == 6
