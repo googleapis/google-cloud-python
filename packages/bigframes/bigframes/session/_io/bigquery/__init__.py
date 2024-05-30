@@ -392,14 +392,12 @@ def is_table_with_wildcard_suffix(query_or_table: str) -> bool:
 
 def to_query(
     query_or_table: str,
-    index_cols: Iterable[str],
     columns: Iterable[str],
-    filters: third_party_pandas_gbq.FiltersType,
-    max_results: Optional[int],
-    time_travel_timestamp: Optional[datetime.datetime],
+    sql_predicate: Optional[str],
+    max_results: Optional[int] = None,
+    time_travel_timestamp: Optional[datetime.datetime] = None,
 ) -> str:
     """Compile query_or_table with conditions(filters, wildcards) to query."""
-    filters = list(filters)
     sub_query = (
         f"({query_or_table})" if is_query(query_or_table) else f"`{query_or_table}`"
     )
@@ -409,8 +407,7 @@ def to_query(
     if columns:
         # We only reduce the selection if columns is set, but we always
         # want to make sure index_cols is also included.
-        all_columns = itertools.chain(index_cols, columns)
-        select_clause = "SELECT " + ", ".join(f"`{column}`" for column in all_columns)
+        select_clause = "SELECT " + ", ".join(f"`{column}`" for column in columns)
     else:
         select_clause = "SELECT *"
 
@@ -423,77 +420,84 @@ def to_query(
     if max_results is not None:
         limit_clause = f" LIMIT {bigframes.core.sql.simple_literal(max_results)}"
 
-    filter_string = ""
-    if filters:
-        valid_operators: Mapping[third_party_pandas_gbq.FilterOps, str] = {
-            "in": "IN",
-            "not in": "NOT IN",
-            "LIKE": "LIKE",
-            "==": "=",
-            ">": ">",
-            "<": "<",
-            ">=": ">=",
-            "<=": "<=",
-            "!=": "!=",
-        }
-
-        # If single layer filter, add another pseudo layer. So the single layer represents "and" logic.
-        if isinstance(filters[0], tuple) and (
-            len(filters[0]) == 0 or not isinstance(list(filters[0])[0], tuple)
-        ):
-            filters = typing.cast(third_party_pandas_gbq.FiltersType, [filters])
-
-        for group in filters:
-            if not isinstance(group, Iterable):
-                group = [group]
-
-            and_expression = ""
-            for filter_item in group:
-                if not isinstance(filter_item, tuple) or (len(filter_item) != 3):
-                    raise ValueError(
-                        f"Elements of filters must be tuples of length 3, but got {repr(filter_item)}.",
-                    )
-
-                column, operator, value = filter_item
-
-                if not isinstance(column, str):
-                    raise ValueError(
-                        f"Column name should be a string, but received '{column}' of type {type(column).__name__}."
-                    )
-
-                if operator not in valid_operators:
-                    raise ValueError(f"Operator {operator} is not valid.")
-
-                operator_str = valid_operators[operator]
-
-                column_ref = bigframes.core.sql.identifier(column)
-                if operator_str in ["IN", "NOT IN"]:
-                    value_literal = bigframes.core.sql.multi_literal(*value)
-                else:
-                    value_literal = bigframes.core.sql.simple_literal(value)
-                expression = bigframes.core.sql.infix_op(
-                    operator_str, column_ref, value_literal
-                )
-                if and_expression:
-                    and_expression = bigframes.core.sql.infix_op(
-                        "AND", and_expression, expression
-                    )
-                else:
-                    and_expression = expression
-
-            if filter_string:
-                filter_string = bigframes.core.sql.infix_op(
-                    "OR", filter_string, and_expression
-                )
-            else:
-                filter_string = and_expression
-
-    where_clause = ""
-    if filter_string:
-        where_clause = f" WHERE {filter_string}"
+    where_clause = f" WHERE {sql_predicate}" if sql_predicate else ""
 
     return (
         f"{select_clause} "
         f"FROM {sub_query}"
         f"{time_travel_clause}{where_clause}{limit_clause}"
     )
+
+
+def compile_filters(filters: third_party_pandas_gbq.FiltersType) -> str:
+    """Compiles a set of filters into a boolean sql expression"""
+    if not filters:
+        return ""
+    filter_string = ""
+    valid_operators: Mapping[third_party_pandas_gbq.FilterOps, str] = {
+        "in": "IN",
+        "not in": "NOT IN",
+        "LIKE": "LIKE",
+        "==": "=",
+        ">": ">",
+        "<": "<",
+        ">=": ">=",
+        "<=": "<=",
+        "!=": "!=",
+    }
+
+    # If single layer filter, add another pseudo layer. So the single layer represents "and" logic.
+    filters_list: list = list(filters)
+    if isinstance(filters_list[0], tuple) and (
+        len(filters_list[0]) == 0 or not isinstance(list(filters_list[0])[0], tuple)
+    ):
+        filter_items = [filters_list]
+    else:
+        filter_items = filters_list
+
+    for group in filter_items:
+        if not isinstance(group, Iterable):
+            group = [group]
+
+        and_expression = ""
+        for filter_item in group:
+            if not isinstance(filter_item, tuple) or (len(filter_item) != 3):
+                raise ValueError(
+                    f"Elements of filters must be tuples of length 3, but got {repr(filter_item)}.",
+                )
+
+            column, operator, value = filter_item
+
+            if not isinstance(column, str):
+                raise ValueError(
+                    f"Column name should be a string, but received '{column}' of type {type(column).__name__}."
+                )
+
+            if operator not in valid_operators:
+                raise ValueError(f"Operator {operator} is not valid.")
+
+            operator_str = valid_operators[operator]
+
+            column_ref = bigframes.core.sql.identifier(column)
+            if operator_str in ["IN", "NOT IN"]:
+                value_literal = bigframes.core.sql.multi_literal(*value)
+            else:
+                value_literal = bigframes.core.sql.simple_literal(value)
+            expression = bigframes.core.sql.infix_op(
+                operator_str, column_ref, value_literal
+            )
+            if and_expression:
+                and_expression = bigframes.core.sql.infix_op(
+                    "AND", and_expression, expression
+                )
+            else:
+                and_expression = expression
+
+        if filter_string:
+            filter_string = bigframes.core.sql.infix_op(
+                "OR", filter_string, and_expression
+            )
+        else:
+            filter_string = and_expression
+
+    return filter_string

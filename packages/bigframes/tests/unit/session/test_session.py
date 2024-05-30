@@ -35,6 +35,14 @@ TABLE_REFERENCE = {
     "datasetId": "my_dataset",
     "tableId": "my_table",
 }
+SCHEMA = {
+    "fields": [
+        {"name": "col1", "type": "INTEGER"},
+        {"name": "col2", "type": "INTEGER"},
+        {"name": "col3", "type": "INTEGER"},
+        {"name": "col4", "type": "INTEGER"},
+    ]
+}
 CLUSTERED_OR_PARTITIONED_TABLES = [
     pytest.param(
         google.cloud.bigquery.Table.from_api_repr(
@@ -43,6 +51,7 @@ CLUSTERED_OR_PARTITIONED_TABLES = [
                 "clustering": {
                     "fields": ["col1", "col2"],
                 },
+                "schema": SCHEMA,
             },
         ),
         id="clustered",
@@ -59,6 +68,7 @@ CLUSTERED_OR_PARTITIONED_TABLES = [
                         "interval": 1,
                     },
                 },
+                "schema": SCHEMA,
             },
         ),
         id="range-partitioned",
@@ -71,6 +81,7 @@ CLUSTERED_OR_PARTITIONED_TABLES = [
                     "type": "MONTH",
                     "field": "col1",
                 },
+                "schema": SCHEMA,
             },
         ),
         id="time-partitioned",
@@ -86,6 +97,7 @@ CLUSTERED_OR_PARTITIONED_TABLES = [
                     "type": "MONTH",
                     "field": "col1",
                 },
+                "schema": SCHEMA,
             },
         ),
         id="time-partitioned-and-clustered",
@@ -163,22 +175,18 @@ def test_read_gbq_cached_table():
         google.cloud.bigquery.DatasetReference("my-project", "my_dataset"),
         "my_table",
     )
-    table = google.cloud.bigquery.Table(table_ref)
+    table = google.cloud.bigquery.Table(
+        table_ref, (google.cloud.bigquery.SchemaField("col", "INTEGER"),)
+    )
+    table._properties["location"] = session._location
+    table._properties["numRows"] = "1000000000"
     table._properties["location"] = session._location
     session._df_snapshot[table_ref] = (
         datetime.datetime(1999, 1, 2, 3, 4, 5, 678901, tzinfo=datetime.timezone.utc),
         table,
     )
 
-    def get_table_mock(table_ref):
-        table = google.cloud.bigquery.Table(
-            table_ref, (google.cloud.bigquery.SchemaField("col", "INTEGER"),)
-        )
-        table._properties["numRows"] = "1000000000"
-        table._properties["location"] = session._location
-        return table
-
-    session.bqclient.get_table = get_table_mock
+    session.bqclient.get_table.return_value = table
     session.bqclient.query_and_wait.return_value = (
         {"total_count": 3, "distinct_count": 2},
     )
@@ -373,7 +381,7 @@ def test_read_gbq_external_table_no_drive_access(api_name, query_or_table):
 
         return session_query_mock(query, *args, **kwargs)
 
-    session.bqclient.query = query_mock
+    session.bqclient.query_and_wait = query_mock
 
     def get_table_mock(table_ref):
         table = google.cloud.bigquery.Table(

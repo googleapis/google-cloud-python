@@ -19,6 +19,7 @@ from __future__ import annotations
 import collections.abc
 import copy
 import datetime
+import itertools
 import logging
 import math
 import os
@@ -85,6 +86,7 @@ import bigframes.core.guid
 import bigframes.core.nodes as nodes
 from bigframes.core.ordering import IntegerEncoding
 import bigframes.core.ordering as order
+import bigframes.core.schema as schemata
 import bigframes.core.tree_properties as traversals
 import bigframes.core.tree_properties as tree_properties
 import bigframes.core.utils as utils
@@ -621,11 +623,11 @@ class Session(
         if len(filters) != 0 or max_results is not None:
             # TODO(b/338111344): If we are running a query anyway, we might as
             # well generate ROW_NUMBER() at the same time.
+            all_columns = itertools.chain(index_cols, columns) if columns else ()
             query = bf_io_bigquery.to_query(
                 query,
-                index_cols,
-                columns,
-                filters,
+                all_columns,
+                bf_io_bigquery.compile_filters(filters) if filters else None,
                 max_results=max_results,
                 # We're executing the query, so we don't need time travel for
                 # determinism.
@@ -741,7 +743,6 @@ class Session(
         # Fetch table metadata and validate
         # ---------------------------------
 
-        time_travel_timestamp: Optional[datetime.datetime] = None
         time_travel_timestamp, table = bf_read_gbq_table.get_table_metadata(
             self.bqclient,
             table_ref=table_ref,
@@ -799,11 +800,13 @@ class Session(
         ):
             # TODO(b/338111344): If we are running a query anyway, we might as
             # well generate ROW_NUMBER() at the same time.
+            all_columns = itertools.chain(index_cols, columns) if columns else ()
             query = bf_io_bigquery.to_query(
                 query,
-                index_cols=index_cols,
-                columns=columns,
-                filters=filters,
+                columns=all_columns,
+                sql_predicate=bf_io_bigquery.compile_filters(filters)
+                if filters
+                else None,
                 max_results=max_results,
                 # We're executing the query, so we don't need time travel for
                 # determinism.
@@ -819,7 +822,7 @@ class Session(
             )
 
         # -----------------------------------------
-        # Create Ibis table expression and validate
+        # Validate table access and features
         # -----------------------------------------
 
         # Use a time travel to make sure the DataFrame is deterministic, even
@@ -828,37 +831,15 @@ class Session(
         # If a dry run query fails with time travel but
         # succeeds without it, omit the time travel clause and raise a warning
         # about potential non-determinism if the underlying tables are modified.
-        sql = bigframes.session._io.bigquery.to_query(
-            f"{table_ref.project}.{table_ref.dataset_id}.{table_ref.table_id}",
-            index_cols=index_cols,
-            columns=columns,
-            filters=filters,
-            time_travel_timestamp=time_travel_timestamp,
-            max_results=None,
+        filter_str = bf_io_bigquery.compile_filters(filters) if filters else None
+        all_columns = (
+            ()
+            if len(columns) == 0
+            else (*columns, *[col for col in index_cols if col not in columns])
         )
-        dry_run_config = bigquery.QueryJobConfig()
-        dry_run_config.dry_run = True
-        try:
-            self._start_query(sql, job_config=dry_run_config, api_name=api_name)
-        except google.api_core.exceptions.NotFound:
-            # note that a notfound caused by a simple typo will be
-            # caught above when the metadata is fetched, not here
-            time_travel_timestamp = None
-            warnings.warn(
-                "NotFound error when reading table with time travel."
-                " Attempting query without time travel. Warning: Without"
-                " time travel, modifications to the underlying table may"
-                " result in errors or unexpected behavior.",
-                category=bigframes.exceptions.TimeTravelDisabledWarning,
-            )
 
-        table_expression = bf_read_gbq_table.get_ibis_time_travel_table(
-            ibis_client=self.ibis_client,
-            table_ref=table_ref,
-            index_cols=index_cols,
-            columns=columns,
-            filters=filters,
-            time_travel_timestamp=time_travel_timestamp,
+        supports_snapshot = bf_read_gbq_table.validate_table(
+            self.bqclient, table_ref, all_columns, time_travel_timestamp, filter_str
         )
 
         # ----------------------------
@@ -876,20 +857,17 @@ class Session(
             index_cols=index_cols,
             api_name=api_name,
         )
-
-        if is_index_unique:
-            array_value = bf_read_gbq_table.to_array_value_with_total_ordering(
-                session=self,
-                table_expression=table_expression,
-                total_ordering_cols=index_cols,
-            )
-        else:
-            # Note: Even though we're adding a default ordering here, that's
-            # just so we have a deterministic total ordering. If the user
-            # specified a non-unique index, we still sort by that later.
-            array_value = bf_read_gbq_table.to_array_value_with_default_ordering(
-                session=self, table=table_expression, table_rows=table.num_rows
-            )
+        schema = schemata.ArraySchema.from_bq_table(table)
+        if columns:
+            schema = schema.select(index_cols + columns)
+        array_value = core.ArrayValue.from_table(
+            table,
+            schema=schema,
+            predicate=filter_str,
+            at_time=time_travel_timestamp if supports_snapshot else None,
+            primary_key=index_cols if is_index_unique else (),
+            session=self,
+        )
 
         # ----------------------------------------------------
         # Create Default Sequential Index if still have no index

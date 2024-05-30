@@ -16,10 +16,13 @@ from __future__ import annotations
 
 import abc
 from dataclasses import dataclass, field, fields, replace
+import datetime
 import functools
 import itertools
 import typing
 from typing import Callable, Tuple
+
+import google.cloud.bigquery as bq
 
 import bigframes.core.expression as ex
 import bigframes.core.guid
@@ -338,6 +341,67 @@ class ReadGbqNode(BigFrameNode):
     def relation_ops_created(self) -> int:
         # Assume worst case, where readgbq actually has baked in analytic operation to generate index
         return 2
+
+    def transform_children(
+        self, t: Callable[[BigFrameNode], BigFrameNode]
+    ) -> BigFrameNode:
+        return self
+
+
+## Put ordering in here or just add order_by node above?
+@dataclass(frozen=True)
+class ReadTableNode(BigFrameNode):
+    project_id: str = field()
+    dataset_id: str = field()
+    table_id: str = field()
+
+    physical_schema: Tuple[bq.SchemaField, ...] = field()
+    # Subset of physical schema columns, with chosen BQ types
+    columns: schemata.ArraySchema = field()
+
+    table_session: bigframes.session.Session = field()
+    # Empty tuple if no primary key (primary key can be any set of columns that together form a unique key)
+    # Empty if no known unique key
+    total_order_cols: Tuple[str, ...] = field()
+    # indicates a primary key that is exactly offsets 0, 1, 2, ..., N-2, N-1
+    order_col_is_sequential: bool = False
+    at_time: typing.Optional[datetime.datetime] = None
+    # Added for backwards compatibility, not validated
+    sql_predicate: typing.Optional[str] = None
+
+    def __post_init__(self):
+        # enforce invariants
+        physical_names = set(map(lambda i: i.name, self.physical_schema))
+        if not set(self.columns.names).issubset(physical_names):
+            raise ValueError(
+                f"Requested schema {self.columns} cannot be derived from table schemal {self.physical_schema}"
+            )
+        if self.order_col_is_sequential and len(self.total_order_cols) == 1:
+            raise ValueError("Sequential primary key must have only one component")
+
+    @property
+    def session(self):
+        return self.table_session
+
+    def __hash__(self):
+        return self._node_hash
+
+    @property
+    def roots(self) -> typing.Set[BigFrameNode]:
+        return {self}
+
+    @property
+    def schema(self) -> schemata.ArraySchema:
+        return self.columns
+
+    @property
+    def relation_ops_created(self) -> int:
+        # Assume worst case, where readgbq actually has baked in analytic operation to generate index
+        return 3
+
+    @functools.cached_property
+    def variables_introduced(self) -> int:
+        return len(self.schema.items) + 1
 
     def transform_children(
         self, t: Callable[[BigFrameNode], BigFrameNode]

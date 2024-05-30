@@ -19,6 +19,7 @@ import decimal
 import textwrap
 import typing
 from typing import Any, Dict, Iterable, Literal, Tuple, Union
+import warnings
 
 import bigframes_vendored.ibis.backends.bigquery.datatypes as third_party_ibis_bqtypes
 import bigframes_vendored.ibis.expr.operations as vendored_ibis_ops
@@ -33,6 +34,7 @@ import pandas as pd
 import pyarrow as pa
 
 import bigframes.constants as constants
+import bigframes.exceptions
 
 # Type hints for Pandas dtypes supported by BigQuery DataFrame
 Dtype = Union[
@@ -181,6 +183,10 @@ BIDIRECTIONAL_MAPPINGS: Iterable[Tuple[IbisDtype, Dtype]] = (
         ibis_dtypes.Decimal(precision=76, scale=38, nullable=True),
         pd.ArrowDtype(pa.decimal256(76, 38)),
     ),
+    (
+        ibis_dtypes.GeoSpatial(geotype="geography", srid=4326, nullable=True),
+        gpd.array.GeometryDtype(),
+    ),
 )
 
 BIGFRAMES_TO_IBIS: Dict[Dtype, ibis_dtypes.DataType] = {
@@ -212,9 +218,6 @@ IBIS_TO_BIGFRAMES.update(
 )
 IBIS_TO_BIGFRAMES.update(
     {
-        ibis_dtypes.GeoSpatial(
-            geotype="geography", srid=4326, nullable=True
-        ): gpd.array.GeometryDtype(),
         # TODO: Interval
     }
 )
@@ -279,6 +282,14 @@ def ibis_dtype_to_bigframes_dtype(
     # BigQuery only supports integers of size 64 bits.
     if isinstance(ibis_dtype, ibis_dtypes.Integer):
         return pd.Int64Dtype()
+
+    # Temporary: Will eventually support an explicit json type instead of casting to string.
+    if isinstance(ibis_dtype, ibis_dtypes.JSON):
+        warnings.warn(
+            "Interpreting JSON as string. This behavior may change in future versions.",
+            bigframes.exceptions.PreviewWarning,
+        )
+        return STRING_DTYPE
 
     if ibis_dtype in IBIS_TO_BIGFRAMES:
         return IBIS_TO_BIGFRAMES[ibis_dtype]

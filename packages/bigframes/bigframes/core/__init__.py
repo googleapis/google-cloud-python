@@ -14,12 +14,15 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+import datetime
 import functools
 import io
 import itertools
 import typing
-from typing import Iterable, Sequence
+from typing import Iterable, Optional, Sequence
+import warnings
 
+import google.cloud.bigquery
 import ibis.expr.types as ibis_types
 import pandas
 import pyarrow as pa
@@ -89,6 +92,35 @@ class ArrayValue:
             iobytes.getvalue(),
             data_schema=schema,
             session=session,
+        )
+        return cls(node)
+
+    @classmethod
+    def from_table(
+        cls,
+        table: google.cloud.bigquery.Table,
+        schema: schemata.ArraySchema,
+        session: Session,
+        *,
+        predicate: Optional[str] = None,
+        at_time: Optional[datetime.datetime] = None,
+        primary_key: Sequence[str] = (),
+    ):
+        if any(i.field_type == "JSON" for i in table.schema if i.name in schema.names):
+            warnings.warn(
+                "Interpreting JSON column(s) as StringDtype. This behavior may change in future versions.",
+                bigframes.exceptions.PreviewWarning,
+            )
+        node = nodes.ReadTableNode(
+            project_id=table.reference.project,
+            dataset_id=table.reference.dataset_id,
+            table_id=table.reference.table_id,
+            physical_schema=tuple(table.schema),
+            total_order_cols=tuple(primary_key),
+            columns=schema,
+            at_time=at_time,
+            table_session=session,
+            sql_predicate=predicate,
         )
         return cls(node)
 

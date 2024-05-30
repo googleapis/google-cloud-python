@@ -18,6 +18,8 @@ from dataclasses import dataclass
 import functools
 import typing
 
+import google.cloud.bigquery
+
 import bigframes.core.guid
 import bigframes.dtypes
 
@@ -34,6 +36,16 @@ class SchemaItem:
 class ArraySchema:
     items: typing.Tuple[SchemaItem, ...]
 
+    @classmethod
+    def from_bq_table(cls, table: google.cloud.bigquery.Table):
+        items = tuple(
+            SchemaItem(name, dtype)
+            for name, dtype in bigframes.dtypes.bf_type_from_type_kind(
+                table.schema
+            ).items()
+        )
+        return ArraySchema(items)
+
     @property
     def names(self) -> typing.Tuple[str, ...]:
         return tuple(item.column for item in self.items)
@@ -49,6 +61,11 @@ class ArraySchema:
     def drop(self, columns: typing.Iterable[str]) -> ArraySchema:
         return ArraySchema(
             tuple(item for item in self.items if item.column not in columns)
+        )
+
+    def select(self, columns: typing.Iterable[str]) -> ArraySchema:
+        return ArraySchema(
+            tuple(SchemaItem(name, self.get_type(name)) for name in columns)
         )
 
     def append(self, item: SchemaItem):
