@@ -1612,13 +1612,13 @@ def test_list_public_operators_pager(transport_name: str = "grpc"):
             RuntimeError,
         )
 
-        metadata = ()
-        metadata = tuple(metadata) + (
+        expected_metadata = ()
+        expected_metadata = tuple(expected_metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
         )
         pager = client.list_public_operators(request={})
 
-        assert pager._metadata == metadata
+        assert pager._metadata == expected_metadata
 
         results = list(pager)
         assert len(results) == 6
@@ -2582,13 +2582,13 @@ def test_list_operators_pager(transport_name: str = "grpc"):
             RuntimeError,
         )
 
-        metadata = ()
-        metadata = tuple(metadata) + (
+        expected_metadata = ()
+        expected_metadata = tuple(expected_metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
         )
         pager = client.list_operators(request={})
 
-        assert pager._metadata == metadata
+        assert pager._metadata == expected_metadata
 
         results = list(pager)
         assert len(results) == 6
@@ -4669,13 +4669,13 @@ def test_list_analyses_pager(transport_name: str = "grpc"):
             RuntimeError,
         )
 
-        metadata = ()
-        metadata = tuple(metadata) + (
+        expected_metadata = ()
+        expected_metadata = tuple(expected_metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
         )
         pager = client.list_analyses(request={})
 
-        assert pager._metadata == metadata
+        assert pager._metadata == expected_metadata
 
         results = list(pager)
         assert len(results) == 6
@@ -6756,13 +6756,13 @@ def test_list_processes_pager(transport_name: str = "grpc"):
             RuntimeError,
         )
 
-        metadata = ()
-        metadata = tuple(metadata) + (
+        expected_metadata = ()
+        expected_metadata = tuple(expected_metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
         )
         pager = client.list_processes(request={})
 
-        assert pager._metadata == metadata
+        assert pager._metadata == expected_metadata
 
         results = list(pager)
         assert len(results) == 6

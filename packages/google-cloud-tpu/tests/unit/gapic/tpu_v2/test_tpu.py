@@ -1444,13 +1444,13 @@ def test_list_nodes_pager(transport_name: str = "grpc"):
             RuntimeError,
         )
 
-        metadata = ()
-        metadata = tuple(metadata) + (
+        expected_metadata = ()
+        expected_metadata = tuple(expected_metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
         )
         pager = client.list_nodes(request={})
 
-        assert pager._metadata == metadata
+        assert pager._metadata == expected_metadata
 
         results = list(pager)
         assert len(results) == 6
@@ -4466,13 +4466,13 @@ def test_list_accelerator_types_pager(transport_name: str = "grpc"):
             RuntimeError,
         )
 
-        metadata = ()
-        metadata = tuple(metadata) + (
+        expected_metadata = ()
+        expected_metadata = tuple(expected_metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
         )
         pager = client.list_accelerator_types(request={})
 
-        assert pager._metadata == metadata
+        assert pager._metadata == expected_metadata
 
         results = list(pager)
         assert len(results) == 6
@@ -5463,13 +5463,13 @@ def test_list_runtime_versions_pager(transport_name: str = "grpc"):
             RuntimeError,
         )
 
-        metadata = ()
-        metadata = tuple(metadata) + (
+        expected_metadata = ()
+        expected_metadata = tuple(expected_metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
         )
         pager = client.list_runtime_versions(request={})
 
-        assert pager._metadata == metadata
+        assert pager._metadata == expected_metadata
 
         results = list(pager)
         assert len(results) == 6
