@@ -57,8 +57,7 @@ def array_length(series: series.Series) -> series.Series:
         dtype: Int64
 
     Args:
-        series (bigframes.series.Series):
-                A Series with array columns.
+        series (bigframes.series.Series): A Series with array columns.
 
     Returns:
         bigframes.series.Series: A Series of integer values indicating
@@ -104,7 +103,7 @@ def array_agg(
 
     Args:
         obj (groupby.SeriesGroupBy | groupby.DataFrameGroupBy):
-                A GroupBy object to be applied the function.
+            A GroupBy object to be applied the function.
 
     Returns:
         bigframes.series.Series | bigframes.dataframe.DataFrame: A Series or
@@ -119,3 +118,33 @@ def array_agg(
         raise ValueError(
             f"Unsupported type {type(obj)} to apply `array_agg` function. {constants.FEEDBACK_LINK}"
         )
+
+
+def array_to_string(series: series.Series, delimiter: str) -> series.Series:
+    """Converts array elements within a Series into delimited strings.
+
+    **Examples:**
+
+        >>> import bigframes.pandas as bpd
+        >>> import bigframes.bigquery as bbq
+        >>> import numpy as np
+        >>> bpd.options.display.progress_bar = None
+
+        >>> s = bpd.Series([["H", "i", "!"], ["Hello", "World"], np.nan, [], ["Hi"]])
+        >>> bbq.array_to_string(s, delimiter=", ")
+            0         H, i, !
+            1    Hello, World
+            2
+            3
+            4              Hi
+            dtype: string
+
+    Args:
+        series (bigframes.series.Series): A Series containing arrays.
+        delimiter (str): The string used to separate array elements.
+
+    Returns:
+        bigframes.series.Series: A Series containing delimited strings.
+
+    """
+    return series._apply_unary_op(ops.ArrayToStringOp(delimiter=delimiter))

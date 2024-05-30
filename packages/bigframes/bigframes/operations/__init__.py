@@ -580,6 +580,19 @@ class FloorDtOp(UnaryOp):
         return input_types[0]
 
 
+## Array Ops
+@dataclasses.dataclass(frozen=True)
+class ArrayToStringOp(UnaryOp):
+    name: typing.ClassVar[str] = "array_to_string"
+    delimiter: str
+
+    def output_type(self, *input_types):
+        input_type = input_types[0]
+        if not dtypes.is_array_string_like(input_type):
+            raise TypeError("Input type must be an array of string type.")
+        return dtypes.STRING_DTYPE
+
+
 # Binary Ops
 fillna_op = create_binary_op(name="fillna", type_signature=op_typing.COERCE)
 maximum_op = create_binary_op(name="maximum", type_signature=op_typing.COERCE)

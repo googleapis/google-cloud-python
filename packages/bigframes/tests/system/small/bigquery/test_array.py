@@ -139,3 +139,16 @@ def test_array_agg_matches_after_explode():
         result.to_pandas(),  # type: ignore
         df.to_pandas(),
     )
+
+
+@pytest.mark.parametrize(
+    ("data"),
+    [
+        pytest.param([[1, 2], [3, 4], [5]], id="int_array"),
+        pytest.param(["hello", "world"], id="string"),
+    ],
+)
+def test_array_to_string_w_type_checks(data):
+    series = bpd.Series(data)
+    with pytest.raises(TypeError):
+        bbq.array_to_string(series, delimiter=", ")

@@ -134,6 +134,14 @@ def is_array_like(type: ExpressionType) -> bool:
     )
 
 
+def is_array_string_like(type: ExpressionType) -> bool:
+    return (
+        isinstance(type, pd.ArrowDtype)
+        and isinstance(type.pyarrow_dtype, pa.ListType)
+        and pa.types.is_string(type.pyarrow_dtype.value_type)
+    )
+
+
 def is_struct_like(type: ExpressionType) -> bool:
     return isinstance(type, pd.ArrowDtype) and isinstance(
         type.pyarrow_dtype, pa.StructType
