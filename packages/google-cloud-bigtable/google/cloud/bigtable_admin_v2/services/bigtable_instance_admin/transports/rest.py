@@ -904,8 +904,7 @@ class BigtableInstanceAdminRestTransport(BigtableInstanceAdminTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"],
-                use_integers_for_enums=True,
+                transcoded_request["body"], use_integers_for_enums=True
             )
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
