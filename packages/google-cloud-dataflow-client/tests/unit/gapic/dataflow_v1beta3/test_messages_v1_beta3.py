@@ -1498,8 +1498,8 @@ def test_list_job_messages_pager(transport_name: str = "grpc"):
             RuntimeError,
         )
 
-        metadata = ()
-        metadata = tuple(metadata) + (
+        expected_metadata = ()
+        expected_metadata = tuple(expected_metadata) + (
             gapic_v1.routing_header.to_grpc_metadata(
                 (
                     ("project_id", ""),
@@ -1510,7 +1510,7 @@ def test_list_job_messages_pager(transport_name: str = "grpc"):
         )
         pager = client.list_job_messages(request={})
 
-        assert pager._metadata == metadata
+        assert pager._metadata == expected_metadata
 
         results = list(pager)
         assert len(results) == 6
