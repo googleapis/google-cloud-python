@@ -3969,7 +3969,7 @@ class Series(NDFrame):  # type: ignore[misc]
 
         It also accepts a remote function:
 
-            >>> @bpd.remote_function
+            >>> @bpd.remote_function()
             ... def my_mapper(val: str) -> str:
             ...     vowels = ["a", "e", "i", "o", "u"]
             ...     if val:

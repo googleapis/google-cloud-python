@@ -727,7 +727,7 @@ def test_df_apply_axis_1(session, scalars_dfs):
 
     with pytest.warns(
         bigframes.exceptions.PreviewWarning,
-        match="input_types=Series scenario is in preview.",
+        match="input_types=Series is in preview.",
     ):
         add_ints_remote = session.remote_function(bigframes.series.Series, int)(
             add_ints

@@ -14,6 +14,7 @@
 
 from __future__ import annotations
 
+import collections.abc
 import hashlib
 import inspect
 import logging
@@ -1043,6 +1044,8 @@ def remote_function(
                         "Types are required to use @remote_function."
                     )
                 input_types.append(param_type)
+        elif not isinstance(input_types, collections.abc.Sequence):
+            input_types = [input_types]
 
         if output_type is None:
             if (output_type := signature.return_annotation) is inspect.Signature.empty:
@@ -1055,9 +1058,12 @@ def remote_function(
         # The function will actually be receiving a pandas Series, but allow both
         # BigQuery DataFrames and pandas object types for compatibility.
         is_row_processor = False
-        if input_types == bigframes.series.Series or input_types == pandas.Series:
+        if len(input_types) == 1 and (
+            (input_type := input_types[0]) == bigframes.series.Series
+            or input_type == pandas.Series
+        ):
             warnings.warn(
-                "input_types=Series scenario is in preview.",
+                "input_types=Series is in preview.",
                 stacklevel=1,
                 category=bigframes.exceptions.PreviewWarning,
             )

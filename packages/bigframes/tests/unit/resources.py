@@ -23,6 +23,7 @@ import pandas
 import pytest
 
 import bigframes
+import bigframes.clients
 import bigframes.core as core
 import bigframes.core.ordering
 import bigframes.dataframe
@@ -97,6 +98,9 @@ def create_bigquery_session(
 
     bqoptions = bigframes.BigQueryOptions(credentials=credentials, location=location)
     session = bigframes.Session(context=bqoptions, clients_provider=clients_provider)
+    session._bq_connection_manager = mock.create_autospec(
+        bigframes.clients.BqConnectionManager, instance=True
+    )
     return session
 
 
