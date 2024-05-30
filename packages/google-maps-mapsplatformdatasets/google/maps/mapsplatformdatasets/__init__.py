@@ -18,46 +18,40 @@ from google.maps.mapsplatformdatasets import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.maps.mapsplatformdatasets_v1alpha.services.maps_platform_datasets_v1_alpha.async_client import (
-    MapsPlatformDatasetsV1AlphaAsyncClient,
+from google.maps.mapsplatformdatasets_v1.services.maps_platform_datasets.async_client import (
+    MapsPlatformDatasetsAsyncClient,
 )
-from google.maps.mapsplatformdatasets_v1alpha.services.maps_platform_datasets_v1_alpha.client import (
-    MapsPlatformDatasetsV1AlphaClient,
+from google.maps.mapsplatformdatasets_v1.services.maps_platform_datasets.client import (
+    MapsPlatformDatasetsClient,
 )
-from google.maps.mapsplatformdatasets_v1alpha.types.data_source import (
+from google.maps.mapsplatformdatasets_v1.types.data_source import (
     FileFormat,
     GcsSource,
     LocalFileSource,
 )
-from google.maps.mapsplatformdatasets_v1alpha.types.dataset import Dataset, State, Usage
-from google.maps.mapsplatformdatasets_v1alpha.types.maps_platform_datasets import (
+from google.maps.mapsplatformdatasets_v1.types.dataset import Dataset, Status, Usage
+from google.maps.mapsplatformdatasets_v1.types.maps_platform_datasets import (
     CreateDatasetRequest,
     DeleteDatasetRequest,
-    DeleteDatasetVersionRequest,
     GetDatasetRequest,
     ListDatasetsRequest,
     ListDatasetsResponse,
-    ListDatasetVersionsRequest,
-    ListDatasetVersionsResponse,
     UpdateDatasetMetadataRequest,
 )
 
 __all__ = (
-    "MapsPlatformDatasetsV1AlphaClient",
-    "MapsPlatformDatasetsV1AlphaAsyncClient",
+    "MapsPlatformDatasetsClient",
+    "MapsPlatformDatasetsAsyncClient",
     "GcsSource",
     "LocalFileSource",
     "FileFormat",
     "Dataset",
-    "State",
+    "Status",
     "Usage",
     "CreateDatasetRequest",
     "DeleteDatasetRequest",
-    "DeleteDatasetVersionRequest",
     "GetDatasetRequest",
     "ListDatasetsRequest",
     "ListDatasetsResponse",
-    "ListDatasetVersionsRequest",
-    "ListDatasetVersionsResponse",
     "UpdateDatasetMetadataRequest",
 )

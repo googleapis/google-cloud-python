@@ -72,11 +72,11 @@ class ListSchemasRequest(proto.Message):
             The service may return fewer than this value.
 
             If unspecified, at most 100
-            [Schema][google.cloud.discoveryengine.v1.Schema]s will be
+            [Schema][google.cloud.discoveryengine.v1.Schema]s are
             returned.
 
-            The maximum value is 1000; values above 1000 will be coerced
-            to 1000.
+            The maximum value is 1000; values above 1000 are set to
+            1000.
         page_token (str):
             A page token, received from a previous
             [SchemaService.ListSchemas][google.cloud.discoveryengine.v1.SchemaService.ListSchemas]
@@ -146,8 +146,8 @@ class CreateSchemaRequest(proto.Message):
             [Schema][google.cloud.discoveryengine.v1.Schema] to create.
         schema_id (str):
             Required. The ID to use for the
-            [Schema][google.cloud.discoveryengine.v1.Schema], which will
-            become the final component of the
+            [Schema][google.cloud.discoveryengine.v1.Schema], which
+            becomes the final component of the
             [Schema.name][google.cloud.discoveryengine.v1.Schema.name].
 
             This field should conform to
@@ -183,8 +183,8 @@ class UpdateSchemaRequest(proto.Message):
             If set to true, and the
             [Schema][google.cloud.discoveryengine.v1.Schema] is not
             found, a new
-            [Schema][google.cloud.discoveryengine.v1.Schema] will be
-            created. In this situation, ``update_mask`` is ignored.
+            [Schema][google.cloud.discoveryengine.v1.Schema] is created.
+            In this situation, ``update_mask`` is ignored.
     """
 
     schema: gcd_schema.Schema = proto.Field(

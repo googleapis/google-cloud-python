@@ -23,9 +23,9 @@ from google.type import latlng_pb2  # type: ignore
 from google.type import localized_text_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.maps.places_v1.types import ev_charging
+from google.maps.places_v1.types import content_block, ev_charging
 from google.maps.places_v1.types import fuel_options as gmp_fuel_options
-from google.maps.places_v1.types import photo, review
+from google.maps.places_v1.types import photo, reference, review
 
 __protobuf__ = proto.module(
     package="google.maps.places.v1",
@@ -333,6 +333,19 @@ class Place(proto.Message):
             updated regularly.
         ev_charge_options (google.maps.places_v1.types.EVChargeOptions):
             Information of ev charging options.
+        generative_summary (google.maps.places_v1.types.Place.GenerativeSummary):
+            Experimental: See
+            https://developers.google.com/maps/documentation/places/web-service/experimental/places-generative
+            for more details.
+
+            AI-generated summary of the place.
+        area_summary (google.maps.places_v1.types.Place.AreaSummary):
+            Experimental: See
+            https://developers.google.com/maps/documentation/places/web-service/experimental/places-generative
+            for more details.
+
+            AI-generated summary of the area that the place
+            is in.
     """
 
     class BusinessStatus(proto.Enum):
@@ -832,6 +845,60 @@ class Place(proto.Message):
             optional=True,
         )
 
+    class GenerativeSummary(proto.Message):
+        r"""Experimental: See
+        https://developers.google.com/maps/documentation/places/web-service/experimental/places-generative
+        for more details.
+
+        AI-generated summary of the place.
+
+        Attributes:
+            overview (google.type.localized_text_pb2.LocalizedText):
+                The overview of the place.
+            description (google.type.localized_text_pb2.LocalizedText):
+                The detailed description of the place.
+            references (google.maps.places_v1.types.References):
+                References that are used to generate the
+                summary description.
+        """
+
+        overview: localized_text_pb2.LocalizedText = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message=localized_text_pb2.LocalizedText,
+        )
+        description: localized_text_pb2.LocalizedText = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message=localized_text_pb2.LocalizedText,
+        )
+        references: reference.References = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            message=reference.References,
+        )
+
+    class AreaSummary(proto.Message):
+        r"""Experimental: See
+        https://developers.google.com/maps/documentation/places/web-service/experimental/places-generative
+        for more details.
+
+        AI-generated summary of the area that the place is in.
+
+        Attributes:
+            content_blocks (MutableSequence[google.maps.places_v1.types.ContentBlock]):
+                Content blocks that compose the area summary.
+                Each block has a separate topic about the area.
+        """
+
+        content_blocks: MutableSequence[
+            content_block.ContentBlock
+        ] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=4,
+            message=content_block.ContentBlock,
+        )
+
     name: str = proto.Field(
         proto.STRING,
         number=1,
@@ -1127,6 +1194,16 @@ class Place(proto.Message):
         proto.MESSAGE,
         number=79,
         message=ev_charging.EVChargeOptions,
+    )
+    generative_summary: GenerativeSummary = proto.Field(
+        proto.MESSAGE,
+        number=80,
+        message=GenerativeSummary,
+    )
+    area_summary: AreaSummary = proto.Field(
+        proto.MESSAGE,
+        number=81,
+        message=AreaSummary,
     )
 
 

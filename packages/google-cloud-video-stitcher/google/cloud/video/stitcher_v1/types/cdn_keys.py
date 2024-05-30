@@ -136,7 +136,32 @@ class MediaCdnKey(proto.Message):
             this Media CDN key.
         key_name (str):
             The keyset name of the Media CDN key.
+        token_config (google.cloud.video.stitcher_v1.types.MediaCdnKey.TokenConfig):
+            Optional. If set, the URL will be signed
+            using the Media CDN token. Otherwise, the URL
+            would be signed using the standard Media CDN
+            signature.
     """
+
+    class TokenConfig(proto.Message):
+        r"""Configuration for a Media CDN token.
+
+        Attributes:
+            query_parameter (str):
+                Optional. The query parameter in which to find the token.
+
+                The name must be 1-64 characters long and match the regular
+                expression ``[a-zA-Z]([a-zA-Z0-9_-])*`` which means the
+                first character must be a letter, and all following
+                characters must be a dash, underscore, letter or digit.
+
+                Defaults to ``edge-cache-token``.
+        """
+
+        query_parameter: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
 
     private_key: bytes = proto.Field(
         proto.BYTES,
@@ -145,6 +170,11 @@ class MediaCdnKey(proto.Message):
     key_name: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    token_config: TokenConfig = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=TokenConfig,
     )
 
 

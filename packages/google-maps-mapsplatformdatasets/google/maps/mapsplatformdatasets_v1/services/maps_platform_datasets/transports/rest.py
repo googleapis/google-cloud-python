@@ -343,7 +343,7 @@ class MapsPlatformDatasetsRestTransport(MapsPlatformDatasetsTransport):
 
             Returns:
                 ~.gmm_dataset.Dataset:
-                    A representation of a Maps Dataset
+                    A representation of a dataset
                 resource.
 
             """
@@ -429,8 +429,6 @@ class MapsPlatformDatasetsRestTransport(MapsPlatformDatasetsTransport):
             Args:
                 request (~.maps_platform_datasets.DeleteDatasetRequest):
                     The request object. Request to delete a dataset.
-
-                The dataset to be deleted.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -512,7 +510,7 @@ class MapsPlatformDatasetsRestTransport(MapsPlatformDatasetsTransport):
 
             Returns:
                 ~.dataset.Dataset:
-                    A representation of a Maps Dataset
+                    A representation of a dataset
                 resource.
 
             """
@@ -600,9 +598,7 @@ class MapsPlatformDatasetsRestTransport(MapsPlatformDatasetsTransport):
 
             Returns:
                 ~.maps_platform_datasets.ListDatasetsResponse:
-                    Response to list datasets for the
-                project.
-
+                    Response object of ListDatasets.
             """
 
             http_options: List[Dict[str, str]] = [
@@ -688,7 +684,7 @@ class MapsPlatformDatasetsRestTransport(MapsPlatformDatasetsTransport):
 
             Returns:
                 ~.gmm_dataset.Dataset:
-                    A representation of a Maps Dataset
+                    A representation of a dataset
                 resource.
 
             """

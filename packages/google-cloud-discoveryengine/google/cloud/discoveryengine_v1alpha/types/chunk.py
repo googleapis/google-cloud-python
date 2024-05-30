@@ -32,6 +32,9 @@ class Chunk(proto.Message):
     r"""Chunk captures all raw metadata information of items to be
     recommended or searched in the chunk mode.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         name (str):
             The full resource name of the chunk. Format:
@@ -44,6 +47,13 @@ class Chunk(proto.Message):
         content (str):
             Content is a string from a document (parsed
             content).
+        relevance_score (float):
+            The relevance score based on similarity. Higher score
+            indicates higher chunk relevance. The score is in range
+            [-1.0, 1.0]. Only populated on
+            [SearchService.SearchResponse][].
+
+            This field is a member of `oneof`_ ``_relevance_score``.
         document_metadata (google.cloud.discoveryengine_v1alpha.types.Chunk.DocumentMetadata):
             Metadata of the document from the current
             chunk.
@@ -149,6 +159,11 @@ class Chunk(proto.Message):
     content: str = proto.Field(
         proto.STRING,
         number=3,
+    )
+    relevance_score: float = proto.Field(
+        proto.DOUBLE,
+        number=8,
+        optional=True,
     )
     document_metadata: DocumentMetadata = proto.Field(
         proto.MESSAGE,

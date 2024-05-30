@@ -48,7 +48,10 @@ from google.api_core import operation_async  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 
-from google.cloud.discoveryengine_v1beta.types import search_tuning_service
+from google.cloud.discoveryengine_v1beta.types import (
+    custom_tuning_model,
+    search_tuning_service,
+)
 
 from .client import SearchTuningServiceClient
 from .transports.base import DEFAULT_CLIENT_INFO, SearchTuningServiceTransport
@@ -67,6 +70,12 @@ class SearchTuningServiceAsyncClient:
     _DEFAULT_ENDPOINT_TEMPLATE = SearchTuningServiceClient._DEFAULT_ENDPOINT_TEMPLATE
     _DEFAULT_UNIVERSE = SearchTuningServiceClient._DEFAULT_UNIVERSE
 
+    custom_tuning_model_path = staticmethod(
+        SearchTuningServiceClient.custom_tuning_model_path
+    )
+    parse_custom_tuning_model_path = staticmethod(
+        SearchTuningServiceClient.parse_custom_tuning_model_path
+    )
     data_store_path = staticmethod(SearchTuningServiceClient.data_store_path)
     parse_data_store_path = staticmethod(
         SearchTuningServiceClient.parse_data_store_path
@@ -373,6 +382,96 @@ class SearchTuningServiceAsyncClient:
         # Done; return the response.
         return response
 
+    async def list_custom_models(
+        self,
+        request: Optional[
+            Union[search_tuning_service.ListCustomModelsRequest, dict]
+        ] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> search_tuning_service.ListCustomModelsResponse:
+        r"""Gets a list of all the custom models.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import discoveryengine_v1beta
+
+            async def sample_list_custom_models():
+                # Create a client
+                client = discoveryengine_v1beta.SearchTuningServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = discoveryengine_v1beta.ListCustomModelsRequest(
+                    data_store="data_store_value",
+                )
+
+                # Make the request
+                response = await client.list_custom_models(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.discoveryengine_v1beta.types.ListCustomModelsRequest, dict]]):
+                The request object. Request message for
+                [SearchTuningService.ListCustomModels][google.cloud.discoveryengine.v1beta.SearchTuningService.ListCustomModels]
+                method.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.discoveryengine_v1beta.types.ListCustomModelsResponse:
+                Response message for
+                   [SearchTuningService.ListCustomModels][google.cloud.discoveryengine.v1beta.SearchTuningService.ListCustomModels]
+                   method.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, search_tuning_service.ListCustomModelsRequest):
+            request = search_tuning_service.ListCustomModelsRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_custom_models
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("data_store", request.data_store),)
+            ),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
     async def list_operations(
         self,
         request: Optional[operations_pb2.ListOperationsRequest] = None,
@@ -486,6 +585,63 @@ class SearchTuningServiceAsyncClient:
 
         # Done; return the response.
         return response
+
+    async def cancel_operation(
+        self,
+        request: Optional[operations_pb2.CancelOperationRequest] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> None:
+        r"""Starts asynchronous cancellation on a long-running operation.
+
+        The server makes a best effort to cancel the operation, but success
+        is not guaranteed.  If the server doesn't support this method, it returns
+        `google.rpc.Code.UNIMPLEMENTED`.
+
+        Args:
+            request (:class:`~.operations_pb2.CancelOperationRequest`):
+                The request object. Request message for
+                `CancelOperation` method.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors,
+                    if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        Returns:
+            None
+        """
+        # Create or coerce a protobuf request object.
+        # The request isn't a proto-plus wrapped type,
+        # so it must be constructed via keyword expansion.
+        if isinstance(request, dict):
+            request = operations_pb2.CancelOperationRequest(**request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.cancel_operation,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
     async def __aenter__(self) -> "SearchTuningServiceAsyncClient":
         return self

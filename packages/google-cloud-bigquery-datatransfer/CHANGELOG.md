@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-datatransfer/#history
 
+## [3.15.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-datatransfer-v3.15.2...google-cloud-bigquery-datatransfer-v3.15.3) (2024-05-29)
+
+
+### Documentation
+
+* [google-cloud-bigquery-datatransfer] update OAuth links in `CreateTransferConfigRequest` and `UpdateTransferConfigRequest` ([#12738](https://github.com/googleapis/google-cloud-python/issues/12738)) ([0a9f0d7](https://github.com/googleapis/google-cloud-python/commit/0a9f0d76fb9b6765123a2f9070ce99ea23d01e0d))
+
 ## [3.15.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-datatransfer-v3.15.1...google-cloud-bigquery-datatransfer-v3.15.2) (2024-04-15)
 
 

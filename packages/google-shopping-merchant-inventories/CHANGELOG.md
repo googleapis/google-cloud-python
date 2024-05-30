@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.7](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-inventories-v0.1.6...google-shopping-merchant-inventories-v0.1.7) (2024-05-27)
+
+
+### Documentation
+
+* change in wording : feed specification -&gt; data specification ([995bdaf](https://github.com/googleapis/google-cloud-python/commit/995bdaf5d95fcbfae7ee63393fb394cc2dba687a))
+
 ## [0.1.6](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-inventories-v0.1.5...google-shopping-merchant-inventories-v0.1.6) (2024-04-15)
 
 

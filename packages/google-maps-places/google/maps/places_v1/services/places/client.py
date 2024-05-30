@@ -53,6 +53,7 @@ from google.type import latlng_pb2  # type: ignore
 from google.type import localized_text_pb2  # type: ignore
 
 from google.maps.places_v1.types import (
+    contextual_content,
     ev_charging,
     fuel_options,
     photo,

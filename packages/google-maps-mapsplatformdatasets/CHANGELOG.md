@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.4.0](https://github.com/googleapis/google-cloud-python/compare/google-maps-mapsplatformdatasets-v0.3.7...google-maps-mapsplatformdatasets-v0.4.0) (2024-05-29)
+
+
+### ⚠ BREAKING CHANGES
+
+* set google.maps.mapsplatformdatasets_v1 as the default import
+* removed v1alpha libraries
+
+### Features
+
+* added support for getting/listing active version(s) ([338ef52](https://github.com/googleapis/google-cloud-python/commit/338ef523e37711f9739fca79dfdc0e63fbcaeb23))
+* removed v1alpha libraries ([338ef52](https://github.com/googleapis/google-cloud-python/commit/338ef523e37711f9739fca79dfdc0e63fbcaeb23))
+* set google.maps.mapsplatformdatasets_v1 as the default import ([338ef52](https://github.com/googleapis/google-cloud-python/commit/338ef523e37711f9739fca79dfdc0e63fbcaeb23))
+
+
+### Documentation
+
+* general improvements ([338ef52](https://github.com/googleapis/google-cloud-python/commit/338ef523e37711f9739fca79dfdc0e63fbcaeb23))
+
 ## [0.3.7](https://github.com/googleapis/google-cloud-python/compare/google-maps-mapsplatformdatasets-v0.3.6...google-maps-mapsplatformdatasets-v0.3.7) (2024-03-05)
 
 

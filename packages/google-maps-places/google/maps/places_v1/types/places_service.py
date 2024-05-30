@@ -21,7 +21,7 @@ from google.geo.type.types import viewport
 from google.type import latlng_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.maps.places_v1.types import ev_charging, geometry
+from google.maps.places_v1.types import contextual_content, ev_charging, geometry
 from google.maps.places_v1.types import place as gmp_place
 
 __protobuf__ = proto.module(
@@ -511,12 +511,32 @@ class SearchTextResponse(proto.Message):
         places (MutableSequence[google.maps.places_v1.types.Place]):
             A list of places that meet the user's text
             search criteria.
+        contextual_contents (MutableSequence[google.maps.places_v1.types.ContextualContent]):
+            Experimental: See
+            https://developers.google.com/maps/documentation/places/web-service/experimental/places-generative
+            for more details.
+
+            A list of contextual contents where each entry associates to
+            the corresponding place in the same index in the places
+            field. The contents that are relevant to the ``text_query``
+            in the request are preferred. If the contextual content is
+            not available for one of the places, it will return
+            non-contextual content. It will be empty only when the
+            content is unavailable for this place. This list should have
+            as many entries as the list of places if requested.
     """
 
     places: MutableSequence[gmp_place.Place] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gmp_place.Place,
+    )
+    contextual_contents: MutableSequence[
+        contextual_content.ContextualContent
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message=contextual_content.ContextualContent,
     )
 
 
@@ -708,11 +728,12 @@ class AutocompletePlacesRequest(proto.Message):
             to an imprecise location and used as a biasing signal.
         included_primary_types (MutableSequence[str]):
             Optional. Included primary Place type (for example,
-            "restaurant" or "gas_station") from
-            https://developers.google.com/maps/documentation/places/web-service/place-types.
-            A Place is only returned if its primary type is included in
-            this list. Up to 5 values can be specified. If no types are
-            specified, all Place types are returned.
+            "restaurant" or "gas_station") in Place Types
+            (https://developers.google.com/maps/documentation/places/web-service/place-types),
+            or only ``(regions)``, or only ``(cities)``. A Place is only
+            returned if its primary type is included in this list. Up to
+            5 values can be specified. If no types are specified, all
+            Place types are returned.
         included_region_codes (MutableSequence[str]):
             Optional. Only include results in the specified regions,
             specified as up to 15 CLDR two-character region codes. An

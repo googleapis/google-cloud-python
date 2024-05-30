@@ -40,8 +40,6 @@ async def sample_create_vod_session():
 
     # Initialize request argument(s)
     vod_session = stitcher_v1.VodSession()
-    vod_session.source_uri = "source_uri_value"
-    vod_session.ad_tag_uri = "ad_tag_uri_value"
     vod_session.ad_tracking = "SERVER"
 
     request = stitcher_v1.CreateVodSessionRequest(

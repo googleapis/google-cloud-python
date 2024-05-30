@@ -6,6 +6,7 @@ Services for Google Cloud Discoveryengine v1alpha API
     acl_config_service
     chunk_service
     completion_service
+    control_service
     conversational_search_service
     data_store_service
     document_service

@@ -246,6 +246,30 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
+    def engine_path(
+        project: str,
+        location: str,
+        collection: str,
+        engine: str,
+    ) -> str:
+        """Returns a fully-qualified engine string."""
+        return "projects/{project}/locations/{location}/collections/{collection}/engines/{engine}".format(
+            project=project,
+            location=location,
+            collection=collection,
+            engine=engine,
+        )
+
+    @staticmethod
+    def parse_engine_path(path: str) -> Dict[str, str]:
+        """Parses a engine path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/collections/(?P<collection>.+?)/engines/(?P<engine>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def common_billing_account_path(
         billing_account: str,
     ) -> str:
@@ -771,7 +795,7 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
                 UserEvent captures all metadata
                 information Discovery Engine API needs
                 to know about how end users interact
-                with customers' website.
+                with your website.
 
         """
         # Create or coerce a protobuf request object.
@@ -947,7 +971,7 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
-        r"""Bulk import of User events. Request processing might
+        r"""Bulk import of user events. Request processing might
         be synchronous. Events that already exist are skipped.
         Use this method for backfilling historical user events.
 
@@ -1176,6 +1200,63 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
 
         # Done; return the response.
         return response
+
+    def cancel_operation(
+        self,
+        request: Optional[operations_pb2.CancelOperationRequest] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> None:
+        r"""Starts asynchronous cancellation on a long-running operation.
+
+        The server makes a best effort to cancel the operation, but success
+        is not guaranteed.  If the server doesn't support this method, it returns
+        `google.rpc.Code.UNIMPLEMENTED`.
+
+        Args:
+            request (:class:`~.operations_pb2.CancelOperationRequest`):
+                The request object. Request message for
+                `CancelOperation` method.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                    if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        Returns:
+            None
+        """
+        # Create or coerce a protobuf request object.
+        # The request isn't a proto-plus wrapped type,
+        # so it must be constructed via keyword expansion.
+        if isinstance(request, dict):
+            request = operations_pb2.CancelOperationRequest(**request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method.wrap_method(
+            self._transport.cancel_operation,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(

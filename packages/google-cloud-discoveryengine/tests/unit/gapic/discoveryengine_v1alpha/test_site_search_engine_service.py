@@ -2332,6 +2332,7 @@ def test_get_target_site(request_type, transport: str = "grpc"):
             type_=site_search_engine.TargetSite.Type.INCLUDE,
             exact_match=True,
             generated_uri_pattern="generated_uri_pattern_value",
+            root_domain_uri="root_domain_uri_value",
             indexing_status=site_search_engine.TargetSite.IndexingStatus.PENDING,
         )
         response = client.get_target_site(request)
@@ -2349,6 +2350,7 @@ def test_get_target_site(request_type, transport: str = "grpc"):
     assert response.type_ == site_search_engine.TargetSite.Type.INCLUDE
     assert response.exact_match is True
     assert response.generated_uri_pattern == "generated_uri_pattern_value"
+    assert response.root_domain_uri == "root_domain_uri_value"
     assert (
         response.indexing_status == site_search_engine.TargetSite.IndexingStatus.PENDING
     )
@@ -2455,6 +2457,7 @@ async def test_get_target_site_empty_call_async():
                 type_=site_search_engine.TargetSite.Type.INCLUDE,
                 exact_match=True,
                 generated_uri_pattern="generated_uri_pattern_value",
+                root_domain_uri="root_domain_uri_value",
                 indexing_status=site_search_engine.TargetSite.IndexingStatus.PENDING,
             )
         )
@@ -2534,6 +2537,7 @@ async def test_get_target_site_async(
                 type_=site_search_engine.TargetSite.Type.INCLUDE,
                 exact_match=True,
                 generated_uri_pattern="generated_uri_pattern_value",
+                root_domain_uri="root_domain_uri_value",
                 indexing_status=site_search_engine.TargetSite.IndexingStatus.PENDING,
             )
         )
@@ -2552,6 +2556,7 @@ async def test_get_target_site_async(
     assert response.type_ == site_search_engine.TargetSite.Type.INCLUDE
     assert response.exact_match is True
     assert response.generated_uri_pattern == "generated_uri_pattern_value"
+    assert response.root_domain_uri == "root_domain_uri_value"
     assert (
         response.indexing_status == site_search_engine.TargetSite.IndexingStatus.PENDING
     )
@@ -6149,6 +6154,7 @@ def test_create_target_site_rest(request_type):
         "type_": 1,
         "exact_match": True,
         "generated_uri_pattern": "generated_uri_pattern_value",
+        "root_domain_uri": "root_domain_uri_value",
         "site_verification_info": {
             "site_verification_state": 1,
             "verify_time": {"seconds": 751, "nanos": 543},
@@ -6823,6 +6829,7 @@ def test_get_target_site_rest(request_type):
             type_=site_search_engine.TargetSite.Type.INCLUDE,
             exact_match=True,
             generated_uri_pattern="generated_uri_pattern_value",
+            root_domain_uri="root_domain_uri_value",
             indexing_status=site_search_engine.TargetSite.IndexingStatus.PENDING,
         )
 
@@ -6844,6 +6851,7 @@ def test_get_target_site_rest(request_type):
     assert response.type_ == site_search_engine.TargetSite.Type.INCLUDE
     assert response.exact_match is True
     assert response.generated_uri_pattern == "generated_uri_pattern_value"
+    assert response.root_domain_uri == "root_domain_uri_value"
     assert (
         response.indexing_status == site_search_engine.TargetSite.IndexingStatus.PENDING
     )
@@ -7142,6 +7150,7 @@ def test_update_target_site_rest(request_type):
         "type_": 1,
         "exact_match": True,
         "generated_uri_pattern": "generated_uri_pattern_value",
+        "root_domain_uri": "root_domain_uri_value",
         "site_verification_info": {
             "site_verification_state": 1,
             "verify_time": {"seconds": 751, "nanos": 543},
@@ -9754,6 +9763,7 @@ def test_site_search_engine_service_base_transport():
         "batch_verify_target_sites",
         "fetch_domain_verification_status",
         "get_operation",
+        "cancel_operation",
         "list_operations",
     )
     for method in methods:
@@ -10436,6 +10446,69 @@ async def test_transport_close_async():
         close.assert_called_once()
 
 
+def test_cancel_operation_rest_bad_request(
+    transport: str = "rest", request_type=operations_pb2.CancelOperationRequest
+):
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    request = request_type()
+    request = json_format.ParseDict(
+        {
+            "name": "projects/sample1/locations/sample2/collections/sample3/dataStores/sample4/branches/sample5/operations/sample6"
+        },
+        request,
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.cancel_operation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.CancelOperationRequest,
+        dict,
+    ],
+)
+def test_cancel_operation_rest(request_type):
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request_init = {
+        "name": "projects/sample1/locations/sample2/collections/sample3/dataStores/sample4/branches/sample5/operations/sample6"
+    }
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = "{}"
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        response = client.cancel_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
 def test_get_operation_rest_bad_request(
     transport: str = "rest", request_type=operations_pb2.GetOperationRequest
 ):
@@ -10560,6 +10633,145 @@ def test_list_operations_rest(request_type):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, operations_pb2.ListOperationsResponse)
+
+
+def test_cancel_operation(transport: str = "grpc"):
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = operations_pb2.CancelOperationRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+        response = client.cancel_operation(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.asyncio
+async def test_cancel_operation_async(transport: str = "grpc_asyncio"):
+    client = SiteSearchEngineServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = operations_pb2.CancelOperationRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.cancel_operation(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_cancel_operation_field_headers():
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = operations_pb2.CancelOperationRequest()
+    request.name = "locations"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
+        call.return_value = None
+
+        client.cancel_operation(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=locations",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_cancel_operation_field_headers_async():
+    client = SiteSearchEngineServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = operations_pb2.CancelOperationRequest()
+    request.name = "locations"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.cancel_operation(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=locations",
+    ) in kw["metadata"]
+
+
+def test_cancel_operation_from_dict():
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        response = client.cancel_operation(
+            request={
+                "name": "locations",
+            }
+        )
+        call.assert_called()
+
+
+@pytest.mark.asyncio
+async def test_cancel_operation_from_dict_async():
+    client = SiteSearchEngineServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.cancel_operation(
+            request={
+                "name": "locations",
+            }
+        )
+        call.assert_called()
 
 
 def test_get_operation(transport: str = "grpc"):

@@ -48,7 +48,7 @@ class Usage(proto.Enum):
 
 
 class Dataset(proto.Message):
-    r"""A representation of a Maps Dataset resource.
+    r"""A representation of a dataset resource.
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
@@ -59,12 +59,14 @@ class Dataset(proto.Message):
 
     Attributes:
         name (str):
-            Resource name, projects/{project}/datasets/{dataset_id}
+            Resource name. Format:
+            projects/{project}/datasets/{dataset_id}
         display_name (str):
-            Human readable name, shown in the console UI
-            .
+            Human readable name, shown in the console UI.
+
+            Must be unique within a project.
         description (str):
-            A description of this dataset .
+            A description of this dataset.
         version_id (str):
             The version ID of the dataset.
         usage (MutableSequence[google.maps.mapsplatformdatasets_v1.types.Usage]):
@@ -89,7 +91,8 @@ class Dataset(proto.Message):
             Output only. Time when the dataset metadata
             was last updated.
         version_create_time (google.protobuf.timestamp_pb2.Timestamp):
-            Output only. Time when the data was uploaded.
+            Output only. Time when this version was
+            created.
         version_description (str):
             Output only. The description for this version
             of dataset. It is provided when importing data

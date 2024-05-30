@@ -22,6 +22,7 @@ from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.video.stitcher_v1.types import live_configs as gcvs_live_configs
+from google.cloud.video.stitcher_v1.types import vod_configs as gcvs_vod_configs
 from google.cloud.video.stitcher_v1.types import ad_tag_details
 from google.cloud.video.stitcher_v1.types import cdn_keys as gcvs_cdn_keys
 from google.cloud.video.stitcher_v1.types import sessions
@@ -61,6 +62,13 @@ __protobuf__ = proto.module(
         "ListLiveConfigsResponse",
         "GetLiveConfigRequest",
         "DeleteLiveConfigRequest",
+        "UpdateLiveConfigRequest",
+        "CreateVodConfigRequest",
+        "ListVodConfigsRequest",
+        "ListVodConfigsResponse",
+        "GetVodConfigRequest",
+        "DeleteVodConfigRequest",
+        "UpdateVodConfigRequest",
         "OperationMetadata",
     },
 )
@@ -871,6 +879,215 @@ class DeleteLiveConfigRequest(proto.Message):
     name: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+
+
+class UpdateLiveConfigRequest(proto.Message):
+    r"""Request message for VideoStitcherService.updateLiveConfig.
+
+    Attributes:
+        live_config (google.cloud.video.stitcher_v1.types.LiveConfig):
+            Required. The LiveConfig resource which
+            replaces the resource on the server.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Required. The update mask applies to the resource. For the
+            ``FieldMask`` definition, see
+            https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask
+    """
+
+    live_config: gcvs_live_configs.LiveConfig = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=gcvs_live_configs.LiveConfig,
+    )
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
+    )
+
+
+class CreateVodConfigRequest(proto.Message):
+    r"""Request message for VideoStitcherService.createVodConfig
+
+    Attributes:
+        parent (str):
+            Required. The project in which the VOD config should be
+            created, in the form of
+            ``projects/{project_number}/locations/{location}``.
+        vod_config_id (str):
+            Required. The unique identifier ID to use for
+            the VOD config.
+        vod_config (google.cloud.video.stitcher_v1.types.VodConfig):
+            Required. The VOD config resource to create.
+        request_id (str):
+            Optional. A request ID to identify requests. Specify a
+            unique request ID so that if you must retry your request,
+            the server will know to ignore the request if it has already
+            been completed. The server will guarantee that for at least
+            60 minutes since the first request.
+
+            For example, consider a situation where you make an initial
+            request and the request times out. If you make the request
+            again with the same request ID, the server can check if
+            original operation with the same request ID was received,
+            and if so, will ignore the second request. This prevents
+            clients from accidentally creating duplicate commitments.
+
+            The request ID must be a valid UUID with the exception that
+            zero UUID is not supported
+            ``(00000000-0000-0000-0000-000000000000)``.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    vod_config_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    vod_config: gcvs_vod_configs.VodConfig = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=gcvs_vod_configs.VodConfig,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+
+
+class ListVodConfigsRequest(proto.Message):
+    r"""Request message for VideoStitcherService.listVodConfig.
+
+    Attributes:
+        parent (str):
+            Required. The project that contains the list of VOD configs,
+            in the form of
+            ``projects/{project_number}/locations/{location}``.
+        page_size (int):
+            Optional. The maximum number of items to
+            return.
+        page_token (str):
+            Optional. The next_page_token value returned from a previous
+            List request, if any.
+        filter (str):
+            Optional. The filter to apply to list results (see
+            `Filtering <https://google.aip.dev/160>`__).
+        order_by (str):
+            Optional. Specifies the ordering of results following `Cloud
+            API
+            syntax <https://cloud.google.com/apis/design/design_patterns#sorting_order>`__.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    order_by: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+
+
+class ListVodConfigsResponse(proto.Message):
+    r"""Response message for VideoStitcher.ListVodConfig.
+
+    Attributes:
+        vod_configs (MutableSequence[google.cloud.video.stitcher_v1.types.VodConfig]):
+            List of VOD configs.
+        next_page_token (str):
+            The pagination token.
+        unreachable (MutableSequence[str]):
+            Locations that could not be reached.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    vod_configs: MutableSequence[gcvs_vod_configs.VodConfig] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=gcvs_vod_configs.VodConfig,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+
+
+class GetVodConfigRequest(proto.Message):
+    r"""Request message for VideoStitcherService.getVodConfig.
+
+    Attributes:
+        name (str):
+            Required. The name of the VOD config to be retrieved, in the
+            form of
+            ``projects/{project_number}/locations/{location}/vodConfigs/{id}``.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class DeleteVodConfigRequest(proto.Message):
+    r"""Request message for VideoStitcherService.deleteVodConfig.
+
+    Attributes:
+        name (str):
+            Required. The name of the VOD config to be deleted, in the
+            form of
+            ``projects/{project_number}/locations/{location}/vodConfigs/{id}``.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class UpdateVodConfigRequest(proto.Message):
+    r"""Request message for VideoStitcherService.updateVodConfig.
+
+    Attributes:
+        vod_config (google.cloud.video.stitcher_v1.types.VodConfig):
+            Required. The VOD config resource which
+            replaces the resource on the server.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Required. The update mask applies to the resource. For the
+            ``FieldMask`` definition, see
+            https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask
+    """
+
+    vod_config: gcvs_vod_configs.VodConfig = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=gcvs_vod_configs.VodConfig,
+    )
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
     )
 
 

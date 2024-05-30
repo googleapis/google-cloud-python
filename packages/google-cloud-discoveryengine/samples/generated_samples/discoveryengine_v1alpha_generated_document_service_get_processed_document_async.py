@@ -41,7 +41,7 @@ async def sample_get_processed_document():
     # Initialize request argument(s)
     request = discoveryengine_v1alpha.GetProcessedDocumentRequest(
         name="name_value",
-        processed_document_type="CHUNKED_DOCUMENT",
+        processed_document_type="PNG_CONVERTED_DOCUMENT",
     )
 
     # Make the request

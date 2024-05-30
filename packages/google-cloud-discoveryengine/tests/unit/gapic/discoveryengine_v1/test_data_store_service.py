@@ -63,10 +63,14 @@ from google.cloud.discoveryengine_v1.services.data_store_service import (
     pagers,
     transports,
 )
+from google.cloud.discoveryengine_v1.types import (
+    data_store_service,
+    document_processing_config,
+    schema,
+)
 from google.cloud.discoveryengine_v1.types import common
 from google.cloud.discoveryengine_v1.types import data_store
 from google.cloud.discoveryengine_v1.types import data_store as gcd_data_store
-from google.cloud.discoveryengine_v1.types import data_store_service, schema
 
 
 def client_cert_source_callback():
@@ -3370,6 +3374,20 @@ def test_create_data_store_rest(request_type):
         "default_schema_id": "default_schema_id_value",
         "content_config": 1,
         "create_time": {"seconds": 751, "nanos": 543},
+        "document_processing_config": {
+            "name": "name_value",
+            "default_parsing_config": {
+                "digital_parsing_config": {},
+                "ocr_parsing_config": {
+                    "enhanced_document_elements": [
+                        "enhanced_document_elements_value1",
+                        "enhanced_document_elements_value2",
+                    ],
+                    "use_native_text": True,
+                },
+            },
+            "parsing_config_overrides": {},
+        },
         "starting_schema": {
             "struct_schema": {"fields": {}},
             "json_schema": "json_schema_value",
@@ -4784,6 +4802,20 @@ def test_update_data_store_rest(request_type):
         "default_schema_id": "default_schema_id_value",
         "content_config": 1,
         "create_time": {"seconds": 751, "nanos": 543},
+        "document_processing_config": {
+            "name": "name_value",
+            "default_parsing_config": {
+                "digital_parsing_config": {},
+                "ocr_parsing_config": {
+                    "enhanced_document_elements": [
+                        "enhanced_document_elements_value1",
+                        "enhanced_document_elements_value2",
+                    ],
+                    "use_native_text": True,
+                },
+            },
+            "parsing_config_overrides": {},
+        },
         "starting_schema": {
             "struct_schema": {"fields": {}},
             "json_schema": "json_schema_value",
@@ -5308,6 +5340,7 @@ def test_data_store_service_base_transport():
         "delete_data_store",
         "update_data_store",
         "get_operation",
+        "cancel_operation",
         "list_operations",
     )
     for method in methods:
@@ -5820,11 +5853,39 @@ def test_parse_data_store_path():
     assert expected == actual
 
 
-def test_schema_path():
+def test_document_processing_config_path():
     project = "squid"
     location = "clam"
     data_store = "whelk"
-    schema = "octopus"
+    expected = "projects/{project}/locations/{location}/dataStores/{data_store}/documentProcessingConfig".format(
+        project=project,
+        location=location,
+        data_store=data_store,
+    )
+    actual = DataStoreServiceClient.document_processing_config_path(
+        project, location, data_store
+    )
+    assert expected == actual
+
+
+def test_parse_document_processing_config_path():
+    expected = {
+        "project": "octopus",
+        "location": "oyster",
+        "data_store": "nudibranch",
+    }
+    path = DataStoreServiceClient.document_processing_config_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = DataStoreServiceClient.parse_document_processing_config_path(path)
+    assert expected == actual
+
+
+def test_schema_path():
+    project = "cuttlefish"
+    location = "mussel"
+    data_store = "winkle"
+    schema = "nautilus"
     expected = "projects/{project}/locations/{location}/dataStores/{data_store}/schemas/{schema}".format(
         project=project,
         location=location,
@@ -5837,10 +5898,10 @@ def test_schema_path():
 
 def test_parse_schema_path():
     expected = {
-        "project": "oyster",
-        "location": "nudibranch",
-        "data_store": "cuttlefish",
-        "schema": "mussel",
+        "project": "scallop",
+        "location": "abalone",
+        "data_store": "squid",
+        "schema": "clam",
     }
     path = DataStoreServiceClient.schema_path(**expected)
 
@@ -5850,7 +5911,7 @@ def test_parse_schema_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "winkle"
+    billing_account = "whelk"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -5860,7 +5921,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "nautilus",
+        "billing_account": "octopus",
     }
     path = DataStoreServiceClient.common_billing_account_path(**expected)
 
@@ -5870,7 +5931,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "scallop"
+    folder = "oyster"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -5880,7 +5941,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "abalone",
+        "folder": "nudibranch",
     }
     path = DataStoreServiceClient.common_folder_path(**expected)
 
@@ -5890,7 +5951,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "squid"
+    organization = "cuttlefish"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -5900,7 +5961,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "clam",
+        "organization": "mussel",
     }
     path = DataStoreServiceClient.common_organization_path(**expected)
 
@@ -5910,7 +5971,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "whelk"
+    project = "winkle"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -5920,7 +5981,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "octopus",
+        "project": "nautilus",
     }
     path = DataStoreServiceClient.common_project_path(**expected)
 
@@ -5930,8 +5991,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "oyster"
-    location = "nudibranch"
+    project = "scallop"
+    location = "abalone"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -5942,8 +6003,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "cuttlefish",
-        "location": "mussel",
+        "project": "squid",
+        "location": "clam",
     }
     path = DataStoreServiceClient.common_location_path(**expected)
 
@@ -5987,6 +6048,64 @@ async def test_transport_close_async():
         async with client:
             close.assert_not_called()
         close.assert_called_once()
+
+
+def test_cancel_operation_rest_bad_request(
+    transport: str = "rest", request_type=operations_pb2.CancelOperationRequest
+):
+    client = DataStoreServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/operations/sample2"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.cancel_operation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.CancelOperationRequest,
+        dict,
+    ],
+)
+def test_cancel_operation_rest(request_type):
+    client = DataStoreServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request_init = {"name": "projects/sample1/operations/sample2"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = "{}"
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        response = client.cancel_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
 
 
 def test_get_operation_rest_bad_request(
@@ -6101,6 +6220,145 @@ def test_list_operations_rest(request_type):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, operations_pb2.ListOperationsResponse)
+
+
+def test_cancel_operation(transport: str = "grpc"):
+    client = DataStoreServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = operations_pb2.CancelOperationRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+        response = client.cancel_operation(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.asyncio
+async def test_cancel_operation_async(transport: str = "grpc_asyncio"):
+    client = DataStoreServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = operations_pb2.CancelOperationRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.cancel_operation(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_cancel_operation_field_headers():
+    client = DataStoreServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = operations_pb2.CancelOperationRequest()
+    request.name = "locations"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
+        call.return_value = None
+
+        client.cancel_operation(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=locations",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_cancel_operation_field_headers_async():
+    client = DataStoreServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = operations_pb2.CancelOperationRequest()
+    request.name = "locations"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.cancel_operation(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=locations",
+    ) in kw["metadata"]
+
+
+def test_cancel_operation_from_dict():
+    client = DataStoreServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        response = client.cancel_operation(
+            request={
+                "name": "locations",
+            }
+        )
+        call.assert_called()
+
+
+@pytest.mark.asyncio
+async def test_cancel_operation_from_dict_async():
+    client = DataStoreServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.cancel_operation(
+            request={
+                "name": "locations",
+            }
+        )
+        call.assert_called()
 
 
 def test_get_operation(transport: str = "grpc"):

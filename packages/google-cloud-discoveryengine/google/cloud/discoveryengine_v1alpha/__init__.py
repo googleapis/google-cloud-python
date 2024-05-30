@@ -27,6 +27,7 @@ from .services.completion_service import (
     CompletionServiceAsyncClient,
     CompletionServiceClient,
 )
+from .services.control_service import ControlServiceAsyncClient, ControlServiceClient
 from .services.conversational_search_service import (
     ConversationalSearchServiceAsyncClient,
     ConversationalSearchServiceClient,
@@ -86,11 +87,21 @@ from .types.common import (
     Principal,
     SearchAddOn,
     SearchTier,
+    SearchUseCase,
     SolutionType,
     UserInfo,
 )
 from .types.completion import SuggestionDenyListEntry
 from .types.completion_service import CompleteQueryRequest, CompleteQueryResponse
+from .types.control import Condition, Control
+from .types.control_service import (
+    CreateControlRequest,
+    DeleteControlRequest,
+    GetControlRequest,
+    ListControlsRequest,
+    ListControlsResponse,
+    UpdateControlRequest,
+)
 from .types.conversation import (
     Conversation,
     ConversationContext,
@@ -117,6 +128,7 @@ from .types.conversational_search_service import (
     UpdateConversationRequest,
     UpdateSessionRequest,
 )
+from .types.custom_tuning_model import CustomTuningModel
 from .types.data_store import DataStore
 from .types.data_store_service import (
     CreateDataStoreMetadata,
@@ -223,6 +235,8 @@ from .types.schema_service import (
 )
 from .types.search_service import SearchRequest, SearchResponse
 from .types.search_tuning_service import (
+    ListCustomModelsRequest,
+    ListCustomModelsResponse,
     TrainCustomModelMetadata,
     TrainCustomModelRequest,
     TrainCustomModelResponse,
@@ -281,6 +295,7 @@ __all__ = (
     "AclConfigServiceAsyncClient",
     "ChunkServiceAsyncClient",
     "CompletionServiceAsyncClient",
+    "ControlServiceAsyncClient",
     "ConversationalSearchServiceAsyncClient",
     "DataStoreServiceAsyncClient",
     "DocumentServiceAsyncClient",
@@ -321,12 +336,16 @@ __all__ = (
     "CompleteQueryResponse",
     "CompletionInfo",
     "CompletionServiceClient",
+    "Condition",
+    "Control",
+    "ControlServiceClient",
     "Conversation",
     "ConversationContext",
     "ConversationMessage",
     "ConversationalSearchServiceClient",
     "ConverseConversationRequest",
     "ConverseConversationResponse",
+    "CreateControlRequest",
     "CreateConversationRequest",
     "CreateDataStoreMetadata",
     "CreateDataStoreRequest",
@@ -340,8 +359,10 @@ __all__ = (
     "CreateTargetSiteRequest",
     "CustomAttribute",
     "CustomFineTuningSpec",
+    "CustomTuningModel",
     "DataStore",
     "DataStoreServiceClient",
+    "DeleteControlRequest",
     "DeleteConversationRequest",
     "DeleteDataStoreMetadata",
     "DeleteDataStoreRequest",
@@ -381,6 +402,7 @@ __all__ = (
     "GetAclConfigRequest",
     "GetAnswerRequest",
     "GetChunkRequest",
+    "GetControlRequest",
     "GetConversationRequest",
     "GetDataStoreRequest",
     "GetDocumentProcessingConfigRequest",
@@ -411,8 +433,12 @@ __all__ = (
     "Interval",
     "ListChunksRequest",
     "ListChunksResponse",
+    "ListControlsRequest",
+    "ListControlsResponse",
     "ListConversationsRequest",
     "ListConversationsResponse",
+    "ListCustomModelsRequest",
+    "ListCustomModelsResponse",
     "ListDataStoresRequest",
     "ListDataStoresResponse",
     "ListDocumentsRequest",
@@ -470,6 +496,7 @@ __all__ = (
     "SearchServiceClient",
     "SearchTier",
     "SearchTuningServiceClient",
+    "SearchUseCase",
     "ServingConfig",
     "ServingConfigServiceClient",
     "Session",
@@ -489,6 +516,7 @@ __all__ = (
     "TuneEngineRequest",
     "TuneEngineResponse",
     "UpdateAclConfigRequest",
+    "UpdateControlRequest",
     "UpdateConversationRequest",
     "UpdateDataStoreRequest",
     "UpdateDocumentProcessingConfigRequest",

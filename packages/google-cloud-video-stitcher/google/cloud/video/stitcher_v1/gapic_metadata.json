@@ -30,6 +30,11 @@
                 "create_slate"
               ]
             },
+            "CreateVodConfig": {
+              "methods": [
+                "create_vod_config"
+              ]
+            },
             "CreateVodSession": {
               "methods": [
                 "create_vod_session"
@@ -48,6 +53,11 @@
             "DeleteSlate": {
               "methods": [
                 "delete_slate"
+              ]
+            },
+            "DeleteVodConfig": {
+              "methods": [
+                "delete_vod_config"
               ]
             },
             "GetCdnKey": {
@@ -78,6 +88,11 @@
             "GetVodAdTagDetail": {
               "methods": [
                 "get_vod_ad_tag_detail"
+              ]
+            },
+            "GetVodConfig": {
+              "methods": [
+                "get_vod_config"
               ]
             },
             "GetVodSession": {
@@ -115,6 +130,11 @@
                 "list_vod_ad_tag_details"
               ]
             },
+            "ListVodConfigs": {
+              "methods": [
+                "list_vod_configs"
+              ]
+            },
             "ListVodStitchDetails": {
               "methods": [
                 "list_vod_stitch_details"
@@ -125,9 +145,19 @@
                 "update_cdn_key"
               ]
             },
+            "UpdateLiveConfig": {
+              "methods": [
+                "update_live_config"
+              ]
+            },
             "UpdateSlate": {
               "methods": [
                 "update_slate"
+              ]
+            },
+            "UpdateVodConfig": {
+              "methods": [
+                "update_vod_config"
               ]
             }
           }
@@ -155,6 +185,11 @@
                 "create_slate"
               ]
             },
+            "CreateVodConfig": {
+              "methods": [
+                "create_vod_config"
+              ]
+            },
             "CreateVodSession": {
               "methods": [
                 "create_vod_session"
@@ -173,6 +208,11 @@
             "DeleteSlate": {
               "methods": [
                 "delete_slate"
+              ]
+            },
+            "DeleteVodConfig": {
+              "methods": [
+                "delete_vod_config"
               ]
             },
             "GetCdnKey": {
@@ -203,6 +243,11 @@
             "GetVodAdTagDetail": {
               "methods": [
                 "get_vod_ad_tag_detail"
+              ]
+            },
+            "GetVodConfig": {
+              "methods": [
+                "get_vod_config"
               ]
             },
             "GetVodSession": {
@@ -240,6 +285,11 @@
                 "list_vod_ad_tag_details"
               ]
             },
+            "ListVodConfigs": {
+              "methods": [
+                "list_vod_configs"
+              ]
+            },
             "ListVodStitchDetails": {
               "methods": [
                 "list_vod_stitch_details"
@@ -250,9 +300,19 @@
                 "update_cdn_key"
               ]
             },
+            "UpdateLiveConfig": {
+              "methods": [
+                "update_live_config"
+              ]
+            },
             "UpdateSlate": {
               "methods": [
                 "update_slate"
+              ]
+            },
+            "UpdateVodConfig": {
+              "methods": [
+                "update_vod_config"
               ]
             }
           }

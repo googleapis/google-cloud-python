@@ -55,10 +55,10 @@ class GcsSource(proto.Message):
 
     Attributes:
         input_uris (MutableSequence[str]):
-            Required. Cloud Storage URIs to input files. URI can be up
-            to 2000 characters long. URIs can match the full object path
-            (for example, ``gs://bucket/directory/object.json``) or a
-            pattern matching one or more files, such as
+            Required. Cloud Storage URIs to input files. Each URI can be
+            up to 2000 characters long. URIs can match the full object
+            path (for example, ``gs://bucket/directory/object.json``) or
+            a pattern matching one or more files, such as
             ``gs://bucket/directory/*.json``.
 
             A request can contain at most 100 files (or 100,000 files if
@@ -88,7 +88,7 @@ class GcsSource(proto.Message):
                Document. This can only be used by the GENERIC Data Store
                vertical.
 
-            Supported values for user even imports:
+            Supported values for user event imports:
 
             -  ``user_event`` (default): One JSON
                [UserEvent][google.cloud.discoveryengine.v1.UserEvent]
@@ -551,9 +551,9 @@ class FirestoreSource(proto.Message):
             Required. The Firestore database to copy the
             data from with a length limit of 256 characters.
         collection_id (str):
-            Required. The Firestore collection to copy
-            the data from with a length limit of 1,500
-            characters.
+            Required. The Firestore collection (or
+            entity) to copy the data from with a length
+            limit of 1,500 characters.
         gcs_staging_dir (str):
             Intermediate Cloud Storage directory used for
             the import with a length limit of 2,000

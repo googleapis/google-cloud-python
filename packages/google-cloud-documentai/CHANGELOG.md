@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.28.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-v2.27.1...google-cloud-documentai-v2.28.0) (2024-05-29)
+
+
+### Features
+
+* [google-cloud-documentai] Make Layout Parser generally available in V1 ([#12745](https://github.com/googleapis/google-cloud-python/issues/12745)) ([c5b9322](https://github.com/googleapis/google-cloud-python/commit/c5b93220710708fc457934281685b635c335394a))
+
 ## [2.27.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-v2.27.0...google-cloud-documentai-v2.27.1) (2024-05-16)
 
 

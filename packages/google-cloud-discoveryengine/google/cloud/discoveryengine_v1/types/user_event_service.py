@@ -37,12 +37,25 @@ class WriteUserEventRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The parent DataStore resource name, such as
+            Required. The parent resource name. If the write user event
+            action is applied in
+            [DataStore][google.cloud.discoveryengine.v1.DataStore]
+            level, the format is:
             ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}``.
+            If the write user event action is applied in [Location][]
+            level, for example, the event with
+            [Document][google.cloud.discoveryengine.v1.Document] across
+            multiple
+            [DataStore][google.cloud.discoveryengine.v1.DataStore], the
+            format is: ``projects/{project}/locations/{location}``.
         user_event (google.cloud.discoveryengine_v1.types.UserEvent):
             Required. User event to write.
 
             This field is a member of `oneof`_ ``_user_event``.
+        write_async (bool):
+            If set to true, the user event is written
+            asynchronously after validation, and the API
+            responds without waiting for the write.
     """
 
     parent: str = proto.Field(
@@ -54,6 +67,10 @@ class WriteUserEventRequest(proto.Message):
         number=2,
         optional=True,
         message=gcd_user_event.UserEvent,
+    )
+    write_async: bool = proto.Field(
+        proto.BOOL,
+        number=3,
     )
 
 

@@ -393,12 +393,12 @@ class AnswerQueryRequest(proto.Message):
         session (str):
             The session resource name. Not required.
 
-            When session field is not set, the API is in
-            sessionless mode.
+            When session field is not set, the API is in sessionless
+            mode.
 
-            We support auto session mode: users can use the
-            wildcard symbol “-” as session id.  A new id
-            will be automatically generated and assigned.
+            We support auto session mode: users can use the wildcard
+            symbol ``-`` as session ID. A new ID will be automatically
+            generated and assigned.
         safety_spec (google.cloud.discoveryengine_v1alpha.types.AnswerQueryRequest.SafetySpec):
             Model specification.
         related_questions_spec (google.cloud.discoveryengine_v1alpha.types.AnswerQueryRequest.RelatedQuestionsSpec):
@@ -465,6 +465,8 @@ class AnswerQueryRequest(proto.Message):
     class AnswerGenerationSpec(proto.Message):
         r"""Answer generation specification.
 
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
         Attributes:
             model_spec (google.cloud.discoveryengine_v1alpha.types.AnswerQueryRequest.AnswerGenerationSpec.ModelSpec):
                 Answer generation model specification.
@@ -499,6 +501,16 @@ class AnswerQueryRequest(proto.Message):
                 field is set to ``true``, we skip generating answers for
                 non-answer seeking queries and return fallback messages
                 instead.
+            ignore_low_relevant_content (bool):
+                Specifies whether to filter out queries that have low
+                relevance.
+
+                If this field is set to ``false``, all search results are
+                used regardless of relevance to generate answers. If set to
+                ``true`` or unset, the behavior will be determined
+                automatically by the service.
+
+                This field is a member of `oneof`_ ``_ignore_low_relevant_content``.
         """
 
         class ModelSpec(proto.Message):
@@ -554,6 +566,11 @@ class AnswerQueryRequest(proto.Message):
         ignore_non_answer_seeking_query: bool = proto.Field(
             proto.BOOL,
             number=6,
+        )
+        ignore_low_relevant_content: bool = proto.Field(
+            proto.BOOL,
+            number=7,
+            optional=True,
         )
 
     class SearchSpec(proto.Message):
@@ -632,6 +649,13 @@ class AnswerQueryRequest(proto.Message):
                        documents <https://cloud.google.com/generative-ai-app-builder/docs/parse-chunk-documents>`__
                 custom_fine_tuning_spec (google.cloud.discoveryengine_v1alpha.types.CustomFineTuningSpec):
                     Custom fine tuning configs.
+                data_store_specs (MutableSequence[google.cloud.discoveryengine_v1alpha.types.SearchRequest.DataStoreSpec]):
+                    Specs defining dataStores to filter on in a
+                    search call and configurations for those
+                    dataStores. This is only considered for engines
+                    with multiple dataStores use case. For single
+                    dataStore within an engine, they should use the
+                    specs at the top level.
             """
 
             max_return_results: int = proto.Field(
@@ -660,6 +684,13 @@ class AnswerQueryRequest(proto.Message):
                 proto.MESSAGE,
                 number=6,
                 message=common.CustomFineTuningSpec,
+            )
+            data_store_specs: MutableSequence[
+                search_service.SearchRequest.DataStoreSpec
+            ] = proto.RepeatedField(
+                proto.MESSAGE,
+                number=7,
+                message=search_service.SearchRequest.DataStoreSpec,
             )
 
         class SearchResultList(proto.Message):
@@ -906,7 +937,7 @@ class AnswerQueryRequest(proto.Message):
                     Disable query rephraser.
                 max_rephrase_steps (int):
                     Max rephrase steps.
-                    The max number is 10 steps.
+                    The max number is 5 steps.
                     If not set or set to < 1, it will be set to 1 by
                     default.
             """
@@ -998,6 +1029,8 @@ class AnswerQueryResponse(proto.Message):
             session field is set and valid in the
             [AnswerQueryRequest][google.cloud.discoveryengine.v1alpha.AnswerQueryRequest]
             request.
+        answer_query_token (str):
+            A global unique ID used for logging.
     """
 
     answer: gcd_answer.Answer = proto.Field(
@@ -1009,6 +1042,10 @@ class AnswerQueryResponse(proto.Message):
         proto.MESSAGE,
         number=2,
         message=gcd_session.Session,
+    )
+    answer_query_token: str = proto.Field(
+        proto.STRING,
+        number=3,
     )
 
 

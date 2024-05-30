@@ -34,7 +34,9 @@ __protobuf__ = proto.module(
 
 
 class LiveAdTagDetail(proto.Message):
-    r"""Container for a live session's ad tag detail.
+    r"""Information related to the details for one ad tag. This
+    resource is only available for live sessions that do not
+    implement Google Ad Manager ad insertion.
 
     Attributes:
         name (str):

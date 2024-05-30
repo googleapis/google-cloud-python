@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.1.9](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securitycentermanagement-v0.1.8...google-cloud-securitycentermanagement-v0.1.9) (2024-05-27)
+
+
+### Features
+
+* add support for new Security Center Management APIs ([9896255](https://github.com/googleapis/google-cloud-python/commit/98962551bbe4c8901950a9769c7d5fd4369f2ef5))
+
+
+### Documentation
+
+* update comment formatting throughout API ([9896255](https://github.com/googleapis/google-cloud-python/commit/98962551bbe4c8901950a9769c7d5fd4369f2ef5))
+
 ## [0.1.8](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securitycentermanagement-v0.1.7...google-cloud-securitycentermanagement-v0.1.8) (2024-03-22)
 
 

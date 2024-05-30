@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.15](https://github.com/googleapis/google-cloud-python/compare/google-maps-places-v0.1.14...google-maps-places-v0.1.15) (2024-05-27)
+
+
+### Features
+
+* add `generative_summary` and `area_summary` for place summaries ([46d0d9f](https://github.com/googleapis/google-cloud-python/commit/46d0d9f863049c257b8bfa15cfce0ea0f3530c5a))
+
 ## [0.1.14](https://github.com/googleapis/google-cloud-python/compare/google-maps-places-v0.1.13...google-maps-places-v0.1.14) (2024-05-07)
 
 

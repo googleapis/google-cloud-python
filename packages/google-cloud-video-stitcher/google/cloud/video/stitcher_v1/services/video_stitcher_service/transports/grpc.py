@@ -31,6 +31,7 @@ from google.cloud.video.stitcher_v1.types import (
     slates,
     stitch_details,
     video_stitcher_service,
+    vod_configs,
 )
 
 from .base import DEFAULT_CLIENT_INFO, VideoStitcherServiceTransport
@@ -947,6 +948,178 @@ class VideoStitcherServiceGrpcTransport(VideoStitcherServiceTransport):
                 response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["delete_live_config"]
+
+    @property
+    def update_live_config(
+        self,
+    ) -> Callable[
+        [video_stitcher_service.UpdateLiveConfigRequest], operations_pb2.Operation
+    ]:
+        r"""Return a callable for the update live config method over gRPC.
+
+        Updates the specified LiveConfig. Only update fields
+        specified in the call method body.
+
+        Returns:
+            Callable[[~.UpdateLiveConfigRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_live_config" not in self._stubs:
+            self._stubs["update_live_config"] = self.grpc_channel.unary_unary(
+                "/google.cloud.video.stitcher.v1.VideoStitcherService/UpdateLiveConfig",
+                request_serializer=video_stitcher_service.UpdateLiveConfigRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["update_live_config"]
+
+    @property
+    def create_vod_config(
+        self,
+    ) -> Callable[
+        [video_stitcher_service.CreateVodConfigRequest], operations_pb2.Operation
+    ]:
+        r"""Return a callable for the create vod config method over gRPC.
+
+        Registers the VOD config with the provided unique ID
+        in the specified region.
+
+        Returns:
+            Callable[[~.CreateVodConfigRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_vod_config" not in self._stubs:
+            self._stubs["create_vod_config"] = self.grpc_channel.unary_unary(
+                "/google.cloud.video.stitcher.v1.VideoStitcherService/CreateVodConfig",
+                request_serializer=video_stitcher_service.CreateVodConfigRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["create_vod_config"]
+
+    @property
+    def list_vod_configs(
+        self,
+    ) -> Callable[
+        [video_stitcher_service.ListVodConfigsRequest],
+        video_stitcher_service.ListVodConfigsResponse,
+    ]:
+        r"""Return a callable for the list vod configs method over gRPC.
+
+        Lists all VOD configs managed by the Video Stitcher
+        API that belong to the specified project and region.
+
+        Returns:
+            Callable[[~.ListVodConfigsRequest],
+                    ~.ListVodConfigsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_vod_configs" not in self._stubs:
+            self._stubs["list_vod_configs"] = self.grpc_channel.unary_unary(
+                "/google.cloud.video.stitcher.v1.VideoStitcherService/ListVodConfigs",
+                request_serializer=video_stitcher_service.ListVodConfigsRequest.serialize,
+                response_deserializer=video_stitcher_service.ListVodConfigsResponse.deserialize,
+            )
+        return self._stubs["list_vod_configs"]
+
+    @property
+    def get_vod_config(
+        self,
+    ) -> Callable[[video_stitcher_service.GetVodConfigRequest], vod_configs.VodConfig]:
+        r"""Return a callable for the get vod config method over gRPC.
+
+        Returns the specified VOD config managed by the Video
+        Stitcher API service.
+
+        Returns:
+            Callable[[~.GetVodConfigRequest],
+                    ~.VodConfig]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_vod_config" not in self._stubs:
+            self._stubs["get_vod_config"] = self.grpc_channel.unary_unary(
+                "/google.cloud.video.stitcher.v1.VideoStitcherService/GetVodConfig",
+                request_serializer=video_stitcher_service.GetVodConfigRequest.serialize,
+                response_deserializer=vod_configs.VodConfig.deserialize,
+            )
+        return self._stubs["get_vod_config"]
+
+    @property
+    def delete_vod_config(
+        self,
+    ) -> Callable[
+        [video_stitcher_service.DeleteVodConfigRequest], operations_pb2.Operation
+    ]:
+        r"""Return a callable for the delete vod config method over gRPC.
+
+        Deletes the specified VOD config.
+
+        Returns:
+            Callable[[~.DeleteVodConfigRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_vod_config" not in self._stubs:
+            self._stubs["delete_vod_config"] = self.grpc_channel.unary_unary(
+                "/google.cloud.video.stitcher.v1.VideoStitcherService/DeleteVodConfig",
+                request_serializer=video_stitcher_service.DeleteVodConfigRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["delete_vod_config"]
+
+    @property
+    def update_vod_config(
+        self,
+    ) -> Callable[
+        [video_stitcher_service.UpdateVodConfigRequest], operations_pb2.Operation
+    ]:
+        r"""Return a callable for the update vod config method over gRPC.
+
+        Updates the specified VOD config. Only update fields
+        specified in the call method body.
+
+        Returns:
+            Callable[[~.UpdateVodConfigRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_vod_config" not in self._stubs:
+            self._stubs["update_vod_config"] = self.grpc_channel.unary_unary(
+                "/google.cloud.video.stitcher.v1.VideoStitcherService/UpdateVodConfig",
+                request_serializer=video_stitcher_service.UpdateVodConfigRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["update_vod_config"]
 
     def close(self):
         self.grpc_channel.close()
