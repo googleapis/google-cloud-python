@@ -15,10 +15,11 @@
 from __future__ import absolute_import
 
 import datetime
-import google.auth.credentials as ga_credentials
-import grpc
 import unittest
 from unittest import mock
+
+import google.auth.credentials as ga_credentials
+import grpc
 
 from google.cloud import monitoring_v3 as monitoring_v3
 from google.cloud.monitoring_v3 import MetricServiceClient
