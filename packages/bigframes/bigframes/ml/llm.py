@@ -46,6 +46,14 @@ _EMBEDDING_GENERATOR_ENDPOINTS = (
 )
 
 _GEMINI_PRO_ENDPOINT = "gemini-pro"
+_GEMINI_1P5_PRO_PREVIEW_ENDPOINT = "gemini-1.5-pro-preview-0514"
+_GEMINI_1P5_PRO_FLASH_PREVIEW_ENDPOINT = "gemini-1.5-flash-preview-0514"
+_GEMINI_ENDPOINTS = (
+    _GEMINI_PRO_ENDPOINT,
+    _GEMINI_1P5_PRO_PREVIEW_ENDPOINT,
+    _GEMINI_1P5_PRO_FLASH_PREVIEW_ENDPOINT,
+)
+
 
 _ML_GENERATE_TEXT_STATUS = "ml_generate_text_status"
 _ML_EMBED_TEXT_STATUS = "ml_embed_text_status"
@@ -547,13 +555,16 @@ class PaLM2TextEmbeddingGenerator(base.BaseEstimator):
 class GeminiTextGenerator(base.BaseEstimator):
     """Gemini text generator LLM model.
 
-    .. note::
-        This product or feature is subject to the "Pre-GA Offerings Terms" in the General Service Terms section of the
-        Service Specific Terms(https://cloud.google.com/terms/service-terms#1). Pre-GA products and features are available "as is"
-        and might have limited support. For more information, see the launch stage descriptions
-        (https://cloud.google.com/products#product-launch-stages).
-
     Args:
+        model_name (str, Default to "gemini-pro"):
+            The model for natural language tasks. Accepted values are "gemini-pro", "gemini-1.5-pro-preview-0514" and "gemini-1.5-flash-preview-0514". Default to "gemini-pro".
+
+        .. note::
+            "gemini-1.5-pro-preview-0514" and "gemini-1.5-flash-preview-0514" is subject to the "Pre-GA Offerings Terms" in the General Service Terms section of the
+            Service Specific Terms(https://cloud.google.com/terms/service-terms#1). Pre-GA products and features are available "as is"
+            and might have limited support. For more information, see the launch stage descriptions
+            (https://cloud.google.com/products#product-launch-stages).
+
         session (bigframes.Session or None):
             BQ session to create the model. If None, use the global default session.
         connection_name (str or None):
@@ -565,9 +576,13 @@ class GeminiTextGenerator(base.BaseEstimator):
     def __init__(
         self,
         *,
+        model_name: Literal[
+            "gemini-pro", "gemini-1.5-pro-preview-0514", "gemini-1.5-flash-preview-0514"
+        ] = "gemini-pro",
         session: Optional[bigframes.Session] = None,
         connection_name: Optional[str] = None,
     ):
+        self.model_name = model_name
         self.session = session or bpd.get_global_session()
         self._bq_connection_manager = self.session.bqconnectionmanager
 
@@ -601,7 +616,12 @@ class GeminiTextGenerator(base.BaseEstimator):
                 iam_role="aiplatform.user",
             )
 
-        options = {"endpoint": _GEMINI_PRO_ENDPOINT}
+        if self.model_name not in _GEMINI_ENDPOINTS:
+            raise ValueError(
+                f"Model name {self.model_name} is not supported. We only support {', '.join(_GEMINI_ENDPOINTS)}."
+            )
+
+        options = {"endpoint": self.model_name}
 
         return self._bqml_model_factory.create_remote_model(
             session=self.session, connection_name=self.connection_name, options=options
@@ -613,12 +633,17 @@ class GeminiTextGenerator(base.BaseEstimator):
     ) -> GeminiTextGenerator:
         assert bq_model.model_type == "MODEL_TYPE_UNSPECIFIED"
         assert "remoteModelInfo" in bq_model._properties
+        assert "endpoint" in bq_model._properties["remoteModelInfo"]
         assert "connection" in bq_model._properties["remoteModelInfo"]
 
         # Parse the remote model endpoint
+        bqml_endpoint = bq_model._properties["remoteModelInfo"]["endpoint"]
         model_connection = bq_model._properties["remoteModelInfo"]["connection"]
+        model_endpoint = bqml_endpoint.split("/")[-1]
 
-        model = cls(session=session, connection_name=model_connection)
+        model = cls(
+            model_name=model_endpoint, session=session, connection_name=model_connection
+        )
         model._bqml_model = core.BqmlModel(session, bq_model)
         return model
 
