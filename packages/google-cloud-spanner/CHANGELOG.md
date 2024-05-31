@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-spanner/#history
 
+## [3.47.0](https://github.com/googleapis/python-spanner/compare/v3.46.0...v3.47.0) (2024-05-22)
+
+
+### Features
+
+* Add support for multi region encryption config ([#1136](https://github.com/googleapis/python-spanner/issues/1136)) ([bc71fe9](https://github.com/googleapis/python-spanner/commit/bc71fe98a5dfb1198a17d0d1a0b14b89f0ae1754))
+* **spanner:** Add support for Proto Columns ([#1084](https://github.com/googleapis/python-spanner/issues/1084)) ([3ca2689](https://github.com/googleapis/python-spanner/commit/3ca2689324406e0bd9a6b872eda4a23999115f0f))
+
 ## [3.46.0](https://github.com/googleapis/python-spanner/compare/v3.45.0...v3.46.0) (2024-05-02)
 
 
