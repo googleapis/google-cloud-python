@@ -714,6 +714,8 @@ class TestLoadJob(_Base):
         )
 
     def test_reload_w_bound_client(self):
+        from google.cloud.bigquery.retry import DEFAULT_GET_JOB_TIMEOUT
+
         PATH = "/projects/%s/jobs/%s" % (self.PROJECT, self.JOB_ID)
         RESOURCE = self._make_resource()
         conn = make_connection(RESOURCE)
@@ -724,14 +726,27 @@ class TestLoadJob(_Base):
         ) as final_attributes:
             job.reload()
 
-        final_attributes.assert_called_with({"path": PATH}, client, job)
+        final_attributes.assert_called_with(
+            {
+                "path": PATH,
+                "job_id": self.JOB_ID,
+                "location": None,
+            },
+            client,
+            None,
+        )
 
         conn.api_request.assert_called_once_with(
-            method="GET", path=PATH, query_params={}, timeout=None
+            method="GET",
+            path=PATH,
+            query_params={"projection": "full"},
+            timeout=DEFAULT_GET_JOB_TIMEOUT,
         )
         self._verifyResourceProperties(job, RESOURCE)
 
     def test_reload_w_alternate_client(self):
+        from google.cloud.bigquery.retry import DEFAULT_GET_JOB_TIMEOUT
+
         PATH = "/projects/%s/jobs/%s" % (self.PROJECT, self.JOB_ID)
         RESOURCE = self._make_resource()
         conn1 = make_connection()
@@ -744,16 +759,28 @@ class TestLoadJob(_Base):
         ) as final_attributes:
             job.reload(client=client2)
 
-        final_attributes.assert_called_with({"path": PATH}, client2, job)
+        final_attributes.assert_called_with(
+            {
+                "path": PATH,
+                "job_id": self.JOB_ID,
+                "location": None,
+            },
+            client2,
+            None,
+        )
 
         conn1.api_request.assert_not_called()
         conn2.api_request.assert_called_once_with(
-            method="GET", path=PATH, query_params={}, timeout=None
+            method="GET",
+            path=PATH,
+            query_params={"projection": "full"},
+            timeout=DEFAULT_GET_JOB_TIMEOUT,
         )
         self._verifyResourceProperties(job, RESOURCE)
 
     def test_reload_w_job_reference(self):
         from google.cloud.bigquery import job
+        from google.cloud.bigquery.retry import DEFAULT_GET_JOB_TIMEOUT
 
         resource = self._make_resource(ended=True)
         resource["jobReference"]["projectId"] = "alternative-project"
@@ -768,16 +795,20 @@ class TestLoadJob(_Base):
             load_job.reload()
 
         final_attributes.assert_called_with(
-            {"path": "/projects/alternative-project/jobs/{}".format(self.JOB_ID)},
+            {
+                "path": "/projects/alternative-project/jobs/{}".format(self.JOB_ID),
+                "job_id": self.JOB_ID,
+                "location": "US",
+            },
             client,
-            load_job,
+            None,
         )
 
         conn.api_request.assert_called_once_with(
             method="GET",
             path="/projects/alternative-project/jobs/{}".format(self.JOB_ID),
-            query_params={"location": "US"},
-            timeout=None,
+            query_params={"projection": "full", "location": "US"},
+            timeout=DEFAULT_GET_JOB_TIMEOUT,
         )
 
     def test_cancel_w_bound_client(self):

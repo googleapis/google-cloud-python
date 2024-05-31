@@ -3167,6 +3167,7 @@ class TestClient(unittest.TestCase):
 
     def test_get_job_miss_w_explict_project(self):
         from google.cloud.exceptions import NotFound
+        from google.cloud.bigquery.retry import DEFAULT_GET_JOB_TIMEOUT
 
         OTHER_PROJECT = "OTHER_PROJECT"
         JOB_ID = "NONESUCH"
@@ -3181,11 +3182,12 @@ class TestClient(unittest.TestCase):
             method="GET",
             path="/projects/OTHER_PROJECT/jobs/NONESUCH",
             query_params={"projection": "full"},
-            timeout=DEFAULT_TIMEOUT,
+            timeout=DEFAULT_GET_JOB_TIMEOUT,
         )
 
     def test_get_job_miss_w_client_location(self):
         from google.cloud.exceptions import NotFound
+        from google.cloud.bigquery.retry import DEFAULT_GET_JOB_TIMEOUT
 
         JOB_ID = "NONESUCH"
         creds = _make_credentials()
@@ -3199,7 +3201,7 @@ class TestClient(unittest.TestCase):
             method="GET",
             path="/projects/client-proj/jobs/NONESUCH",
             query_params={"projection": "full", "location": "client-loc"},
-            timeout=DEFAULT_TIMEOUT,
+            timeout=DEFAULT_GET_JOB_TIMEOUT,
         )
 
     def test_get_job_hit_w_timeout(self):

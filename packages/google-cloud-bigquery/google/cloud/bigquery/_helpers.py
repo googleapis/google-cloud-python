@@ -33,6 +33,8 @@ from google.cloud._helpers import _to_bytes
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.api_core import client_options as client_options_lib
 
+TimeoutType = Union[float, None]
+
 _RFC3339_MICROS_NO_ZULU = "%Y-%m-%dT%H:%M:%S.%f"
 _TIMEONLY_WO_MICROS = "%H:%M:%S"
 _TIMEONLY_W_MICROS = "%H:%M:%S.%f"

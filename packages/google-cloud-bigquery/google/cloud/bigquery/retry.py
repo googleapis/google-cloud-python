@@ -14,6 +14,7 @@
 
 from google.api_core import exceptions
 from google.api_core import retry
+import google.api_core.future.polling
 from google.auth import exceptions as auth_exceptions  # type: ignore
 import requests.exceptions
 
@@ -139,4 +140,14 @@ DEFAULT_JOB_RETRY = retry.Retry(
 )
 """
 The default job retry object.
+"""
+
+DEFAULT_GET_JOB_TIMEOUT = 128
+"""
+Default timeout for Client.get_job().
+"""
+
+POLLING_DEFAULT_VALUE = google.api_core.future.polling.PollingFuture._DEFAULT_VALUE
+"""
+Default value defined in google.api_core.future.polling.PollingFuture.
 """

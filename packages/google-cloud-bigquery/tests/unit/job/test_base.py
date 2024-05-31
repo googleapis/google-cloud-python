@@ -22,6 +22,8 @@ import google.api_core.retry
 from google.api_core.future import polling
 import pytest
 
+from google.cloud.bigquery.retry import DEFAULT_GET_JOB_TIMEOUT
+
 from ..helpers import make_connection
 
 from .helpers import _make_client
@@ -709,7 +711,7 @@ class Test_AsyncJob(unittest.TestCase):
         )
 
     def test_reload_defaults(self):
-        from google.cloud.bigquery.retry import DEFAULT_RETRY
+        from google.cloud.bigquery.retry import DEFAULT_RETRY, DEFAULT_GET_JOB_TIMEOUT
 
         resource = {
             "jobReference": {
@@ -729,15 +731,19 @@ class Test_AsyncJob(unittest.TestCase):
 
         call_api.assert_called_once_with(
             DEFAULT_RETRY,
-            span_name="BigQuery.job.reload",
+            span_name="BigQuery.getJob",
             span_attributes={
-                "path": "/projects/{}/jobs/{}".format(self.PROJECT, self.JOB_ID)
+                "path": "/projects/{}/jobs/{}".format(self.PROJECT, self.JOB_ID),
+                "job_id": "job-id",
+                "location": "us-central",
             },
-            job_ref=job,
             method="GET",
             path="/projects/{}/jobs/{}".format(self.PROJECT, self.JOB_ID),
-            query_params={"location": self.LOCATION},
-            timeout=None,
+            query_params={
+                "projection": "full",
+                "location": "us-central",
+            },
+            timeout=DEFAULT_GET_JOB_TIMEOUT,
         )
         self.assertEqual(job._properties, expected)
 
@@ -764,17 +770,42 @@ class Test_AsyncJob(unittest.TestCase):
 
         call_api.assert_called_once_with(
             retry,
-            span_name="BigQuery.job.reload",
+            span_name="BigQuery.getJob",
             span_attributes={
-                "path": "/projects/{}/jobs/{}".format(self.PROJECT, self.JOB_ID)
+                "path": "/projects/{}/jobs/{}".format(self.PROJECT, self.JOB_ID),
+                "job_id": "job-id",
+                "location": None,
             },
-            job_ref=job,
             method="GET",
             path="/projects/{}/jobs/{}".format(self.PROJECT, self.JOB_ID),
-            query_params={},
+            query_params={"projection": "full"},
             timeout=4.2,
         )
         self.assertEqual(job._properties, expected)
+
+    def test_reload_none_timeout(self):
+        from google.cloud.bigquery.retry import DEFAULT_RETRY
+
+        resource = {
+            "jobReference": {
+                "jobId": self.JOB_ID,
+                "projectId": self.PROJECT,
+                "location": None,
+            },
+            "configuration": {"test": True},
+        }
+        client = _make_client(project=self.PROJECT)
+        conn = client._connection = make_connection(resource)
+        job = self._set_properties_job()
+        retry = DEFAULT_RETRY.with_deadline(1)
+        job.reload(client=client, retry=retry, timeout=None)
+
+        conn.api_request.assert_called_once_with(
+            method="GET",
+            path="/projects/{}/jobs/{}".format(self.PROJECT, self.JOB_ID),
+            query_params={"projection": "full"},
+            timeout=None,
+        )
 
     def test_cancel_defaults(self):
         resource = {
@@ -952,7 +983,10 @@ class Test_AsyncJob(unittest.TestCase):
 
         self.assertFalse(job.done())
 
-        reload_.assert_called_once_with(retry=DEFAULT_RETRY, timeout=None)
+        reload_.assert_called_once_with(
+            retry=DEFAULT_RETRY,
+            timeout=DEFAULT_GET_JOB_TIMEOUT,
+        )
 
     def test_done_explicit_wo_state(self):
         from google.cloud.bigquery.retry import DEFAULT_RETRY
@@ -966,6 +1000,18 @@ class Test_AsyncJob(unittest.TestCase):
 
         reload_.assert_called_once_with(retry=retry, timeout=7.5)
 
+    def test_done_with_none_timeout(self):
+        from google.cloud.bigquery.retry import DEFAULT_RETRY
+
+        client = _make_client(project=self.PROJECT)
+        job = self._make_one(self.JOB_ID, client)
+        reload_ = job.reload = mock.Mock()
+        retry = DEFAULT_RETRY.with_deadline(1)
+
+        self.assertFalse(job.done(retry=retry, timeout=None))
+
+        reload_.assert_called_once_with(retry=retry, timeout=None)
+
     def test_done_already(self):
         client = _make_client(project=self.PROJECT)
         job = self._make_one(self.JOB_ID, client)
@@ -974,6 +1020,8 @@ class Test_AsyncJob(unittest.TestCase):
         self.assertTrue(job.done())
 
     def test_result_default_wo_state(self):
+        from google.cloud.bigquery.retry import DEFAULT_GET_JOB_TIMEOUT
+
         begun_job_resource = _make_job_resource(
             job_id=self.JOB_ID, project_id=self.PROJECT, location="US", started=True
         )
@@ -1003,12 +1051,17 @@ class Test_AsyncJob(unittest.TestCase):
         reload_call = mock.call(
             method="GET",
             path=f"/projects/{self.PROJECT}/jobs/{self.JOB_ID}",
-            query_params={"location": "US"},
-            timeout=None,
+            query_params={
+                "projection": "full",
+                "location": "US",
+            },
+            timeout=DEFAULT_GET_JOB_TIMEOUT,
         )
         conn.api_request.assert_has_calls([begin_call, begin_call, reload_call])
 
     def test_result_w_retry_wo_state(self):
+        from google.cloud.bigquery.retry import DEFAULT_GET_JOB_TIMEOUT
+
         begun_job_resource = _make_job_resource(
             job_id=self.JOB_ID, project_id=self.PROJECT, location="EU", started=True
         )
@@ -1054,8 +1107,11 @@ class Test_AsyncJob(unittest.TestCase):
         reload_call = mock.call(
             method="GET",
             path=f"/projects/{self.PROJECT}/jobs/{self.JOB_ID}",
-            query_params={"location": "EU"},
-            timeout=None,
+            query_params={
+                "projection": "full",
+                "location": "EU",
+            },
+            timeout=DEFAULT_GET_JOB_TIMEOUT,
         )
         conn.api_request.assert_has_calls(
             [begin_call, begin_call, reload_call, reload_call]

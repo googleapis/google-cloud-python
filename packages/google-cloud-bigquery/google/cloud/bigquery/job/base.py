@@ -26,8 +26,11 @@ from google.api_core import exceptions
 import google.api_core.future.polling
 
 from google.cloud.bigquery import _helpers
-from google.cloud.bigquery.retry import DEFAULT_RETRY
 from google.cloud.bigquery._helpers import _int_or_none
+from google.cloud.bigquery.retry import (
+    DEFAULT_GET_JOB_TIMEOUT,
+    DEFAULT_RETRY,
+)
 
 
 _DONE_STATE = "DONE"
@@ -801,7 +804,7 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
         self,
         client=None,
         retry: "retries.Retry" = DEFAULT_RETRY,
-        timeout: Optional[float] = None,
+        timeout: Optional[float] = DEFAULT_GET_JOB_TIMEOUT,
     ):
         """API call:  refresh job properties via a GET request.
 
@@ -820,22 +823,14 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
         """
         client = self._require_client(client)
 
-        extra_params = {}
-        if self.location:
-            extra_params["location"] = self.location
-        span_attributes = {"path": self.path}
-
-        api_response = client._call_api(
-            retry,
-            span_name="BigQuery.job.reload",
-            span_attributes=span_attributes,
-            job_ref=self,
-            method="GET",
-            path=self.path,
-            query_params=extra_params,
+        got_job = client.get_job(
+            self,
+            project=self.project,
+            location=self.location,
+            retry=retry,
             timeout=timeout,
         )
-        self._set_properties(api_response)
+        self._set_properties(got_job._properties)
 
     def cancel(
         self,
@@ -913,7 +908,7 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
     def done(
         self,
         retry: "retries.Retry" = DEFAULT_RETRY,
-        timeout: Optional[float] = None,
+        timeout: Optional[float] = DEFAULT_GET_JOB_TIMEOUT,
         reload: bool = True,
     ) -> bool:
         """Checks if the job is complete.

@@ -23,85 +23,93 @@ import google.api_core.retry
 import freezegun
 import requests.exceptions
 
-from google.cloud.bigquery.client import Client
 from google.cloud.bigquery import _job_helpers
 import google.cloud.bigquery.retry
 
-from .helpers import make_connection
+from .helpers import make_client, make_connection
 
 
-# With job_retry_on_query, we're testing 4 scenarios:
+_RETRY_NOT_FOUND = {
+    "job_retry": google.api_core.retry.Retry(
+        predicate=google.api_core.retry.if_exception_type(
+            google.api_core.exceptions.NotFound,
+        ),
+    ),
+}
+_RETRY_BAD_REQUEST = {
+    "job_retry": google.api_core.retry.Retry(
+        predicate=google.api_core.retry.if_exception_type(
+            google.api_core.exceptions.BadRequest,
+        ),
+    ),
+}
+
+
+# Test retry of job failures, instead of API-invocation failures. 4 scenarios:
 # - No `job_retry` passed, retry on default rateLimitExceeded.
 # - Pass NotFound retry to `query`.
 # - Pass NotFound retry to `result`.
 # - Pass BadRequest retry to query, with the value passed to `result` overriding.
-@pytest.mark.parametrize("job_retry_on_query", [None, "Query", "Result", "Both"])
 @mock.patch("time.sleep")
-def test_retry_failed_jobs(sleep, client, job_retry_on_query):
-    """
-    Test retry of job failures, as opposed to API-invocation failures.
-    """
-
-    retry_notfound = google.api_core.retry.Retry(
-        predicate=google.api_core.retry.if_exception_type(
-            google.api_core.exceptions.NotFound
-        )
-    )
-    retry_badrequest = google.api_core.retry.Retry(
-        predicate=google.api_core.retry.if_exception_type(
-            google.api_core.exceptions.BadRequest
-        )
-    )
-
-    if job_retry_on_query is None:
-        reason = "rateLimitExceeded"
-    else:
-        reason = "notFound"
-
+@pytest.mark.parametrize(
+    "reason, job_retry, result_retry",
+    [
+        pytest.param(
+            "rateLimitExceeded",
+            {},
+            {},
+            id="no job_retry",
+        ),
+        pytest.param(
+            "notFound",
+            _RETRY_NOT_FOUND,
+            {},
+            id="Query NotFound",
+        ),
+        pytest.param(
+            "notFound",
+            _RETRY_NOT_FOUND,
+            _RETRY_NOT_FOUND,
+            id="Result NotFound",
+        ),
+        pytest.param(
+            "notFound",
+            _RETRY_BAD_REQUEST,
+            _RETRY_NOT_FOUND,
+            id="BadRequest",
+        ),
+    ],
+)
+def test_retry_failed_jobs(sleep, reason, job_retry, result_retry):
+    client = make_client()
     err = dict(reason=reason)
-    responses = [
-        dict(status=dict(state="DONE", errors=[err], errorResult=err)),
-        dict(status=dict(state="DONE", errors=[err], errorResult=err)),
-        dict(status=dict(state="DONE", errors=[err], errorResult=err)),
-        dict(status=dict(state="DONE")),
+    conn = client._connection = make_connection(
+        dict(
+            status=dict(state="DONE", errors=[err], errorResult=err),
+            jobReference={"jobId": "id_1"},
+        ),
+        dict(
+            status=dict(state="DONE", errors=[err], errorResult=err),
+            jobReference={"jobId": "id_1"},
+        ),
+        dict(
+            status=dict(state="DONE", errors=[err], errorResult=err),
+            jobReference={"jobId": "id_1"},
+        ),
+        dict(status=dict(state="DONE"), jobReference={"jobId": "id_2"}),
         dict(rows=[{"f": [{"v": "1"}]}], totalRows="1"),
-    ]
-
-    def api_request(method, path, query_params=None, data=None, **kw):
-        response = responses.pop(0)
-        if data:
-            response["jobReference"] = data["jobReference"]
-        else:
-            response["jobReference"] = dict(
-                jobId=path.split("/")[-1], projectId="PROJECT"
-            )
-        return response
-
-    conn = client._connection = make_connection()
-    conn.api_request.side_effect = api_request
-
-    if job_retry_on_query == "Query":
-        job_retry = dict(job_retry=retry_notfound)
-    elif job_retry_on_query == "Both":
-        # This will be overridden in `result`
-        job_retry = dict(job_retry=retry_badrequest)
-    else:
-        job_retry = {}
-    job = client.query("select 1", **job_retry)
-
-    orig_job_id = job.job_id
-    job_retry = (
-        dict(job_retry=retry_notfound)
-        if job_retry_on_query in ("Result", "Both")
-        else {}
     )
-    result = job.result(**job_retry)
+
+    job = client.query("select 1", **job_retry)
+    result = job.result(**result_retry)
+
     assert result.total_rows == 1
-    assert not responses  # We made all the calls we expected to.
+
+    # We made all the calls we expected to.
+    assert conn.api_request.call_count == 5
 
     # The job adjusts it's job id based on the id of the last attempt.
-    assert job.job_id != orig_job_id
-    assert job.job_id == conn.mock_calls[3][2]["data"]["jobReference"]["jobId"]
+    assert job.job_id == "id_2"
 
     # We had to sleep three times
     assert len(sleep.mock_calls) == 3
@@ -114,17 +122,19 @@ def test_retry_failed_jobs(sleep, client, job_retry_on_query):
     assert max(c[1][0] for c in sleep.mock_calls) <= 8
 
     # We can ask for the result again:
-    responses = [
+    conn = client._connection = make_connection(
         dict(rows=[{"f": [{"v": "1"}]}], totalRows="1"),
-    ]
-    orig_job_id = job.job_id
+    )
     result = job.result()
+
     assert result.total_rows == 1
-    assert not responses  # We made all the calls we expected to.
+
+    # We made all the calls we expected to.
+    assert conn.api_request.call_count == 1
 
     # We wouldn't (and didn't) fail, because we're dealing with a successful job.
     # So the job id hasn't changed.
-    assert job.job_id == orig_job_id
+    assert job.job_id == "id_2"
 
 
 def test_retry_connection_error_with_default_retries_and_successful_first_job(
@@ -209,8 +219,8 @@ def test_retry_connection_error_with_default_retries_and_successful_first_job(
             mock.call(
                 method="GET",
                 path="/projects/PROJECT/jobs/1",
-                query_params={"location": "test-loc"},
-                timeout=None,
+                query_params={"location": "test-loc", "projection": "full"},
+                timeout=google.cloud.bigquery.retry.DEFAULT_GET_JOB_TIMEOUT,
             ),
             # jobs.getQueryResults x2
             mock.call(
@@ -229,8 +239,8 @@ def test_retry_connection_error_with_default_retries_and_successful_first_job(
             mock.call(
                 method="GET",
                 path="/projects/PROJECT/jobs/1",
-                query_params={"location": "test-loc"},
-                timeout=None,
+                query_params={"location": "test-loc", "projection": "full"},
+                timeout=google.cloud.bigquery.retry.DEFAULT_GET_JOB_TIMEOUT,
             ),
             # jobs.getQueryResults
             mock.call(
@@ -307,8 +317,7 @@ def test_query_retry_with_default_retry_and_ambiguous_errors_only_retries_with_f
         {"jobReference": job_reference_2, "status": {"state": "DONE"}},
     ]
 
-    conn = client._connection = make_connection()
-    conn.api_request.side_effect = responses
+    conn = client._connection = make_connection(*responses)
 
     with freezegun.freeze_time(
         # Note: because of exponential backoff and a bit of jitter,
@@ -341,8 +350,8 @@ def test_query_retry_with_default_retry_and_ambiguous_errors_only_retries_with_f
             mock.call(
                 method="GET",
                 path="/projects/PROJECT/jobs/1",
-                query_params={"location": "test-loc"},
-                timeout=None,
+                query_params={"location": "test-loc", "projection": "full"},
+                timeout=google.cloud.bigquery.retry.DEFAULT_GET_JOB_TIMEOUT,
             ),
             # jobs.getQueryResults x2
             mock.call(
@@ -361,8 +370,8 @@ def test_query_retry_with_default_retry_and_ambiguous_errors_only_retries_with_f
             mock.call(
                 method="GET",
                 path="/projects/PROJECT/jobs/1",
-                query_params={"location": "test-loc"},
-                timeout=None,
+                query_params={"location": "test-loc", "projection": "full"},
+                timeout=google.cloud.bigquery.retry.DEFAULT_GET_JOB_TIMEOUT,
             ),
             # jobs.insert
             mock.call(
@@ -384,8 +393,8 @@ def test_query_retry_with_default_retry_and_ambiguous_errors_only_retries_with_f
             mock.call(
                 method="GET",
                 path="/projects/PROJECT/jobs/2",
-                query_params={"location": "test-loc"},
-                timeout=None,
+                query_params={"location": "test-loc", "projection": "full"},
+                timeout=google.cloud.bigquery.retry.DEFAULT_GET_JOB_TIMEOUT,
             ),
             # jobs.getQueryResults
             mock.call(
@@ -398,8 +407,8 @@ def test_query_retry_with_default_retry_and_ambiguous_errors_only_retries_with_f
             mock.call(
                 method="GET",
                 path="/projects/PROJECT/jobs/2",
-                query_params={"location": "test-loc"},
-                timeout=None,
+                query_params={"location": "test-loc", "projection": "full"},
+                timeout=google.cloud.bigquery.retry.DEFAULT_GET_JOB_TIMEOUT,
             ),
         ]
     )
@@ -531,12 +540,9 @@ def test_query_and_wait_retries_job_for_DDL_queries():
     https://github.com/googleapis/python-bigquery/issues/1790
     """
     freezegun.freeze_time(auto_tick_seconds=1)
-    client = mock.create_autospec(Client)
-    client._call_api.__name__ = "_call_api"
-    client._call_api.__qualname__ = "Client._call_api"
-    client._call_api.__annotations__ = {}
-    client._call_api.__type_params__ = ()
-    client._call_api.side_effect = (
+
+    client = make_client()
+    conn = client._connection = make_connection(
         {
             "jobReference": {
                 "projectId": "response-project",
@@ -589,7 +595,7 @@ def test_query_and_wait_retries_job_for_DDL_queries():
     # and https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/getQueryResults
     query_request_path = "/projects/request-project/queries"
 
-    calls = client._call_api.call_args_list
+    calls = conn.api_request.call_args_list
     _, kwargs = calls[0]
     assert kwargs["method"] == "POST"
     assert kwargs["path"] == query_request_path

@@ -477,6 +477,8 @@ class TestCopyJob(_Base):
         )
 
     def test_reload_w_bound_client(self):
+        from google.cloud.bigquery.retry import DEFAULT_GET_JOB_TIMEOUT
+
         PATH = "/projects/%s/jobs/%s" % (self.PROJECT, self.JOB_ID)
         RESOURCE = self._make_resource()
         conn = make_connection(RESOURCE)
@@ -489,14 +491,27 @@ class TestCopyJob(_Base):
         ) as final_attributes:
             job.reload()
 
-        final_attributes.assert_called_with({"path": PATH}, client, job)
+        final_attributes.assert_called_with(
+            {
+                "path": PATH,
+                "job_id": self.JOB_ID,
+                "location": None,
+            },
+            client,
+            None,
+        )
 
         conn.api_request.assert_called_once_with(
-            method="GET", path=PATH, query_params={}, timeout=None
+            method="GET",
+            path=PATH,
+            query_params={"projection": "full"},
+            timeout=DEFAULT_GET_JOB_TIMEOUT,
         )
         self._verifyResourceProperties(job, RESOURCE)
 
     def test_reload_w_alternate_client(self):
+        from google.cloud.bigquery.retry import DEFAULT_GET_JOB_TIMEOUT
+
         PATH = "/projects/%s/jobs/%s" % (self.PROJECT, self.JOB_ID)
         RESOURCE = self._make_resource()
         conn1 = make_connection()
@@ -511,10 +526,21 @@ class TestCopyJob(_Base):
         ) as final_attributes:
             job.reload(client=client2)
 
-        final_attributes.assert_called_with({"path": PATH}, client2, job)
+        final_attributes.assert_called_with(
+            {
+                "path": PATH,
+                "job_id": self.JOB_ID,
+                "location": None,
+            },
+            client2,
+            None,
+        )
 
         conn1.api_request.assert_not_called()
         conn2.api_request.assert_called_once_with(
-            method="GET", path=PATH, query_params={}, timeout=None
+            method="GET",
+            path=PATH,
+            query_params={"projection": "full"},
+            timeout=DEFAULT_GET_JOB_TIMEOUT,
         )
         self._verifyResourceProperties(job, RESOURCE)

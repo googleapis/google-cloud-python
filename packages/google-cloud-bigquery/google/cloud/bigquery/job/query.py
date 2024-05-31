@@ -40,7 +40,11 @@ from google.cloud.bigquery.query import (
     StructQueryParameter,
     UDFResource,
 )
-from google.cloud.bigquery.retry import DEFAULT_RETRY, DEFAULT_JOB_RETRY
+from google.cloud.bigquery.retry import (
+    DEFAULT_RETRY,
+    DEFAULT_JOB_RETRY,
+    POLLING_DEFAULT_VALUE,
+)
 from google.cloud.bigquery.routine import RoutineReference
 from google.cloud.bigquery.schema import SchemaField
 from google.cloud.bigquery.table import _EmptyRowIterator
@@ -1437,7 +1441,7 @@ class QueryJob(_AsyncJob):
         page_size: Optional[int] = None,
         max_results: Optional[int] = None,
         retry: Optional[retries.Retry] = DEFAULT_RETRY,
-        timeout: Optional[float] = None,
+        timeout: Optional[Union[float, object]] = POLLING_DEFAULT_VALUE,
         start_index: Optional[int] = None,
         job_retry: Optional[retries.Retry] = DEFAULT_JOB_RETRY,
     ) -> Union["RowIterator", _EmptyRowIterator]:
@@ -1457,11 +1461,14 @@ class QueryJob(_AsyncJob):
                 is ``DONE``, retrying is aborted early even if the
                 results are not available, as this will not change
                 anymore.
-            timeout (Optional[float]):
+            timeout (Optional[Union[float, \
+                google.api_core.future.polling.PollingFuture._DEFAULT_VALUE, \
+            ]]):
                 The number of seconds to wait for the underlying HTTP transport
-                before using ``retry``.
-                If multiple requests are made under the hood, ``timeout``
-                applies to each individual request.
+                before using ``retry``. If ``None``, wait indefinitely
+                unless an error is returned. If unset, only the
+                underlying API calls have their default timeouts, but we still
+                wait indefinitely for the job to finish.
             start_index (Optional[int]):
                 The zero-based index of the starting row to read.
             job_retry (Optional[google.api_core.retry.Retry]):
@@ -1507,6 +1514,13 @@ class QueryJob(_AsyncJob):
                 # Intentionally omit job_id and query_id since this doesn't
                 # actually correspond to a finished query job.
             )
+
+        # When timeout has default sentinel value ``object()``, do not pass
+        # anything to invoke default timeouts in subsequent calls.
+        kwargs: Dict[str, Union[_helpers.TimeoutType, object]] = {}
+        if type(timeout) is not object:
+            kwargs["timeout"] = timeout
+
         try:
             retry_do_query = getattr(self, "_retry_do_query", None)
             if retry_do_query is not None:
@@ -1548,7 +1562,7 @@ class QueryJob(_AsyncJob):
                 # rateLimitExceeded errors are ambiguous. We want to know if
                 # the query job failed and not just the call to
                 # jobs.getQueryResults.
-                if self.done(retry=retry, timeout=timeout):
+                if self.done(retry=retry, **kwargs):
                     # If it's already failed, we might as well stop.
                     job_failed_exception = self.exception()
                     if job_failed_exception is not None:
@@ -1585,14 +1599,14 @@ class QueryJob(_AsyncJob):
                         # response from the REST API. This ensures we aren't
                         # making any extra API calls if the previous loop
                         # iteration fetched the finished job.
-                        self._reload_query_results(retry=retry, timeout=timeout)
+                        self._reload_query_results(retry=retry, **kwargs)
                         return True
 
                 # Call jobs.getQueryResults with max results set to 0 just to
                 # wait for the query to finish. Unlike most methods,
                 # jobs.getQueryResults hangs as long as it can to ensure we
                 # know when the query has finished as soon as possible.
-                self._reload_query_results(retry=retry, timeout=timeout)
+                self._reload_query_results(retry=retry, **kwargs)
 
                 # Even if the query is finished now according to
                 # jobs.getQueryResults, we'll want to reload the job status if
@@ -1682,10 +1696,10 @@ class QueryJob(_AsyncJob):
             max_results=max_results,
             start_index=start_index,
             retry=retry,
-            timeout=timeout,
             query_id=self.query_id,
             first_page_response=first_page_response,
             num_dml_affected_rows=self._query_results.num_dml_affected_rows,
+            **kwargs,
         )
         rows._preserve_order = _contains_order_by(self.query)
         return rows

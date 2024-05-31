@@ -39,7 +39,7 @@ import copy
 import functools
 import os
 import uuid
-from typing import Any, Dict, TYPE_CHECKING, Optional
+from typing import Any, Dict, Optional, TYPE_CHECKING, Union
 
 import google.api_core.exceptions as core_exceptions
 from google.api_core import retry as retries
@@ -47,6 +47,7 @@ from google.api_core import retry as retries
 from google.cloud.bigquery import job
 import google.cloud.bigquery.query
 from google.cloud.bigquery import table
+from google.cloud.bigquery.retry import POLLING_DEFAULT_VALUE
 
 # Avoid circular imports
 if TYPE_CHECKING:  # pragma: NO COVER
@@ -328,7 +329,7 @@ def query_and_wait(
     location: Optional[str],
     project: str,
     api_timeout: Optional[float] = None,
-    wait_timeout: Optional[float] = None,
+    wait_timeout: Optional[Union[float, object]] = POLLING_DEFAULT_VALUE,
     retry: Optional[retries.Retry],
     job_retry: Optional[retries.Retry],
     page_size: Optional[int] = None,
@@ -364,10 +365,12 @@ def query_and_wait(
         api_timeout (Optional[float]):
             The number of seconds to wait for the underlying HTTP transport
             before using ``retry``.
-        wait_timeout (Optional[float]):
+        wait_timeout (Optional[Union[float, object]]):
             The number of seconds to wait for the query to finish. If the
             query doesn't finish before this timeout, the client attempts
-            to cancel the query.
+            to cancel the query. If unset, the underlying Client.get_job() API
+            call has timeout, but we still wait indefinitely for the job to
+            finish.
         retry (Optional[google.api_core.retry.Retry]):
             How to retry the RPC.  This only applies to making RPC
             calls.  It isn't used to retry failed jobs.  This has
@@ -545,7 +548,7 @@ def _supported_by_jobs_query(request_body: Dict[str, Any]) -> bool:
 def _wait_or_cancel(
     job: job.QueryJob,
     api_timeout: Optional[float],
-    wait_timeout: Optional[float],
+    wait_timeout: Optional[Union[object, float]],
     retry: Optional[retries.Retry],
     page_size: Optional[int],
     max_results: Optional[int],

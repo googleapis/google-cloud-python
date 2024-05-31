@@ -12,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import functools
 from typing import Any, Dict, Optional
 from unittest import mock
 
@@ -21,14 +20,17 @@ import google.api_core.exceptions
 from google.api_core import retry as retries
 import pytest
 
-from google.cloud.bigquery.client import Client
-from google.cloud.bigquery import enums
 from google.cloud.bigquery import _job_helpers
+from google.cloud.bigquery import enums
+from google.cloud.bigquery import retry
+from google.cloud.bigquery.client import Client
 from google.cloud.bigquery.job import copy_ as job_copy
 from google.cloud.bigquery.job import extract as job_extract
 from google.cloud.bigquery.job import load as job_load
 from google.cloud.bigquery.job import query as job_query
 from google.cloud.bigquery.query import ConnectionProperty, ScalarQueryParameter
+
+from .helpers import make_client, make_connection
 
 
 def make_query_request(additional_properties: Optional[Dict[str, Any]] = None):
@@ -806,11 +808,8 @@ def test_query_and_wait_caches_completed_query_results_one_page_no_rows():
 
 
 def test_query_and_wait_caches_completed_query_results_more_pages():
-    client = mock.create_autospec(Client)
-    client._list_rows_from_query_results = functools.partial(
-        Client._list_rows_from_query_results, client
-    )
-    client._call_api.side_effect = (
+    client = make_client()
+    conn = client._connection = make_connection(
         {
             "jobReference": {
                 "projectId": "response-project",
@@ -882,10 +881,7 @@ def test_query_and_wait_caches_completed_query_results_more_pages():
 
     # Start the query.
     jobs_query_path = "/projects/request-project/queries"
-    client._call_api.assert_any_call(
-        None,  # retry
-        span_name="BigQuery.query",
-        span_attributes={"path": jobs_query_path},
+    conn.api_request.assert_any_call(
         method="POST",
         path=jobs_query_path,
         data={
@@ -906,8 +902,7 @@ def test_query_and_wait_caches_completed_query_results_more_pages():
 
     # Fetch the remaining two pages.
     jobs_get_query_results_path = "/projects/response-project/queries/response-job-id"
-    client._call_api.assert_any_call(
-        None,  # retry
+    conn.api_request.assert_any_call(
         timeout=None,
         method="GET",
         path=jobs_get_query_results_path,
@@ -918,8 +913,7 @@ def test_query_and_wait_caches_completed_query_results_more_pages():
             "formatOptions.useInt64Timestamp": True,
         },
     )
-    client._call_api.assert_any_call(
-        None,  # retry
+    conn.api_request.assert_any_call(
         timeout=None,
         method="GET",
         path=jobs_get_query_results_path,
@@ -933,12 +927,8 @@ def test_query_and_wait_caches_completed_query_results_more_pages():
 
 
 def test_query_and_wait_incomplete_query():
-    client = mock.create_autospec(Client)
-    client._get_query_results = functools.partial(Client._get_query_results, client)
-    client._list_rows_from_query_results = functools.partial(
-        Client._list_rows_from_query_results, client
-    )
-    client._call_api.side_effect = (
+    client = make_client()
+    conn = client._connection = make_connection(
         # jobs.query
         {
             "jobReference": {
@@ -1022,10 +1012,7 @@ def test_query_and_wait_incomplete_query():
 
     # Start the query.
     jobs_query_path = "/projects/request-project/queries"
-    client._call_api.assert_any_call(
-        None,  # retry
-        span_name="BigQuery.query",
-        span_attributes={"path": jobs_query_path},
+    conn.api_request.assert_any_call(
         method="POST",
         path=jobs_query_path,
         data={
@@ -1041,10 +1028,7 @@ def test_query_and_wait_incomplete_query():
 
     # Wait for the query to finish.
     jobs_get_query_results_path = "/projects/response-project/queries/response-job-id"
-    client._call_api.assert_any_call(
-        None,  # retry
-        span_name="BigQuery.getQueryResults",
-        span_attributes={"path": jobs_get_query_results_path},
+    conn.api_request.assert_any_call(
         method="GET",
         path=jobs_get_query_results_path,
         query_params={
@@ -1063,20 +1047,15 @@ def test_query_and_wait_incomplete_query():
 
     # Fetch the job metadata in case the RowIterator needs the destination table.
     jobs_get_path = "/projects/response-project/jobs/response-job-id"
-    client._call_api.assert_any_call(
-        None,  # retry
-        span_name="BigQuery.job.reload",
-        span_attributes={"path": jobs_get_path},
-        job_ref=mock.ANY,
+    conn.api_request.assert_any_call(
         method="GET",
         path=jobs_get_path,
-        query_params={"location": "response-location"},
-        timeout=None,
+        query_params={"projection": "full", "location": "response-location"},
+        timeout=retry.DEFAULT_GET_JOB_TIMEOUT,
     )
 
     # Fetch the remaining two pages.
-    client._call_api.assert_any_call(
-        None,  # retry
+    conn.api_request.assert_any_call(
         timeout=None,
         method="GET",
         path=jobs_get_query_results_path,
@@ -1086,8 +1065,7 @@ def test_query_and_wait_incomplete_query():
             "formatOptions.useInt64Timestamp": True,
         },
     )
-    client._call_api.assert_any_call(
-        None,  # retry
+    conn.api_request.assert_any_call(
         timeout=None,
         method="GET",
         path=jobs_get_query_results_path,
