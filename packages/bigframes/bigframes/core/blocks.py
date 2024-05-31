@@ -124,7 +124,7 @@ class Block:
         if len(index_columns) == 0:
             warnings.warn(
                 "Creating object with Null Index. Null Index is a preview feature.",
-                category=bigframes.exceptions.PreviewWarning,
+                category=bigframes.exceptions.NullIndexPreviewWarning,
             )
         self._index_columns = tuple(index_columns)
         # Index labels don't need complicated hierarchical access so can store as tuple
@@ -1930,10 +1930,22 @@ class Block:
             coalesce_labels=matching_join_labels,
             suffixes=suffixes,
         )
-        # Constructs default index
-        offset_index_id = guid.generate_guid()
-        expr = joined_expr.promote_offsets(offset_index_id)
-        return Block(expr, index_columns=[offset_index_id], column_labels=labels)
+
+        # Construct a default index only if this object and the other both have
+        # indexes. In other words, joining anything to a NULL index object
+        # keeps everything as a NULL index.
+        #
+        # This keeps us from generating an index if the user joins a large
+        # BigQuery table against small local data, for example.
+        if len(self._index_columns) > 0 and len(other._index_columns) > 0:
+            offset_index_id = guid.generate_guid()
+            expr = joined_expr.promote_offsets(offset_index_id)
+            index_columns = [offset_index_id]
+        else:
+            expr = joined_expr
+            index_columns = []
+
+        return Block(expr, index_columns=index_columns, column_labels=labels)
 
     def join(
         self,

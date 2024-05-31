@@ -39,6 +39,10 @@ class PreviewWarning(Warning):
     """The feature is in preview."""
 
 
+class NullIndexPreviewWarning(PreviewWarning):
+    """Null index feature is in preview."""
+
+
 class NullIndexError(ValueError):
     """Object has no index."""
 

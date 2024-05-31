@@ -61,10 +61,12 @@ class Options:
     @property
     def bigquery(self) -> bigquery_options.BigQueryOptions:
         """Options to use with the BigQuery engine."""
-        if self._local.bigquery_options is not None:
+        if (
+            bigquery_options := getattr(self._local, "bigquery_options", None)
+        ) is not None:
             # The only way we can get here is if someone called
             # _init_bigquery_thread_local.
-            return self._local.bigquery_options
+            return bigquery_options
 
         return self._bigquery_options
 
