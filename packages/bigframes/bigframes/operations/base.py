@@ -70,27 +70,35 @@ class SeriesMethods:
         )
 
         block: typing.Optional[blocks.Block] = None
+        if (name is not None) and not isinstance(name, typing.Hashable):
+            raise ValueError(
+                f"BigQuery DataFrames only supports hashable series names. {constants.FEEDBACK_LINK}"
+            )
         if copy is not None and not copy:
             raise ValueError(
                 f"Series constructor only supports copy=True. {constants.FEEDBACK_LINK}"
             )
         if isinstance(data, blocks.Block):
+            # Constructing from block is for internal use only - shouldn't use parameters, block encompasses all state
             assert len(data.value_columns) == 1
             assert len(data.column_labels) == 1
             assert index is None
+            assert name is None
+            assert dtype is None
             block = data
 
         # interpret these cases as both index and data
-        elif (
-            isinstance(data, SeriesMethods)
-            or isinstance(data, pd.Series)
-            or pd.api.types.is_dict_like(data)
-        ):
-            if isinstance(data, pd.Series):
-                data = read_pandas_func(data)
-            elif pd.api.types.is_dict_like(data):
-                data = read_pandas_func(pd.Series(data, dtype=dtype))  # type: ignore
-                dtype = None
+        elif isinstance(data, bigframes.pandas.Series) or pd.api.types.is_dict_like(
+            data
+        ):  # includes pd.Series
+            if isinstance(data, bigframes.pandas.Series):
+                data = data.copy()
+                if name is not None:
+                    data.name = name
+                if dtype is not None:
+                    data = data.astype(dtype)
+            else:  # local dict-like data
+                data = read_pandas_func(pd.Series(data, name=name, dtype=dtype))  # type: ignore
             data_block = data._block
             if index is not None:
                 # reindex
@@ -103,10 +111,8 @@ class SeriesMethods:
 
         # list-like data that will get default index
         elif isinstance(data, indexes.Index) or pd.api.types.is_list_like(data):
-            data = indexes.Index(data, dtype=dtype, session=session)
-            dtype = (
-                None  # set to none as it has already been applied, avoid re-cast later
-            )
+            data = indexes.Index(data, dtype=dtype, name=name, session=session)
+            # set to none as it has already been applied, avoid re-cast later
             if data.nlevels != 1:
                 raise NotImplementedError("Cannot interpret multi-index as Series.")
             # Reset index to promote index columns to value columns, set default index
@@ -135,20 +141,9 @@ class SeriesMethods:
                     dtype=bigframes.dtypes.INT_DTYPE,
                 )
             block, _ = bf_index._block.create_constant(data, dtype)
-            dtype = None
             block = block.with_column_labels([name])
 
         assert block is not None
-        if name:
-            if not isinstance(name, typing.Hashable):
-                raise ValueError(
-                    f"BigQuery DataFrames only supports hashable series names. {constants.FEEDBACK_LINK}"
-                )
-            block = block.with_column_labels([name])
-        if dtype:
-            block = block.multi_apply_unary_op(
-                block.value_columns, ops.AsTypeOp(to_type=dtype)
-            )
         self._block: blocks.Block = block
 
     @property

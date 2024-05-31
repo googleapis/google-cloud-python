@@ -2130,14 +2130,12 @@ def test_series_binop_axis_index(
         (pd.Index([1000, 2000, 3000])),
         (bf_indexes.Index([1000, 2000, 3000])),
         (pd.Series((1000, 2000), index=["int64_too", "float64_col"])),
-        (series.Series((1000, 2000), index=["int64_too", "float64_col"])),
     ],
     ids=[
         "tuple",
         "pd_index",
         "bf_index",
         "pd_series",
-        "bf_series",
     ],
 )
 def test_listlike_binop_axis_1(scalars_dfs, input):
@@ -2150,6 +2148,26 @@ def test_listlike_binop_axis_1(scalars_dfs, input):
         input = input.to_pandas()
     pd_result = scalars_pandas_df[df_columns].add(input, axis=1)
 
+    assert_pandas_df_equal(bf_result, pd_result, check_dtype=False)
+
+
+def test_binop_with_self_aggregate(session, scalars_dfs):
+    scalars_df, scalars_pandas_df = scalars_dfs
+
+    df_columns = ["int64_col", "float64_col", "int64_too"]
+
+    # Ensure that this takes the optimized single-query path by counting executions
+    execution_count_before = session._execution_count
+    bf_df = scalars_df[df_columns]
+    bf_result = (bf_df - bf_df.mean()).to_pandas()
+    execution_count_after = session._execution_count
+
+    pd_df = scalars_pandas_df[df_columns]
+    pd_result = pd_df - pd_df.mean()
+
+    executions = execution_count_after - execution_count_before
+
+    assert executions == 1
     assert_pandas_df_equal(bf_result, pd_result, check_dtype=False)
 
 

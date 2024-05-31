@@ -560,7 +560,7 @@ class SeriesGroupBy(vendored_pandas_groupby.SeriesGroupBy):
             by_column_ids=self._by_col_ids,
             dropna=self._dropna,
         )
-        return series.Series(agg_block, name=self._value_name)
+        return series.Series(agg_block.with_column_labels([self._value_name]))
 
     def skew(self, *args, **kwargs) -> series.Series:
         block = block_ops.skew(self._block, [self._value_column], self._by_col_ids)

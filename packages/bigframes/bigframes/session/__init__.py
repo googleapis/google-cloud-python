@@ -294,6 +294,7 @@ class Session(
         # performance logging
         self._bytes_processed_sum = 0
         self._slot_millis_sum = 0
+        self._execution_count = 0
 
     @property
     def bqclient(self):
@@ -361,6 +362,10 @@ class Session(
     def _add_slot_millis(self, amount: int):
         """Increment slot_millis_sum by amount."""
         self._slot_millis_sum += amount
+
+    def _add_execution(self, amount: int = 1):
+        """Increment slot_millis_sum by amount."""
+        self._execution_count += amount
 
     def __hash__(self):
         # Stable hash needed to use in expression tree
@@ -442,6 +447,7 @@ class Session(
         configuration: dict = {"query": {"useQueryCache": True}},
         do_clustering=True,
     ) -> Tuple[Optional[bigquery.TableReference], bigquery.QueryJob]:
+        self._add_execution(1)
         # If a dry_run indicates this is not a query type job, then don't
         # bother trying to do a CREATE TEMP TABLE ... AS SELECT ... statement.
         dry_run_config = bigquery.QueryJobConfig()
@@ -1035,7 +1041,7 @@ class Session(
         # Try to handle non-dataframe pandas objects as well
         if isinstance(pandas_dataframe, pandas.Series):
             bf_df = self._read_pandas(pandas.DataFrame(pandas_dataframe), "read_pandas")
-            bf_series = typing.cast(series.Series, bf_df[bf_df.columns[0]])
+            bf_series = series.Series(bf_df._block)
             # wrapping into df can set name to 0 so reset to original object name
             bf_series.name = pandas_dataframe.name
             return bf_series
@@ -1080,9 +1086,8 @@ class Session(
             return None
 
         try:
-            inline_df = dataframe.DataFrame(
-                blocks.Block.from_local(pandas_dataframe, self)
-            )
+            local_block = blocks.Block.from_local(pandas_dataframe, self)
+            inline_df = dataframe.DataFrame(local_block)
         except pa.ArrowInvalid as e:
             raise pa.ArrowInvalid(
                 f"Could not convert with a BigQuery type: `{e}`. "
@@ -1969,6 +1974,8 @@ class Session(
         dry_run=False,
         col_id_overrides: Mapping[str, str] = {},
     ) -> tuple[bigquery.table.RowIterator, bigquery.QueryJob]:
+        if not dry_run:
+            self._add_execution(1)
         sql = self._to_sql(
             array_value, sorted=sorted, col_id_overrides=col_id_overrides
         )  # type:ignore
