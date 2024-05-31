@@ -56,6 +56,7 @@ from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.network_services_v1.services.dep_service import pagers
@@ -1146,7 +1147,7 @@ class DepServiceClient(metaclass=DepServiceClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
-                Required. Used to specify the fields to be overwritten
+                Optional. Used to specify the fields to be overwritten
                 in the ``LbTrafficExtension`` resource by the update.
                 The fields specified in the update_mask are relative to
                 the resource, not the full request. A field is
@@ -1789,7 +1790,7 @@ class DepServiceClient(metaclass=DepServiceClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
-                Required. Used to specify the fields to be overwritten
+                Optional. Used to specify the fields to be overwritten
                 in the ``LbRouteExtension`` resource by the update. The
                 fields specified in the update_mask are relative to the
                 resource, not the full request. A field is overwritten

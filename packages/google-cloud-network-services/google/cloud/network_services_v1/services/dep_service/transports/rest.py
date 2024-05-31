@@ -1478,9 +1478,7 @@ class DepServiceRestTransport(DepServiceTransport):
         def __hash__(self):
             return hash("UpdateLbRouteExtension")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "updateMask": {},
-        }
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1575,9 +1573,7 @@ class DepServiceRestTransport(DepServiceTransport):
         def __hash__(self):
             return hash("UpdateLbTrafficExtension")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "updateMask": {},
-        }
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
