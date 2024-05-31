@@ -105,7 +105,11 @@ class TestDownload(object):
         msg = download_mod._CHECKSUM_MISMATCH.format(
             EXAMPLE_URL, bad_checksum, good_checksum, checksum_type=checksum.upper()
         )
-        assert error.args[0] == msg
+        assert msg in error.args[0]
+        assert (
+            f"The download request read {download._bytes_downloaded} bytes of data."
+            in error.args[0]
+        )
 
         # Check mocks.
         response.__enter__.assert_called_once_with()
@@ -166,6 +170,29 @@ class TestDownload(object):
 
         error = exc_info.value
         assert error.args[0] == "checksum must be ``'md5'``, ``'crc32c'`` or ``None``"
+
+    @pytest.mark.parametrize("checksum", ["md5", "crc32c"])
+    def test__write_to_stream_incomplete_read(self, checksum):
+        stream = io.BytesIO()
+        download = download_mod.Download(EXAMPLE_URL, stream=stream, checksum=checksum)
+
+        chunk1 = b"first chunk"
+        mock_full_content_length = len(chunk1) + 123
+        headers = {"x-goog-stored-content-length": mock_full_content_length}
+        bad_checksum = "d3JvbmcgbiBtYWRlIHVwIQ=="
+        header_value = "crc32c={bad},md5={bad}".format(bad=bad_checksum)
+        headers[_helpers._HASH_HEADER] = header_value
+        response = _mock_response(chunks=[chunk1], headers=headers)
+
+        with pytest.raises(ConnectionError) as exc_info:
+            download._write_to_stream(response)
+
+        assert not download.finished
+        error = exc_info.value
+        assert (
+            f"The download request read {download._bytes_downloaded} bytes of data."
+            in error.args[0]
+        )
 
     def _consume_helper(
         self,
@@ -285,7 +312,11 @@ class TestDownload(object):
         msg = download_mod._CHECKSUM_MISMATCH.format(
             EXAMPLE_URL, bad_checksum, good_checksum, checksum_type=checksum.upper()
         )
-        assert error.args[0] == msg
+        assert msg in error.args[0]
+        assert (
+            f"The download request read {download._bytes_downloaded} bytes of data."
+            in error.args[0]
+        )
 
         # Check mocks.
         transport.request.assert_called_once_with(
@@ -544,7 +575,11 @@ class TestRawDownload(object):
         msg = download_mod._CHECKSUM_MISMATCH.format(
             EXAMPLE_URL, bad_checksum, good_checksum, checksum_type=checksum.upper()
         )
-        assert error.args[0] == msg
+        assert msg in error.args[0]
+        assert (
+            f"The download request read {download._bytes_downloaded} bytes of data."
+            in error.args[0]
+        )
 
         # Check mocks.
         response.__enter__.assert_called_once_with()
@@ -576,6 +611,31 @@ class TestRawDownload(object):
 
         error = exc_info.value
         assert error.args[0] == "checksum must be ``'md5'``, ``'crc32c'`` or ``None``"
+
+    @pytest.mark.parametrize("checksum", ["md5", "crc32c"])
+    def test__write_to_stream_incomplete_read(self, checksum):
+        stream = io.BytesIO()
+        download = download_mod.RawDownload(
+            EXAMPLE_URL, stream=stream, checksum=checksum
+        )
+
+        chunk1 = b"first chunk"
+        mock_full_content_length = len(chunk1) + 123
+        headers = {"x-goog-stored-content-length": mock_full_content_length}
+        bad_checksum = "d3JvbmcgbiBtYWRlIHVwIQ=="
+        header_value = "crc32c={bad},md5={bad}".format(bad=bad_checksum)
+        headers[_helpers._HASH_HEADER] = header_value
+        response = _mock_raw_response(chunks=[chunk1], headers=headers)
+
+        with pytest.raises(ConnectionError) as exc_info:
+            download._write_to_stream(response)
+
+        assert not download.finished
+        error = exc_info.value
+        assert (
+            f"The download request read {download._bytes_downloaded} bytes of data."
+            in error.args[0]
+        )
 
     def _consume_helper(
         self,
@@ -699,7 +759,11 @@ class TestRawDownload(object):
         msg = download_mod._CHECKSUM_MISMATCH.format(
             EXAMPLE_URL, bad_checksum, good_checksum, checksum_type=checksum.upper()
         )
-        assert error.args[0] == msg
+        assert msg in error.args[0]
+        assert (
+            f"The download request read {download._bytes_downloaded} bytes of data."
+            in error.args[0]
+        )
 
         # Check mocks.
         transport.request.assert_called_once_with(

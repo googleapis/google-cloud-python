@@ -98,7 +98,7 @@ class TestDownload(object):
             good_checksum,
             checksum_type=checksum.upper(),
         )
-        assert error.args[0] == msg
+        assert msg in error.args[0]
 
     @pytest.mark.asyncio
     @pytest.mark.parametrize("checksum", ["md5", "crc32c"])
@@ -263,7 +263,7 @@ class TestDownload(object):
             good_checksum,
             checksum_type=checksum.upper(),
         )
-        assert error.args[0] == msg
+        assert msg in error.args[0]
 
         # Check mocks.
         transport.request.assert_called_once_with(
@@ -353,7 +353,7 @@ class TestRawDownload(object):
             good_checksum,
             checksum_type=checksum.upper(),
         )
-        assert error.args[0] == msg
+        assert msg in error.args[0]
 
     @pytest.mark.asyncio
     async def test__write_to_stream_with_invalid_checksum_type(self):
@@ -482,7 +482,7 @@ class TestRawDownload(object):
             good_checksum,
             checksum_type=checksum.upper(),
         )
-        assert error.args[0] == msg
+        assert msg in error.args[0]
 
         # Check mocks.
         transport.request.assert_called_once_with(
