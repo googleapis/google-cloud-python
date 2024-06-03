@@ -1385,7 +1385,10 @@ class QueryJob(_AsyncJob):
             raise
 
     def _reload_query_results(
-        self, retry: "retries.Retry" = DEFAULT_RETRY, timeout: Optional[float] = None
+        self,
+        retry: "retries.Retry" = DEFAULT_RETRY,
+        timeout: Optional[float] = None,
+        page_size: int = 0,
     ):
         """Refresh the cached query results unless already cached and complete.
 
@@ -1395,6 +1398,9 @@ class QueryJob(_AsyncJob):
             timeout (Optional[float]):
                 The number of seconds to wait for the underlying HTTP transport
                 before using ``retry``.
+            page_size (int):
+                Maximum number of rows in a single response. See maxResults in
+                the jobs.getQueryResults REST API.
         """
         # Optimization: avoid a call to jobs.getQueryResults if it's already
         # been fetched, e.g. from jobs.query first page of results.
@@ -1425,7 +1431,14 @@ class QueryJob(_AsyncJob):
 
         # If an explicit timeout is not given, fall back to the transport timeout
         # stored in _blocking_poll() in the process of polling for job completion.
-        transport_timeout = timeout if timeout is not None else self._transport_timeout
+        if timeout is not None:
+            transport_timeout = timeout
+        else:
+            transport_timeout = self._transport_timeout
+
+            # Handle PollingJob._DEFAULT_VALUE.
+            if not isinstance(transport_timeout, (float, int)):
+                transport_timeout = None
 
         self._query_results = self._client._get_query_results(
             self.job_id,
@@ -1434,6 +1447,7 @@ class QueryJob(_AsyncJob):
             timeout_ms=timeout_ms,
             location=self.location,
             timeout=transport_timeout,
+            page_size=page_size,
         )
 
     def result(  # type: ignore  # (incompatible with supertype)
@@ -1515,11 +1529,25 @@ class QueryJob(_AsyncJob):
                 # actually correspond to a finished query job.
             )
 
+        # Setting max_results should be equivalent to setting page_size with
+        # regards to allowing the user to tune how many results to download
+        # while we wait for the query to finish. See internal issue:
+        # 344008814.
+        if page_size is None and max_results is not None:
+            page_size = max_results
+
         # When timeout has default sentinel value ``object()``, do not pass
         # anything to invoke default timeouts in subsequent calls.
-        kwargs: Dict[str, Union[_helpers.TimeoutType, object]] = {}
+        done_kwargs: Dict[str, Union[_helpers.TimeoutType, object]] = {}
+        reload_query_results_kwargs: Dict[str, Union[_helpers.TimeoutType, object]] = {}
+        list_rows_kwargs: Dict[str, Union[_helpers.TimeoutType, object]] = {}
         if type(timeout) is not object:
-            kwargs["timeout"] = timeout
+            done_kwargs["timeout"] = timeout
+            list_rows_kwargs["timeout"] = timeout
+            reload_query_results_kwargs["timeout"] = timeout
+
+        if page_size is not None:
+            reload_query_results_kwargs["page_size"] = page_size
 
         try:
             retry_do_query = getattr(self, "_retry_do_query", None)
@@ -1562,7 +1590,7 @@ class QueryJob(_AsyncJob):
                 # rateLimitExceeded errors are ambiguous. We want to know if
                 # the query job failed and not just the call to
                 # jobs.getQueryResults.
-                if self.done(retry=retry, **kwargs):
+                if self.done(retry=retry, **done_kwargs):
                     # If it's already failed, we might as well stop.
                     job_failed_exception = self.exception()
                     if job_failed_exception is not None:
@@ -1599,14 +1627,16 @@ class QueryJob(_AsyncJob):
                         # response from the REST API. This ensures we aren't
                         # making any extra API calls if the previous loop
                         # iteration fetched the finished job.
-                        self._reload_query_results(retry=retry, **kwargs)
+                        self._reload_query_results(
+                            retry=retry, **reload_query_results_kwargs
+                        )
                         return True
 
                 # Call jobs.getQueryResults with max results set to 0 just to
                 # wait for the query to finish. Unlike most methods,
                 # jobs.getQueryResults hangs as long as it can to ensure we
                 # know when the query has finished as soon as possible.
-                self._reload_query_results(retry=retry, **kwargs)
+                self._reload_query_results(retry=retry, **reload_query_results_kwargs)
 
                 # Even if the query is finished now according to
                 # jobs.getQueryResults, we'll want to reload the job status if
@@ -1679,8 +1709,9 @@ class QueryJob(_AsyncJob):
         # We know that there's at least 1 row, so only treat the response from
         # jobs.getQueryResults / jobs.query as the first page of the
         # RowIterator response if there are any rows in it. This prevents us
-        # from stopping the iteration early because we're missing rows and
-        # there's no next page token.
+        # from stopping the iteration early in the cases where we set
+        # maxResults=0. In that case, we're missing rows and there's no next
+        # page token.
         first_page_response = self._query_results._properties
         if "rows" not in first_page_response:
             first_page_response = None
@@ -1699,7 +1730,7 @@ class QueryJob(_AsyncJob):
             query_id=self.query_id,
             first_page_response=first_page_response,
             num_dml_affected_rows=self._query_results.num_dml_affected_rows,
-            **kwargs,
+            **list_rows_kwargs,
         )
         rows._preserve_order = _contains_order_by(self.query)
         return rows

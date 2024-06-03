@@ -247,7 +247,7 @@ def test_retry_connection_error_with_default_retries_and_successful_first_job(
                 method="GET",
                 path="/projects/PROJECT/queries/1",
                 query_params={"maxResults": 0, "location": "test-loc"},
-                timeout=120,
+                timeout=None,
             ),
         ],
     )

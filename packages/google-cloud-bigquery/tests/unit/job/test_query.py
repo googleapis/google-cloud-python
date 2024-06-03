@@ -28,6 +28,7 @@ import requests
 from google.cloud.bigquery.client import _LIST_ROWS_FROM_QUERY_RESULTS_FIELDS
 import google.cloud.bigquery._job_helpers
 import google.cloud.bigquery.query
+import google.cloud.bigquery.retry
 from google.cloud.bigquery.retry import DEFAULT_GET_JOB_TIMEOUT
 from google.cloud.bigquery.table import _EmptyRowIterator
 
@@ -841,6 +842,22 @@ class TestQueryJob(_Base):
         assert isinstance(job.search_stats, SearchStats)
         assert job.search_stats.mode == "INDEX_USAGE_MODE_UNSPECIFIED"
 
+    def test_reload_query_results_uses_transport_timeout(self):
+        conn = make_connection({})
+        client = _make_client(self.PROJECT, connection=conn)
+        job = self._make_one(self.JOB_ID, self.QUERY, client)
+        job._transport_timeout = 123
+
+        job._reload_query_results()
+
+        query_results_path = f"/projects/{self.PROJECT}/queries/{self.JOB_ID}"
+        conn.api_request.assert_called_once_with(
+            method="GET",
+            path=query_results_path,
+            query_params={"maxResults": 0},
+            timeout=123,
+        )
+
     def test_result_reloads_job_state_until_done(self):
         """Verify that result() doesn't return until state == 'DONE'.
 
@@ -1053,7 +1070,7 @@ class TestQueryJob(_Base):
             method="GET",
             path=query_results_path,
             query_params={"maxResults": 0, "location": "EU"},
-            timeout=google.cloud.bigquery.client._MIN_GET_QUERY_RESULTS_TIMEOUT,
+            timeout=None,
         )
         query_results_page_call = mock.call(
             method="GET",
@@ -1139,77 +1156,6 @@ class TestQueryJob(_Base):
             timeout=None,
         )
 
-    def test_result_with_done_jobs_query_response_and_page_size_invalidates_cache(self):
-        """We don't call jobs.query with a page size, so if the user explicitly
-        requests a certain size, invalidate the cache.
-        """
-        # Arrange
-        job_resource = self._make_resource(
-            started=True, ended=True, location="asia-northeast1"
-        )
-        query_resource_done = {
-            "jobComplete": True,
-            "jobReference": {"projectId": self.PROJECT, "jobId": self.JOB_ID},
-            "schema": {"fields": [{"name": "col1", "type": "STRING"}]},
-            "rows": [{"f": [{"v": "abc"}]}],
-            "pageToken": "initial-page-token-shouldnt-be-used",
-            "totalRows": "4",
-        }
-        query_page_resource = {
-            "totalRows": 4,
-            "pageToken": "some-page-token",
-            "rows": [
-                {"f": [{"v": "row1"}]},
-                {"f": [{"v": "row2"}]},
-                {"f": [{"v": "row3"}]},
-            ],
-        }
-        query_page_resource_2 = {"totalRows": 4, "rows": [{"f": [{"v": "row4"}]}]}
-        conn = make_connection(job_resource, query_page_resource, query_page_resource_2)
-        client = _make_client(self.PROJECT, connection=conn)
-        job = google.cloud.bigquery._job_helpers._to_query_job(
-            client,
-            "SELECT col1 FROM table",
-            request_config=None,
-            query_response=query_resource_done,
-        )
-        # We want job.result() to refresh the job state, so the conversion is
-        # always "PENDING", even if the job is finished.
-        assert job.state == "PENDING"
-
-        # Act
-        result = job.result(page_size=3)
-
-        # Assert
-        actual_rows = list(result)
-        self.assertEqual(len(actual_rows), 4)
-
-        query_results_path = f"/projects/{self.PROJECT}/queries/{self.JOB_ID}"
-        query_page_1_call = mock.call(
-            method="GET",
-            path=query_results_path,
-            query_params={
-                "maxResults": 3,
-                "fields": _LIST_ROWS_FROM_QUERY_RESULTS_FIELDS,
-                "location": "asia-northeast1",
-                "formatOptions.useInt64Timestamp": True,
-            },
-            timeout=None,
-        )
-        query_page_2_call = mock.call(
-            method="GET",
-            path=query_results_path,
-            query_params={
-                "pageToken": "some-page-token",
-                "maxResults": 3,
-                "fields": _LIST_ROWS_FROM_QUERY_RESULTS_FIELDS,
-                "location": "asia-northeast1",
-                "formatOptions.useInt64Timestamp": True,
-            },
-            timeout=None,
-        )
-        conn.api_request.assert_has_calls([query_page_1_call, query_page_2_call])
-
     def test_result_with_max_results(self):
         from google.cloud.bigquery.table import RowIterator
 
@@ -1217,36 +1163,85 @@ class TestQueryJob(_Base):
             "jobComplete": True,
             "jobReference": {"projectId": self.PROJECT, "jobId": self.JOB_ID},
             "schema": {"fields": [{"name": "col1", "type": "STRING"}]},
-            "totalRows": "5",
-        }
-        query_page_resource = {
-            "totalRows": "5",
-            "pageToken": None,
+            "totalRows": "10",
+            "pageToken": "first-page-token",
             "rows": [
                 {"f": [{"v": "abc"}]},
                 {"f": [{"v": "def"}]},
                 {"f": [{"v": "ghi"}]},
+                {"f": [{"v": "jkl"}]},
+                {"f": [{"v": "mno"}]},
+                {"f": [{"v": "pqr"}]},
+                # Pretend these are very large rows, so the API doesn't return
+                # all of the rows we asked for in the first response.
             ],
         }
-        connection = make_connection(query_resource, query_page_resource)
-        client = _make_client(self.PROJECT, connection=connection)
-        resource = self._make_resource(ended=True)
-        job = self._get_target_class().from_api_repr(resource, client)
+        query_page_resource = {
+            "totalRows": "10",
+            "pageToken": None,
+            "rows": [
+                {"f": [{"v": "stu"}]},
+                {"f": [{"v": "vwx"}]},
+                {"f": [{"v": "yz0"}]},
+            ],
+        }
+        job_resource_running = self._make_resource(
+            started=True, ended=False, location="US"
+        )
+        job_resource_done = self._make_resource(started=True, ended=True, location="US")
+        conn = make_connection(job_resource_done, query_resource, query_page_resource)
+        client = _make_client(self.PROJECT, connection=conn)
+        job = self._get_target_class().from_api_repr(job_resource_running, client)
 
-        max_results = 3
-
+        max_results = 9
         result = job.result(max_results=max_results)
 
         self.assertIsInstance(result, RowIterator)
-        self.assertEqual(result.total_rows, 5)
+        self.assertEqual(result.total_rows, 10)
 
         rows = list(result)
 
-        self.assertEqual(len(rows), 3)
-        self.assertEqual(len(connection.api_request.call_args_list), 2)
-        query_page_request = connection.api_request.call_args_list[1]
-        self.assertEqual(
-            query_page_request[1]["query_params"]["maxResults"], max_results
+        self.assertEqual(len(rows), 9)
+        jobs_get_path = f"/projects/{self.PROJECT}/jobs/{self.JOB_ID}"
+        jobs_get_call = mock.call(
+            method="GET",
+            path=jobs_get_path,
+            query_params={"projection": "full", "location": "US"},
+            timeout=DEFAULT_GET_JOB_TIMEOUT,
+        )
+        query_results_path = f"/projects/{self.PROJECT}/queries/{self.JOB_ID}"
+        query_page_waiting_call = mock.call(
+            method="GET",
+            path=query_results_path,
+            query_params={
+                # Waiting for the results should set maxResults and cache the
+                # first page if page_size is set. This allows customers to
+                # more finely tune when we fallback to the BQ Storage API.
+                # See internal issue: 344008814.
+                "maxResults": max_results,
+                "formatOptions.useInt64Timestamp": True,
+                "location": "US",
+            },
+            timeout=None,
+        )
+        query_page_2_call = mock.call(
+            timeout=None,
+            method="GET",
+            path=query_results_path,
+            query_params={
+                "pageToken": "first-page-token",
+                "maxResults": 3,
+                "fields": _LIST_ROWS_FROM_QUERY_RESULTS_FIELDS,
+                "location": "US",
+                "formatOptions.useInt64Timestamp": True,
+            },
+        )
+        # Waiting for the results should set maxResults and cache the
+        # first page if max_results is set. This allows customers to
+        # more finely tune when we fallback to the BQ Storage API.
+        # See internal issue: 344008814.
+        conn.api_request.assert_has_calls(
+            [jobs_get_call, query_page_waiting_call, query_page_2_call]
         )
 
     def test_result_w_custom_retry(self):
@@ -1469,63 +1464,85 @@ class TestQueryJob(_Base):
             "jobComplete": True,
             "jobReference": {"projectId": self.PROJECT, "jobId": self.JOB_ID},
             "schema": {"fields": [{"name": "col1", "type": "STRING"}]},
-            "totalRows": "4",
-        }
-        job_resource = self._make_resource(started=True, ended=True, location="US")
-        q_config = job_resource["configuration"]["query"]
-        q_config["destinationTable"] = {
-            "projectId": self.PROJECT,
-            "datasetId": self.DS_ID,
-            "tableId": self.TABLE_ID,
-        }
-        query_page_resource = {
-            "totalRows": 4,
-            "pageToken": "some-page-token",
+            "totalRows": "10",
             "rows": [
                 {"f": [{"v": "row1"}]},
                 {"f": [{"v": "row2"}]},
                 {"f": [{"v": "row3"}]},
+                {"f": [{"v": "row4"}]},
+                {"f": [{"v": "row5"}]},
+                {"f": [{"v": "row6"}]},
+                {"f": [{"v": "row7"}]},
+                {"f": [{"v": "row8"}]},
+                {"f": [{"v": "row9"}]},
             ],
+            "pageToken": "first-page-token",
         }
-        query_page_resource_2 = {"totalRows": 4, "rows": [{"f": [{"v": "row4"}]}]}
+        job_resource_running = self._make_resource(
+            started=True, ended=False, location="US"
+        )
+        job_resource_done = self._make_resource(started=True, ended=True, location="US")
+        destination_table = {
+            "projectId": self.PROJECT,
+            "datasetId": self.DS_ID,
+            "tableId": self.TABLE_ID,
+        }
+        q_config = job_resource_done["configuration"]["query"]
+        q_config["destinationTable"] = destination_table
+        query_page_resource_2 = {"totalRows": 10, "rows": [{"f": [{"v": "row10"}]}]}
         conn = make_connection(
-            query_results_resource, query_page_resource, query_page_resource_2
+            job_resource_running,
+            query_results_resource,
+            job_resource_done,
+            query_page_resource_2,
         )
         client = _make_client(self.PROJECT, connection=conn)
-        job = self._get_target_class().from_api_repr(job_resource, client)
+        job = self._get_target_class().from_api_repr(job_resource_running, client)
 
         # Act
-        result = job.result(page_size=3)
+        result = job.result(page_size=9)
 
         # Assert
         actual_rows = list(result)
-        self.assertEqual(len(actual_rows), 4)
+        self.assertEqual(len(actual_rows), 10)
 
+        jobs_get_path = f"/projects/{self.PROJECT}/jobs/{self.JOB_ID}"
+        jobs_get_call = mock.call(
+            method="GET",
+            path=jobs_get_path,
+            query_params={"projection": "full", "location": "US"},
+            timeout=DEFAULT_GET_JOB_TIMEOUT,
+        )
         query_results_path = f"/projects/{self.PROJECT}/queries/{self.JOB_ID}"
-        query_page_1_call = mock.call(
+        query_page_waiting_call = mock.call(
             method="GET",
             path=query_results_path,
             query_params={
-                "maxResults": 3,
-                "fields": _LIST_ROWS_FROM_QUERY_RESULTS_FIELDS,
+                # Waiting for the results should set maxResults and cache the
+                # first page if page_size is set. This allows customers to
+                # more finely tune when we fallback to the BQ Storage API.
+                # See internal issue: 344008814.
+                "maxResults": 9,
                 "location": "US",
                 "formatOptions.useInt64Timestamp": True,
             },
             timeout=None,
         )
         query_page_2_call = mock.call(
+            timeout=None,
             method="GET",
             path=query_results_path,
             query_params={
-                "pageToken": "some-page-token",
-                "maxResults": 3,
+                "pageToken": "first-page-token",
+                "maxResults": 9,
                 "fields": _LIST_ROWS_FROM_QUERY_RESULTS_FIELDS,
                 "location": "US",
                 "formatOptions.useInt64Timestamp": True,
             },
-            timeout=None,
         )
-        conn.api_request.assert_has_calls([query_page_1_call, query_page_2_call])
+        conn.api_request.assert_has_calls(
+            [jobs_get_call, query_page_waiting_call, jobs_get_call, query_page_2_call]
+        )
 
     def test_result_with_start_index(self):
         from google.cloud.bigquery.table import RowIterator
