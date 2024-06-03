@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.63.1](https://github.com/googleapis/python-api-common-protos/compare/v1.63.0...v1.63.1) (2024-05-30)
+
+
+### Bug Fixes
+
+* Increase upper limit for protobuf 5.X versions ([#212](https://github.com/googleapis/python-api-common-protos/issues/212)) ([28fc17a](https://github.com/googleapis/python-api-common-protos/commit/28fc17a9208aa98782acc6bee6c40ec12b959706))
+
 ## [1.63.0](https://github.com/googleapis/python-api-common-protos/compare/v1.62.0...v1.63.0) (2024-03-08)
 
 
