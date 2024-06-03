@@ -19,6 +19,7 @@ from typing import MutableMapping, MutableSequence
 
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -179,8 +180,8 @@ class ExtensionChain(proto.Message):
             supported_events (MutableSequence[google.cloud.network_services_v1.types.EventType]):
                 Optional. A set of events during request or response
                 processing for which this extension is called. This field is
-                required for the ``LbTrafficExtension`` resource. It's not
-                relevant for the ``LbRouteExtension`` resource.
+                required for the ``LbTrafficExtension`` resource. It must
+                not be set for the ``LbRouteExtension`` resource.
             timeout (google.protobuf.duration_pb2.Duration):
                 Optional. Specifies the timeout for each
                 individual message on the stream. The timeout
@@ -305,6 +306,15 @@ class LbTrafficExtension(proto.Message):
             ``EXTERNAL_MANAGED``. For more information, refer to
             `Choosing a load
             balancer <https://cloud.google.com/load-balancing/docs/backend-service>`__.
+        metadata (google.protobuf.struct_pb2.Struct):
+            Optional. The metadata provided here is included in the
+            ``ProcessingRequest.metadata_context.filter_metadata`` map
+            field. The metadata is available under the key
+            ``com.google.lb_traffic_extension.<resource_name>``. The
+            following variables are supported in the metadata:
+
+            ``{forwarding_rule_id}`` - substituted with the forwarding
+            rule's fully qualified resource name.
     """
 
     name: str = proto.Field(
@@ -343,6 +353,11 @@ class LbTrafficExtension(proto.Message):
         proto.ENUM,
         number=8,
         enum="LoadBalancingScheme",
+    )
+    metadata: struct_pb2.Struct = proto.Field(
+        proto.MESSAGE,
+        number=10,
+        message=struct_pb2.Struct,
     )
 
 
@@ -498,7 +513,7 @@ class UpdateLbTrafficExtensionRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Required. Used to specify the fields to be overwritten in
+            Optional. Used to specify the fields to be overwritten in
             the ``LbTrafficExtension`` resource by the update. The
             fields specified in the update_mask are relative to the
             resource, not the full request. A field is overwritten if it
@@ -630,6 +645,17 @@ class LbRouteExtension(proto.Message):
             ``EXTERNAL_MANAGED``. For more information, refer to
             `Choosing a load
             balancer <https://cloud.google.com/load-balancing/docs/backend-service>`__.
+        metadata (google.protobuf.struct_pb2.Struct):
+            Optional. The metadata provided here is included as part of
+            the ``metadata_context`` (of type
+            ``google.protobuf.Struct``) in the ``ProcessingRequest``
+            message sent to the extension server. The metadata is
+            available under the namespace
+            ``com.google.lb_route_extension.<resource_name>``. The
+            following variables are supported in the metadata Struct:
+
+            ``{forwarding_rule_id}`` - substituted with the forwarding
+            rule's fully qualified resource name.
     """
 
     name: str = proto.Field(
@@ -668,6 +694,11 @@ class LbRouteExtension(proto.Message):
         proto.ENUM,
         number=8,
         enum="LoadBalancingScheme",
+    )
+    metadata: struct_pb2.Struct = proto.Field(
+        proto.MESSAGE,
+        number=10,
+        message=struct_pb2.Struct,
     )
 
 
@@ -823,7 +854,7 @@ class UpdateLbRouteExtensionRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Required. Used to specify the fields to be overwritten in
+            Optional. Used to specify the fields to be overwritten in
             the ``LbRouteExtension`` resource by the update. The fields
             specified in the update_mask are relative to the resource,
             not the full request. A field is overwritten if it is in the

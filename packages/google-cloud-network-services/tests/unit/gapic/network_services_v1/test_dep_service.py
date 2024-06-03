@@ -51,6 +51,7 @@ from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import json_format
+from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import grpc
 from grpc.experimental import aio
@@ -6266,6 +6267,7 @@ def test_create_lb_traffic_extension_rest(request_type):
             }
         ],
         "load_balancing_scheme": 1,
+        "metadata": {"fields": {}},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -6714,6 +6716,7 @@ def test_update_lb_traffic_extension_rest(request_type):
             }
         ],
         "load_balancing_scheme": 1,
+        "metadata": {"fields": {}},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -6936,12 +6939,7 @@ def test_update_lb_traffic_extension_rest_unset_required_fields():
                 "updateMask",
             )
         )
-        & set(
-            (
-                "updateMask",
-                "lbTrafficExtension",
-            )
-        )
+        & set(("lbTrafficExtension",))
     )
 
 
@@ -8154,6 +8152,7 @@ def test_create_lb_route_extension_rest(request_type):
             }
         ],
         "load_balancing_scheme": 1,
+        "metadata": {"fields": {}},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -8599,6 +8598,7 @@ def test_update_lb_route_extension_rest(request_type):
             }
         ],
         "load_balancing_scheme": 1,
+        "metadata": {"fields": {}},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -8819,12 +8819,7 @@ def test_update_lb_route_extension_rest_unset_required_fields():
                 "updateMask",
             )
         )
-        & set(
-            (
-                "updateMask",
-                "lbRouteExtension",
-            )
-        )
+        & set(("lbRouteExtension",))
     )
 
 
