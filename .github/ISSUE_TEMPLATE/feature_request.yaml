@@ -11,7 +11,7 @@ body:
     label: Determine this is the right repository
     description: Please follow the steps in [the SUPPORT guide](https://github.com/vchudnov-g/google-cloud-python/blob/issue-templates/SUPPORT.md) and determine that this is likely a client library issue and this is the correct repository in which to report it.
     options:
-      - label: I determined this is the correct repository in which to report this bug
+      - label: I determined this is the correct repository in which to report this feature request.
         required: true
 - type: textarea
   attributes:

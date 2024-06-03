@@ -11,7 +11,7 @@ body:
     label: Determine this is the right repository
     description: Please follow the steps in [the SUPPORT guide](https://github.com/vchudnov-g/google-cloud-python/blob/issue-templates/SUPPORT.md) and determine that this is likely a client library issue and this is the correct repository in which to report it.
     options:
-      - label: I determined this is the correct repository in which to report this bug
+      - label: I determined this is the correct repository in which to report this bug.
         required: true
 - type: textarea
   attributes:
@@ -30,7 +30,7 @@ body:
 - type: input
   attributes:
     label: API client name and version
-    description: Try `pip list | grep google-cloud`, which should give you a name corresponding to one of the packages listed [here](https://github.com/googleapis/google-cloud-python/tree/main/packages).
+    description: Try `pip list | grep google-`, which should give you a name corresponding to one of the packages listed [here](https://github.com/googleapis/google-cloud-python/tree/main/packages).
     placeholder: e.g. google-cloud-vision v3.7.2
 - type: textarea
   attributes:
