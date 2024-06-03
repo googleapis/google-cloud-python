@@ -6582,6 +6582,7 @@ def test_create_job_rest(request_type):
                             "policy": {},
                             "instance_template": "instance_template_value",
                             "install_gpu_drivers": True,
+                            "install_ops_agent": True,
                         }
                     ],
                     "instance_templates": [
@@ -7692,6 +7693,7 @@ def test_update_job_rest(request_type):
                             "policy": {},
                             "instance_template": "instance_template_value",
                             "install_gpu_drivers": True,
+                            "install_ops_agent": True,
                         }
                     ],
                     "instance_templates": [

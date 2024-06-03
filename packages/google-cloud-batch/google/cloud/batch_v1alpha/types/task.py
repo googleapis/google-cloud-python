@@ -166,20 +166,19 @@ class TaskExecution(proto.Message):
         exit_code (int):
             The exit code of a finished task.
 
-            If the task succeeded, the exit code will be 0.
-            If the task failed but not due to the following
-            reasons, the exit code will be 50000.
+            If the task succeeded, the exit code will be 0. If the task
+            failed but not due to the following reasons, the exit code
+            will be 50000.
 
             Otherwise, it can be from different sources:
 
-            - Batch known failures as
-            https://cloud.google.com/batch/docs/troubleshooting#reserved-exit-codes.
-            - Batch runnable execution failures: You can
-              rely on Batch logs for further diagnose:
-              https://cloud.google.com/batch/docs/analyze-job-using-logs.
-              If there are multiple runnables failures,
-              Batch only exposes the first error caught for
-              now.
+            -  Batch known failures:
+               https://cloud.google.com/batch/docs/troubleshooting#reserved-exit-codes.
+            -  Batch runnable execution failures; you can rely on Batch
+               logs to further diagnose:
+               https://cloud.google.com/batch/docs/analyze-job-using-logs.
+               If there are multiple runnables failures, Batch only
+               exposes the first error.
         stderr_snippet (str):
             Optional. The tail end of any content written
             to standard error by the task execution. This
@@ -604,10 +603,16 @@ class TaskSpec(proto.Message):
         compute_resource (google.cloud.batch_v1alpha.types.ComputeResource):
             ComputeResource requirements.
         max_run_duration (google.protobuf.duration_pb2.Duration):
-            Maximum duration the task should run. The task will be
-            killed and marked as FAILED if over this limit. The valid
-            value range for max_run_duration in seconds is [0,
-            315576000000.999999999],
+            Maximum duration the task should run before being
+            automatically retried (if enabled) or automatically failed.
+            Format the value of this field as a time limit in seconds
+            followed by ``s``—for example, ``3600s`` for 1 hour. The
+            field accepts any value between 0 and the maximum listed for
+            the ``Duration`` field type at
+            https://protobuf.dev/reference/protobuf/google.protobuf/#duration;
+            however, the actual maximum run time for a job will be
+            limited to the maximum run time for a job listed at
+            https://cloud.google.com/batch/quotas#max-job-duration.
         max_retry_count (int):
             Maximum number of retries on failures. The default, 0, which
             means never retry. The valid value range is [0, 10].
