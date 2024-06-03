@@ -17,8 +17,12 @@ Configuration for BigQuery DataFrames. Do not depend on other parts of BigQuery
 DataFrames from this package.
 """
 
+from __future__ import annotations
+
 import copy
+from dataclasses import dataclass, field
 import threading
+from typing import Optional
 
 import bigframes_vendored.pandas._config.config as pandas_config
 
@@ -28,18 +32,27 @@ import bigframes._config.display_options as display_options
 import bigframes._config.sampling_options as sampling_options
 
 
+@dataclass
+class ThreadLocalConfig(threading.local):
+    # If unset, global settings will be used
+    bigquery_options: Optional[bigquery_options.BigQueryOptions] = None
+    # Note: use default factory instead of default instance so each thread initializes to default values
+    display_options: display_options.DisplayOptions = field(
+        default_factory=display_options.DisplayOptions
+    )
+    sampling_options: sampling_options.SamplingOptions = field(
+        default_factory=sampling_options.SamplingOptions
+    )
+    compute_options: compute_options.ComputeOptions = field(
+        default_factory=compute_options.ComputeOptions
+    )
+
+
 class Options:
     """Global options affecting BigQuery DataFrames behavior."""
 
     def __init__(self):
-        self._local = threading.local()
-
-        # Initialize these in the property getters to make sure we do have a
-        # separate instance per thread.
-        self._local.bigquery_options = None
-        self._local.display_options = None
-        self._local.sampling_options = None
-        self._local.compute_options = None
+        self._local = ThreadLocalConfig()
 
         # BigQuery options are special because they can only be set once per
         # session, so we need an indicator as to whether we are using the
@@ -61,21 +74,16 @@ class Options:
     @property
     def bigquery(self) -> bigquery_options.BigQueryOptions:
         """Options to use with the BigQuery engine."""
-        if (
-            bigquery_options := getattr(self._local, "bigquery_options", None)
-        ) is not None:
+        if self._local.bigquery_options is not None:
             # The only way we can get here is if someone called
             # _init_bigquery_thread_local.
-            return bigquery_options
+            return self._local.bigquery_options
 
         return self._bigquery_options
 
     @property
     def display(self) -> display_options.DisplayOptions:
         """Options controlling object representation."""
-        if self._local.display_options is None:
-            self._local.display_options = display_options.DisplayOptions()
-
         return self._local.display_options
 
     @property
@@ -88,17 +96,11 @@ class Options:
         matplotlib plotting). This option can be overriden by
         parameters in specific functions.
         """
-        if self._local.sampling_options is None:
-            self._local.sampling_options = sampling_options.SamplingOptions()
-
         return self._local.sampling_options
 
     @property
     def compute(self) -> compute_options.ComputeOptions:
         """Thread-local options controlling object computation."""
-        if self._local.compute_options is None:
-            self._local.compute_options = compute_options.ComputeOptions()
-
         return self._local.compute_options
 
     @property
