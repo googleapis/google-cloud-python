@@ -42,19 +42,27 @@ jobs:
     runs-on: ubuntu-20.04
     strategy:
       matrix:
-        python: ['3.6', '3.7', '3.8', '3.9', '3.10', '3.11', '3.12']
-        variant: ['', 'cpp', 'upb']
+        python: ['3.6', '3.7', '3.8', '3.9', '3.10', '3.11', '3.12', '3.13']
+        variant: ['cpp', 'python', 'upb']
+        # TODO(https://github.com/googleapis/proto-plus-python/issues/389):
+        # Remove the 'cpp' implementation once support for Protobuf 3.x is dropped.
+        # The 'cpp' implementation requires Protobuf == 3.x however version 3.x
+        # does not support Python 3.11 and newer. The 'cpp' implementation
+        # must be excluded from the test matrix for these runtimes.
         exclude:
           - variant: "cpp"
             python: 3.11
           - variant: "cpp"
             python: 3.12
+          - variant: "cpp"
+            python: 3.13
     steps:
       - uses: actions/checkout@v4
       - name: Set up Python ${{ matrix.python }}
         uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python }}
+          allow-prereleases: true
       - name: Install nox
         run: |
           pip install nox
@@ -68,12 +76,38 @@ jobs:
         env:
           COVERAGE_FILE: .coverage-${{ matrix.variant }}-${{ env.PYTHON_VERSION_TRIMMED }}
         run: |
-          nox -s unit${{ matrix.variant }}-${{ env.PYTHON_VERSION_TRIMMED }}
+          nox -s "unit-${{ env.PYTHON_VERSION_TRIMMED }}(implementation='${{ matrix.variant }}')"
       - name: Upload coverage results
         uses: actions/upload-artifact@v4
         with:
           name: coverage-artifact-${{ matrix.variant }}-${{ env.PYTHON_VERSION_TRIMMED }}
           path: .coverage-${{ matrix.variant }}-${{ env.PYTHON_VERSION_TRIMMED }}
+  prerelease:
+    runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        python: ['3.12']
+        variant: ['python', 'upb']
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python ${{ matrix.python }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+          allow-prereleases: true
+      - name: Install nox
+        run: |
+          pip install nox
+      - name: Run unit tests
+        env:
+          COVERAGE_FILE: .coverage-prerelease-${{ matrix.variant }}
+        run: |
+          nox -s "prerelease_deps(implementation='${{ matrix.variant }}')"
+      - name: Upload coverage results
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-artifact-prerelease-${{ matrix.variant }}
+          path: .coverage-prerelease-${{ matrix.variant }}
   cover:
     runs-on: ubuntu-latest
     needs:

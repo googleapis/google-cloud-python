@@ -16,8 +16,10 @@ import collections
 import collections.abc
 import copy
 import re
-from typing import List, Type
+from typing import List, Optional, Type
+import warnings
 
+import google.protobuf
 from google.protobuf import descriptor_pb2
 from google.protobuf import message
 from google.protobuf.json_format import MessageToDict, MessageToJson, Parse
@@ -31,6 +33,8 @@ from proto.marshal import Marshal
 from proto.primitives import ProtoType
 from proto.utils import has_upb
 
+
+PROTOBUF_VERSION = google.protobuf.__version__
 
 _upb = has_upb()  # Important to cache result here.
 
@@ -369,16 +373,101 @@ class MessageMeta(type):
         """
         return cls.wrap(cls.pb().FromString(payload))
 
+    def _warn_if_including_default_value_fields_is_used_protobuf_5(
+        cls, including_default_value_fields: Optional[bool]
+    ) -> None:
+        """
+        Warn Protobuf 5.x+ users that `including_default_value_fields` is deprecated if it is set.
+
+        Args:
+            including_default_value_fields (Optional(bool)): The value of `including_default_value_fields` set by the user.
+        """
+        if (
+            PROTOBUF_VERSION[0] not in ("3", "4")
+            and including_default_value_fields is not None
+        ):
+            warnings.warn(
+                """The argument `including_default_value_fields` has been removed from
+                Protobuf 5.x. Please use `always_print_fields_with_no_presence` instead.
+                """,
+                DeprecationWarning,
+            )
+
+    def _raise_if_print_fields_values_are_set_and_differ(
+        cls,
+        always_print_fields_with_no_presence: Optional[bool],
+        including_default_value_fields: Optional[bool],
+    ) -> None:
+        """
+        Raise Exception if both `always_print_fields_with_no_presence` and `including_default_value_fields` are set
+            and the values differ.
+
+        Args:
+            always_print_fields_with_no_presence (Optional(bool)): The value of `always_print_fields_with_no_presence` set by the user.
+            including_default_value_fields (Optional(bool)): The value of `including_default_value_fields` set by the user.
+        Returns:
+            None
+        Raises:
+            ValueError: if both `always_print_fields_with_no_presence` and `including_default_value_fields` are set and
+                the values differ.
+        """
+        if (
+            always_print_fields_with_no_presence is not None
+            and including_default_value_fields is not None
+            and always_print_fields_with_no_presence != including_default_value_fields
+        ):
+            raise ValueError(
+                "Arguments `always_print_fields_with_no_presence` and `including_default_value_fields` must match"
+            )
+
+    def _normalize_print_fields_without_presence(
+        cls,
+        always_print_fields_with_no_presence: Optional[bool],
+        including_default_value_fields: Optional[bool],
+    ) -> bool:
+        """
+        Return true if fields with no presence should be included in the results.
+        By default, fields with no presence will be included in the results
+        when both `always_print_fields_with_no_presence` and
+        `including_default_value_fields` are not set
+
+        Args:
+            always_print_fields_with_no_presence (Optional(bool)): The value of `always_print_fields_with_no_presence` set by the user.
+            including_default_value_fields (Optional(bool)): The value of `including_default_value_fields` set by the user.
+        Returns:
+            None
+        Raises:
+            ValueError: if both `always_print_fields_with_no_presence` and `including_default_value_fields` are set and
+                the values differ.
+        """
+
+        cls._warn_if_including_default_value_fields_is_used_protobuf_5(
+            including_default_value_fields
+        )
+        cls._raise_if_print_fields_values_are_set_and_differ(
+            always_print_fields_with_no_presence, including_default_value_fields
+        )
+        # Default to True if neither `always_print_fields_with_no_presence` or `including_default_value_fields` is set
+        return (
+            (
+                always_print_fields_with_no_presence is None
+                and including_default_value_fields is None
+            )
+            or always_print_fields_with_no_presence
+            or including_default_value_fields
+        )
+
     def to_json(
         cls,
         instance,
         *,
         use_integers_for_enums=True,
-        including_default_value_fields=True,
+        including_default_value_fields=None,
         preserving_proto_field_name=False,
         sort_keys=False,
         indent=2,
         float_precision=None,
+        always_print_fields_with_no_presence=None,
     ) -> str:
         """Given a message instance, serialize it to json
 
@@ -388,6 +477,11 @@ class MessageMeta(type):
             use_integers_for_enums (Optional(bool)): An option that determines whether enum
                 values should be represented by strings (False) or integers (True).
                 Default is True.
+            including_default_value_fields (Optional(bool)): Deprecated. Use argument
+                `always_print_fields_with_no_presence` instead. An option that
+                determines whether the default field values should be included in the results.
+                This value must match `always_print_fields_with_no_presence`,
+                if both arguments are explictly set.
             preserving_proto_field_name (Optional(bool)): An option that
                 determines whether field name representations preserve
                 proto case (snake_case) or use lowerCamelCase. Default is False.
@@ -398,18 +492,45 @@ class MessageMeta(type):
                 Pass None for the most compact representation without newlines.
             float_precision (Optional(int)): If set, use this to specify float field valid digits.
                 Default is None.
+            always_print_fields_with_no_presence (Optional(bool)): If True, fields without
+                presence (implicit presence scalars, repeated fields, and map fields) will
+                always be serialized. Any field that supports presence is not affected by
+                this option (including singular message fields and oneof fields).
+                This value must match `including_default_value_fields`,
+                if both arguments are explictly set.
         Returns:
             str: The json string representation of the protocol buffer.
         """
-        return MessageToJson(
-            cls.pb(instance),
-            use_integers_for_enums=use_integers_for_enums,
-            including_default_value_fields=including_default_value_fields,
-            preserving_proto_field_name=preserving_proto_field_name,
-            sort_keys=sort_keys,
-            indent=indent,
-            float_precision=float_precision,
+
+        print_fields = cls._normalize_print_fields_without_presence(
+            always_print_fields_with_no_presence, including_default_value_fields
         )
+
+        if PROTOBUF_VERSION[0] in ("3", "4"):
+            return MessageToJson(
+                cls.pb(instance),
+                use_integers_for_enums=use_integers_for_enums,
+                including_default_value_fields=print_fields,
+                preserving_proto_field_name=preserving_proto_field_name,
+                sort_keys=sort_keys,
+                indent=indent,
+                float_precision=float_precision,
+            )
+        else:
+            # The `including_default_value_fields` argument was removed from protobuf 5.x
+            # and replaced with `always_print_fields_with_no_presence` which very similar but has
+            # handles optional fields consistently by not affecting them.
+            # The old flag accidentally had inconsistent behavior between proto2
+            # optional and proto3 optional fields.
+            return MessageToJson(
+                cls.pb(instance),
+                use_integers_for_enums=use_integers_for_enums,
+                always_print_fields_with_no_presence=print_fields,
+                preserving_proto_field_name=preserving_proto_field_name,
+                sort_keys=sort_keys,
+                indent=indent,
+                float_precision=float_precision,
+            )
 
     def from_json(cls, payload, *, ignore_unknown_fields=False) -> "Message":
         """Given a json string representing an instance,
@@ -434,38 +555,65 @@ class MessageMeta(type):
         *,
         use_integers_for_enums=True,
         preserving_proto_field_name=True,
-        including_default_value_fields=True,
+        including_default_value_fields=None,
         float_precision=None,
+        always_print_fields_with_no_presence=None,
     ) -> "Message":
         """Given a message instance, return its representation as a python dict.
 
         Args:
             instance: An instance of this message type, or something
-                      compatible (accepted by the type's constructor).
+                compatible (accepted by the type's constructor).
             use_integers_for_enums (Optional(bool)): An option that determines whether enum
                 values should be represented by strings (False) or integers (True).
                 Default is True.
             preserving_proto_field_name (Optional(bool)): An option that
                 determines whether field name representations preserve
                 proto case (snake_case) or use lowerCamelCase. Default is True.
-            including_default_value_fields (Optional(bool)): An option that
+            including_default_value_fields (Optional(bool)): Deprecated. Use argument
+                `always_print_fields_with_no_presence` instead. An option that
                 determines whether the default field values should be included in the results.
-                Default is True.
+                This value must match `always_print_fields_with_no_presence`,
+                if both arguments are explictly set.
             float_precision (Optional(int)): If set, use this to specify float field valid digits.
                 Default is None.
+            always_print_fields_with_no_presence (Optional(bool)): If True, fields without
+                presence (implicit presence scalars, repeated fields, and map fields) will
+                always be serialized. Any field that supports presence is not affected by
+                this option (including singular message fields and oneof fields). This value
+                must match `including_default_value_fields`, if both arguments are explictly set.
 
         Returns:
             dict: A representation of the protocol buffer using pythonic data structures.
                   Messages and map fields are represented as dicts,
                   repeated fields are represented as lists.
         """
-        return MessageToDict(
-            cls.pb(instance),
-            including_default_value_fields=including_default_value_fields,
-            preserving_proto_field_name=preserving_proto_field_name,
-            use_integers_for_enums=use_integers_for_enums,
-            float_precision=float_precision,
+
+        print_fields = cls._normalize_print_fields_without_presence(
+            always_print_fields_with_no_presence, including_default_value_fields
         )
+
+        if PROTOBUF_VERSION[0] in ("3", "4"):
+            return MessageToDict(
+                cls.pb(instance),
+                including_default_value_fields=print_fields,
+                preserving_proto_field_name=preserving_proto_field_name,
+                use_integers_for_enums=use_integers_for_enums,
+                float_precision=float_precision,
+            )
+        else:
+            # The `including_default_value_fields` argument was removed from protobuf 5.x
+            # and replaced with `always_print_fields_with_no_presence` which very similar but has
+            # handles optional fields consistently by not affecting them.
+            # The old flag accidentally had inconsistent behavior between proto2
+            # optional and proto3 optional fields.
+            return MessageToDict(
+                cls.pb(instance),
+                always_print_fields_with_no_presence=print_fields,
+                preserving_proto_field_name=preserving_proto_field_name,
+                use_integers_for_enums=use_integers_for_enums,
+                float_precision=float_precision,
+            )
 
     def copy_from(cls, instance, other):
         """Equivalent for protobuf.Message.CopyFrom

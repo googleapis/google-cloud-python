@@ -45,7 +45,7 @@ setup(
     install_requires=("protobuf >= 3.19.0, <5.0.0dev",),
     extras_require={
         "testing": [
-            "google-api-core[grpc] >= 1.31.5",
+            "google-api-core >= 1.31.5",
         ],
     },
     python_requires=">=3.6",

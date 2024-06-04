@@ -41,9 +41,11 @@ def pytest_runtest_setup(item):
 
         item._mocks.append(
             mock.patch(
-                "google._upb._message.default_pool"
-                if has_upb()
-                else "google.protobuf.pyext._message.default_pool",
+                (
+                    "google._upb._message.default_pool"
+                    if has_upb()
+                    else "google.protobuf.pyext._message.default_pool"
+                ),
                 pool,
             )
         )
@@ -67,6 +69,14 @@ def pytest_runtest_setup(item):
     for name in dir(item.module):
         if name.endswith("_pb2") and not name.startswith("test_"):
             module = getattr(item.module, name)
+
+            # Exclude `google.protobuf.descriptor_pb2` which causes error
+            # `RecursionError: maximum recursion depth exceeded while calling a Python object`
+            # when running the test suite and is not required for tests.
+            # See https://github.com/googleapis/proto-plus-python/issues/425
+            if module.__package__ == "google.protobuf" and name == "descriptor_pb2":
+                continue
+
             pool.AddSerializedFile(module.DESCRIPTOR.serialized_pb)
             fd = pool.FindFileByName(module.DESCRIPTOR.name)
 

@@ -13,10 +13,9 @@
 # limitations under the License.
 
 from __future__ import absolute_import
-import os
-import pathlib
 
 import nox
+import pathlib
 
 
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
@@ -30,6 +29,7 @@ PYTHON_VERSIONS = [
     "3.10",
     "3.11",
     "3.12",
+    "3.13",
 ]
 
 # Error if a python version is missing
@@ -37,26 +37,30 @@ nox.options.error_on_missing_interpreters = True
 
 
 @nox.session(python=PYTHON_VERSIONS)
-def unit(session, proto="python"):
+@nox.parametrize("implementation", ["cpp", "upb", "python"])
+def unit(session, implementation):
     """Run the unit test suite."""
 
     constraints_path = str(
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
     )
 
-    session.env["PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION"] = proto
+    session.env["PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION"] = implementation
     session.install("coverage", "pytest", "pytest-cov", "pytz")
     session.install("-e", ".[testing]", "-c", constraints_path)
-    if proto == "cpp":  # 4.20 does not have cpp.
-        session.install("protobuf==3.19.0")
+    # TODO(https://github.com/googleapis/proto-plus-python/issues/389):
+    # Remove the 'cpp' implementation once support for Protobuf 3.x is dropped.
+    # The 'cpp' implementation requires Protobuf<4.
+    if implementation == "cpp":
+        session.install("protobuf<4")
 
     # TODO(https://github.com/googleapis/proto-plus-python/issues/403): re-enable `-W=error`
     # The warnings-as-errors flag `-W=error` was removed in
     # https://github.com/googleapis/proto-plus-python/pull/400.
     # It should be re-added once issue
-    # https://github.com/protocolbuffers/protobuf/issues/12186 is fixed.
+    # https://github.com/protocolbuffers/protobuf/issues/15077 is fixed.
     session.run(
-        "py.test",
+        "pytest",
         "--quiet",
         *(
             session.posargs  # Coverage info when running individual tests is annoying.
@@ -71,17 +75,59 @@ def unit(session, proto="python"):
     )
 
 
-# Check if protobuf has released wheels for new python versions
-# https://pypi.org/project/protobuf/#files
-# This list will generally be shorter than 'unit'
-@nox.session(python=["3.6", "3.7", "3.8", "3.9", "3.10"])
-def unitcpp(session):
-    return unit(session, proto="cpp")
+# Only test upb and python implementation backends.
+# As of protobuf 4.x, the "ccp" implementation is not available in the PyPI package as per
+# https://github.com/protocolbuffers/protobuf/tree/main/python#implementation-backends
+@nox.session(python=PYTHON_VERSIONS[-2])
+@nox.parametrize("implementation", ["python", "upb"])
+def prerelease_deps(session, implementation):
+    """Run the unit test suite against pre-release versions of dependencies."""
 
+    session.env["PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION"] = implementation
 
-@nox.session(python=PYTHON_VERSIONS)
-def unitupb(session):
-    return unit(session, proto="upb")
+    # Install test environment dependencies
+    session.install("coverage", "pytest", "pytest-cov", "pytz")
+
+    # Install the package without dependencies
+    session.install("-e", ".", "--no-deps")
+
+    prerel_deps = [
+        "google-api-core",
+        # dependency of google-api-core
+        "googleapis-common-protos",
+    ]
+
+    for dep in prerel_deps:
+        session.install("--pre", "--no-deps", "--upgrade", dep)
+
+    session.install("--pre", "--upgrade", "protobuf")
+    # Print out prerelease package versions
+    session.run(
+        "python", "-c", "import google.protobuf; print(google.protobuf.__version__)"
+    )
+    session.run(
+        "python", "-c", "import google.api_core; print(google.api_core.__version__)"
+    )
+
+    # TODO(https://github.com/googleapis/proto-plus-python/issues/403): re-enable `-W=error`
+    # The warnings-as-errors flag `-W=error` was removed in
+    # https://github.com/googleapis/proto-plus-python/pull/400.
+    # It should be re-added once issue
+    # https://github.com/protocolbuffers/protobuf/issues/15077 is fixed.
+    session.run(
+        "pytest",
+        "--quiet",
+        *(
+            session.posargs  # Coverage info when running individual tests is annoying.
+            or [
+                "--cov=proto",
+                "--cov-config=.coveragerc",
+                "--cov-report=term",
+                "--cov-report=html",
+                "tests",
+            ]
+        ),
+    )
 
 
 @nox.session(python="3.9")

@@ -267,8 +267,63 @@ def test_serialize_to_dict():
     expected_dict = {"mass_kg": 20}
     assert s_dict_2 == expected_dict
 
-    new_s = Squid(s_dict)
-    assert new_s == s
+    s_dict_2 = Squid.to_dict(s_new_2, always_print_fields_with_no_presence=False)
+    expected_dict = {"mass_kg": 20}
+    assert s_dict_2 == expected_dict
+
+    s_dict_2 = Squid.to_dict(
+        s_new_2,
+        including_default_value_fields=False,
+        always_print_fields_with_no_presence=False,
+    )
+    expected_dict = {"mass_kg": 20}
+    assert s_dict_2 == expected_dict
+
+    s_dict_2 = Squid.to_dict(
+        s_new_2,
+        including_default_value_fields=True,
+    )
+    expected_dict = {"mass_kg": 20, "chromatophores": []}
+    assert s_dict_2 == expected_dict
+
+    s_dict_2 = Squid.to_dict(
+        s_new_2,
+        always_print_fields_with_no_presence=True,
+    )
+    expected_dict = {"mass_kg": 20, "chromatophores": []}
+    assert s_dict_2 == expected_dict
+
+    s_dict_2 = Squid.to_dict(
+        s_new_2,
+        including_default_value_fields=True,
+        always_print_fields_with_no_presence=True,
+    )
+    expected_dict = {"mass_kg": 20, "chromatophores": []}
+    assert s_dict_2 == expected_dict
+
+    s_dict_2 = Squid.to_dict(s_new_2)
+    expected_dict = {"mass_kg": 20, "chromatophores": []}
+    assert s_dict_2 == expected_dict
+
+    with pytest.raises(
+        ValueError,
+        match="Arguments.*always_print_fields_with_no_presence.*including_default_value_fields.*must match",
+    ):
+        s_dict_2 = Squid.to_dict(
+            s_new_2,
+            including_default_value_fields=True,
+            always_print_fields_with_no_presence=False,
+        )
+
+    with pytest.raises(
+        ValueError,
+        match="Arguments.*always_print_fields_with_no_presence.*including_default_value_fields.*must match",
+    ):
+        s_dict_2 = Squid.to_dict(
+            s_new_2,
+            including_default_value_fields=False,
+            always_print_fields_with_no_presence=True,
+        )
 
 
 # TODO: https://github.com/googleapis/proto-plus-python/issues/390
