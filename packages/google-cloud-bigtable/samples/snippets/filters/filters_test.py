@@ -13,17 +13,16 @@
 
 
 import datetime
+import inspect
 import os
 import time
 import uuid
-import inspect
 
 from google.cloud import bigtable
 import pytest
-from .snapshots.snap_filters_test import snapshots
 
 from . import filter_snippets
-
+from .snapshots.snap_filters_test import snapshots
 
 PROJECT = os.environ["GOOGLE_CLOUD_PROJECT"]
 BIGTABLE_INSTANCE = os.environ["BIGTABLE_INSTANCE"]
