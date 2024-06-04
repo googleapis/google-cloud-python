@@ -5,6 +5,25 @@
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
 
+## [3.24.0](https://github.com/googleapis/python-bigquery/compare/v3.23.1...v3.24.0) (2024-06-04)
+
+
+### Features
+
+* Add default timeout for Client.get_job() ([#1935](https://github.com/googleapis/python-bigquery/issues/1935)) ([9fbad76](https://github.com/googleapis/python-bigquery/commit/9fbad767cc228e02040436742d0cb6743d370b90))
+* Add support for map target type in Parquet options ([#1919](https://github.com/googleapis/python-bigquery/issues/1919)) ([c3f7b23](https://github.com/googleapis/python-bigquery/commit/c3f7b237383d4705ed6e720544728c4db61f6c83))
+
+
+### Bug Fixes
+
+* Create query job in job.result() if doesn't exist ([#1944](https://github.com/googleapis/python-bigquery/issues/1944)) ([8f5b4b7](https://github.com/googleapis/python-bigquery/commit/8f5b4b70423c277ffd559d2034bc0b2b5fb93169))
+* Retry `is_job_done` on `ConnectionError` ([#1930](https://github.com/googleapis/python-bigquery/issues/1930)) ([4f72723](https://github.com/googleapis/python-bigquery/commit/4f72723f539d35977bc52c5950f6e00889b5c7be))
+
+
+### Performance Improvements
+
+* If `page_size` or `max_results` is set on `QueryJob.result()`, use to download first page of results ([#1942](https://github.com/googleapis/python-bigquery/issues/1942)) ([3e7a48d](https://github.com/googleapis/python-bigquery/commit/3e7a48d36e3c7bf6abe1b5550097178f6ca6e174))
+
 ## [3.23.1](https://github.com/googleapis/python-bigquery/compare/v3.23.0...v3.23.1) (2024-05-21)
 
 
