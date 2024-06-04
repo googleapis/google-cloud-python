@@ -39,8 +39,10 @@ class MPLPlot(abc.ABC):
 
     @property
     def result(self):
-        # TODO(b/340896123): fix type error
-        return self.axes  # type: ignore
+        if hasattr(self, "axes"):
+            return self.axes
+        else:
+            raise AttributeError("Axes not defined")
 
 
 class SamplingPlot(MPLPlot):
