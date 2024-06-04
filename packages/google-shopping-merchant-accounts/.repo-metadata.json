@@ -1,8 +1,8 @@
 {
     "name": "google-shopping-merchant-accounts",
-    "name_pretty": "",
-    "api_description": "",
-    "product_documentation": "",
+    "name_pretty": "Merchant API",
+    "api_description": "Programmatically manage your Merchant Center accounts.",
+    "product_documentation": "https://developers.google.com/merchant/api",
     "client_documentation": "https://googleapis.dev/python/google-shopping-merchant-accounts/latest",
     "issue_tracker": "https://github.com/googleapis/google-cloud-python/issues",
     "release_level": "preview",
