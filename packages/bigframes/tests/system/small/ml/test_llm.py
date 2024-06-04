@@ -15,6 +15,7 @@
 import pytest
 
 from bigframes.ml import llm
+from tests.system import utils
 
 
 def test_create_text_generator_model(
@@ -366,3 +367,48 @@ def test_gemini_text_generator_predict_with_params_success(
     assert "ml_generate_text_llm_result" in df.columns
     series = df["ml_generate_text_llm_result"]
     assert all(series.str.len() > 20)
+
+
+@pytest.mark.flaky(retries=2)
+def test_llm_gemini_pro_score(llm_fine_tune_df_default_index):
+    model = llm.GeminiTextGenerator(model_name="gemini-pro")
+
+    # Check score to ensure the model was fitted
+    score_result = model.score(
+        X=llm_fine_tune_df_default_index[["prompt"]],
+        y=llm_fine_tune_df_default_index[["label"]],
+    ).to_pandas()
+    utils.check_pandas_df_schema_and_index(
+        score_result,
+        columns=[
+            "bleu4_score",
+            "rouge-l_precision",
+            "rouge-l_recall",
+            "rouge-l_f1_score",
+            "evaluation_status",
+        ],
+        index=1,
+    )
+
+
+@pytest.mark.flaky(retries=2)
+def test_llm_gemini_pro_score_params(llm_fine_tune_df_default_index):
+    model = llm.GeminiTextGenerator(model_name="gemini-pro")
+
+    # Check score to ensure the model was fitted
+    score_result = model.score(
+        X=llm_fine_tune_df_default_index["prompt"],
+        y=llm_fine_tune_df_default_index["label"],
+        task_type="classification",
+    ).to_pandas()
+    utils.check_pandas_df_schema_and_index(
+        score_result,
+        columns=[
+            "precision",
+            "recall",
+            "f1_score",
+            "label",
+            "evaluation_status",
+        ],
+        index=6,
+    )

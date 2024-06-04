@@ -732,6 +732,67 @@ class GeminiTextGenerator(base.BaseEstimator):
 
         return df
 
+    def score(
+        self,
+        X: Union[bpd.DataFrame, bpd.Series],
+        y: Union[bpd.DataFrame, bpd.Series],
+        task_type: Literal[
+            "text_generation", "classification", "summarization", "question_answering"
+        ] = "text_generation",
+    ) -> bpd.DataFrame:
+        """Calculate evaluation metrics of the model. Only "gemini-pro" model is supported for now.
+
+        .. note::
+
+            This product or feature is subject to the "Pre-GA Offerings Terms" in the General Service Terms section of the
+            Service Specific Terms(https://cloud.google.com/terms/service-terms#1). Pre-GA products and features are available "as is"
+            and might have limited support. For more information, see the launch stage descriptions
+            (https://cloud.google.com/products#product-launch-stages).
+
+        .. note::
+
+            Output matches that of the BigQuery ML.EVALUTE function.
+            See: https://cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-evaluate#remote-model-llm
+            for the outputs relevant to this model type.
+
+        Args:
+            X (bigframes.dataframe.DataFrame or bigframes.series.Series):
+                A BigQuery DataFrame as evaluation data, which contains only one column of input_text
+                that contains the prompt text to use when evaluating the model.
+            y (bigframes.dataframe.DataFrame or bigframes.series.Series):
+                A BigQuery DataFrame as evaluation labels, which contains only one column of output_text
+                that you would expect to be returned by the model.
+            task_type (str):
+                The type of the task for LLM model. Default to "text_generation".
+                Possible values: "text_generation", "classification", "summarization", and "question_answering".
+
+        Returns:
+            bigframes.dataframe.DataFrame: The DataFrame as evaluation result.
+        """
+        if not self._bqml_model:
+            raise RuntimeError("A model must be fitted before score")
+
+        # TODO(ashleyxu): Support gemini-1.5 when the rollout is ready. b/344891364.
+        if self._bqml_model.model_name.startswith("gemini-1.5"):
+            raise NotImplementedError("Score is not supported for gemini-1.5 model.")
+
+        X, y = utils.convert_to_dataframe(X, y)
+
+        if len(X.columns) != 1 or len(y.columns) != 1:
+            raise ValueError(
+                f"Only support one column as input for X and y. {constants.FEEDBACK_LINK}"
+            )
+
+        # BQML identified the column by name
+        X_col_label = cast(blocks.Label, X.columns[0])
+        y_col_label = cast(blocks.Label, y.columns[0])
+        X = X.rename(columns={X_col_label: "input_text"})
+        y = y.rename(columns={y_col_label: "output_text"})
+
+        input_data = X.join(y, how="outer")
+
+        return self._bqml_model.llm_evaluate(input_data, task_type)
+
     def to_gbq(self, model_name: str, replace: bool = False) -> GeminiTextGenerator:
         """Save the model to BigQuery.
 
