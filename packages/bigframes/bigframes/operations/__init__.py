@@ -161,7 +161,10 @@ def _convert_expr_input(
 def create_unary_op(name: str, type_signature: op_typing.UnaryTypeSignature) -> UnaryOp:
     return dataclasses.make_dataclass(
         name,
-        [("name", typing.ClassVar[str], name), ("output_type", typing.ClassVar[typing.Callable], type_signature.as_method)],  # type: ignore
+        [
+            ("name", typing.ClassVar[str], name),
+            ("output_type", typing.ClassVar[typing.Callable], type_signature.as_method),
+        ],
         bases=(UnaryOp,),
         frozen=True,
     )()
@@ -172,7 +175,10 @@ def create_binary_op(
 ) -> BinaryOp:
     return dataclasses.make_dataclass(
         name,
-        [("name", typing.ClassVar[str], name), ("output_type", typing.ClassVar[typing.Callable], type_signature.as_method)],  # type: ignore
+        [
+            ("name", typing.ClassVar[str], name),
+            ("output_type", typing.ClassVar[typing.Callable], type_signature.as_method),
+        ],
         bases=(BinaryOp,),
         frozen=True,
     )()
@@ -493,8 +499,9 @@ class AsTypeOp(UnaryOp):
         if self.to_type == pa.string():
             return dtypes.STRING_DTYPE
         if isinstance(self.to_type, str):
-            # TODO(b/340895446): fix type error
-            return dtypes.BIGFRAMES_STRING_TO_BIGFRAMES[self.to_type]  # type: ignore
+            return dtypes.BIGFRAMES_STRING_TO_BIGFRAMES[
+                typing.cast(dtypes.DtypeString, self.to_type)
+            ]
         return self.to_type
 
 
@@ -516,8 +523,10 @@ class RemoteFunctionOp(UnaryOp):
 
     def output_type(self, *input_types):
         # This property should be set to a valid Dtype by the @remote_function decorator or read_gbq_function method
-        # TODO(b/340895446): fix type error
-        return self.func.output_dtype  # type: ignore
+        if hasattr(self.func, "output_dtype"):
+            return self.func.output_dtype
+        else:
+            raise AttributeError("output_dtype not defined")
 
 
 @dataclasses.dataclass(frozen=True)
@@ -644,8 +653,10 @@ class BinaryRemoteFunctionOp(BinaryOp):
 
     def output_type(self, *input_types):
         # This property should be set to a valid Dtype by the @remote_function decorator or read_gbq_function method
-        # TODO(b/340895446): fix type error
-        return self.func.output_dtype  # type: ignore
+        if hasattr(self.func, "output_dtype"):
+            return self.func.output_dtype
+        else:
+            raise AttributeError("output_dtype not defined")
 
 
 add_op = AddOp()
