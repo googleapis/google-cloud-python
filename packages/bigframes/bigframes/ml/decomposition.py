@@ -190,5 +190,5 @@ class PCA(
         if not self._bqml_model:
             raise RuntimeError("A model must be fitted before score")
 
-        # TODO(b/291973741): X param is ignored. Update BQML supports input in ML.EVALUTE.
+        # TODO(b/291973741): X param is ignored. Update BQML supports input in ML.EVALUATE.
         return self._bqml_model.evaluate()

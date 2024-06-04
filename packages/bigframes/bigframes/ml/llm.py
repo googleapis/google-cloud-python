@@ -329,7 +329,7 @@ class PaLM2TextGenerator(base.BaseEstimator):
 
         .. note::
 
-            Output matches that of the BigQuery ML.EVALUTE function.
+            Output matches that of the BigQuery ML.EVALUATE function.
             See: https://cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-evaluate#remote-model-llm
             for the outputs relevant to this model type.
 
@@ -751,7 +751,7 @@ class GeminiTextGenerator(base.BaseEstimator):
 
         .. note::
 
-            Output matches that of the BigQuery ML.EVALUTE function.
+            Output matches that of the BigQuery ML.EVALUATE function.
             See: https://cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-evaluate#remote-model-llm
             for the outputs relevant to this model type.
 

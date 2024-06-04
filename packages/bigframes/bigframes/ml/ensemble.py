@@ -460,7 +460,7 @@ class RandomForestRegressor(
 
         .. note::
 
-            Output matches that of the BigQuery ML.EVALUTE function.
+            Output matches that of the BigQuery ML.EVALUATE function.
             See: https://cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-evaluate#regression_models
             for the outputs relevant to this model type.
 
@@ -616,7 +616,7 @@ class RandomForestClassifier(
 
         .. note::
 
-            Output matches that of the BigQuery ML.EVALUTE function.
+            Output matches that of the BigQuery ML.EVALUATE function.
             See: https://cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-evaluate#classification_models
             for the outputs relevant to this model type.
 
