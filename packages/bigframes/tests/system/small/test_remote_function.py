@@ -537,12 +537,12 @@ def test_skip_bq_connection_check(dataset_id_permanent):
 
 
 @pytest.mark.flaky(retries=2, delay=120)
-def test_read_gbq_function_detects_invalid_function(bigquery_client, dataset_id):
+def test_read_gbq_function_detects_invalid_function(session, dataset_id):
     dataset_ref = bigquery.DatasetReference.from_string(dataset_id)
     with pytest.raises(ValueError) as e:
         rf.read_gbq_function(
             str(dataset_ref.routine("not_a_function")),
-            bigquery_client=bigquery_client,
+            session=session,
         )
 
     assert "Unknown function" in str(e.value)
@@ -550,6 +550,7 @@ def test_read_gbq_function_detects_invalid_function(bigquery_client, dataset_id)
 
 @pytest.mark.flaky(retries=2, delay=120)
 def test_read_gbq_function_like_original(
+    session,
     bigquery_client,
     bigqueryconnection_client,
     cloudfunctions_client,
@@ -577,7 +578,7 @@ def test_read_gbq_function_like_original(
 
     square2 = rf.read_gbq_function(
         function_name=square1.bigframes_remote_function,
-        bigquery_client=bigquery_client,
+        session=session,
     )
 
     # The newly-created function (square1) should have a remote function AND a
@@ -607,7 +608,14 @@ def test_read_gbq_function_like_original(
 
 
 @pytest.mark.flaky(retries=2, delay=120)
-def test_read_gbq_function_reads_udfs(bigquery_client, dataset_id):
+def test_read_gbq_function_runs_existing_udf(session, bigquery_client, dataset_id):
+    func = session.read_gbq_function("bqutil.fn.cw_lower_case_ascii_only")
+    got = func("AURÉLIE")
+    assert got == "aurÉlie"
+
+
+@pytest.mark.flaky(retries=2, delay=120)
+def test_read_gbq_function_reads_udfs(session, bigquery_client, dataset_id):
     dataset_ref = bigquery.DatasetReference.from_string(dataset_id)
     arg = bigquery.RoutineArgument(
         name="x",
@@ -633,7 +641,8 @@ def test_read_gbq_function_reads_udfs(bigquery_client, dataset_id):
         # Create the routine in BigQuery and read it back using read_gbq_function.
         bigquery_client.create_routine(routine, exists_ok=True)
         square = rf.read_gbq_function(
-            str(routine.reference), bigquery_client=bigquery_client
+            str(routine.reference),
+            session=session,
         )
 
         # It should point to the named routine and yield the expected results.
@@ -658,7 +667,9 @@ def test_read_gbq_function_reads_udfs(bigquery_client, dataset_id):
 
 
 @pytest.mark.flaky(retries=2, delay=120)
-def test_read_gbq_function_enforces_explicit_types(bigquery_client, dataset_id):
+def test_read_gbq_function_enforces_explicit_types(
+    session, bigquery_client, dataset_id
+):
     dataset_ref = bigquery.DatasetReference.from_string(dataset_id)
     typed_arg = bigquery.RoutineArgument(
         name="x",
@@ -702,18 +713,22 @@ def test_read_gbq_function_enforces_explicit_types(bigquery_client, dataset_id):
     bigquery_client.create_routine(neither_type_specified, exists_ok=True)
 
     rf.read_gbq_function(
-        str(both_types_specified.reference), bigquery_client=bigquery_client
+        str(both_types_specified.reference),
+        session=session,
     )
     rf.read_gbq_function(
-        str(only_return_type_specified.reference), bigquery_client=bigquery_client
+        str(only_return_type_specified.reference),
+        session=session,
     )
     with pytest.raises(ValueError):
         rf.read_gbq_function(
-            str(only_arg_type_specified.reference), bigquery_client=bigquery_client
+            str(only_arg_type_specified.reference),
+            session=session,
         )
     with pytest.raises(ValueError):
         rf.read_gbq_function(
-            str(neither_type_specified.reference), bigquery_client=bigquery_client
+            str(neither_type_specified.reference),
+            session=session,
         )
 
 

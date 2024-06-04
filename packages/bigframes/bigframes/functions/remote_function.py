@@ -1146,21 +1146,14 @@ def remote_function(
 
 def read_gbq_function(
     function_name: str,
-    session: Optional[Session] = None,
-    bigquery_client: Optional[bigquery.Client] = None,
+    *,
+    session: Session,
 ):
     """
     Read an existing BigQuery function and prepare it for use in future queries.
     """
-
-    # A BigQuery client is required to perform BQ operations
-    if not bigquery_client and session:
-        bigquery_client = session.bqclient
-    if not bigquery_client:
-        raise ValueError(
-            "A bigquery client must be provided, either directly or via session. "
-            f"{constants.FEEDBACK_LINK}"
-        )
+    bigquery_client = session.bqclient
+    ibis_client = session.ibis_client
 
     try:
         routine_ref = get_routine_reference(function_name, bigquery_client, session)
@@ -1192,8 +1185,10 @@ def read_gbq_function(
     # non-standard names for the arguments here.
     def func(*ignored_args, **ignored_kwargs):
         f"""Remote function {str(routine_ref)}."""
-        # TODO(swast): Construct an ibis client from bigquery_client and
-        # execute node via a query.
+        nonlocal node  # type: ignore
+
+        expr = node(*ignored_args, **ignored_kwargs)  # type: ignore
+        return ibis_client.execute(expr)
 
     # TODO: Move ibis logic to compiler step
     func.__name__ = routine_ref.routine_id
