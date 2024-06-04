@@ -14,7 +14,6 @@
 
 import datetime
 import os
-import time
 
 import inspect
 from typing import AsyncGenerator
@@ -26,7 +25,6 @@ from .snapshots.snap_filters_test import snapshots
 from . import filter_snippets_async
 from google.cloud._helpers import (
     _microseconds_from_datetime,
-    _datetime_from_microseconds,
 )
 
 PROJECT = os.environ["GOOGLE_CLOUD_PROJECT"]
@@ -77,7 +75,7 @@ async def _populate_table(table_id):
     timestamp = datetime.datetime(2019, 5, 1)
     timestamp_minus_hr = timestamp - datetime.timedelta(hours=1)
 
-    async with (BigtableDataClientAsync(project=PROJECT) as client):
+    async with BigtableDataClientAsync(project=PROJECT) as client:
         async with client.get_table(BIGTABLE_INSTANCE, table_id) as table:
             async with table.mutations_batcher() as batcher:
                 await batcher.append(
@@ -257,6 +255,8 @@ async def _populate_table(table_id):
 
 def _datetime_to_micros(value: datetime.datetime) -> int:
     """Uses the same conversion rules as the old client in"""
+    import calendar
+    import datetime as dt
     if not value.tzinfo:
         value = value.replace(tzinfo=datetime.timezone.utc)
     # Regardless of what timezone is on the value, convert it to UTC.
