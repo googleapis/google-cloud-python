@@ -118,7 +118,9 @@ class ResponseIterator:
     def _grab(self):
         # Add extra quotes to make json.loads happy.
         if issubclass(self._response_message_cls, proto.Message):
-            return self._response_message_cls.from_json(self._ready_objs.popleft())
+            return self._response_message_cls.from_json(
+                self._ready_objs.popleft(), ignore_unknown_fields=True
+            )
         elif issubclass(self._response_message_cls, google.protobuf.message.Message):
             return Parse(self._ready_objs.popleft(), self._response_message_cls())
         else:
