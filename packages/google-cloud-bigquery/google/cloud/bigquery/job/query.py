@@ -1585,6 +1585,11 @@ class QueryJob(_AsyncJob):
                     self._retry_do_query = retry_do_query
                     self._job_retry = job_retry
 
+                # If the job hasn't been created, create it now. Related:
+                # https://github.com/googleapis/python-bigquery/issues/1940
+                if self.state is None:
+                    self._begin(retry=retry, **done_kwargs)
+
                 # Refresh the job status with jobs.get because some of the
                 # exceptions thrown by jobs.getQueryResults like timeout and
                 # rateLimitExceeded errors are ambiguous. We want to know if
