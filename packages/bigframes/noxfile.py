@@ -76,6 +76,8 @@ SYSTEM_TEST_DEPENDENCIES: List[str] = []
 SYSTEM_TEST_EXTRAS: List[str] = ["tests"]
 SYSTEM_TEST_EXTRAS_BY_PYTHON: Dict[str, List[str]] = {}
 
+LOGGING_NAME_ENV_VAR = "BIGFRAMES_PERFORMANCE_LOG_NAME"
+
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 
 # Sessions are executed in the order so putting the smaller sessions
@@ -748,8 +750,6 @@ def notebook(session: nox.Session):
         "--nbmake-timeout=900",  # 15 minutes
     ]
 
-    logging_name_env_var = "BIGFRAMES_PERFORMANCE_LOG_NAME"
-
     try:
         # Populate notebook parameters and make a backup so that the notebooks
         # are runnable.
@@ -763,10 +763,10 @@ def notebook(session: nox.Session):
         # takes an environment variable for performance logging
         processes = []
         for notebook in notebooks:
-            session.env[logging_name_env_var] = os.path.basename(notebook)
             process = Process(
                 target=session.run,
                 args=(*pytest_command, notebook),
+                kwargs={"env": {LOGGING_NAME_ENV_VAR: os.path.basename(notebook)}},
             )
             process.start()
             processes.append(process)
@@ -788,11 +788,15 @@ def notebook(session: nox.Session):
     processes = []
     for notebook, regions in notebooks_reg.items():
         for region in regions:
-            session.env[logging_name_env_var] = os.path.basename(notebook)
             process = Process(
                 target=session.run,
                 args=(*pytest_command, notebook),
-                kwargs={"env": {"BIGQUERY_LOCATION": region}},
+                kwargs={
+                    "env": {
+                        "BIGQUERY_LOCATION": region,
+                        LOGGING_NAME_ENV_VAR: os.path.basename(notebook),
+                    }
+                },
             )
             process.start()
             processes.append(process)
@@ -803,24 +807,59 @@ def notebook(session: nox.Session):
     # when the environment variable is set as it is above,
     # notebooks output a .bytesprocessed and .slotmillis report
     # collect those reports and print a summary
-    _print_performance_report()
+    _print_performance_report("notebooks/")
 
 
-def _print_performance_report():
+@nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)
+def benchmark(session: nox.Session):
+    session.install("-e", ".[all]")
+
+    benchmark_script_list = list(Path("scripts/benchmark/").glob("*.py"))
+
+    # Run benchmarks in parallel session.run's, since each benchmark
+    # takes an environment variable for performance logging
+    processes = []
+    for benchmark in benchmark_script_list:
+        process = Process(
+            target=session.run,
+            args=("python", benchmark),
+            kwargs={
+                "env": {
+                    LOGGING_NAME_ENV_VAR: "scripts/benchmark/"
+                    + os.path.basename(benchmark)
+                }
+            },
+        )
+        process.start()
+        processes.append(process)
+
+    for process in processes:
+        process.join()
+
+    # when the environment variable is set as it is above,
+    # notebooks output a .bytesprocessed and .slotmillis report
+    # collect those reports and print a summary
+    _print_performance_report("scripts/")
+
+
+def _print_performance_report(path: str):
     """Add an informational report about http queries, bytes
     processed, and slot time to the testlog output for purposes
     of measuring bigquery-related performance changes.
+
+    Looks specifically for output files in subfolders of the
+    passed path. (*/*.bytesprocessed and */*.slotmillis)
     """
     print("---BIGQUERY USAGE REPORT---")
     results_dict = {}
-    for bytes_report in Path("notebooks/").glob("*/*.bytesprocessed"):
+    for bytes_report in Path(path).glob("*/*.bytesprocessed"):
         with open(bytes_report, "r") as bytes_file:
             filename = bytes_report.stem
             lines = bytes_file.read().splitlines()
             query_count = len(lines)
             total_bytes = sum([int(line) for line in lines])
             results_dict[filename] = [query_count, total_bytes]
-    for millis_report in Path("notebooks/").glob("*/*.slotmillis"):
+    for millis_report in Path(path).glob("*/*.slotmillis"):
         with open(millis_report, "r") as millis_file:
             filename = millis_report.stem
             lines = millis_file.read().splitlines()
@@ -830,7 +869,7 @@ def _print_performance_report():
     cumulative_queries = 0
     cumulative_bytes = 0
     cumulative_slot_millis = 0
-    for results in results_dict.values():
+    for name, results in results_dict.items():
         if len(results) != 3:
             raise IOError(
                 "Mismatch in performance logging output. "
@@ -842,7 +881,7 @@ def _print_performance_report():
         cumulative_bytes += total_bytes
         cumulative_slot_millis += total_slot_millis
         print(
-            f"{filename} - query count: {query_count},"
+            f"{name} - query count: {query_count},"
             f" bytes processed sum: {total_bytes},"
             f" slot millis sum: {total_slot_millis}"
         )
