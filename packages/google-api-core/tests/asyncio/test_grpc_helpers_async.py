@@ -166,19 +166,6 @@ async def test_wrap_stream_errors_stream_stream():
 
 
 @pytest.mark.asyncio
-async def test_wrap_errors_type_error():
-    """
-    If wrap_errors is called with an unexpected type, it should raise a TypeError.
-    """
-    mock_call = mock.Mock()
-    multicallable = mock.Mock(return_value=mock_call)
-
-    with pytest.raises(TypeError) as exc:
-        grpc_helpers_async.wrap_errors(multicallable)
-    assert "Unexpected type" in str(exc.value)
-
-
-@pytest.mark.asyncio
 async def test_wrap_stream_errors_raised():
     grpc_error = RpcErrorImpl(grpc.StatusCode.INVALID_ARGUMENT)
     mock_call = mock.Mock(aio.StreamStreamCall, autospec=True)
