@@ -92,17 +92,14 @@ def make_uniq_udf(udf):
         target_code = source_code.replace(source_key, target_key, 1)
         f.write(target_code)
     spec = importlib.util.spec_from_file_location(udf_file_name, udf_file_path)
-    # TODO(b/340875260): fix type error
-    udf_uniq = getattr(spec.loader.load_module(), udf_uniq_name)  # type: ignore
 
-    # This is a bit of a hack but we need to remove the reference to a foreign
-    # module, otherwise the serialization would keep the foreign module
-    # reference and deserialization would fail with error like following:
-    #     ModuleNotFoundError: No module named 'add_one_2nxcmd9j'
-    # TODO(shobs): Figure out if there is a better way of generating the unique
-    # function object, but for now let's just set it to same module as the
-    # original udf.
-    udf_uniq.__module__ = udf.__module__
+    assert (spec is not None) and (spec.loader is not None)
+    module = importlib.util.module_from_spec(spec)
+
+    # exec_module fills the module object with all the functions, classes, and
+    # variables defined in the module file.
+    spec.loader.exec_module(module)
+    udf_uniq = getattr(module, udf_uniq_name)
 
     return udf_uniq, tmpdir
 
