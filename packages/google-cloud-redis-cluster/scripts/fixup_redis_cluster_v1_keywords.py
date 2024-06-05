@@ -42,6 +42,7 @@ class redis_clusterCallTransformer(cst.CSTTransformer):
         'create_cluster': ('parent', 'cluster_id', 'cluster', 'request_id', ),
         'delete_cluster': ('name', 'request_id', ),
         'get_cluster': ('name', ),
+        'get_cluster_certificate_authority': ('name', ),
         'list_clusters': ('parent', 'page_size', 'page_token', ),
         'update_cluster': ('update_mask', 'cluster', 'request_id', ),
     }
