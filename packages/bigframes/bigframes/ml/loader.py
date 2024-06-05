@@ -98,13 +98,7 @@ def from_bq(
     Returns:
         A BigQuery DataFrames ML model object.
     """
-    # TODO(garrettwu): the entire condition only to TRANSFORM_ONLY when b/331679273 is fixed.
-    if (
-        bq_model.model_type == "TRANSFORM_ONLY"
-        or bq_model.model_type == "MODEL_TYPE_UNSPECIFIED"
-        and "transformColumns" in bq_model._properties
-        and not _is_bq_model_remote(bq_model)
-    ):
+    if bq_model.model_type == "TRANSFORM_ONLY":
         return _transformer_from_bq(session, bq_model)
 
     if _is_bq_model_pipeline(bq_model):
