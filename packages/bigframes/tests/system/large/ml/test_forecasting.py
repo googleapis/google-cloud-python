@@ -127,8 +127,7 @@ def test_arima_plus_model_fit_params(time_series_df_default_index, dataset_id):
     assert reloaded_model.horizon == 100
     assert reloaded_model.auto_arima is True
     assert reloaded_model.auto_arima_max_order == 4
-    # TODO(garrettwu): now BQML doesn't populate auto_arima_min_order
-    # assert reloaded_model.auto_arima_min_order == 1
+    assert reloaded_model.auto_arima_min_order == 1
     assert reloaded_model.data_frequency == "DAILY"
     assert reloaded_model.holiday_region == "US"
     assert reloaded_model.clean_spikes_and_dips is False
