@@ -30,7 +30,7 @@ body:
 - type: input
   attributes:
     label: API client name and version
-    description: Try `pip list | grep google-`, which should give you a name corresponding to one of the packages listed [here](https://github.com/googleapis/google-cloud-python/tree/main/packages).
+    description: Try `pip list | grep google`, which should give you a name corresponding to one of the packages listed [here](https://github.com/googleapis/google-cloud-python/tree/main/packages).
     placeholder: e.g. google-cloud-vision v3.7.2
 - type: textarea
   attributes:

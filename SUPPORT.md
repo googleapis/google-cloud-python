@@ -8,7 +8,6 @@ To help us resolve your issue as soon as possible, please follow these steps:
 # Check for already opened issues:
 
 -   In `google-cloud-python`: <https://github.com/googleapis/google-cloud-python/issues>
--   In Stack Overflow: <https://stackoverflow.com/questions/tagged/google-cloud-platform+python>
 
 
 <a id="orge74b7aa"></a>

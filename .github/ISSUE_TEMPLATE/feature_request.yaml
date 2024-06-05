@@ -43,5 +43,5 @@ body:
 - type: input
   attributes:
     label: API client name and version
-    description: If there's a particular API client for which this feature would be helpful, enter it here. Try `pip list | grep google-cloud`, which should give you a name corresponding to one of the packages listed [here](https://github.com/googleapis/google-cloud-python/tree/main/packages).
+    description: If there's a particular API client for which this feature would be helpful, enter it here. Try `pip list | grep google`, which should give you a name corresponding to one of the packages listed [here](https://github.com/googleapis/google-cloud-python/tree/main/packages).
     placeholder: e.g. google-cloud-vision v3.7.2
