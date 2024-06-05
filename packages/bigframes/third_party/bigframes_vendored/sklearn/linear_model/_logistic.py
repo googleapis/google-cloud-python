@@ -26,8 +26,10 @@ class LogisticRegression(LinearClassifierMixin, BaseEstimator):
     Args:
         optimize_strategy (str, default "auto_strategy"):
             The strategy to train logistic regression models. Possible values are
-            "auto_strategy", "batch_gradient_descent", "normal_equation". Default
-            to "auto_strategy".
+            "auto_strategy" and "batch_gradient_descent". The two are equilevant since
+            "auto_strategy" will fall back to "batch_gradient_descent". The API is kept
+            for consistency.
+            Default to "auto_strategy".
         fit_intercept (default True):
             Default True. Specifies if a constant (a.k.a. bias or intercept)
             should be added to the decision function.

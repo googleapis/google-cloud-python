@@ -195,7 +195,7 @@ class LogisticRegression(
         self,
         *,
         optimize_strategy: Literal[
-            "auto_strategy", "batch_gradient_descent", "normal_equation"
+            "auto_strategy", "batch_gradient_descent"
         ] = "auto_strategy",
         fit_intercept: bool = True,
         l1_reg: Optional[float] = None,

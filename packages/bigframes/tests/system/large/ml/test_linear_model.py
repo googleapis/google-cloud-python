@@ -192,8 +192,6 @@ def test_logistic_regression_customized_params_fit_score(
         f"{dataset_id}.temp_configured_logistic_reg_model"
         in reloaded_model._bqml_model.model_name
     )
-    # TODO(garrettwu) optimize_strategy isn't logged in BQML
-    # assert reloaded_model.optimize_strategy == "BATCH_GRADIENT_DESCENT"
     assert reloaded_model.fit_intercept is False
     assert reloaded_model.class_weight == "balanced"
     assert reloaded_model.calculate_p_values is False
