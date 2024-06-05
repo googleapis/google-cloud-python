@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.17.21](https://github.com/googleapis/google-cloud-python/compare/google-cloud-batch-v0.17.20...google-cloud-batch-v0.17.21) (2024-06-05)
+
+
+### Documentation
+
+* Documentation improvements ([7e19b0e](https://github.com/googleapis/google-cloud-python/commit/7e19b0e6a16ce47b588613fa806ee6cb7f2fcb86))
+
 ## [0.17.20](https://github.com/googleapis/google-cloud-python/compare/google-cloud-batch-v0.17.19...google-cloud-batch-v0.17.20) (2024-05-16)
 
 
