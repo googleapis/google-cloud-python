@@ -96,6 +96,23 @@ class ArrayValue:
         return cls(node)
 
     @classmethod
+    def from_cached(
+        cls,
+        original: ArrayValue,
+        table: google.cloud.bigquery.Table,
+        ordering: orderings.ExpressionOrdering,
+    ):
+        node = nodes.CachedTableNode(
+            original_node=original.node,
+            project_id=table.reference.project,
+            dataset_id=table.reference.dataset_id,
+            table_id=table.reference.table_id,
+            physical_schema=tuple(table.schema),
+            ordering=ordering,
+        )
+        return cls(node)
+
+    @classmethod
     def from_table(
         cls,
         table: google.cloud.bigquery.Table,
@@ -105,7 +122,10 @@ class ArrayValue:
         predicate: Optional[str] = None,
         at_time: Optional[datetime.datetime] = None,
         primary_key: Sequence[str] = (),
+        offsets_col: Optional[str] = None,
     ):
+        if offsets_col and primary_key:
+            raise ValueError("must set at most one of 'offests', 'primary_key'")
         if any(i.field_type == "JSON" for i in table.schema if i.name in schema.names):
             warnings.warn(
                 "Interpreting JSON column(s) as StringDtype. This behavior may change in future versions.",
@@ -116,7 +136,8 @@ class ArrayValue:
             dataset_id=table.reference.dataset_id,
             table_id=table.reference.table_id,
             physical_schema=tuple(table.schema),
-            total_order_cols=tuple(primary_key),
+            total_order_cols=(offsets_col,) if offsets_col else tuple(primary_key),
+            order_col_is_sequential=(offsets_col is not None),
             columns=schema,
             at_time=at_time,
             table_session=session,
@@ -149,6 +170,24 @@ class ArrayValue:
             for id in compiled.column_ids
         )
         return schemata.ArraySchema(items)
+
+    def as_cached(
+        self: ArrayValue,
+        cache_table: google.cloud.bigquery.Table,
+        ordering: orderings.ExpressionOrdering,
+    ) -> ArrayValue:
+        """
+        Replace the node with an equivalent one that references a tabel where the value has been materialized to.
+        """
+        node = nodes.CachedTableNode(
+            original_node=self.node,
+            project_id=cache_table.reference.project,
+            dataset_id=cache_table.reference.dataset_id,
+            table_id=cache_table.reference.table_id,
+            physical_schema=tuple(cache_table.schema),
+            ordering=ordering,
+        )
+        return ArrayValue(node)
 
     def _try_evaluate_local(self):
         """Use only for unit testing paths - not fully featured. Will throw exception if fails."""

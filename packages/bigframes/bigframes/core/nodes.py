@@ -376,7 +376,7 @@ class ReadTableNode(BigFrameNode):
             raise ValueError(
                 f"Requested schema {self.columns} cannot be derived from table schemal {self.physical_schema}"
             )
-        if self.order_col_is_sequential and len(self.total_order_cols) == 1:
+        if self.order_col_is_sequential and len(self.total_order_cols) != 1:
             raise ValueError("Sequential primary key must have only one component")
 
     @property
@@ -402,6 +402,53 @@ class ReadTableNode(BigFrameNode):
     @functools.cached_property
     def variables_introduced(self) -> int:
         return len(self.schema.items) + 1
+
+    def transform_children(
+        self, t: Callable[[BigFrameNode], BigFrameNode]
+    ) -> BigFrameNode:
+        return self
+
+
+@dataclass(frozen=True)
+class CachedTableNode(BigFrameNode):
+    # The original BFET subtree that was cached
+    # note: this isn't a "child" node.
+    original_node: BigFrameNode = field()
+    # reference to cached materialization of original_node
+    project_id: str = field()
+    dataset_id: str = field()
+    table_id: str = field()
+    physical_schema: Tuple[bq.SchemaField, ...] = field()
+
+    ordering: orderings.ExpressionOrdering = field()
+
+    @property
+    def session(self):
+        return self.original_node.session
+
+    def __hash__(self):
+        return self._node_hash
+
+    @property
+    def roots(self) -> typing.Set[BigFrameNode]:
+        return {self}
+
+    @property
+    def schema(self) -> schemata.ArraySchema:
+        return self.original_node.schema
+
+    @functools.cached_property
+    def variables_introduced(self) -> int:
+        return len(self.schema.items) + OVERHEAD_VARIABLES
+
+    @property
+    def hidden_columns(self) -> typing.Tuple[str, ...]:
+        """Physical columns used to define ordering but not directly exposed as value columns."""
+        return tuple(
+            col
+            for col in sorted(self.ordering.referenced_columns)
+            if col not in self.schema.names
+        )
 
     def transform_children(
         self, t: Callable[[BigFrameNode], BigFrameNode]

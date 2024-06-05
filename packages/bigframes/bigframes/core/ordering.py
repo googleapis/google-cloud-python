@@ -215,6 +215,14 @@ class ExpressionOrdering:
     def all_ordering_columns(self) -> Sequence[OrderingExpression]:
         return list(self.ordering_value_columns)
 
+    @property
+    def referenced_columns(self) -> Set[str]:
+        return set(
+            col
+            for part in self.ordering_value_columns
+            for col in part.scalar_expression.unbound_variables
+        )
+
 
 def encode_order_string(
     order_id: ibis_types.IntegerColumn, length: int = DEFAULT_ORDERING_ID_LENGTH
