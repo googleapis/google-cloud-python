@@ -913,16 +913,20 @@ class AllocationPolicy(proto.Message):
 
                 This field is a member of `oneof`_ ``policy_template``.
             install_gpu_drivers (bool):
-                Set this field true if users want Batch to help fetch
-                drivers from a third party location and install them for
-                GPUs specified in policy.accelerators or instance_template
-                on their behalf. Default is false.
+                Set this field true if you want Batch to help fetch drivers
+                from a third party location and install them for GPUs
+                specified in ``policy.accelerators`` or
+                ``instance_template`` on your behalf. Default is false.
 
                 For Container-Optimized Image cases, Batch will install the
                 accelerator driver following milestones of
                 https://cloud.google.com/container-optimized-os/docs/release-notes.
                 For non Container-Optimized Image cases, following
                 https://github.com/GoogleCloudPlatform/compute-gpu-installation/blob/main/linux/install_gpu_driver.py.
+            install_ops_agent (bool):
+                Optional. Set this field true if you want
+                Batch to install Ops Agent on your behalf.
+                Default is false.
         """
 
         policy: "AllocationPolicy.InstancePolicy" = proto.Field(
@@ -939,6 +943,10 @@ class AllocationPolicy(proto.Message):
         install_gpu_drivers: bool = proto.Field(
             proto.BOOL,
             number=3,
+        )
+        install_ops_agent: bool = proto.Field(
+            proto.BOOL,
+            number=4,
         )
 
     class NetworkInterface(proto.Message):

@@ -675,7 +675,7 @@ class BatchServiceAsyncClient:
                 The request object. UpdateJob Request.
             job (:class:`google.cloud.batch_v1alpha.types.Job`):
                 Required. The Job to update. Only fields specified in
-                ``update_mask`` are updated.
+                ``updateMask`` are updated.
 
                 This corresponds to the ``job`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -683,9 +683,25 @@ class BatchServiceAsyncClient:
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
                 Required. Mask of fields to update.
 
-                UpdateJob request now only supports update on
-                ``task_count`` field in a job's first task group. Other
-                fields will be ignored.
+                The ``jobs.patch`` method can only be used while a job
+                is in the ``QUEUED``, ``SCHEDULED``, or ``RUNNING``
+                state and currently only supports increasing the value
+                of the first ``taskCount`` field in the job's
+                ``taskGroups`` field. Therefore, you must set the value
+                of ``updateMask`` to ``taskGroups``. Any other job
+                fields in the update request will be ignored.
+
+                For example, to update a job's ``taskCount`` to ``2``,
+                set ``updateMask`` to ``taskGroups`` and use the
+                following request body:
+
+                ::
+
+                   {
+                     "taskGroups":[{
+                       "taskCount": 2
+                     }]
+                   }
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
