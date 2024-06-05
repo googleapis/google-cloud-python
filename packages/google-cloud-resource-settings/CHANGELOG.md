@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-resource-settings-v1.9.3...google-cloud-resource-settings-v1.9.4) (2024-06-05)
+
+
+### Documentation
+
+* [google-cloud-resource-settings] Resource Settings is deprecated. As of November 7, 2023, no organizations will be onboarded for any of the enabled settings, and the service will be shut down on October 1, 2024 ([#12766](https://github.com/googleapis/google-cloud-python/issues/12766)) ([d2a2825](https://github.com/googleapis/google-cloud-python/commit/d2a282512c457c5b348aeef118b6ea7df5a2bb6f))
+
 ## [1.9.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-resource-settings-v1.9.2...google-cloud-resource-settings-v1.9.3) (2024-03-05)
 
 

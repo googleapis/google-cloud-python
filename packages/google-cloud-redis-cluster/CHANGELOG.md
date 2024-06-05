@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.1.6](https://github.com/googleapis/google-cloud-python/compare/google-cloud-redis-cluster-v0.1.5...google-cloud-redis-cluster-v0.1.6) (2024-06-05)
+
+
+### Features
+
+* [Memorystore for Redis Cluster] Add persistence support ([6a70a4b](https://github.com/googleapis/google-cloud-python/commit/6a70a4b7c968ba28af488f6ab5ac78c66a8c2b98))
+* [Memorystore for Redis Cluster] Add support for different node types ([6a70a4b](https://github.com/googleapis/google-cloud-python/commit/6a70a4b7c968ba28af488f6ab5ac78c66a8c2b98))
+* [Memorystore for Redis Cluster] Get details of certificate authority from redis cluster ([6a70a4b](https://github.com/googleapis/google-cloud-python/commit/6a70a4b7c968ba28af488f6ab5ac78c66a8c2b98))
+
+
+### Documentation
+
+* [Memorystore for Redis Cluster] size_gb field shows the size of the cluster rounded up to the next integer, precise_size_gb field will show the exact size of the cluster ([6a70a4b](https://github.com/googleapis/google-cloud-python/commit/6a70a4b7c968ba28af488f6ab5ac78c66a8c2b98))
+
 ## [0.1.5](https://github.com/googleapis/google-cloud-python/compare/google-cloud-redis-cluster-v0.1.4...google-cloud-redis-cluster-v0.1.5) (2024-03-05)
 
 
