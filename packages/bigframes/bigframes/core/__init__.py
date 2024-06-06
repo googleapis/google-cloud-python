@@ -60,6 +60,7 @@ class ArrayValue:
 
     node: nodes.BigFrameNode
 
+    # DO NOT use, on deprecation path
     @classmethod
     def from_ibis(
         cls,
@@ -69,11 +70,13 @@ class ArrayValue:
         hidden_ordering_columns: Sequence[ibis_types.Value],
         ordering: orderings.ExpressionOrdering,
     ):
+        import bigframes.core.compile.ibis_types
+
         node = nodes.ReadGbqNode(
             table=table,
             table_session=session,
             columns=tuple(
-                bigframes.dtypes.ibis_value_to_canonical_type(column)
+                bigframes.core.compile.ibis_types.ibis_value_to_canonical_type(column)
                 for column in columns
             ),
             hidden_ordering_columns=tuple(hidden_ordering_columns),

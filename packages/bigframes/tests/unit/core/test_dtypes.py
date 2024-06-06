@@ -20,6 +20,7 @@ import pandas as pd
 import pyarrow as pa  # type: ignore
 import pytest
 
+import bigframes.core.compile.ibis_types
 import bigframes.dtypes
 
 
@@ -67,14 +68,14 @@ import bigframes.dtypes
 )
 def test_ibis_dtype_converts(ibis_dtype, bigframes_dtype):
     """Test all the Ibis data types needed to read BigQuery tables"""
-    result = bigframes.dtypes.ibis_dtype_to_bigframes_dtype(ibis_dtype)
+    result = bigframes.core.compile.ibis_types.ibis_dtype_to_bigframes_dtype(ibis_dtype)
     assert result == bigframes_dtype
 
 
 def test_ibis_timestamp_pst_raises_unexpected_datatype():
     """BigQuery timestamp only supports UTC time"""
     with pytest.raises(ValueError, match="Unexpected Ibis data type"):
-        bigframes.dtypes.ibis_dtype_to_bigframes_dtype(
+        bigframes.core.compile.ibis_types.ibis_dtype_to_bigframes_dtype(
             ibis_dtypes.Timestamp(timezone="PST")
         )
 
@@ -82,7 +83,9 @@ def test_ibis_timestamp_pst_raises_unexpected_datatype():
 def test_ibis_float32_raises_unexpected_datatype():
     """Other Ibis types not read from BigQuery are not expected"""
     with pytest.raises(ValueError, match="Unexpected Ibis data type"):
-        bigframes.dtypes.ibis_dtype_to_bigframes_dtype(ibis_dtypes.float32)
+        bigframes.core.compile.ibis_types.ibis_dtype_to_bigframes_dtype(
+            ibis_dtypes.float32
+        )
 
 
 IBIS_ARROW_DTYPES = (
@@ -139,13 +142,13 @@ IBIS_ARROW_DTYPES = (
 
 @pytest.mark.parametrize(("ibis_dtype", "arrow_dtype"), IBIS_ARROW_DTYPES)
 def test_arrow_dtype_to_ibis_dtype(ibis_dtype, arrow_dtype):
-    result = bigframes.dtypes.arrow_dtype_to_ibis_dtype(arrow_dtype)
+    result = bigframes.core.compile.ibis_types._arrow_dtype_to_ibis_dtype(arrow_dtype)
     assert result == ibis_dtype
 
 
 @pytest.mark.parametrize(("ibis_dtype", "arrow_dtype"), IBIS_ARROW_DTYPES)
 def test_ibis_dtype_to_arrow_dtype(ibis_dtype, arrow_dtype):
-    result = bigframes.dtypes.ibis_dtype_to_arrow_dtype(ibis_dtype)
+    result = bigframes.core.compile.ibis_types._ibis_dtype_to_arrow_dtype(ibis_dtype)
     assert result == arrow_dtype
 
 
@@ -178,7 +181,9 @@ def test_ibis_dtype_to_arrow_dtype(ibis_dtype, arrow_dtype):
 )
 def test_bigframes_dtype_converts(ibis_dtype, bigframes_dtype):
     """Test all the Ibis data types needed to read BigQuery tables"""
-    result = bigframes.dtypes.bigframes_dtype_to_ibis_dtype(bigframes_dtype)
+    result = bigframes.core.compile.ibis_types.bigframes_dtype_to_ibis_dtype(
+        bigframes_dtype
+    )
     assert result == ibis_dtype
 
 
@@ -203,20 +208,22 @@ def test_bigframes_dtype_converts(ibis_dtype, bigframes_dtype):
 )
 def test_bigframes_string_dtype_converts(ibis_dtype, bigframes_dtype_str):
     """Test all the Ibis data types needed to read BigQuery tables"""
-    result = bigframes.dtypes.bigframes_dtype_to_ibis_dtype(bigframes_dtype_str)
+    result = bigframes.core.compile.ibis_types.bigframes_dtype_to_ibis_dtype(
+        bigframes_dtype_str
+    )
     assert result == ibis_dtype
 
 
 def test_unsupported_dtype_raises_unexpected_datatype():
     """Incompatible dtypes should fail when passed into BigQuery DataFrames"""
     with pytest.raises(ValueError, match="Unexpected data type"):
-        bigframes.dtypes.bigframes_dtype_to_ibis_dtype(np.float32)
+        bigframes.core.compile.ibis_types.bigframes_dtype_to_ibis_dtype(np.float32)
 
 
 def test_unsupported_dtype_str_raises_unexpected_datatype():
     """Incompatible dtypes should fail when passed into BigQuery DataFrames"""
     with pytest.raises(ValueError, match="Unexpected data type"):
-        bigframes.dtypes.bigframes_dtype_to_ibis_dtype("int64")
+        bigframes.core.compile.ibis_types.bigframes_dtype_to_ibis_dtype("int64")
 
 
 @pytest.mark.parametrize(
@@ -228,21 +235,23 @@ def test_unsupported_dtype_str_raises_unexpected_datatype():
     ],
 )
 def test_literal_to_ibis_scalar_converts(literal, ibis_scalar):
-    assert bigframes.dtypes.literal_to_ibis_scalar(literal).equals(ibis_scalar)
+    assert bigframes.core.compile.ibis_types.literal_to_ibis_scalar(literal).equals(
+        ibis_scalar
+    )
 
 
 def test_literal_to_ibis_scalar_throws_on_incompatible_literal():
     with pytest.raises(
         ValueError,
     ):
-        bigframes.dtypes.literal_to_ibis_scalar({"mykey": "myval"})
+        bigframes.core.compile.ibis_types.literal_to_ibis_scalar({"mykey": "myval"})
 
 
 def test_remote_function_io_types_are_supported_bigframes_types():
     from ibis.expr.datatypes.core import dtype as python_type_to_bigquery_type
 
-    from bigframes.dtypes import SUPPORTED_IO_PYTHON_TYPES as rf_supported_io_types
+    from bigframes.dtypes import RF_SUPPORTED_IO_PYTHON_TYPES as rf_supported_io_types
 
     for python_type in rf_supported_io_types:
         ibis_type = python_type_to_bigquery_type(python_type)
-        assert ibis_type in bigframes.dtypes.IBIS_TO_BIGFRAMES
+        assert ibis_type in bigframes.core.compile.ibis_types.IBIS_TO_BIGFRAMES

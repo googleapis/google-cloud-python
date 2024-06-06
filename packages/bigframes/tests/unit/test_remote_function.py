@@ -19,6 +19,7 @@ from ibis.expr import datatypes as ibis_types
 import pandas
 import pytest
 
+import bigframes.core.compile.ibis_types
 import bigframes.dtypes
 import bigframes.functions.remote_function
 import bigframes.series
@@ -62,11 +63,11 @@ def test_series_input_types_to_str(series_type):
 def test_supported_types_correspond():
     # The same types should be representable by the supported Python and BigQuery types.
     ibis_types_from_python = {
-        ibis_types.dtype(t) for t in bigframes.dtypes.SUPPORTED_IO_PYTHON_TYPES
+        ibis_types.dtype(t) for t in bigframes.dtypes.RF_SUPPORTED_IO_PYTHON_TYPES
     }
     ibis_types_from_bigquery = {
         third_party_ibis_bqtypes.BigQueryType.to_ibis(tk)
-        for tk in bigframes.dtypes.SUPPORTED_IO_BIGQUERY_TYPEKINDS
+        for tk in bigframes.dtypes.RF_SUPPORTED_IO_BIGQUERY_TYPEKINDS
     }
 
     assert ibis_types_from_python == ibis_types_from_bigquery

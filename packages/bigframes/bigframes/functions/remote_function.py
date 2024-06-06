@@ -59,7 +59,7 @@ from ibis.expr.datatypes.core import DataType as IbisDataType
 
 from bigframes import clients
 import bigframes.constants as constants
-import bigframes.dtypes
+import bigframes.core.compile.ibis_types
 import bigframes.functions.remote_function_template
 
 logger = logging.getLogger(__name__)
@@ -523,12 +523,16 @@ def ibis_signature_from_python_signature(
     input_types: Sequence[type],
     output_type: type,
 ) -> IbisSignature:
+
     return IbisSignature(
         parameter_names=list(signature.parameters.keys()),
         input_types=[
-            bigframes.dtypes.ibis_type_from_python_type(t) for t in input_types
+            bigframes.core.compile.ibis_types.ibis_type_from_python_type(t)
+            for t in input_types
         ],
-        output_type=bigframes.dtypes.ibis_type_from_python_type(output_type),
+        output_type=bigframes.core.compile.ibis_types.ibis_type_from_python_type(
+            output_type
+        ),
     )
 
 
@@ -536,6 +540,7 @@ class ReturnTypeMissingError(ValueError):
     pass
 
 
+# TODO: Move this to compile folder
 def ibis_signature_from_routine(routine: bigquery.Routine) -> IbisSignature:
     if not routine.return_type:
         raise ReturnTypeMissingError
@@ -543,12 +548,14 @@ def ibis_signature_from_routine(routine: bigquery.Routine) -> IbisSignature:
     return IbisSignature(
         parameter_names=[arg.name for arg in routine.arguments],
         input_types=[
-            bigframes.dtypes.ibis_type_from_type_kind(arg.data_type.type_kind)
+            bigframes.core.compile.ibis_types.ibis_type_from_type_kind(
+                arg.data_type.type_kind
+            )
             if arg.data_type
             else None
             for arg in routine.arguments
         ],
-        output_type=bigframes.dtypes.ibis_type_from_type_kind(
+        output_type=bigframes.core.compile.ibis_types.ibis_type_from_type_kind(
             routine.return_type.type_kind
         ),
     )
@@ -757,8 +764,9 @@ def remote_function(
             https://cloud.google.com/functions/docs/networking/connecting-vpc.
     """
     # Some defaults may be used from the session if not provided otherwise
+    import bigframes.exceptions as bf_exceptions
     import bigframes.pandas as bpd
-    import bigframes.series
+    import bigframes.series as bf_series
     import bigframes.session
 
     session = cast(bigframes.session.Session, session or bpd.get_global_session())
@@ -896,13 +904,13 @@ def remote_function(
         # BigQuery DataFrames and pandas object types for compatibility.
         is_row_processor = False
         if len(input_types) == 1 and (
-            (input_type := input_types[0]) == bigframes.series.Series
+            (input_type := input_types[0]) == bf_series.Series
             or input_type == pandas.Series
         ):
             warnings.warn(
                 "input_types=Series is in preview.",
                 stacklevel=1,
-                category=bigframes.exceptions.PreviewWarning,
+                category=bf_exceptions.PreviewWarning,
             )
 
             # we will model the row as a json serialized string containing the data
@@ -972,8 +980,11 @@ def remote_function(
             remote_function_client.get_cloud_function_fully_qualified_name(cf_name)
         )
         func.bigframes_remote_function = str(dataset_ref.routine(rf_name))  # type: ignore
-        func.output_dtype = bigframes.dtypes.ibis_dtype_to_bigframes_dtype(
-            ibis_signature.output_type
+
+        func.output_dtype = (
+            bigframes.core.compile.ibis_types.ibis_dtype_to_bigframes_dtype(
+                ibis_signature.output_type
+            )
         )
         func.ibis_node = node
         return func
@@ -1012,7 +1023,7 @@ def read_gbq_function(
         raise ValueError(
             f"Function return type must be specified. {constants.FEEDBACK_LINK}"
         )
-    except bigframes.dtypes.UnsupportedTypeError as e:
+    except bigframes.core.compile.ibis_types.UnsupportedTypeError as e:
         raise ValueError(
             f"Type {e.type} not supported, supported types are {e.supported_types}. "
             f"{constants.FEEDBACK_LINK}"
@@ -1028,6 +1039,7 @@ def read_gbq_function(
         return ibis_client.execute(expr)
 
     # TODO: Move ibis logic to compiler step
+
     func.__name__ = routine_ref.routine_id
 
     node = ibis.udf.scalar.builtin(
@@ -1037,7 +1049,7 @@ def read_gbq_function(
         signature=(ibis_signature.input_types, ibis_signature.output_type),
     )
     func.bigframes_remote_function = str(routine_ref)  # type: ignore
-    func.output_dtype = bigframes.dtypes.ibis_dtype_to_bigframes_dtype(  # type: ignore
+    func.output_dtype = bigframes.core.compile.ibis_types.ibis_dtype_to_bigframes_dtype(  # type: ignore
         ibis_signature.output_type
     )
     func.ibis_node = node  # type: ignore

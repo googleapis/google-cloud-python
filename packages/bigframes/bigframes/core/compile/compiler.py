@@ -26,11 +26,11 @@ import pandas as pd
 import bigframes.core.compile.compiled as compiled
 import bigframes.core.compile.concat as concat_impl
 import bigframes.core.compile.default_ordering as default_ordering
+import bigframes.core.compile.ibis_types
 import bigframes.core.compile.schema_translator
 import bigframes.core.compile.single_column
 import bigframes.core.nodes as nodes
 import bigframes.core.ordering as bf_ordering
-import bigframes.dtypes as bigframes_dtypes
 
 if typing.TYPE_CHECKING:
     import bigframes.core
@@ -112,7 +112,9 @@ def compile_cached_table(node: nodes.CachedTableNode, ordered: bool = True):
         return compiled.OrderedIR(
             ibis_table,
             columns=tuple(
-                bigframes_dtypes.ibis_value_to_canonical_type(ibis_table[col])
+                bigframes.core.compile.ibis_types.ibis_value_to_canonical_type(
+                    ibis_table[col]
+                )
                 for col in node.schema.names
             ),
             ordering=node.ordering,
@@ -123,7 +125,9 @@ def compile_cached_table(node: nodes.CachedTableNode, ordered: bool = True):
         return compiled.UnorderedIR(
             ibis_table,
             columns=tuple(
-                bigframes_dtypes.ibis_value_to_canonical_type(ibis_table[col])
+                bigframes.core.compile.ibis_types.ibis_value_to_canonical_type(
+                    ibis_table[col]
+                )
                 for col in node.schema.names
             ),
         )
@@ -166,7 +170,9 @@ def compile_read_table_unordered(node: nodes.ReadTableNode):
     return compiled.UnorderedIR(
         ibis_table,
         tuple(
-            bigframes_dtypes.ibis_value_to_canonical_type(ibis_table[col])
+            bigframes.core.compile.ibis_types.ibis_value_to_canonical_type(
+                ibis_table[col]
+            )
             for col in node.schema.names
         ),
     )
@@ -202,7 +208,9 @@ def compile_read_table_ordered(node: nodes.ReadTableNode):
     return compiled.OrderedIR(
         ibis_table,
         columns=tuple(
-            bigframes_dtypes.ibis_value_to_canonical_type(ibis_table[col])
+            bigframes.core.compile.ibis_types.ibis_value_to_canonical_type(
+                ibis_table[col]
+            )
             for col in node.schema.names
         ),
         ordering=ordering,

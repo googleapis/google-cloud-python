@@ -46,8 +46,8 @@ def adapt_pa_table(arrow_table: pa.Table) -> pa.Table:
 
 
 def bigframes_type_for_arrow_type(pa_type: pa.DataType) -> bigframes.dtypes.Dtype:
-    return bigframes.dtypes.ibis_dtype_to_bigframes_dtype(
-        bigframes.dtypes.arrow_dtype_to_ibis_dtype(arrow_type_replacements(pa_type))
+    return bigframes.dtypes.arrow_dtype_to_bigframes_dtype(
+        arrow_type_replacements(pa_type)
     )
 
 

@@ -324,10 +324,12 @@ class ReadGbqNode(BigFrameNode):
 
     @functools.cached_property
     def schema(self) -> schemata.ArraySchema:
+        from bigframes.core.compile.ibis_types import ibis_dtype_to_bigframes_dtype
+
         items = tuple(
             schemata.SchemaItem(
                 value.get_name(),
-                bigframes.dtypes.ibis_dtype_to_bigframes_dtype(value.type()),
+                ibis_dtype_to_bigframes_dtype(value.type()),
             )
             for value in self.columns
         )

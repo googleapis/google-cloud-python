@@ -18,6 +18,7 @@ from __future__ import annotations
 import ibis
 import ibis.expr.schema
 
+import bigframes.core.compile.ibis_types
 import bigframes.core.schema as bf_schema
 import bigframes.dtypes
 
@@ -28,7 +29,7 @@ def convert_bf_schema(schema: bf_schema.ArraySchema) -> ibis.expr.schema.Schema:
     """
     names = schema.names
     types = [
-        bigframes.dtypes.bigframes_dtype_to_ibis_dtype(bf_type)
+        bigframes.core.compile.ibis_types.bigframes_dtype_to_ibis_dtype(bf_type)
         for bf_type in schema.dtypes
     ]
     return ibis.schema(names=names, types=types)
