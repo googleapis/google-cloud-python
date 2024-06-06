@@ -4,6 +4,21 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.30.0](https://github.com/googleapis/google-auth-library-python/compare/v2.29.0...v2.30.0) (2024-06-06)
+
+
+### Features
+
+* Add WebAuthn plugin component to handle WebAuthn get assertion request ([#1464](https://github.com/googleapis/google-auth-library-python/issues/1464)) ([e25f336](https://github.com/googleapis/google-auth-library-python/commit/e25f336ab49c2018a222458a95ebe083e8a4eb2a))
+* ECP Provider drop cryptography requirement ([#1524](https://github.com/googleapis/google-auth-library-python/issues/1524)) ([a821d71](https://github.com/googleapis/google-auth-library-python/commit/a821d719e2fc7bcdc21737fdf175d6f06aa9a56a))
+* Enable webauthn plugin for security keys ([#1528](https://github.com/googleapis/google-auth-library-python/issues/1528)) ([e2d5e63](https://github.com/googleapis/google-auth-library-python/commit/e2d5e635da2cb2caf8240fb9e07fc381442a9d0c))
+
+
+### Bug Fixes
+
+* Fix id_token iam endpoint for non-gdu service credentials ([#1506](https://github.com/googleapis/google-auth-library-python/issues/1506)) ([93d681e](https://github.com/googleapis/google-auth-library-python/commit/93d681e6cfb15eb4a3efada623be8ba73b302257))
+* Makes default token_url universe aware ([#1514](https://github.com/googleapis/google-auth-library-python/issues/1514)) ([045776e](https://github.com/googleapis/google-auth-library-python/commit/045776e5dfa3fb172ffaeb59bfe5c637778a5d34))
+
 ## [2.29.0](https://github.com/googleapis/google-auth-library-python/compare/v2.28.2...v2.29.0) (2024-03-18)
 
 
