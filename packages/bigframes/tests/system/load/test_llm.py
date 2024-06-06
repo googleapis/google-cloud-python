@@ -19,18 +19,6 @@ import bigframes.ml.llm
 
 
 @pytest.fixture(scope="session")
-def llm_fine_tune_df_default_index(
-    session: bigframes.Session,
-) -> bigframes.dataframe.DataFrame:
-    training_table_name = "llm_tuning.emotion_classification_train"
-    df = session.read_gbq(training_table_name)
-    prefix = "Please do sentiment analysis on the following text and only output a number from 0 to 5 where 0 means sadness, 1 means joy, 2 means love, 3 means anger, 4 means fear, and 5 means surprise. Text: "
-    df["prompt"] = prefix + df["text"]
-    df["label"] = df["label"].astype("string")
-    return df
-
-
-@pytest.fixture(scope="session")
 def llm_remote_text_pandas_df():
     """Additional data matching the penguins dataset, with a new index"""
     return pd.DataFrame(
@@ -55,9 +43,8 @@ def test_llm_palm_configure_fit(llm_fine_tune_df_default_index, llm_remote_text_
         model_name="text-bison", max_iterations=1
     )
 
-    df = llm_fine_tune_df_default_index.dropna().sample(n=100)
-    X_train = df[["prompt"]]
-    y_train = df[["label"]]
+    X_train = llm_fine_tune_df_default_index[["prompt"]]
+    y_train = llm_fine_tune_df_default_index[["label"]]
     model.fit(X_train, y_train)
 
     assert model is not None
