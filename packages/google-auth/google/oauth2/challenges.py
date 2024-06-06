@@ -22,12 +22,19 @@ import sys
 
 from google.auth import _helpers
 from google.auth import exceptions
+from google.oauth2 import webauthn_handler_factory
+from google.oauth2.webauthn_types import (
+    AuthenticationExtensionsClientInputs,
+    GetRequest,
+    PublicKeyCredentialDescriptor,
+)
 
 
 REAUTH_ORIGIN = "https://accounts.google.com"
 SAML_CHALLENGE_MESSAGE = (
     "Please run `gcloud auth login` to complete reauthentication with SAML."
 )
+WEBAUTHN_TIMEOUT_MS = 120000  # Two minute timeout
 
 
 def get_user_password(text):
@@ -110,6 +117,17 @@ class SecurityKeyChallenge(ReauthChallenge):
 
     @_helpers.copy_docstring(ReauthChallenge)
     def obtain_challenge_input(self, metadata):
+        # Check if there is an available Webauthn Handler, if not use pyu2f
+        try:
+            factory = webauthn_handler_factory.WebauthnHandlerFactory()
+            webauthn_handler = factory.get_handler()
+            if webauthn_handler is not None:
+                sys.stderr.write("Please insert and touch your security key\n")
+                return self._obtain_challenge_input_webauthn(metadata, webauthn_handler)
+        except Exception:
+            # Attempt pyu2f if exception in webauthn flow
+            pass
+
         try:
             import pyu2f.convenience.authenticator  # type: ignore
             import pyu2f.errors  # type: ignore
@@ -172,6 +190,66 @@ class SecurityKeyChallenge(ReauthChallenge):
             except pyu2f.errors.NoDeviceFoundError:
                 sys.stderr.write("No security key found.\n")
             return None
+
+    def _obtain_challenge_input_webauthn(self, metadata, webauthn_handler):
+        sk = metadata.get("securityKey")
+        if sk is None:
+            raise exceptions.InvalidValue("securityKey is None")
+        challenges = sk.get("challenges")
+        application_id = sk.get("applicationId")
+        relying_party_id = sk.get("relyingPartyId")
+        if challenges is None or len(challenges) < 1:
+            raise exceptions.InvalidValue("challenges is None or empty")
+        if application_id is None:
+            raise exceptions.InvalidValue("application_id is None")
+        if relying_party_id is None:
+            raise exceptions.InvalidValue("relying_party_id is None")
+
+        allow_credentials = []
+        for challenge in challenges:
+            kh = challenge.get("keyHandle")
+            if kh is None:
+                raise exceptions.InvalidValue("keyHandle is None")
+            key_handle = self._unpadded_urlsafe_b64recode(kh)
+            allow_credentials.append(PublicKeyCredentialDescriptor(id=key_handle))
+
+        extension = AuthenticationExtensionsClientInputs(appid=application_id)
+
+        challenge = challenges[0].get("challenge")
+        if challenge is None:
+            raise exceptions.InvalidValue("challenge is None")
+
+        get_request = GetRequest(
+            origin=REAUTH_ORIGIN,
+            rpid=relying_party_id,
+            challenge=self._unpadded_urlsafe_b64recode(challenge),
+            timeout_ms=WEBAUTHN_TIMEOUT_MS,
+            allow_credentials=allow_credentials,
+            user_verification="required",
+            extensions=extension,
+        )
+
+        try:
+            get_response = webauthn_handler.get(get_request)
+        except Exception as e:
+            sys.stderr.write("Webauthn Error: {}.\n".format(e))
+            raise e
+
+        response = {
+            "clientData": get_response.response.client_data_json,
+            "authenticatorData": get_response.response.authenticator_data,
+            "signatureData": get_response.response.signature,
+            "applicationId": application_id,
+            "keyHandle": get_response.id,
+            "securityKeyReplyType": 2,
+        }
+        return {"securityKey": response}
+
+    def _unpadded_urlsafe_b64recode(self, s):
+        """Converts standard b64 encoded string to url safe b64 encoded string
+        with no padding."""
+        b = base64.urlsafe_b64decode(s)
+        return base64.urlsafe_b64encode(b).decode().rstrip("=")
 
 
 class SamlChallenge(ReauthChallenge):
