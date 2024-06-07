@@ -32,6 +32,7 @@ from typing import (
     NamedTuple,
     Optional,
     Sequence,
+    Tuple,
     TYPE_CHECKING,
     Union,
 )
@@ -39,6 +40,7 @@ import warnings
 
 import ibis
 import pandas
+import pyarrow
 import requests
 
 if TYPE_CHECKING:
@@ -182,15 +184,11 @@ class RemoteFunctionClient:
         # Create BQ function
         # https://cloud.google.com/bigquery/docs/reference/standard-sql/remote-functions#create_a_remote_function_2
         bq_function_args = []
-        bq_function_return_type = third_party_ibis_bqtypes.BigQueryType.from_ibis(
-            output_type
-        )
+        bq_function_return_type = output_type
 
         # We are expecting the input type annotations to be 1:1 with the input args
-        for idx, name in enumerate(input_args):
-            bq_function_args.append(
-                f"{name} {third_party_ibis_bqtypes.BigQueryType.from_ibis(input_types[idx])}"
-            )
+        for name, type_ in zip(input_args, input_types):
+            bq_function_args.append(f"{name} {type_}")
 
         remote_function_options = {
             "endpoint": endpoint,
@@ -259,9 +257,23 @@ class RemoteFunctionClient:
         return None
 
     def generate_cloud_function_code(
-        self, def_, directory, package_requirements=None, is_row_processor=False
+        self,
+        def_,
+        directory,
+        *,
+        input_types: Tuple[str],
+        output_type: str,
+        package_requirements=None,
+        is_row_processor=False,
     ):
-        """Generate the cloud function code for a given user defined function."""
+        """Generate the cloud function code for a given user defined function.
+
+        Args:
+            input_types (tuple[str]):
+                Types of the input arguments in BigQuery SQL data type names.
+            output_type (str):
+                Types of the output scalar as a BigQuery SQL data type name.
+        """
 
         # requirements.txt
         requirements = ["cloudpickle >= 2.1.0"]
@@ -269,6 +281,7 @@ class RemoteFunctionClient:
             # bigframes remote function will send an entire row of data as json,
             # which would be converted to a pandas series and processed
             requirements.append(f"pandas=={pandas.__version__}")
+            requirements.append(f"pyarrow=={pyarrow.__version__}")
         if package_requirements:
             requirements.extend(package_requirements)
         requirements = sorted(requirements)
@@ -278,7 +291,11 @@ class RemoteFunctionClient:
 
         # main.py
         entry_point = bigframes.functions.remote_function_template.generate_cloud_function_main_code(
-            def_, directory, is_row_processor
+            def_,
+            directory,
+            input_types=input_types,
+            output_type=output_type,
+            is_row_processor=is_row_processor,
         )
         return entry_point
 
@@ -286,18 +303,33 @@ class RemoteFunctionClient:
         self,
         def_,
         cf_name,
+        *,
+        input_types: Tuple[str],
+        output_type: str,
         package_requirements=None,
         timeout_seconds=600,
         max_instance_count=None,
         is_row_processor=False,
         vpc_connector=None,
     ):
-        """Create a cloud function from the given user defined function."""
+        """Create a cloud function from the given user defined function.
+
+        Args:
+            input_types (tuple[str]):
+                Types of the input arguments in BigQuery SQL data type names.
+            output_type (str):
+                Types of the output scalar as a BigQuery SQL data type name.
+        """
 
         # Build and deploy folder structure containing cloud function
         with tempfile.TemporaryDirectory() as directory:
             entry_point = self.generate_cloud_function_code(
-                def_, directory, package_requirements, is_row_processor
+                def_,
+                directory,
+                package_requirements=package_requirements,
+                input_types=input_types,
+                output_type=output_type,
+                is_row_processor=is_row_processor,
             )
             archive_path = shutil.make_archive(directory, "zip", directory)
 
@@ -444,11 +476,13 @@ class RemoteFunctionClient:
             cf_endpoint = self.create_cloud_function(
                 def_,
                 cloud_function_name,
-                package_requirements,
-                cloud_function_timeout,
-                cloud_function_max_instance_count,
-                is_row_processor,
-                cloud_function_vpc_connector,
+                input_types=input_types,
+                output_type=output_type,
+                package_requirements=package_requirements,
+                timeout_seconds=cloud_function_timeout,
+                max_instance_count=cloud_function_max_instance_count,
+                is_row_processor=is_row_processor,
+                vpc_connector=cloud_function_vpc_connector,
             )
         else:
             logger.info(f"Cloud function {cloud_function_name} already exists.")
@@ -957,16 +991,21 @@ def remote_function(
 
         rf_name, cf_name = remote_function_client.provision_bq_remote_function(
             func,
-            ibis_signature.input_types,
-            ibis_signature.output_type,
-            reuse,
-            name,
-            packages,
-            max_batching_rows,
-            cloud_function_timeout,
-            cloud_function_max_instances,
-            is_row_processor,
-            cloud_function_vpc_connector,
+            input_types=tuple(
+                third_party_ibis_bqtypes.BigQueryType.from_ibis(type_)
+                for type_ in ibis_signature.input_types
+            ),
+            output_type=third_party_ibis_bqtypes.BigQueryType.from_ibis(
+                ibis_signature.output_type
+            ),
+            reuse=reuse,
+            name=name,
+            package_requirements=packages,
+            max_batching_rows=max_batching_rows,
+            cloud_function_timeout=cloud_function_timeout,
+            cloud_function_max_instance_count=cloud_function_max_instances,
+            is_row_processor=is_row_processor,
+            cloud_function_vpc_connector=cloud_function_vpc_connector,
         )
 
         # TODO: Move ibis logic to compiler step

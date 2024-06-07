@@ -2339,12 +2339,19 @@ class Block:
         index_columns_count = len(self.index_columns)
 
         # column references to form the array of values for the row
-        column_references_csv = sql.csv(
-            [sql.cast_as_string(col) for col in self.expr.column_ids]
-        )
+        column_types = list(self.index.dtypes) + list(self.dtypes)
+        column_references = []
+        for type_, col in zip(column_types, self.expr.column_ids):
+            if isinstance(type_, pd.ArrowDtype) and pa.types.is_binary(
+                type_.pyarrow_dtype
+            ):
+                column_references.append(sql.to_json_string(col))
+            else:
+                column_references.append(sql.cast_as_string(col))
+
+        column_references_csv = sql.csv(column_references)
 
         # types of the columns to serialize for the row
-        column_types = list(self.index.dtypes) + list(self.dtypes)
         column_types_csv = sql.csv(
             [sql.simple_literal(str(typ)) for typ in column_types]
         )

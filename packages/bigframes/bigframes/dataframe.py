@@ -3313,22 +3313,43 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             # Early check whether the dataframe dtypes are currently supported
             # in the remote function
             # NOTE: Keep in sync with the value converters used in the gcf code
-            # generated in generate_cloud_function_main_code in remote_function.py
+            # generated in remote_function_template.py
             remote_function_supported_dtypes = (
                 bigframes.dtypes.INT_DTYPE,
                 bigframes.dtypes.FLOAT_DTYPE,
                 bigframes.dtypes.BOOL_DTYPE,
+                bigframes.dtypes.BYTES_DTYPE,
                 bigframes.dtypes.STRING_DTYPE,
             )
             supported_dtypes_types = tuple(
-                type(dtype) for dtype in remote_function_supported_dtypes
+                type(dtype)
+                for dtype in remote_function_supported_dtypes
+                if not isinstance(dtype, pandas.ArrowDtype)
+            )
+            # Check ArrowDtype separately since multiple BigQuery types map to
+            # ArrowDtype, including BYTES and TIMESTAMP.
+            supported_arrow_types = tuple(
+                dtype.pyarrow_dtype
+                for dtype in remote_function_supported_dtypes
+                if isinstance(dtype, pandas.ArrowDtype)
             )
             supported_dtypes_hints = tuple(
                 str(dtype) for dtype in remote_function_supported_dtypes
             )
 
             for dtype in self.dtypes:
-                if not isinstance(dtype, supported_dtypes_types):
+                if (
+                    # Not one of the pandas/numpy types.
+                    not isinstance(dtype, supported_dtypes_types)
+                    # And not one of the arrow types.
+                    and not (
+                        isinstance(dtype, pandas.ArrowDtype)
+                        and any(
+                            dtype.pyarrow_dtype.equals(arrow_type)
+                            for arrow_type in supported_arrow_types
+                        )
+                    )
+                ):
                     raise NotImplementedError(
                         f"DataFrame has a column of dtype '{dtype}' which is not supported with axis=1."
                         f" Supported dtypes are {supported_dtypes_hints}."

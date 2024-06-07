@@ -96,6 +96,12 @@ def cast_as_string(column_name: str) -> str:
     return f"CAST({identifier(column_name)} AS STRING)"
 
 
+def to_json_string(column_name: str) -> str:
+    """Return a string representing JSON version of a column."""
+
+    return f"TO_JSON_STRING({identifier(column_name)})"
+
+
 def csv(values: Iterable[str]) -> str:
     """Return a string of comma separated values."""
     return ", ".join(values)

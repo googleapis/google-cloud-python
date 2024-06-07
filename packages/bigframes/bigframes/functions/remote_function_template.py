@@ -18,6 +18,7 @@ import inspect
 import logging
 import os
 import textwrap
+from typing import Tuple
 
 import cloudpickle
 
@@ -29,9 +30,45 @@ logger = logging.getLogger(__name__)
 _pickle_protocol_version = 4
 
 
+# Placeholder variables for testing.
+input_types = ("STRING",)
+output_type = "STRING"
+
+
+# Convert inputs to BigQuery JSON. See:
+# https://cloud.google.com/bigquery/docs/remote-functions#json_encoding_of_sql_data_type
+# and
+# https://cloud.google.com/bigquery/docs/reference/standard-sql/json_functions#to_json_string
+def convert_call(input_types, call):
+    for type_, arg in zip(input_types, call):
+        yield convert_from_bq_json(type_, arg)
+
+
+def convert_from_bq_json(type_, arg):
+    import base64
+    import collections
+
+    converters = collections.defaultdict(lambda: (lambda value: value))  # type: ignore
+    converters["BYTES"] = base64.b64decode
+    converter = converters[type_]
+    return converter(arg) if arg is not None else None
+
+
+def convert_to_bq_json(type_, arg):
+    import base64
+    import collections
+
+    converters = collections.defaultdict(lambda: (lambda value: value))  # type: ignore
+    converters["BYTES"] = lambda value: base64.b64encode(value).decode("utf-8")
+    converter = converters[type_]
+    return converter(arg) if arg is not None else None
+
+
 # get_pd_series is the inverse of Block._get_rows_as_json_values
+# NOTE: Keep in sync with the list of supported types in DataFrame.apply.
 def get_pd_series(row):
     import ast
+    import base64
     import json
     from typing import Callable, cast
 
@@ -65,6 +102,7 @@ def get_pd_series(row):
         "Int64": int,
         "Float64": float,
         "string": str,
+        "binary[pyarrow]": base64.b64decode,
     }
 
     def convert_value(value, value_type):
@@ -117,7 +155,9 @@ def udf(*args):
 # }
 # https://cloud.google.com/bigquery/docs/reference/standard-sql/remote-functions#input_format
 def udf_http(request):
+    global input_types, output_type
     import json
+    import traceback
 
     from flask import jsonify
 
@@ -126,17 +166,21 @@ def udf_http(request):
         calls = request_json["calls"]
         replies = []
         for call in calls:
-            reply = udf(*call)
+            reply = convert_to_bq_json(
+                output_type, udf(*convert_call(input_types, call))
+            )
             replies.append(reply)
         return_json = json.dumps({"replies": replies})
         return return_json
-    except Exception as e:
-        return jsonify({"errorMessage": str(e)}), 400
+    except Exception:
+        return jsonify({"errorMessage": traceback.format_exc()}), 400
 
 
 def udf_http_row_processor(request):
+    global output_type
     import json
     import math
+    import traceback
 
     from flask import jsonify
     import pandas as pd
@@ -146,7 +190,7 @@ def udf_http_row_processor(request):
         calls = request_json["calls"]
         replies = []
         for call in calls:
-            reply = udf(get_pd_series(call[0]))
+            reply = convert_to_bq_json(output_type, udf(get_pd_series(call[0])))
             if isinstance(reply, float) and (math.isnan(reply) or math.isinf(reply)):
                 # json serialization of the special float values (nan, inf, -inf)
                 # is not in strict compliance of the JSON specification
@@ -166,8 +210,8 @@ def udf_http_row_processor(request):
             replies.append(reply)
         return_json = json.dumps({"replies": replies})
         return return_json
-    except Exception as e:
-        return jsonify({"errorMessage": str(e)}), 400
+    except Exception:
+        return jsonify({"errorMessage": traceback.format_exc()}), 400
 
 
 def generate_udf_code(def_, directory):
@@ -190,8 +234,22 @@ def generate_udf_code(def_, directory):
     return udf_code_file_name, udf_bytecode_file_name
 
 
-def generate_cloud_function_main_code(def_, directory, is_row_processor=False):
-    """Get main.py code for the cloud function for the given user defined function."""
+def generate_cloud_function_main_code(
+    def_,
+    directory,
+    *,
+    input_types: Tuple[str],
+    output_type: str,
+    is_row_processor=False,
+):
+    """Get main.py code for the cloud function for the given user defined function.
+
+    Args:
+        input_types (tuple[str]):
+            Types of the input arguments in BigQuery SQL data type names.
+        output_type (str):
+            Types of the output scalar as a BigQuery SQL data type name.
+    """
 
     # Pickle the udf with all its dependencies
     udf_code_file, udf_bytecode_file = generate_udf_code(def_, directory)
@@ -204,14 +262,22 @@ import cloudpickle
 # serialized udf code is in {udf_bytecode_file}
 with open("{udf_bytecode_file}", "rb") as f:
     udf = cloudpickle.load(f)
+
+input_types = {repr(input_types)}
+output_type = {repr(output_type)}
 """
     ]
+
+    # For converting scalar outputs to the correct type.
+    code_blocks.append(inspect.getsource(convert_to_bq_json))
 
     if is_row_processor:
         code_blocks.append(inspect.getsource(get_pd_series))
         handler_func_name = "udf_http_row_processor"
         code_blocks.append(inspect.getsource(udf_http_row_processor))
     else:
+        code_blocks.append(inspect.getsource(convert_call))
+        code_blocks.append(inspect.getsource(convert_from_bq_json))
         handler_func_name = "udf_http"
         code_blocks.append(inspect.getsource(udf_http))
 

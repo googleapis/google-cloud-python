@@ -383,11 +383,12 @@ def bf_type_from_type_kind(bf_schema) -> Dict[str, Dtype]:
 # Input and output types supported by BigQuery DataFrames remote functions.
 # TODO(shobs): Extend the support to all types supported by BQ remote functions
 # https://cloud.google.com/bigquery/docs/remote-functions#limitations
-RF_SUPPORTED_IO_PYTHON_TYPES = {bool, float, int, str}
+RF_SUPPORTED_IO_PYTHON_TYPES = {bool, bytes, float, int, str}
 
 RF_SUPPORTED_IO_BIGQUERY_TYPEKINDS = {
     "BOOLEAN",
     "BOOL",
+    "BYTES",
     "FLOAT",
     "FLOAT64",
     "INT64",

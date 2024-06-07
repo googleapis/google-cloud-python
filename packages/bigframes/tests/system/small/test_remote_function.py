@@ -17,6 +17,7 @@ import re
 import google.api_core.exceptions
 from google.cloud import bigquery
 import pandas as pd
+import pyarrow
 import pytest
 
 import bigframes
@@ -80,7 +81,7 @@ def session_with_bq_connection(
     bq_cf_connection, dataset_id_permanent
 ) -> bigframes.Session:
     session = bigframes.Session(
-        bigframes.BigQueryOptions(bq_connection=bq_cf_connection)
+        bigframes.BigQueryOptions(bq_connection=bq_cf_connection, location="US")
     )
     return session
 
@@ -484,17 +485,27 @@ def test_dataframe_applymap_na_ignore(session_with_bq_connection, scalars_dfs):
 
 
 @pytest.mark.flaky(retries=2, delay=120)
-def test_series_map(session_with_bq_connection, scalars_dfs):
-    def add_one(x):
-        return x + 1
-
-    remote_add_one = session_with_bq_connection.remote_function([int], int)(add_one)
-
+def test_series_map_bytes(session_with_bq_connection, scalars_dfs):
+    """Check that bytes is support as input and output."""
     scalars_df, scalars_pandas_df = scalars_dfs
 
-    bf_result = scalars_df.int64_too.map(remote_add_one).to_pandas()
-    pd_result = scalars_pandas_df.int64_too.map(add_one)
-    pd_result = pd_result.astype("Int64")  # pandas type differences
+    def bytes_to_hex(mybytes: bytes) -> bytes:
+        import pandas
+
+        return mybytes.hex().encode("utf-8") if pandas.notna(mybytes) else None  # type: ignore
+
+    # TODO(b/345516010): the type: ignore is because "Optional" not yet
+    # supported as a type annotation in @remote_function().
+    assert bytes_to_hex(None) is None  # type: ignore
+    assert bytes_to_hex(b"\x00\xdd\xba\x11") == b"00ddba11"
+    pd_result = scalars_pandas_df.bytes_col.map(bytes_to_hex).astype(
+        pd.ArrowDtype(pyarrow.binary())
+    )
+
+    remote_bytes_to_hex = session_with_bq_connection.remote_function(
+        packages=["pandas"]
+    )(bytes_to_hex)
+    bf_result = scalars_df.bytes_col.map(remote_bytes_to_hex).to_pandas()
 
     pd.testing.assert_series_equal(
         bf_result,
@@ -733,7 +744,14 @@ def test_read_gbq_function_enforces_explicit_types(
 
 @pytest.mark.flaky(retries=2, delay=120)
 def test_df_apply_axis_1(session, scalars_dfs):
-    columns = ["bool_col", "int64_col", "int64_too", "float64_col", "string_col"]
+    columns = [
+        "bool_col",
+        "int64_col",
+        "int64_too",
+        "float64_col",
+        "string_col",
+        "bytes_col",
+    ]
     scalars_df, scalars_pandas_df = scalars_dfs
 
     def add_ints(row):
@@ -743,9 +761,10 @@ def test_df_apply_axis_1(session, scalars_dfs):
         bigframes.exceptions.PreviewWarning,
         match="input_types=Series is in preview.",
     ):
-        add_ints_remote = session.remote_function(bigframes.series.Series, int)(
-            add_ints
-        )
+        add_ints_remote = session.remote_function(
+            bigframes.series.Series,
+            int,
+        )(add_ints)
 
     with pytest.warns(
         bigframes.exceptions.PreviewWarning, match="axis=1 scenario is in preview."
@@ -843,7 +862,6 @@ def test_df_apply_axis_1_unsupported_callable(scalars_dfs):
 @pytest.mark.parametrize(
     ("column"),
     [
-        pytest.param("bytes_col"),
         pytest.param("date_col"),
         pytest.param("datetime_col"),
         pytest.param("geography_col"),
@@ -868,7 +886,9 @@ def test_df_apply_axis_1_unsupported_dtype(scalars_dfs, column):
     with pytest.raises(
         NotImplementedError,
         match=re.escape(
-            f"DataFrame has a column of dtype '{dtype}' which is not supported with axis=1. Supported dtypes are ('Int64', 'Float64', 'boolean', 'string')."
+            f"DataFrame has a column of dtype '{dtype}' which is not supported with axis=1. Supported dtypes are ("
         ),
+    ), pytest.warns(
+        bigframes.exceptions.PreviewWarning, match="axis=1 scenario is in preview."
     ):
         scalars_df[[column]].apply(echo, axis=1)
