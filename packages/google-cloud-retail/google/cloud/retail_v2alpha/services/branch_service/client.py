@@ -48,49 +48,35 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
-from google.api_core import operation  # type: ignore
-from google.api_core import operation_async  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 
-from google.cloud.retail_v2alpha.types import (
-    merchant_center_account_link as gcr_merchant_center_account_link,
-)
-from google.cloud.retail_v2alpha.types import merchant_center_account_link_service
-from google.cloud.retail_v2alpha.types import merchant_center_account_link
+from google.cloud.retail_v2alpha.types import branch, branch_service
 
-from .transports.base import (
-    DEFAULT_CLIENT_INFO,
-    MerchantCenterAccountLinkServiceTransport,
-)
-from .transports.grpc import MerchantCenterAccountLinkServiceGrpcTransport
-from .transports.grpc_asyncio import (
-    MerchantCenterAccountLinkServiceGrpcAsyncIOTransport,
-)
-from .transports.rest import MerchantCenterAccountLinkServiceRestTransport
+from .transports.base import DEFAULT_CLIENT_INFO, BranchServiceTransport
+from .transports.grpc import BranchServiceGrpcTransport
+from .transports.grpc_asyncio import BranchServiceGrpcAsyncIOTransport
+from .transports.rest import BranchServiceRestTransport
 
 
-class MerchantCenterAccountLinkServiceClientMeta(type):
-    """Metaclass for the MerchantCenterAccountLinkService client.
+class BranchServiceClientMeta(type):
+    """Metaclass for the BranchService client.
 
     This provides class-level methods for building and retrieving
     support objects (e.g. transport) without polluting the client instance
     objects.
     """
 
-    _transport_registry = (
-        OrderedDict()
-    )  # type: Dict[str, Type[MerchantCenterAccountLinkServiceTransport]]
-    _transport_registry["grpc"] = MerchantCenterAccountLinkServiceGrpcTransport
-    _transport_registry[
-        "grpc_asyncio"
-    ] = MerchantCenterAccountLinkServiceGrpcAsyncIOTransport
-    _transport_registry["rest"] = MerchantCenterAccountLinkServiceRestTransport
+    _transport_registry = OrderedDict()  # type: Dict[str, Type[BranchServiceTransport]]
+    _transport_registry["grpc"] = BranchServiceGrpcTransport
+    _transport_registry["grpc_asyncio"] = BranchServiceGrpcAsyncIOTransport
+    _transport_registry["rest"] = BranchServiceRestTransport
 
     def get_transport_class(
         cls,
         label: Optional[str] = None,
-    ) -> Type[MerchantCenterAccountLinkServiceTransport]:
+    ) -> Type[BranchServiceTransport]:
         """Returns an appropriate transport class.
 
         Args:
@@ -109,11 +95,14 @@ class MerchantCenterAccountLinkServiceClientMeta(type):
         return next(iter(cls._transport_registry.values()))
 
 
-class MerchantCenterAccountLinkServiceClient(
-    metaclass=MerchantCenterAccountLinkServiceClientMeta
-):
-    """Merchant Center Link service to link a Branch to a Merchant
-    Center Account.
+class BranchServiceClient(metaclass=BranchServiceClientMeta):
+    """Service for [Branch][google.cloud.retail.v2alpha.Branch] Management
+
+    [Branch][google.cloud.retail.v2alpha.Branch]es are automatically
+    created when a [Catalog][google.cloud.retail.v2alpha.Catalog] is
+    created. There are fixed three branches in each catalog, and may use
+    [ListBranches][google.cloud.retail.v2alpha.BranchService.ListBranches]
+    method to get the details of all branches.
     """
 
     @staticmethod
@@ -166,7 +155,7 @@ class MerchantCenterAccountLinkServiceClient(
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            MerchantCenterAccountLinkServiceClient: The constructed client.
+            BranchServiceClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_info(info)
         kwargs["credentials"] = credentials
@@ -184,7 +173,7 @@ class MerchantCenterAccountLinkServiceClient(
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            MerchantCenterAccountLinkServiceClient: The constructed client.
+            BranchServiceClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_file(filename)
         kwargs["credentials"] = credentials
@@ -193,14 +182,38 @@ class MerchantCenterAccountLinkServiceClient(
     from_service_account_json = from_service_account_file
 
     @property
-    def transport(self) -> MerchantCenterAccountLinkServiceTransport:
+    def transport(self) -> BranchServiceTransport:
         """Returns the transport used by the client instance.
 
         Returns:
-            MerchantCenterAccountLinkServiceTransport: The transport used by the client
+            BranchServiceTransport: The transport used by the client
                 instance.
         """
         return self._transport
+
+    @staticmethod
+    def branch_path(
+        project: str,
+        location: str,
+        catalog: str,
+        branch: str,
+    ) -> str:
+        """Returns a fully-qualified branch string."""
+        return "projects/{project}/locations/{location}/catalogs/{catalog}/branches/{branch}".format(
+            project=project,
+            location=location,
+            catalog=catalog,
+            branch=branch,
+        )
+
+    @staticmethod
+    def parse_branch_path(path: str) -> Dict[str, str]:
+        """Parses a branch path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/catalogs/(?P<catalog>.+?)/branches/(?P<branch>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
 
     @staticmethod
     def catalog_path(
@@ -225,25 +238,27 @@ class MerchantCenterAccountLinkServiceClient(
         return m.groupdict() if m else {}
 
     @staticmethod
-    def merchant_center_account_link_path(
+    def product_path(
         project: str,
         location: str,
         catalog: str,
-        merchant_center_account_link: str,
+        branch: str,
+        product: str,
     ) -> str:
-        """Returns a fully-qualified merchant_center_account_link string."""
-        return "projects/{project}/locations/{location}/catalogs/{catalog}/merchantCenterAccountLinks/{merchant_center_account_link}".format(
+        """Returns a fully-qualified product string."""
+        return "projects/{project}/locations/{location}/catalogs/{catalog}/branches/{branch}/products/{product}".format(
             project=project,
             location=location,
             catalog=catalog,
-            merchant_center_account_link=merchant_center_account_link,
+            branch=branch,
+            product=product,
         )
 
     @staticmethod
-    def parse_merchant_center_account_link_path(path: str) -> Dict[str, str]:
-        """Parses a merchant_center_account_link path into its component segments."""
+    def parse_product_path(path: str) -> Dict[str, str]:
+        """Parses a product path into its component segments."""
         m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/catalogs/(?P<catalog>.+?)/merchantCenterAccountLinks/(?P<merchant_center_account_link>.+?)$",
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/catalogs/(?P<catalog>.+?)/branches/(?P<branch>.+?)/products/(?P<product>.+?)$",
             path,
         )
         return m.groupdict() if m else {}
@@ -467,14 +482,14 @@ class MerchantCenterAccountLinkServiceClient(
         elif use_mtls_endpoint == "always" or (
             use_mtls_endpoint == "auto" and client_cert_source
         ):
-            _default_universe = MerchantCenterAccountLinkServiceClient._DEFAULT_UNIVERSE
+            _default_universe = BranchServiceClient._DEFAULT_UNIVERSE
             if universe_domain != _default_universe:
                 raise MutualTLSChannelError(
                     f"mTLS is not supported in any universe other than {_default_universe}."
                 )
-            api_endpoint = MerchantCenterAccountLinkServiceClient.DEFAULT_MTLS_ENDPOINT
+            api_endpoint = BranchServiceClient.DEFAULT_MTLS_ENDPOINT
         else:
-            api_endpoint = MerchantCenterAccountLinkServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
+            api_endpoint = BranchServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
                 UNIVERSE_DOMAIN=universe_domain
             )
         return api_endpoint
@@ -495,7 +510,7 @@ class MerchantCenterAccountLinkServiceClient(
         Raises:
             ValueError: If the universe domain is an empty string.
         """
-        universe_domain = MerchantCenterAccountLinkServiceClient._DEFAULT_UNIVERSE
+        universe_domain = BranchServiceClient._DEFAULT_UNIVERSE
         if client_universe_domain is not None:
             universe_domain = client_universe_domain
         elif universe_domain_env is not None:
@@ -521,7 +536,7 @@ class MerchantCenterAccountLinkServiceClient(
             ValueError: when client_universe does not match the universe in credentials.
         """
 
-        default_universe = MerchantCenterAccountLinkServiceClient._DEFAULT_UNIVERSE
+        default_universe = BranchServiceClient._DEFAULT_UNIVERSE
         credentials_universe = getattr(credentials, "universe_domain", default_universe)
 
         if client_universe != credentials_universe:
@@ -545,7 +560,7 @@ class MerchantCenterAccountLinkServiceClient(
         """
         self._is_universe_domain_valid = (
             self._is_universe_domain_valid
-            or MerchantCenterAccountLinkServiceClient._compare_universes(
+            or BranchServiceClient._compare_universes(
                 self.universe_domain, self.transport._credentials
             )
         )
@@ -574,16 +589,12 @@ class MerchantCenterAccountLinkServiceClient(
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
         transport: Optional[
-            Union[
-                str,
-                MerchantCenterAccountLinkServiceTransport,
-                Callable[..., MerchantCenterAccountLinkServiceTransport],
-            ]
+            Union[str, BranchServiceTransport, Callable[..., BranchServiceTransport]]
         ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
-        """Instantiates the merchant center account link service client.
+        """Instantiates the branch service client.
 
         Args:
             credentials (Optional[google.auth.credentials.Credentials]): The
@@ -591,10 +602,10 @@ class MerchantCenterAccountLinkServiceClient(
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Optional[Union[str,MerchantCenterAccountLinkServiceTransport,Callable[..., MerchantCenterAccountLinkServiceTransport]]]):
+            transport (Optional[Union[str,BranchServiceTransport,Callable[..., BranchServiceTransport]]]):
                 The transport to use, or a Callable that constructs and returns a new transport.
                 If a Callable is given, it will be called with the same set of initialization
-                arguments as used in the MerchantCenterAccountLinkServiceTransport constructor.
+                arguments as used in the BranchServiceTransport constructor.
                 If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
@@ -647,16 +658,12 @@ class MerchantCenterAccountLinkServiceClient(
             self._use_client_cert,
             self._use_mtls_endpoint,
             self._universe_domain_env,
-        ) = MerchantCenterAccountLinkServiceClient._read_environment_variables()
-        self._client_cert_source = (
-            MerchantCenterAccountLinkServiceClient._get_client_cert_source(
-                self._client_options.client_cert_source, self._use_client_cert
-            )
+        ) = BranchServiceClient._read_environment_variables()
+        self._client_cert_source = BranchServiceClient._get_client_cert_source(
+            self._client_options.client_cert_source, self._use_client_cert
         )
-        self._universe_domain = (
-            MerchantCenterAccountLinkServiceClient._get_universe_domain(
-                universe_domain_opt, self._universe_domain_env
-            )
+        self._universe_domain = BranchServiceClient._get_universe_domain(
+            universe_domain_opt, self._universe_domain_env
         )
         self._api_endpoint = None  # updated below, depending on `transport`
 
@@ -672,11 +679,9 @@ class MerchantCenterAccountLinkServiceClient(
         # Save or instantiate the transport.
         # Ordinarily, we provide the transport, but allowing a custom transport
         # instance provides an extensibility point for unusual situations.
-        transport_provided = isinstance(
-            transport, MerchantCenterAccountLinkServiceTransport
-        )
+        transport_provided = isinstance(transport, BranchServiceTransport)
         if transport_provided:
-            # transport is a MerchantCenterAccountLinkServiceTransport instance.
+            # transport is a BranchServiceTransport instance.
             if credentials or self._client_options.credentials_file or api_key_value:
                 raise ValueError(
                     "When providing a transport instance, "
@@ -687,12 +692,12 @@ class MerchantCenterAccountLinkServiceClient(
                     "When providing a transport instance, provide its scopes "
                     "directly."
                 )
-            self._transport = cast(MerchantCenterAccountLinkServiceTransport, transport)
+            self._transport = cast(BranchServiceTransport, transport)
             self._api_endpoint = self._transport.host
 
         self._api_endpoint = (
             self._api_endpoint
-            or MerchantCenterAccountLinkServiceClient._get_api_endpoint(
+            or BranchServiceClient._get_api_endpoint(
                 self._client_options.api_endpoint,
                 self._client_cert_source,
                 self._universe_domain,
@@ -711,14 +716,11 @@ class MerchantCenterAccountLinkServiceClient(
                 )
 
             transport_init: Union[
-                Type[MerchantCenterAccountLinkServiceTransport],
-                Callable[..., MerchantCenterAccountLinkServiceTransport],
+                Type[BranchServiceTransport], Callable[..., BranchServiceTransport]
             ] = (
                 type(self).get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
-                else cast(
-                    Callable[..., MerchantCenterAccountLinkServiceTransport], transport
-                )
+                else cast(Callable[..., BranchServiceTransport], transport)
             )
             # initialize with the provided callable or the passed in class
             self._transport = transport_init(
@@ -733,23 +735,17 @@ class MerchantCenterAccountLinkServiceClient(
                 api_audience=self._client_options.api_audience,
             )
 
-    def list_merchant_center_account_links(
+    def list_branches(
         self,
-        request: Optional[
-            Union[
-                merchant_center_account_link_service.ListMerchantCenterAccountLinksRequest,
-                dict,
-            ]
-        ] = None,
+        request: Optional[Union[branch_service.ListBranchesRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> merchant_center_account_link_service.ListMerchantCenterAccountLinksResponse:
-        r"""Lists all
-        [MerchantCenterAccountLink][google.cloud.retail.v2alpha.MerchantCenterAccountLink]s
-        under the specified parent
+    ) -> branch_service.ListBranchesResponse:
+        r"""Lists all [Branch][google.cloud.retail.v2alpha.Branch]s under
+        the specified parent
         [Catalog][google.cloud.retail.v2alpha.Catalog].
 
         .. code-block:: python
@@ -763,30 +759,29 @@ class MerchantCenterAccountLinkServiceClient(
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import retail_v2alpha
 
-            def sample_list_merchant_center_account_links():
+            def sample_list_branches():
                 # Create a client
-                client = retail_v2alpha.MerchantCenterAccountLinkServiceClient()
+                client = retail_v2alpha.BranchServiceClient()
 
                 # Initialize request argument(s)
-                request = retail_v2alpha.ListMerchantCenterAccountLinksRequest(
+                request = retail_v2alpha.ListBranchesRequest(
                     parent="parent_value",
                 )
 
                 # Make the request
-                response = client.list_merchant_center_account_links(request=request)
+                response = client.list_branches(request=request)
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.retail_v2alpha.types.ListMerchantCenterAccountLinksRequest, dict]):
+            request (Union[google.cloud.retail_v2alpha.types.ListBranchesRequest, dict]):
                 The request object. Request for
-                [MerchantCenterAccountLinkService.ListMerchantCenterAccountLinks][google.cloud.retail.v2alpha.MerchantCenterAccountLinkService.ListMerchantCenterAccountLinks]
+                [BranchService.ListBranches][google.cloud.retail.v2alpha.BranchService.ListBranches]
                 method.
             parent (str):
-                Required. The parent Catalog of the resource. It must
-                match this format:
-                ``projects/{PROJECT_NUMBER}/locations/global/catalogs/{CATALOG_ID}``
+                Required. The parent catalog resource
+                name.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -798,9 +793,9 @@ class MerchantCenterAccountLinkServiceClient(
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.retail_v2alpha.types.ListMerchantCenterAccountLinksResponse:
+            google.cloud.retail_v2alpha.types.ListBranchesResponse:
                 Response for
-                   [MerchantCenterAccountLinkService.ListMerchantCenterAccountLinks][google.cloud.retail.v2alpha.MerchantCenterAccountLinkService.ListMerchantCenterAccountLinks]
+                   [BranchService.ListBranches][google.cloud.retail.v2alpha.BranchService.ListBranches]
                    method.
 
         """
@@ -816,13 +811,8 @@ class MerchantCenterAccountLinkServiceClient(
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request,
-            merchant_center_account_link_service.ListMerchantCenterAccountLinksRequest,
-        ):
-            request = merchant_center_account_link_service.ListMerchantCenterAccountLinksRequest(
-                request
-            )
+        if not isinstance(request, branch_service.ListBranchesRequest):
+            request = branch_service.ListBranchesRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             if parent is not None:
@@ -830,9 +820,7 @@ class MerchantCenterAccountLinkServiceClient(
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.list_merchant_center_account_links
-        ]
+        rpc = self._transport._wrapped_methods[self._transport.list_branches]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -854,182 +842,16 @@ class MerchantCenterAccountLinkServiceClient(
         # Done; return the response.
         return response
 
-    def create_merchant_center_account_link(
+    def get_branch(
         self,
-        request: Optional[
-            Union[
-                merchant_center_account_link_service.CreateMerchantCenterAccountLinkRequest,
-                dict,
-            ]
-        ] = None,
-        *,
-        parent: Optional[str] = None,
-        merchant_center_account_link: Optional[
-            gcr_merchant_center_account_link.MerchantCenterAccountLink
-        ] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> operation.Operation:
-        r"""Creates a
-        [MerchantCenterAccountLink][google.cloud.retail.v2alpha.MerchantCenterAccountLink].
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import retail_v2alpha
-
-            def sample_create_merchant_center_account_link():
-                # Create a client
-                client = retail_v2alpha.MerchantCenterAccountLinkServiceClient()
-
-                # Initialize request argument(s)
-                merchant_center_account_link = retail_v2alpha.MerchantCenterAccountLink()
-                merchant_center_account_link.merchant_center_account_id = 2730
-                merchant_center_account_link.branch_id = "branch_id_value"
-
-                request = retail_v2alpha.CreateMerchantCenterAccountLinkRequest(
-                    parent="parent_value",
-                    merchant_center_account_link=merchant_center_account_link,
-                )
-
-                # Make the request
-                operation = client.create_merchant_center_account_link(request=request)
-
-                print("Waiting for operation to complete...")
-
-                response = operation.result()
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Union[google.cloud.retail_v2alpha.types.CreateMerchantCenterAccountLinkRequest, dict]):
-                The request object. Request for
-                [MerchantCenterAccountLinkService.CreateMerchantCenterAccountLink][google.cloud.retail.v2alpha.MerchantCenterAccountLinkService.CreateMerchantCenterAccountLink]
-                method.
-            parent (str):
-                Required. The branch resource where this
-                MerchantCenterAccountLink will be created. Format:
-                ``projects/{PROJECT_NUMBER}/locations/global/catalogs/{CATALOG_ID}``
-
-                This corresponds to the ``parent`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            merchant_center_account_link (google.cloud.retail_v2alpha.types.MerchantCenterAccountLink):
-                Required. The
-                [MerchantCenterAccountLink][google.cloud.retail.v2alpha.MerchantCenterAccountLink]
-                to create.
-
-                If the caller does not have permission to create the
-                [MerchantCenterAccountLink][google.cloud.retail.v2alpha.MerchantCenterAccountLink],
-                regardless of whether or not it exists, a
-                PERMISSION_DENIED error is returned.
-
-                This corresponds to the ``merchant_center_account_link`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.api_core.operation.Operation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be :class:`google.cloud.retail_v2alpha.types.MerchantCenterAccountLink` Represents a link between a Merchant Center account and a branch.
-                   After a link is established, products from the linked
-                   Merchant Center account are streamed to the linked
-                   branch.
-
-        """
-        # Create or coerce a protobuf request object.
-        # - Quick check: If we got a request object, we should *not* have
-        #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([parent, merchant_center_account_link])
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # - Use the request object if provided (there's no risk of modifying the input as
-        #   there are no flattened fields), or create one.
-        if not isinstance(
-            request,
-            merchant_center_account_link_service.CreateMerchantCenterAccountLinkRequest,
-        ):
-            request = merchant_center_account_link_service.CreateMerchantCenterAccountLinkRequest(
-                request
-            )
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if parent is not None:
-                request.parent = parent
-            if merchant_center_account_link is not None:
-                request.merchant_center_account_link = merchant_center_account_link
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.create_merchant_center_account_link
-        ]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
-
-        # Validate the universe domain.
-        self._validate_universe_domain()
-
-        # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Wrap the response in an operation future.
-        response = operation.from_gapic(
-            response,
-            self._transport.operations_client,
-            gcr_merchant_center_account_link.MerchantCenterAccountLink,
-            metadata_type=gcr_merchant_center_account_link.CreateMerchantCenterAccountLinkMetadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    def delete_merchant_center_account_link(
-        self,
-        request: Optional[
-            Union[
-                merchant_center_account_link_service.DeleteMerchantCenterAccountLinkRequest,
-                dict,
-            ]
-        ] = None,
+        request: Optional[Union[branch_service.GetBranchRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> None:
-        r"""Deletes a
-        [MerchantCenterAccountLink][google.cloud.retail.v2alpha.MerchantCenterAccountLink].
-        If the
-        [MerchantCenterAccountLink][google.cloud.retail.v2alpha.MerchantCenterAccountLink]
-        to delete does not exist, a NOT_FOUND error is returned.
+    ) -> branch.Branch:
+        r"""Retrieves a [Branch][google.cloud.retail.v2alpha.Branch].
 
         .. code-block:: python
 
@@ -1042,26 +864,33 @@ class MerchantCenterAccountLinkServiceClient(
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import retail_v2alpha
 
-            def sample_delete_merchant_center_account_link():
+            def sample_get_branch():
                 # Create a client
-                client = retail_v2alpha.MerchantCenterAccountLinkServiceClient()
+                client = retail_v2alpha.BranchServiceClient()
 
                 # Initialize request argument(s)
-                request = retail_v2alpha.DeleteMerchantCenterAccountLinkRequest(
+                request = retail_v2alpha.GetBranchRequest(
                     name="name_value",
                 )
 
                 # Make the request
-                client.delete_merchant_center_account_link(request=request)
+                response = client.get_branch(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
-            request (Union[google.cloud.retail_v2alpha.types.DeleteMerchantCenterAccountLinkRequest, dict]):
+            request (Union[google.cloud.retail_v2alpha.types.GetBranchRequest, dict]):
                 The request object. Request for
-                [MerchantCenterAccountLinkService.DeleteMerchantCenterAccountLink][google.cloud.retail.v2alpha.MerchantCenterAccountLinkService.DeleteMerchantCenterAccountLink]
+                [BranchService.GetBranch][google.cloud.retail.v2alpha.BranchService.GetBranch]
                 method.
             name (str):
-                Required. Full resource name. Format:
-                ``projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/merchantCenterAccountLinks/{merchant_center_account_link_id}``
+                Required. The name of the branch to retrieve. Format:
+                ``projects/*/locations/global/catalogs/default_catalog/branches/some_branch_id``.
+
+                "default_branch" can be used as a special branch_id, it
+                returns the default branch that has been set for the
+                catalog.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1071,6 +900,12 @@ class MerchantCenterAccountLinkServiceClient(
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
+
+        Returns:
+            google.cloud.retail_v2alpha.types.Branch:
+                A data branch that stores
+                [Product][google.cloud.retail.v2alpha.Product]s.
+
         """
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
@@ -1084,13 +919,8 @@ class MerchantCenterAccountLinkServiceClient(
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request,
-            merchant_center_account_link_service.DeleteMerchantCenterAccountLinkRequest,
-        ):
-            request = merchant_center_account_link_service.DeleteMerchantCenterAccountLinkRequest(
-                request
-            )
+        if not isinstance(request, branch_service.GetBranchRequest):
+            request = branch_service.GetBranchRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             if name is not None:
@@ -1098,9 +928,7 @@ class MerchantCenterAccountLinkServiceClient(
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.delete_merchant_center_account_link
-        ]
+        rpc = self._transport._wrapped_methods[self._transport.get_branch]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1112,14 +940,17 @@ class MerchantCenterAccountLinkServiceClient(
         self._validate_universe_domain()
 
         # Send the request.
-        rpc(
+        response = rpc(
             request,
             retry=retry,
             timeout=timeout,
             metadata=metadata,
         )
 
-    def __enter__(self) -> "MerchantCenterAccountLinkServiceClient":
+        # Done; return the response.
+        return response
+
+    def __enter__(self) -> "BranchServiceClient":
         return self
 
     def __exit__(self, type, value, traceback):
@@ -1252,4 +1083,4 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
 )
 
 
-__all__ = ("MerchantCenterAccountLinkServiceClient",)
+__all__ = ("BranchServiceClient",)

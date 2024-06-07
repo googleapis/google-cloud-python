@@ -26,9 +26,18 @@ from collections.abc import Iterable
 import json
 import math
 
-from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
+from google.api_core import (
+    future,
+    gapic_v1,
+    grpc_helpers,
+    grpc_helpers_async,
+    operation,
+    operations_v1,
+    path_template,
+)
 from google.api_core import api_core_version, client_options
 from google.api_core import exceptions as core_exceptions
+from google.api_core import operation_async  # type: ignore
 import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
@@ -37,7 +46,6 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import json_format
-from google.protobuf import timestamp_pb2  # type: ignore
 import grpc
 from grpc.experimental import aio
 from proto.marshal.rules import wrappers
@@ -46,16 +54,15 @@ import pytest
 from requests import PreparedRequest, Request, Response
 from requests.sessions import Session
 
-from google.cloud.retail_v2alpha.services.control_service import (
-    ControlServiceAsyncClient,
-    ControlServiceClient,
-    pagers,
+from google.cloud.retail_v2alpha.services.project_service import (
+    ProjectServiceAsyncClient,
+    ProjectServiceClient,
     transports,
 )
 from google.cloud.retail_v2alpha.types import common
-from google.cloud.retail_v2alpha.types import control
-from google.cloud.retail_v2alpha.types import control as gcr_control
-from google.cloud.retail_v2alpha.types import control_service, search_service
+from google.cloud.retail_v2alpha.types import project
+from google.cloud.retail_v2alpha.types import project as gcr_project
+from google.cloud.retail_v2alpha.types import project_service
 
 
 def client_cert_source_callback():
@@ -91,40 +98,40 @@ def test__get_default_mtls_endpoint():
     sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
     non_googleapi = "api.example.com"
 
-    assert ControlServiceClient._get_default_mtls_endpoint(None) is None
+    assert ProjectServiceClient._get_default_mtls_endpoint(None) is None
     assert (
-        ControlServiceClient._get_default_mtls_endpoint(api_endpoint)
+        ProjectServiceClient._get_default_mtls_endpoint(api_endpoint)
         == api_mtls_endpoint
     )
     assert (
-        ControlServiceClient._get_default_mtls_endpoint(api_mtls_endpoint)
+        ProjectServiceClient._get_default_mtls_endpoint(api_mtls_endpoint)
         == api_mtls_endpoint
     )
     assert (
-        ControlServiceClient._get_default_mtls_endpoint(sandbox_endpoint)
+        ProjectServiceClient._get_default_mtls_endpoint(sandbox_endpoint)
         == sandbox_mtls_endpoint
     )
     assert (
-        ControlServiceClient._get_default_mtls_endpoint(sandbox_mtls_endpoint)
+        ProjectServiceClient._get_default_mtls_endpoint(sandbox_mtls_endpoint)
         == sandbox_mtls_endpoint
     )
     assert (
-        ControlServiceClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
+        ProjectServiceClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
     )
 
 
 def test__read_environment_variables():
-    assert ControlServiceClient._read_environment_variables() == (False, "auto", None)
+    assert ProjectServiceClient._read_environment_variables() == (False, "auto", None)
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-        assert ControlServiceClient._read_environment_variables() == (
+        assert ProjectServiceClient._read_environment_variables() == (
             True,
             "auto",
             None,
         )
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
-        assert ControlServiceClient._read_environment_variables() == (
+        assert ProjectServiceClient._read_environment_variables() == (
             False,
             "auto",
             None,
@@ -134,28 +141,28 @@ def test__read_environment_variables():
         os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
     ):
         with pytest.raises(ValueError) as excinfo:
-            ControlServiceClient._read_environment_variables()
+            ProjectServiceClient._read_environment_variables()
     assert (
         str(excinfo.value)
         == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
     )
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
-        assert ControlServiceClient._read_environment_variables() == (
+        assert ProjectServiceClient._read_environment_variables() == (
             False,
             "never",
             None,
         )
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
-        assert ControlServiceClient._read_environment_variables() == (
+        assert ProjectServiceClient._read_environment_variables() == (
             False,
             "always",
             None,
         )
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"}):
-        assert ControlServiceClient._read_environment_variables() == (
+        assert ProjectServiceClient._read_environment_variables() == (
             False,
             "auto",
             None,
@@ -163,14 +170,14 @@ def test__read_environment_variables():
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError) as excinfo:
-            ControlServiceClient._read_environment_variables()
+            ProjectServiceClient._read_environment_variables()
     assert (
         str(excinfo.value)
         == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
     )
 
     with mock.patch.dict(os.environ, {"GOOGLE_CLOUD_UNIVERSE_DOMAIN": "foo.com"}):
-        assert ControlServiceClient._read_environment_variables() == (
+        assert ProjectServiceClient._read_environment_variables() == (
             False,
             "auto",
             "foo.com",
@@ -181,13 +188,13 @@ def test__get_client_cert_source():
     mock_provided_cert_source = mock.Mock()
     mock_default_cert_source = mock.Mock()
 
-    assert ControlServiceClient._get_client_cert_source(None, False) is None
+    assert ProjectServiceClient._get_client_cert_source(None, False) is None
     assert (
-        ControlServiceClient._get_client_cert_source(mock_provided_cert_source, False)
+        ProjectServiceClient._get_client_cert_source(mock_provided_cert_source, False)
         is None
     )
     assert (
-        ControlServiceClient._get_client_cert_source(mock_provided_cert_source, True)
+        ProjectServiceClient._get_client_cert_source(mock_provided_cert_source, True)
         == mock_provided_cert_source
     )
 
@@ -199,11 +206,11 @@ def test__get_client_cert_source():
             return_value=mock_default_cert_source,
         ):
             assert (
-                ControlServiceClient._get_client_cert_source(None, True)
+                ProjectServiceClient._get_client_cert_source(None, True)
                 is mock_default_cert_source
             )
             assert (
-                ControlServiceClient._get_client_cert_source(
+                ProjectServiceClient._get_client_cert_source(
                     mock_provided_cert_source, "true"
                 )
                 is mock_provided_cert_source
@@ -211,64 +218,64 @@ def test__get_client_cert_source():
 
 
 @mock.patch.object(
-    ControlServiceClient,
+    ProjectServiceClient,
     "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(ControlServiceClient),
+    modify_default_endpoint_template(ProjectServiceClient),
 )
 @mock.patch.object(
-    ControlServiceAsyncClient,
+    ProjectServiceAsyncClient,
     "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(ControlServiceAsyncClient),
+    modify_default_endpoint_template(ProjectServiceAsyncClient),
 )
 def test__get_api_endpoint():
     api_override = "foo.com"
     mock_client_cert_source = mock.Mock()
-    default_universe = ControlServiceClient._DEFAULT_UNIVERSE
-    default_endpoint = ControlServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
+    default_universe = ProjectServiceClient._DEFAULT_UNIVERSE
+    default_endpoint = ProjectServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
         UNIVERSE_DOMAIN=default_universe
     )
     mock_universe = "bar.com"
-    mock_endpoint = ControlServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
+    mock_endpoint = ProjectServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
         UNIVERSE_DOMAIN=mock_universe
     )
 
     assert (
-        ControlServiceClient._get_api_endpoint(
+        ProjectServiceClient._get_api_endpoint(
             api_override, mock_client_cert_source, default_universe, "always"
         )
         == api_override
     )
     assert (
-        ControlServiceClient._get_api_endpoint(
+        ProjectServiceClient._get_api_endpoint(
             None, mock_client_cert_source, default_universe, "auto"
         )
-        == ControlServiceClient.DEFAULT_MTLS_ENDPOINT
+        == ProjectServiceClient.DEFAULT_MTLS_ENDPOINT
     )
     assert (
-        ControlServiceClient._get_api_endpoint(None, None, default_universe, "auto")
+        ProjectServiceClient._get_api_endpoint(None, None, default_universe, "auto")
         == default_endpoint
     )
     assert (
-        ControlServiceClient._get_api_endpoint(None, None, default_universe, "always")
-        == ControlServiceClient.DEFAULT_MTLS_ENDPOINT
+        ProjectServiceClient._get_api_endpoint(None, None, default_universe, "always")
+        == ProjectServiceClient.DEFAULT_MTLS_ENDPOINT
     )
     assert (
-        ControlServiceClient._get_api_endpoint(
+        ProjectServiceClient._get_api_endpoint(
             None, mock_client_cert_source, default_universe, "always"
         )
-        == ControlServiceClient.DEFAULT_MTLS_ENDPOINT
+        == ProjectServiceClient.DEFAULT_MTLS_ENDPOINT
     )
     assert (
-        ControlServiceClient._get_api_endpoint(None, None, mock_universe, "never")
+        ProjectServiceClient._get_api_endpoint(None, None, mock_universe, "never")
         == mock_endpoint
     )
     assert (
-        ControlServiceClient._get_api_endpoint(None, None, default_universe, "never")
+        ProjectServiceClient._get_api_endpoint(None, None, default_universe, "never")
         == default_endpoint
     )
 
     with pytest.raises(MutualTLSChannelError) as excinfo:
-        ControlServiceClient._get_api_endpoint(
+        ProjectServiceClient._get_api_endpoint(
             None, mock_client_cert_source, mock_universe, "auto"
         )
     assert (
@@ -282,30 +289,30 @@ def test__get_universe_domain():
     universe_domain_env = "bar.com"
 
     assert (
-        ControlServiceClient._get_universe_domain(
+        ProjectServiceClient._get_universe_domain(
             client_universe_domain, universe_domain_env
         )
         == client_universe_domain
     )
     assert (
-        ControlServiceClient._get_universe_domain(None, universe_domain_env)
+        ProjectServiceClient._get_universe_domain(None, universe_domain_env)
         == universe_domain_env
     )
     assert (
-        ControlServiceClient._get_universe_domain(None, None)
-        == ControlServiceClient._DEFAULT_UNIVERSE
+        ProjectServiceClient._get_universe_domain(None, None)
+        == ProjectServiceClient._DEFAULT_UNIVERSE
     )
 
     with pytest.raises(ValueError) as excinfo:
-        ControlServiceClient._get_universe_domain("", None)
+        ProjectServiceClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
 
 
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name",
     [
-        (ControlServiceClient, transports.ControlServiceGrpcTransport, "grpc"),
-        (ControlServiceClient, transports.ControlServiceRestTransport, "rest"),
+        (ProjectServiceClient, transports.ProjectServiceGrpcTransport, "grpc"),
+        (ProjectServiceClient, transports.ProjectServiceRestTransport, "rest"),
     ],
 )
 def test__validate_universe_domain(client_class, transport_class, transport_name):
@@ -384,12 +391,12 @@ def test__validate_universe_domain(client_class, transport_class, transport_name
 @pytest.mark.parametrize(
     "client_class,transport_name",
     [
-        (ControlServiceClient, "grpc"),
-        (ControlServiceAsyncClient, "grpc_asyncio"),
-        (ControlServiceClient, "rest"),
+        (ProjectServiceClient, "grpc"),
+        (ProjectServiceAsyncClient, "grpc_asyncio"),
+        (ProjectServiceClient, "rest"),
     ],
 )
-def test_control_service_client_from_service_account_info(client_class, transport_name):
+def test_project_service_client_from_service_account_info(client_class, transport_name):
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
         service_account.Credentials, "from_service_account_info"
@@ -410,12 +417,12 @@ def test_control_service_client_from_service_account_info(client_class, transpor
 @pytest.mark.parametrize(
     "transport_class,transport_name",
     [
-        (transports.ControlServiceGrpcTransport, "grpc"),
-        (transports.ControlServiceGrpcAsyncIOTransport, "grpc_asyncio"),
-        (transports.ControlServiceRestTransport, "rest"),
+        (transports.ProjectServiceGrpcTransport, "grpc"),
+        (transports.ProjectServiceGrpcAsyncIOTransport, "grpc_asyncio"),
+        (transports.ProjectServiceRestTransport, "rest"),
     ],
 )
-def test_control_service_client_service_account_always_use_jwt(
+def test_project_service_client_service_account_always_use_jwt(
     transport_class, transport_name
 ):
     with mock.patch.object(
@@ -436,12 +443,12 @@ def test_control_service_client_service_account_always_use_jwt(
 @pytest.mark.parametrize(
     "client_class,transport_name",
     [
-        (ControlServiceClient, "grpc"),
-        (ControlServiceAsyncClient, "grpc_asyncio"),
-        (ControlServiceClient, "rest"),
+        (ProjectServiceClient, "grpc"),
+        (ProjectServiceAsyncClient, "grpc_asyncio"),
+        (ProjectServiceClient, "rest"),
     ],
 )
-def test_control_service_client_from_service_account_file(client_class, transport_name):
+def test_project_service_client_from_service_account_file(client_class, transport_name):
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
         service_account.Credentials, "from_service_account_file"
@@ -466,51 +473,51 @@ def test_control_service_client_from_service_account_file(client_class, transpor
         )
 
 
-def test_control_service_client_get_transport_class():
-    transport = ControlServiceClient.get_transport_class()
+def test_project_service_client_get_transport_class():
+    transport = ProjectServiceClient.get_transport_class()
     available_transports = [
-        transports.ControlServiceGrpcTransport,
-        transports.ControlServiceRestTransport,
+        transports.ProjectServiceGrpcTransport,
+        transports.ProjectServiceRestTransport,
     ]
     assert transport in available_transports
 
-    transport = ControlServiceClient.get_transport_class("grpc")
-    assert transport == transports.ControlServiceGrpcTransport
+    transport = ProjectServiceClient.get_transport_class("grpc")
+    assert transport == transports.ProjectServiceGrpcTransport
 
 
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name",
     [
-        (ControlServiceClient, transports.ControlServiceGrpcTransport, "grpc"),
+        (ProjectServiceClient, transports.ProjectServiceGrpcTransport, "grpc"),
         (
-            ControlServiceAsyncClient,
-            transports.ControlServiceGrpcAsyncIOTransport,
+            ProjectServiceAsyncClient,
+            transports.ProjectServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
-        (ControlServiceClient, transports.ControlServiceRestTransport, "rest"),
+        (ProjectServiceClient, transports.ProjectServiceRestTransport, "rest"),
     ],
 )
 @mock.patch.object(
-    ControlServiceClient,
+    ProjectServiceClient,
     "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(ControlServiceClient),
+    modify_default_endpoint_template(ProjectServiceClient),
 )
 @mock.patch.object(
-    ControlServiceAsyncClient,
+    ProjectServiceAsyncClient,
     "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(ControlServiceAsyncClient),
+    modify_default_endpoint_template(ProjectServiceAsyncClient),
 )
-def test_control_service_client_client_options(
+def test_project_service_client_client_options(
     client_class, transport_class, transport_name
 ):
     # Check that if channel is provided we won't create a new one.
-    with mock.patch.object(ControlServiceClient, "get_transport_class") as gtc:
+    with mock.patch.object(ProjectServiceClient, "get_transport_class") as gtc:
         transport = transport_class(credentials=ga_credentials.AnonymousCredentials())
         client = client_class(transport=transport)
         gtc.assert_not_called()
 
     # Check that if channel is provided via str we will create a new one.
-    with mock.patch.object(ControlServiceClient, "get_transport_class") as gtc:
+    with mock.patch.object(ProjectServiceClient, "get_transport_class") as gtc:
         client = client_class(transport=transport_name)
         gtc.assert_called()
 
@@ -633,36 +640,36 @@ def test_control_service_client_client_options(
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name,use_client_cert_env",
     [
-        (ControlServiceClient, transports.ControlServiceGrpcTransport, "grpc", "true"),
+        (ProjectServiceClient, transports.ProjectServiceGrpcTransport, "grpc", "true"),
         (
-            ControlServiceAsyncClient,
-            transports.ControlServiceGrpcAsyncIOTransport,
+            ProjectServiceAsyncClient,
+            transports.ProjectServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
             "true",
         ),
-        (ControlServiceClient, transports.ControlServiceGrpcTransport, "grpc", "false"),
+        (ProjectServiceClient, transports.ProjectServiceGrpcTransport, "grpc", "false"),
         (
-            ControlServiceAsyncClient,
-            transports.ControlServiceGrpcAsyncIOTransport,
+            ProjectServiceAsyncClient,
+            transports.ProjectServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
             "false",
         ),
-        (ControlServiceClient, transports.ControlServiceRestTransport, "rest", "true"),
-        (ControlServiceClient, transports.ControlServiceRestTransport, "rest", "false"),
+        (ProjectServiceClient, transports.ProjectServiceRestTransport, "rest", "true"),
+        (ProjectServiceClient, transports.ProjectServiceRestTransport, "rest", "false"),
     ],
 )
 @mock.patch.object(
-    ControlServiceClient,
+    ProjectServiceClient,
     "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(ControlServiceClient),
+    modify_default_endpoint_template(ProjectServiceClient),
 )
 @mock.patch.object(
-    ControlServiceAsyncClient,
+    ProjectServiceAsyncClient,
     "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(ControlServiceAsyncClient),
+    modify_default_endpoint_template(ProjectServiceAsyncClient),
 )
 @mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"})
-def test_control_service_client_mtls_env_auto(
+def test_project_service_client_mtls_env_auto(
     client_class, transport_class, transport_name, use_client_cert_env
 ):
     # This tests the endpoint autoswitch behavior. Endpoint is autoswitched to the default
@@ -765,19 +772,19 @@ def test_control_service_client_mtls_env_auto(
 
 
 @pytest.mark.parametrize(
-    "client_class", [ControlServiceClient, ControlServiceAsyncClient]
+    "client_class", [ProjectServiceClient, ProjectServiceAsyncClient]
 )
 @mock.patch.object(
-    ControlServiceClient,
+    ProjectServiceClient,
     "DEFAULT_ENDPOINT",
-    modify_default_endpoint(ControlServiceClient),
+    modify_default_endpoint(ProjectServiceClient),
 )
 @mock.patch.object(
-    ControlServiceAsyncClient,
+    ProjectServiceAsyncClient,
     "DEFAULT_ENDPOINT",
-    modify_default_endpoint(ControlServiceAsyncClient),
+    modify_default_endpoint(ProjectServiceAsyncClient),
 )
-def test_control_service_client_get_mtls_endpoint_and_cert_source(client_class):
+def test_project_service_client_get_mtls_endpoint_and_cert_source(client_class):
     mock_client_cert_source = mock.Mock()
 
     # Test the case GOOGLE_API_USE_CLIENT_CERTIFICATE is "true".
@@ -869,27 +876,27 @@ def test_control_service_client_get_mtls_endpoint_and_cert_source(client_class):
 
 
 @pytest.mark.parametrize(
-    "client_class", [ControlServiceClient, ControlServiceAsyncClient]
+    "client_class", [ProjectServiceClient, ProjectServiceAsyncClient]
 )
 @mock.patch.object(
-    ControlServiceClient,
+    ProjectServiceClient,
     "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(ControlServiceClient),
+    modify_default_endpoint_template(ProjectServiceClient),
 )
 @mock.patch.object(
-    ControlServiceAsyncClient,
+    ProjectServiceAsyncClient,
     "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(ControlServiceAsyncClient),
+    modify_default_endpoint_template(ProjectServiceAsyncClient),
 )
-def test_control_service_client_client_api_endpoint(client_class):
+def test_project_service_client_client_api_endpoint(client_class):
     mock_client_cert_source = client_cert_source_callback
     api_override = "foo.com"
-    default_universe = ControlServiceClient._DEFAULT_UNIVERSE
-    default_endpoint = ControlServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
+    default_universe = ProjectServiceClient._DEFAULT_UNIVERSE
+    default_endpoint = ProjectServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
         UNIVERSE_DOMAIN=default_universe
     )
     mock_universe = "bar.com"
-    mock_endpoint = ControlServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
+    mock_endpoint = ProjectServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
         UNIVERSE_DOMAIN=mock_universe
     )
 
@@ -957,16 +964,16 @@ def test_control_service_client_client_api_endpoint(client_class):
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name",
     [
-        (ControlServiceClient, transports.ControlServiceGrpcTransport, "grpc"),
+        (ProjectServiceClient, transports.ProjectServiceGrpcTransport, "grpc"),
         (
-            ControlServiceAsyncClient,
-            transports.ControlServiceGrpcAsyncIOTransport,
+            ProjectServiceAsyncClient,
+            transports.ProjectServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
-        (ControlServiceClient, transports.ControlServiceRestTransport, "rest"),
+        (ProjectServiceClient, transports.ProjectServiceRestTransport, "rest"),
     ],
 )
-def test_control_service_client_client_options_scopes(
+def test_project_service_client_client_options_scopes(
     client_class, transport_class, transport_name
 ):
     # Check the case scopes are provided.
@@ -995,21 +1002,21 @@ def test_control_service_client_client_options_scopes(
     "client_class,transport_class,transport_name,grpc_helpers",
     [
         (
-            ControlServiceClient,
-            transports.ControlServiceGrpcTransport,
+            ProjectServiceClient,
+            transports.ProjectServiceGrpcTransport,
             "grpc",
             grpc_helpers,
         ),
         (
-            ControlServiceAsyncClient,
-            transports.ControlServiceGrpcAsyncIOTransport,
+            ProjectServiceAsyncClient,
+            transports.ProjectServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
             grpc_helpers_async,
         ),
-        (ControlServiceClient, transports.ControlServiceRestTransport, "rest", None),
+        (ProjectServiceClient, transports.ProjectServiceRestTransport, "rest", None),
     ],
 )
-def test_control_service_client_client_options_credentials_file(
+def test_project_service_client_client_options_credentials_file(
     client_class, transport_class, transport_name, grpc_helpers
 ):
     # Check the case credentials file is provided.
@@ -1033,12 +1040,12 @@ def test_control_service_client_client_options_credentials_file(
         )
 
 
-def test_control_service_client_client_options_from_dict():
+def test_project_service_client_client_options_from_dict():
     with mock.patch(
-        "google.cloud.retail_v2alpha.services.control_service.transports.ControlServiceGrpcTransport.__init__"
+        "google.cloud.retail_v2alpha.services.project_service.transports.ProjectServiceGrpcTransport.__init__"
     ) as grpc_transport:
         grpc_transport.return_value = None
-        client = ControlServiceClient(
+        client = ProjectServiceClient(
             client_options={"api_endpoint": "squid.clam.whelk"}
         )
         grpc_transport.assert_called_once_with(
@@ -1058,20 +1065,20 @@ def test_control_service_client_client_options_from_dict():
     "client_class,transport_class,transport_name,grpc_helpers",
     [
         (
-            ControlServiceClient,
-            transports.ControlServiceGrpcTransport,
+            ProjectServiceClient,
+            transports.ProjectServiceGrpcTransport,
             "grpc",
             grpc_helpers,
         ),
         (
-            ControlServiceAsyncClient,
-            transports.ControlServiceGrpcAsyncIOTransport,
+            ProjectServiceAsyncClient,
+            transports.ProjectServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
             grpc_helpers_async,
         ),
     ],
 )
-def test_control_service_client_create_channel_credentials_file(
+def test_project_service_client_create_channel_credentials_file(
     client_class, transport_class, transport_name, grpc_helpers
 ):
     # Check the case credentials file is provided.
@@ -1126,12 +1133,12 @@ def test_control_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        control_service.CreateControlRequest,
+        project_service.GetProjectRequest,
         dict,
     ],
 )
-def test_create_control(request_type, transport: str = "grpc"):
-    client = ControlServiceClient(
+def test_get_project(request_type, transport: str = "grpc"):
+    client = ProjectServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -1141,61 +1148,51 @@ def test_create_control(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_control), "__call__") as call:
+    with mock.patch.object(type(client.transport.get_project), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = gcr_control.Control(
+        call.return_value = project.Project(
             name="name_value",
-            display_name="display_name_value",
-            associated_serving_config_ids=["associated_serving_config_ids_value"],
-            solution_types=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
-            search_solution_use_case=[
-                common.SearchSolutionUseCase.SEARCH_SOLUTION_USE_CASE_SEARCH
-            ],
+            enrolled_solutions=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
         )
-        response = client.create_control(request)
+        response = client.get_project(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        request = control_service.CreateControlRequest()
+        request = project_service.GetProjectRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, gcr_control.Control)
+    assert isinstance(response, project.Project)
     assert response.name == "name_value"
-    assert response.display_name == "display_name_value"
-    assert response.associated_serving_config_ids == [
-        "associated_serving_config_ids_value"
-    ]
-    assert response.solution_types == [common.SolutionType.SOLUTION_TYPE_RECOMMENDATION]
-    assert response.search_solution_use_case == [
-        common.SearchSolutionUseCase.SEARCH_SOLUTION_USE_CASE_SEARCH
+    assert response.enrolled_solutions == [
+        common.SolutionType.SOLUTION_TYPE_RECOMMENDATION
     ]
 
 
-def test_create_control_empty_call():
+def test_get_project_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
-    client = ControlServiceClient(
+    client = ProjectServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_control), "__call__") as call:
+    with mock.patch.object(type(client.transport.get_project), "__call__") as call:
         call.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client.create_control()
+        client.get_project()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == control_service.CreateControlRequest()
+        assert args[0] == project_service.GetProjectRequest()
 
 
-def test_create_control_non_empty_request_with_auto_populated_field():
+def test_get_project_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
-    client = ControlServiceClient(
+    client = ProjectServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
@@ -1203,468 +1200,28 @@ def test_create_control_non_empty_request_with_auto_populated_field():
     # Populate all string fields in the request which are not UUID4
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
-    request = control_service.CreateControlRequest(
-        parent="parent_value",
-        control_id="control_id_value",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_control), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.create_control(request=request)
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == control_service.CreateControlRequest(
-            parent="parent_value",
-            control_id="control_id_value",
-        )
-
-
-def test_create_control_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = ControlServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="grpc",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert client._transport.create_control in client._transport._wrapped_methods
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[client._transport.create_control] = mock_rpc
-        request = {}
-        client.create_control(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        client.create_control(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-@pytest.mark.asyncio
-async def test_create_control_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ControlServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_control), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            gcr_control.Control(
-                name="name_value",
-                display_name="display_name_value",
-                associated_serving_config_ids=["associated_serving_config_ids_value"],
-                solution_types=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
-                search_solution_use_case=[
-                    common.SearchSolutionUseCase.SEARCH_SOLUTION_USE_CASE_SEARCH
-                ],
-            )
-        )
-        response = await client.create_control()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == control_service.CreateControlRequest()
-
-
-@pytest.mark.asyncio
-async def test_create_control_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
-        client = ControlServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport=transport,
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert (
-            client._client._transport.create_control
-            in client._client._transport._wrapped_methods
-        )
-
-        # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.create_control
-        ] = mock_object
-
-        request = {}
-        await client.create_control(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
-
-        await client.create_control(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
-
-
-@pytest.mark.asyncio
-async def test_create_control_async(
-    transport: str = "grpc_asyncio", request_type=control_service.CreateControlRequest
-):
-    client = ControlServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_control), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            gcr_control.Control(
-                name="name_value",
-                display_name="display_name_value",
-                associated_serving_config_ids=["associated_serving_config_ids_value"],
-                solution_types=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
-                search_solution_use_case=[
-                    common.SearchSolutionUseCase.SEARCH_SOLUTION_USE_CASE_SEARCH
-                ],
-            )
-        )
-        response = await client.create_control(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        request = control_service.CreateControlRequest()
-        assert args[0] == request
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, gcr_control.Control)
-    assert response.name == "name_value"
-    assert response.display_name == "display_name_value"
-    assert response.associated_serving_config_ids == [
-        "associated_serving_config_ids_value"
-    ]
-    assert response.solution_types == [common.SolutionType.SOLUTION_TYPE_RECOMMENDATION]
-    assert response.search_solution_use_case == [
-        common.SearchSolutionUseCase.SEARCH_SOLUTION_USE_CASE_SEARCH
-    ]
-
-
-@pytest.mark.asyncio
-async def test_create_control_async_from_dict():
-    await test_create_control_async(request_type=dict)
-
-
-def test_create_control_field_headers():
-    client = ControlServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = control_service.CreateControlRequest()
-
-    request.parent = "parent_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_control), "__call__") as call:
-        call.return_value = gcr_control.Control()
-        client.create_control(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "parent=parent_value",
-    ) in kw["metadata"]
-
-
-@pytest.mark.asyncio
-async def test_create_control_field_headers_async():
-    client = ControlServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = control_service.CreateControlRequest()
-
-    request.parent = "parent_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_control), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(gcr_control.Control())
-        await client.create_control(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "parent=parent_value",
-    ) in kw["metadata"]
-
-
-def test_create_control_flattened():
-    client = ControlServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_control), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = gcr_control.Control()
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        client.create_control(
-            parent="parent_value",
-            control=gcr_control.Control(
-                facet_spec=search_service.SearchRequest.FacetSpec(
-                    facet_key=search_service.SearchRequest.FacetSpec.FacetKey(
-                        key="key_value"
-                    )
-                )
-            ),
-            control_id="control_id_value",
-        )
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].parent
-        mock_val = "parent_value"
-        assert arg == mock_val
-        arg = args[0].control
-        mock_val = gcr_control.Control(
-            facet_spec=search_service.SearchRequest.FacetSpec(
-                facet_key=search_service.SearchRequest.FacetSpec.FacetKey(
-                    key="key_value"
-                )
-            )
-        )
-        assert arg == mock_val
-        arg = args[0].control_id
-        mock_val = "control_id_value"
-        assert arg == mock_val
-
-
-def test_create_control_flattened_error():
-    client = ControlServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.create_control(
-            control_service.CreateControlRequest(),
-            parent="parent_value",
-            control=gcr_control.Control(
-                facet_spec=search_service.SearchRequest.FacetSpec(
-                    facet_key=search_service.SearchRequest.FacetSpec.FacetKey(
-                        key="key_value"
-                    )
-                )
-            ),
-            control_id="control_id_value",
-        )
-
-
-@pytest.mark.asyncio
-async def test_create_control_flattened_async():
-    client = ControlServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_control), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = gcr_control.Control()
-
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(gcr_control.Control())
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        response = await client.create_control(
-            parent="parent_value",
-            control=gcr_control.Control(
-                facet_spec=search_service.SearchRequest.FacetSpec(
-                    facet_key=search_service.SearchRequest.FacetSpec.FacetKey(
-                        key="key_value"
-                    )
-                )
-            ),
-            control_id="control_id_value",
-        )
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].parent
-        mock_val = "parent_value"
-        assert arg == mock_val
-        arg = args[0].control
-        mock_val = gcr_control.Control(
-            facet_spec=search_service.SearchRequest.FacetSpec(
-                facet_key=search_service.SearchRequest.FacetSpec.FacetKey(
-                    key="key_value"
-                )
-            )
-        )
-        assert arg == mock_val
-        arg = args[0].control_id
-        mock_val = "control_id_value"
-        assert arg == mock_val
-
-
-@pytest.mark.asyncio
-async def test_create_control_flattened_error_async():
-    client = ControlServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        await client.create_control(
-            control_service.CreateControlRequest(),
-            parent="parent_value",
-            control=gcr_control.Control(
-                facet_spec=search_service.SearchRequest.FacetSpec(
-                    facet_key=search_service.SearchRequest.FacetSpec.FacetKey(
-                        key="key_value"
-                    )
-                )
-            ),
-            control_id="control_id_value",
-        )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        control_service.DeleteControlRequest,
-        dict,
-    ],
-)
-def test_delete_control(request_type, transport: str = "grpc"):
-    client = ControlServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_control), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = None
-        response = client.delete_control(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        request = control_service.DeleteControlRequest()
-        assert args[0] == request
-
-    # Establish that the response is the type that we expect.
-    assert response is None
-
-
-def test_delete_control_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ControlServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_control), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.delete_control()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == control_service.DeleteControlRequest()
-
-
-def test_delete_control_non_empty_request_with_auto_populated_field():
-    # This test is a coverage failsafe to make sure that UUID4 fields are
-    # automatically populated, according to AIP-4235, with non-empty requests.
-    client = ControlServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Populate all string fields in the request which are not UUID4
-    # since we want to check that UUID4 are populated automatically
-    # if they meet the requirements of AIP 4235.
-    request = control_service.DeleteControlRequest(
+    request = project_service.GetProjectRequest(
         name="name_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_control), "__call__") as call:
+    with mock.patch.object(type(client.transport.get_project), "__call__") as call:
         call.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client.delete_control(request=request)
+        client.get_project(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == control_service.DeleteControlRequest(
+        assert args[0] == project_service.GetProjectRequest(
             name="name_value",
         )
 
 
-def test_delete_control_use_cached_wrapped_rpc():
+def test_get_project_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = ControlServiceClient(
+        client = ProjectServiceClient(
             credentials=ga_credentials.AnonymousCredentials(),
             transport="grpc",
         )
@@ -1674,21 +1231,21 @@ def test_delete_control_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert client._transport.delete_control in client._transport._wrapped_methods
+        assert client._transport.get_project in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.delete_control] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_project] = mock_rpc
         request = {}
-        client.delete_control(request)
+        client.get_project(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
-        client.delete_control(request)
+        client.get_project(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
@@ -1696,32 +1253,37 @@ def test_delete_control_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_control_empty_call_async():
+async def test_get_project_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
-    client = ControlServiceAsyncClient(
+    client = ProjectServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc_asyncio",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_control), "__call__") as call:
+    with mock.patch.object(type(client.transport.get_project), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        response = await client.delete_control()
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            project.Project(
+                name="name_value",
+                enrolled_solutions=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
+            )
+        )
+        response = await client.get_project()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == control_service.DeleteControlRequest()
+        assert args[0] == project_service.GetProjectRequest()
 
 
 @pytest.mark.asyncio
-async def test_delete_control_async_use_cached_wrapped_rpc(
+async def test_get_project_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
-        client = ControlServiceAsyncClient(
+        client = ProjectServiceAsyncClient(
             credentials=ga_credentials.AnonymousCredentials(),
             transport=transport,
         )
@@ -1732,7 +1294,7 @@ async def test_delete_control_async_use_cached_wrapped_rpc(
 
         # Ensure method has been cached
         assert (
-            client._client._transport.delete_control
+            client._client._transport.get_project
             in client._client._transport._wrapped_methods
         )
 
@@ -1744,16 +1306,16 @@ async def test_delete_control_async_use_cached_wrapped_rpc(
 
         mock_object = AwaitableMock()
         client._client._transport._wrapped_methods[
-            client._client._transport.delete_control
+            client._client._transport.get_project
         ] = mock_object
 
         request = {}
-        await client.delete_control(request)
+        await client.get_project(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert mock_object.call_count == 1
 
-        await client.delete_control(request)
+        await client.get_project(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
@@ -1761,10 +1323,10 @@ async def test_delete_control_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_control_async(
-    transport: str = "grpc_asyncio", request_type=control_service.DeleteControlRequest
+async def test_get_project_async(
+    transport: str = "grpc_asyncio", request_type=project_service.GetProjectRequest
 ):
-    client = ControlServiceAsyncClient(
+    client = ProjectServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -1774,41 +1336,50 @@ async def test_delete_control_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_control), "__call__") as call:
+    with mock.patch.object(type(client.transport.get_project), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        response = await client.delete_control(request)
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            project.Project(
+                name="name_value",
+                enrolled_solutions=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
+            )
+        )
+        response = await client.get_project(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = control_service.DeleteControlRequest()
+        request = project_service.GetProjectRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
-    assert response is None
+    assert isinstance(response, project.Project)
+    assert response.name == "name_value"
+    assert response.enrolled_solutions == [
+        common.SolutionType.SOLUTION_TYPE_RECOMMENDATION
+    ]
 
 
 @pytest.mark.asyncio
-async def test_delete_control_async_from_dict():
-    await test_delete_control_async(request_type=dict)
+async def test_get_project_async_from_dict():
+    await test_get_project_async(request_type=dict)
 
 
-def test_delete_control_field_headers():
-    client = ControlServiceClient(
+def test_get_project_field_headers():
+    client = ProjectServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = control_service.DeleteControlRequest()
+    request = project_service.GetProjectRequest()
 
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_control), "__call__") as call:
-        call.return_value = None
-        client.delete_control(request)
+    with mock.patch.object(type(client.transport.get_project), "__call__") as call:
+        call.return_value = project.Project()
+        client.get_project(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
@@ -1824,21 +1395,21 @@ def test_delete_control_field_headers():
 
 
 @pytest.mark.asyncio
-async def test_delete_control_field_headers_async():
-    client = ControlServiceAsyncClient(
+async def test_get_project_field_headers_async():
+    client = ProjectServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = control_service.DeleteControlRequest()
+    request = project_service.GetProjectRequest()
 
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_control), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        await client.delete_control(request)
+    with mock.patch.object(type(client.transport.get_project), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(project.Project())
+        await client.get_project(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
@@ -1853,18 +1424,18 @@ async def test_delete_control_field_headers_async():
     ) in kw["metadata"]
 
 
-def test_delete_control_flattened():
-    client = ControlServiceClient(
+def test_get_project_flattened():
+    client = ProjectServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_control), "__call__") as call:
+    with mock.patch.object(type(client.transport.get_project), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = None
+        call.return_value = project.Project()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.delete_control(
+        client.get_project(
             name="name_value",
         )
 
@@ -1877,35 +1448,35 @@ def test_delete_control_flattened():
         assert arg == mock_val
 
 
-def test_delete_control_flattened_error():
-    client = ControlServiceClient(
+def test_get_project_flattened_error():
+    client = ProjectServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        client.delete_control(
-            control_service.DeleteControlRequest(),
+        client.get_project(
+            project_service.GetProjectRequest(),
             name="name_value",
         )
 
 
 @pytest.mark.asyncio
-async def test_delete_control_flattened_async():
-    client = ControlServiceAsyncClient(
+async def test_get_project_flattened_async():
+    client = ProjectServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_control), "__call__") as call:
+    with mock.patch.object(type(client.transport.get_project), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = None
+        call.return_value = project.Project()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(project.Project())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.delete_control(
+        response = await client.get_project(
             name="name_value",
         )
 
@@ -1919,16 +1490,16 @@ async def test_delete_control_flattened_async():
 
 
 @pytest.mark.asyncio
-async def test_delete_control_flattened_error_async():
-    client = ControlServiceAsyncClient(
+async def test_get_project_flattened_error_async():
+    client = ProjectServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        await client.delete_control(
-            control_service.DeleteControlRequest(),
+        await client.get_project(
+            project_service.GetProjectRequest(),
             name="name_value",
         )
 
@@ -1936,12 +1507,12 @@ async def test_delete_control_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        control_service.UpdateControlRequest,
+        project_service.AcceptTermsRequest,
         dict,
     ],
 )
-def test_update_control(request_type, transport: str = "grpc"):
-    client = ControlServiceClient(
+def test_accept_terms(request_type, transport: str = "grpc"):
+    client = ProjectServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -1951,61 +1522,51 @@ def test_update_control(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.update_control), "__call__") as call:
+    with mock.patch.object(type(client.transport.accept_terms), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = gcr_control.Control(
+        call.return_value = gcr_project.Project(
             name="name_value",
-            display_name="display_name_value",
-            associated_serving_config_ids=["associated_serving_config_ids_value"],
-            solution_types=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
-            search_solution_use_case=[
-                common.SearchSolutionUseCase.SEARCH_SOLUTION_USE_CASE_SEARCH
-            ],
+            enrolled_solutions=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
         )
-        response = client.update_control(request)
+        response = client.accept_terms(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        request = control_service.UpdateControlRequest()
+        request = project_service.AcceptTermsRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, gcr_control.Control)
+    assert isinstance(response, gcr_project.Project)
     assert response.name == "name_value"
-    assert response.display_name == "display_name_value"
-    assert response.associated_serving_config_ids == [
-        "associated_serving_config_ids_value"
-    ]
-    assert response.solution_types == [common.SolutionType.SOLUTION_TYPE_RECOMMENDATION]
-    assert response.search_solution_use_case == [
-        common.SearchSolutionUseCase.SEARCH_SOLUTION_USE_CASE_SEARCH
+    assert response.enrolled_solutions == [
+        common.SolutionType.SOLUTION_TYPE_RECOMMENDATION
     ]
 
 
-def test_update_control_empty_call():
+def test_accept_terms_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
-    client = ControlServiceClient(
+    client = ProjectServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.update_control), "__call__") as call:
+    with mock.patch.object(type(client.transport.accept_terms), "__call__") as call:
         call.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client.update_control()
+        client.accept_terms()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == control_service.UpdateControlRequest()
+        assert args[0] == project_service.AcceptTermsRequest()
 
 
-def test_update_control_non_empty_request_with_auto_populated_field():
+def test_accept_terms_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
-    client = ControlServiceClient(
+    client = ProjectServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
@@ -2013,24 +1574,28 @@ def test_update_control_non_empty_request_with_auto_populated_field():
     # Populate all string fields in the request which are not UUID4
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
-    request = control_service.UpdateControlRequest()
+    request = project_service.AcceptTermsRequest(
+        project="project_value",
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.update_control), "__call__") as call:
+    with mock.patch.object(type(client.transport.accept_terms), "__call__") as call:
         call.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client.update_control(request=request)
+        client.accept_terms(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == control_service.UpdateControlRequest()
+        assert args[0] == project_service.AcceptTermsRequest(
+            project="project_value",
+        )
 
 
-def test_update_control_use_cached_wrapped_rpc():
+def test_accept_terms_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = ControlServiceClient(
+        client = ProjectServiceClient(
             credentials=ga_credentials.AnonymousCredentials(),
             transport="grpc",
         )
@@ -2040,21 +1605,21 @@ def test_update_control_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert client._transport.update_control in client._transport._wrapped_methods
+        assert client._transport.accept_terms in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.update_control] = mock_rpc
+        client._transport._wrapped_methods[client._transport.accept_terms] = mock_rpc
         request = {}
-        client.update_control(request)
+        client.accept_terms(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
-        client.update_control(request)
+        client.accept_terms(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
@@ -2062,42 +1627,37 @@ def test_update_control_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_update_control_empty_call_async():
+async def test_accept_terms_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
-    client = ControlServiceAsyncClient(
+    client = ProjectServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc_asyncio",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.update_control), "__call__") as call:
+    with mock.patch.object(type(client.transport.accept_terms), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            gcr_control.Control(
+            gcr_project.Project(
                 name="name_value",
-                display_name="display_name_value",
-                associated_serving_config_ids=["associated_serving_config_ids_value"],
-                solution_types=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
-                search_solution_use_case=[
-                    common.SearchSolutionUseCase.SEARCH_SOLUTION_USE_CASE_SEARCH
-                ],
+                enrolled_solutions=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
             )
         )
-        response = await client.update_control()
+        response = await client.accept_terms()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == control_service.UpdateControlRequest()
+        assert args[0] == project_service.AcceptTermsRequest()
 
 
 @pytest.mark.asyncio
-async def test_update_control_async_use_cached_wrapped_rpc(
+async def test_accept_terms_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
-        client = ControlServiceAsyncClient(
+        client = ProjectServiceAsyncClient(
             credentials=ga_credentials.AnonymousCredentials(),
             transport=transport,
         )
@@ -2108,7 +1668,7 @@ async def test_update_control_async_use_cached_wrapped_rpc(
 
         # Ensure method has been cached
         assert (
-            client._client._transport.update_control
+            client._client._transport.accept_terms
             in client._client._transport._wrapped_methods
         )
 
@@ -2120,16 +1680,16 @@ async def test_update_control_async_use_cached_wrapped_rpc(
 
         mock_object = AwaitableMock()
         client._client._transport._wrapped_methods[
-            client._client._transport.update_control
+            client._client._transport.accept_terms
         ] = mock_object
 
         request = {}
-        await client.update_control(request)
+        await client.accept_terms(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert mock_object.call_count == 1
 
-        await client.update_control(request)
+        await client.accept_terms(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
@@ -2137,10 +1697,10 @@ async def test_update_control_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_control_async(
-    transport: str = "grpc_asyncio", request_type=control_service.UpdateControlRequest
+async def test_accept_terms_async(
+    transport: str = "grpc_asyncio", request_type=project_service.AcceptTermsRequest
 ):
-    client = ControlServiceAsyncClient(
+    client = ProjectServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -2150,60 +1710,50 @@ async def test_update_control_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.update_control), "__call__") as call:
+    with mock.patch.object(type(client.transport.accept_terms), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            gcr_control.Control(
+            gcr_project.Project(
                 name="name_value",
-                display_name="display_name_value",
-                associated_serving_config_ids=["associated_serving_config_ids_value"],
-                solution_types=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
-                search_solution_use_case=[
-                    common.SearchSolutionUseCase.SEARCH_SOLUTION_USE_CASE_SEARCH
-                ],
+                enrolled_solutions=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
             )
         )
-        response = await client.update_control(request)
+        response = await client.accept_terms(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = control_service.UpdateControlRequest()
+        request = project_service.AcceptTermsRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, gcr_control.Control)
+    assert isinstance(response, gcr_project.Project)
     assert response.name == "name_value"
-    assert response.display_name == "display_name_value"
-    assert response.associated_serving_config_ids == [
-        "associated_serving_config_ids_value"
-    ]
-    assert response.solution_types == [common.SolutionType.SOLUTION_TYPE_RECOMMENDATION]
-    assert response.search_solution_use_case == [
-        common.SearchSolutionUseCase.SEARCH_SOLUTION_USE_CASE_SEARCH
+    assert response.enrolled_solutions == [
+        common.SolutionType.SOLUTION_TYPE_RECOMMENDATION
     ]
 
 
 @pytest.mark.asyncio
-async def test_update_control_async_from_dict():
-    await test_update_control_async(request_type=dict)
+async def test_accept_terms_async_from_dict():
+    await test_accept_terms_async(request_type=dict)
 
 
-def test_update_control_field_headers():
-    client = ControlServiceClient(
+def test_accept_terms_field_headers():
+    client = ProjectServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = control_service.UpdateControlRequest()
+    request = project_service.AcceptTermsRequest()
 
-    request.control.name = "name_value"
+    request.project = "project_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.update_control), "__call__") as call:
-        call.return_value = gcr_control.Control()
-        client.update_control(request)
+    with mock.patch.object(type(client.transport.accept_terms), "__call__") as call:
+        call.return_value = gcr_project.Project()
+        client.accept_terms(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
@@ -2214,26 +1764,26 @@ def test_update_control_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "control.name=name_value",
+        "project=project_value",
     ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
-async def test_update_control_field_headers_async():
-    client = ControlServiceAsyncClient(
+async def test_accept_terms_field_headers_async():
+    client = ProjectServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = control_service.UpdateControlRequest()
+    request = project_service.AcceptTermsRequest()
 
-    request.control.name = "name_value"
+    request.project = "project_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.update_control), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(gcr_control.Control())
-        await client.update_control(request)
+    with mock.patch.object(type(client.transport.accept_terms), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(gcr_project.Project())
+        await client.accept_terms(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
@@ -2244,29 +1794,1484 @@ async def test_update_control_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "control.name=name_value",
+        "project=project_value",
     ) in kw["metadata"]
 
 
-def test_update_control_flattened():
-    client = ControlServiceClient(
+def test_accept_terms_flattened():
+    client = ProjectServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.update_control), "__call__") as call:
+    with mock.patch.object(type(client.transport.accept_terms), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = gcr_control.Control()
+        call.return_value = gcr_project.Project()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.update_control(
-            control=gcr_control.Control(
-                facet_spec=search_service.SearchRequest.FacetSpec(
-                    facet_key=search_service.SearchRequest.FacetSpec.FacetKey(
-                        key="key_value"
-                    )
-                )
-            ),
+        client.accept_terms(
+            project="project_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].project
+        mock_val = "project_value"
+        assert arg == mock_val
+
+
+def test_accept_terms_flattened_error():
+    client = ProjectServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.accept_terms(
+            project_service.AcceptTermsRequest(),
+            project="project_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_accept_terms_flattened_async():
+    client = ProjectServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.accept_terms), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = gcr_project.Project()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(gcr_project.Project())
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.accept_terms(
+            project="project_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].project
+        mock_val = "project_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_accept_terms_flattened_error_async():
+    client = ProjectServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.accept_terms(
+            project_service.AcceptTermsRequest(),
+            project="project_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        project_service.EnrollSolutionRequest,
+        dict,
+    ],
+)
+def test_enroll_solution(request_type, transport: str = "grpc"):
+    client = ProjectServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.enroll_solution), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.enroll_solution(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = project_service.EnrollSolutionRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_enroll_solution_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ProjectServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.enroll_solution), "__call__") as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.enroll_solution()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == project_service.EnrollSolutionRequest()
+
+
+def test_enroll_solution_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ProjectServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = project_service.EnrollSolutionRequest(
+        project="project_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.enroll_solution), "__call__") as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.enroll_solution(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == project_service.EnrollSolutionRequest(
+            project="project_value",
+        )
+
+
+def test_enroll_solution_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ProjectServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.enroll_solution in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.enroll_solution] = mock_rpc
+        request = {}
+        client.enroll_solution(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.enroll_solution(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_enroll_solution_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ProjectServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.enroll_solution), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.enroll_solution()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == project_service.EnrollSolutionRequest()
+
+
+@pytest.mark.asyncio
+async def test_enroll_solution_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = ProjectServiceAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.enroll_solution
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        class AwaitableMock(mock.AsyncMock):
+            def __await__(self):
+                self.await_count += 1
+                return iter([])
+
+        mock_object = AwaitableMock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.enroll_solution
+        ] = mock_object
+
+        request = {}
+        await client.enroll_solution(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_object.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        await client.enroll_solution(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_object.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_enroll_solution_async(
+    transport: str = "grpc_asyncio", request_type=project_service.EnrollSolutionRequest
+):
+    client = ProjectServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.enroll_solution), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.enroll_solution(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = project_service.EnrollSolutionRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_enroll_solution_async_from_dict():
+    await test_enroll_solution_async(request_type=dict)
+
+
+def test_enroll_solution_field_headers():
+    client = ProjectServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = project_service.EnrollSolutionRequest()
+
+    request.project = "project_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.enroll_solution), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.enroll_solution(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "project=project_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_enroll_solution_field_headers_async():
+    client = ProjectServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = project_service.EnrollSolutionRequest()
+
+    request.project = "project_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.enroll_solution), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.enroll_solution(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "project=project_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        project_service.ListEnrolledSolutionsRequest,
+        dict,
+    ],
+)
+def test_list_enrolled_solutions(request_type, transport: str = "grpc"):
+    client = ProjectServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_enrolled_solutions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = project_service.ListEnrolledSolutionsResponse(
+            enrolled_solutions=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
+        )
+        response = client.list_enrolled_solutions(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = project_service.ListEnrolledSolutionsRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, project_service.ListEnrolledSolutionsResponse)
+    assert response.enrolled_solutions == [
+        common.SolutionType.SOLUTION_TYPE_RECOMMENDATION
+    ]
+
+
+def test_list_enrolled_solutions_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ProjectServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_enrolled_solutions), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.list_enrolled_solutions()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == project_service.ListEnrolledSolutionsRequest()
+
+
+def test_list_enrolled_solutions_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ProjectServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = project_service.ListEnrolledSolutionsRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_enrolled_solutions), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.list_enrolled_solutions(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == project_service.ListEnrolledSolutionsRequest(
+            parent="parent_value",
+        )
+
+
+def test_list_enrolled_solutions_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ProjectServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.list_enrolled_solutions
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.list_enrolled_solutions
+        ] = mock_rpc
+        request = {}
+        client.list_enrolled_solutions(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.list_enrolled_solutions(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_list_enrolled_solutions_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ProjectServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_enrolled_solutions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            project_service.ListEnrolledSolutionsResponse(
+                enrolled_solutions=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
+            )
+        )
+        response = await client.list_enrolled_solutions()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == project_service.ListEnrolledSolutionsRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_enrolled_solutions_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = ProjectServiceAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.list_enrolled_solutions
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        class AwaitableMock(mock.AsyncMock):
+            def __await__(self):
+                self.await_count += 1
+                return iter([])
+
+        mock_object = AwaitableMock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.list_enrolled_solutions
+        ] = mock_object
+
+        request = {}
+        await client.list_enrolled_solutions(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_object.call_count == 1
+
+        await client.list_enrolled_solutions(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_object.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_list_enrolled_solutions_async(
+    transport: str = "grpc_asyncio",
+    request_type=project_service.ListEnrolledSolutionsRequest,
+):
+    client = ProjectServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_enrolled_solutions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            project_service.ListEnrolledSolutionsResponse(
+                enrolled_solutions=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
+            )
+        )
+        response = await client.list_enrolled_solutions(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = project_service.ListEnrolledSolutionsRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, project_service.ListEnrolledSolutionsResponse)
+    assert response.enrolled_solutions == [
+        common.SolutionType.SOLUTION_TYPE_RECOMMENDATION
+    ]
+
+
+@pytest.mark.asyncio
+async def test_list_enrolled_solutions_async_from_dict():
+    await test_list_enrolled_solutions_async(request_type=dict)
+
+
+def test_list_enrolled_solutions_field_headers():
+    client = ProjectServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = project_service.ListEnrolledSolutionsRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_enrolled_solutions), "__call__"
+    ) as call:
+        call.return_value = project_service.ListEnrolledSolutionsResponse()
+        client.list_enrolled_solutions(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_enrolled_solutions_field_headers_async():
+    client = ProjectServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = project_service.ListEnrolledSolutionsRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_enrolled_solutions), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            project_service.ListEnrolledSolutionsResponse()
+        )
+        await client.list_enrolled_solutions(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_list_enrolled_solutions_flattened():
+    client = ProjectServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_enrolled_solutions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = project_service.ListEnrolledSolutionsResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_enrolled_solutions(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+def test_list_enrolled_solutions_flattened_error():
+    client = ProjectServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_enrolled_solutions(
+            project_service.ListEnrolledSolutionsRequest(),
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_enrolled_solutions_flattened_async():
+    client = ProjectServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_enrolled_solutions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = project_service.ListEnrolledSolutionsResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            project_service.ListEnrolledSolutionsResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_enrolled_solutions(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_list_enrolled_solutions_flattened_error_async():
+    client = ProjectServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_enrolled_solutions(
+            project_service.ListEnrolledSolutionsRequest(),
+            parent="parent_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        project_service.GetLoggingConfigRequest,
+        dict,
+    ],
+)
+def test_get_logging_config(request_type, transport: str = "grpc"):
+    client = ProjectServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_logging_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = project.LoggingConfig(
+            name="name_value",
+        )
+        response = client.get_logging_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = project_service.GetLoggingConfigRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, project.LoggingConfig)
+    assert response.name == "name_value"
+
+
+def test_get_logging_config_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ProjectServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_logging_config), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.get_logging_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == project_service.GetLoggingConfigRequest()
+
+
+def test_get_logging_config_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ProjectServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = project_service.GetLoggingConfigRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_logging_config), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.get_logging_config(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == project_service.GetLoggingConfigRequest(
+            name="name_value",
+        )
+
+
+def test_get_logging_config_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ProjectServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.get_logging_config in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.get_logging_config
+        ] = mock_rpc
+        request = {}
+        client.get_logging_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_logging_config(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_get_logging_config_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ProjectServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_logging_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            project.LoggingConfig(
+                name="name_value",
+            )
+        )
+        response = await client.get_logging_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == project_service.GetLoggingConfigRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_logging_config_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = ProjectServiceAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.get_logging_config
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        class AwaitableMock(mock.AsyncMock):
+            def __await__(self):
+                self.await_count += 1
+                return iter([])
+
+        mock_object = AwaitableMock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.get_logging_config
+        ] = mock_object
+
+        request = {}
+        await client.get_logging_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_object.call_count == 1
+
+        await client.get_logging_config(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_object.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_get_logging_config_async(
+    transport: str = "grpc_asyncio",
+    request_type=project_service.GetLoggingConfigRequest,
+):
+    client = ProjectServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_logging_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            project.LoggingConfig(
+                name="name_value",
+            )
+        )
+        response = await client.get_logging_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = project_service.GetLoggingConfigRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, project.LoggingConfig)
+    assert response.name == "name_value"
+
+
+@pytest.mark.asyncio
+async def test_get_logging_config_async_from_dict():
+    await test_get_logging_config_async(request_type=dict)
+
+
+def test_get_logging_config_field_headers():
+    client = ProjectServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = project_service.GetLoggingConfigRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_logging_config), "__call__"
+    ) as call:
+        call.return_value = project.LoggingConfig()
+        client.get_logging_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_logging_config_field_headers_async():
+    client = ProjectServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = project_service.GetLoggingConfigRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_logging_config), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            project.LoggingConfig()
+        )
+        await client.get_logging_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_get_logging_config_flattened():
+    client = ProjectServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_logging_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = project.LoggingConfig()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_logging_config(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_logging_config_flattened_error():
+    client = ProjectServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_logging_config(
+            project_service.GetLoggingConfigRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_logging_config_flattened_async():
+    client = ProjectServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_logging_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = project.LoggingConfig()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            project.LoggingConfig()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_logging_config(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_logging_config_flattened_error_async():
+    client = ProjectServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_logging_config(
+            project_service.GetLoggingConfigRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        project_service.UpdateLoggingConfigRequest,
+        dict,
+    ],
+)
+def test_update_logging_config(request_type, transport: str = "grpc"):
+    client = ProjectServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_logging_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = project.LoggingConfig(
+            name="name_value",
+        )
+        response = client.update_logging_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = project_service.UpdateLoggingConfigRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, project.LoggingConfig)
+    assert response.name == "name_value"
+
+
+def test_update_logging_config_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ProjectServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_logging_config), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.update_logging_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == project_service.UpdateLoggingConfigRequest()
+
+
+def test_update_logging_config_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ProjectServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = project_service.UpdateLoggingConfigRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_logging_config), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.update_logging_config(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == project_service.UpdateLoggingConfigRequest()
+
+
+def test_update_logging_config_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ProjectServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.update_logging_config
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.update_logging_config
+        ] = mock_rpc
+        request = {}
+        client.update_logging_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.update_logging_config(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_update_logging_config_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ProjectServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_logging_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            project.LoggingConfig(
+                name="name_value",
+            )
+        )
+        response = await client.update_logging_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == project_service.UpdateLoggingConfigRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_logging_config_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = ProjectServiceAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.update_logging_config
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        class AwaitableMock(mock.AsyncMock):
+            def __await__(self):
+                self.await_count += 1
+                return iter([])
+
+        mock_object = AwaitableMock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.update_logging_config
+        ] = mock_object
+
+        request = {}
+        await client.update_logging_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_object.call_count == 1
+
+        await client.update_logging_config(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_object.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_update_logging_config_async(
+    transport: str = "grpc_asyncio",
+    request_type=project_service.UpdateLoggingConfigRequest,
+):
+    client = ProjectServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_logging_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            project.LoggingConfig(
+                name="name_value",
+            )
+        )
+        response = await client.update_logging_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = project_service.UpdateLoggingConfigRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, project.LoggingConfig)
+    assert response.name == "name_value"
+
+
+@pytest.mark.asyncio
+async def test_update_logging_config_async_from_dict():
+    await test_update_logging_config_async(request_type=dict)
+
+
+def test_update_logging_config_field_headers():
+    client = ProjectServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = project_service.UpdateLoggingConfigRequest()
+
+    request.logging_config.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_logging_config), "__call__"
+    ) as call:
+        call.return_value = project.LoggingConfig()
+        client.update_logging_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "logging_config.name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_update_logging_config_field_headers_async():
+    client = ProjectServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = project_service.UpdateLoggingConfigRequest()
+
+    request.logging_config.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_logging_config), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            project.LoggingConfig()
+        )
+        await client.update_logging_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "logging_config.name=name_value",
+    ) in kw["metadata"]
+
+
+def test_update_logging_config_flattened():
+    client = ProjectServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_logging_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = project.LoggingConfig()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.update_logging_config(
+            logging_config=project.LoggingConfig(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
@@ -2274,63 +3279,49 @@ def test_update_control_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        arg = args[0].control
-        mock_val = gcr_control.Control(
-            facet_spec=search_service.SearchRequest.FacetSpec(
-                facet_key=search_service.SearchRequest.FacetSpec.FacetKey(
-                    key="key_value"
-                )
-            )
-        )
+        arg = args[0].logging_config
+        mock_val = project.LoggingConfig(name="name_value")
         assert arg == mock_val
         arg = args[0].update_mask
         mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
         assert arg == mock_val
 
 
-def test_update_control_flattened_error():
-    client = ControlServiceClient(
+def test_update_logging_config_flattened_error():
+    client = ProjectServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        client.update_control(
-            control_service.UpdateControlRequest(),
-            control=gcr_control.Control(
-                facet_spec=search_service.SearchRequest.FacetSpec(
-                    facet_key=search_service.SearchRequest.FacetSpec.FacetKey(
-                        key="key_value"
-                    )
-                )
-            ),
+        client.update_logging_config(
+            project_service.UpdateLoggingConfigRequest(),
+            logging_config=project.LoggingConfig(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
 
 @pytest.mark.asyncio
-async def test_update_control_flattened_async():
-    client = ControlServiceAsyncClient(
+async def test_update_logging_config_flattened_async():
+    client = ProjectServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.update_control), "__call__") as call:
+    with mock.patch.object(
+        type(client.transport.update_logging_config), "__call__"
+    ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = gcr_control.Control()
+        call.return_value = project.LoggingConfig()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(gcr_control.Control())
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            project.LoggingConfig()
+        )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.update_control(
-            control=gcr_control.Control(
-                facet_spec=search_service.SearchRequest.FacetSpec(
-                    facet_key=search_service.SearchRequest.FacetSpec.FacetKey(
-                        key="key_value"
-                    )
-                )
-            ),
+        response = await client.update_logging_config(
+            logging_config=project.LoggingConfig(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
@@ -2338,14 +3329,8 @@ async def test_update_control_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        arg = args[0].control
-        mock_val = gcr_control.Control(
-            facet_spec=search_service.SearchRequest.FacetSpec(
-                facet_key=search_service.SearchRequest.FacetSpec.FacetKey(
-                    key="key_value"
-                )
-            )
-        )
+        arg = args[0].logging_config
+        mock_val = project.LoggingConfig(name="name_value")
         assert arg == mock_val
         arg = args[0].update_mask
         mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
@@ -2353,23 +3338,17 @@ async def test_update_control_flattened_async():
 
 
 @pytest.mark.asyncio
-async def test_update_control_flattened_error_async():
-    client = ControlServiceAsyncClient(
+async def test_update_logging_config_flattened_error_async():
+    client = ProjectServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        await client.update_control(
-            control_service.UpdateControlRequest(),
-            control=gcr_control.Control(
-                facet_spec=search_service.SearchRequest.FacetSpec(
-                    facet_key=search_service.SearchRequest.FacetSpec.FacetKey(
-                        key="key_value"
-                    )
-                )
-            ),
+        await client.update_logging_config(
+            project_service.UpdateLoggingConfigRequest(),
+            logging_config=project.LoggingConfig(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
@@ -2377,12 +3356,12 @@ async def test_update_control_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        control_service.GetControlRequest,
+        project_service.GetAlertConfigRequest,
         dict,
     ],
 )
-def test_get_control(request_type, transport: str = "grpc"):
-    client = ControlServiceClient(
+def test_get_alert_config(request_type, transport: str = "grpc"):
+    client = ProjectServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -2392,61 +3371,47 @@ def test_get_control(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_control), "__call__") as call:
+    with mock.patch.object(type(client.transport.get_alert_config), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = control.Control(
+        call.return_value = project.AlertConfig(
             name="name_value",
-            display_name="display_name_value",
-            associated_serving_config_ids=["associated_serving_config_ids_value"],
-            solution_types=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
-            search_solution_use_case=[
-                common.SearchSolutionUseCase.SEARCH_SOLUTION_USE_CASE_SEARCH
-            ],
         )
-        response = client.get_control(request)
+        response = client.get_alert_config(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        request = control_service.GetControlRequest()
+        request = project_service.GetAlertConfigRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, control.Control)
+    assert isinstance(response, project.AlertConfig)
     assert response.name == "name_value"
-    assert response.display_name == "display_name_value"
-    assert response.associated_serving_config_ids == [
-        "associated_serving_config_ids_value"
-    ]
-    assert response.solution_types == [common.SolutionType.SOLUTION_TYPE_RECOMMENDATION]
-    assert response.search_solution_use_case == [
-        common.SearchSolutionUseCase.SEARCH_SOLUTION_USE_CASE_SEARCH
-    ]
 
 
-def test_get_control_empty_call():
+def test_get_alert_config_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
-    client = ControlServiceClient(
+    client = ProjectServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_control), "__call__") as call:
+    with mock.patch.object(type(client.transport.get_alert_config), "__call__") as call:
         call.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client.get_control()
+        client.get_alert_config()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == control_service.GetControlRequest()
+        assert args[0] == project_service.GetAlertConfigRequest()
 
 
-def test_get_control_non_empty_request_with_auto_populated_field():
+def test_get_alert_config_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
-    client = ControlServiceClient(
+    client = ProjectServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
@@ -2454,28 +3419,28 @@ def test_get_control_non_empty_request_with_auto_populated_field():
     # Populate all string fields in the request which are not UUID4
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
-    request = control_service.GetControlRequest(
+    request = project_service.GetAlertConfigRequest(
         name="name_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_control), "__call__") as call:
+    with mock.patch.object(type(client.transport.get_alert_config), "__call__") as call:
         call.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client.get_control(request=request)
+        client.get_alert_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == control_service.GetControlRequest(
+        assert args[0] == project_service.GetAlertConfigRequest(
             name="name_value",
         )
 
 
-def test_get_control_use_cached_wrapped_rpc():
+def test_get_alert_config_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = ControlServiceClient(
+        client = ProjectServiceClient(
             credentials=ga_credentials.AnonymousCredentials(),
             transport="grpc",
         )
@@ -2485,21 +3450,23 @@ def test_get_control_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert client._transport.get_control in client._transport._wrapped_methods
+        assert client._transport.get_alert_config in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.get_control] = mock_rpc
+        client._transport._wrapped_methods[
+            client._transport.get_alert_config
+        ] = mock_rpc
         request = {}
-        client.get_control(request)
+        client.get_alert_config(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
-        client.get_control(request)
+        client.get_alert_config(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
@@ -2507,42 +3474,36 @@ def test_get_control_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_control_empty_call_async():
+async def test_get_alert_config_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
-    client = ControlServiceAsyncClient(
+    client = ProjectServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc_asyncio",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_control), "__call__") as call:
+    with mock.patch.object(type(client.transport.get_alert_config), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            control.Control(
+            project.AlertConfig(
                 name="name_value",
-                display_name="display_name_value",
-                associated_serving_config_ids=["associated_serving_config_ids_value"],
-                solution_types=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
-                search_solution_use_case=[
-                    common.SearchSolutionUseCase.SEARCH_SOLUTION_USE_CASE_SEARCH
-                ],
             )
         )
-        response = await client.get_control()
+        response = await client.get_alert_config()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == control_service.GetControlRequest()
+        assert args[0] == project_service.GetAlertConfigRequest()
 
 
 @pytest.mark.asyncio
-async def test_get_control_async_use_cached_wrapped_rpc(
+async def test_get_alert_config_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
-        client = ControlServiceAsyncClient(
+        client = ProjectServiceAsyncClient(
             credentials=ga_credentials.AnonymousCredentials(),
             transport=transport,
         )
@@ -2553,7 +3514,7 @@ async def test_get_control_async_use_cached_wrapped_rpc(
 
         # Ensure method has been cached
         assert (
-            client._client._transport.get_control
+            client._client._transport.get_alert_config
             in client._client._transport._wrapped_methods
         )
 
@@ -2565,16 +3526,16 @@ async def test_get_control_async_use_cached_wrapped_rpc(
 
         mock_object = AwaitableMock()
         client._client._transport._wrapped_methods[
-            client._client._transport.get_control
+            client._client._transport.get_alert_config
         ] = mock_object
 
         request = {}
-        await client.get_control(request)
+        await client.get_alert_config(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert mock_object.call_count == 1
 
-        await client.get_control(request)
+        await client.get_alert_config(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
@@ -2582,10 +3543,10 @@ async def test_get_control_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_control_async(
-    transport: str = "grpc_asyncio", request_type=control_service.GetControlRequest
+async def test_get_alert_config_async(
+    transport: str = "grpc_asyncio", request_type=project_service.GetAlertConfigRequest
 ):
-    client = ControlServiceAsyncClient(
+    client = ProjectServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -2595,60 +3556,46 @@ async def test_get_control_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_control), "__call__") as call:
+    with mock.patch.object(type(client.transport.get_alert_config), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            control.Control(
+            project.AlertConfig(
                 name="name_value",
-                display_name="display_name_value",
-                associated_serving_config_ids=["associated_serving_config_ids_value"],
-                solution_types=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
-                search_solution_use_case=[
-                    common.SearchSolutionUseCase.SEARCH_SOLUTION_USE_CASE_SEARCH
-                ],
             )
         )
-        response = await client.get_control(request)
+        response = await client.get_alert_config(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = control_service.GetControlRequest()
+        request = project_service.GetAlertConfigRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, control.Control)
+    assert isinstance(response, project.AlertConfig)
     assert response.name == "name_value"
-    assert response.display_name == "display_name_value"
-    assert response.associated_serving_config_ids == [
-        "associated_serving_config_ids_value"
-    ]
-    assert response.solution_types == [common.SolutionType.SOLUTION_TYPE_RECOMMENDATION]
-    assert response.search_solution_use_case == [
-        common.SearchSolutionUseCase.SEARCH_SOLUTION_USE_CASE_SEARCH
-    ]
 
 
 @pytest.mark.asyncio
-async def test_get_control_async_from_dict():
-    await test_get_control_async(request_type=dict)
+async def test_get_alert_config_async_from_dict():
+    await test_get_alert_config_async(request_type=dict)
 
 
-def test_get_control_field_headers():
-    client = ControlServiceClient(
+def test_get_alert_config_field_headers():
+    client = ProjectServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = control_service.GetControlRequest()
+    request = project_service.GetAlertConfigRequest()
 
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_control), "__call__") as call:
-        call.return_value = control.Control()
-        client.get_control(request)
+    with mock.patch.object(type(client.transport.get_alert_config), "__call__") as call:
+        call.return_value = project.AlertConfig()
+        client.get_alert_config(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
@@ -2664,21 +3611,21 @@ def test_get_control_field_headers():
 
 
 @pytest.mark.asyncio
-async def test_get_control_field_headers_async():
-    client = ControlServiceAsyncClient(
+async def test_get_alert_config_field_headers_async():
+    client = ProjectServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = control_service.GetControlRequest()
+    request = project_service.GetAlertConfigRequest()
 
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_control), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(control.Control())
-        await client.get_control(request)
+    with mock.patch.object(type(client.transport.get_alert_config), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(project.AlertConfig())
+        await client.get_alert_config(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
@@ -2693,18 +3640,18 @@ async def test_get_control_field_headers_async():
     ) in kw["metadata"]
 
 
-def test_get_control_flattened():
-    client = ControlServiceClient(
+def test_get_alert_config_flattened():
+    client = ProjectServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_control), "__call__") as call:
+    with mock.patch.object(type(client.transport.get_alert_config), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = control.Control()
+        call.return_value = project.AlertConfig()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_control(
+        client.get_alert_config(
             name="name_value",
         )
 
@@ -2717,35 +3664,35 @@ def test_get_control_flattened():
         assert arg == mock_val
 
 
-def test_get_control_flattened_error():
-    client = ControlServiceClient(
+def test_get_alert_config_flattened_error():
+    client = ProjectServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        client.get_control(
-            control_service.GetControlRequest(),
+        client.get_alert_config(
+            project_service.GetAlertConfigRequest(),
             name="name_value",
         )
 
 
 @pytest.mark.asyncio
-async def test_get_control_flattened_async():
-    client = ControlServiceAsyncClient(
+async def test_get_alert_config_flattened_async():
+    client = ProjectServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_control), "__call__") as call:
+    with mock.patch.object(type(client.transport.get_alert_config), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = control.Control()
+        call.return_value = project.AlertConfig()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(control.Control())
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(project.AlertConfig())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_control(
+        response = await client.get_alert_config(
             name="name_value",
         )
 
@@ -2759,16 +3706,16 @@ async def test_get_control_flattened_async():
 
 
 @pytest.mark.asyncio
-async def test_get_control_flattened_error_async():
-    client = ControlServiceAsyncClient(
+async def test_get_alert_config_flattened_error_async():
+    client = ProjectServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        await client.get_control(
-            control_service.GetControlRequest(),
+        await client.get_alert_config(
+            project_service.GetAlertConfigRequest(),
             name="name_value",
         )
 
@@ -2776,12 +3723,12 @@ async def test_get_control_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        control_service.ListControlsRequest,
+        project_service.UpdateAlertConfigRequest,
         dict,
     ],
 )
-def test_list_controls(request_type, transport: str = "grpc"):
-    client = ControlServiceClient(
+def test_update_alert_config(request_type, transport: str = "grpc"):
+    client = ProjectServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -2791,47 +3738,51 @@ def test_list_controls(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_controls), "__call__") as call:
+    with mock.patch.object(
+        type(client.transport.update_alert_config), "__call__"
+    ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = control_service.ListControlsResponse(
-            next_page_token="next_page_token_value",
+        call.return_value = project.AlertConfig(
+            name="name_value",
         )
-        response = client.list_controls(request)
+        response = client.update_alert_config(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        request = control_service.ListControlsRequest()
+        request = project_service.UpdateAlertConfigRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListControlsPager)
-    assert response.next_page_token == "next_page_token_value"
+    assert isinstance(response, project.AlertConfig)
+    assert response.name == "name_value"
 
 
-def test_list_controls_empty_call():
+def test_update_alert_config_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
-    client = ControlServiceClient(
+    client = ProjectServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_controls), "__call__") as call:
+    with mock.patch.object(
+        type(client.transport.update_alert_config), "__call__"
+    ) as call:
         call.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client.list_controls()
+        client.update_alert_config()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == control_service.ListControlsRequest()
+        assert args[0] == project_service.UpdateAlertConfigRequest()
 
 
-def test_list_controls_non_empty_request_with_auto_populated_field():
+def test_update_alert_config_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
-    client = ControlServiceClient(
+    client = ProjectServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
@@ -2839,32 +3790,26 @@ def test_list_controls_non_empty_request_with_auto_populated_field():
     # Populate all string fields in the request which are not UUID4
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
-    request = control_service.ListControlsRequest(
-        parent="parent_value",
-        page_token="page_token_value",
-        filter="filter_value",
-    )
+    request = project_service.UpdateAlertConfigRequest()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_controls), "__call__") as call:
+    with mock.patch.object(
+        type(client.transport.update_alert_config), "__call__"
+    ) as call:
         call.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client.list_controls(request=request)
+        client.update_alert_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == control_service.ListControlsRequest(
-            parent="parent_value",
-            page_token="page_token_value",
-            filter="filter_value",
-        )
+        assert args[0] == project_service.UpdateAlertConfigRequest()
 
 
-def test_list_controls_use_cached_wrapped_rpc():
+def test_update_alert_config_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = ControlServiceClient(
+        client = ProjectServiceClient(
             credentials=ga_credentials.AnonymousCredentials(),
             transport="grpc",
         )
@@ -2874,21 +3819,25 @@ def test_list_controls_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert client._transport.list_controls in client._transport._wrapped_methods
+        assert (
+            client._transport.update_alert_config in client._transport._wrapped_methods
+        )
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.list_controls] = mock_rpc
+        client._transport._wrapped_methods[
+            client._transport.update_alert_config
+        ] = mock_rpc
         request = {}
-        client.list_controls(request)
+        client.update_alert_config(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
-        client.list_controls(request)
+        client.update_alert_config(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
@@ -2896,36 +3845,38 @@ def test_list_controls_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_controls_empty_call_async():
+async def test_update_alert_config_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
-    client = ControlServiceAsyncClient(
+    client = ProjectServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc_asyncio",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_controls), "__call__") as call:
+    with mock.patch.object(
+        type(client.transport.update_alert_config), "__call__"
+    ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            control_service.ListControlsResponse(
-                next_page_token="next_page_token_value",
+            project.AlertConfig(
+                name="name_value",
             )
         )
-        response = await client.list_controls()
+        response = await client.update_alert_config()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == control_service.ListControlsRequest()
+        assert args[0] == project_service.UpdateAlertConfigRequest()
 
 
 @pytest.mark.asyncio
-async def test_list_controls_async_use_cached_wrapped_rpc(
+async def test_update_alert_config_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
-        client = ControlServiceAsyncClient(
+        client = ProjectServiceAsyncClient(
             credentials=ga_credentials.AnonymousCredentials(),
             transport=transport,
         )
@@ -2936,7 +3887,7 @@ async def test_list_controls_async_use_cached_wrapped_rpc(
 
         # Ensure method has been cached
         assert (
-            client._client._transport.list_controls
+            client._client._transport.update_alert_config
             in client._client._transport._wrapped_methods
         )
 
@@ -2948,16 +3899,16 @@ async def test_list_controls_async_use_cached_wrapped_rpc(
 
         mock_object = AwaitableMock()
         client._client._transport._wrapped_methods[
-            client._client._transport.list_controls
+            client._client._transport.update_alert_config
         ] = mock_object
 
         request = {}
-        await client.list_controls(request)
+        await client.update_alert_config(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert mock_object.call_count == 1
 
-        await client.list_controls(request)
+        await client.update_alert_config(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
@@ -2965,10 +3916,11 @@ async def test_list_controls_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_controls_async(
-    transport: str = "grpc_asyncio", request_type=control_service.ListControlsRequest
+async def test_update_alert_config_async(
+    transport: str = "grpc_asyncio",
+    request_type=project_service.UpdateAlertConfigRequest,
 ):
-    client = ControlServiceAsyncClient(
+    client = ProjectServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -2978,46 +3930,50 @@ async def test_list_controls_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_controls), "__call__") as call:
+    with mock.patch.object(
+        type(client.transport.update_alert_config), "__call__"
+    ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            control_service.ListControlsResponse(
-                next_page_token="next_page_token_value",
+            project.AlertConfig(
+                name="name_value",
             )
         )
-        response = await client.list_controls(request)
+        response = await client.update_alert_config(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = control_service.ListControlsRequest()
+        request = project_service.UpdateAlertConfigRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListControlsAsyncPager)
-    assert response.next_page_token == "next_page_token_value"
+    assert isinstance(response, project.AlertConfig)
+    assert response.name == "name_value"
 
 
 @pytest.mark.asyncio
-async def test_list_controls_async_from_dict():
-    await test_list_controls_async(request_type=dict)
+async def test_update_alert_config_async_from_dict():
+    await test_update_alert_config_async(request_type=dict)
 
 
-def test_list_controls_field_headers():
-    client = ControlServiceClient(
+def test_update_alert_config_field_headers():
+    client = ProjectServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = control_service.ListControlsRequest()
+    request = project_service.UpdateAlertConfigRequest()
 
-    request.parent = "parent_value"
+    request.alert_config.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_controls), "__call__") as call:
-        call.return_value = control_service.ListControlsResponse()
-        client.list_controls(request)
+    with mock.patch.object(
+        type(client.transport.update_alert_config), "__call__"
+    ) as call:
+        call.return_value = project.AlertConfig()
+        client.update_alert_config(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
@@ -3028,28 +3984,28 @@ def test_list_controls_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent_value",
+        "alert_config.name=name_value",
     ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
-async def test_list_controls_field_headers_async():
-    client = ControlServiceAsyncClient(
+async def test_update_alert_config_field_headers_async():
+    client = ProjectServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = control_service.ListControlsRequest()
+    request = project_service.UpdateAlertConfigRequest()
 
-    request.parent = "parent_value"
+    request.alert_config.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_controls), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            control_service.ListControlsResponse()
-        )
-        await client.list_controls(request)
+    with mock.patch.object(
+        type(client.transport.update_alert_config), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(project.AlertConfig())
+        await client.update_alert_config(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
@@ -3060,494 +4016,153 @@ async def test_list_controls_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent_value",
+        "alert_config.name=name_value",
     ) in kw["metadata"]
 
 
-def test_list_controls_flattened():
-    client = ControlServiceClient(
+def test_update_alert_config_flattened():
+    client = ProjectServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_controls), "__call__") as call:
+    with mock.patch.object(
+        type(client.transport.update_alert_config), "__call__"
+    ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = control_service.ListControlsResponse()
+        call.return_value = project.AlertConfig()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_controls(
-            parent="parent_value",
+        client.update_alert_config(
+            alert_config=project.AlertConfig(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        arg = args[0].parent
-        mock_val = "parent_value"
+        arg = args[0].alert_config
+        mock_val = project.AlertConfig(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
         assert arg == mock_val
 
 
-def test_list_controls_flattened_error():
-    client = ControlServiceClient(
+def test_update_alert_config_flattened_error():
+    client = ProjectServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        client.list_controls(
-            control_service.ListControlsRequest(),
-            parent="parent_value",
+        client.update_alert_config(
+            project_service.UpdateAlertConfigRequest(),
+            alert_config=project.AlertConfig(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
 
 @pytest.mark.asyncio
-async def test_list_controls_flattened_async():
-    client = ControlServiceAsyncClient(
+async def test_update_alert_config_flattened_async():
+    client = ProjectServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_controls), "__call__") as call:
+    with mock.patch.object(
+        type(client.transport.update_alert_config), "__call__"
+    ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = control_service.ListControlsResponse()
+        call.return_value = project.AlertConfig()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            control_service.ListControlsResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(project.AlertConfig())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_controls(
-            parent="parent_value",
+        response = await client.update_alert_config(
+            alert_config=project.AlertConfig(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        arg = args[0].parent
-        mock_val = "parent_value"
+        arg = args[0].alert_config
+        mock_val = project.AlertConfig(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
         assert arg == mock_val
 
 
 @pytest.mark.asyncio
-async def test_list_controls_flattened_error_async():
-    client = ControlServiceAsyncClient(
+async def test_update_alert_config_flattened_error_async():
+    client = ProjectServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        await client.list_controls(
-            control_service.ListControlsRequest(),
-            parent="parent_value",
+        await client.update_alert_config(
+            project_service.UpdateAlertConfigRequest(),
+            alert_config=project.AlertConfig(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
-
-
-def test_list_controls_pager(transport_name: str = "grpc"):
-    client = ControlServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport_name,
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_controls), "__call__") as call:
-        # Set the response to a series of pages.
-        call.side_effect = (
-            control_service.ListControlsResponse(
-                controls=[
-                    control.Control(),
-                    control.Control(),
-                    control.Control(),
-                ],
-                next_page_token="abc",
-            ),
-            control_service.ListControlsResponse(
-                controls=[],
-                next_page_token="def",
-            ),
-            control_service.ListControlsResponse(
-                controls=[
-                    control.Control(),
-                ],
-                next_page_token="ghi",
-            ),
-            control_service.ListControlsResponse(
-                controls=[
-                    control.Control(),
-                    control.Control(),
-                ],
-            ),
-            RuntimeError,
-        )
-
-        expected_metadata = ()
-        expected_metadata = tuple(expected_metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
-        )
-        pager = client.list_controls(request={})
-
-        assert pager._metadata == expected_metadata
-
-        results = list(pager)
-        assert len(results) == 6
-        assert all(isinstance(i, control.Control) for i in results)
-
-
-def test_list_controls_pages(transport_name: str = "grpc"):
-    client = ControlServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport_name,
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_controls), "__call__") as call:
-        # Set the response to a series of pages.
-        call.side_effect = (
-            control_service.ListControlsResponse(
-                controls=[
-                    control.Control(),
-                    control.Control(),
-                    control.Control(),
-                ],
-                next_page_token="abc",
-            ),
-            control_service.ListControlsResponse(
-                controls=[],
-                next_page_token="def",
-            ),
-            control_service.ListControlsResponse(
-                controls=[
-                    control.Control(),
-                ],
-                next_page_token="ghi",
-            ),
-            control_service.ListControlsResponse(
-                controls=[
-                    control.Control(),
-                    control.Control(),
-                ],
-            ),
-            RuntimeError,
-        )
-        pages = list(client.list_controls(request={}).pages)
-        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
-            assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.asyncio
-async def test_list_controls_async_pager():
-    client = ControlServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_controls), "__call__", new_callable=mock.AsyncMock
-    ) as call:
-        # Set the response to a series of pages.
-        call.side_effect = (
-            control_service.ListControlsResponse(
-                controls=[
-                    control.Control(),
-                    control.Control(),
-                    control.Control(),
-                ],
-                next_page_token="abc",
-            ),
-            control_service.ListControlsResponse(
-                controls=[],
-                next_page_token="def",
-            ),
-            control_service.ListControlsResponse(
-                controls=[
-                    control.Control(),
-                ],
-                next_page_token="ghi",
-            ),
-            control_service.ListControlsResponse(
-                controls=[
-                    control.Control(),
-                    control.Control(),
-                ],
-            ),
-            RuntimeError,
-        )
-        async_pager = await client.list_controls(
-            request={},
-        )
-        assert async_pager.next_page_token == "abc"
-        responses = []
-        async for response in async_pager:  # pragma: no branch
-            responses.append(response)
-
-        assert len(responses) == 6
-        assert all(isinstance(i, control.Control) for i in responses)
-
-
-@pytest.mark.asyncio
-async def test_list_controls_async_pages():
-    client = ControlServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_controls), "__call__", new_callable=mock.AsyncMock
-    ) as call:
-        # Set the response to a series of pages.
-        call.side_effect = (
-            control_service.ListControlsResponse(
-                controls=[
-                    control.Control(),
-                    control.Control(),
-                    control.Control(),
-                ],
-                next_page_token="abc",
-            ),
-            control_service.ListControlsResponse(
-                controls=[],
-                next_page_token="def",
-            ),
-            control_service.ListControlsResponse(
-                controls=[
-                    control.Control(),
-                ],
-                next_page_token="ghi",
-            ),
-            control_service.ListControlsResponse(
-                controls=[
-                    control.Control(),
-                    control.Control(),
-                ],
-            ),
-            RuntimeError,
-        )
-        pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_controls(request={})
-        ).pages:
-            pages.append(page_)
-        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
-            assert page_.raw_page.next_page_token == token
 
 
 @pytest.mark.parametrize(
     "request_type",
     [
-        control_service.CreateControlRequest,
+        project_service.GetProjectRequest,
         dict,
     ],
 )
-def test_create_control_rest(request_type):
-    client = ControlServiceClient(
+def test_get_project_rest(request_type):
+    client = ProjectServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
     # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2/catalogs/sample3"}
-    request_init["control"] = {
-        "facet_spec": {
-            "facet_key": {
-                "key": "key_value",
-                "intervals": [
-                    {
-                        "minimum": 0.764,
-                        "exclusive_minimum": 0.18430000000000002,
-                        "maximum": 0.766,
-                        "exclusive_maximum": 0.1845,
-                    }
-                ],
-                "restricted_values": [
-                    "restricted_values_value1",
-                    "restricted_values_value2",
-                ],
-                "prefixes": ["prefixes_value1", "prefixes_value2"],
-                "contains": ["contains_value1", "contains_value2"],
-                "case_insensitive": True,
-                "order_by": "order_by_value",
-                "query": "query_value",
-                "return_min_max": True,
-            },
-            "limit": 543,
-            "excluded_filter_keys": [
-                "excluded_filter_keys_value1",
-                "excluded_filter_keys_value2",
-            ],
-            "enable_dynamic_position": True,
-        },
-        "rule": {
-            "boost_action": {
-                "boost": 0.551,
-                "products_filter": "products_filter_value",
-            },
-            "redirect_action": {"redirect_uri": "redirect_uri_value"},
-            "oneway_synonyms_action": {
-                "query_terms": ["query_terms_value1", "query_terms_value2"],
-                "synonyms": ["synonyms_value1", "synonyms_value2"],
-                "oneway_terms": ["oneway_terms_value1", "oneway_terms_value2"],
-            },
-            "do_not_associate_action": {
-                "query_terms": ["query_terms_value1", "query_terms_value2"],
-                "do_not_associate_terms": [
-                    "do_not_associate_terms_value1",
-                    "do_not_associate_terms_value2",
-                ],
-                "terms": ["terms_value1", "terms_value2"],
-            },
-            "replacement_action": {
-                "query_terms": ["query_terms_value1", "query_terms_value2"],
-                "replacement_term": "replacement_term_value",
-                "term": "term_value",
-            },
-            "ignore_action": {
-                "ignore_terms": ["ignore_terms_value1", "ignore_terms_value2"]
-            },
-            "filter_action": {"filter": "filter_value"},
-            "twoway_synonyms_action": {
-                "synonyms": ["synonyms_value1", "synonyms_value2"]
-            },
-            "force_return_facet_action": {
-                "facet_position_adjustments": [
-                    {"attribute_name": "attribute_name_value", "position": 885}
-                ]
-            },
-            "remove_facet_action": {
-                "attribute_names": ["attribute_names_value1", "attribute_names_value2"]
-            },
-            "condition": {
-                "query_terms": [{"value": "value_value", "full_match": True}],
-                "active_time_range": [
-                    {"start_time": {"seconds": 751, "nanos": 543}, "end_time": {}}
-                ],
-                "page_categories": ["page_categories_value1", "page_categories_value2"],
-            },
-        },
-        "name": "name_value",
-        "display_name": "display_name_value",
-        "associated_serving_config_ids": [
-            "associated_serving_config_ids_value1",
-            "associated_serving_config_ids_value2",
-        ],
-        "solution_types": [1],
-        "search_solution_use_case": [1],
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = control_service.CreateControlRequest.meta.fields["control"]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["control"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["control"][field])):
-                    del request_init["control"][field][i][subfield]
-            else:
-                del request_init["control"][field][subfield]
+    request_init = {"name": "projects/sample1/retailProject"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = gcr_control.Control(
+        return_value = project.Project(
             name="name_value",
-            display_name="display_name_value",
-            associated_serving_config_ids=["associated_serving_config_ids_value"],
-            solution_types=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
-            search_solution_use_case=[
-                common.SearchSolutionUseCase.SEARCH_SOLUTION_USE_CASE_SEARCH
-            ],
+            enrolled_solutions=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
         )
 
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
         # Convert return value to protobuf type
-        return_value = gcr_control.Control.pb(return_value)
+        return_value = project.Project.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-        response = client.create_control(request)
+        response = client.get_project(request)
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, gcr_control.Control)
+    assert isinstance(response, project.Project)
     assert response.name == "name_value"
-    assert response.display_name == "display_name_value"
-    assert response.associated_serving_config_ids == [
-        "associated_serving_config_ids_value"
-    ]
-    assert response.solution_types == [common.SolutionType.SOLUTION_TYPE_RECOMMENDATION]
-    assert response.search_solution_use_case == [
-        common.SearchSolutionUseCase.SEARCH_SOLUTION_USE_CASE_SEARCH
+    assert response.enrolled_solutions == [
+        common.SolutionType.SOLUTION_TYPE_RECOMMENDATION
     ]
 
 
-def test_create_control_rest_use_cached_wrapped_rpc():
+def test_get_project_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = ControlServiceClient(
+        client = ProjectServiceClient(
             credentials=ga_credentials.AnonymousCredentials(),
             transport="rest",
         )
@@ -3557,36 +4172,35 @@ def test_create_control_rest_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert client._transport.create_control in client._transport._wrapped_methods
+        assert client._transport.get_project in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.create_control] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_project] = mock_rpc
 
         request = {}
-        client.create_control(request)
+        client.get_project(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
-        client.create_control(request)
+        client.get_project(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
         assert mock_rpc.call_count == 2
 
 
-def test_create_control_rest_required_fields(
-    request_type=control_service.CreateControlRequest,
+def test_get_project_rest_required_fields(
+    request_type=project_service.GetProjectRequest,
 ):
-    transport_class = transports.ControlServiceRestTransport
+    transport_class = transports.ProjectServiceRestTransport
 
     request_init = {}
-    request_init["parent"] = ""
-    request_init["control_id"] = ""
+    request_init["name"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
@@ -3594,41 +4208,337 @@ def test_create_control_rest_required_fields(
     )
 
     # verify fields with default values are dropped
-    assert "controlId" not in jsonified_request
 
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
-    ).create_control._get_unset_required_fields(jsonified_request)
+    ).get_project._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
-    assert "controlId" in jsonified_request
-    assert jsonified_request["controlId"] == request_init["control_id"]
 
-    jsonified_request["parent"] = "parent_value"
-    jsonified_request["controlId"] = "control_id_value"
+    jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
-    ).create_control._get_unset_required_fields(jsonified_request)
-    # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("control_id",))
+    ).get_project._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
-    assert "parent" in jsonified_request
-    assert jsonified_request["parent"] == "parent_value"
-    assert "controlId" in jsonified_request
-    assert jsonified_request["controlId"] == "control_id_value"
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
 
-    client = ControlServiceClient(
+    client = ProjectServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
-    return_value = gcr_control.Control()
+    return_value = project.Project()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = project.Project.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_project(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_project_rest_unset_required_fields():
+    transport = transports.ProjectServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_project._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_project_rest_interceptors(null_interceptor):
+    transport = transports.ProjectServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ProjectServiceRestInterceptor(),
+    )
+    client = ProjectServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ProjectServiceRestInterceptor, "post_get_project"
+    ) as post, mock.patch.object(
+        transports.ProjectServiceRestInterceptor, "pre_get_project"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = project_service.GetProjectRequest.pb(
+            project_service.GetProjectRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = project.Project.to_json(project.Project())
+
+        request = project_service.GetProjectRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = project.Project()
+
+        client.get_project(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_project_rest_bad_request(
+    transport: str = "rest", request_type=project_service.GetProjectRequest
+):
+    client = ProjectServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/retailProject"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_project(request)
+
+
+def test_get_project_rest_flattened():
+    client = ProjectServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = project.Project()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "projects/sample1/retailProject"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = project.Project.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_project(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2alpha/{name=projects/*/retailProject}" % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_project_rest_flattened_error(transport: str = "rest"):
+    client = ProjectServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_project(
+            project_service.GetProjectRequest(),
+            name="name_value",
+        )
+
+
+def test_get_project_rest_error():
+    client = ProjectServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        project_service.AcceptTermsRequest,
+        dict,
+    ],
+)
+def test_accept_terms_rest(request_type):
+    client = ProjectServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "projects/sample1/retailProject"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gcr_project.Project(
+            name="name_value",
+            enrolled_solutions=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = gcr_project.Project.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.accept_terms(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gcr_project.Project)
+    assert response.name == "name_value"
+    assert response.enrolled_solutions == [
+        common.SolutionType.SOLUTION_TYPE_RECOMMENDATION
+    ]
+
+
+def test_accept_terms_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ProjectServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.accept_terms in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.accept_terms] = mock_rpc
+
+        request = {}
+        client.accept_terms(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.accept_terms(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_accept_terms_rest_required_fields(
+    request_type=project_service.AcceptTermsRequest,
+):
+    transport_class = transports.ProjectServiceRestTransport
+
+    request_init = {}
+    request_init["project"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).accept_terms._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["project"] = "project_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).accept_terms._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+
+    client = ProjectServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = gcr_project.Project()
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
         # We need to mock transcode() because providing default values
@@ -3650,65 +4560,50 @@ def test_create_control_rest_required_fields(
             response_value.status_code = 200
 
             # Convert return value to protobuf type
-            return_value = gcr_control.Control.pb(return_value)
+            return_value = gcr_project.Project.pb(return_value)
             json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
-            response = client.create_control(request)
+            response = client.accept_terms(request)
 
-            expected_params = [
-                (
-                    "controlId",
-                    "",
-                ),
-                ("$alt", "json;enum-encoding=int"),
-            ]
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
 
-def test_create_control_rest_unset_required_fields():
-    transport = transports.ControlServiceRestTransport(
+def test_accept_terms_rest_unset_required_fields():
+    transport = transports.ProjectServiceRestTransport(
         credentials=ga_credentials.AnonymousCredentials
     )
 
-    unset_fields = transport.create_control._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(("controlId",))
-        & set(
-            (
-                "parent",
-                "control",
-                "controlId",
-            )
-        )
-    )
+    unset_fields = transport.accept_terms._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("project",)))
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
-def test_create_control_rest_interceptors(null_interceptor):
-    transport = transports.ControlServiceRestTransport(
+def test_accept_terms_rest_interceptors(null_interceptor):
+    transport = transports.ProjectServiceRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
-        else transports.ControlServiceRestInterceptor(),
+        else transports.ProjectServiceRestInterceptor(),
     )
-    client = ControlServiceClient(transport=transport)
+    client = ProjectServiceClient(transport=transport)
     with mock.patch.object(
         type(client.transport._session), "request"
     ) as req, mock.patch.object(
         path_template, "transcode"
     ) as transcode, mock.patch.object(
-        transports.ControlServiceRestInterceptor, "post_create_control"
+        transports.ProjectServiceRestInterceptor, "post_accept_terms"
     ) as post, mock.patch.object(
-        transports.ControlServiceRestInterceptor, "pre_create_control"
+        transports.ProjectServiceRestInterceptor, "pre_accept_terms"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-        pb_message = control_service.CreateControlRequest.pb(
-            control_service.CreateControlRequest()
+        pb_message = project_service.AcceptTermsRequest.pb(
+            project_service.AcceptTermsRequest()
         )
         transcode.return_value = {
             "method": "post",
@@ -3720,17 +4615,17 @@ def test_create_control_rest_interceptors(null_interceptor):
         req.return_value = Response()
         req.return_value.status_code = 200
         req.return_value.request = PreparedRequest()
-        req.return_value._content = gcr_control.Control.to_json(gcr_control.Control())
+        req.return_value._content = gcr_project.Project.to_json(gcr_project.Project())
 
-        request = control_service.CreateControlRequest()
+        request = project_service.AcceptTermsRequest()
         metadata = [
             ("key", "val"),
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = gcr_control.Control()
+        post.return_value = gcr_project.Project()
 
-        client.create_control(
+        client.accept_terms(
             request,
             metadata=[
                 ("key", "val"),
@@ -3742,16 +4637,16 @@ def test_create_control_rest_interceptors(null_interceptor):
         post.assert_called_once()
 
 
-def test_create_control_rest_bad_request(
-    transport: str = "rest", request_type=control_service.CreateControlRequest
+def test_accept_terms_rest_bad_request(
+    transport: str = "rest", request_type=project_service.AcceptTermsRequest
 ):
-    client = ControlServiceClient(
+    client = ProjectServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
     # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2/catalogs/sample3"}
+    request_init = {"project": "projects/sample1/retailProject"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -3763,11 +4658,11 @@ def test_create_control_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
-        client.create_control(request)
+        client.accept_terms(request)
 
 
-def test_create_control_rest_flattened():
-    client = ControlServiceClient(
+def test_accept_terms_rest_flattened():
+    client = ProjectServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
@@ -3775,24 +4670,14 @@ def test_create_control_rest_flattened():
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = gcr_control.Control()
+        return_value = gcr_project.Project()
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "parent": "projects/sample1/locations/sample2/catalogs/sample3"
-        }
+        sample_request = {"project": "projects/sample1/retailProject"}
 
         # get truthy value for each flattened field
         mock_args = dict(
-            parent="parent_value",
-            control=gcr_control.Control(
-                facet_spec=search_service.SearchRequest.FacetSpec(
-                    facet_key=search_service.SearchRequest.FacetSpec.FacetKey(
-                        key="key_value"
-                    )
-                )
-            ),
-            control_id="control_id_value",
+            project="project_value",
         )
         mock_args.update(sample_request)
 
@@ -3800,26 +4685,26 @@ def test_create_control_rest_flattened():
         response_value = Response()
         response_value.status_code = 200
         # Convert return value to protobuf type
-        return_value = gcr_control.Control.pb(return_value)
+        return_value = gcr_project.Project.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
-        client.create_control(**mock_args)
+        client.accept_terms(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/v2alpha/{parent=projects/*/locations/*/catalogs/*}/controls"
+            "%s/v2alpha/{project=projects/*/retailProject}:acceptTerms"
             % client.transport._host,
             args[1],
         )
 
 
-def test_create_control_rest_flattened_error(transport: str = "rest"):
-    client = ControlServiceClient(
+def test_accept_terms_rest_flattened_error(transport: str = "rest"):
+    client = ProjectServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -3827,22 +4712,14 @@ def test_create_control_rest_flattened_error(transport: str = "rest"):
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        client.create_control(
-            control_service.CreateControlRequest(),
-            parent="parent_value",
-            control=gcr_control.Control(
-                facet_spec=search_service.SearchRequest.FacetSpec(
-                    facet_key=search_service.SearchRequest.FacetSpec.FacetKey(
-                        key="key_value"
-                    )
-                )
-            ),
-            control_id="control_id_value",
+        client.accept_terms(
+            project_service.AcceptTermsRequest(),
+            project="project_value",
         )
 
 
-def test_create_control_rest_error():
-    client = ControlServiceClient(
+def test_accept_terms_rest_error():
+    client = ProjectServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
@@ -3850,45 +4727,43 @@ def test_create_control_rest_error():
 @pytest.mark.parametrize(
     "request_type",
     [
-        control_service.DeleteControlRequest,
+        project_service.EnrollSolutionRequest,
         dict,
     ],
 )
-def test_delete_control_rest(request_type):
-    client = ControlServiceClient(
+def test_enroll_solution_rest(request_type):
+    client = ProjectServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/catalogs/sample3/controls/sample4"
-    }
+    request_init = {"project": "projects/sample1"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = None
+        return_value = operations_pb2.Operation(name="operations/spam")
 
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = ""
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-        response = client.delete_control(request)
+        response = client.enroll_solution(request)
 
     # Establish that the response is the type that we expect.
-    assert response is None
+    assert response.operation.name == "operations/spam"
 
 
-def test_delete_control_rest_use_cached_wrapped_rpc():
+def test_enroll_solution_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = ControlServiceClient(
+        client = ProjectServiceClient(
             credentials=ga_credentials.AnonymousCredentials(),
             transport="rest",
         )
@@ -3898,32 +4773,607 @@ def test_delete_control_rest_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert client._transport.delete_control in client._transport._wrapped_methods
+        assert client._transport.enroll_solution in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.delete_control] = mock_rpc
+        client._transport._wrapped_methods[client._transport.enroll_solution] = mock_rpc
 
         request = {}
-        client.delete_control(request)
+        client.enroll_solution(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
-        client.delete_control(request)
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.enroll_solution(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
         assert mock_rpc.call_count == 2
 
 
-def test_delete_control_rest_required_fields(
-    request_type=control_service.DeleteControlRequest,
+def test_enroll_solution_rest_required_fields(
+    request_type=project_service.EnrollSolutionRequest,
 ):
-    transport_class = transports.ControlServiceRestTransport
+    transport_class = transports.ProjectServiceRestTransport
+
+    request_init = {}
+    request_init["project"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).enroll_solution._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["project"] = "project_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).enroll_solution._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+
+    client = ProjectServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.enroll_solution(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_enroll_solution_rest_unset_required_fields():
+    transport = transports.ProjectServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.enroll_solution._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "project",
+                "solution",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_enroll_solution_rest_interceptors(null_interceptor):
+    transport = transports.ProjectServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ProjectServiceRestInterceptor(),
+    )
+    client = ProjectServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.ProjectServiceRestInterceptor, "post_enroll_solution"
+    ) as post, mock.patch.object(
+        transports.ProjectServiceRestInterceptor, "pre_enroll_solution"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = project_service.EnrollSolutionRequest.pb(
+            project_service.EnrollSolutionRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = project_service.EnrollSolutionRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.enroll_solution(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_enroll_solution_rest_bad_request(
+    transport: str = "rest", request_type=project_service.EnrollSolutionRequest
+):
+    client = ProjectServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "projects/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.enroll_solution(request)
+
+
+def test_enroll_solution_rest_error():
+    client = ProjectServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        project_service.ListEnrolledSolutionsRequest,
+        dict,
+    ],
+)
+def test_list_enrolled_solutions_rest(request_type):
+    client = ProjectServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = project_service.ListEnrolledSolutionsResponse(
+            enrolled_solutions=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = project_service.ListEnrolledSolutionsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_enrolled_solutions(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, project_service.ListEnrolledSolutionsResponse)
+    assert response.enrolled_solutions == [
+        common.SolutionType.SOLUTION_TYPE_RECOMMENDATION
+    ]
+
+
+def test_list_enrolled_solutions_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ProjectServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.list_enrolled_solutions
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.list_enrolled_solutions
+        ] = mock_rpc
+
+        request = {}
+        client.list_enrolled_solutions(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.list_enrolled_solutions(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_list_enrolled_solutions_rest_required_fields(
+    request_type=project_service.ListEnrolledSolutionsRequest,
+):
+    transport_class = transports.ProjectServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_enrolled_solutions._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_enrolled_solutions._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = ProjectServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = project_service.ListEnrolledSolutionsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = project_service.ListEnrolledSolutionsResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_enrolled_solutions(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_enrolled_solutions_rest_unset_required_fields():
+    transport = transports.ProjectServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_enrolled_solutions._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("parent",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_enrolled_solutions_rest_interceptors(null_interceptor):
+    transport = transports.ProjectServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ProjectServiceRestInterceptor(),
+    )
+    client = ProjectServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ProjectServiceRestInterceptor, "post_list_enrolled_solutions"
+    ) as post, mock.patch.object(
+        transports.ProjectServiceRestInterceptor, "pre_list_enrolled_solutions"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = project_service.ListEnrolledSolutionsRequest.pb(
+            project_service.ListEnrolledSolutionsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = (
+            project_service.ListEnrolledSolutionsResponse.to_json(
+                project_service.ListEnrolledSolutionsResponse()
+            )
+        )
+
+        request = project_service.ListEnrolledSolutionsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = project_service.ListEnrolledSolutionsResponse()
+
+        client.list_enrolled_solutions(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_enrolled_solutions_rest_bad_request(
+    transport: str = "rest", request_type=project_service.ListEnrolledSolutionsRequest
+):
+    client = ProjectServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_enrolled_solutions(request)
+
+
+def test_list_enrolled_solutions_rest_flattened():
+    client = ProjectServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = project_service.ListEnrolledSolutionsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = project_service.ListEnrolledSolutionsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_enrolled_solutions(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2alpha/{parent=projects/*}:enrolledSolutions" % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_enrolled_solutions_rest_flattened_error(transport: str = "rest"):
+    client = ProjectServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_enrolled_solutions(
+            project_service.ListEnrolledSolutionsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_enrolled_solutions_rest_error():
+    client = ProjectServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        project_service.GetLoggingConfigRequest,
+        dict,
+    ],
+)
+def test_get_logging_config_rest(request_type):
+    client = ProjectServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/loggingConfig"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = project.LoggingConfig(
+            name="name_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = project.LoggingConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_logging_config(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, project.LoggingConfig)
+    assert response.name == "name_value"
+
+
+def test_get_logging_config_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ProjectServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.get_logging_config in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.get_logging_config
+        ] = mock_rpc
+
+        request = {}
+        client.get_logging_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_logging_config(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_get_logging_config_rest_required_fields(
+    request_type=project_service.GetLoggingConfigRequest,
+):
+    transport_class = transports.ProjectServiceRestTransport
 
     request_init = {}
     request_init["name"] = ""
@@ -3937,7 +5387,7 @@ def test_delete_control_rest_required_fields(
 
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
-    ).delete_control._get_unset_required_fields(jsonified_request)
+    ).get_logging_config._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -3946,21 +5396,21 @@ def test_delete_control_rest_required_fields(
 
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
-    ).delete_control._get_unset_required_fields(jsonified_request)
+    ).get_logging_config._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
     assert jsonified_request["name"] == "name_value"
 
-    client = ControlServiceClient(
+    client = ProjectServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
-    return_value = None
+    return_value = project.LoggingConfig()
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
         # We need to mock transcode() because providing default values
@@ -3972,53 +5422,59 @@ def test_delete_control_rest_required_fields(
             pb_request = request_type.pb(request)
             transcode_result = {
                 "uri": "v1/sample_method",
-                "method": "delete",
+                "method": "get",
                 "query_params": pb_request,
             }
             transcode.return_value = transcode_result
 
             response_value = Response()
             response_value.status_code = 200
-            json_return_value = ""
+
+            # Convert return value to protobuf type
+            return_value = project.LoggingConfig.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
-            response = client.delete_control(request)
+            response = client.get_logging_config(request)
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
 
-def test_delete_control_rest_unset_required_fields():
-    transport = transports.ControlServiceRestTransport(
+def test_get_logging_config_rest_unset_required_fields():
+    transport = transports.ProjectServiceRestTransport(
         credentials=ga_credentials.AnonymousCredentials
     )
 
-    unset_fields = transport.delete_control._get_unset_required_fields({})
+    unset_fields = transport.get_logging_config._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
-def test_delete_control_rest_interceptors(null_interceptor):
-    transport = transports.ControlServiceRestTransport(
+def test_get_logging_config_rest_interceptors(null_interceptor):
+    transport = transports.ProjectServiceRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
-        else transports.ControlServiceRestInterceptor(),
+        else transports.ProjectServiceRestInterceptor(),
     )
-    client = ControlServiceClient(transport=transport)
+    client = ProjectServiceClient(transport=transport)
     with mock.patch.object(
         type(client.transport._session), "request"
     ) as req, mock.patch.object(
         path_template, "transcode"
     ) as transcode, mock.patch.object(
-        transports.ControlServiceRestInterceptor, "pre_delete_control"
+        transports.ProjectServiceRestInterceptor, "post_get_logging_config"
+    ) as post, mock.patch.object(
+        transports.ProjectServiceRestInterceptor, "pre_get_logging_config"
     ) as pre:
         pre.assert_not_called()
-        pb_message = control_service.DeleteControlRequest.pb(
-            control_service.DeleteControlRequest()
+        post.assert_not_called()
+        pb_message = project_service.GetLoggingConfigRequest.pb(
+            project_service.GetLoggingConfigRequest()
         )
         transcode.return_value = {
             "method": "post",
@@ -4030,15 +5486,19 @@ def test_delete_control_rest_interceptors(null_interceptor):
         req.return_value = Response()
         req.return_value.status_code = 200
         req.return_value.request = PreparedRequest()
+        req.return_value._content = project.LoggingConfig.to_json(
+            project.LoggingConfig()
+        )
 
-        request = control_service.DeleteControlRequest()
+        request = project_service.GetLoggingConfigRequest()
         metadata = [
             ("key", "val"),
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
+        post.return_value = project.LoggingConfig()
 
-        client.delete_control(
+        client.get_logging_config(
             request,
             metadata=[
                 ("key", "val"),
@@ -4047,20 +5507,19 @@ def test_delete_control_rest_interceptors(null_interceptor):
         )
 
         pre.assert_called_once()
+        post.assert_called_once()
 
 
-def test_delete_control_rest_bad_request(
-    transport: str = "rest", request_type=control_service.DeleteControlRequest
+def test_get_logging_config_rest_bad_request(
+    transport: str = "rest", request_type=project_service.GetLoggingConfigRequest
 ):
-    client = ControlServiceClient(
+    client = ProjectServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/catalogs/sample3/controls/sample4"
-    }
+    request_init = {"name": "projects/sample1/loggingConfig"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -4072,11 +5531,11 @@ def test_delete_control_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
-        client.delete_control(request)
+        client.get_logging_config(request)
 
 
-def test_delete_control_rest_flattened():
-    client = ControlServiceClient(
+def test_get_logging_config_rest_flattened():
+    client = ProjectServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
@@ -4084,12 +5543,10 @@ def test_delete_control_rest_flattened():
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = None
+        return_value = project.LoggingConfig()
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "name": "projects/sample1/locations/sample2/catalogs/sample3/controls/sample4"
-        }
+        sample_request = {"name": "projects/sample1/loggingConfig"}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -4100,25 +5557,26 @@ def test_delete_control_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = ""
+        # Convert return value to protobuf type
+        return_value = project.LoggingConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
-        client.delete_control(**mock_args)
+        client.get_logging_config(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/v2alpha/{name=projects/*/locations/*/catalogs/*/controls/*}"
-            % client.transport._host,
+            "%s/v2alpha/{name=projects/*/loggingConfig}" % client.transport._host,
             args[1],
         )
 
 
-def test_delete_control_rest_flattened_error(transport: str = "rest"):
-    client = ControlServiceClient(
+def test_get_logging_config_rest_flattened_error(transport: str = "rest"):
+    client = ProjectServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -4126,14 +5584,14 @@ def test_delete_control_rest_flattened_error(transport: str = "rest"):
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        client.delete_control(
-            control_service.DeleteControlRequest(),
+        client.get_logging_config(
+            project_service.GetLoggingConfigRequest(),
             name="name_value",
         )
 
 
-def test_delete_control_rest_error():
-    client = ControlServiceClient(
+def test_get_logging_config_rest_error():
+    client = ProjectServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
@@ -4141,114 +5599,36 @@ def test_delete_control_rest_error():
 @pytest.mark.parametrize(
     "request_type",
     [
-        control_service.UpdateControlRequest,
+        project_service.UpdateLoggingConfigRequest,
         dict,
     ],
 )
-def test_update_control_rest(request_type):
-    client = ControlServiceClient(
+def test_update_logging_config_rest(request_type):
+    client = ProjectServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
     # send a request that will satisfy transcoding
-    request_init = {
-        "control": {
-            "name": "projects/sample1/locations/sample2/catalogs/sample3/controls/sample4"
-        }
-    }
-    request_init["control"] = {
-        "facet_spec": {
-            "facet_key": {
-                "key": "key_value",
-                "intervals": [
-                    {
-                        "minimum": 0.764,
-                        "exclusive_minimum": 0.18430000000000002,
-                        "maximum": 0.766,
-                        "exclusive_maximum": 0.1845,
-                    }
-                ],
-                "restricted_values": [
-                    "restricted_values_value1",
-                    "restricted_values_value2",
-                ],
-                "prefixes": ["prefixes_value1", "prefixes_value2"],
-                "contains": ["contains_value1", "contains_value2"],
-                "case_insensitive": True,
-                "order_by": "order_by_value",
-                "query": "query_value",
-                "return_min_max": True,
-            },
-            "limit": 543,
-            "excluded_filter_keys": [
-                "excluded_filter_keys_value1",
-                "excluded_filter_keys_value2",
-            ],
-            "enable_dynamic_position": True,
+    request_init = {"logging_config": {"name": "projects/sample1/loggingConfig"}}
+    request_init["logging_config"] = {
+        "name": "projects/sample1/loggingConfig",
+        "default_log_generation_rule": {
+            "logging_level": 1,
+            "info_log_sample_rate": 0.21050000000000002,
         },
-        "rule": {
-            "boost_action": {
-                "boost": 0.551,
-                "products_filter": "products_filter_value",
-            },
-            "redirect_action": {"redirect_uri": "redirect_uri_value"},
-            "oneway_synonyms_action": {
-                "query_terms": ["query_terms_value1", "query_terms_value2"],
-                "synonyms": ["synonyms_value1", "synonyms_value2"],
-                "oneway_terms": ["oneway_terms_value1", "oneway_terms_value2"],
-            },
-            "do_not_associate_action": {
-                "query_terms": ["query_terms_value1", "query_terms_value2"],
-                "do_not_associate_terms": [
-                    "do_not_associate_terms_value1",
-                    "do_not_associate_terms_value2",
-                ],
-                "terms": ["terms_value1", "terms_value2"],
-            },
-            "replacement_action": {
-                "query_terms": ["query_terms_value1", "query_terms_value2"],
-                "replacement_term": "replacement_term_value",
-                "term": "term_value",
-            },
-            "ignore_action": {
-                "ignore_terms": ["ignore_terms_value1", "ignore_terms_value2"]
-            },
-            "filter_action": {"filter": "filter_value"},
-            "twoway_synonyms_action": {
-                "synonyms": ["synonyms_value1", "synonyms_value2"]
-            },
-            "force_return_facet_action": {
-                "facet_position_adjustments": [
-                    {"attribute_name": "attribute_name_value", "position": 885}
-                ]
-            },
-            "remove_facet_action": {
-                "attribute_names": ["attribute_names_value1", "attribute_names_value2"]
-            },
-            "condition": {
-                "query_terms": [{"value": "value_value", "full_match": True}],
-                "active_time_range": [
-                    {"start_time": {"seconds": 751, "nanos": 543}, "end_time": {}}
-                ],
-                "page_categories": ["page_categories_value1", "page_categories_value2"],
-            },
-        },
-        "name": "projects/sample1/locations/sample2/catalogs/sample3/controls/sample4",
-        "display_name": "display_name_value",
-        "associated_serving_config_ids": [
-            "associated_serving_config_ids_value1",
-            "associated_serving_config_ids_value2",
+        "service_log_generation_rules": [
+            {"service_name": "service_name_value", "log_generation_rule": {}}
         ],
-        "solution_types": [1],
-        "search_solution_use_case": [1],
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
     # See https://github.com/googleapis/gapic-generator-python/issues/1748
 
     # Determine if the message type is proto-plus or protobuf
-    test_field = control_service.UpdateControlRequest.meta.fields["control"]
+    test_field = project_service.UpdateLoggingConfigRequest.meta.fields[
+        "logging_config"
+    ]
 
     def get_message_fields(field):
         # Given a field which is a message (composite type), return a list with
@@ -4276,7 +5656,7 @@ def test_update_control_rest(request_type):
 
     # For each item in the sample request, create a list of sub fields which are not present at runtime
     # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["control"].items():  # pragma: NO COVER
+    for field, value in request_init["logging_config"].items():  # pragma: NO COVER
         result = None
         is_repeated = False
         # For repeated fields
@@ -4306,54 +5686,40 @@ def test_update_control_rest(request_type):
         subfield = subfield_to_delete.get("subfield")
         if subfield:
             if field_repeated:
-                for i in range(0, len(request_init["control"][field])):
-                    del request_init["control"][field][i][subfield]
+                for i in range(0, len(request_init["logging_config"][field])):
+                    del request_init["logging_config"][field][i][subfield]
             else:
-                del request_init["control"][field][subfield]
+                del request_init["logging_config"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = gcr_control.Control(
+        return_value = project.LoggingConfig(
             name="name_value",
-            display_name="display_name_value",
-            associated_serving_config_ids=["associated_serving_config_ids_value"],
-            solution_types=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
-            search_solution_use_case=[
-                common.SearchSolutionUseCase.SEARCH_SOLUTION_USE_CASE_SEARCH
-            ],
         )
 
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
         # Convert return value to protobuf type
-        return_value = gcr_control.Control.pb(return_value)
+        return_value = project.LoggingConfig.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-        response = client.update_control(request)
+        response = client.update_logging_config(request)
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, gcr_control.Control)
+    assert isinstance(response, project.LoggingConfig)
     assert response.name == "name_value"
-    assert response.display_name == "display_name_value"
-    assert response.associated_serving_config_ids == [
-        "associated_serving_config_ids_value"
-    ]
-    assert response.solution_types == [common.SolutionType.SOLUTION_TYPE_RECOMMENDATION]
-    assert response.search_solution_use_case == [
-        common.SearchSolutionUseCase.SEARCH_SOLUTION_USE_CASE_SEARCH
-    ]
 
 
-def test_update_control_rest_use_cached_wrapped_rpc():
+def test_update_logging_config_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = ControlServiceClient(
+        client = ProjectServiceClient(
             credentials=ga_credentials.AnonymousCredentials(),
             transport="rest",
         )
@@ -4363,32 +5729,37 @@ def test_update_control_rest_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert client._transport.update_control in client._transport._wrapped_methods
+        assert (
+            client._transport.update_logging_config
+            in client._transport._wrapped_methods
+        )
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.update_control] = mock_rpc
+        client._transport._wrapped_methods[
+            client._transport.update_logging_config
+        ] = mock_rpc
 
         request = {}
-        client.update_control(request)
+        client.update_logging_config(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
-        client.update_control(request)
+        client.update_logging_config(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
         assert mock_rpc.call_count == 2
 
 
-def test_update_control_rest_required_fields(
-    request_type=control_service.UpdateControlRequest,
+def test_update_logging_config_rest_required_fields(
+    request_type=project_service.UpdateLoggingConfigRequest,
 ):
-    transport_class = transports.ControlServiceRestTransport
+    transport_class = transports.ProjectServiceRestTransport
 
     request_init = {}
     request = request_type(**request_init)
@@ -4401,28 +5772,28 @@ def test_update_control_rest_required_fields(
 
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
-    ).update_control._get_unset_required_fields(jsonified_request)
+    ).update_logging_config._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
-    ).update_control._get_unset_required_fields(jsonified_request)
+    ).update_logging_config._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("update_mask",))
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
 
-    client = ControlServiceClient(
+    client = ProjectServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
-    return_value = gcr_control.Control()
+    return_value = project.LoggingConfig()
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
         # We need to mock transcode() because providing default values
@@ -4444,50 +5815,50 @@ def test_update_control_rest_required_fields(
             response_value.status_code = 200
 
             # Convert return value to protobuf type
-            return_value = gcr_control.Control.pb(return_value)
+            return_value = project.LoggingConfig.pb(return_value)
             json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
-            response = client.update_control(request)
+            response = client.update_logging_config(request)
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
 
-def test_update_control_rest_unset_required_fields():
-    transport = transports.ControlServiceRestTransport(
+def test_update_logging_config_rest_unset_required_fields():
+    transport = transports.ProjectServiceRestTransport(
         credentials=ga_credentials.AnonymousCredentials
     )
 
-    unset_fields = transport.update_control._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("updateMask",)) & set(("control",)))
+    unset_fields = transport.update_logging_config._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("updateMask",)) & set(("loggingConfig",)))
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
-def test_update_control_rest_interceptors(null_interceptor):
-    transport = transports.ControlServiceRestTransport(
+def test_update_logging_config_rest_interceptors(null_interceptor):
+    transport = transports.ProjectServiceRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
-        else transports.ControlServiceRestInterceptor(),
+        else transports.ProjectServiceRestInterceptor(),
     )
-    client = ControlServiceClient(transport=transport)
+    client = ProjectServiceClient(transport=transport)
     with mock.patch.object(
         type(client.transport._session), "request"
     ) as req, mock.patch.object(
         path_template, "transcode"
     ) as transcode, mock.patch.object(
-        transports.ControlServiceRestInterceptor, "post_update_control"
+        transports.ProjectServiceRestInterceptor, "post_update_logging_config"
     ) as post, mock.patch.object(
-        transports.ControlServiceRestInterceptor, "pre_update_control"
+        transports.ProjectServiceRestInterceptor, "pre_update_logging_config"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-        pb_message = control_service.UpdateControlRequest.pb(
-            control_service.UpdateControlRequest()
+        pb_message = project_service.UpdateLoggingConfigRequest.pb(
+            project_service.UpdateLoggingConfigRequest()
         )
         transcode.return_value = {
             "method": "post",
@@ -4499,17 +5870,19 @@ def test_update_control_rest_interceptors(null_interceptor):
         req.return_value = Response()
         req.return_value.status_code = 200
         req.return_value.request = PreparedRequest()
-        req.return_value._content = gcr_control.Control.to_json(gcr_control.Control())
+        req.return_value._content = project.LoggingConfig.to_json(
+            project.LoggingConfig()
+        )
 
-        request = control_service.UpdateControlRequest()
+        request = project_service.UpdateLoggingConfigRequest()
         metadata = [
             ("key", "val"),
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = gcr_control.Control()
+        post.return_value = project.LoggingConfig()
 
-        client.update_control(
+        client.update_logging_config(
             request,
             metadata=[
                 ("key", "val"),
@@ -4521,20 +5894,16 @@ def test_update_control_rest_interceptors(null_interceptor):
         post.assert_called_once()
 
 
-def test_update_control_rest_bad_request(
-    transport: str = "rest", request_type=control_service.UpdateControlRequest
+def test_update_logging_config_rest_bad_request(
+    transport: str = "rest", request_type=project_service.UpdateLoggingConfigRequest
 ):
-    client = ControlServiceClient(
+    client = ProjectServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
     # send a request that will satisfy transcoding
-    request_init = {
-        "control": {
-            "name": "projects/sample1/locations/sample2/catalogs/sample3/controls/sample4"
-        }
-    }
+    request_init = {"logging_config": {"name": "projects/sample1/loggingConfig"}}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -4546,11 +5915,11 @@ def test_update_control_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
-        client.update_control(request)
+        client.update_logging_config(request)
 
 
-def test_update_control_rest_flattened():
-    client = ControlServiceClient(
+def test_update_logging_config_rest_flattened():
+    client = ProjectServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
@@ -4558,24 +5927,14 @@ def test_update_control_rest_flattened():
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = gcr_control.Control()
+        return_value = project.LoggingConfig()
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "control": {
-                "name": "projects/sample1/locations/sample2/catalogs/sample3/controls/sample4"
-            }
-        }
+        sample_request = {"logging_config": {"name": "projects/sample1/loggingConfig"}}
 
         # get truthy value for each flattened field
         mock_args = dict(
-            control=gcr_control.Control(
-                facet_spec=search_service.SearchRequest.FacetSpec(
-                    facet_key=search_service.SearchRequest.FacetSpec.FacetKey(
-                        key="key_value"
-                    )
-                )
-            ),
+            logging_config=project.LoggingConfig(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
         mock_args.update(sample_request)
@@ -4584,26 +5943,26 @@ def test_update_control_rest_flattened():
         response_value = Response()
         response_value.status_code = 200
         # Convert return value to protobuf type
-        return_value = gcr_control.Control.pb(return_value)
+        return_value = project.LoggingConfig.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
-        client.update_control(**mock_args)
+        client.update_logging_config(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/v2alpha/{control.name=projects/*/locations/*/catalogs/*/controls/*}"
+            "%s/v2alpha/{logging_config.name=projects/*/loggingConfig}"
             % client.transport._host,
             args[1],
         )
 
 
-def test_update_control_rest_flattened_error(transport: str = "rest"):
-    client = ControlServiceClient(
+def test_update_logging_config_rest_flattened_error(transport: str = "rest"):
+    client = ProjectServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -4611,21 +5970,15 @@ def test_update_control_rest_flattened_error(transport: str = "rest"):
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        client.update_control(
-            control_service.UpdateControlRequest(),
-            control=gcr_control.Control(
-                facet_spec=search_service.SearchRequest.FacetSpec(
-                    facet_key=search_service.SearchRequest.FacetSpec.FacetKey(
-                        key="key_value"
-                    )
-                )
-            ),
+        client.update_logging_config(
+            project_service.UpdateLoggingConfigRequest(),
+            logging_config=project.LoggingConfig(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
 
-def test_update_control_rest_error():
-    client = ControlServiceClient(
+def test_update_logging_config_rest_error():
+    client = ProjectServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
@@ -4633,64 +5986,48 @@ def test_update_control_rest_error():
 @pytest.mark.parametrize(
     "request_type",
     [
-        control_service.GetControlRequest,
+        project_service.GetAlertConfigRequest,
         dict,
     ],
 )
-def test_get_control_rest(request_type):
-    client = ControlServiceClient(
+def test_get_alert_config_rest(request_type):
+    client = ProjectServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/catalogs/sample3/controls/sample4"
-    }
+    request_init = {"name": "projects/sample1/alertConfig"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = control.Control(
+        return_value = project.AlertConfig(
             name="name_value",
-            display_name="display_name_value",
-            associated_serving_config_ids=["associated_serving_config_ids_value"],
-            solution_types=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
-            search_solution_use_case=[
-                common.SearchSolutionUseCase.SEARCH_SOLUTION_USE_CASE_SEARCH
-            ],
         )
 
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
         # Convert return value to protobuf type
-        return_value = control.Control.pb(return_value)
+        return_value = project.AlertConfig.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-        response = client.get_control(request)
+        response = client.get_alert_config(request)
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, control.Control)
+    assert isinstance(response, project.AlertConfig)
     assert response.name == "name_value"
-    assert response.display_name == "display_name_value"
-    assert response.associated_serving_config_ids == [
-        "associated_serving_config_ids_value"
-    ]
-    assert response.solution_types == [common.SolutionType.SOLUTION_TYPE_RECOMMENDATION]
-    assert response.search_solution_use_case == [
-        common.SearchSolutionUseCase.SEARCH_SOLUTION_USE_CASE_SEARCH
-    ]
 
 
-def test_get_control_rest_use_cached_wrapped_rpc():
+def test_get_alert_config_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = ControlServiceClient(
+        client = ProjectServiceClient(
             credentials=ga_credentials.AnonymousCredentials(),
             transport="rest",
         )
@@ -4700,32 +6037,34 @@ def test_get_control_rest_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert client._transport.get_control in client._transport._wrapped_methods
+        assert client._transport.get_alert_config in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.get_control] = mock_rpc
+        client._transport._wrapped_methods[
+            client._transport.get_alert_config
+        ] = mock_rpc
 
         request = {}
-        client.get_control(request)
+        client.get_alert_config(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
-        client.get_control(request)
+        client.get_alert_config(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
         assert mock_rpc.call_count == 2
 
 
-def test_get_control_rest_required_fields(
-    request_type=control_service.GetControlRequest,
+def test_get_alert_config_rest_required_fields(
+    request_type=project_service.GetAlertConfigRequest,
 ):
-    transport_class = transports.ControlServiceRestTransport
+    transport_class = transports.ProjectServiceRestTransport
 
     request_init = {}
     request_init["name"] = ""
@@ -4739,7 +6078,7 @@ def test_get_control_rest_required_fields(
 
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
-    ).get_control._get_unset_required_fields(jsonified_request)
+    ).get_alert_config._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -4748,21 +6087,21 @@ def test_get_control_rest_required_fields(
 
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
-    ).get_control._get_unset_required_fields(jsonified_request)
+    ).get_alert_config._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
     assert jsonified_request["name"] == "name_value"
 
-    client = ControlServiceClient(
+    client = ProjectServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
-    return_value = control.Control()
+    return_value = project.AlertConfig()
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
         # We need to mock transcode() because providing default values
@@ -4783,50 +6122,50 @@ def test_get_control_rest_required_fields(
             response_value.status_code = 200
 
             # Convert return value to protobuf type
-            return_value = control.Control.pb(return_value)
+            return_value = project.AlertConfig.pb(return_value)
             json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
-            response = client.get_control(request)
+            response = client.get_alert_config(request)
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
 
-def test_get_control_rest_unset_required_fields():
-    transport = transports.ControlServiceRestTransport(
+def test_get_alert_config_rest_unset_required_fields():
+    transport = transports.ProjectServiceRestTransport(
         credentials=ga_credentials.AnonymousCredentials
     )
 
-    unset_fields = transport.get_control._get_unset_required_fields({})
+    unset_fields = transport.get_alert_config._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_control_rest_interceptors(null_interceptor):
-    transport = transports.ControlServiceRestTransport(
+def test_get_alert_config_rest_interceptors(null_interceptor):
+    transport = transports.ProjectServiceRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
-        else transports.ControlServiceRestInterceptor(),
+        else transports.ProjectServiceRestInterceptor(),
     )
-    client = ControlServiceClient(transport=transport)
+    client = ProjectServiceClient(transport=transport)
     with mock.patch.object(
         type(client.transport._session), "request"
     ) as req, mock.patch.object(
         path_template, "transcode"
     ) as transcode, mock.patch.object(
-        transports.ControlServiceRestInterceptor, "post_get_control"
+        transports.ProjectServiceRestInterceptor, "post_get_alert_config"
     ) as post, mock.patch.object(
-        transports.ControlServiceRestInterceptor, "pre_get_control"
+        transports.ProjectServiceRestInterceptor, "pre_get_alert_config"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-        pb_message = control_service.GetControlRequest.pb(
-            control_service.GetControlRequest()
+        pb_message = project_service.GetAlertConfigRequest.pb(
+            project_service.GetAlertConfigRequest()
         )
         transcode.return_value = {
             "method": "post",
@@ -4838,17 +6177,17 @@ def test_get_control_rest_interceptors(null_interceptor):
         req.return_value = Response()
         req.return_value.status_code = 200
         req.return_value.request = PreparedRequest()
-        req.return_value._content = control.Control.to_json(control.Control())
+        req.return_value._content = project.AlertConfig.to_json(project.AlertConfig())
 
-        request = control_service.GetControlRequest()
+        request = project_service.GetAlertConfigRequest()
         metadata = [
             ("key", "val"),
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = control.Control()
+        post.return_value = project.AlertConfig()
 
-        client.get_control(
+        client.get_alert_config(
             request,
             metadata=[
                 ("key", "val"),
@@ -4860,18 +6199,16 @@ def test_get_control_rest_interceptors(null_interceptor):
         post.assert_called_once()
 
 
-def test_get_control_rest_bad_request(
-    transport: str = "rest", request_type=control_service.GetControlRequest
+def test_get_alert_config_rest_bad_request(
+    transport: str = "rest", request_type=project_service.GetAlertConfigRequest
 ):
-    client = ControlServiceClient(
+    client = ProjectServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/catalogs/sample3/controls/sample4"
-    }
+    request_init = {"name": "projects/sample1/alertConfig"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -4883,11 +6220,11 @@ def test_get_control_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
-        client.get_control(request)
+        client.get_alert_config(request)
 
 
-def test_get_control_rest_flattened():
-    client = ControlServiceClient(
+def test_get_alert_config_rest_flattened():
+    client = ProjectServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
@@ -4895,12 +6232,10 @@ def test_get_control_rest_flattened():
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = control.Control()
+        return_value = project.AlertConfig()
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "name": "projects/sample1/locations/sample2/catalogs/sample3/controls/sample4"
-        }
+        sample_request = {"name": "projects/sample1/alertConfig"}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -4912,26 +6247,24 @@ def test_get_control_rest_flattened():
         response_value = Response()
         response_value.status_code = 200
         # Convert return value to protobuf type
-        return_value = control.Control.pb(return_value)
+        return_value = project.AlertConfig.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
-        client.get_control(**mock_args)
+        client.get_alert_config(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/v2alpha/{name=projects/*/locations/*/catalogs/*/controls/*}"
-            % client.transport._host,
-            args[1],
+            "%s/v2alpha/{name=projects/*/alertConfig}" % client.transport._host, args[1]
         )
 
 
-def test_get_control_rest_flattened_error(transport: str = "rest"):
-    client = ControlServiceClient(
+def test_get_alert_config_rest_flattened_error(transport: str = "rest"):
+    client = ProjectServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -4939,14 +6272,14 @@ def test_get_control_rest_flattened_error(transport: str = "rest"):
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        client.get_control(
-            control_service.GetControlRequest(),
+        client.get_alert_config(
+            project_service.GetAlertConfigRequest(),
             name="name_value",
         )
 
 
-def test_get_control_rest_error():
-    client = ControlServiceClient(
+def test_get_alert_config_rest_error():
+    client = ProjectServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
@@ -4954,48 +6287,125 @@ def test_get_control_rest_error():
 @pytest.mark.parametrize(
     "request_type",
     [
-        control_service.ListControlsRequest,
+        project_service.UpdateAlertConfigRequest,
         dict,
     ],
 )
-def test_list_controls_rest(request_type):
-    client = ControlServiceClient(
+def test_update_alert_config_rest(request_type):
+    client = ProjectServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
     # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2/catalogs/sample3"}
+    request_init = {"alert_config": {"name": "projects/sample1/alertConfig"}}
+    request_init["alert_config"] = {
+        "name": "projects/sample1/alertConfig",
+        "alert_policies": [
+            {
+                "alert_group": "alert_group_value",
+                "enroll_status": 1,
+                "recipients": [{"email_address": "email_address_value"}],
+            }
+        ],
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = project_service.UpdateAlertConfigRequest.meta.fields["alert_config"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["alert_config"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["alert_config"][field])):
+                    del request_init["alert_config"][field][i][subfield]
+            else:
+                del request_init["alert_config"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = control_service.ListControlsResponse(
-            next_page_token="next_page_token_value",
+        return_value = project.AlertConfig(
+            name="name_value",
         )
 
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
         # Convert return value to protobuf type
-        return_value = control_service.ListControlsResponse.pb(return_value)
+        return_value = project.AlertConfig.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-        response = client.list_controls(request)
+        response = client.update_alert_config(request)
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListControlsPager)
-    assert response.next_page_token == "next_page_token_value"
+    assert isinstance(response, project.AlertConfig)
+    assert response.name == "name_value"
 
 
-def test_list_controls_rest_use_cached_wrapped_rpc():
+def test_update_alert_config_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = ControlServiceClient(
+        client = ProjectServiceClient(
             credentials=ga_credentials.AnonymousCredentials(),
             transport="rest",
         )
@@ -5005,35 +6415,38 @@ def test_list_controls_rest_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert client._transport.list_controls in client._transport._wrapped_methods
+        assert (
+            client._transport.update_alert_config in client._transport._wrapped_methods
+        )
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.list_controls] = mock_rpc
+        client._transport._wrapped_methods[
+            client._transport.update_alert_config
+        ] = mock_rpc
 
         request = {}
-        client.list_controls(request)
+        client.update_alert_config(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
-        client.list_controls(request)
+        client.update_alert_config(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
         assert mock_rpc.call_count == 2
 
 
-def test_list_controls_rest_required_fields(
-    request_type=control_service.ListControlsRequest,
+def test_update_alert_config_rest_required_fields(
+    request_type=project_service.UpdateAlertConfigRequest,
 ):
-    transport_class = transports.ControlServiceRestTransport
+    transport_class = transports.ProjectServiceRestTransport
 
     request_init = {}
-    request_init["parent"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
@@ -5044,38 +6457,28 @@ def test_list_controls_rest_required_fields(
 
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
-    ).list_controls._get_unset_required_fields(jsonified_request)
+    ).update_alert_config._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
-    jsonified_request["parent"] = "parent_value"
-
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
-    ).list_controls._get_unset_required_fields(jsonified_request)
+    ).update_alert_config._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(
-        (
-            "filter",
-            "page_size",
-            "page_token",
-        )
-    )
+    assert not set(unset_fields) - set(("update_mask",))
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
-    assert "parent" in jsonified_request
-    assert jsonified_request["parent"] == "parent_value"
 
-    client = ControlServiceClient(
+    client = ProjectServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
-    return_value = control_service.ListControlsResponse()
+    return_value = project.AlertConfig()
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
         # We need to mock transcode() because providing default values
@@ -5087,68 +6490,60 @@ def test_list_controls_rest_required_fields(
             pb_request = request_type.pb(request)
             transcode_result = {
                 "uri": "v1/sample_method",
-                "method": "get",
+                "method": "patch",
                 "query_params": pb_request,
             }
+            transcode_result["body"] = pb_request
             transcode.return_value = transcode_result
 
             response_value = Response()
             response_value.status_code = 200
 
             # Convert return value to protobuf type
-            return_value = control_service.ListControlsResponse.pb(return_value)
+            return_value = project.AlertConfig.pb(return_value)
             json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
-            response = client.list_controls(request)
+            response = client.update_alert_config(request)
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
 
-def test_list_controls_rest_unset_required_fields():
-    transport = transports.ControlServiceRestTransport(
+def test_update_alert_config_rest_unset_required_fields():
+    transport = transports.ProjectServiceRestTransport(
         credentials=ga_credentials.AnonymousCredentials
     )
 
-    unset_fields = transport.list_controls._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "filter",
-                "pageSize",
-                "pageToken",
-            )
-        )
-        & set(("parent",))
-    )
+    unset_fields = transport.update_alert_config._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("updateMask",)) & set(("alertConfig",)))
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_controls_rest_interceptors(null_interceptor):
-    transport = transports.ControlServiceRestTransport(
+def test_update_alert_config_rest_interceptors(null_interceptor):
+    transport = transports.ProjectServiceRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
-        else transports.ControlServiceRestInterceptor(),
+        else transports.ProjectServiceRestInterceptor(),
     )
-    client = ControlServiceClient(transport=transport)
+    client = ProjectServiceClient(transport=transport)
     with mock.patch.object(
         type(client.transport._session), "request"
     ) as req, mock.patch.object(
         path_template, "transcode"
     ) as transcode, mock.patch.object(
-        transports.ControlServiceRestInterceptor, "post_list_controls"
+        transports.ProjectServiceRestInterceptor, "post_update_alert_config"
     ) as post, mock.patch.object(
-        transports.ControlServiceRestInterceptor, "pre_list_controls"
+        transports.ProjectServiceRestInterceptor, "pre_update_alert_config"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-        pb_message = control_service.ListControlsRequest.pb(
-            control_service.ListControlsRequest()
+        pb_message = project_service.UpdateAlertConfigRequest.pb(
+            project_service.UpdateAlertConfigRequest()
         )
         transcode.return_value = {
             "method": "post",
@@ -5160,19 +6555,17 @@ def test_list_controls_rest_interceptors(null_interceptor):
         req.return_value = Response()
         req.return_value.status_code = 200
         req.return_value.request = PreparedRequest()
-        req.return_value._content = control_service.ListControlsResponse.to_json(
-            control_service.ListControlsResponse()
-        )
+        req.return_value._content = project.AlertConfig.to_json(project.AlertConfig())
 
-        request = control_service.ListControlsRequest()
+        request = project_service.UpdateAlertConfigRequest()
         metadata = [
             ("key", "val"),
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = control_service.ListControlsResponse()
+        post.return_value = project.AlertConfig()
 
-        client.list_controls(
+        client.update_alert_config(
             request,
             metadata=[
                 ("key", "val"),
@@ -5184,16 +6577,16 @@ def test_list_controls_rest_interceptors(null_interceptor):
         post.assert_called_once()
 
 
-def test_list_controls_rest_bad_request(
-    transport: str = "rest", request_type=control_service.ListControlsRequest
+def test_update_alert_config_rest_bad_request(
+    transport: str = "rest", request_type=project_service.UpdateAlertConfigRequest
 ):
-    client = ControlServiceClient(
+    client = ProjectServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
     # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2/catalogs/sample3"}
+    request_init = {"alert_config": {"name": "projects/sample1/alertConfig"}}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -5205,11 +6598,11 @@ def test_list_controls_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
-        client.list_controls(request)
+        client.update_alert_config(request)
 
 
-def test_list_controls_rest_flattened():
-    client = ControlServiceClient(
+def test_update_alert_config_rest_flattened():
+    client = ProjectServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
@@ -5217,16 +6610,15 @@ def test_list_controls_rest_flattened():
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = control_service.ListControlsResponse()
+        return_value = project.AlertConfig()
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "parent": "projects/sample1/locations/sample2/catalogs/sample3"
-        }
+        sample_request = {"alert_config": {"name": "projects/sample1/alertConfig"}}
 
         # get truthy value for each flattened field
         mock_args = dict(
-            parent="parent_value",
+            alert_config=project.AlertConfig(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
         mock_args.update(sample_request)
 
@@ -5234,26 +6626,26 @@ def test_list_controls_rest_flattened():
         response_value = Response()
         response_value.status_code = 200
         # Convert return value to protobuf type
-        return_value = control_service.ListControlsResponse.pb(return_value)
+        return_value = project.AlertConfig.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
-        client.list_controls(**mock_args)
+        client.update_alert_config(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/v2alpha/{parent=projects/*/locations/*/catalogs/*}/controls"
+            "%s/v2alpha/{alert_config.name=projects/*/alertConfig}"
             % client.transport._host,
             args[1],
         )
 
 
-def test_list_controls_rest_flattened_error(transport: str = "rest"):
-    client = ControlServiceClient(
+def test_update_alert_config_rest_flattened_error(transport: str = "rest"):
+    client = ProjectServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -5261,106 +6653,48 @@ def test_list_controls_rest_flattened_error(transport: str = "rest"):
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        client.list_controls(
-            control_service.ListControlsRequest(),
-            parent="parent_value",
+        client.update_alert_config(
+            project_service.UpdateAlertConfigRequest(),
+            alert_config=project.AlertConfig(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
 
-def test_list_controls_rest_pager(transport: str = "rest"):
-    client = ControlServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
+def test_update_alert_config_rest_error():
+    client = ProjectServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # TODO(kbandes): remove this mock unless there's a good reason for it.
-        # with mock.patch.object(path_template, 'transcode') as transcode:
-        # Set the response as a series of pages
-        response = (
-            control_service.ListControlsResponse(
-                controls=[
-                    control.Control(),
-                    control.Control(),
-                    control.Control(),
-                ],
-                next_page_token="abc",
-            ),
-            control_service.ListControlsResponse(
-                controls=[],
-                next_page_token="def",
-            ),
-            control_service.ListControlsResponse(
-                controls=[
-                    control.Control(),
-                ],
-                next_page_token="ghi",
-            ),
-            control_service.ListControlsResponse(
-                controls=[
-                    control.Control(),
-                    control.Control(),
-                ],
-            ),
-        )
-        # Two responses for two calls
-        response = response + response
-
-        # Wrap the values into proper Response objs
-        response = tuple(
-            control_service.ListControlsResponse.to_json(x) for x in response
-        )
-        return_values = tuple(Response() for i in response)
-        for return_val, response_val in zip(return_values, response):
-            return_val._content = response_val.encode("UTF-8")
-            return_val.status_code = 200
-        req.side_effect = return_values
-
-        sample_request = {
-            "parent": "projects/sample1/locations/sample2/catalogs/sample3"
-        }
-
-        pager = client.list_controls(request=sample_request)
-
-        results = list(pager)
-        assert len(results) == 6
-        assert all(isinstance(i, control.Control) for i in results)
-
-        pages = list(client.list_controls(request=sample_request).pages)
-        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
-            assert page_.raw_page.next_page_token == token
 
 
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
-    transport = transports.ControlServiceGrpcTransport(
+    transport = transports.ProjectServiceGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
-        client = ControlServiceClient(
+        client = ProjectServiceClient(
             credentials=ga_credentials.AnonymousCredentials(),
             transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
-    transport = transports.ControlServiceGrpcTransport(
+    transport = transports.ProjectServiceGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
-        client = ControlServiceClient(
+        client = ProjectServiceClient(
             client_options={"credentials_file": "credentials.json"},
             transport=transport,
         )
 
     # It is an error to provide an api_key and a transport instance.
-    transport = transports.ControlServiceGrpcTransport(
+    transport = transports.ProjectServiceGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = ControlServiceClient(
+        client = ProjectServiceClient(
             client_options=options,
             transport=transport,
         )
@@ -5369,16 +6703,16 @@ def test_credentials_transport_error():
     options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = ControlServiceClient(
+        client = ProjectServiceClient(
             client_options=options, credentials=ga_credentials.AnonymousCredentials()
         )
 
     # It is an error to provide scopes and a transport instance.
-    transport = transports.ControlServiceGrpcTransport(
+    transport = transports.ProjectServiceGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
-        client = ControlServiceClient(
+        client = ProjectServiceClient(
             client_options={"scopes": ["1", "2"]},
             transport=transport,
         )
@@ -5386,22 +6720,22 @@ def test_credentials_transport_error():
 
 def test_transport_instance():
     # A client may be instantiated with a custom transport instance.
-    transport = transports.ControlServiceGrpcTransport(
+    transport = transports.ProjectServiceGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
-    client = ControlServiceClient(transport=transport)
+    client = ProjectServiceClient(transport=transport)
     assert client.transport is transport
 
 
 def test_transport_get_channel():
     # A client may be instantiated with a custom transport instance.
-    transport = transports.ControlServiceGrpcTransport(
+    transport = transports.ProjectServiceGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     channel = transport.grpc_channel
     assert channel
 
-    transport = transports.ControlServiceGrpcAsyncIOTransport(
+    transport = transports.ProjectServiceGrpcAsyncIOTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     channel = transport.grpc_channel
@@ -5411,9 +6745,9 @@ def test_transport_get_channel():
 @pytest.mark.parametrize(
     "transport_class",
     [
-        transports.ControlServiceGrpcTransport,
-        transports.ControlServiceGrpcAsyncIOTransport,
-        transports.ControlServiceRestTransport,
+        transports.ProjectServiceGrpcTransport,
+        transports.ProjectServiceGrpcAsyncIOTransport,
+        transports.ProjectServiceRestTransport,
     ],
 )
 def test_transport_adc(transport_class):
@@ -5432,7 +6766,7 @@ def test_transport_adc(transport_class):
     ],
 )
 def test_transport_kind(transport_name):
-    transport = ControlServiceClient.get_transport_class(transport_name)(
+    transport = ProjectServiceClient.get_transport_class(transport_name)(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     assert transport.kind == transport_name
@@ -5440,42 +6774,45 @@ def test_transport_kind(transport_name):
 
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
-    client = ControlServiceClient(
+    client = ProjectServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     assert isinstance(
         client.transport,
-        transports.ControlServiceGrpcTransport,
+        transports.ProjectServiceGrpcTransport,
     )
 
 
-def test_control_service_base_transport_error():
+def test_project_service_base_transport_error():
     # Passing both a credentials object and credentials_file should raise an error
     with pytest.raises(core_exceptions.DuplicateCredentialArgs):
-        transport = transports.ControlServiceTransport(
+        transport = transports.ProjectServiceTransport(
             credentials=ga_credentials.AnonymousCredentials(),
             credentials_file="credentials.json",
         )
 
 
-def test_control_service_base_transport():
+def test_project_service_base_transport():
     # Instantiate the base transport.
     with mock.patch(
-        "google.cloud.retail_v2alpha.services.control_service.transports.ControlServiceTransport.__init__"
+        "google.cloud.retail_v2alpha.services.project_service.transports.ProjectServiceTransport.__init__"
     ) as Transport:
         Transport.return_value = None
-        transport = transports.ControlServiceTransport(
+        transport = transports.ProjectServiceTransport(
             credentials=ga_credentials.AnonymousCredentials(),
         )
 
     # Every method on the transport should just blindly
     # raise NotImplementedError.
     methods = (
-        "create_control",
-        "delete_control",
-        "update_control",
-        "get_control",
-        "list_controls",
+        "get_project",
+        "accept_terms",
+        "enroll_solution",
+        "list_enrolled_solutions",
+        "get_logging_config",
+        "update_logging_config",
+        "get_alert_config",
+        "update_alert_config",
         "get_operation",
         "list_operations",
     )
@@ -5486,6 +6823,11 @@ def test_control_service_base_transport():
     with pytest.raises(NotImplementedError):
         transport.close()
 
+    # Additionally, the LRO client (a property) should
+    # also raise NotImplementedError
+    with pytest.raises(NotImplementedError):
+        transport.operations_client
+
     # Catch all for all remaining methods and properties
     remainder = [
         "kind",
@@ -5495,16 +6837,16 @@ def test_control_service_base_transport():
             getattr(transport, r)()
 
 
-def test_control_service_base_transport_with_credentials_file():
+def test_project_service_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
     with mock.patch.object(
         google.auth, "load_credentials_from_file", autospec=True
     ) as load_creds, mock.patch(
-        "google.cloud.retail_v2alpha.services.control_service.transports.ControlServiceTransport._prep_wrapped_messages"
+        "google.cloud.retail_v2alpha.services.project_service.transports.ProjectServiceTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
-        transport = transports.ControlServiceTransport(
+        transport = transports.ProjectServiceTransport(
             credentials_file="credentials.json",
             quota_project_id="octopus",
         )
@@ -5516,22 +6858,22 @@ def test_control_service_base_transport_with_credentials_file():
         )
 
 
-def test_control_service_base_transport_with_adc():
+def test_project_service_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
     with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.cloud.retail_v2alpha.services.control_service.transports.ControlServiceTransport._prep_wrapped_messages"
+        "google.cloud.retail_v2alpha.services.project_service.transports.ProjectServiceTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
-        transport = transports.ControlServiceTransport()
+        transport = transports.ProjectServiceTransport()
         adc.assert_called_once()
 
 
-def test_control_service_auth_adc():
+def test_project_service_auth_adc():
     # If no credentials are provided, we should use ADC credentials.
     with mock.patch.object(google.auth, "default", autospec=True) as adc:
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
-        ControlServiceClient()
+        ProjectServiceClient()
         adc.assert_called_once_with(
             scopes=None,
             default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
@@ -5542,11 +6884,11 @@ def test_control_service_auth_adc():
 @pytest.mark.parametrize(
     "transport_class",
     [
-        transports.ControlServiceGrpcTransport,
-        transports.ControlServiceGrpcAsyncIOTransport,
+        transports.ProjectServiceGrpcTransport,
+        transports.ProjectServiceGrpcAsyncIOTransport,
     ],
 )
-def test_control_service_transport_auth_adc(transport_class):
+def test_project_service_transport_auth_adc(transport_class):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
     with mock.patch.object(google.auth, "default", autospec=True) as adc:
@@ -5562,12 +6904,12 @@ def test_control_service_transport_auth_adc(transport_class):
 @pytest.mark.parametrize(
     "transport_class",
     [
-        transports.ControlServiceGrpcTransport,
-        transports.ControlServiceGrpcAsyncIOTransport,
-        transports.ControlServiceRestTransport,
+        transports.ProjectServiceGrpcTransport,
+        transports.ProjectServiceGrpcAsyncIOTransport,
+        transports.ProjectServiceRestTransport,
     ],
 )
-def test_control_service_transport_auth_gdch_credentials(transport_class):
+def test_project_service_transport_auth_gdch_credentials(transport_class):
     host = "https://language.com"
     api_audience_tests = [None, "https://language2.com"]
     api_audience_expect = [host, "https://language2.com"]
@@ -5585,11 +6927,11 @@ def test_control_service_transport_auth_gdch_credentials(transport_class):
 @pytest.mark.parametrize(
     "transport_class,grpc_helpers",
     [
-        (transports.ControlServiceGrpcTransport, grpc_helpers),
-        (transports.ControlServiceGrpcAsyncIOTransport, grpc_helpers_async),
+        (transports.ProjectServiceGrpcTransport, grpc_helpers),
+        (transports.ProjectServiceGrpcAsyncIOTransport, grpc_helpers_async),
     ],
 )
-def test_control_service_transport_create_channel(transport_class, grpc_helpers):
+def test_project_service_transport_create_channel(transport_class, grpc_helpers):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
     with mock.patch.object(
@@ -5620,11 +6962,11 @@ def test_control_service_transport_create_channel(transport_class, grpc_helpers)
 @pytest.mark.parametrize(
     "transport_class",
     [
-        transports.ControlServiceGrpcTransport,
-        transports.ControlServiceGrpcAsyncIOTransport,
+        transports.ProjectServiceGrpcTransport,
+        transports.ProjectServiceGrpcAsyncIOTransport,
     ],
 )
-def test_control_service_grpc_transport_client_cert_source_for_mtls(transport_class):
+def test_project_service_grpc_transport_client_cert_source_for_mtls(transport_class):
     cred = ga_credentials.AnonymousCredentials()
 
     # Check ssl_channel_credentials is used if provided.
@@ -5662,15 +7004,32 @@ def test_control_service_grpc_transport_client_cert_source_for_mtls(transport_cl
             )
 
 
-def test_control_service_http_transport_client_cert_source_for_mtls():
+def test_project_service_http_transport_client_cert_source_for_mtls():
     cred = ga_credentials.AnonymousCredentials()
     with mock.patch(
         "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
     ) as mock_configure_mtls_channel:
-        transports.ControlServiceRestTransport(
+        transports.ProjectServiceRestTransport(
             credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
         )
         mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
+
+
+def test_project_service_rest_lro_client():
+    client = ProjectServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    transport = client.transport
+
+    # Ensure that we have a api-core operations client.
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.AbstractOperationsClient,
+    )
+
+    # Ensure that subsequent calls to the property send the exact same object.
+    assert transport.operations_client is transport.operations_client
 
 
 @pytest.mark.parametrize(
@@ -5681,8 +7040,8 @@ def test_control_service_http_transport_client_cert_source_for_mtls():
         "rest",
     ],
 )
-def test_control_service_host_no_port(transport_name):
-    client = ControlServiceClient(
+def test_project_service_host_no_port(transport_name):
+    client = ProjectServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(
             api_endpoint="retail.googleapis.com"
@@ -5704,8 +7063,8 @@ def test_control_service_host_no_port(transport_name):
         "rest",
     ],
 )
-def test_control_service_host_with_port(transport_name):
-    client = ControlServiceClient(
+def test_project_service_host_with_port(transport_name):
+    client = ProjectServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(
             api_endpoint="retail.googleapis.com:8000"
@@ -5725,39 +7084,48 @@ def test_control_service_host_with_port(transport_name):
         "rest",
     ],
 )
-def test_control_service_client_transport_session_collision(transport_name):
+def test_project_service_client_transport_session_collision(transport_name):
     creds1 = ga_credentials.AnonymousCredentials()
     creds2 = ga_credentials.AnonymousCredentials()
-    client1 = ControlServiceClient(
+    client1 = ProjectServiceClient(
         credentials=creds1,
         transport=transport_name,
     )
-    client2 = ControlServiceClient(
+    client2 = ProjectServiceClient(
         credentials=creds2,
         transport=transport_name,
     )
-    session1 = client1.transport.create_control._session
-    session2 = client2.transport.create_control._session
+    session1 = client1.transport.get_project._session
+    session2 = client2.transport.get_project._session
     assert session1 != session2
-    session1 = client1.transport.delete_control._session
-    session2 = client2.transport.delete_control._session
+    session1 = client1.transport.accept_terms._session
+    session2 = client2.transport.accept_terms._session
     assert session1 != session2
-    session1 = client1.transport.update_control._session
-    session2 = client2.transport.update_control._session
+    session1 = client1.transport.enroll_solution._session
+    session2 = client2.transport.enroll_solution._session
     assert session1 != session2
-    session1 = client1.transport.get_control._session
-    session2 = client2.transport.get_control._session
+    session1 = client1.transport.list_enrolled_solutions._session
+    session2 = client2.transport.list_enrolled_solutions._session
     assert session1 != session2
-    session1 = client1.transport.list_controls._session
-    session2 = client2.transport.list_controls._session
+    session1 = client1.transport.get_logging_config._session
+    session2 = client2.transport.get_logging_config._session
+    assert session1 != session2
+    session1 = client1.transport.update_logging_config._session
+    session2 = client2.transport.update_logging_config._session
+    assert session1 != session2
+    session1 = client1.transport.get_alert_config._session
+    session2 = client2.transport.get_alert_config._session
+    assert session1 != session2
+    session1 = client1.transport.update_alert_config._session
+    session2 = client2.transport.update_alert_config._session
     assert session1 != session2
 
 
-def test_control_service_grpc_transport_channel():
+def test_project_service_grpc_transport_channel():
     channel = grpc.secure_channel("http://localhost/", grpc.local_channel_credentials())
 
     # Check that channel is used if provided.
-    transport = transports.ControlServiceGrpcTransport(
+    transport = transports.ProjectServiceGrpcTransport(
         host="squid.clam.whelk",
         channel=channel,
     )
@@ -5766,11 +7134,11 @@ def test_control_service_grpc_transport_channel():
     assert transport._ssl_channel_credentials == None
 
 
-def test_control_service_grpc_asyncio_transport_channel():
+def test_project_service_grpc_asyncio_transport_channel():
     channel = aio.secure_channel("http://localhost/", grpc.local_channel_credentials())
 
     # Check that channel is used if provided.
-    transport = transports.ControlServiceGrpcAsyncIOTransport(
+    transport = transports.ProjectServiceGrpcAsyncIOTransport(
         host="squid.clam.whelk",
         channel=channel,
     )
@@ -5784,11 +7152,11 @@ def test_control_service_grpc_asyncio_transport_channel():
 @pytest.mark.parametrize(
     "transport_class",
     [
-        transports.ControlServiceGrpcTransport,
-        transports.ControlServiceGrpcAsyncIOTransport,
+        transports.ProjectServiceGrpcTransport,
+        transports.ProjectServiceGrpcAsyncIOTransport,
     ],
 )
-def test_control_service_transport_channel_mtls_with_client_cert_source(
+def test_project_service_transport_channel_mtls_with_client_cert_source(
     transport_class,
 ):
     with mock.patch(
@@ -5838,11 +7206,11 @@ def test_control_service_transport_channel_mtls_with_client_cert_source(
 @pytest.mark.parametrize(
     "transport_class",
     [
-        transports.ControlServiceGrpcTransport,
-        transports.ControlServiceGrpcAsyncIOTransport,
+        transports.ProjectServiceGrpcTransport,
+        transports.ProjectServiceGrpcAsyncIOTransport,
     ],
 )
-def test_control_service_transport_channel_mtls_with_adc(transport_class):
+def test_project_service_transport_channel_mtls_with_adc(transport_class):
     mock_ssl_cred = mock.Mock()
     with mock.patch.multiple(
         "google.auth.transport.grpc.SslCredentials",
@@ -5879,161 +7247,200 @@ def test_control_service_transport_channel_mtls_with_adc(transport_class):
             assert transport.grpc_channel == mock_grpc_channel
 
 
-def test_catalog_path():
-    project = "squid"
-    location = "clam"
-    catalog = "whelk"
-    expected = "projects/{project}/locations/{location}/catalogs/{catalog}".format(
-        project=project,
-        location=location,
-        catalog=catalog,
+def test_project_service_grpc_lro_client():
+    client = ProjectServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
-    actual = ControlServiceClient.catalog_path(project, location, catalog)
+    transport = client.transport
+
+    # Ensure that we have a api-core operations client.
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.OperationsClient,
+    )
+
+    # Ensure that subsequent calls to the property send the exact same object.
+    assert transport.operations_client is transport.operations_client
+
+
+def test_project_service_grpc_lro_async_client():
+    client = ProjectServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+    transport = client.transport
+
+    # Ensure that we have a api-core operations client.
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.OperationsAsyncClient,
+    )
+
+    # Ensure that subsequent calls to the property send the exact same object.
+    assert transport.operations_client is transport.operations_client
+
+
+def test_alert_config_path():
+    project = "squid"
+    expected = "projects/{project}/alertConfig".format(
+        project=project,
+    )
+    actual = ProjectServiceClient.alert_config_path(project)
     assert expected == actual
 
 
-def test_parse_catalog_path():
+def test_parse_alert_config_path():
+    expected = {
+        "project": "clam",
+    }
+    path = ProjectServiceClient.alert_config_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ProjectServiceClient.parse_alert_config_path(path)
+    assert expected == actual
+
+
+def test_logging_config_path():
+    project = "whelk"
+    expected = "projects/{project}/loggingConfig".format(
+        project=project,
+    )
+    actual = ProjectServiceClient.logging_config_path(project)
+    assert expected == actual
+
+
+def test_parse_logging_config_path():
     expected = {
         "project": "octopus",
-        "location": "oyster",
-        "catalog": "nudibranch",
     }
-    path = ControlServiceClient.catalog_path(**expected)
+    path = ProjectServiceClient.logging_config_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = ControlServiceClient.parse_catalog_path(path)
+    actual = ProjectServiceClient.parse_logging_config_path(path)
     assert expected == actual
 
 
-def test_control_path():
-    project = "cuttlefish"
-    location = "mussel"
-    catalog = "winkle"
-    control = "nautilus"
-    expected = "projects/{project}/locations/{location}/catalogs/{catalog}/controls/{control}".format(
+def test_retail_project_path():
+    project = "oyster"
+    expected = "projects/{project}/retailProject".format(
         project=project,
-        location=location,
-        catalog=catalog,
-        control=control,
     )
-    actual = ControlServiceClient.control_path(project, location, catalog, control)
+    actual = ProjectServiceClient.retail_project_path(project)
     assert expected == actual
 
 
-def test_parse_control_path():
+def test_parse_retail_project_path():
     expected = {
-        "project": "scallop",
-        "location": "abalone",
-        "catalog": "squid",
-        "control": "clam",
+        "project": "nudibranch",
     }
-    path = ControlServiceClient.control_path(**expected)
+    path = ProjectServiceClient.retail_project_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = ControlServiceClient.parse_control_path(path)
+    actual = ProjectServiceClient.parse_retail_project_path(path)
     assert expected == actual
 
 
 def test_common_billing_account_path():
-    billing_account = "whelk"
+    billing_account = "cuttlefish"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
-    actual = ControlServiceClient.common_billing_account_path(billing_account)
+    actual = ProjectServiceClient.common_billing_account_path(billing_account)
     assert expected == actual
 
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "octopus",
+        "billing_account": "mussel",
     }
-    path = ControlServiceClient.common_billing_account_path(**expected)
+    path = ProjectServiceClient.common_billing_account_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = ControlServiceClient.parse_common_billing_account_path(path)
+    actual = ProjectServiceClient.parse_common_billing_account_path(path)
     assert expected == actual
 
 
 def test_common_folder_path():
-    folder = "oyster"
+    folder = "winkle"
     expected = "folders/{folder}".format(
         folder=folder,
     )
-    actual = ControlServiceClient.common_folder_path(folder)
+    actual = ProjectServiceClient.common_folder_path(folder)
     assert expected == actual
 
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "nudibranch",
+        "folder": "nautilus",
     }
-    path = ControlServiceClient.common_folder_path(**expected)
+    path = ProjectServiceClient.common_folder_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = ControlServiceClient.parse_common_folder_path(path)
+    actual = ProjectServiceClient.parse_common_folder_path(path)
     assert expected == actual
 
 
 def test_common_organization_path():
-    organization = "cuttlefish"
+    organization = "scallop"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
-    actual = ControlServiceClient.common_organization_path(organization)
+    actual = ProjectServiceClient.common_organization_path(organization)
     assert expected == actual
 
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "mussel",
+        "organization": "abalone",
     }
-    path = ControlServiceClient.common_organization_path(**expected)
+    path = ProjectServiceClient.common_organization_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = ControlServiceClient.parse_common_organization_path(path)
+    actual = ProjectServiceClient.parse_common_organization_path(path)
     assert expected == actual
 
 
 def test_common_project_path():
-    project = "winkle"
+    project = "squid"
     expected = "projects/{project}".format(
         project=project,
     )
-    actual = ControlServiceClient.common_project_path(project)
+    actual = ProjectServiceClient.common_project_path(project)
     assert expected == actual
 
 
 def test_parse_common_project_path():
     expected = {
-        "project": "nautilus",
+        "project": "clam",
     }
-    path = ControlServiceClient.common_project_path(**expected)
+    path = ProjectServiceClient.common_project_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = ControlServiceClient.parse_common_project_path(path)
+    actual = ProjectServiceClient.parse_common_project_path(path)
     assert expected == actual
 
 
 def test_common_location_path():
-    project = "scallop"
-    location = "abalone"
+    project = "whelk"
+    location = "octopus"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
     )
-    actual = ControlServiceClient.common_location_path(project, location)
+    actual = ProjectServiceClient.common_location_path(project, location)
     assert expected == actual
 
 
 def test_parse_common_location_path():
     expected = {
-        "project": "squid",
-        "location": "clam",
+        "project": "oyster",
+        "location": "nudibranch",
     }
-    path = ControlServiceClient.common_location_path(**expected)
+    path = ProjectServiceClient.common_location_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = ControlServiceClient.parse_common_location_path(path)
+    actual = ProjectServiceClient.parse_common_location_path(path)
     assert expected == actual
 
 
@@ -6041,18 +7448,18 @@ def test_client_with_default_client_info():
     client_info = gapic_v1.client_info.ClientInfo()
 
     with mock.patch.object(
-        transports.ControlServiceTransport, "_prep_wrapped_messages"
+        transports.ProjectServiceTransport, "_prep_wrapped_messages"
     ) as prep:
-        client = ControlServiceClient(
+        client = ProjectServiceClient(
             credentials=ga_credentials.AnonymousCredentials(),
             client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
     with mock.patch.object(
-        transports.ControlServiceTransport, "_prep_wrapped_messages"
+        transports.ProjectServiceTransport, "_prep_wrapped_messages"
     ) as prep:
-        transport_class = ControlServiceClient.get_transport_class()
+        transport_class = ProjectServiceClient.get_transport_class()
         transport = transport_class(
             credentials=ga_credentials.AnonymousCredentials(),
             client_info=client_info,
@@ -6062,7 +7469,7 @@ def test_client_with_default_client_info():
 
 @pytest.mark.asyncio
 async def test_transport_close_async():
-    client = ControlServiceAsyncClient(
+    client = ProjectServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc_asyncio",
     )
@@ -6077,7 +7484,7 @@ async def test_transport_close_async():
 def test_get_operation_rest_bad_request(
     transport: str = "rest", request_type=operations_pb2.GetOperationRequest
 ):
-    client = ControlServiceClient(
+    client = ProjectServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -6110,7 +7517,7 @@ def test_get_operation_rest_bad_request(
     ],
 )
 def test_get_operation_rest(request_type):
-    client = ControlServiceClient(
+    client = ProjectServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
@@ -6140,7 +7547,7 @@ def test_get_operation_rest(request_type):
 def test_list_operations_rest_bad_request(
     transport: str = "rest", request_type=operations_pb2.ListOperationsRequest
 ):
-    client = ControlServiceClient(
+    client = ProjectServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -6170,7 +7577,7 @@ def test_list_operations_rest_bad_request(
     ],
 )
 def test_list_operations_rest(request_type):
-    client = ControlServiceClient(
+    client = ProjectServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
@@ -6196,7 +7603,7 @@ def test_list_operations_rest(request_type):
 
 
 def test_get_operation(transport: str = "grpc"):
-    client = ControlServiceClient(
+    client = ProjectServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -6221,7 +7628,7 @@ def test_get_operation(transport: str = "grpc"):
 
 @pytest.mark.asyncio
 async def test_get_operation_async(transport: str = "grpc_asyncio"):
-    client = ControlServiceAsyncClient(
+    client = ProjectServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -6247,7 +7654,7 @@ async def test_get_operation_async(transport: str = "grpc_asyncio"):
 
 
 def test_get_operation_field_headers():
-    client = ControlServiceClient(
+    client = ProjectServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
@@ -6276,7 +7683,7 @@ def test_get_operation_field_headers():
 
 @pytest.mark.asyncio
 async def test_get_operation_field_headers_async():
-    client = ControlServiceAsyncClient(
+    client = ProjectServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
@@ -6305,7 +7712,7 @@ async def test_get_operation_field_headers_async():
 
 
 def test_get_operation_from_dict():
-    client = ControlServiceClient(
+    client = ProjectServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6323,7 +7730,7 @@ def test_get_operation_from_dict():
 
 @pytest.mark.asyncio
 async def test_get_operation_from_dict_async():
-    client = ControlServiceAsyncClient(
+    client = ProjectServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6341,7 +7748,7 @@ async def test_get_operation_from_dict_async():
 
 
 def test_list_operations(transport: str = "grpc"):
-    client = ControlServiceClient(
+    client = ProjectServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -6366,7 +7773,7 @@ def test_list_operations(transport: str = "grpc"):
 
 @pytest.mark.asyncio
 async def test_list_operations_async(transport: str = "grpc_asyncio"):
-    client = ControlServiceAsyncClient(
+    client = ProjectServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -6392,7 +7799,7 @@ async def test_list_operations_async(transport: str = "grpc_asyncio"):
 
 
 def test_list_operations_field_headers():
-    client = ControlServiceClient(
+    client = ProjectServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
@@ -6421,7 +7828,7 @@ def test_list_operations_field_headers():
 
 @pytest.mark.asyncio
 async def test_list_operations_field_headers_async():
-    client = ControlServiceAsyncClient(
+    client = ProjectServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
@@ -6450,7 +7857,7 @@ async def test_list_operations_field_headers_async():
 
 
 def test_list_operations_from_dict():
-    client = ControlServiceClient(
+    client = ProjectServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6468,7 +7875,7 @@ def test_list_operations_from_dict():
 
 @pytest.mark.asyncio
 async def test_list_operations_from_dict_async():
-    client = ControlServiceAsyncClient(
+    client = ProjectServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6492,7 +7899,7 @@ def test_transport_close():
     }
 
     for transport, close_name in transports.items():
-        client = ControlServiceClient(
+        client = ProjectServiceClient(
             credentials=ga_credentials.AnonymousCredentials(), transport=transport
         )
         with mock.patch.object(
@@ -6509,7 +7916,7 @@ def test_client_ctx():
         "grpc",
     ]
     for transport in transports:
-        client = ControlServiceClient(
+        client = ProjectServiceClient(
             credentials=ga_credentials.AnonymousCredentials(), transport=transport
         )
         # Test client calls underlying transport.
@@ -6523,8 +7930,8 @@ def test_client_ctx():
 @pytest.mark.parametrize(
     "client_class,transport_class",
     [
-        (ControlServiceClient, transports.ControlServiceGrpcTransport),
-        (ControlServiceAsyncClient, transports.ControlServiceGrpcAsyncIOTransport),
+        (ProjectServiceClient, transports.ProjectServiceGrpcTransport),
+        (ProjectServiceAsyncClient, transports.ProjectServiceGrpcAsyncIOTransport),
     ],
 )
 def test_api_key_credentials(client_class, transport_class):

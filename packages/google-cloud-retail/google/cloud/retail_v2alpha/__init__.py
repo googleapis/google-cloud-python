@@ -22,6 +22,7 @@ from .services.analytics_service import (
     AnalyticsServiceAsyncClient,
     AnalyticsServiceClient,
 )
+from .services.branch_service import BranchServiceAsyncClient, BranchServiceClient
 from .services.catalog_service import CatalogServiceAsyncClient, CatalogServiceClient
 from .services.completion_service import (
     CompletionServiceAsyncClient,
@@ -38,6 +39,7 @@ from .services.prediction_service import (
     PredictionServiceClient,
 )
 from .services.product_service import ProductServiceAsyncClient, ProductServiceClient
+from .services.project_service import ProjectServiceAsyncClient, ProjectServiceClient
 from .services.search_service import SearchServiceAsyncClient, SearchServiceClient
 from .services.serving_config_service import (
     ServingConfigServiceAsyncClient,
@@ -46,6 +48,12 @@ from .services.serving_config_service import (
 from .services.user_event_service import (
     UserEventServiceAsyncClient,
     UserEventServiceClient,
+)
+from .types.branch import Branch, BranchView
+from .types.branch_service import (
+    GetBranchRequest,
+    ListBranchesRequest,
+    ListBranchesResponse,
 )
 from .types.catalog import (
     AttributesConfig,
@@ -183,6 +191,20 @@ from .types.product_service import (
     SetInventoryResponse,
     UpdateProductRequest,
 )
+from .types.project import AlertConfig, LoggingConfig, Project
+from .types.project_service import (
+    AcceptTermsRequest,
+    EnrollSolutionMetadata,
+    EnrollSolutionRequest,
+    EnrollSolutionResponse,
+    GetAlertConfigRequest,
+    GetLoggingConfigRequest,
+    GetProjectRequest,
+    ListEnrolledSolutionsRequest,
+    ListEnrolledSolutionsResponse,
+    UpdateAlertConfigRequest,
+    UpdateLoggingConfigRequest,
+)
 from .types.promotion import Promotion
 from .types.purge_config import (
     PurgeMetadata,
@@ -220,6 +242,7 @@ from .types.user_event_service import (
 
 __all__ = (
     "AnalyticsServiceAsyncClient",
+    "BranchServiceAsyncClient",
     "CatalogServiceAsyncClient",
     "CompletionServiceAsyncClient",
     "ControlServiceAsyncClient",
@@ -227,9 +250,11 @@ __all__ = (
     "ModelServiceAsyncClient",
     "PredictionServiceAsyncClient",
     "ProductServiceAsyncClient",
+    "ProjectServiceAsyncClient",
     "SearchServiceAsyncClient",
     "ServingConfigServiceAsyncClient",
     "UserEventServiceAsyncClient",
+    "AcceptTermsRequest",
     "AddCatalogAttributeRequest",
     "AddControlRequest",
     "AddFulfillmentPlacesMetadata",
@@ -238,6 +263,7 @@ __all__ = (
     "AddLocalInventoriesMetadata",
     "AddLocalInventoriesRequest",
     "AddLocalInventoriesResponse",
+    "AlertConfig",
     "AnalyticsServiceClient",
     "AttributeConfigLevel",
     "AttributesConfig",
@@ -246,6 +272,9 @@ __all__ = (
     "BatchRemoveCatalogAttributesResponse",
     "BigQueryOutputResult",
     "BigQuerySource",
+    "Branch",
+    "BranchServiceClient",
+    "BranchView",
     "Catalog",
     "CatalogAttribute",
     "CatalogServiceClient",
@@ -273,6 +302,9 @@ __all__ = (
     "DeleteModelRequest",
     "DeleteProductRequest",
     "DeleteServingConfigRequest",
+    "EnrollSolutionMetadata",
+    "EnrollSolutionRequest",
+    "EnrollSolutionResponse",
     "ExperimentInfo",
     "ExportAnalyticsMetricsRequest",
     "ExportAnalyticsMetricsResponse",
@@ -283,13 +315,17 @@ __all__ = (
     "FulfillmentInfo",
     "GcsOutputResult",
     "GcsSource",
+    "GetAlertConfigRequest",
     "GetAttributesConfigRequest",
+    "GetBranchRequest",
     "GetCompletionConfigRequest",
     "GetControlRequest",
     "GetDefaultBranchRequest",
     "GetDefaultBranchResponse",
+    "GetLoggingConfigRequest",
     "GetModelRequest",
     "GetProductRequest",
+    "GetProjectRequest",
     "GetServingConfigRequest",
     "Image",
     "ImportCompletionDataRequest",
@@ -301,10 +337,14 @@ __all__ = (
     "ImportUserEventsRequest",
     "ImportUserEventsResponse",
     "Interval",
+    "ListBranchesRequest",
+    "ListBranchesResponse",
     "ListCatalogsRequest",
     "ListCatalogsResponse",
     "ListControlsRequest",
     "ListControlsResponse",
+    "ListEnrolledSolutionsRequest",
+    "ListEnrolledSolutionsResponse",
     "ListMerchantCenterAccountLinksRequest",
     "ListMerchantCenterAccountLinksResponse",
     "ListModelsRequest",
@@ -314,6 +354,7 @@ __all__ = (
     "ListServingConfigsRequest",
     "ListServingConfigsResponse",
     "LocalInventory",
+    "LoggingConfig",
     "MerchantCenterAccountLink",
     "MerchantCenterAccountLinkServiceClient",
     "MerchantCenterFeedFilter",
@@ -334,6 +375,8 @@ __all__ = (
     "ProductInputConfig",
     "ProductLevelConfig",
     "ProductServiceClient",
+    "Project",
+    "ProjectServiceClient",
     "Promotion",
     "PurchaseTransaction",
     "PurgeMetadata",
@@ -373,10 +416,12 @@ __all__ = (
     "TuneModelMetadata",
     "TuneModelRequest",
     "TuneModelResponse",
+    "UpdateAlertConfigRequest",
     "UpdateAttributesConfigRequest",
     "UpdateCatalogRequest",
     "UpdateCompletionConfigRequest",
     "UpdateControlRequest",
+    "UpdateLoggingConfigRequest",
     "UpdateModelRequest",
     "UpdateProductRequest",
     "UpdateServingConfigRequest",
