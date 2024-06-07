@@ -508,11 +508,24 @@ class Block:
         else:
             return None
 
-    def to_pandas_batches(self):
-        """Download results one message at a time."""
+    def to_pandas_batches(
+        self, page_size: Optional[int] = None, max_results: Optional[int] = None
+    ):
+        """Download results one message at a time.
+
+        page_size and max_results determine the size and number of batches,
+        see https://cloud.google.com/python/docs/reference/bigquery/latest/google.cloud.bigquery.job.QueryJob#google_cloud_bigquery_job_QueryJob_result"""
         dtypes = dict(zip(self.index_columns, self.index.dtypes))
         dtypes.update(zip(self.value_columns, self.dtypes))
-        results_iterator, _ = self.session._execute(self.expr, sorted=True)
+        _, query_job = self.session._query_to_destination(
+            self.session._to_sql(self.expr, sorted=True),
+            list(self.index_columns),
+            api_name="cached",
+            do_clustering=False,
+        )
+        results_iterator = query_job.result(
+            page_size=page_size, max_results=max_results
+        )
         for arrow_table in results_iterator.to_arrow_iterable(
             bqstorage_client=self.session.bqstoragereadclient
         ):

@@ -1215,10 +1215,30 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         self._set_internal_query_job(query_job)
         return df.set_axis(self._block.column_labels, axis=1, copy=False)
 
-    def to_pandas_batches(self) -> Iterable[pandas.DataFrame]:
-        """Stream DataFrame results to an iterable of pandas DataFrame"""
+    def to_pandas_batches(
+        self, page_size: Optional[int] = None, max_results: Optional[int] = None
+    ) -> Iterable[pandas.DataFrame]:
+        """Stream DataFrame results to an iterable of pandas DataFrame.
+
+        page_size and max_results determine the size and number of batches,
+        see https://cloud.google.com/python/docs/reference/bigquery/latest/google.cloud.bigquery.job.QueryJob#google_cloud_bigquery_job_QueryJob_result
+
+        Args:
+            page_size (int, default None):
+                The size of each batch.
+            max_results (int, default None):
+                If given, only download this many rows at maximum.
+
+        Returns:
+            Iterable[pandas.DataFrame]:
+                An iterable of smaller dataframes which combine to
+                form the original dataframe. Results stream from bigquery,
+                see https://cloud.google.com/python/docs/reference/bigquery/latest/google.cloud.bigquery.table.RowIterator#google_cloud_bigquery_table_RowIterator_to_arrow_iterable
+        """
         self._optimize_query_complexity()
-        return self._block.to_pandas_batches()
+        return self._block.to_pandas_batches(
+            page_size=page_size, max_results=max_results
+        )
 
     def _compute_dry_run(self) -> bigquery.QueryJob:
         return self._block._compute_dry_run()
