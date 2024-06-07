@@ -622,7 +622,7 @@ class TestLogging(unittest.TestCase):
             "trace_sampled": True,
             "http_request": expected_request,
             "source_location": expected_source,
-            "resource": Resource(type="cloudiot_device", labels={}),
+            "resource": Resource(type="global", labels={}),
             "labels": {"test-label": "manual"},
         }
         cloud_logger.warning(LOG_MESSAGE, extra=extra)
