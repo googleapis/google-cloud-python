@@ -137,6 +137,11 @@ class Condition(proto.Message):
             Range of time(s) specifying when Condition is
             active. Condition true if any time range
             matches.
+        page_categories (MutableSequence[str]):
+            Used to support browse uses cases. A list (up to 10 entries)
+            of categories or departments. The format should be the same
+            as
+            [UserEvent.page_categories][google.cloud.retail.v2beta.UserEvent.page_categories];
     """
 
     class QueryTerm(proto.Message):
@@ -197,6 +202,10 @@ class Condition(proto.Message):
         number=3,
         message=TimeRange,
     )
+    page_categories: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=4,
+    )
 
 
 class Rule(proto.Message):
@@ -250,6 +259,16 @@ class Rule(proto.Message):
         twoway_synonyms_action (google.cloud.retail_v2beta.types.Rule.TwowaySynonymsAction):
             Treats a set of terms as synonyms of one
             another.
+
+            This field is a member of `oneof`_ ``action``.
+        force_return_facet_action (google.cloud.retail_v2beta.types.Rule.ForceReturnFacetAction):
+            Force returns an attribute as a facet in the
+            request.
+
+            This field is a member of `oneof`_ ``action``.
+        remove_facet_action (google.cloud.retail_v2beta.types.Rule.RemoveFacetAction):
+            Remove an attribute as a facet in the request
+            (if present).
 
             This field is a member of `oneof`_ ``action``.
         condition (google.cloud.retail_v2beta.types.Condition):
@@ -322,6 +341,7 @@ class Rule(proto.Message):
            provided with the SearchRequest. The AND operator is used to
            combine the query's existing filters with the filter rule(s).
            NOTE: May result in 0 results when filters conflict.
+
         -  Action Result: Filters the returned objects to be ONLY those that
            passed the filter.
 
@@ -334,8 +354,8 @@ class Rule(proto.Message):
                    must be set.
                 -  Filter syntax is identical to
                    [SearchRequest.filter][google.cloud.retail.v2beta.SearchRequest.filter].
-                   See more details at the Retail Search `user
-                   guide </retail/search/docs/filter-and-order#filter>`__.
+                   For more information, see
+                   `Filter </retail/docs/filter-and-order#filter>`__.
                 -  To filter products with product ID "product_1" or
                    "product_2", and color "Red" or "Blue": *(id:
                    ANY("product_1", "product_2"))* *AND* *(colorFamilies:
@@ -350,11 +370,8 @@ class Rule(proto.Message):
     class RedirectAction(proto.Message):
         r"""Redirects a shopper to a specific page.
 
-        -  Rule Condition:
-
-           -  Must specify
-              [Condition.query_terms][google.cloud.retail.v2beta.Condition.query_terms].
-
+        -  Rule Condition: Must specify
+           [Condition.query_terms][google.cloud.retail.v2beta.Condition.query_terms].
         -  Action Input: Request Query
         -  Action Result: Redirects shopper to provided uri.
 
@@ -494,6 +511,108 @@ class Rule(proto.Message):
             number=1,
         )
 
+    class ForceReturnFacetAction(proto.Message):
+        r"""Force returns an attribute/facet in the request around a certain
+        position or above.
+
+        -  Rule Condition: Must specify non-empty
+           [Condition.query_terms][google.cloud.retail.v2beta.Condition.query_terms]
+           (for search only) or
+           [Condition.page_categories][google.cloud.retail.v2beta.Condition.page_categories]
+           (for browse only), but can't specify both.
+
+        -  Action Inputs: attribute name, position
+
+        -  Action Result: Will force return a facet key around a certain
+           position or above if the condition is satisfied.
+
+        Example: Suppose the query is "shoes", the
+        [Condition.query_terms][google.cloud.retail.v2beta.Condition.query_terms]
+        is "shoes", the
+        [ForceReturnFacetAction.FacetPositionAdjustment.attribute_name][google.cloud.retail.v2beta.Rule.ForceReturnFacetAction.FacetPositionAdjustment.attribute_name]
+        is "size" and the
+        [ForceReturnFacetAction.FacetPositionAdjustment.position][google.cloud.retail.v2beta.Rule.ForceReturnFacetAction.FacetPositionAdjustment.position]
+        is 8.
+
+        Two cases: a) The facet key "size" is not already in the top 8
+        slots, then the facet "size" will appear at a position close to 8.
+        b) The facet key "size" in among the top 8 positions in the request,
+        then it will stay at its current rank.
+
+        Attributes:
+            facet_position_adjustments (MutableSequence[google.cloud.retail_v2beta.types.Rule.ForceReturnFacetAction.FacetPositionAdjustment]):
+                Each instance corresponds to a force return
+                attribute for the given condition. There can't
+                be more 3 instances here.
+        """
+
+        class FacetPositionAdjustment(proto.Message):
+            r"""Each facet position adjustment consists of a single attribute
+            name (i.e. facet key) along with a specified position.
+
+            Attributes:
+                attribute_name (str):
+                    The attribute name to force return as a
+                    facet. Each attribute name should be a valid
+                    attribute name, be non-empty and contain at most
+                    80 characters long.
+                position (int):
+                    This is the position in the request as
+                    explained above. It should be strictly positive
+                    be at most 100.
+            """
+
+            attribute_name: str = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+            position: int = proto.Field(
+                proto.INT32,
+                number=2,
+            )
+
+        facet_position_adjustments: MutableSequence[
+            "Rule.ForceReturnFacetAction.FacetPositionAdjustment"
+        ] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="Rule.ForceReturnFacetAction.FacetPositionAdjustment",
+        )
+
+    class RemoveFacetAction(proto.Message):
+        r"""Removes an attribute/facet in the request if is present.
+
+        -  Rule Condition: Must specify non-empty
+           [Condition.query_terms][google.cloud.retail.v2beta.Condition.query_terms]
+           (for search only) or
+           [Condition.page_categories][google.cloud.retail.v2beta.Condition.page_categories]
+           (for browse only), but can't specify both.
+
+        -  Action Input: attribute name
+
+        -  Action Result: Will remove the attribute (as a facet) from the
+           request if it is present.
+
+        Example: Suppose the query is "shoes", the
+        [Condition.query_terms][google.cloud.retail.v2beta.Condition.query_terms]
+        is "shoes" and the attribute name "size", then facet key "size" will
+        be removed from the request (if it is present).
+
+        Attributes:
+            attribute_names (MutableSequence[str]):
+                The attribute names (i.e. facet keys) to
+                remove from the dynamic facets (if present in
+                the request). There can't be more 3 attribute
+                names. Each attribute name should be a valid
+                attribute name, be non-empty and contain at most
+                80 characters.
+        """
+
+        attribute_names: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=1,
+        )
+
     boost_action: BoostAction = proto.Field(
         proto.MESSAGE,
         number=2,
@@ -541,6 +660,18 @@ class Rule(proto.Message):
         number=11,
         oneof="action",
         message=TwowaySynonymsAction,
+    )
+    force_return_facet_action: ForceReturnFacetAction = proto.Field(
+        proto.MESSAGE,
+        number=12,
+        oneof="action",
+        message=ForceReturnFacetAction,
+    )
+    remove_facet_action: RemoveFacetAction = proto.Field(
+        proto.MESSAGE,
+        number=13,
+        oneof="action",
+        message=RemoveFacetAction,
     )
     condition: "Condition" = proto.Field(
         proto.MESSAGE,
