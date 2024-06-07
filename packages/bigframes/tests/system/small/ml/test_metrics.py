@@ -219,8 +219,8 @@ def test_roc_curve_binary_classification_prediction_matches_sklearn(session):
     )
 
     # sklearn returns float64 np arrays
-    np_fpr = fpr.to_pandas().astype("float64").array
-    np_tpr = tpr.to_pandas().astype("float64").array
+    np_fpr = fpr.to_pandas().astype("float64").array.to_numpy()
+    np_tpr = tpr.to_pandas().astype("float64").array.to_numpy()
     np_thresholds = thresholds.to_pandas().astype("float64").array
 
     np.testing.assert_array_equal(
@@ -228,14 +228,12 @@ def test_roc_curve_binary_classification_prediction_matches_sklearn(session):
         np_thresholds[1:],
         expected_thresholds[1:],
     )
-    # TODO(b/340872435): fix type error
     np.testing.assert_array_equal(
-        np_fpr,  # type: ignore
+        np_fpr,
         expected_fpr,
     )
-    # TODO(b/340872435): fix type error
     np.testing.assert_array_equal(
-        np_tpr,  # type: ignore
+        np_tpr,
         expected_tpr,
     )
 
@@ -316,8 +314,8 @@ def test_roc_curve_binary_classification_decision_matches_sklearn(session):
     )
 
     # sklearn returns float64 np arrays
-    np_fpr = fpr.to_pandas().astype("float64").array
-    np_tpr = tpr.to_pandas().astype("float64").array
+    np_fpr = fpr.to_pandas().astype("float64").array.to_numpy()
+    np_tpr = tpr.to_pandas().astype("float64").array.to_numpy()
     np_thresholds = thresholds.to_pandas().astype("float64").array
 
     np.testing.assert_array_equal(
@@ -325,14 +323,12 @@ def test_roc_curve_binary_classification_decision_matches_sklearn(session):
         np_thresholds[1:],
         expected_thresholds[1:],
     )
-    # TODO(b/340872435): fix type error
     np.testing.assert_array_equal(
-        np_fpr,  # type: ignore
+        np_fpr,
         expected_fpr,
     )
-    # TODO(b/340872435): fix type error
     np.testing.assert_array_equal(
-        np_tpr,  # type: ignore
+        np_tpr,
         expected_tpr,
     )
 
@@ -519,14 +515,10 @@ def test_confusion_matrix_column_index(session):
     ).astype("Int64")
     df = session.read_pandas(pd_df)
     confusion_matrix = metrics.confusion_matrix(df[["y_true"]], df[["y_pred"]])
-    # TODO(b/340872435): fix type error
-    expected_pd_df = (
-        pd.DataFrame(  # type: ignore
-            {1: [1, 0, 1, 0], 2: [0, 0, 2, 0], 3: [0, 0, 0, 0], 4: [0, 1, 0, 1]}
-        )
-        .astype("int64")
-        .set_index([pd.Index([1, 2, 3, 4])])
-    )
+    expected_pd_df = pd.DataFrame(
+        {1: [1, 0, 1, 0], 2: [0, 0, 2, 0], 3: [0, 0, 0, 0], 4: [0, 1, 0, 1]},
+        index=[1, 2, 3, 4],
+    ).astype("int64")
     pd.testing.assert_frame_equal(
         confusion_matrix, expected_pd_df, check_index_type=False
     )
@@ -562,9 +554,8 @@ def test_confusion_matrix_str_matches_sklearn(session):
     expected_confusion_matrix = sklearn_metrics.confusion_matrix(
         pd_df[["y_true"]], pd_df[["y_pred"]]
     )
-    # TODO(b/340872435): fix type error
-    expected_pd_df = pd.DataFrame(expected_confusion_matrix).set_index(  # type: ignore
-        [pd.Index(["ant", "bird", "cat"])]
+    expected_pd_df = pd.DataFrame(
+        expected_confusion_matrix, index=["ant", "bird", "cat"]
     )
     expected_pd_df.columns = pd.Index(["ant", "bird", "cat"])
     pd.testing.assert_frame_equal(
@@ -601,9 +592,8 @@ def test_recall_score(session):
         }
     ).astype("Int64")
     df = session.read_pandas(pd_df)
-    # TODO(b/340872435): fix type error
     recall = metrics.recall_score(
-        df[["y_true_arbitrary_name"]], df[["y_pred_arbitrary_name"]], average=None  # type: ignore
+        df[["y_true_arbitrary_name"]], df[["y_pred_arbitrary_name"]], average=None
     )
     expected_values = [1.000000, 0.000000, 0.666667]
     expected_index = [0, 1, 2]
@@ -620,8 +610,7 @@ def test_recall_score_matches_sklearn(session):
         }
     ).astype("Int64")
     df = session.read_pandas(pd_df)
-    # TODO(b/340872435): fix type error
-    recall = metrics.recall_score(df[["y_true"]], df[["y_pred"]], average=None)  # type: ignore
+    recall = metrics.recall_score(df[["y_true"]], df[["y_pred"]], average=None)
     expected_values = sklearn_metrics.recall_score(
         pd_df[["y_true"]], pd_df[["y_pred"]], average=None
     )
@@ -638,8 +627,7 @@ def test_recall_score_str_matches_sklearn(session):
         }
     ).astype("str")
     df = session.read_pandas(pd_df)
-    # TODO(b/340872435): fix type error
-    recall = metrics.recall_score(df[["y_true"]], df[["y_pred"]], average=None)  # type: ignore
+    recall = metrics.recall_score(df[["y_true"]], df[["y_pred"]], average=None)
     expected_values = sklearn_metrics.recall_score(
         pd_df[["y_true"]], pd_df[["y_pred"]], average=None
     )
@@ -656,8 +644,7 @@ def test_recall_score_series(session):
         }
     ).astype("Int64")
     df = session.read_pandas(pd_df)
-    # TODO(b/340872435): fix type error
-    recall = metrics.recall_score(df["y_true"], df["y_pred"], average=None)  # type: ignore
+    recall = metrics.recall_score(df["y_true"], df["y_pred"], average=None)
     expected_values = [1.000000, 0.000000, 0.666667]
     expected_index = [0, 1, 2]
     expected_recall = pd.Series(expected_values, index=expected_index)
@@ -673,9 +660,8 @@ def test_precision_score(session):
         }
     ).astype("Int64")
     df = session.read_pandas(pd_df)
-    # TODO(b/340872435): fix type error
     precision_score = metrics.precision_score(
-        df[["y_true_arbitrary_name"]], df[["y_pred_arbitrary_name"]], average=None  # type: ignore
+        df[["y_true_arbitrary_name"]], df[["y_pred_arbitrary_name"]], average=None
     )
     expected_values = [0.666667, 0.000000, 0.666667]
     expected_index = [0, 1, 2]
@@ -696,7 +682,7 @@ def test_precision_score_matches_sklearn(session):
     df = session.read_pandas(pd_df)
     # TODO(b/340872435): fix type error
     precision_score = metrics.precision_score(
-        df[["y_true"]], df[["y_pred"]], average=None  # type: ignore
+        df[["y_true"]], df[["y_pred"]], average=None
     )
     expected_values = sklearn_metrics.precision_score(
         pd_df[["y_true"]], pd_df[["y_pred"]], average=None
@@ -716,9 +702,8 @@ def test_precision_score_str_matches_sklearn(session):
         }
     ).astype("str")
     df = session.read_pandas(pd_df)
-    # TODO(b/340872435): fix type error
     precision_score = metrics.precision_score(
-        df[["y_true"]], df[["y_pred"]], average=None  # type: ignore
+        df[["y_true"]], df[["y_pred"]], average=None
     )
     expected_values = sklearn_metrics.precision_score(
         pd_df[["y_true"]], pd_df[["y_pred"]], average=None
@@ -738,8 +723,7 @@ def test_precision_score_series(session):
         }
     ).astype("Int64")
     df = session.read_pandas(pd_df)
-    # TODO(b/340872435): fix type error
-    precision_score = metrics.precision_score(df["y_true"], df["y_pred"], average=None)  # type: ignore
+    precision_score = metrics.precision_score(df["y_true"], df["y_pred"], average=None)
     expected_values = [0.666667, 0.000000, 0.666667]
     expected_index = [0, 1, 2]
     expected_precision = pd.Series(expected_values, index=expected_index)
@@ -757,9 +741,8 @@ def test_f1_score(session):
         }
     ).astype("Int64")
     df = session.read_pandas(pd_df)
-    # TODO(b/340872435): fix type error
     f1_score = metrics.f1_score(
-        df[["y_true_arbitrary_name"]], df[["y_pred_arbitrary_name"]], average=None  # type: ignore
+        df[["y_true_arbitrary_name"]], df[["y_pred_arbitrary_name"]], average=None
     )
     expected_values = [0.8, 0.000000, 0.666667]
     expected_index = [0, 1, 2]
@@ -776,8 +759,7 @@ def test_f1_score_matches_sklearn(session):
         }
     ).astype("Int64")
     df = session.read_pandas(pd_df)
-    # TODO(b/340872435): fix type error
-    f1_score = metrics.f1_score(df[["y_true"]], df[["y_pred"]], average=None)  # type: ignore
+    f1_score = metrics.f1_score(df[["y_true"]], df[["y_pred"]], average=None)
     expected_values = sklearn_metrics.f1_score(
         pd_df[["y_true"]], pd_df[["y_pred"]], average=None
     )
@@ -794,8 +776,7 @@ def test_f1_score_str_matches_sklearn(session):
         }
     ).astype("str")
     df = session.read_pandas(pd_df)
-    # TODO(b/340872435): fix type error
-    f1_score = metrics.f1_score(df[["y_true"]], df[["y_pred"]], average=None)  # type: ignore
+    f1_score = metrics.f1_score(df[["y_true"]], df[["y_pred"]], average=None)
     expected_values = sklearn_metrics.f1_score(
         pd_df[["y_true"]], pd_df[["y_pred"]], average=None
     )
@@ -812,8 +793,7 @@ def test_f1_score_series(session):
         }
     ).astype("Int64")
     df = session.read_pandas(pd_df)
-    # TODO(b/340872435): fix type error
-    f1_score = metrics.f1_score(df["y_true"], df["y_pred"], average=None)  # type: ignore
+    f1_score = metrics.f1_score(df["y_true"], df["y_pred"], average=None)
     expected_values = [0.8, 0.000000, 0.666667]
     expected_index = [0, 1, 2]
     expected_f1 = pd.Series(expected_values, index=expected_index)

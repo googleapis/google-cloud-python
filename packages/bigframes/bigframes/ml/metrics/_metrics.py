@@ -227,7 +227,7 @@ def recall_score(
     y_true: Union[bpd.DataFrame, bpd.Series],
     y_pred: Union[bpd.DataFrame, bpd.Series],
     *,
-    average: str = "binary",
+    average: typing.Optional[str] = "binary",
 ) -> pd.Series:
     # TODO(ashleyxu): support more average type, default to "binary"
     if average is not None:
@@ -264,7 +264,7 @@ def precision_score(
     y_true: Union[bpd.DataFrame, bpd.Series],
     y_pred: Union[bpd.DataFrame, bpd.Series],
     *,
-    average: str = "binary",
+    average: typing.Optional[str] = "binary",
 ) -> pd.Series:
     # TODO(ashleyxu): support more average type, default to "binary"
     if average is not None:
@@ -303,7 +303,7 @@ def f1_score(
     y_true: Union[bpd.DataFrame, bpd.Series],
     y_pred: Union[bpd.DataFrame, bpd.Series],
     *,
-    average: str = "binary",
+    average: typing.Optional[str] = "binary",
 ) -> pd.Series:
     # TODO(ashleyxu): support more average type, default to "binary"
     y_true_series, y_pred_series = utils.convert_to_series(y_true, y_pred)
