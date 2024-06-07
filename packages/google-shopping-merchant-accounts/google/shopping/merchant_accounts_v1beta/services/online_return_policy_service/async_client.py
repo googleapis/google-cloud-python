@@ -56,7 +56,10 @@ from .transports.grpc_asyncio import OnlineReturnPolicyServiceGrpcAsyncIOTranspo
 class OnlineReturnPolicyServiceAsyncClient:
     """The service facilitates the management of a merchant's remorse
     return policy configuration, encompassing return policies for both
-    ads and free listings programs. This API defines the following resource model:
+    ads and free listings
+
+    programs. This API defines the following resource model:
+    --------------------------------------------------------
 
     [OnlineReturnPolicy][google.shopping.merchant.accounts.v1.OnlineReturnPolicy]
     """

@@ -1158,7 +1158,7 @@ class UserServiceClient(metaclass=UserServiceClientMeta):
                 The request object. Request message for the ``ListUsers`` method.
             parent (str):
                 Required. The parent, which owns this collection of
-                users. Format: \`accounts/{account}
+                users. Format: ``accounts/{account}``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
