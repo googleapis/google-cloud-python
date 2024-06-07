@@ -267,7 +267,7 @@ class StreamingPullManager(object):
         client: "subscriber.Client",
         subscription: str,
         flow_control: types.FlowControl = types.FlowControl(),
-        scheduler: ThreadScheduler = None,
+        scheduler: Optional[ThreadScheduler] = None,
         use_legacy_flow_control: bool = False,
         await_callbacks_on_shutdown: bool = False,
     ):

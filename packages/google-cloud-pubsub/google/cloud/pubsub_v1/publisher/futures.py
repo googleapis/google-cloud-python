@@ -45,7 +45,7 @@ class Future(futures.Future):
         """
         return False
 
-    def result(self, timeout: Union[int, float] = None) -> str:
+    def result(self, timeout: Union[int, float, None] = None) -> str:
         """Return the message ID or raise an exception.
 
         This blocks until the message has been published successfully and

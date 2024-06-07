@@ -348,7 +348,7 @@ s.move(templated_files, excludes=[".coveragerc", ".github/release-please.yml", "
 s.replace(
     "noxfile.py",
     r"LINT_PATHS = \[.*?\]",
-    '\g<0>\n\nMYPY_VERSION = "mypy==0.910"',
+    '\g<0>\n\nMYPY_VERSION = "mypy==1.10.0"',
 )
 s.replace(
     "noxfile.py", r'"blacken",', '\g<0>\n    "mypy",',

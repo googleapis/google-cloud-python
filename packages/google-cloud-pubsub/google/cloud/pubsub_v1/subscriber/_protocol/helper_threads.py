@@ -15,7 +15,7 @@
 import logging
 import queue
 import time
-from typing import Any, Callable, List, Sequence
+from typing import Any, Callable, List, Sequence, Optional
 import uuid
 
 
@@ -32,7 +32,7 @@ STOP = uuid.uuid4()
 
 
 def _get_many(
-    queue_: queue.Queue, max_items: int = None, max_latency: float = 0
+    queue_: queue.Queue, max_items: Optional[int] = None, max_latency: float = 0
 ) -> List[Any]:
     """Get multiple items from a Queue.
 

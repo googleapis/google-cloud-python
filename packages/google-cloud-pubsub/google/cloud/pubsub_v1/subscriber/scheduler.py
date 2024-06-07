@@ -162,7 +162,7 @@ class ThreadScheduler(Scheduler):
                 work_item = self._executor._work_queue.get(block=False)
                 if work_item is None:  # Exceutor in shutdown mode.
                     continue
-                dropped_messages.append(work_item.args[0])
+                dropped_messages.append(work_item.args[0])  # type: ignore[index]
         except queue.Empty:
             pass
 

@@ -32,7 +32,7 @@ BLACK_VERSION = "black[jupyter]==23.7.0"
 ISORT_VERSION = "isort==5.11.0"
 LINT_PATHS = ["docs", "google", "tests", "noxfile.py", "setup.py"]
 
-MYPY_VERSION = "mypy==0.910"
+MYPY_VERSION = "mypy==1.10.0"
 
 DEFAULT_PYTHON_VERSION = "3.8"
 

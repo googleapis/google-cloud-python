@@ -90,7 +90,7 @@ class Batch(base.Batch):
         client: "PublisherClient",
         topic: str,
         settings: "types.BatchSettings",
-        batch_done_callback: Callable[[bool], Any] = None,
+        batch_done_callback: Optional[Callable[[bool], Any]] = None,
         commit_when_full: bool = True,
         commit_retry: "OptionalRetry" = gapic_v1.method.DEFAULT,
         commit_timeout: "types.OptionalTimeout" = gapic_v1.method.DEFAULT,

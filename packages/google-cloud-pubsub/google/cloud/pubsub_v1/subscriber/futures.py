@@ -104,7 +104,7 @@ class Future(futures.Future):
         """
         return False
 
-    def result(self, timeout: Union[int, float] = None) -> AcknowledgeStatus:
+    def result(self, timeout: Union[int, float, None] = None) -> AcknowledgeStatus:
         """Return a success code or raise an exception.
 
         This blocks until the operation completes successfully and
