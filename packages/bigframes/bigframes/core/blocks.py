@@ -553,7 +553,7 @@ class Block:
         """Run query and download results as a pandas DataFrame. Return the total number of results as well."""
         # TODO(swast): Allow for dry run and timeout.
         _, query_job = self.session._query_to_destination(
-            self.session._to_sql(self.expr, sorted=True),
+            self.session._to_sql(self.expr, sorted=materialize_options.ordered),
             list(self.index_columns),
             api_name="cached",
             do_clustering=False,
@@ -1016,7 +1016,7 @@ class Block:
                 index_columns=[index_id],
                 column_labels=self.column_labels,
                 index_labels=[None],
-            ).transpose(original_row_index=pd.Index([None]))
+            ).transpose(original_row_index=pd.Index([None]), single_row_mode=True)
         else:  # axis_n == 1
             # using offsets as identity to group on.
             # TODO: Allow to promote identity/total_order columns instead for better perf
@@ -1659,6 +1659,8 @@ class Block:
         value_vars=typing.Sequence[str],
         var_names=typing.Sequence[typing.Hashable],
         value_name: typing.Hashable = "value",
+        *,
+        create_offsets_index: bool = True,
     ):
         """
         Unpivot columns to produce longer, narrower dataframe.
@@ -1679,20 +1681,31 @@ class Block:
             index_col_ids=var_col_ids,
             join_side="right",
         )
-        index_id = guid.generate_guid()
-        unpivot_expr = unpivot_expr.promote_offsets(index_id)
+
+        if create_offsets_index:
+            index_id = guid.generate_guid()
+            unpivot_expr = unpivot_expr.promote_offsets(index_id)
+            index_cols = [index_id]
+        else:
+            index_cols = []
+
         # Need to reorder to get id_vars before var_col and unpivot_col
         unpivot_expr = unpivot_expr.select_columns(
-            [index_id, *id_vars, *var_col_ids, unpivot_col_id]
+            [*index_cols, *id_vars, *var_col_ids, unpivot_col_id]
         )
 
         return Block(
             unpivot_expr,
             column_labels=[*id_labels, *var_names, value_name],
-            index_columns=[index_id],
+            index_columns=index_cols,
         )
 
-    def transpose(self, *, original_row_index: Optional[pd.Index] = None) -> Block:
+    def transpose(
+        self,
+        *,
+        original_row_index: Optional[pd.Index] = None,
+        single_row_mode: bool = False,
+    ) -> Block:
         """Transpose the block. Will fail if dtypes aren't coercible to a common type or too many rows.
         Can provide the original_row_index directly if it is already known, otherwise a query is needed.
         """
@@ -1718,7 +1731,11 @@ class Block:
                 block.column_labels, pd.Index(range(len(block.column_labels)))
             )
         )
-        numbered_block, offsets = numbered_block.promote_offsets()
+        # TODO: Determine if single row from expression tree (after aggregation without groupby)
+        if single_row_mode:
+            numbered_block, offsets = numbered_block.create_constant(0)
+        else:
+            numbered_block, offsets = numbered_block.promote_offsets()
 
         stacked_block = numbered_block.melt(
             id_vars=(offsets,),
@@ -1727,6 +1744,7 @@ class Block:
                 "col_offset",
             ),
             value_vars=block.value_columns,
+            create_offsets_index=False,
         )
         col_labels = stacked_block.value_columns[-2 - original_col_index.nlevels : -2]
         col_offset = stacked_block.value_columns[-2]  # disambiguator we created earlier

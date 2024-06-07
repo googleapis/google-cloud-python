@@ -177,7 +177,7 @@ class ArrayValue:
     def as_cached(
         self: ArrayValue,
         cache_table: google.cloud.bigquery.Table,
-        ordering: orderings.ExpressionOrdering,
+        ordering: Optional[orderings.ExpressionOrdering],
     ) -> ArrayValue:
         """
         Replace the node with an equivalent one that references a tabel where the value has been materialized to.
@@ -234,6 +234,8 @@ class ArrayValue:
         """
         Convenience function to promote copy of column offsets to a value column. Can be used to reset index.
         """
+        if not self.session._strictly_ordered:
+            raise ValueError("Generating offsets not supported in unordered mode")
         return ArrayValue(nodes.PromoteOffsetsNode(child=self.node, col_id=col_id))
 
     def concat(self, other: typing.Sequence[ArrayValue]) -> ArrayValue:
@@ -382,6 +384,10 @@ class ArrayValue:
         never_skip_nulls: will disable null skipping for operators that would otherwise do so
         skip_reproject_unsafe: skips the reprojection step, can be used when performing many non-dependent window operations, user responsible for not nesting window expressions, or using outputs as join, filter or aggregation keys before a reprojection
         """
+        if not self.session._strictly_ordered:
+            # TODO: Support unbounded windows with aggregate ops and some row-order-independent analytic ops
+            # TODO: Support non-deterministic windowing
+            raise ValueError("Windowed ops not supported in unordered mode")
         return ArrayValue(
             nodes.WindowOpNode(
                 child=self.node,
@@ -433,8 +439,9 @@ class ArrayValue:
         """
         # There will be N labels, used to disambiguate which of N source columns produced each output row
         explode_offsets_id = bigframes.core.guid.generate_guid("unpivot_offsets_")
-        labels_array = self._create_unpivot_labels_array(row_labels, index_col_ids)
-        labels_array = labels_array.promote_offsets(explode_offsets_id)
+        labels_array = self._create_unpivot_labels_array(
+            row_labels, index_col_ids, explode_offsets_id
+        )
 
         # Unpivot creates N output rows for each input row, labels disambiguate these N rows
         joined_array = self._cross_join_w_labels(labels_array, join_side)
@@ -500,6 +507,7 @@ class ArrayValue:
         self,
         former_column_labels: typing.Sequence[typing.Hashable],
         col_ids: typing.Sequence[str],
+        offsets_id: str,
     ) -> ArrayValue:
         """Create an ArrayValue from a list of label tuples."""
         rows = []
@@ -510,6 +518,7 @@ class ArrayValue:
                 col_ids[i]: (row_label[i] if pandas.notnull(row_label[i]) else None)
                 for i in range(len(col_ids))
             }
+            row[offsets_id] = row_offset
             rows.append(row)
 
         return ArrayValue.from_pyarrow(pa.Table.from_pylist(rows), session=self.session)

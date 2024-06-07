@@ -109,6 +109,11 @@ def compile_cached_table(node: nodes.CachedTableNode, ordered: bool = True):
     )
     ibis_table = ibis.table(physical_schema, full_table_name)
     if ordered:
+        if node.ordering is None:
+            # If this happens, session malfunctioned while applying cached results.
+            raise ValueError(
+                "Cannot use unordered cached value. Result requires ordering information."
+            )
         return compiled.OrderedIR(
             ibis_table,
             columns=tuple(

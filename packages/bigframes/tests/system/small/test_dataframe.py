@@ -3124,9 +3124,9 @@ def test_dataframe_aggregate_int(scalars_df_index, scalars_pandas_df_index, col,
 
     # Check dtype separately
     assert bf_result.dtype == "Int64"
-
+    # Is otherwise "object" dtype
+    pd_result.index = pd_result.index.astype("string[pyarrow]")
     # Pandas may produce narrower numeric types
-    # Pandas has object index type
     assert_series_equal(pd_result, bf_result, check_dtype=False, check_index_type=False)
 
 
@@ -3146,6 +3146,7 @@ def test_dataframe_aggregate_bool(scalars_df_index, scalars_pandas_df_index, col
 
     # Pandas may produce narrower numeric types
     # Pandas has object index type
+    pd_result.index = pd_result.index.astype("string[pyarrow]")
     assert_series_equal(pd_result, bf_result, check_dtype=False, check_index_type=False)
 
 
@@ -3183,6 +3184,7 @@ def test_dataframe_aggregates(
 
     # Pandas may produce narrower numeric types, but bigframes always produces Float64
     # Pandas has object index type
+    pd_result.index = pd_result.index.astype("string[pyarrow]")
     assert_series_equal(
         pd_result,
         bf_result,

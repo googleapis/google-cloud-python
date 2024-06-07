@@ -294,6 +294,9 @@ class Session(
         self._bytes_processed_sum = 0
         self._slot_millis_sum = 0
         self._execution_count = 0
+        # Whether this session treats objects as totally ordered.
+        # Will expose as feature later, only False for internal testing
+        self._strictly_ordered = True
 
     @property
     def bqclient(self):
@@ -1841,17 +1844,20 @@ class Session(
         """Executes the query and uses the resulting table to rewrite future executions."""
         # TODO: Use this for all executions? Problem is that caching materializes extra
         # ordering columns
+        # TODO: May want to support some partial ordering info even for non-strict ordering mode
+        keep_order_info = self._strictly_ordered
+
         compiled_value = self._compile_ordered(array_value)
 
         ibis_expr = compiled_value._to_ibis_expr(
-            ordering_mode="unordered", expose_hidden_cols=True
+            ordering_mode="unordered", expose_hidden_cols=keep_order_info
         )
         tmp_table = self._ibis_to_temp_table(
             ibis_expr, cluster_cols=cluster_cols, api_name="cached"
         )
         cached_replacement = array_value.as_cached(
             cache_table=self.bqclient.get_table(tmp_table),
-            ordering=compiled_value._ordering,
+            ordering=compiled_value._ordering if keep_order_info else None,
         ).node
         self._cached_executions[array_value.node] = cached_replacement
 
@@ -1859,6 +1865,10 @@ class Session(
         """Executes the query and uses the resulting table to rewrite future executions."""
         # TODO: Use this for all executions? Problem is that caching materializes extra
         # ordering columns
+        if not self._strictly_ordered:
+            raise ValueError(
+                "Caching with offsets only supported in strictly ordered mode."
+            )
         compiled_value = self._compile_ordered(array_value)
 
         ibis_expr = compiled_value._to_ibis_expr(

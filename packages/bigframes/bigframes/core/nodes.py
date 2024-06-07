@@ -411,6 +411,7 @@ class ReadTableNode(BigFrameNode):
         return self
 
 
+# This node shouldn't be used in the "original" expression tree, only used as replacement for original during planning
 @dataclass(frozen=True)
 class CachedTableNode(BigFrameNode):
     # The original BFET subtree that was cached
@@ -422,7 +423,7 @@ class CachedTableNode(BigFrameNode):
     table_id: str = field()
     physical_schema: Tuple[bq.SchemaField, ...] = field()
 
-    ordering: orderings.ExpressionOrdering = field()
+    ordering: typing.Optional[orderings.ExpressionOrdering] = field()
 
     @property
     def session(self):
@@ -446,6 +447,8 @@ class CachedTableNode(BigFrameNode):
     @property
     def hidden_columns(self) -> typing.Tuple[str, ...]:
         """Physical columns used to define ordering but not directly exposed as value columns."""
+        if self.ordering is None:
+            return ()
         return tuple(
             col
             for col in sorted(self.ordering.referenced_columns)
