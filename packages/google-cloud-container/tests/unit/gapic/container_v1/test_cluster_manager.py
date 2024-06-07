@@ -7206,6 +7206,7 @@ def test_list_operations_flattened():
         client.list_operations(
             project_id="project_id_value",
             zone="zone_value",
+            parent="parent_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -7217,6 +7218,9 @@ def test_list_operations_flattened():
         assert arg == mock_val
         arg = args[0].zone
         mock_val = "zone_value"
+        assert arg == mock_val
+        arg = args[0].parent
+        mock_val = "parent_value"
         assert arg == mock_val
 
 
@@ -7232,6 +7236,7 @@ def test_list_operations_flattened_error():
             cluster_service.ListOperationsRequest(),
             project_id="project_id_value",
             zone="zone_value",
+            parent="parent_value",
         )
 
 
@@ -7254,6 +7259,7 @@ async def test_list_operations_flattened_async():
         response = await client.list_operations(
             project_id="project_id_value",
             zone="zone_value",
+            parent="parent_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -7265,6 +7271,9 @@ async def test_list_operations_flattened_async():
         assert arg == mock_val
         arg = args[0].zone
         mock_val = "zone_value"
+        assert arg == mock_val
+        arg = args[0].parent
+        mock_val = "parent_value"
         assert arg == mock_val
 
 
@@ -7281,6 +7290,7 @@ async def test_list_operations_flattened_error_async():
             cluster_service.ListOperationsRequest(),
             project_id="project_id_value",
             zone="zone_value",
+            parent="parent_value",
         )
 
 
