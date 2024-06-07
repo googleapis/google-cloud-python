@@ -528,8 +528,10 @@ def update_subscription_with_dead_letter_policy(
     )
 
     with subscriber:
-        subscription_after_update = subscriber.update_subscription(
-            request={"subscription": subscription, "update_mask": update_mask}
+        subscription_after_update: gapic_types.Subscription = (
+            subscriber.update_subscription(
+                request={"subscription": subscription, "update_mask": update_mask}
+            )
         )
 
     print(f"After the update: {subscription_after_update}.")
@@ -573,8 +575,10 @@ def remove_dead_letter_policy(
     )
 
     with subscriber:
-        subscription_after_update = subscriber.update_subscription(
-            request={"subscription": subscription, "update_mask": update_mask}
+        subscription_after_update: gapic_types.Subscription = (
+            subscriber.update_subscription(
+                request={"subscription": subscription, "update_mask": update_mask}
+            )
         )
 
     print(f"After removing the policy: {subscription_after_update}.")
