@@ -164,6 +164,9 @@ from .types.product_service import (
 from .types.promotion import Promotion
 from .types.purge_config import (
     PurgeMetadata,
+    PurgeProductsMetadata,
+    PurgeProductsRequest,
+    PurgeProductsResponse,
     PurgeUserEventsRequest,
     PurgeUserEventsResponse,
 )
@@ -297,6 +300,9 @@ __all__ = (
     "Promotion",
     "PurchaseTransaction",
     "PurgeMetadata",
+    "PurgeProductsMetadata",
+    "PurgeProductsRequest",
+    "PurgeProductsResponse",
     "PurgeUserEventsRequest",
     "PurgeUserEventsResponse",
     "Rating",
