@@ -98,19 +98,31 @@ class TestReadRowsOperation:
             (["d", "c", "b", "a"], "b", ["d", "c"]),
         ],
     )
-    def test_revise_request_rowset_keys(self, in_keys, last_key, expected):
+    @pytest.mark.parametrize("with_range", [True, False])
+    def test_revise_request_rowset_keys_with_range(
+        self, in_keys, last_key, expected, with_range
+    ):
         from google.cloud.bigtable_v2.types import RowSet as RowSetPB
         from google.cloud.bigtable_v2.types import RowRange as RowRangePB
+        from google.cloud.bigtable.data.exceptions import _RowSetComplete
 
         in_keys = [key.encode("utf-8") for key in in_keys]
         expected = [key.encode("utf-8") for key in expected]
         last_key = last_key.encode("utf-8")
 
-        sample_range = RowRangePB(start_key_open=last_key)
-        row_set = RowSetPB(row_keys=in_keys, row_ranges=[sample_range])
-        revised = self._get_target_class()._revise_request_rowset(row_set, last_key)
-        assert revised.row_keys == expected
-        assert revised.row_ranges == [sample_range]
+        if with_range:
+            sample_range = [RowRangePB(start_key_open=last_key)]
+        else:
+            sample_range = []
+        row_set = RowSetPB(row_keys=in_keys, row_ranges=sample_range)
+        if not with_range and expected == []:
+            # expect exception if we are revising to an empty rowset
+            with pytest.raises(_RowSetComplete):
+                self._get_target_class()._revise_request_rowset(row_set, last_key)
+        else:
+            revised = self._get_target_class()._revise_request_rowset(row_set, last_key)
+            assert revised.row_keys == expected
+            assert revised.row_ranges == sample_range
 
     @pytest.mark.parametrize(
         "in_ranges,last_key,expected",
@@ -157,9 +169,13 @@ class TestReadRowsOperation:
             ),
         ],
     )
-    def test_revise_request_rowset_ranges(self, in_ranges, last_key, expected):
+    @pytest.mark.parametrize("with_key", [True, False])
+    def test_revise_request_rowset_ranges(
+        self, in_ranges, last_key, expected, with_key
+    ):
         from google.cloud.bigtable_v2.types import RowSet as RowSetPB
         from google.cloud.bigtable_v2.types import RowRange as RowRangePB
+        from google.cloud.bigtable.data.exceptions import _RowSetComplete
 
         # convert to protobuf
         next_key = (last_key + "a").encode("utf-8")
@@ -172,10 +188,20 @@ class TestReadRowsOperation:
             RowRangePB(**{k: v.encode("utf-8") for k, v in r.items()}) for r in expected
         ]
 
-        row_set = RowSetPB(row_ranges=in_ranges, row_keys=[next_key])
-        revised = self._get_target_class()._revise_request_rowset(row_set, last_key)
-        assert revised.row_keys == [next_key]
-        assert revised.row_ranges == expected
+        if with_key:
+            row_keys = [next_key]
+        else:
+            row_keys = []
+
+        row_set = RowSetPB(row_ranges=in_ranges, row_keys=row_keys)
+        if not with_key and expected == []:
+            # expect exception if we are revising to an empty rowset
+            with pytest.raises(_RowSetComplete):
+                self._get_target_class()._revise_request_rowset(row_set, last_key)
+        else:
+            revised = self._get_target_class()._revise_request_rowset(row_set, last_key)
+            assert revised.row_keys == row_keys
+            assert revised.row_ranges == expected
 
     @pytest.mark.parametrize("last_key", ["a", "b", "c"])
     def test_revise_request_full_table(self, last_key):

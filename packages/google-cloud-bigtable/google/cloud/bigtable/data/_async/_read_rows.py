@@ -342,7 +342,7 @@ class _ReadRowsOperationAsync:
             _RowSetComplete: if there are no rows left to process after the revision
         """
         # if user is doing a whole table scan, start a new one with the last seen key
-        if row_set is None or (not row_set.row_ranges and row_set.row_keys is not None):
+        if row_set is None or (not row_set.row_ranges and not row_set.row_keys):
             last_seen = last_seen_row_key
             return RowSetPB(row_ranges=[RowRangePB(start_key_open=last_seen)])
         # remove seen keys from user-specific key list
