@@ -1,6 +1,8 @@
 # Contains code from https://github.com/pandas-dev/pandas/blob/main/pandas/core/indexes/base.py
 from __future__ import annotations
 
+import typing
+
 from bigframes import constants
 
 
@@ -320,7 +322,7 @@ class Index:
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
-    def dropna(self, how: str = "any"):
+    def dropna(self, how: typing.Literal["all", "any"] = "any"):
         """Return Index without NA/NaN values.
 
         Args:

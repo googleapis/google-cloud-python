@@ -90,9 +90,12 @@ class Index(vendored_pandas_index.Index):
         # TODO: Support more index subtypes
         from bigframes.core.indexes.multi import MultiIndex
 
-        klass = MultiIndex if len(block._index_columns) > 1 else cls
-        # TODO(b/340893286): fix type error
-        result = typing.cast(Index, object.__new__(klass))  # type: ignore
+        if len(block._index_columns) <= 1:
+            klass = cls
+        else:
+            klass = MultiIndex
+
+        result = typing.cast(Index, object.__new__(klass))
         result._query_job = None
         result._block = block
         block.session._register_object(result)
@@ -161,7 +164,8 @@ class Index(vendored_pandas_index.Index):
     @property
     def dtypes(self) -> pandas.Series:
         return pandas.Series(
-            data=self._block.index.dtypes, index=self._block.index.names  # type:ignore
+            data=self._block.index.dtypes,
+            index=typing.cast(typing.Tuple, self._block.index.names),
         )
 
     @property
@@ -408,10 +412,10 @@ class Index(vendored_pandas_index.Index):
         block = block.drop_columns([condition_id])
         return Index(block)
 
-    def dropna(self, how: str = "any") -> Index:
+    def dropna(self, how: typing.Literal["all", "any"] = "any") -> Index:
         if how not in ("any", "all"):
             raise ValueError("'how' must be one of 'any', 'all'")
-        result = block_ops.dropna(self._block, self._block.index_columns, how=how)  # type: ignore
+        result = block_ops.dropna(self._block, self._block.index_columns, how=how)
         return Index(result)
 
     def drop_duplicates(self, *, keep: str = "first") -> Index:
