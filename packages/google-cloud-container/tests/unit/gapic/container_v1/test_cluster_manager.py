@@ -1565,6 +1565,8 @@ def test_get_cluster(request_type, transport: str = "grpc"):
             tpu_ipv4_cidr_block="tpu_ipv4_cidr_block_value",
             id="id_value",
             etag="etag_value",
+            satisfies_pzs=True,
+            satisfies_pzi=True,
         )
         response = client.get_cluster(request)
 
@@ -1606,6 +1608,8 @@ def test_get_cluster(request_type, transport: str = "grpc"):
     assert response.tpu_ipv4_cidr_block == "tpu_ipv4_cidr_block_value"
     assert response.id == "id_value"
     assert response.etag == "etag_value"
+    assert response.satisfies_pzs is True
+    assert response.satisfies_pzi is True
 
 
 def test_get_cluster_empty_call():
@@ -1740,6 +1744,8 @@ async def test_get_cluster_empty_call_async():
                 tpu_ipv4_cidr_block="tpu_ipv4_cidr_block_value",
                 id="id_value",
                 etag="etag_value",
+                satisfies_pzs=True,
+                satisfies_pzi=True,
             )
         )
         response = await client.get_cluster()
@@ -1842,6 +1848,8 @@ async def test_get_cluster_async(
                 tpu_ipv4_cidr_block="tpu_ipv4_cidr_block_value",
                 id="id_value",
                 etag="etag_value",
+                satisfies_pzs=True,
+                satisfies_pzi=True,
             )
         )
         response = await client.get_cluster(request)
@@ -1884,6 +1892,8 @@ async def test_get_cluster_async(
     assert response.tpu_ipv4_cidr_block == "tpu_ipv4_cidr_block_value"
     assert response.id == "id_value"
     assert response.etag == "etag_value"
+    assert response.satisfies_pzs is True
+    assert response.satisfies_pzi is True
 
 
 @pytest.mark.asyncio
@@ -16074,6 +16084,8 @@ def test_get_cluster_rest(request_type):
             tpu_ipv4_cidr_block="tpu_ipv4_cidr_block_value",
             id="id_value",
             etag="etag_value",
+            satisfies_pzs=True,
+            satisfies_pzi=True,
         )
 
         # Wrap the value into a proper Response obj
@@ -16119,6 +16131,8 @@ def test_get_cluster_rest(request_type):
     assert response.tpu_ipv4_cidr_block == "tpu_ipv4_cidr_block_value"
     assert response.id == "id_value"
     assert response.etag == "etag_value"
+    assert response.satisfies_pzs is True
+    assert response.satisfies_pzi is True
 
 
 def test_get_cluster_rest_use_cached_wrapped_rpc():
