@@ -56,6 +56,7 @@ from google.cloud.container_v1.types import cluster_service
 from .transports.base import DEFAULT_CLIENT_INFO, ClusterManagerTransport
 from .transports.grpc import ClusterManagerGrpcTransport
 from .transports.grpc_asyncio import ClusterManagerGrpcAsyncIOTransport
+from .transports.rest import ClusterManagerRestTransport
 
 
 class ClusterManagerClientMeta(type):
@@ -71,6 +72,7 @@ class ClusterManagerClientMeta(type):
     )  # type: Dict[str, Type[ClusterManagerTransport]]
     _transport_registry["grpc"] = ClusterManagerGrpcTransport
     _transport_registry["grpc_asyncio"] = ClusterManagerGrpcAsyncIOTransport
+    _transport_registry["rest"] = ClusterManagerRestTransport
 
     def get_transport_class(
         cls,
