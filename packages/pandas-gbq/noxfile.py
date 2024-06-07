@@ -607,6 +607,7 @@ def conda_test(session):
         "pydata-google-auth",
         "tqdm",
         "protobuf",
+        "sqlite>3.31.1",  # v3.31.1 caused test failures
     ]
 
     install_conda_unittest_dependencies(session, standard_deps, conda_forge_packages)
