@@ -282,13 +282,13 @@ class Batch(base.Batch):
             # all futures and exit.
             self._status = base.BatchStatus.ERROR
 
-            for future in self._futures:
-                future.set_exception(exc)
-
             batch_transport_succeeded = False
             if self._batch_done_callback is not None:
                 # Failed to publish batch.
                 self._batch_done_callback(batch_transport_succeeded)
+
+            for future in self._futures:
+                future.set_exception(exc)
 
             return
 
