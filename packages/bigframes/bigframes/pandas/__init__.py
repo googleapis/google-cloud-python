@@ -142,7 +142,7 @@ def cut(
     x: bigframes.series.Series,
     bins: int,
     *,
-    labels: Optional[bool] = None,
+    labels: Union[Iterable[str], bool, None] = None,
 ) -> bigframes.series.Series:
     return bigframes.core.reshape.cut(
         x,

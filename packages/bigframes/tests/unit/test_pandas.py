@@ -95,8 +95,7 @@ def test_cut_raises_with_labels():
         match="The 'labels' parameter must be either False or None.",
     ):
         mock_series = mock.create_autospec(bigframes.pandas.Series, instance=True)
-        # TODO(b/340893280): fix type error
-        bigframes.pandas.cut(mock_series, 4, labels=["a", "b", "c", "d"])  # type: ignore
+        bigframes.pandas.cut(mock_series, 4, labels=["a", "b", "c", "d"])
 
 
 @pytest.mark.parametrize(

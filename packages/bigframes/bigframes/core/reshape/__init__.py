@@ -116,7 +116,7 @@ def cut(
         Iterable,
     ],
     *,
-    labels: Optional[bool] = None,
+    labels: Union[Iterable[str], bool, None] = None,
 ) -> bigframes.series.Series:
     if isinstance(bins, int) and bins <= 0:
         raise ValueError("`bins` should be a positive integer.")
