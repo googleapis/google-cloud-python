@@ -419,11 +419,12 @@ class GbqConnector(object):
             # Having too small a timeout_ms results in individual
             # API calls timing out before they can finish.
             # ~300 milliseconds is rule of thumb for bare minimum
-            # latency from the BigQuery API.
-            minimum_latency = 400
+            # latency from the BigQuery API, however, 400 milliseconds
+            # produced too many issues with flakybot failures.
+            minimum_latency = 500
             if timeout_ms < minimum_latency:
                 raise QueryTimeout(
-                    f"Query timeout must be at least 400 milliseconds: timeout_ms equals {timeout_ms}."
+                    f"Query timeout must be at least 500 milliseconds: timeout_ms equals {timeout_ms}."
                 )
         else:
             timeout_ms = None
