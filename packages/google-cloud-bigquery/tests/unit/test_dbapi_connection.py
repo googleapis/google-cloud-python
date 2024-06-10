@@ -122,6 +122,26 @@ class TestConnection(unittest.TestCase):
         self.assertIs(connection._client, mock_client)
         self.assertIs(connection._bqstorage_client, mock_bqstorage_client)
 
+    def test_connect_prefer_bqstorage_client_false(self):
+        pytest.importorskip("google.cloud.bigquery_storage")
+        from google.cloud.bigquery.dbapi import connect
+        from google.cloud.bigquery.dbapi import Connection
+
+        mock_client = self._mock_client()
+        mock_bqstorage_client = self._mock_bqstorage_client()
+        mock_client._ensure_bqstorage_client.return_value = mock_bqstorage_client
+
+        connection = connect(
+            client=mock_client,
+            bqstorage_client=mock_bqstorage_client,
+            prefer_bqstorage_client=False,
+        )
+
+        mock_client._ensure_bqstorage_client.assert_not_called()
+        self.assertIsInstance(connection, Connection)
+        self.assertIs(connection._client, mock_client)
+        self.assertIs(connection._bqstorage_client, None)
+
     def test_raises_error_if_closed(self):
         from google.cloud.bigquery.dbapi.exceptions import ProgrammingError
 
