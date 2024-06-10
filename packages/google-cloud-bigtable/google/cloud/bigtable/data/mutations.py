@@ -94,11 +94,9 @@ class Mutation(ABC):
         Create a `Mutation` instance from a dictionary representation.
 
         Args:
-            input_dict (dict[str, Any]): A dictionary representation of the mutation.
-
+            input_dict: A dictionary representation of the mutation.
         Returns:
             Mutation: A Mutation instance created from the dictionary.
-
         Raises:
             ValueError: If the input dictionary is invalid or does not represent a valid mutation type.
         """
@@ -139,10 +137,10 @@ class SetCell(Mutation):
     Mutation to set the value of a cell.
 
     Args:
-        family (str): The name of the column family to which the new cell belongs.
-        qualifier (bytes | str): The column qualifier of the new cell.
-        new_value (bytes | str | int): The value of the new cell.
-        timestamp_micros (int | None): The timestamp of the new cell. If `None`,
+        family: The name of the column family to which the new cell belongs.
+        qualifier: The column qualifier of the new cell.
+        new_value: The value of the new cell.
+        timestamp_micros: The timestamp of the new cell. If `None`,
             the current timestamp will be used. Timestamps will be sent with
             millisecond precision. Extra precision will be truncated. If -1, the
             server will assign a timestamp. Note that `SetCell` mutations with
@@ -207,13 +205,12 @@ class DeleteRangeFromColumn(Mutation):
     Mutation to delete a range of cells from a column.
 
     Args:
-        family (str): The name of the column family.
-         qualifier (bytes): The column qualifier.
-        start_timestamp_micros (int | None): The start timestamp of the range to
+        family: The name of the column family.
+         qualifier: The column qualifier.
+        start_timestamp_micros: The start timestamp of the range to
             delete. `None` represents 0. Defaults to `None`.
-        end_timestamp_micros (int | None): The end timestamp of the range to
+        end_timestamp_micros: The end timestamp of the range to
             delete. `None` represents infinity. Defaults to `None`.
-
     Raises:
         ValueError: If `start_timestamp_micros` is greater than `end_timestamp_micros`.
     """
@@ -254,7 +251,7 @@ class DeleteAllFromFamily(Mutation):
     Mutation to delete all cells from a column family.
 
     Args:
-        family_to_delete (str): The name of the column family to delete.
+        family_to_delete: The name of the column family to delete.
     """
 
     family_to_delete: str
@@ -287,8 +284,8 @@ class RowMutationEntry:
     Bigtable table.
 
     Args:
-        row_key (bytes | str): The key of the row to mutate.
-        mutations (Mutation | list[Mutation]): The mutation or list of mutations to apply
+        row_key: The key of the row to mutate.
+        mutations: The mutation or list of mutations to apply
             to the row.
 
     Raises:
@@ -358,7 +355,7 @@ class RowMutationEntry:
         Create a `RowMutationEntry` instance from a dictionary representation.
 
         Args:
-            input_dict (dict[str, Any]): A dictionary representation of the mutation entry.
+            input_dict: A dictionary representation of the mutation entry.
 
         Returns:
             RowMutationEntry: A RowMutationEntry instance created from the dictionary.

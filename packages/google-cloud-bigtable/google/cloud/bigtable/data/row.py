@@ -33,8 +33,13 @@ class Row:
     query.
     Expected to be read-only to users, and written by backend
 
-    Can be indexed:
-    cells = row["family", "qualifier"]
+    Can be indexed by family and qualifier to get cells in the row::
+
+        cells = row["family", "qualifier"]
+
+    Args:
+        key: Row key
+        cells: List of cells in the row
     """
 
     __slots__ = ("row_key", "cells", "_index_data")
@@ -45,14 +50,8 @@ class Row:
         cells: list[Cell],
     ):
         """
-        Initializes a Row object
-
         Row objects are not intended to be created by users.
         They are returned by the Bigtable backend.
-
-        Args:
-            key (bytes): Row key
-            cells (list[Cell]): List of cells in the row
         """
         self.row_key = key
         self.cells: list[Cell] = cells
@@ -121,9 +120,9 @@ class Row:
 
         If family or qualifier not passed, will include all
 
-        Can also be accessed through indexing:
-          cells = row["family", "qualifier"]
-          cells = row["family"]
+        Can also be accessed through indexing::
+            cells = row["family", "qualifier"]
+            cells = row["family"]
 
         Args:
             family: family to filter cells by
@@ -172,9 +171,7 @@ class Row:
 
     def __str__(self) -> str:
         """
-        Human-readable string representation
-
-        .. code-block:: python
+        Human-readable string representation::
 
             {
               (family='fam', qualifier=b'col'): [b'value', (+1 more),],

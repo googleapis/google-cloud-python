@@ -31,6 +31,17 @@ if TYPE_CHECKING:
 class RowRange:
     """
     Represents a range of keys in a ReadRowsQuery
+
+    Args:
+        start_key: The start key of the range. If empty, the range is unbounded on the left.
+        end_key: The end key of the range. If empty, the range is unbounded on the right.
+        start_is_inclusive: Whether the start key is inclusive. If None, the start key is
+            inclusive.
+        end_is_inclusive: Whether the end key is inclusive. If None, the end key is not inclusive.
+    Raises:
+        ValueError: if start_key is greater than end_key, or start_is_inclusive
+        ValueError: if end_is_inclusive is set when the corresponding key is None
+        ValueError: if start_key or end_key is not a string or bytes.
     """
 
     __slots__ = ("_pb",)
@@ -42,18 +53,6 @@ class RowRange:
         start_is_inclusive: bool | None = None,
         end_is_inclusive: bool | None = None,
     ):
-        """
-        Args:
-            start_key: The start key of the range. If empty, the range is unbounded on the left.
-            end_key: The end key of the range. If empty, the range is unbounded on the right.
-            start_is_inclusive: Whether the start key is inclusive. If None, the start key is
-                inclusive.
-            end_is_inclusive: Whether the end key is inclusive. If None, the end key is not inclusive.
-        Raises:
-            ValueError: if start_key is greater than end_key, or start_is_inclusive
-            ValueError: if end_is_inclusive is set when the corresponding key is None
-            ValueError: if start_key or end_key is not a string or bytes.
-        """
         # convert empty key inputs to None for consistency
         start_key = None if not start_key else start_key
         end_key = None if not end_key else end_key
@@ -221,6 +220,14 @@ class RowRange:
 class ReadRowsQuery:
     """
     Class to encapsulate details of a read row request
+
+    Args:
+        row_keys: row keys to include in the query
+            a query can contain multiple keys, but ranges should be preferred
+        row_ranges: ranges of rows to include in the query
+        limit: the maximum number of rows to return. None or 0 means no limit
+            default: None (no limit)
+        row_filter: a RowFilter to apply to the query
     """
 
     slots = ("_limit", "_filter", "_row_set")
@@ -232,17 +239,6 @@ class ReadRowsQuery:
         limit: int | None = None,
         row_filter: RowFilter | None = None,
     ):
-        """
-        Create a new ReadRowsQuery
-
-        Args:
-            row_keys: row keys to include in the query
-                a query can contain multiple keys, but ranges should be preferred
-            row_ranges: ranges of rows to include in the query
-            limit: the maximum number of rows to return. None or 0 means no limit
-                default: None (no limit)
-            row_filter: a RowFilter to apply to the query
-        """
         if row_keys is None:
             row_keys = []
         if row_ranges is None:

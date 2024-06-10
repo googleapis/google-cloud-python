@@ -112,12 +112,12 @@ class BigtableDataClientAsync(ClientWithProject):
                 client. If not passed (and if no ``_http`` object is
                 passed), falls back to the default inferred from the
                 environment.
-            client_options (Optional[Union[dict, google.api_core.client_options.ClientOptions]]):
+            client_options:
                 Client options used to set user options
                 on the client. API Endpoint should be set through client_options.
         Raises:
-          RuntimeError: if called outside of an async context (no running event loop)
-          ValueError: if pool_size is less than 1
+            RuntimeError: if called outside of an async context (no running event loop)
+            ValueError: if pool_size is less than 1
         """
         # set up transport in registry
         transport_str = f"pooled_grpc_asyncio_{pool_size}"
@@ -711,14 +711,13 @@ class TableAsync:
         Runs a sharded query in parallel, then return the results in a single list.
         Results will be returned in the order of the input queries.
 
-        This function is intended to be run on the results on a query.shard() call:
+        This function is intended to be run on the results on a query.shard() call.
+        For example::
 
-        ```
-        table_shard_keys = await table.sample_row_keys()
-        query = ReadRowsQuery(...)
-        shard_queries = query.shard(table_shard_keys)
-        results = await table.read_rows_sharded(shard_queries)
-        ```
+            table_shard_keys = await table.sample_row_keys()
+            query = ReadRowsQuery(...)
+            shard_queries = query.shard(table_shard_keys)
+            results = await table.read_rows_sharded(shard_queries)
 
         Args:
             sharded_query: a sharded query to execute
