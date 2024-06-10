@@ -40,8 +40,8 @@ class Promotion(proto.Message):
             ID_1_LIKE_THIS. Otherwise, an INVALID_ARGUMENT error is
             returned.
 
-            Google Merchant Center property
-            `promotion <https://support.google.com/merchants/answer/7050148>`__.
+            Corresponds to Google Merchant Center property
+            `promotion_id <https://support.google.com/merchants/answer/7050148>`__.
     """
 
     promotion_id: str = proto.Field(

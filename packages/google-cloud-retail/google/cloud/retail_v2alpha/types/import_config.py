@@ -276,7 +276,9 @@ class ImportProductsRequest(proto.Message):
             during the Import.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Indicates which fields in the provided imported ``products``
-            to update. If not set, all fields are updated.
+            to update. If not set, all fields are updated. If provided,
+            only the existing product fields are updated. Missing
+            products will not be created.
         reconciliation_mode (google.cloud.retail_v2alpha.types.ImportProductsRequest.ReconciliationMode):
             The mode of reconciliation between existing products and the
             products to be imported. Defaults to
@@ -291,10 +293,16 @@ class ImportProductsRequest(proto.Message):
             ``projects/{project}/topics/{topic}``. It has to be within
             the same project as
             [ImportProductsRequest.parent][google.cloud.retail.v2alpha.ImportProductsRequest.parent].
-            Make sure that
+            Make sure that both
+            ``cloud-retail-customer-data-access@system.gserviceaccount.com``
+            and
             ``service-<project number>@gcp-sa-retail.iam.gserviceaccount.com``
-            has the ``pubsub.topics.publish`` IAM permission on the
+            have the ``pubsub.topics.publish`` IAM permission on the
             topic.
+
+            Only supported when
+            [ImportProductsRequest.reconciliation_mode][google.cloud.retail.v2alpha.ImportProductsRequest.reconciliation_mode]
+            is set to ``FULL``.
         skip_default_branch_protection (bool):
             If true, this performs the FULL import even if it would
             delete a large proportion of the products in the default

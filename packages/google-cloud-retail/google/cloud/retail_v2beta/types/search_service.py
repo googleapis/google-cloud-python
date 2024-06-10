@@ -50,7 +50,7 @@ class SearchRequest(proto.Message):
             or the name of the legacy placement resource, such as
             ``projects/*/locations/global/catalogs/default_catalog/placements/default_search``.
             This field is used to identify the serving config name and
-            the set of models that will be used to make the search.
+            the set of models that are used to make the search.
         branch (str):
             The branch resource name, such as
             ``projects/*/locations/global/catalogs/default_catalog/branches/0``.
@@ -113,8 +113,8 @@ class SearchRequest(proto.Message):
             The filter syntax consists of an expression language for
             constructing a predicate from one or more fields of the
             products being filtered. Filter expression is
-            case-sensitive. See more details at this `user
-            guide <https://cloud.google.com/retail/docs/filter-and-order#filter>`__.
+            case-sensitive. For more information, see
+            `Filter <https://cloud.google.com/retail/docs/filter-and-order#filter>`__.
 
             If this field is unrecognizable, an INVALID_ARGUMENT is
             returned.
@@ -123,24 +123,22 @@ class SearchRequest(proto.Message):
             search without checking any filters on the search page.
 
             The filter applied to every search request when quality
-            improvement such as query expansion is needed. For example,
-            if a query does not have enough results, an expanded query
-            with
-            [SearchRequest.canonical_filter][google.cloud.retail.v2beta.SearchRequest.canonical_filter]
-            will be returned as a supplement of the original query. This
-            field is strongly recommended to achieve high search
-            quality.
+            improvement such as query expansion is needed. In the case a
+            query does not have a sufficient amount of results this
+            filter will be used to determine whether or not to enable
+            the query expansion flow. The original filter will still be
+            used for the query expanded search. This field is strongly
+            recommended to achieve high search quality.
 
-            See
-            [SearchRequest.filter][google.cloud.retail.v2beta.SearchRequest.filter]
-            for more details about filter syntax.
+            For more information about filter syntax, see
+            [SearchRequest.filter][google.cloud.retail.v2beta.SearchRequest.filter].
         order_by (str):
             The order in which products are returned. Products can be
             ordered by a field in an
             [Product][google.cloud.retail.v2beta.Product] object. Leave
             it unset if ordered by relevance. OrderBy expression is
-            case-sensitive. See more details at this `user
-            guide <https://cloud.google.com/retail/docs/filter-and-order#order>`__.
+            case-sensitive. For more information, see
+            `Order <https://cloud.google.com/retail/docs/filter-and-order#order>`__.
 
             If this field is unrecognizable, an INVALID_ARGUMENT is
             returned.
@@ -159,9 +157,9 @@ class SearchRequest(proto.Message):
             facets. Notice that only textual facets can be
             dynamically generated.
         boost_spec (google.cloud.retail_v2beta.types.SearchRequest.BoostSpec):
-            Boost specification to boost certain products. See more
-            details at this `user
-            guide <https://cloud.google.com/retail/docs/boosting>`__.
+            Boost specification to boost certain products. For more
+            information, see `Boost
+            results <https://cloud.google.com/retail/docs/boosting>`__.
 
             Notice that if both
             [ServingConfig.boost_control_ids][google.cloud.retail.v2beta.ServingConfig.boost_control_ids]
@@ -173,9 +171,9 @@ class SearchRequest(proto.Message):
             boost scores from all matched boost conditions.
         query_expansion_spec (google.cloud.retail_v2beta.types.SearchRequest.QueryExpansionSpec):
             The query expansion specification that specifies the
-            conditions under which query expansion will occur. See more
-            details at this `user
-            guide <https://cloud.google.com/retail/docs/result-size#query_expansion>`__.
+            conditions under which query expansion occurs. For more
+            information, see `Query
+            expansion <https://cloud.google.com/retail/docs/result-size#query_expansion>`__.
         variant_rollup_keys (MutableSequence[str]):
             The keys to fetch and rollup the matching
             [variant][google.cloud.retail.v2beta.Product.Type.VARIANT]
@@ -310,9 +308,9 @@ class SearchRequest(proto.Message):
             -  Keys must start with a lowercase letter or international
                character.
 
-            See `Google Cloud
-            Document <https://cloud.google.com/resource-manager/docs/creating-managing-labels#requirements>`__
-            for more details.
+            For more information, see `Requirements for
+            labels <https://cloud.google.com/resource-manager/docs/creating-managing-labels#requirements>`__
+            in the Resource Manager documentation.
         spell_correction_spec (google.cloud.retail_v2beta.types.SearchRequest.SpellCorrectionSpec):
             The spell correction specification that
             specifies the mode under which spell correction
@@ -420,18 +418,17 @@ class SearchRequest(proto.Message):
             enable_dynamic_position (bool):
                 Enables dynamic position for this facet. If set to true, the
                 position of this facet among all facets in the response is
-                determined by Google Retail Search. It will be ordered
-                together with dynamic facets if dynamic facets is enabled.
-                If set to false, the position of this facet in the response
-                will be the same as in the request, and it will be ranked
-                before the facets with dynamic position enable and all
-                dynamic facets.
+                determined by Google Retail Search. It is ordered together
+                with dynamic facets if dynamic facets is enabled. If set to
+                false, the position of this facet in the response is the
+                same as in the request, and it is ranked before the facets
+                with dynamic position enable and all dynamic facets.
 
                 For example, you may always want to have rating facet
                 returned in the response, but it's not necessarily to always
                 display the rating facet at the top. In that case, you can
                 set enable_dynamic_position to true so that the position of
-                rating facet in response will be determined by Google Retail
+                rating facet in response is determined by Google Retail
                 Search.
 
                 Another example, assuming you have the following facets in
@@ -443,14 +440,14 @@ class SearchRequest(proto.Message):
 
                 -  "brands", enable_dynamic_position = false
 
-                And also you have a dynamic facets enable, which will
-                generate a facet 'gender'. Then the final order of the
-                facets in the response can be ("price", "brands", "rating",
-                "gender") or ("price", "brands", "gender", "rating") depends
-                on how Google Retail Search orders "gender" and "rating"
-                facets. However, notice that "price" and "brands" will
-                always be ranked at 1st and 2nd position since their
-                enable_dynamic_position are false.
+                And also you have a dynamic facets enable, which generates a
+                facet "gender". Then, the final order of the facets in the
+                response can be ("price", "brands", "rating", "gender") or
+                ("price", "brands", "gender", "rating") depends on how
+                Google Retail Search orders "gender" and "rating" facets.
+                However, notice that "price" and "brands" are always ranked
+                at first and second position because their
+                enable_dynamic_position values are false.
         """
 
         class FacetKey(proto.Message):
@@ -510,15 +507,15 @@ class SearchRequest(proto.Message):
 
                     For all numerical facet keys that appear in the
                     list of products from the catalog, the
-                    percentiles 0, 10, 30, 50, 70, 90 and 100 are
+                    percentiles 0, 10, 30, 50, 70, 90, and 100 are
                     computed from their distribution weekly. If the
                     model assigns a high score to a numerical facet
                     key and its intervals are not specified in the
-                    search request, these percentiles will become
-                    the bounds for its intervals and will be
-                    returned in the response. If the facet key
-                    intervals are specified in the request, then the
-                    specified intervals will be returned instead.
+                    search request, these percentiles become the
+                    bounds for its intervals and are returned in the
+                    response. If the facet key intervals are
+                    specified in the request, then the specified
+                    intervals are returned instead.
                 restricted_values (MutableSequence[str]):
                     Only get facet for the given restricted values. For example,
                     when using "pickupInStore" as key and set restricted values
@@ -552,17 +549,16 @@ class SearchRequest(proto.Message):
                     "categories" has three values "Women > Shoe",
                     "Women > Dress" and "Men > Shoe". If set
                     "prefixes" to "Women", the "categories" facet
-                    will give only "Women > Shoe" and "Women >
-                    Dress". Only supported on textual fields.
-                    Maximum is 10.
+                    gives only "Women > Shoe" and "Women > Dress".
+                    Only supported on textual fields. Maximum is 10.
                 contains (MutableSequence[str]):
                     Only get facet values that contains the given
                     strings. For example, suppose "categories" has
                     three values "Women > Shoe", "Women > Dress" and
                     "Men > Shoe". If set "contains" to "Shoe", the
-                    "categories" facet will give only "Women > Shoe"
-                    and "Men > Shoe". Only supported on textual
-                    fields. Maximum is 10.
+                    "categories" facet gives only "Women > Shoe" and
+                    "Men > Shoe". Only supported on textual fields.
+                    Maximum is 10.
                 case_insensitive (bool):
                     True to make facet keys case insensitive when
                     getting faceting values with prefixes or
@@ -591,7 +587,7 @@ class SearchRequest(proto.Message):
                     [FacetSpec.FacetKey.restricted_values][google.cloud.retail.v2beta.SearchRequest.FacetSpec.FacetKey.restricted_values].
                 query (str):
                     The query that is used to compute facet for the given facet
-                    key. When provided, it will override the default behavior of
+                    key. When provided, it overrides the default behavior of
                     facet computation. The query syntax is the same as a filter
                     expression. See
                     [SearchRequest.filter][google.cloud.retail.v2beta.SearchRequest.filter]
@@ -602,9 +598,9 @@ class SearchRequest(proto.Message):
 
                     In the response,
                     [SearchResponse.Facet.values.value][google.cloud.retail.v2beta.SearchResponse.Facet.FacetValue.value]
-                    will be always "1" and
+                    is always "1" and
                     [SearchResponse.Facet.values.count][google.cloud.retail.v2beta.SearchResponse.Facet.FacetValue.count]
-                    will be the number of results that match the query.
+                    is the number of results that match the query.
 
                     For example, you can set a customized facet for
                     "shipToStore", where
@@ -612,7 +608,7 @@ class SearchRequest(proto.Message):
                     is "customizedShipToStore", and
                     [FacetKey.query][google.cloud.retail.v2beta.SearchRequest.FacetSpec.FacetKey.query]
                     is "availability: ANY("IN_STOCK") AND shipToStore:
-                    ANY("123")". Then the facet will count the products that are
+                    ANY("123")". Then the facet counts the products that are
                     both in stock and ship to store "123".
                 return_min_max (bool):
                     Returns the min and max value for each
@@ -1371,7 +1367,7 @@ class SearchResponse(proto.Message):
 
 
 class ExperimentInfo(proto.Message):
-    r"""Metadata for active A/B testing [Experiments][].
+    r"""Metadata for active A/B testing [Experiment][].
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
@@ -1400,8 +1396,8 @@ class ExperimentInfo(proto.Message):
                 ``projects/*/locations/*/catalogs/*/servingConfigs/*``.
             experiment_serving_config (str):
                 The fully qualified resource name of the serving config
-                [VariantArm.serving_config_id][] responsible for generating
-                the search response. For example:
+                [Experiment.VariantArm.serving_config_id][] responsible for
+                generating the search response. For example:
                 ``projects/*/locations/*/catalogs/*/servingConfigs/*``.
         """
 

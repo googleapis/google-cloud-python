@@ -1229,6 +1229,7 @@ def test_create_serving_config(request_type, transport: str = "grpc"):
             diversity_level="diversity_level_value",
             diversity_type=gcr_serving_config.ServingConfig.DiversityType.RULE_BASED_DIVERSITY,
             enable_category_filter_level="enable_category_filter_level_value",
+            ignore_recs_denylist=True,
             solution_types=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
         )
         response = client.create_serving_config(request)
@@ -1262,6 +1263,7 @@ def test_create_serving_config(request_type, transport: str = "grpc"):
         == gcr_serving_config.ServingConfig.DiversityType.RULE_BASED_DIVERSITY
     )
     assert response.enable_category_filter_level == "enable_category_filter_level_value"
+    assert response.ignore_recs_denylist is True
     assert response.solution_types == [common.SolutionType.SOLUTION_TYPE_RECOMMENDATION]
 
 
@@ -1390,6 +1392,7 @@ async def test_create_serving_config_empty_call_async():
                 diversity_level="diversity_level_value",
                 diversity_type=gcr_serving_config.ServingConfig.DiversityType.RULE_BASED_DIVERSITY,
                 enable_category_filter_level="enable_category_filter_level_value",
+                ignore_recs_denylist=True,
                 solution_types=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
             )
         )
@@ -1482,6 +1485,7 @@ async def test_create_serving_config_async(
                 diversity_level="diversity_level_value",
                 diversity_type=gcr_serving_config.ServingConfig.DiversityType.RULE_BASED_DIVERSITY,
                 enable_category_filter_level="enable_category_filter_level_value",
+                ignore_recs_denylist=True,
                 solution_types=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
             )
         )
@@ -1516,6 +1520,7 @@ async def test_create_serving_config_async(
         == gcr_serving_config.ServingConfig.DiversityType.RULE_BASED_DIVERSITY
     )
     assert response.enable_category_filter_level == "enable_category_filter_level_value"
+    assert response.ignore_recs_denylist is True
     assert response.solution_types == [common.SolutionType.SOLUTION_TYPE_RECOMMENDATION]
 
 
@@ -2111,6 +2116,7 @@ def test_update_serving_config(request_type, transport: str = "grpc"):
             diversity_level="diversity_level_value",
             diversity_type=gcr_serving_config.ServingConfig.DiversityType.RULE_BASED_DIVERSITY,
             enable_category_filter_level="enable_category_filter_level_value",
+            ignore_recs_denylist=True,
             solution_types=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
         )
         response = client.update_serving_config(request)
@@ -2144,6 +2150,7 @@ def test_update_serving_config(request_type, transport: str = "grpc"):
         == gcr_serving_config.ServingConfig.DiversityType.RULE_BASED_DIVERSITY
     )
     assert response.enable_category_filter_level == "enable_category_filter_level_value"
+    assert response.ignore_recs_denylist is True
     assert response.solution_types == [common.SolutionType.SOLUTION_TYPE_RECOMMENDATION]
 
 
@@ -2266,6 +2273,7 @@ async def test_update_serving_config_empty_call_async():
                 diversity_level="diversity_level_value",
                 diversity_type=gcr_serving_config.ServingConfig.DiversityType.RULE_BASED_DIVERSITY,
                 enable_category_filter_level="enable_category_filter_level_value",
+                ignore_recs_denylist=True,
                 solution_types=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
             )
         )
@@ -2358,6 +2366,7 @@ async def test_update_serving_config_async(
                 diversity_level="diversity_level_value",
                 diversity_type=gcr_serving_config.ServingConfig.DiversityType.RULE_BASED_DIVERSITY,
                 enable_category_filter_level="enable_category_filter_level_value",
+                ignore_recs_denylist=True,
                 solution_types=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
             )
         )
@@ -2392,6 +2401,7 @@ async def test_update_serving_config_async(
         == gcr_serving_config.ServingConfig.DiversityType.RULE_BASED_DIVERSITY
     )
     assert response.enable_category_filter_level == "enable_category_filter_level_value"
+    assert response.ignore_recs_denylist is True
     assert response.solution_types == [common.SolutionType.SOLUTION_TYPE_RECOMMENDATION]
 
 
@@ -2600,6 +2610,7 @@ def test_get_serving_config(request_type, transport: str = "grpc"):
             diversity_level="diversity_level_value",
             diversity_type=serving_config.ServingConfig.DiversityType.RULE_BASED_DIVERSITY,
             enable_category_filter_level="enable_category_filter_level_value",
+            ignore_recs_denylist=True,
             solution_types=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
         )
         response = client.get_serving_config(request)
@@ -2633,6 +2644,7 @@ def test_get_serving_config(request_type, transport: str = "grpc"):
         == serving_config.ServingConfig.DiversityType.RULE_BASED_DIVERSITY
     )
     assert response.enable_category_filter_level == "enable_category_filter_level_value"
+    assert response.ignore_recs_denylist is True
     assert response.solution_types == [common.SolutionType.SOLUTION_TYPE_RECOMMENDATION]
 
 
@@ -2758,6 +2770,7 @@ async def test_get_serving_config_empty_call_async():
                 diversity_level="diversity_level_value",
                 diversity_type=serving_config.ServingConfig.DiversityType.RULE_BASED_DIVERSITY,
                 enable_category_filter_level="enable_category_filter_level_value",
+                ignore_recs_denylist=True,
                 solution_types=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
             )
         )
@@ -2850,6 +2863,7 @@ async def test_get_serving_config_async(
                 diversity_level="diversity_level_value",
                 diversity_type=serving_config.ServingConfig.DiversityType.RULE_BASED_DIVERSITY,
                 enable_category_filter_level="enable_category_filter_level_value",
+                ignore_recs_denylist=True,
                 solution_types=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
             )
         )
@@ -2884,6 +2898,7 @@ async def test_get_serving_config_async(
         == serving_config.ServingConfig.DiversityType.RULE_BASED_DIVERSITY
     )
     assert response.enable_category_filter_level == "enable_category_filter_level_value"
+    assert response.ignore_recs_denylist is True
     assert response.solution_types == [common.SolutionType.SOLUTION_TYPE_RECOMMENDATION]
 
 
@@ -3672,6 +3687,7 @@ def test_add_control(request_type, transport: str = "grpc"):
             diversity_level="diversity_level_value",
             diversity_type=gcr_serving_config.ServingConfig.DiversityType.RULE_BASED_DIVERSITY,
             enable_category_filter_level="enable_category_filter_level_value",
+            ignore_recs_denylist=True,
             solution_types=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
         )
         response = client.add_control(request)
@@ -3705,6 +3721,7 @@ def test_add_control(request_type, transport: str = "grpc"):
         == gcr_serving_config.ServingConfig.DiversityType.RULE_BASED_DIVERSITY
     )
     assert response.enable_category_filter_level == "enable_category_filter_level_value"
+    assert response.ignore_recs_denylist is True
     assert response.solution_types == [common.SolutionType.SOLUTION_TYPE_RECOMMENDATION]
 
 
@@ -3822,6 +3839,7 @@ async def test_add_control_empty_call_async():
                 diversity_level="diversity_level_value",
                 diversity_type=gcr_serving_config.ServingConfig.DiversityType.RULE_BASED_DIVERSITY,
                 enable_category_filter_level="enable_category_filter_level_value",
+                ignore_recs_denylist=True,
                 solution_types=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
             )
         )
@@ -3912,6 +3930,7 @@ async def test_add_control_async(
                 diversity_level="diversity_level_value",
                 diversity_type=gcr_serving_config.ServingConfig.DiversityType.RULE_BASED_DIVERSITY,
                 enable_category_filter_level="enable_category_filter_level_value",
+                ignore_recs_denylist=True,
                 solution_types=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
             )
         )
@@ -3946,6 +3965,7 @@ async def test_add_control_async(
         == gcr_serving_config.ServingConfig.DiversityType.RULE_BASED_DIVERSITY
     )
     assert response.enable_category_filter_level == "enable_category_filter_level_value"
+    assert response.ignore_recs_denylist is True
     assert response.solution_types == [common.SolutionType.SOLUTION_TYPE_RECOMMENDATION]
 
 
@@ -4134,6 +4154,7 @@ def test_remove_control(request_type, transport: str = "grpc"):
             diversity_level="diversity_level_value",
             diversity_type=gcr_serving_config.ServingConfig.DiversityType.RULE_BASED_DIVERSITY,
             enable_category_filter_level="enable_category_filter_level_value",
+            ignore_recs_denylist=True,
             solution_types=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
         )
         response = client.remove_control(request)
@@ -4167,6 +4188,7 @@ def test_remove_control(request_type, transport: str = "grpc"):
         == gcr_serving_config.ServingConfig.DiversityType.RULE_BASED_DIVERSITY
     )
     assert response.enable_category_filter_level == "enable_category_filter_level_value"
+    assert response.ignore_recs_denylist is True
     assert response.solution_types == [common.SolutionType.SOLUTION_TYPE_RECOMMENDATION]
 
 
@@ -4284,6 +4306,7 @@ async def test_remove_control_empty_call_async():
                 diversity_level="diversity_level_value",
                 diversity_type=gcr_serving_config.ServingConfig.DiversityType.RULE_BASED_DIVERSITY,
                 enable_category_filter_level="enable_category_filter_level_value",
+                ignore_recs_denylist=True,
                 solution_types=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
             )
         )
@@ -4374,6 +4397,7 @@ async def test_remove_control_async(
                 diversity_level="diversity_level_value",
                 diversity_type=gcr_serving_config.ServingConfig.DiversityType.RULE_BASED_DIVERSITY,
                 enable_category_filter_level="enable_category_filter_level_value",
+                ignore_recs_denylist=True,
                 solution_types=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
             )
         )
@@ -4408,6 +4432,7 @@ async def test_remove_control_async(
         == gcr_serving_config.ServingConfig.DiversityType.RULE_BASED_DIVERSITY
     )
     assert response.enable_category_filter_level == "enable_category_filter_level_value"
+    assert response.ignore_recs_denylist is True
     assert response.solution_types == [common.SolutionType.SOLUTION_TYPE_RECOMMENDATION]
 
 
@@ -4613,6 +4638,7 @@ def test_create_serving_config_rest(request_type):
         "diversity_level": "diversity_level_value",
         "diversity_type": 2,
         "enable_category_filter_level": "enable_category_filter_level_value",
+        "ignore_recs_denylist": True,
         "personalization_spec": {"mode": 1},
         "solution_types": [1],
     }
@@ -4707,6 +4733,7 @@ def test_create_serving_config_rest(request_type):
             diversity_level="diversity_level_value",
             diversity_type=gcr_serving_config.ServingConfig.DiversityType.RULE_BASED_DIVERSITY,
             enable_category_filter_level="enable_category_filter_level_value",
+            ignore_recs_denylist=True,
             solution_types=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
         )
 
@@ -4744,6 +4771,7 @@ def test_create_serving_config_rest(request_type):
         == gcr_serving_config.ServingConfig.DiversityType.RULE_BASED_DIVERSITY
     )
     assert response.enable_category_filter_level == "enable_category_filter_level_value"
+    assert response.ignore_recs_denylist is True
     assert response.solution_types == [common.SolutionType.SOLUTION_TYPE_RECOMMENDATION]
 
 
@@ -5402,6 +5430,7 @@ def test_update_serving_config_rest(request_type):
         "diversity_level": "diversity_level_value",
         "diversity_type": 2,
         "enable_category_filter_level": "enable_category_filter_level_value",
+        "ignore_recs_denylist": True,
         "personalization_spec": {"mode": 1},
         "solution_types": [1],
     }
@@ -5496,6 +5525,7 @@ def test_update_serving_config_rest(request_type):
             diversity_level="diversity_level_value",
             diversity_type=gcr_serving_config.ServingConfig.DiversityType.RULE_BASED_DIVERSITY,
             enable_category_filter_level="enable_category_filter_level_value",
+            ignore_recs_denylist=True,
             solution_types=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
         )
 
@@ -5533,6 +5563,7 @@ def test_update_serving_config_rest(request_type):
         == gcr_serving_config.ServingConfig.DiversityType.RULE_BASED_DIVERSITY
     )
     assert response.enable_category_filter_level == "enable_category_filter_level_value"
+    assert response.ignore_recs_denylist is True
     assert response.solution_types == [common.SolutionType.SOLUTION_TYPE_RECOMMENDATION]
 
 
@@ -5852,6 +5883,7 @@ def test_get_serving_config_rest(request_type):
             diversity_level="diversity_level_value",
             diversity_type=serving_config.ServingConfig.DiversityType.RULE_BASED_DIVERSITY,
             enable_category_filter_level="enable_category_filter_level_value",
+            ignore_recs_denylist=True,
             solution_types=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
         )
 
@@ -5889,6 +5921,7 @@ def test_get_serving_config_rest(request_type):
         == serving_config.ServingConfig.DiversityType.RULE_BASED_DIVERSITY
     )
     assert response.enable_category_filter_level == "enable_category_filter_level_value"
+    assert response.ignore_recs_denylist is True
     assert response.solution_types == [common.SolutionType.SOLUTION_TYPE_RECOMMENDATION]
 
 
@@ -6595,6 +6628,7 @@ def test_add_control_rest(request_type):
             diversity_level="diversity_level_value",
             diversity_type=gcr_serving_config.ServingConfig.DiversityType.RULE_BASED_DIVERSITY,
             enable_category_filter_level="enable_category_filter_level_value",
+            ignore_recs_denylist=True,
             solution_types=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
         )
 
@@ -6632,6 +6666,7 @@ def test_add_control_rest(request_type):
         == gcr_serving_config.ServingConfig.DiversityType.RULE_BASED_DIVERSITY
     )
     assert response.enable_category_filter_level == "enable_category_filter_level_value"
+    assert response.ignore_recs_denylist is True
     assert response.solution_types == [common.SolutionType.SOLUTION_TYPE_RECOMMENDATION]
 
 
@@ -6954,6 +6989,7 @@ def test_remove_control_rest(request_type):
             diversity_level="diversity_level_value",
             diversity_type=gcr_serving_config.ServingConfig.DiversityType.RULE_BASED_DIVERSITY,
             enable_category_filter_level="enable_category_filter_level_value",
+            ignore_recs_denylist=True,
             solution_types=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
         )
 
@@ -6991,6 +7027,7 @@ def test_remove_control_rest(request_type):
         == gcr_serving_config.ServingConfig.DiversityType.RULE_BASED_DIVERSITY
     )
     assert response.enable_category_filter_level == "enable_category_filter_level_value"
+    assert response.ignore_recs_denylist is True
     assert response.solution_types == [common.SolutionType.SOLUTION_TYPE_RECOMMENDATION]
 
 

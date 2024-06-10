@@ -31,8 +31,8 @@ __protobuf__ = proto.module(
 
 class MerchantCenterAccountLink(proto.Message):
     r"""Represents a link between a Merchant Center account and a
-    branch. Once a link is established, products from the linked
-    merchant center account will be streamed to the linked branch.
+    branch. After a link is established, products from the linked
+    Merchant Center account are streamed to the linked branch.
 
     Attributes:
         name (str):
@@ -53,14 +53,14 @@ class MerchantCenterAccountLink(proto.Message):
             The account must be a standalone account or a sub-account of
             a MCA.
         branch_id (str):
-            Required. The branch id (e.g. 0/1/2) within the catalog that
+            Required. The branch ID (e.g. 0/1/2) within the catalog that
             products from merchant_center_account_id are streamed to.
             When updating this field, an empty value will use the
             currently configured default branch. However, changing the
             default branch later on won't change the linked branch here.
 
-            A single branch id can only have one linked merchant center
-            account id.
+            A single branch ID can only have one linked Merchant Center
+            account ID.
         feed_label (str):
             The FeedLabel used to perform filtering. Note: this replaces
             `region_id <https://developers.google.com/shopping-content/reference/rest/v2.1/products#Product.FIELDS.feed_label>`__.
@@ -86,7 +86,10 @@ class MerchantCenterAccountLink(proto.Message):
             Output only. Represents the state of the
             link.
         project_id (str):
-            Output only. GCP project ID.
+            Output only. Google Cloud project ID.
+        source (str):
+            Optional. An optional arbitrary string that
+            could be used as a tag for tracking link source.
     """
 
     class State(proto.Enum):
@@ -164,6 +167,10 @@ class MerchantCenterAccountLink(proto.Message):
     project_id: str = proto.Field(
         proto.STRING,
         number=9,
+    )
+    source: str = proto.Field(
+        proto.STRING,
+        number=10,
     )
 
 

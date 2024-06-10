@@ -2845,6 +2845,7 @@ def test_create_merchant_center_account_link_rest(request_type):
         ],
         "state": 1,
         "project_id": "project_id_value",
+        "source": "source_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
