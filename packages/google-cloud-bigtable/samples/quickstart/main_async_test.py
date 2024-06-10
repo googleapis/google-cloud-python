@@ -16,7 +16,8 @@ import os
 from typing import AsyncGenerator
 
 from google.cloud.bigtable.data import BigtableDataClientAsync, SetCell
-import pytest, pytest_asyncio
+import pytest
+import pytest_asyncio
 
 from main_async import main
 

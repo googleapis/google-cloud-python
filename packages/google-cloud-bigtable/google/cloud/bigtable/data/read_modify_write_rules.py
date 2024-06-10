@@ -47,11 +47,11 @@ class IncrementRule(ReadModifyWriteRule):
     Rule to increment a cell's value.
 
     Args:
-        family (str):
+        family:
             The family name of the cell to increment.
-        qualifier (bytes | str):
+        qualifier:
             The qualifier of the cell to increment.
-        increment_amount (int):
+        increment_amount:
             The amount to increment the cell's value. Must be between -2**63 and 2**63 (64-bit signed int).
     Raises:
         TypeError:
@@ -83,11 +83,11 @@ class AppendValueRule(ReadModifyWriteRule):
     Rule to append a value to a cell's value.
 
     Args:
-        family (str):
+        family:
             The family name of the cell to append to.
-        qualifier (bytes | str):
+        qualifier:
             The qualifier of the cell to append to.
-        append_value (bytes | str):
+        append_value:
             The value to append to the cell's value.
     Raises:
         TypeError: If append_value is not bytes or str.
