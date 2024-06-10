@@ -66,7 +66,7 @@ class ShippingSettings(proto.Message):
             Required. This field is used for avoid async
             issue. Make sure shipping setting data
             didn't change between get call and insert call.
-            The user should do following steps：
+            The user should do  following steps:
 
             1. Set etag field as empty string for initial
                 shipping setting creation.

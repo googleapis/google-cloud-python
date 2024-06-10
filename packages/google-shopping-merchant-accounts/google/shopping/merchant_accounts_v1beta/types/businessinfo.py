@@ -51,7 +51,8 @@ class BusinessInfo(proto.Message):
 
             This field is a member of `oneof`_ ``_address``.
         phone (google.type.phone_number_pb2.PhoneNumber):
-            Optional. The phone number of the business.
+            Output only. The phone number of the
+            business.
 
             This field is a member of `oneof`_ ``_phone``.
         phone_verification_state (google.shopping.merchant_accounts_v1beta.types.PhoneVerificationState):

@@ -185,7 +185,7 @@ class ListUsersRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The parent, which owns this collection of users.
-            Format: \`accounts/{account}
+            Format: ``accounts/{account}``
         page_size (int):
             Optional. The maximum number of users to
             return. The service may return fewer than this
