@@ -28,7 +28,7 @@ import bigframes.series
 
 def to_datetime(
     arg: Union[
-        vendored_pandas_datetimes.local_scalars,
+        Union[int, float, str, datetime],
         vendored_pandas_datetimes.local_iterables,
         bigframes.series.Series,
         bigframes.dataframe.DataFrame,

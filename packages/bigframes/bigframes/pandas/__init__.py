@@ -701,17 +701,6 @@ read_gbq_function.__doc__ = inspect.getdoc(bigframes.session.Session.read_gbq_fu
 
 @typing.overload
 def to_datetime(
-    arg: vendored_pandas_datetimes.local_scalars,
-    *,
-    utc: bool = False,
-    format: Optional[str] = None,
-    unit: Optional[str] = None,
-) -> Union[pandas.Timestamp, datetime]:
-    ...
-
-
-@typing.overload
-def to_datetime(
     arg: Union[
         vendored_pandas_datetimes.local_iterables,
         bigframes.series.Series,
@@ -725,9 +714,20 @@ def to_datetime(
     ...
 
 
+@typing.overload
+def to_datetime(
+    arg: Union[int, float, str, datetime],
+    *,
+    utc: bool = False,
+    format: Optional[str] = None,
+    unit: Optional[str] = None,
+) -> Union[pandas.Timestamp, datetime]:
+    ...
+
+
 def to_datetime(
     arg: Union[
-        vendored_pandas_datetimes.local_scalars,
+        Union[int, float, str, datetime],
         vendored_pandas_datetimes.local_iterables,
         bigframes.series.Series,
         bigframes.dataframe.DataFrame,

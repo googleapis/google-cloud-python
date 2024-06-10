@@ -7,7 +7,6 @@ import pandas as pd
 
 from bigframes import constants, series
 
-local_scalars = Union[int, float, str, datetime]
 local_iterables = Union[List, Tuple, pd.Series, pd.DataFrame, Mapping]
 
 
