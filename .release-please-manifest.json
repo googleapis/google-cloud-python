@@ -100,6 +100,7 @@
     "packages/google-cloud-language": "2.13.3",
     "packages/google-cloud-life-sciences": "0.9.9",
     "packages/google-cloud-managed-identities": "1.9.3",
+    "packages/google-cloud-managedkafka": "0.0.0",
     "packages/google-cloud-media-translation": "0.11.9",
     "packages/google-cloud-memcache": "1.9.3",
     "packages/google-cloud-migrationcenter": "0.1.7",
