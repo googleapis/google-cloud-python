@@ -47,6 +47,7 @@ __protobuf__ = proto.module(
         "GcfsConfig",
         "ReservationAffinity",
         "SoleTenantConfig",
+        "ContainerdConfig",
         "NodeTaint",
         "NodeTaints",
         "NodeLabels",
@@ -336,6 +337,8 @@ class InTransitEncryptionConfig(proto.Enum):
 class LinuxNodeConfig(proto.Message):
     r"""Parameters that can be configured on Linux nodes.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         sysctls (MutableMapping[str, str]):
             The Linux kernel parameters to be applied to the nodes and
@@ -351,6 +354,10 @@ class LinuxNodeConfig(proto.Message):
         cgroup_mode (google.cloud.container_v1.types.LinuxNodeConfig.CgroupMode):
             cgroup_mode specifies the cgroup mode to be used on the
             node.
+        hugepages (google.cloud.container_v1.types.LinuxNodeConfig.HugepagesConfig):
+            Optional. Amounts for 2M and 1G hugepages
+
+            This field is a member of `oneof`_ ``_hugepages``.
     """
 
     class CgroupMode(proto.Enum):
@@ -372,6 +379,33 @@ class LinuxNodeConfig(proto.Message):
         CGROUP_MODE_V1 = 1
         CGROUP_MODE_V2 = 2
 
+    class HugepagesConfig(proto.Message):
+        r"""Hugepages amount in both 2m and 1g size
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            hugepage_size2m (int):
+                Optional. Amount of 2M hugepages
+
+                This field is a member of `oneof`_ ``_hugepage_size2m``.
+            hugepage_size1g (int):
+                Optional. Amount of 1G hugepages
+
+                This field is a member of `oneof`_ ``_hugepage_size1g``.
+        """
+
+        hugepage_size2m: int = proto.Field(
+            proto.INT32,
+            number=1,
+            optional=True,
+        )
+        hugepage_size1g: int = proto.Field(
+            proto.INT32,
+            number=2,
+            optional=True,
+        )
+
     sysctls: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
@@ -381,6 +415,12 @@ class LinuxNodeConfig(proto.Message):
         proto.ENUM,
         number=2,
         enum=CgroupMode,
+    )
+    hugepages: HugepagesConfig = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        optional=True,
+        message=HugepagesConfig,
     )
 
 
@@ -714,6 +754,8 @@ class NodeConfig(proto.Message):
         sole_tenant_config (google.cloud.container_v1.types.SoleTenantConfig):
             Parameters for node pools to be backed by
             shared sole tenant node groups.
+        containerd_config (google.cloud.container_v1.types.ContainerdConfig):
+            Parameters for containerd customization.
         resource_manager_tags (google.cloud.container_v1.types.ResourceManagerTags):
             A map of resource manager tag keys and values
             to be attached to the nodes.
@@ -886,6 +928,11 @@ class NodeConfig(proto.Message):
         number=42,
         message="SoleTenantConfig",
     )
+    containerd_config: "ContainerdConfig" = proto.Field(
+        proto.MESSAGE,
+        number=43,
+        message="ContainerdConfig",
+    )
     resource_manager_tags: "ResourceManagerTags" = proto.Field(
         proto.MESSAGE,
         number=45,
@@ -924,11 +971,21 @@ class AdvancedMachineFeatures(proto.Message):
             processor is assumed.
 
             This field is a member of `oneof`_ ``_threads_per_core``.
+        enable_nested_virtualization (bool):
+            Whether or not to enable nested
+            virtualization (defaults to false).
+
+            This field is a member of `oneof`_ ``_enable_nested_virtualization``.
     """
 
     threads_per_core: int = proto.Field(
         proto.INT64,
         number=1,
+        optional=True,
+    )
+    enable_nested_virtualization: bool = proto.Field(
+        proto.BOOL,
+        number=2,
         optional=True,
     )
 
@@ -1354,6 +1411,97 @@ class SoleTenantConfig(proto.Message):
         proto.MESSAGE,
         number=1,
         message=NodeAffinity,
+    )
+
+
+class ContainerdConfig(proto.Message):
+    r"""ContainerdConfig contains configuration to customize
+    containerd.
+
+    Attributes:
+        private_registry_access_config (google.cloud.container_v1.types.ContainerdConfig.PrivateRegistryAccessConfig):
+            PrivateRegistryAccessConfig is used to
+            configure access configuration for private
+            container registries.
+    """
+
+    class PrivateRegistryAccessConfig(proto.Message):
+        r"""PrivateRegistryAccessConfig contains access configuration for
+        private container registries.
+
+        Attributes:
+            enabled (bool):
+                Private registry access is enabled.
+            certificate_authority_domain_config (MutableSequence[google.cloud.container_v1.types.ContainerdConfig.PrivateRegistryAccessConfig.CertificateAuthorityDomainConfig]):
+                Private registry access configuration.
+        """
+
+        class CertificateAuthorityDomainConfig(proto.Message):
+            r"""CertificateAuthorityDomainConfig configures one or more fully
+            qualified domain names (FQDN) to a specific certificate.
+
+
+            .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+            Attributes:
+                fqdns (MutableSequence[str]):
+                    List of fully qualified domain names (FQDN).
+                    Specifying port is supported.
+                    Wilcards are NOT supported.
+                    Examples:
+
+                    - my.customdomain.com
+                    - 10.0.1.2:5000
+                gcp_secret_manager_certificate_config (google.cloud.container_v1.types.ContainerdConfig.PrivateRegistryAccessConfig.CertificateAuthorityDomainConfig.GCPSecretManagerCertificateConfig):
+                    Google Secret Manager (GCP) certificate
+                    configuration.
+
+                    This field is a member of `oneof`_ ``certificate_config``.
+            """
+
+            class GCPSecretManagerCertificateConfig(proto.Message):
+                r"""GCPSecretManagerCertificateConfig configures a secret from `Google
+                Secret Manager <https://cloud.google.com/secret-manager>`__.
+
+                Attributes:
+                    secret_uri (str):
+                        Secret URI, in the form
+                        "projects/$PROJECT_ID/secrets/$SECRET_NAME/versions/$VERSION".
+                        Version can be fixed (e.g. "2") or "latest".
+                """
+
+                secret_uri: str = proto.Field(
+                    proto.STRING,
+                    number=1,
+                )
+
+            fqdns: MutableSequence[str] = proto.RepeatedField(
+                proto.STRING,
+                number=1,
+            )
+            gcp_secret_manager_certificate_config: "ContainerdConfig.PrivateRegistryAccessConfig.CertificateAuthorityDomainConfig.GCPSecretManagerCertificateConfig" = proto.Field(
+                proto.MESSAGE,
+                number=2,
+                oneof="certificate_config",
+                message="ContainerdConfig.PrivateRegistryAccessConfig.CertificateAuthorityDomainConfig.GCPSecretManagerCertificateConfig",
+            )
+
+        enabled: bool = proto.Field(
+            proto.BOOL,
+            number=1,
+        )
+        certificate_authority_domain_config: MutableSequence[
+            "ContainerdConfig.PrivateRegistryAccessConfig.CertificateAuthorityDomainConfig"
+        ] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message="ContainerdConfig.PrivateRegistryAccessConfig.CertificateAuthorityDomainConfig",
+        )
+
+    private_registry_access_config: PrivateRegistryAccessConfig = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=PrivateRegistryAccessConfig,
     )
 
 
@@ -2748,6 +2896,14 @@ class Cluster(proto.Message):
             Beta APIs Config
         enterprise_config (google.cloud.container_v1.types.EnterpriseConfig):
             GKE Enterprise Configuration.
+        satisfies_pzs (bool):
+            Output only. Reserved for future use.
+
+            This field is a member of `oneof`_ ``_satisfies_pzs``.
+        satisfies_pzi (bool):
+            Output only. Reserved for future use.
+
+            This field is a member of `oneof`_ ``_satisfies_pzi``.
     """
 
     class Status(proto.Enum):
@@ -3094,6 +3250,16 @@ class Cluster(proto.Message):
         number=149,
         message="EnterpriseConfig",
     )
+    satisfies_pzs: bool = proto.Field(
+        proto.BOOL,
+        number=152,
+        optional=True,
+    )
+    satisfies_pzi: bool = proto.Field(
+        proto.BOOL,
+        number=153,
+        optional=True,
+    )
 
 
 class K8sBetaAPIConfig(proto.Message):
@@ -3143,10 +3309,14 @@ class SecurityPostureConfig(proto.Message):
             BASIC (2):
                 Applies Security Posture features on the
                 cluster.
+            ENTERPRISE (3):
+                Applies the Security Posture off cluster
+                Enterprise level features.
         """
         MODE_UNSPECIFIED = 0
         DISABLED = 1
         BASIC = 2
+        ENTERPRISE = 3
 
     class VulnerabilityMode(proto.Enum):
         r"""VulnerabilityMode defines enablement mode for vulnerability
@@ -3202,6 +3372,12 @@ class NodePoolAutoConfig(proto.Message):
             attached to the nodes for managing Compute
             Engine firewalls using Network Firewall
             Policies.
+        node_kubelet_config (google.cloud.container_v1.types.NodeKubeletConfig):
+            NodeKubeletConfig controls the defaults for autoprovisioned
+            node-pools.
+
+            Currently only ``insecure_kubelet_readonly_port_enabled``
+            can be set here.
     """
 
     network_tags: "NetworkTags" = proto.Field(
@@ -3213,6 +3389,11 @@ class NodePoolAutoConfig(proto.Message):
         proto.MESSAGE,
         number=2,
         message="ResourceManagerTags",
+    )
+    node_kubelet_config: "NodeKubeletConfig" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="NodeKubeletConfig",
     )
 
 
@@ -3241,6 +3422,13 @@ class NodeConfigDefaults(proto.Message):
             known as Riptide) options.
         logging_config (google.cloud.container_v1.types.NodePoolLoggingConfig):
             Logging configuration for node pools.
+        containerd_config (google.cloud.container_v1.types.ContainerdConfig):
+            Parameters for containerd customization.
+        node_kubelet_config (google.cloud.container_v1.types.NodeKubeletConfig):
+            NodeKubeletConfig controls the defaults for new node-pools.
+
+            Currently only ``insecure_kubelet_readonly_port_enabled``
+            can be set here.
     """
 
     gcfs_config: "GcfsConfig" = proto.Field(
@@ -3252,6 +3440,16 @@ class NodeConfigDefaults(proto.Message):
         proto.MESSAGE,
         number=3,
         message="NodePoolLoggingConfig",
+    )
+    containerd_config: "ContainerdConfig" = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message="ContainerdConfig",
+    )
+    node_kubelet_config: "NodeKubeletConfig" = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message="NodeKubeletConfig",
     )
 
 
@@ -3367,6 +3565,11 @@ class ClusterUpdate(proto.Message):
             configuration.
         desired_private_cluster_config (google.cloud.container_v1.types.PrivateClusterConfig):
             The desired private cluster configuration.
+            master_global_access_config is the only field that can be
+            changed via this field. See also
+            [ClusterUpdate.desired_enable_private_endpoint][google.container.v1.ClusterUpdate.desired_enable_private_endpoint]
+            for modifying other fields within
+            [PrivateClusterConfig][google.container.v1.PrivateClusterConfig].
         desired_intra_node_visibility_config (google.cloud.container_v1.types.IntraNodeVisibilityConfig):
             The desired config of Intra-node visibility.
         desired_default_snat_status (google.cloud.container_v1.types.DefaultSnatStatus):
@@ -3473,6 +3676,9 @@ class ClusterUpdate(proto.Message):
             the autopilot cluster.
         desired_k8s_beta_apis (google.cloud.container_v1.types.K8sBetaAPIConfig):
             Desired Beta APIs to be enabled for cluster.
+        desired_containerd_config (google.cloud.container_v1.types.ContainerdConfig):
+            The desired containerd config for the
+            cluster.
         desired_enable_multi_networking (bool):
             Enable/Disable Multi-Networking for the
             cluster
@@ -3492,6 +3698,14 @@ class ClusterUpdate(proto.Message):
             Policy for the cluster.
 
             This field is a member of `oneof`_ ``_desired_enable_cilium_clusterwide_network_policy``.
+        desired_node_kubelet_config (google.cloud.container_v1.types.NodeKubeletConfig):
+            The desired node kubelet config for the
+            cluster.
+        desired_node_pool_auto_config_kubelet_config (google.cloud.container_v1.types.NodeKubeletConfig):
+            The desired node kubelet config for all
+            auto-provisioned node pools in autopilot
+            clusters and node auto-provisioning enabled
+            clusters.
     """
 
     desired_node_version: str = proto.Field(
@@ -3733,6 +3947,11 @@ class ClusterUpdate(proto.Message):
         number=131,
         message="K8sBetaAPIConfig",
     )
+    desired_containerd_config: "ContainerdConfig" = proto.Field(
+        proto.MESSAGE,
+        number=134,
+        message="ContainerdConfig",
+    )
     desired_enable_multi_networking: bool = proto.Field(
         proto.BOOL,
         number=135,
@@ -3755,6 +3974,16 @@ class ClusterUpdate(proto.Message):
         proto.BOOL,
         number=138,
         optional=True,
+    )
+    desired_node_kubelet_config: "NodeKubeletConfig" = proto.Field(
+        proto.MESSAGE,
+        number=141,
+        message="NodeKubeletConfig",
+    )
+    desired_node_pool_auto_config_kubelet_config: "NodeKubeletConfig" = proto.Field(
+        proto.MESSAGE,
+        number=142,
+        message="NodeKubeletConfig",
     )
 
 
@@ -4439,6 +4668,11 @@ class UpdateNodePoolRequest(proto.Message):
         windows_node_config (google.cloud.container_v1.types.WindowsNodeConfig):
             Parameters that can be configured on Windows
             nodes.
+        accelerators (MutableSequence[google.cloud.container_v1.types.AcceleratorConfig]):
+            A list of hardware accelerators to be
+            attached to each node. See
+            https://cloud.google.com/compute/docs/gpus for
+            more information about support for GPUs.
         machine_type (str):
             Optional. The desired `Google Compute Engine machine
             type <https://cloud.google.com/compute/docs/machine-types>`__
@@ -4463,6 +4697,10 @@ class UpdateNodePoolRequest(proto.Message):
             Engine firewalls using Network Firewall
             Policies. Existing tags will be replaced with
             new values.
+        containerd_config (google.cloud.container_v1.types.ContainerdConfig):
+            The desired containerd config for nodes in
+            the node pool. Initiates an upgrade operation
+            that recreates the nodes with the new config.
         queued_provisioning (google.cloud.container_v1.types.NodePool.QueuedProvisioning):
             Specifies the configuration of queued
             provisioning.
@@ -4579,6 +4817,11 @@ class UpdateNodePoolRequest(proto.Message):
         number=34,
         message="WindowsNodeConfig",
     )
+    accelerators: MutableSequence["AcceleratorConfig"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=35,
+        message="AcceleratorConfig",
+    )
     machine_type: str = proto.Field(
         proto.STRING,
         number=36,
@@ -4595,6 +4838,11 @@ class UpdateNodePoolRequest(proto.Message):
         proto.MESSAGE,
         number=39,
         message="ResourceManagerTags",
+    )
+    containerd_config: "ContainerdConfig" = proto.Field(
+        proto.MESSAGE,
+        number=40,
+        message="ContainerdConfig",
     )
     queued_provisioning: "NodePool.QueuedProvisioning" = proto.Field(
         proto.MESSAGE,
@@ -7271,9 +7519,13 @@ class GPUSharingConfig(proto.Message):
                 Default value.
             TIME_SHARING (1):
                 GPUs are time-shared between containers.
+            MPS (2):
+                GPUs are shared between containers with
+                NVIDIA MPS.
         """
         GPU_SHARING_STRATEGY_UNSPECIFIED = 0
         TIME_SHARING = 1
+        MPS = 2
 
     max_shared_clients_per_gpu: int = proto.Field(
         proto.INT64,
@@ -7593,6 +7845,7 @@ class NetworkConfig(proto.Message):
             This field is a member of `oneof`_ ``_enable_fqdn_network_policy``.
         in_transit_encryption_config (google.cloud.container_v1.types.InTransitEncryptionConfig):
             Specify the details of in-transit encryption.
+            Now named inter-node transparent encryption.
 
             This field is a member of `oneof`_ ``_in_transit_encryption_config``.
         enable_cilium_clusterwide_network_policy (bool):
@@ -8152,6 +8405,9 @@ class DNSConfig(proto.Message):
         cluster_dns_domain (str):
             cluster_dns_domain is the suffix used for all cluster
             service records.
+        additive_vpc_scope_dns_domain (str):
+            Optional. The domain used in Additive VPC
+            scope.
     """
 
     class Provider(proto.Enum):
@@ -8205,6 +8461,10 @@ class DNSConfig(proto.Message):
     cluster_dns_domain: str = proto.Field(
         proto.STRING,
         number=3,
+    )
+    additive_vpc_scope_dns_domain: str = proto.Field(
+        proto.STRING,
+        number=5,
     )
 
 
@@ -9280,6 +9540,10 @@ class MonitoringComponentConfig(proto.Message):
                 Deployment
             STATEFULSET (12):
                 Statefulset
+            CADVISOR (13):
+                CADVISOR
+            KUBELET (14):
+                KUBELET
         """
         COMPONENT_UNSPECIFIED = 0
         SYSTEM_COMPONENTS = 1
@@ -9292,6 +9556,8 @@ class MonitoringComponentConfig(proto.Message):
         DAEMONSET = 10
         DEPLOYMENT = 11
         STATEFULSET = 12
+        CADVISOR = 13
+        KUBELET = 14
 
     enable_components: MutableSequence[Component] = proto.RepeatedField(
         proto.ENUM,
