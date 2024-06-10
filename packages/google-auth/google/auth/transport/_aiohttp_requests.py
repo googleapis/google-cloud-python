@@ -307,7 +307,8 @@ class AuthorizedSession(aiohttp.ClientSession):
                     headers[key] = headers[key].decode("utf-8")
 
         async with aiohttp.ClientSession(
-            auto_decompress=self._auto_decompress
+            auto_decompress=self._auto_decompress,
+            trust_env=kwargs.get("trust_env", False),
         ) as self._auth_request_session:
             auth_request = Request(self._auth_request_session)
             self._auth_request = auth_request
