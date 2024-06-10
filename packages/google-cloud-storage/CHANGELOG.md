@@ -4,6 +4,25 @@
 
 [1]: https://pypi.org/project/google-cloud-storage/#history
 
+## [2.17.0](https://github.com/googleapis/python-storage/compare/v2.16.0...v2.17.0) (2024-05-22)
+
+
+### Features
+
+* Support HNS enablement in bucket metadata ([#1278](https://github.com/googleapis/python-storage/issues/1278)) ([add3c01](https://github.com/googleapis/python-storage/commit/add3c01f0974e22df7f0b50504d5e83e4235fd81))
+* Support page_size in bucket.list_blobs ([#1275](https://github.com/googleapis/python-storage/issues/1275)) ([c52e882](https://github.com/googleapis/python-storage/commit/c52e882f65583a7739392926308cc34984561165))
+
+
+### Bug Fixes
+
+* Remove deprecated methods in samples and tests ([#1274](https://github.com/googleapis/python-storage/issues/1274)) ([4db96c9](https://github.com/googleapis/python-storage/commit/4db96c960b07e503c1031c9fa879cf2af195f513))
+
+
+### Documentation
+
+* Reference Storage Control in readme ([#1254](https://github.com/googleapis/python-storage/issues/1254)) ([3d6d369](https://github.com/googleapis/python-storage/commit/3d6d3693d5c1b24cd3d2bbdeabfd78b8bfd4161a))
+* Update DEFAULT_RETRY_IF_GENERATION_SPECIFIED docstrings ([#1234](https://github.com/googleapis/python-storage/issues/1234)) ([bdd426a](https://github.com/googleapis/python-storage/commit/bdd426adf5901faa36115885af868ef50e356a36))
+
 ## [2.16.0](https://github.com/googleapis/python-storage/compare/v2.15.0...v2.16.0) (2024-03-18)
 
 
