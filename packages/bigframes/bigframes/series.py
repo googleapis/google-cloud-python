@@ -783,10 +783,10 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
     def rpow(self, other: float | int | Series) -> Series:
         return self._apply_binary_op(other, ops.pow_op, reverse=True)
 
-    def __lt__(self, other: float | int | Series) -> Series:  # type: ignore
+    def __lt__(self, other: float | int | str | Series) -> Series:
         return self.lt(other)
 
-    def __le__(self, other: float | int | Series) -> Series:  # type: ignore
+    def __le__(self, other: float | int | str | Series) -> Series:
         return self.le(other)
 
     def lt(self, other) -> Series:
@@ -795,10 +795,10 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
     def le(self, other) -> Series:
         return self._apply_binary_op(other, ops.le_op)
 
-    def __gt__(self, other: float | int | Series) -> Series:  # type: ignore
+    def __gt__(self, other: float | int | str | Series) -> Series:
         return self.gt(other)
 
-    def __ge__(self, other: float | int | Series) -> Series:  # type: ignore
+    def __ge__(self, other: float | int | str | Series) -> Series:
         return self.ge(other)
 
     def gt(self, other) -> Series:
