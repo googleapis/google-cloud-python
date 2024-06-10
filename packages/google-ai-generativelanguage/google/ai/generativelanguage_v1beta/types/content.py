@@ -304,7 +304,7 @@ class FunctionCallingConfig(proto.Message):
             AUTO (1):
                 Default model behavior, model decides to
                 predict either a function call or a natural
-                language repspose.
+                language response.
             ANY (2):
                 Model is constrained to always predicting a function call
                 only. If "allowed_function_names" are set, the predicted

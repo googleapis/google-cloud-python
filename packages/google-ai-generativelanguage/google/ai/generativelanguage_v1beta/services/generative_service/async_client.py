@@ -70,6 +70,10 @@ class GenerativeServiceAsyncClient:
     _DEFAULT_ENDPOINT_TEMPLATE = GenerativeServiceClient._DEFAULT_ENDPOINT_TEMPLATE
     _DEFAULT_UNIVERSE = GenerativeServiceClient._DEFAULT_UNIVERSE
 
+    cached_content_path = staticmethod(GenerativeServiceClient.cached_content_path)
+    parse_cached_content_path = staticmethod(
+        GenerativeServiceClient.parse_cached_content_path
+    )
     model_path = staticmethod(GenerativeServiceClient.model_path)
     parse_model_path = staticmethod(GenerativeServiceClient.parse_model_path)
     common_billing_account_path = staticmethod(

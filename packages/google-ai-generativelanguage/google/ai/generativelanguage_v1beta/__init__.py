@@ -18,6 +18,7 @@ from google.ai.generativelanguage_v1beta import gapic_version as package_version
 __version__ = package_version.__version__
 
 
+from .services.cache_service import CacheServiceAsyncClient, CacheServiceClient
 from .services.discuss_service import DiscussServiceAsyncClient, DiscussServiceClient
 from .services.file_service import FileServiceAsyncClient, FileServiceClient
 from .services.generative_service import (
@@ -34,6 +35,15 @@ from .services.retriever_service import (
     RetrieverServiceClient,
 )
 from .services.text_service import TextServiceAsyncClient, TextServiceClient
+from .types.cache_service import (
+    CreateCachedContentRequest,
+    DeleteCachedContentRequest,
+    GetCachedContentRequest,
+    ListCachedContentsRequest,
+    ListCachedContentsResponse,
+    UpdateCachedContentRequest,
+)
+from .types.cached_content import CachedContent
 from .types.citation import CitationMetadata, CitationSource
 from .types.content import (
     Blob,
@@ -184,6 +194,7 @@ from .types.tuned_model import (
 )
 
 __all__ = (
+    "CacheServiceAsyncClient",
     "DiscussServiceAsyncClient",
     "FileServiceAsyncClient",
     "GenerativeServiceAsyncClient",
@@ -202,6 +213,8 @@ __all__ = (
     "BatchUpdateChunksRequest",
     "BatchUpdateChunksResponse",
     "Blob",
+    "CacheServiceClient",
+    "CachedContent",
     "Candidate",
     "Chunk",
     "ChunkData",
@@ -218,6 +231,7 @@ __all__ = (
     "CountTextTokensResponse",
     "CountTokensRequest",
     "CountTokensResponse",
+    "CreateCachedContentRequest",
     "CreateChunkRequest",
     "CreateCorpusRequest",
     "CreateDocumentRequest",
@@ -228,6 +242,7 @@ __all__ = (
     "CreateTunedModelRequest",
     "CustomMetadata",
     "Dataset",
+    "DeleteCachedContentRequest",
     "DeleteChunkRequest",
     "DeleteCorpusRequest",
     "DeleteDocumentRequest",
@@ -259,6 +274,7 @@ __all__ = (
     "GenerateTextResponse",
     "GenerationConfig",
     "GenerativeServiceClient",
+    "GetCachedContentRequest",
     "GetChunkRequest",
     "GetCorpusRequest",
     "GetDocumentRequest",
@@ -271,6 +287,8 @@ __all__ = (
     "GroundingPassages",
     "HarmCategory",
     "Hyperparameters",
+    "ListCachedContentsRequest",
+    "ListCachedContentsResponse",
     "ListChunksRequest",
     "ListChunksResponse",
     "ListCorporaRequest",
@@ -320,6 +338,7 @@ __all__ = (
     "TuningSnapshot",
     "TuningTask",
     "Type",
+    "UpdateCachedContentRequest",
     "UpdateChunkRequest",
     "UpdateCorpusRequest",
     "UpdateDocumentRequest",

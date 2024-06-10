@@ -19,7 +19,6 @@ import re
 from typing import (
     Callable,
     Dict,
-    Iterable,
     Mapping,
     MutableMapping,
     MutableSequence,
@@ -50,36 +49,41 @@ except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
 from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf import duration_pb2  # type: ignore
+from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 
-from google.ai.generativelanguage_v1beta.types import generative_service, safety
+from google.ai.generativelanguage_v1beta.services.cache_service import pagers
+from google.ai.generativelanguage_v1beta.types import (
+    cached_content as gag_cached_content,
+)
+from google.ai.generativelanguage_v1beta.types import cache_service
+from google.ai.generativelanguage_v1beta.types import cached_content
 from google.ai.generativelanguage_v1beta.types import content
-from google.ai.generativelanguage_v1beta.types import content as gag_content
 
-from .transports.base import DEFAULT_CLIENT_INFO, GenerativeServiceTransport
-from .transports.grpc import GenerativeServiceGrpcTransport
-from .transports.grpc_asyncio import GenerativeServiceGrpcAsyncIOTransport
-from .transports.rest import GenerativeServiceRestTransport
+from .transports.base import DEFAULT_CLIENT_INFO, CacheServiceTransport
+from .transports.grpc import CacheServiceGrpcTransport
+from .transports.grpc_asyncio import CacheServiceGrpcAsyncIOTransport
+from .transports.rest import CacheServiceRestTransport
 
 
-class GenerativeServiceClientMeta(type):
-    """Metaclass for the GenerativeService client.
+class CacheServiceClientMeta(type):
+    """Metaclass for the CacheService client.
 
     This provides class-level methods for building and retrieving
     support objects (e.g. transport) without polluting the client instance
     objects.
     """
 
-    _transport_registry = (
-        OrderedDict()
-    )  # type: Dict[str, Type[GenerativeServiceTransport]]
-    _transport_registry["grpc"] = GenerativeServiceGrpcTransport
-    _transport_registry["grpc_asyncio"] = GenerativeServiceGrpcAsyncIOTransport
-    _transport_registry["rest"] = GenerativeServiceRestTransport
+    _transport_registry = OrderedDict()  # type: Dict[str, Type[CacheServiceTransport]]
+    _transport_registry["grpc"] = CacheServiceGrpcTransport
+    _transport_registry["grpc_asyncio"] = CacheServiceGrpcAsyncIOTransport
+    _transport_registry["rest"] = CacheServiceRestTransport
 
     def get_transport_class(
         cls,
         label: Optional[str] = None,
-    ) -> Type[GenerativeServiceTransport]:
+    ) -> Type[CacheServiceTransport]:
         """Returns an appropriate transport class.
 
         Args:
@@ -98,9 +102,12 @@ class GenerativeServiceClientMeta(type):
         return next(iter(cls._transport_registry.values()))
 
 
-class GenerativeServiceClient(metaclass=GenerativeServiceClientMeta):
-    """API for using Large Models that generate multimodal content
-    and have additional capabilities beyond text generation.
+class CacheServiceClient(metaclass=CacheServiceClientMeta):
+    """API for managing cache of content (CachedContent resources)
+    that can be used in GenerativeService requests. This way
+    generate content requests can benefit from preprocessing work
+    being done earlier, possibly lowering their computational cost.
+    It is intended to be used with large contexts.
     """
 
     @staticmethod
@@ -153,7 +160,7 @@ class GenerativeServiceClient(metaclass=GenerativeServiceClientMeta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            GenerativeServiceClient: The constructed client.
+            CacheServiceClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_info(info)
         kwargs["credentials"] = credentials
@@ -171,7 +178,7 @@ class GenerativeServiceClient(metaclass=GenerativeServiceClientMeta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            GenerativeServiceClient: The constructed client.
+            CacheServiceClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_file(filename)
         kwargs["credentials"] = credentials
@@ -180,11 +187,11 @@ class GenerativeServiceClient(metaclass=GenerativeServiceClientMeta):
     from_service_account_json = from_service_account_file
 
     @property
-    def transport(self) -> GenerativeServiceTransport:
+    def transport(self) -> CacheServiceTransport:
         """Returns the transport used by the client instance.
 
         Returns:
-            GenerativeServiceTransport: The transport used by the client
+            CacheServiceTransport: The transport used by the client
                 instance.
         """
         return self._transport
@@ -438,14 +445,14 @@ class GenerativeServiceClient(metaclass=GenerativeServiceClientMeta):
         elif use_mtls_endpoint == "always" or (
             use_mtls_endpoint == "auto" and client_cert_source
         ):
-            _default_universe = GenerativeServiceClient._DEFAULT_UNIVERSE
+            _default_universe = CacheServiceClient._DEFAULT_UNIVERSE
             if universe_domain != _default_universe:
                 raise MutualTLSChannelError(
                     f"mTLS is not supported in any universe other than {_default_universe}."
                 )
-            api_endpoint = GenerativeServiceClient.DEFAULT_MTLS_ENDPOINT
+            api_endpoint = CacheServiceClient.DEFAULT_MTLS_ENDPOINT
         else:
-            api_endpoint = GenerativeServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
+            api_endpoint = CacheServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
                 UNIVERSE_DOMAIN=universe_domain
             )
         return api_endpoint
@@ -466,7 +473,7 @@ class GenerativeServiceClient(metaclass=GenerativeServiceClientMeta):
         Raises:
             ValueError: If the universe domain is an empty string.
         """
-        universe_domain = GenerativeServiceClient._DEFAULT_UNIVERSE
+        universe_domain = CacheServiceClient._DEFAULT_UNIVERSE
         if client_universe_domain is not None:
             universe_domain = client_universe_domain
         elif universe_domain_env is not None:
@@ -492,7 +499,7 @@ class GenerativeServiceClient(metaclass=GenerativeServiceClientMeta):
             ValueError: when client_universe does not match the universe in credentials.
         """
 
-        default_universe = GenerativeServiceClient._DEFAULT_UNIVERSE
+        default_universe = CacheServiceClient._DEFAULT_UNIVERSE
         credentials_universe = getattr(credentials, "universe_domain", default_universe)
 
         if client_universe != credentials_universe:
@@ -516,7 +523,7 @@ class GenerativeServiceClient(metaclass=GenerativeServiceClientMeta):
         """
         self._is_universe_domain_valid = (
             self._is_universe_domain_valid
-            or GenerativeServiceClient._compare_universes(
+            or CacheServiceClient._compare_universes(
                 self.universe_domain, self.transport._credentials
             )
         )
@@ -545,16 +552,12 @@ class GenerativeServiceClient(metaclass=GenerativeServiceClientMeta):
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
         transport: Optional[
-            Union[
-                str,
-                GenerativeServiceTransport,
-                Callable[..., GenerativeServiceTransport],
-            ]
+            Union[str, CacheServiceTransport, Callable[..., CacheServiceTransport]]
         ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
-        """Instantiates the generative service client.
+        """Instantiates the cache service client.
 
         Args:
             credentials (Optional[google.auth.credentials.Credentials]): The
@@ -562,10 +565,10 @@ class GenerativeServiceClient(metaclass=GenerativeServiceClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Optional[Union[str,GenerativeServiceTransport,Callable[..., GenerativeServiceTransport]]]):
+            transport (Optional[Union[str,CacheServiceTransport,Callable[..., CacheServiceTransport]]]):
                 The transport to use, or a Callable that constructs and returns a new transport.
                 If a Callable is given, it will be called with the same set of initialization
-                arguments as used in the GenerativeServiceTransport constructor.
+                arguments as used in the CacheServiceTransport constructor.
                 If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
@@ -618,11 +621,11 @@ class GenerativeServiceClient(metaclass=GenerativeServiceClientMeta):
             self._use_client_cert,
             self._use_mtls_endpoint,
             self._universe_domain_env,
-        ) = GenerativeServiceClient._read_environment_variables()
-        self._client_cert_source = GenerativeServiceClient._get_client_cert_source(
+        ) = CacheServiceClient._read_environment_variables()
+        self._client_cert_source = CacheServiceClient._get_client_cert_source(
             self._client_options.client_cert_source, self._use_client_cert
         )
-        self._universe_domain = GenerativeServiceClient._get_universe_domain(
+        self._universe_domain = CacheServiceClient._get_universe_domain(
             universe_domain_opt, self._universe_domain_env
         )
         self._api_endpoint = None  # updated below, depending on `transport`
@@ -639,9 +642,9 @@ class GenerativeServiceClient(metaclass=GenerativeServiceClientMeta):
         # Save or instantiate the transport.
         # Ordinarily, we provide the transport, but allowing a custom transport
         # instance provides an extensibility point for unusual situations.
-        transport_provided = isinstance(transport, GenerativeServiceTransport)
+        transport_provided = isinstance(transport, CacheServiceTransport)
         if transport_provided:
-            # transport is a GenerativeServiceTransport instance.
+            # transport is a CacheServiceTransport instance.
             if credentials or self._client_options.credentials_file or api_key_value:
                 raise ValueError(
                     "When providing a transport instance, "
@@ -652,17 +655,14 @@ class GenerativeServiceClient(metaclass=GenerativeServiceClientMeta):
                     "When providing a transport instance, provide its scopes "
                     "directly."
                 )
-            self._transport = cast(GenerativeServiceTransport, transport)
+            self._transport = cast(CacheServiceTransport, transport)
             self._api_endpoint = self._transport.host
 
-        self._api_endpoint = (
-            self._api_endpoint
-            or GenerativeServiceClient._get_api_endpoint(
-                self._client_options.api_endpoint,
-                self._client_cert_source,
-                self._universe_domain,
-                self._use_mtls_endpoint,
-            )
+        self._api_endpoint = self._api_endpoint or CacheServiceClient._get_api_endpoint(
+            self._client_options.api_endpoint,
+            self._client_cert_source,
+            self._universe_domain,
+            self._use_mtls_endpoint,
         )
 
         if not transport_provided:
@@ -676,12 +676,11 @@ class GenerativeServiceClient(metaclass=GenerativeServiceClientMeta):
                 )
 
             transport_init: Union[
-                Type[GenerativeServiceTransport],
-                Callable[..., GenerativeServiceTransport],
+                Type[CacheServiceTransport], Callable[..., CacheServiceTransport]
             ] = (
                 type(self).get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
-                else cast(Callable[..., GenerativeServiceTransport], transport)
+                else cast(Callable[..., CacheServiceTransport], transport)
             )
             # initialize with the provided callable or the passed in class
             self._transport = transport_init(
@@ -696,26 +695,15 @@ class GenerativeServiceClient(metaclass=GenerativeServiceClientMeta):
                 api_audience=self._client_options.api_audience,
             )
 
-    def generate_content(
+    def list_cached_contents(
         self,
-        request: Optional[
-            Union[generative_service.GenerateContentRequest, dict]
-        ] = None,
+        request: Optional[Union[cache_service.ListCachedContentsRequest, dict]] = None,
         *,
-        model: Optional[str] = None,
-        contents: Optional[MutableSequence[content.Content]] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> generative_service.GenerateContentResponse:
-        r"""Generates a response from the model given an input
-        ``GenerateContentRequest``.
-
-        Input capabilities differ between models, including tuned
-        models. See the `model
-        guide <https://ai.google.dev/models/gemini>`__ and `tuning
-        guide <https://ai.google.dev/docs/model_tuning_guidance>`__ for
-        details.
+    ) -> pagers.ListCachedContentsPager:
+        r"""Lists CachedContents.
 
         .. code-block:: python
 
@@ -728,340 +716,24 @@ class GenerativeServiceClient(metaclass=GenerativeServiceClientMeta):
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.ai import generativelanguage_v1beta
 
-            def sample_generate_content():
+            def sample_list_cached_contents():
                 # Create a client
-                client = generativelanguage_v1beta.GenerativeServiceClient()
+                client = generativelanguage_v1beta.CacheServiceClient()
 
                 # Initialize request argument(s)
-                request = generativelanguage_v1beta.GenerateContentRequest(
-                    model="model_value",
+                request = generativelanguage_v1beta.ListCachedContentsRequest(
                 )
 
                 # Make the request
-                response = client.generate_content(request=request)
+                page_result = client.list_cached_contents(request=request)
 
                 # Handle the response
-                print(response)
-
-        Args:
-            request (Union[google.ai.generativelanguage_v1beta.types.GenerateContentRequest, dict]):
-                The request object. Request to generate a completion from
-                the model.
-            model (str):
-                Required. The name of the ``Model`` to use for
-                generating the completion.
-
-                Format: ``name=models/{model}``.
-
-                This corresponds to the ``model`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            contents (MutableSequence[google.ai.generativelanguage_v1beta.types.Content]):
-                Required. The content of the current
-                conversation with the model.
-                For single-turn queries, this is a
-                single instance. For multi-turn queries,
-                this is a repeated field that contains
-                conversation history + latest request.
-
-                This corresponds to the ``contents`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.ai.generativelanguage_v1beta.types.GenerateContentResponse:
-                Response from the model supporting multiple candidates.
-
-                   Note on safety ratings and content filtering. They
-                   are reported for both prompt in
-                   GenerateContentResponse.prompt_feedback and for each
-                   candidate in finish_reason and in safety_ratings. The
-                   API contract is that: - either all requested
-                   candidates are returned or no candidates at all - no
-                   candidates are returned only if there was something
-                   wrong with the prompt (see prompt_feedback) -
-                   feedback on each candidate is reported on
-                   finish_reason and safety_ratings.
-
-        """
-        # Create or coerce a protobuf request object.
-        # - Quick check: If we got a request object, we should *not* have
-        #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([model, contents])
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # - Use the request object if provided (there's no risk of modifying the input as
-        #   there are no flattened fields), or create one.
-        if not isinstance(request, generative_service.GenerateContentRequest):
-            request = generative_service.GenerateContentRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if model is not None:
-                request.model = model
-            if contents is not None:
-                request.contents = contents
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.generate_content]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("model", request.model),)),
-        )
-
-        # Validate the universe domain.
-        self._validate_universe_domain()
-
-        # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    def generate_answer(
-        self,
-        request: Optional[Union[generative_service.GenerateAnswerRequest, dict]] = None,
-        *,
-        model: Optional[str] = None,
-        contents: Optional[MutableSequence[content.Content]] = None,
-        safety_settings: Optional[MutableSequence[safety.SafetySetting]] = None,
-        answer_style: Optional[
-            generative_service.GenerateAnswerRequest.AnswerStyle
-        ] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> generative_service.GenerateAnswerResponse:
-        r"""Generates a grounded answer from the model given an input
-        ``GenerateAnswerRequest``.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.ai import generativelanguage_v1beta
-
-            def sample_generate_answer():
-                # Create a client
-                client = generativelanguage_v1beta.GenerativeServiceClient()
-
-                # Initialize request argument(s)
-                request = generativelanguage_v1beta.GenerateAnswerRequest(
-                    model="model_value",
-                    answer_style="VERBOSE",
-                )
-
-                # Make the request
-                response = client.generate_answer(request=request)
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Union[google.ai.generativelanguage_v1beta.types.GenerateAnswerRequest, dict]):
-                The request object. Request to generate a grounded answer
-                from the model.
-            model (str):
-                Required. The name of the ``Model`` to use for
-                generating the grounded response.
-
-                Format: ``model=models/{model}``.
-
-                This corresponds to the ``model`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            contents (MutableSequence[google.ai.generativelanguage_v1beta.types.Content]):
-                Required. The content of the current conversation with
-                the model. For single-turn queries, this is a single
-                question to answer. For multi-turn queries, this is a
-                repeated field that contains conversation history and
-                the last ``Content`` in the list containing the
-                question.
-
-                Note: GenerateAnswer currently only supports queries in
-                English.
-
-                This corresponds to the ``contents`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            safety_settings (MutableSequence[google.ai.generativelanguage_v1beta.types.SafetySetting]):
-                Optional. A list of unique ``SafetySetting`` instances
-                for blocking unsafe content.
-
-                This will be enforced on the
-                ``GenerateAnswerRequest.contents`` and
-                ``GenerateAnswerResponse.candidate``. There should not
-                be more than one setting for each ``SafetyCategory``
-                type. The API will block any contents and responses that
-                fail to meet the thresholds set by these settings. This
-                list overrides the default settings for each
-                ``SafetyCategory`` specified in the safety_settings. If
-                there is no ``SafetySetting`` for a given
-                ``SafetyCategory`` provided in the list, the API will
-                use the default safety setting for that category. Harm
-                categories HARM_CATEGORY_HATE_SPEECH,
-                HARM_CATEGORY_SEXUALLY_EXPLICIT,
-                HARM_CATEGORY_DANGEROUS_CONTENT,
-                HARM_CATEGORY_HARASSMENT are supported.
-
-                This corresponds to the ``safety_settings`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            answer_style (google.ai.generativelanguage_v1beta.types.GenerateAnswerRequest.AnswerStyle):
-                Required. Style in which answers
-                should be returned.
-
-                This corresponds to the ``answer_style`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.ai.generativelanguage_v1beta.types.GenerateAnswerResponse:
-                Response from the model for a
-                grounded answer.
-
-        """
-        # Create or coerce a protobuf request object.
-        # - Quick check: If we got a request object, we should *not* have
-        #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([model, contents, safety_settings, answer_style])
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # - Use the request object if provided (there's no risk of modifying the input as
-        #   there are no flattened fields), or create one.
-        if not isinstance(request, generative_service.GenerateAnswerRequest):
-            request = generative_service.GenerateAnswerRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if model is not None:
-                request.model = model
-            if contents is not None:
-                request.contents = contents
-            if safety_settings is not None:
-                request.safety_settings = safety_settings
-            if answer_style is not None:
-                request.answer_style = answer_style
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.generate_answer]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("model", request.model),)),
-        )
-
-        # Validate the universe domain.
-        self._validate_universe_domain()
-
-        # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    def stream_generate_content(
-        self,
-        request: Optional[
-            Union[generative_service.GenerateContentRequest, dict]
-        ] = None,
-        *,
-        model: Optional[str] = None,
-        contents: Optional[MutableSequence[content.Content]] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> Iterable[generative_service.GenerateContentResponse]:
-        r"""Generates a streamed response from the model given an input
-        ``GenerateContentRequest``.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.ai import generativelanguage_v1beta
-
-            def sample_stream_generate_content():
-                # Create a client
-                client = generativelanguage_v1beta.GenerativeServiceClient()
-
-                # Initialize request argument(s)
-                request = generativelanguage_v1beta.GenerateContentRequest(
-                    model="model_value",
-                )
-
-                # Make the request
-                stream = client.stream_generate_content(request=request)
-
-                # Handle the response
-                for response in stream:
+                for response in page_result:
                     print(response)
 
         Args:
-            request (Union[google.ai.generativelanguage_v1beta.types.GenerateContentRequest, dict]):
-                The request object. Request to generate a completion from
-                the model.
-            model (str):
-                Required. The name of the ``Model`` to use for
-                generating the completion.
-
-                Format: ``name=models/{model}``.
-
-                This corresponds to the ``model`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            contents (MutableSequence[google.ai.generativelanguage_v1beta.types.Content]):
-                Required. The content of the current
-                conversation with the model.
-                For single-turn queries, this is a
-                single instance. For multi-turn queries,
-                this is a repeated field that contains
-                conversation history + latest request.
-
-                This corresponds to the ``contents`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
+            request (Union[google.ai.generativelanguage_v1beta.types.ListCachedContentsRequest, dict]):
+                The request object. Request to list CachedContents.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1069,51 +741,23 @@ class GenerativeServiceClient(metaclass=GenerativeServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            Iterable[google.ai.generativelanguage_v1beta.types.GenerateContentResponse]:
-                Response from the model supporting multiple candidates.
+            google.ai.generativelanguage_v1beta.services.cache_service.pagers.ListCachedContentsPager:
+                Response with CachedContents list.
 
-                   Note on safety ratings and content filtering. They
-                   are reported for both prompt in
-                   GenerateContentResponse.prompt_feedback and for each
-                   candidate in finish_reason and in safety_ratings. The
-                   API contract is that: - either all requested
-                   candidates are returned or no candidates at all - no
-                   candidates are returned only if there was something
-                   wrong with the prompt (see prompt_feedback) -
-                   feedback on each candidate is reported on
-                   finish_reason and safety_ratings.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
-        # - Quick check: If we got a request object, we should *not* have
-        #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([model, contents])
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(request, generative_service.GenerateContentRequest):
-            request = generative_service.GenerateContentRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if model is not None:
-                request.model = model
-            if contents is not None:
-                request.contents = contents
+        if not isinstance(request, cache_service.ListCachedContentsRequest):
+            request = cache_service.ListCachedContentsRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.stream_generate_content]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("model", request.model),)),
-        )
+        rpc = self._transport._wrapped_methods[self._transport.list_cached_contents]
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -1126,21 +770,28 @@ class GenerativeServiceClient(metaclass=GenerativeServiceClientMeta):
             metadata=metadata,
         )
 
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListCachedContentsPager(
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
+        )
+
         # Done; return the response.
         return response
 
-    def embed_content(
+    def create_cached_content(
         self,
-        request: Optional[Union[generative_service.EmbedContentRequest, dict]] = None,
+        request: Optional[Union[cache_service.CreateCachedContentRequest, dict]] = None,
         *,
-        model: Optional[str] = None,
-        content: Optional[gag_content.Content] = None,
+        cached_content: Optional[gag_cached_content.CachedContent] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> generative_service.EmbedContentResponse:
-        r"""Generates an embedding from the model given an input
-        ``Content``.
+    ) -> gag_cached_content.CachedContent:
+        r"""Creates CachedContent resource.
 
         .. code-block:: python
 
@@ -1153,42 +804,28 @@ class GenerativeServiceClient(metaclass=GenerativeServiceClientMeta):
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.ai import generativelanguage_v1beta
 
-            def sample_embed_content():
+            def sample_create_cached_content():
                 # Create a client
-                client = generativelanguage_v1beta.GenerativeServiceClient()
+                client = generativelanguage_v1beta.CacheServiceClient()
 
                 # Initialize request argument(s)
-                request = generativelanguage_v1beta.EmbedContentRequest(
-                    model="model_value",
+                request = generativelanguage_v1beta.CreateCachedContentRequest(
                 )
 
                 # Make the request
-                response = client.embed_content(request=request)
+                response = client.create_cached_content(request=request)
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.ai.generativelanguage_v1beta.types.EmbedContentRequest, dict]):
-                The request object. Request containing the ``Content`` for the model to
-                embed.
-            model (str):
-                Required. The model's resource name. This serves as an
-                ID for the Model to use.
+            request (Union[google.ai.generativelanguage_v1beta.types.CreateCachedContentRequest, dict]):
+                The request object. Request to create CachedContent.
+            cached_content (google.ai.generativelanguage_v1beta.types.CachedContent):
+                Required. The cached content to
+                create.
 
-                This name should match a model name returned by the
-                ``ListModels`` method.
-
-                Format: ``models/{model}``
-
-                This corresponds to the ``model`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            content (google.ai.generativelanguage_v1beta.types.Content):
-                Required. The content to embed. Only the ``parts.text``
-                fields will be counted.
-
-                This corresponds to the ``content`` field
+                This corresponds to the ``cached_content`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1198,13 +835,19 @@ class GenerativeServiceClient(metaclass=GenerativeServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.ai.generativelanguage_v1beta.types.EmbedContentResponse:
-                The response to an EmbedContentRequest.
+            google.ai.generativelanguage_v1beta.types.CachedContent:
+                Content that has been preprocessed
+                and can be used in subsequent request to
+                GenerativeService.
+
+                Cached content can be only used with
+                model it was created for.
+
         """
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([model, content])
+        has_flattened_params = any([cached_content])
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -1213,24 +856,16 @@ class GenerativeServiceClient(metaclass=GenerativeServiceClientMeta):
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(request, generative_service.EmbedContentRequest):
-            request = generative_service.EmbedContentRequest(request)
+        if not isinstance(request, cache_service.CreateCachedContentRequest):
+            request = cache_service.CreateCachedContentRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-            if model is not None:
-                request.model = model
-            if content is not None:
-                request.content = content
+            if cached_content is not None:
+                request.cached_content = cached_content
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.embed_content]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("model", request.model),)),
-        )
+        rpc = self._transport._wrapped_methods[self._transport.create_cached_content]
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -1246,22 +881,16 @@ class GenerativeServiceClient(metaclass=GenerativeServiceClientMeta):
         # Done; return the response.
         return response
 
-    def batch_embed_contents(
+    def get_cached_content(
         self,
-        request: Optional[
-            Union[generative_service.BatchEmbedContentsRequest, dict]
-        ] = None,
+        request: Optional[Union[cache_service.GetCachedContentRequest, dict]] = None,
         *,
-        model: Optional[str] = None,
-        requests: Optional[
-            MutableSequence[generative_service.EmbedContentRequest]
-        ] = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> generative_service.BatchEmbedContentsResponse:
-        r"""Generates multiple embeddings from the model given
-        input text in a synchronous call.
+    ) -> cached_content.CachedContent:
+        r"""Reads CachedContent resource.
 
         .. code-block:: python
 
@@ -1274,47 +903,29 @@ class GenerativeServiceClient(metaclass=GenerativeServiceClientMeta):
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.ai import generativelanguage_v1beta
 
-            def sample_batch_embed_contents():
+            def sample_get_cached_content():
                 # Create a client
-                client = generativelanguage_v1beta.GenerativeServiceClient()
+                client = generativelanguage_v1beta.CacheServiceClient()
 
                 # Initialize request argument(s)
-                requests = generativelanguage_v1beta.EmbedContentRequest()
-                requests.model = "model_value"
-
-                request = generativelanguage_v1beta.BatchEmbedContentsRequest(
-                    model="model_value",
-                    requests=requests,
+                request = generativelanguage_v1beta.GetCachedContentRequest(
+                    name="name_value",
                 )
 
                 # Make the request
-                response = client.batch_embed_contents(request=request)
+                response = client.get_cached_content(request=request)
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.ai.generativelanguage_v1beta.types.BatchEmbedContentsRequest, dict]):
-                The request object. Batch request to get embeddings from
-                the model for a list of prompts.
-            model (str):
-                Required. The model's resource name. This serves as an
-                ID for the Model to use.
+            request (Union[google.ai.generativelanguage_v1beta.types.GetCachedContentRequest, dict]):
+                The request object. Request to read CachedContent.
+            name (str):
+                Required. The resource name referring to the content
+                cache entry. Format: ``cachedContents/{id}``
 
-                This name should match a model name returned by the
-                ``ListModels`` method.
-
-                Format: ``models/{model}``
-
-                This corresponds to the ``model`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            requests (MutableSequence[google.ai.generativelanguage_v1beta.types.EmbedContentRequest]):
-                Required. Embed requests for the batch. The model in
-                each of these requests must match the model specified
-                ``BatchEmbedContentsRequest.model``.
-
-                This corresponds to the ``requests`` field
+                This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1324,13 +935,19 @@ class GenerativeServiceClient(metaclass=GenerativeServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.ai.generativelanguage_v1beta.types.BatchEmbedContentsResponse:
-                The response to a BatchEmbedContentsRequest.
+            google.ai.generativelanguage_v1beta.types.CachedContent:
+                Content that has been preprocessed
+                and can be used in subsequent request to
+                GenerativeService.
+
+                Cached content can be only used with
+                model it was created for.
+
         """
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([model, requests])
+        has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -1339,23 +956,21 @@ class GenerativeServiceClient(metaclass=GenerativeServiceClientMeta):
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(request, generative_service.BatchEmbedContentsRequest):
-            request = generative_service.BatchEmbedContentsRequest(request)
+        if not isinstance(request, cache_service.GetCachedContentRequest):
+            request = cache_service.GetCachedContentRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-            if model is not None:
-                request.model = model
-            if requests is not None:
-                request.requests = requests
+            if name is not None:
+                request.name = name
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.batch_embed_contents]
+        rpc = self._transport._wrapped_methods[self._transport.get_cached_content]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("model", request.model),)),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
         )
 
         # Validate the universe domain.
@@ -1372,18 +987,18 @@ class GenerativeServiceClient(metaclass=GenerativeServiceClientMeta):
         # Done; return the response.
         return response
 
-    def count_tokens(
+    def update_cached_content(
         self,
-        request: Optional[Union[generative_service.CountTokensRequest, dict]] = None,
+        request: Optional[Union[cache_service.UpdateCachedContentRequest, dict]] = None,
         *,
-        model: Optional[str] = None,
-        contents: Optional[MutableSequence[content.Content]] = None,
+        cached_content: Optional[gag_cached_content.CachedContent] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> generative_service.CountTokensResponse:
-        r"""Runs a model's tokenizer on input content and returns
-        the token count.
+    ) -> gag_cached_content.CachedContent:
+        r"""Updates CachedContent resource (only expiration is
+        updatable).
 
         .. code-block:: python
 
@@ -1396,46 +1011,33 @@ class GenerativeServiceClient(metaclass=GenerativeServiceClientMeta):
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.ai import generativelanguage_v1beta
 
-            def sample_count_tokens():
+            def sample_update_cached_content():
                 # Create a client
-                client = generativelanguage_v1beta.GenerativeServiceClient()
+                client = generativelanguage_v1beta.CacheServiceClient()
 
                 # Initialize request argument(s)
-                request = generativelanguage_v1beta.CountTokensRequest(
-                    model="model_value",
+                request = generativelanguage_v1beta.UpdateCachedContentRequest(
                 )
 
                 # Make the request
-                response = client.count_tokens(request=request)
+                response = client.update_cached_content(request=request)
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.ai.generativelanguage_v1beta.types.CountTokensRequest, dict]):
-                The request object. Counts the number of tokens in the ``prompt`` sent to a
-                model.
+            request (Union[google.ai.generativelanguage_v1beta.types.UpdateCachedContentRequest, dict]):
+                The request object. Request to update CachedContent.
+            cached_content (google.ai.generativelanguage_v1beta.types.CachedContent):
+                Required. The content cache entry to
+                update
 
-                Models may tokenize text differently, so each model may
-                return a different ``token_count``.
-            model (str):
-                Required. The model's resource name. This serves as an
-                ID for the Model to use.
-
-                This name should match a model name returned by the
-                ``ListModels`` method.
-
-                Format: ``models/{model}``
-
-                This corresponds to the ``model`` field
+                This corresponds to the ``cached_content`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            contents (MutableSequence[google.ai.generativelanguage_v1beta.types.Content]):
-                Optional. The input given to the model as a prompt. This
-                field is ignored when ``generate_content_request`` is
-                set.
-
-                This corresponds to the ``contents`` field
+            update_mask (google.protobuf.field_mask_pb2.FieldMask):
+                The list of fields to update.
+                This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1445,16 +1047,19 @@ class GenerativeServiceClient(metaclass=GenerativeServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.ai.generativelanguage_v1beta.types.CountTokensResponse:
-                A response from CountTokens.
+            google.ai.generativelanguage_v1beta.types.CachedContent:
+                Content that has been preprocessed
+                and can be used in subsequent request to
+                GenerativeService.
 
-                   It returns the model's token_count for the prompt.
+                Cached content can be only used with
+                model it was created for.
 
         """
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([model, contents])
+        has_flattened_params = any([cached_content, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -1463,23 +1068,25 @@ class GenerativeServiceClient(metaclass=GenerativeServiceClientMeta):
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(request, generative_service.CountTokensRequest):
-            request = generative_service.CountTokensRequest(request)
+        if not isinstance(request, cache_service.UpdateCachedContentRequest):
+            request = cache_service.UpdateCachedContentRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-            if model is not None:
-                request.model = model
-            if contents is not None:
-                request.contents = contents
+            if cached_content is not None:
+                request.cached_content = cached_content
+            if update_mask is not None:
+                request.update_mask = update_mask
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.count_tokens]
+        rpc = self._transport._wrapped_methods[self._transport.update_cached_content]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("model", request.model),)),
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("cached_content.name", request.cached_content.name),)
+            ),
         )
 
         # Validate the universe domain.
@@ -1496,7 +1103,97 @@ class GenerativeServiceClient(metaclass=GenerativeServiceClientMeta):
         # Done; return the response.
         return response
 
-    def __enter__(self) -> "GenerativeServiceClient":
+    def delete_cached_content(
+        self,
+        request: Optional[Union[cache_service.DeleteCachedContentRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> None:
+        r"""Deletes CachedContent resource.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.ai import generativelanguage_v1beta
+
+            def sample_delete_cached_content():
+                # Create a client
+                client = generativelanguage_v1beta.CacheServiceClient()
+
+                # Initialize request argument(s)
+                request = generativelanguage_v1beta.DeleteCachedContentRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_cached_content(request=request)
+
+        Args:
+            request (Union[google.ai.generativelanguage_v1beta.types.DeleteCachedContentRequest, dict]):
+                The request object. Request to delete CachedContent.
+            name (str):
+                Required. The resource name referring to the content
+                cache entry Format: ``cachedContents/{id}``
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cache_service.DeleteCachedContentRequest):
+            request = cache_service.DeleteCachedContentRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.delete_cached_content]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+    def __enter__(self) -> "CacheServiceClient":
         return self
 
     def __exit__(self, type, value, traceback):
@@ -1515,4 +1212,4 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
 )
 
 
-__all__ = ("GenerativeServiceClient",)
+__all__ = ("CacheServiceClient",)

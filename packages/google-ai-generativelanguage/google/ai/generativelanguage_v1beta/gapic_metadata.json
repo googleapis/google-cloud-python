@@ -5,6 +5,100 @@
   "protoPackage": "google.ai.generativelanguage.v1beta",
   "schema": "1.0",
   "services": {
+    "CacheService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "CacheServiceClient",
+          "rpcs": {
+            "CreateCachedContent": {
+              "methods": [
+                "create_cached_content"
+              ]
+            },
+            "DeleteCachedContent": {
+              "methods": [
+                "delete_cached_content"
+              ]
+            },
+            "GetCachedContent": {
+              "methods": [
+                "get_cached_content"
+              ]
+            },
+            "ListCachedContents": {
+              "methods": [
+                "list_cached_contents"
+              ]
+            },
+            "UpdateCachedContent": {
+              "methods": [
+                "update_cached_content"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "CacheServiceAsyncClient",
+          "rpcs": {
+            "CreateCachedContent": {
+              "methods": [
+                "create_cached_content"
+              ]
+            },
+            "DeleteCachedContent": {
+              "methods": [
+                "delete_cached_content"
+              ]
+            },
+            "GetCachedContent": {
+              "methods": [
+                "get_cached_content"
+              ]
+            },
+            "ListCachedContents": {
+              "methods": [
+                "list_cached_contents"
+              ]
+            },
+            "UpdateCachedContent": {
+              "methods": [
+                "update_cached_content"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "CacheServiceClient",
+          "rpcs": {
+            "CreateCachedContent": {
+              "methods": [
+                "create_cached_content"
+              ]
+            },
+            "DeleteCachedContent": {
+              "methods": [
+                "delete_cached_content"
+              ]
+            },
+            "GetCachedContent": {
+              "methods": [
+                "get_cached_content"
+              ]
+            },
+            "ListCachedContents": {
+              "methods": [
+                "list_cached_contents"
+              ]
+            },
+            "UpdateCachedContent": {
+              "methods": [
+                "update_cached_content"
+              ]
+            }
+          }
+        }
+      }
+    },
     "DiscussService": {
       "clients": {
         "grpc": {
