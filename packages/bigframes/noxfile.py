@@ -818,7 +818,7 @@ def notebook(session: nox.Session):
     _print_performance_report("notebooks/")
 
 
-@nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)
+@nox.session(python=DEFAULT_PYTHON_VERSION)
 def benchmark(session: nox.Session):
     session.install("-e", ".[all]")
     base_path = os.path.join("scripts", "benchmark")
@@ -855,7 +855,7 @@ def _print_performance_report(path: str):
     """
     print("---BIGQUERY USAGE REPORT---")
     results_dict = {}
-    bytes_reports = sorted(Path(path).rglob("*.bytesprocessed"), key=lambda x: x.name)
+    bytes_reports = sorted(Path(path).rglob("*.bytesprocessed"))
     for bytes_report in bytes_reports:
         with open(bytes_report, "r") as bytes_file:
             filename = bytes_report.relative_to(path).with_suffix("")
@@ -865,7 +865,7 @@ def _print_performance_report(path: str):
             results_dict[filename] = [query_count, total_bytes]
         os.remove(bytes_report)
 
-    millis_reports = sorted(Path(path).rglob("*.slotmillis"), key=lambda x: x.name)
+    millis_reports = sorted(Path(path).rglob("*.slotmillis"))
     for millis_report in millis_reports:
         with open(millis_report, "r") as millis_file:
             filename = millis_report.relative_to(path).with_suffix("")
