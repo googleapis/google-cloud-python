@@ -4,6 +4,30 @@
 
 [1]: https://pypi.org/project/bigframes/#history
 
+## [1.9.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v1.8.0...v1.9.0) (2024-06-10)
+
+
+### Features
+
+* Allow functions returned from `bpd.read_gbq_function` to execute outside of `apply` ([#706](https://github.com/googleapis/python-bigquery-dataframes/issues/706)) ([ad7d8ac](https://github.com/googleapis/python-bigquery-dataframes/commit/ad7d8ac1247ec3b9532dd5375265c36907f50da2))
+* Support `bigquery.vector_search()` ([#736](https://github.com/googleapis/python-bigquery-dataframes/issues/736)) ([dad66fd](https://github.com/googleapis/python-bigquery-dataframes/commit/dad66fdd22bb2d507e7f366c970d971554598cf3))
+* Support `score()` in GeminiTextGenerator ([#740](https://github.com/googleapis/python-bigquery-dataframes/issues/740)) ([b2c7d8b](https://github.com/googleapis/python-bigquery-dataframes/commit/b2c7d8b28e235c839370818137fba71796c9f02a))
+* Support bytes type in `remote_function` ([#761](https://github.com/googleapis/python-bigquery-dataframes/issues/761)) ([4915424](https://github.com/googleapis/python-bigquery-dataframes/commit/4915424a68f36542e901a0ac27946f1ecb2d05ab))
+* Support fit() in GeminiTextGenerator ([#758](https://github.com/googleapis/python-bigquery-dataframes/issues/758)) ([d751f5c](https://github.com/googleapis/python-bigquery-dataframes/commit/d751f5cd1cf578618eabbb992cfb6b0a3c36608c))
+
+
+### Bug Fixes
+
+* ARIMAPlus loads auto_arima_min_order param ([#752](https://github.com/googleapis/python-bigquery-dataframes/issues/752)) ([39d7013](https://github.com/googleapis/python-bigquery-dataframes/commit/39d7013a8a8d2908f20bfe54a7dc8de166323b90))
+* Improve to_pandas_batches for large results ([#746](https://github.com/googleapis/python-bigquery-dataframes/issues/746)) ([61f18cb](https://github.com/googleapis/python-bigquery-dataframes/commit/61f18cb63f2785c03dc612a34c030079fc8f4172))
+* Resolve issue with unset thread-local options ([#741](https://github.com/googleapis/python-bigquery-dataframes/issues/741)) ([d93dbaf](https://github.com/googleapis/python-bigquery-dataframes/commit/d93dbafe2bb405c60f7141d9ae4135db4ffdb702))
+
+
+### Documentation
+
+* Fix ML.EVALUATE spelling ([#749](https://github.com/googleapis/python-bigquery-dataframes/issues/749)) ([7899749](https://github.com/googleapis/python-bigquery-dataframes/commit/7899749505a75ed89c68e9df64124a153644de96))
+* Remove LogisticRegression normal_equation strategy ([#753](https://github.com/googleapis/python-bigquery-dataframes/issues/753)) ([ea5d367](https://github.com/googleapis/python-bigquery-dataframes/commit/ea5d367d5ecc6826d30082e75c957af8362c9e61))
+
 ## [1.8.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v1.7.0...v1.8.0) (2024-05-31)
 
 
