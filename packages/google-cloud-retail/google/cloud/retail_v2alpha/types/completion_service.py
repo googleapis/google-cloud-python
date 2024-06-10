@@ -112,11 +112,10 @@ class CompleteQueryRequest(proto.Message):
             This field is only available for "cloud-retail"
             dataset.
         entity (str):
-            The entity for customers that may run multiple different
-            entities, domains, sites or regions, for example,
-            ``Google US``, ``Google Ads``, ``Waymo``, ``google.com``,
-            ``youtube.com``, etc. If this is set, it should be exactly
-            matched with
+            The entity for customers who run multiple entities, domains,
+            sites, or regions, for example, ``Google US``,
+            ``Google Ads``, ``Waymo``, ``google.com``, ``youtube.com``,
+            etc. If this is set, it must be an exact match with
             [UserEvent.entity][google.cloud.retail.v2alpha.UserEvent.entity]
             to get per-entity autocomplete results.
     """
@@ -173,10 +172,10 @@ class CompleteQueryResponse(proto.Message):
             for search events resulting from this completion, which
             enables accurate attribution of complete model performance.
         recent_search_results (MutableSequence[google.cloud.retail_v2alpha.types.CompleteQueryResponse.RecentSearchResult]):
-            Matched recent searches of this user. The maximum number of
-            recent searches is 10. This field is a restricted feature.
-            Contact Retail Search support team if you are interested in
-            enabling it.
+            Deprecated. Matched recent searches of this user. The
+            maximum number of recent searches is 10. This field is a
+            restricted feature. If you want to enable it, contact Retail
+            Search support.
 
             This feature is only available when
             [CompleteQueryRequest.visitor_id][google.cloud.retail.v2alpha.CompleteQueryRequest.visitor_id]
@@ -229,14 +228,16 @@ class CompleteQueryResponse(proto.Message):
                 search with this suggestion term for each facet.
 
                 This is an experimental feature for limited
-                customers. Please reach out to the support team
-                if you would like to receive this information.
+                customers. If you want to receive this facet
+                information, reach out to the Retail support
+                team.
             total_product_count (int):
                 Total number of products associated with a
                 search with this suggestion.
                 This is an experimental feature for limited
-                customers. Please reach out to the support team
-                if you would like to receive this information.
+                customers. If you want to receive this product
+                count information, reach out to the Retail
+                support team.
         """
 
         suggestion: str = proto.Field(
@@ -262,7 +263,7 @@ class CompleteQueryResponse(proto.Message):
         )
 
     class RecentSearchResult(proto.Message):
-        r"""Recent search of this user.
+        r"""Deprecated: Recent search of this user.
 
         Attributes:
             recent_search (str):

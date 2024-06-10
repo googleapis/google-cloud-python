@@ -4557,6 +4557,9 @@ def test_create_model_rest(request_type):
                 ]
             }
         ],
+        "model_features_config": {
+            "frequently_bought_together_config": {"context_products_type": 1}
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -6639,6 +6642,9 @@ def test_update_model_rest(request_type):
                 ]
             }
         ],
+        "model_features_config": {
+            "frequently_bought_together_config": {"context_products_type": 1}
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency

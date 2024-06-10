@@ -2717,6 +2717,10 @@
             "type": "str"
           },
           {
+            "name": "parent",
+            "type": "str"
+          },
+          {
             "name": "retry",
             "type": "google.api_core.retry.Retry"
           },
@@ -2798,6 +2802,10 @@
           },
           {
             "name": "zone",
+            "type": "str"
+          },
+          {
+            "name": "parent",
             "type": "str"
           },
           {

@@ -31,7 +31,7 @@ from google.cloud.retail_v2 import gapic_version as package_version
 from google.cloud.retail_v2.types import import_config
 from google.cloud.retail_v2.types import product
 from google.cloud.retail_v2.types import product as gcr_product
-from google.cloud.retail_v2.types import product_service
+from google.cloud.retail_v2.types import product_service, purge_config
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
@@ -157,6 +157,11 @@ class ProductServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.purge_products: gapic_v1.method.wrap_method(
+                self.purge_products,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.import_products: gapic_v1.method.wrap_method(
                 self.import_products,
                 default_retry=retries.Retry(
@@ -258,6 +263,15 @@ class ProductServiceTransport(abc.ABC):
     ) -> Callable[
         [product_service.DeleteProductRequest],
         Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def purge_products(
+        self,
+    ) -> Callable[
+        [purge_config.PurgeProductsRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 

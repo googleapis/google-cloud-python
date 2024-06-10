@@ -56,6 +56,7 @@ from google.cloud.container_v1.types import cluster_service
 from .transports.base import DEFAULT_CLIENT_INFO, ClusterManagerTransport
 from .transports.grpc import ClusterManagerGrpcTransport
 from .transports.grpc_asyncio import ClusterManagerGrpcAsyncIOTransport
+from .transports.rest import ClusterManagerRestTransport
 
 
 class ClusterManagerClientMeta(type):
@@ -71,6 +72,7 @@ class ClusterManagerClientMeta(type):
     )  # type: Dict[str, Type[ClusterManagerTransport]]
     _transport_registry["grpc"] = ClusterManagerGrpcTransport
     _transport_registry["grpc_asyncio"] = ClusterManagerGrpcAsyncIOTransport
+    _transport_registry["rest"] = ClusterManagerRestTransport
 
     def get_transport_class(
         cls,
@@ -2487,6 +2489,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         *,
         project_id: Optional[str] = None,
         zone: Optional[str] = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
@@ -2543,6 +2546,15 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 This corresponds to the ``zone`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
+            parent (str):
+                The parent (project and location) where the operations
+                will be listed. Specified in the format
+                ``projects/*/locations/*``. Location "-" matches all
+                zones and all regions.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -2558,7 +2570,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project_id, zone])
+        has_flattened_params = any([project_id, zone, parent])
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -2575,6 +2587,8 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 request.project_id = project_id
             if zone is not None:
                 request.zone = zone
+            if parent is not None:
+                request.parent = parent
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.

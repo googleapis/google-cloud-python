@@ -3412,11 +3412,20 @@ def test_create_control_rest(request_type):
             "twoway_synonyms_action": {
                 "synonyms": ["synonyms_value1", "synonyms_value2"]
             },
+            "force_return_facet_action": {
+                "facet_position_adjustments": [
+                    {"attribute_name": "attribute_name_value", "position": 885}
+                ]
+            },
+            "remove_facet_action": {
+                "attribute_names": ["attribute_names_value1", "attribute_names_value2"]
+            },
             "condition": {
                 "query_terms": [{"value": "value_value", "full_match": True}],
                 "active_time_range": [
                     {"start_time": {"seconds": 751, "nanos": 543}, "end_time": {}}
                 ],
+                "page_categories": ["page_categories_value1", "page_categories_value2"],
             },
         },
         "name": "name_value",
@@ -4209,11 +4218,20 @@ def test_update_control_rest(request_type):
             "twoway_synonyms_action": {
                 "synonyms": ["synonyms_value1", "synonyms_value2"]
             },
+            "force_return_facet_action": {
+                "facet_position_adjustments": [
+                    {"attribute_name": "attribute_name_value", "position": 885}
+                ]
+            },
+            "remove_facet_action": {
+                "attribute_names": ["attribute_names_value1", "attribute_names_value2"]
+            },
             "condition": {
                 "query_terms": [{"value": "value_value", "full_match": True}],
                 "active_time_range": [
                     {"start_time": {"seconds": 751, "nanos": 543}, "end_time": {}}
                 ],
+                "page_categories": ["page_categories_value1", "page_categories_value2"],
             },
         },
         "name": "projects/sample1/locations/sample2/catalogs/sample3/controls/sample4",
