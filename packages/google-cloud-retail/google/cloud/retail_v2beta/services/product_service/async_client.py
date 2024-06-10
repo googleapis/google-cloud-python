@@ -53,10 +53,10 @@ from google.protobuf import timestamp_pb2  # type: ignore
 from google.protobuf import wrappers_pb2  # type: ignore
 
 from google.cloud.retail_v2beta.services.product_service import pagers
+from google.cloud.retail_v2beta.types import product_service, promotion, purge_config
 from google.cloud.retail_v2beta.types import common, import_config
 from google.cloud.retail_v2beta.types import product
 from google.cloud.retail_v2beta.types import product as gcr_product
-from google.cloud.retail_v2beta.types import product_service, promotion
 
 from .client import ProductServiceClient
 from .transports.base import DEFAULT_CLIENT_INFO, ProductServiceTransport
@@ -931,6 +931,125 @@ class ProductServiceAsyncClient:
             metadata=metadata,
         )
 
+    async def purge_products(
+        self,
+        request: Optional[Union[purge_config.PurgeProductsRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Permanently deletes all selected
+        [Product][google.cloud.retail.v2beta.Product]s under a branch.
+
+        This process is asynchronous. If the request is valid, the
+        removal will be enqueued and processed offline. Depending on the
+        number of [Product][google.cloud.retail.v2beta.Product]s, this
+        operation could take hours to complete. Before the operation
+        completes, some [Product][google.cloud.retail.v2beta.Product]s
+        may still be returned by
+        [ProductService.GetProduct][google.cloud.retail.v2beta.ProductService.GetProduct]
+        or
+        [ProductService.ListProducts][google.cloud.retail.v2beta.ProductService.ListProducts].
+
+        Depending on the number of
+        [Product][google.cloud.retail.v2beta.Product]s, this operation
+        could take hours to complete. To get a sample of
+        [Product][google.cloud.retail.v2beta.Product]s that would be
+        deleted, set
+        [PurgeProductsRequest.force][google.cloud.retail.v2beta.PurgeProductsRequest.force]
+        to false.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import retail_v2beta
+
+            async def sample_purge_products():
+                # Create a client
+                client = retail_v2beta.ProductServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = retail_v2beta.PurgeProductsRequest(
+                    parent="parent_value",
+                    filter="filter_value",
+                )
+
+                # Make the request
+                operation = client.purge_products(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = (await operation).result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.retail_v2beta.types.PurgeProductsRequest, dict]]):
+                The request object. Request message for PurgeProducts
+                method.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.retail_v2beta.types.PurgeProductsResponse` Response of the PurgeProductsRequest. If the long running operation is
+                   successfully done, then this message is returned by
+                   the google.longrunning.Operations.response field.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, purge_config.PurgeProductsRequest):
+            request = purge_config.PurgeProductsRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.purge_products
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            purge_config.PurgeProductsResponse,
+            metadata_type=purge_config.PurgeProductsMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
     async def import_products(
         self,
         request: Optional[Union[import_config.ImportProductsRequest, dict]] = None,
@@ -1314,10 +1433,11 @@ class ProductServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
-        r"""It is recommended to use the
+        r"""We recommend that you use the
         [ProductService.AddLocalInventories][google.cloud.retail.v2beta.ProductService.AddLocalInventories]
-        method instead of
-        [ProductService.AddFulfillmentPlaces][google.cloud.retail.v2beta.ProductService.AddFulfillmentPlaces].
+        method instead of the
+        [ProductService.AddFulfillmentPlaces][google.cloud.retail.v2beta.ProductService.AddFulfillmentPlaces]
+        method.
         [ProductService.AddLocalInventories][google.cloud.retail.v2beta.ProductService.AddLocalInventories]
         achieves the same results but provides more fine-grained control
         over ingesting local inventory data.
@@ -1477,10 +1597,11 @@ class ProductServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
-        r"""It is recommended to use the
+        r"""We recommend that you use the
         [ProductService.RemoveLocalInventories][google.cloud.retail.v2beta.ProductService.RemoveLocalInventories]
-        method instead of
-        [ProductService.RemoveFulfillmentPlaces][google.cloud.retail.v2beta.ProductService.RemoveFulfillmentPlaces].
+        method instead of the
+        [ProductService.RemoveFulfillmentPlaces][google.cloud.retail.v2beta.ProductService.RemoveFulfillmentPlaces]
+        method.
         [ProductService.RemoveLocalInventories][google.cloud.retail.v2beta.ProductService.RemoveLocalInventories]
         achieves the same results but provides more fine-grained control
         over ingesting local inventory data.

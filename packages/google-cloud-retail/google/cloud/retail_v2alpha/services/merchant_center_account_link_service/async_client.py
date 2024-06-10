@@ -346,7 +346,7 @@ class MerchantCenterAccountLinkServiceAsyncClient:
             parent (:class:`str`):
                 Required. The parent Catalog of the resource. It must
                 match this format:
-                projects/{PROJECT_NUMBER}/locations/global/catalogs/{CATALOG_ID}
+                ``projects/{PROJECT_NUMBER}/locations/global/catalogs/{CATALOG_ID}``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -478,7 +478,7 @@ class MerchantCenterAccountLinkServiceAsyncClient:
             parent (:class:`str`):
                 Required. The branch resource where this
                 MerchantCenterAccountLink will be created. Format:
-                projects/{PROJECT_NUMBER}/locations/global/catalogs/{CATALOG_ID}}
+                ``projects/{PROJECT_NUMBER}/locations/global/catalogs/{CATALOG_ID}``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -507,9 +507,9 @@ class MerchantCenterAccountLinkServiceAsyncClient:
                 An object representing a long-running operation.
 
                 The result type for the operation will be :class:`google.cloud.retail_v2alpha.types.MerchantCenterAccountLink` Represents a link between a Merchant Center account and a branch.
-                   Once a link is established, products from the linked
-                   merchant center account will be streamed to the
-                   linked branch.
+                   After a link is established, products from the linked
+                   Merchant Center account are streamed to the linked
+                   branch.
 
         """
         # Create or coerce a protobuf request object.
@@ -623,7 +623,7 @@ class MerchantCenterAccountLinkServiceAsyncClient:
                 method.
             name (:class:`str`):
                 Required. Full resource name. Format:
-                projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/merchantCenterAccountLinks/{merchant_center_account_link_id}
+                ``projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/merchantCenterAccountLinks/{merchant_center_account_link_id}``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this

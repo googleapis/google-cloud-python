@@ -434,6 +434,39 @@ class CloudRedisClusterGrpcTransport(CloudRedisClusterTransport):
             )
         return self._stubs["create_cluster"]
 
+    @property
+    def get_cluster_certificate_authority(
+        self,
+    ) -> Callable[
+        [cloud_redis_cluster.GetClusterCertificateAuthorityRequest],
+        cloud_redis_cluster.CertificateAuthority,
+    ]:
+        r"""Return a callable for the get cluster certificate
+        authority method over gRPC.
+
+        Gets the details of certificate authority information
+        for Redis cluster.
+
+        Returns:
+            Callable[[~.GetClusterCertificateAuthorityRequest],
+                    ~.CertificateAuthority]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_cluster_certificate_authority" not in self._stubs:
+            self._stubs[
+                "get_cluster_certificate_authority"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.redis.cluster.v1beta1.CloudRedisCluster/GetClusterCertificateAuthority",
+                request_serializer=cloud_redis_cluster.GetClusterCertificateAuthorityRequest.serialize,
+                response_deserializer=cloud_redis_cluster.CertificateAuthority.deserialize,
+            )
+        return self._stubs["get_cluster_certificate_authority"]
+
     def close(self):
         self.grpc_channel.close()
 

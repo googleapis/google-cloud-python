@@ -195,6 +195,9 @@ from google.cloud.retail_v2.types.product_service import (
 from google.cloud.retail_v2.types.promotion import Promotion
 from google.cloud.retail_v2.types.purge_config import (
     PurgeMetadata,
+    PurgeProductsMetadata,
+    PurgeProductsRequest,
+    PurgeProductsResponse,
     PurgeUserEventsRequest,
     PurgeUserEventsResponse,
 )
@@ -355,6 +358,9 @@ __all__ = (
     "UpdateProductRequest",
     "Promotion",
     "PurgeMetadata",
+    "PurgeProductsMetadata",
+    "PurgeProductsRequest",
+    "PurgeProductsResponse",
     "PurgeUserEventsRequest",
     "PurgeUserEventsResponse",
     "ExperimentInfo",

@@ -153,6 +153,11 @@ class CloudRedisClusterTransport(abc.ABC):
                 default_timeout=600.0,
                 client_info=client_info,
             ),
+            self.get_cluster_certificate_authority: gapic_v1.method.wrap_method(
+                self.get_cluster_certificate_authority,
+                default_timeout=600.0,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -214,6 +219,18 @@ class CloudRedisClusterTransport(abc.ABC):
     ) -> Callable[
         [cloud_redis_cluster.CreateClusterRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_cluster_certificate_authority(
+        self,
+    ) -> Callable[
+        [cloud_redis_cluster.GetClusterCertificateAuthorityRequest],
+        Union[
+            cloud_redis_cluster.CertificateAuthority,
+            Awaitable[cloud_redis_cluster.CertificateAuthority],
+        ],
     ]:
         raise NotImplementedError()
 

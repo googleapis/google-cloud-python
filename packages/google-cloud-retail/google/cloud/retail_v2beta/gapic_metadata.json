@@ -594,6 +594,11 @@
                 "list_products"
               ]
             },
+            "PurgeProducts": {
+              "methods": [
+                "purge_products"
+              ]
+            },
             "RemoveFulfillmentPlaces": {
               "methods": [
                 "remove_fulfillment_places"
@@ -654,6 +659,11 @@
                 "list_products"
               ]
             },
+            "PurgeProducts": {
+              "methods": [
+                "purge_products"
+              ]
+            },
             "RemoveFulfillmentPlaces": {
               "methods": [
                 "remove_fulfillment_places"
@@ -712,6 +722,11 @@
             "ListProducts": {
               "methods": [
                 "list_products"
+              ]
+            },
+            "PurgeProducts": {
+              "methods": [
+                "purge_products"
               ]
             },
             "RemoveFulfillmentPlaces": {

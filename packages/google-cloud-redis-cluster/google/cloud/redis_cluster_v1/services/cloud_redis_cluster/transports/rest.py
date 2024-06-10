@@ -96,6 +96,14 @@ class CloudRedisClusterRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_get_cluster_certificate_authority(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_cluster_certificate_authority(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_list_clusters(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -180,6 +188,32 @@ class CloudRedisClusterRestInterceptor:
         self, response: cloud_redis_cluster.Cluster
     ) -> cloud_redis_cluster.Cluster:
         """Post-rpc interceptor for get_cluster
+
+        Override in a subclass to manipulate the response
+        after it is returned by the CloudRedisCluster server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get_cluster_certificate_authority(
+        self,
+        request: cloud_redis_cluster.GetClusterCertificateAuthorityRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        cloud_redis_cluster.GetClusterCertificateAuthorityRequest,
+        Sequence[Tuple[str, str]],
+    ]:
+        """Pre-rpc interceptor for get_cluster_certificate_authority
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CloudRedisCluster server.
+        """
+        return request, metadata
+
+    def post_get_cluster_certificate_authority(
+        self, response: cloud_redis_cluster.CertificateAuthority
+    ) -> cloud_redis_cluster.CertificateAuthority:
+        """Post-rpc interceptor for get_cluster_certificate_authority
 
         Override in a subclass to manipulate the response
         after it is returned by the CloudRedisCluster server but before
@@ -810,6 +844,97 @@ class CloudRedisClusterRestTransport(CloudRedisClusterTransport):
             resp = self._interceptor.post_get_cluster(resp)
             return resp
 
+    class _GetClusterCertificateAuthority(CloudRedisClusterRestStub):
+        def __hash__(self):
+            return hash("GetClusterCertificateAuthority")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: cloud_redis_cluster.GetClusterCertificateAuthorityRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> cloud_redis_cluster.CertificateAuthority:
+            r"""Call the get cluster certificate
+            authority method over HTTP.
+
+                Args:
+                    request (~.cloud_redis_cluster.GetClusterCertificateAuthorityRequest):
+                        The request object. Request for
+                    [GetClusterCertificateAuthorityRequest][CloudRedis.GetClusterCertificateAuthorityRequest].
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+
+                Returns:
+                    ~.cloud_redis_cluster.CertificateAuthority:
+                        Redis cluster certificate authority
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=projects/*/locations/*/clusters/*/certificateAuthority}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_get_cluster_certificate_authority(
+                request, metadata
+            )
+            pb_request = cloud_redis_cluster.GetClusterCertificateAuthorityRequest.pb(
+                request
+            )
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = cloud_redis_cluster.CertificateAuthority()
+            pb_resp = cloud_redis_cluster.CertificateAuthority.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_cluster_certificate_authority(resp)
+            return resp
+
     class _ListClusters(CloudRedisClusterRestStub):
         def __hash__(self):
             return hash("ListClusters")
@@ -1013,6 +1138,17 @@ class CloudRedisClusterRestTransport(CloudRedisClusterTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetCluster(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_cluster_certificate_authority(
+        self,
+    ) -> Callable[
+        [cloud_redis_cluster.GetClusterCertificateAuthorityRequest],
+        cloud_redis_cluster.CertificateAuthority,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetClusterCertificateAuthority(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list_clusters(

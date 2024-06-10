@@ -150,6 +150,8 @@ class Model(proto.Message):
             Output only. The list of valid serving
             configs associated with the
             PageOptimizationConfig.
+        model_features_config (google.cloud.retail_v2beta.types.Model.ModelFeaturesConfig):
+            Optional. Additional model features config.
     """
 
     class ServingState(proto.Enum):
@@ -235,6 +237,27 @@ class Model(proto.Message):
         DATA_OK = 1
         DATA_ERROR = 2
 
+    class ContextProductsType(proto.Enum):
+        r"""Use single or multiple context products for recommendations.
+
+        Values:
+            CONTEXT_PRODUCTS_TYPE_UNSPECIFIED (0):
+                Unspecified default value, should never be explicitly set.
+                Defaults to
+                [MULTIPLE_CONTEXT_PRODUCTS][google.cloud.retail.v2beta.Model.ContextProductsType.MULTIPLE_CONTEXT_PRODUCTS].
+            SINGLE_CONTEXT_PRODUCT (1):
+                Use only a single product as context for the
+                recommendation. Typically used on pages like
+                add-to-cart or product details.
+            MULTIPLE_CONTEXT_PRODUCTS (2):
+                Use one or multiple products as context for
+                the recommendation. Typically used on shopping
+                cart pages.
+        """
+        CONTEXT_PRODUCTS_TYPE_UNSPECIFIED = 0
+        SINGLE_CONTEXT_PRODUCT = 1
+        MULTIPLE_CONTEXT_PRODUCTS = 2
+
     class ServingConfigList(proto.Message):
         r"""Represents an ordered combination of valid serving configs, which
         can be used for ``PAGE_OPTIMIZATION`` recommendations.
@@ -248,6 +271,45 @@ class Model(proto.Message):
         serving_config_ids: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=1,
+        )
+
+    class FrequentlyBoughtTogetherFeaturesConfig(proto.Message):
+        r"""Additional configs for the frequently-bought-together model
+        type.
+
+        Attributes:
+            context_products_type (google.cloud.retail_v2beta.types.Model.ContextProductsType):
+                Optional. Specifies the context of the model when it is used
+                in predict requests. Can only be set for the
+                ``frequently-bought-together`` type. If it isn't specified,
+                it defaults to
+                [MULTIPLE_CONTEXT_PRODUCTS][google.cloud.retail.v2beta.Model.ContextProductsType.MULTIPLE_CONTEXT_PRODUCTS].
+        """
+
+        context_products_type: "Model.ContextProductsType" = proto.Field(
+            proto.ENUM,
+            number=2,
+            enum="Model.ContextProductsType",
+        )
+
+    class ModelFeaturesConfig(proto.Message):
+        r"""Additional model features config.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            frequently_bought_together_config (google.cloud.retail_v2beta.types.Model.FrequentlyBoughtTogetherFeaturesConfig):
+                Additional configs for
+                frequently-bought-together models.
+
+                This field is a member of `oneof`_ ``type_dedicated_config``.
+        """
+
+        frequently_bought_together_config: "Model.FrequentlyBoughtTogetherFeaturesConfig" = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            oneof="type_dedicated_config",
+            message="Model.FrequentlyBoughtTogetherFeaturesConfig",
         )
 
     name: str = proto.Field(
@@ -314,6 +376,11 @@ class Model(proto.Message):
         proto.MESSAGE,
         number=19,
         message=ServingConfigList,
+    )
+    model_features_config: ModelFeaturesConfig = proto.Field(
+        proto.MESSAGE,
+        number=22,
+        message=ModelFeaturesConfig,
     )
 
 

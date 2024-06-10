@@ -132,7 +132,14 @@ from .product_service import (
     UpdateProductRequest,
 )
 from .promotion import Promotion
-from .purge_config import PurgeMetadata, PurgeUserEventsRequest, PurgeUserEventsResponse
+from .purge_config import (
+    PurgeMetadata,
+    PurgeProductsMetadata,
+    PurgeProductsRequest,
+    PurgeProductsResponse,
+    PurgeUserEventsRequest,
+    PurgeUserEventsResponse,
+)
 from .search_service import ExperimentInfo, SearchRequest, SearchResponse
 from .serving_config import ServingConfig
 from .serving_config_service import (
@@ -261,6 +268,9 @@ __all__ = (
     "UpdateProductRequest",
     "Promotion",
     "PurgeMetadata",
+    "PurgeProductsMetadata",
+    "PurgeProductsRequest",
+    "PurgeProductsResponse",
     "PurgeUserEventsRequest",
     "PurgeUserEventsResponse",
     "ExperimentInfo",

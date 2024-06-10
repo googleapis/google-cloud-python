@@ -44,6 +44,7 @@ class UserEvent(proto.Message):
             Required. User event type. Allowed values are:
 
             -  ``add-to-cart``: Products being added to cart.
+            -  ``remove-from-cart``: Products being removed from cart.
             -  ``category-page-view``: Special pages such as sale or
                promotion pages viewed.
             -  ``detail-page-view``: Products detail page viewed.
@@ -295,8 +296,8 @@ class UserEvent(proto.Message):
             The entity for customers that may run multiple different
             entities, domains, sites or regions, for example,
             ``Google US``, ``Google Ads``, ``Waymo``, ``google.com``,
-            ``youtube.com``, etc. It is recommended to set this field to
-            get better per-entity search, completion and prediction
+            ``youtube.com``, etc. We recommend that you set this field
+            to get better per-entity search, completion, and prediction
             results.
     """
 
