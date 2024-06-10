@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-resumable-media/#history
 
+## [2.7.1](https://github.com/googleapis/google-resumable-media-python/compare/v2.7.0...v2.7.1) (2024-05-31)
+
+
+### Bug Fixes
+
+* Add a check for partial response data ([#435](https://github.com/googleapis/google-resumable-media-python/issues/435)) ([aaea392](https://github.com/googleapis/google-resumable-media-python/commit/aaea3921cb4caacf3cb142639bad41dfaf7ebb28))
+
 ## [2.7.0](https://github.com/googleapis/google-resumable-media-python/compare/v2.6.0...v2.7.0) (2023-12-10)
 
 
