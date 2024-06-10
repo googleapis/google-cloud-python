@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.23.1](https://github.com/googleapis/python-bigquery-pandas/compare/v0.23.0...v0.23.1) (2024-06-07)
+
+
+### Bug Fixes
+
+* Handle None when converting numerics to parquet ([#768](https://github.com/googleapis/python-bigquery-pandas/issues/768)) ([53a4683](https://github.com/googleapis/python-bigquery-pandas/commit/53a46833a320963d5c15427f6eb631e0199fb332))
+* Set minimum allowable version of sqlite when performing a conda install ([#780](https://github.com/googleapis/python-bigquery-pandas/issues/780)) ([8a03d44](https://github.com/googleapis/python-bigquery-pandas/commit/8a03d44fbe125ae1202f43b7c6e54c98eca94d4d))
+
+
+### Documentation
+
+* Use a short-link to BigQuery DataFrames ([#773](https://github.com/googleapis/python-bigquery-pandas/issues/773)) ([7cd4287](https://github.com/googleapis/python-bigquery-pandas/commit/7cd4287ae70861e4949487db578ab1916d853029))
+
 ## [0.23.0](https://github.com/googleapis/python-bigquery-pandas/compare/v0.22.0...v0.23.0) (2024-05-20)
 
 
