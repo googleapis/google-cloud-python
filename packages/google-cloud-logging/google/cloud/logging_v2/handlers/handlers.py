@@ -18,12 +18,19 @@ import collections
 import json
 import logging
 
-from google.cloud.logging_v2.handlers.transports import BackgroundThreadTransport
+from typing import Optional, IO
+
+from google.cloud.logging_v2.handlers.transports import (
+    BackgroundThreadTransport,
+    Transport,
+)
 from google.cloud.logging_v2.handlers._monitored_resources import (
     detect_resource,
     add_resource_labels,
 )
 from google.cloud.logging_v2.handlers._helpers import get_request_data
+from google.cloud.logging_v2.resource import Resource
+
 
 DEFAULT_LOGGER_NAME = "python"
 
@@ -149,11 +156,11 @@ class CloudLoggingHandler(logging.StreamHandler):
         self,
         client,
         *,
-        name=DEFAULT_LOGGER_NAME,
-        transport=BackgroundThreadTransport,
-        resource=None,
-        labels=None,
-        stream=None,
+        name: str = DEFAULT_LOGGER_NAME,
+        transport: Transport = BackgroundThreadTransport,
+        resource: Resource = None,
+        labels: Optional[dict] = None,
+        stream: Optional[IO] = None,
         **kwargs,
     ):
         """
