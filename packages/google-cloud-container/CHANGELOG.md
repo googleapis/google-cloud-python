@@ -4,6 +4,40 @@
 
 [1]: https://pypi.org/project/google-cloud-container/#history
 
+## [2.47.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-container-v2.46.0...google-cloud-container-v2.47.0) (2024-06-10)
+
+
+### Features
+
+* A new field `accelerators` is added to message `.google.container.v1.UpdateNodePoolRequest` ([0d738fa](https://github.com/googleapis/google-cloud-python/commit/0d738fa1a8751a1cee2071c7af187e2d08b1a889))
+* A new field `additive_vpc_scope_dns_domain` is added to message `.google.container.v1.DNSConfig` ([0d738fa](https://github.com/googleapis/google-cloud-python/commit/0d738fa1a8751a1cee2071c7af187e2d08b1a889))
+* A new field `containerd_config` is added to message `.google.container.v1.NodeConfig` ([0d738fa](https://github.com/googleapis/google-cloud-python/commit/0d738fa1a8751a1cee2071c7af187e2d08b1a889))
+* A new field `containerd_config` is added to message `.google.container.v1.NodeConfigDefaults` ([0d738fa](https://github.com/googleapis/google-cloud-python/commit/0d738fa1a8751a1cee2071c7af187e2d08b1a889))
+* A new field `containerd_config` is added to message `.google.container.v1.UpdateNodePoolRequest` ([0d738fa](https://github.com/googleapis/google-cloud-python/commit/0d738fa1a8751a1cee2071c7af187e2d08b1a889))
+* A new field `desired_containerd_config` is added to message `.google.container.v1.ClusterUpdate` ([0d738fa](https://github.com/googleapis/google-cloud-python/commit/0d738fa1a8751a1cee2071c7af187e2d08b1a889))
+* A new field `desired_node_kubelet_config` is added to message `.google.container.v1.ClusterUpdate` ([0d738fa](https://github.com/googleapis/google-cloud-python/commit/0d738fa1a8751a1cee2071c7af187e2d08b1a889))
+* A new field `desired_node_pool_auto_config_kubelet_config` is added to message `.google.container.v1.ClusterUpdate` ([0d738fa](https://github.com/googleapis/google-cloud-python/commit/0d738fa1a8751a1cee2071c7af187e2d08b1a889))
+* A new field `enable_nested_virtualization` is added to message `.google.container.v1.AdvancedMachineFeatures` ([0d738fa](https://github.com/googleapis/google-cloud-python/commit/0d738fa1a8751a1cee2071c7af187e2d08b1a889))
+* A new field `hugepages` is added to message `.google.container.v1.LinuxNodeConfig` ([0d738fa](https://github.com/googleapis/google-cloud-python/commit/0d738fa1a8751a1cee2071c7af187e2d08b1a889))
+* A new field `node_kubelet_config` is added to message `.google.container.v1.NodeConfigDefaults` ([0d738fa](https://github.com/googleapis/google-cloud-python/commit/0d738fa1a8751a1cee2071c7af187e2d08b1a889))
+* A new field `node_kubelet_config` is added to message `.google.container.v1.NodePoolAutoConfig` ([0d738fa](https://github.com/googleapis/google-cloud-python/commit/0d738fa1a8751a1cee2071c7af187e2d08b1a889))
+* A new field `satisfies_pzi` is added to message `.google.container.v1.Cluster` ([0d738fa](https://github.com/googleapis/google-cloud-python/commit/0d738fa1a8751a1cee2071c7af187e2d08b1a889))
+* A new field `satisfies_pzs` is added to message `.google.container.v1.Cluster` ([0d738fa](https://github.com/googleapis/google-cloud-python/commit/0d738fa1a8751a1cee2071c7af187e2d08b1a889))
+* A new message `ContainerdConfig` is added ([0d738fa](https://github.com/googleapis/google-cloud-python/commit/0d738fa1a8751a1cee2071c7af187e2d08b1a889))
+* A new message `HugepagesConfig` is added ([0d738fa](https://github.com/googleapis/google-cloud-python/commit/0d738fa1a8751a1cee2071c7af187e2d08b1a889))
+* A new method_signature `parent` is added to method `ListOperations` in service `ClusterManager` ([0d738fa](https://github.com/googleapis/google-cloud-python/commit/0d738fa1a8751a1cee2071c7af187e2d08b1a889))
+* A new value `CADVISOR` is added to enum `Component` ([0d738fa](https://github.com/googleapis/google-cloud-python/commit/0d738fa1a8751a1cee2071c7af187e2d08b1a889))
+* A new value `ENTERPRISE` is added to enum `Mode` ([0d738fa](https://github.com/googleapis/google-cloud-python/commit/0d738fa1a8751a1cee2071c7af187e2d08b1a889))
+* A new value `KUBELET` is added to enum `Component` ([0d738fa](https://github.com/googleapis/google-cloud-python/commit/0d738fa1a8751a1cee2071c7af187e2d08b1a889))
+* A new value `MPS` is added to enum `GPUSharingStrategy` ([0d738fa](https://github.com/googleapis/google-cloud-python/commit/0d738fa1a8751a1cee2071c7af187e2d08b1a889))
+* Enable REST transport for google/container/v1 ([0d738fa](https://github.com/googleapis/google-cloud-python/commit/0d738fa1a8751a1cee2071c7af187e2d08b1a889))
+
+
+### Documentation
+
+* A comment for field `desired_private_cluster_config` in message `.google.container.v1.ClusterUpdate` is changed ([0d738fa](https://github.com/googleapis/google-cloud-python/commit/0d738fa1a8751a1cee2071c7af187e2d08b1a889))
+* A comment for field `in_transit_encryption_config` in message `.google.container.v1.NetworkConfig` is changed ([0d738fa](https://github.com/googleapis/google-cloud-python/commit/0d738fa1a8751a1cee2071c7af187e2d08b1a889))
+
 ## [2.46.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-container-v2.45.0...google-cloud-container-v2.46.0) (2024-05-29)
 
 

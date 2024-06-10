@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.10](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securitycentermanagement-v0.1.9...google-cloud-securitycentermanagement-v0.1.10) (2024-06-10)
+
+
+### Documentation
+
+* minor docs formatting in `UpdateSecurityCenterServiceRequest.validate_only` ([01e36a7](https://github.com/googleapis/google-cloud-python/commit/01e36a7b4a7e58ff48fcf4dc1098f4447a7e70f6))
+
 ## [0.1.9](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securitycentermanagement-v0.1.8...google-cloud-securitycentermanagement-v0.1.9) (2024-05-27)
 
 

@@ -788,10 +788,8 @@ class CreateSecurityHealthAnalyticsCustomModuleRequest(proto.Message):
             that a subsequent request to actually create the
             module could still fail because:
 
-             1. the state could have changed (e.g. IAM
-                permission lost) or
-             2. A failure occurred during creation of the
-                module. Defaults to false.
+            - The state could have changed (e.g. IAM permission lost) or
+            - A failure occurred during creation of the module. Defaults to false.
     """
 
     parent: str = proto.Field(
@@ -830,10 +828,10 @@ class UpdateSecurityHealthAnalyticsCustomModuleRequest(proto.Message):
             indicates the request is valid while an error
             response indicates the request is invalid. Note
             that a subsequent request to actually update the
-            module could still fail because 1. the state
-            could have changed (e.g. IAM permission lost) or
-            2. A failure occurred while trying to update the
-                module.
+            module could still fail because:
+
+            - The state could have changed (e.g. IAM permission lost) or
+            - A failure occurred while trying to update the module.
     """
 
     update_mask: field_mask_pb2.FieldMask = proto.Field(
@@ -873,10 +871,10 @@ class DeleteSecurityHealthAnalyticsCustomModuleRequest(proto.Message):
             indicates the request is valid while an error
             response indicates the request is invalid. Note
             that a subsequent request to actually delete the
-            module could still fail because 1. the state
-            could have changed (e.g. IAM permission lost) or
-            2. A failure occurred while trying to delete the
-                module.
+            module could still fail because:
+
+            - The state could have changed (e.g. IAM permission lost) or
+            - A failure occurred while trying to delete the module.
     """
 
     name: str = proto.Field(
@@ -1706,10 +1704,10 @@ class CreateEventThreatDetectionCustomModuleRequest(proto.Message):
             indicates the request is valid while an error
             response indicates the request is invalid. Note
             that a subsequent request to actually create the
-            module could still fail because 1. the state
-            could have changed (e.g. IAM permission lost) or
-            2. A failure occurred during creation of the
-                module.
+            module could still fail because:
+
+            - The state could have changed (e.g. IAM permission lost) or
+            - A failure occurred during creation of the module.
     """
 
     parent: str = proto.Field(
@@ -1749,10 +1747,10 @@ class UpdateEventThreatDetectionCustomModuleRequest(proto.Message):
             indicates the request is valid while an error
             response indicates the request is invalid. Note
             that a subsequent request to actually update the
-            module could still fail because 1. the state
-            could have changed (e.g. IAM permission lost) or
-            2. A failure occurred while trying to update the
-                module.
+            module could still fail because:
+
+            - The state could have changed (e.g. IAM permission lost) or
+            - A failure occurred while trying to update the module.
     """
 
     update_mask: field_mask_pb2.FieldMask = proto.Field(
@@ -1792,10 +1790,10 @@ class DeleteEventThreatDetectionCustomModuleRequest(proto.Message):
             indicates the request is valid while an error
             response indicates the request is invalid. Note
             that a subsequent request to actually delete the
-            module could still fail because 1. the state
-            could have changed (e.g. IAM permission lost) or
-            2. A failure occurred while trying to delete the
-                module.
+            module could still fail because:
+
+            - The state could have changed (e.g. IAM permission lost) or
+            - A failure occurred while trying to delete the module.
     """
 
     name: str = proto.Field(
