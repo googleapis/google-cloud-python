@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.6.5](https://github.com/googleapis/google-cloud-python/compare/google-ai-generativelanguage-v0.6.4...google-ai-generativelanguage-v0.6.5) (2024-06-11)
+
+
+### Features
+
+* Add cached_content_token_count to CountTokensResponse ([09c7fae](https://github.com/googleapis/google-cloud-python/commit/09c7fae459bc3eb91bfcb795384245e7fa4bf7ff))
+* Add cached_content_token_count to generative_service's UsageMetadata ([09c7fae](https://github.com/googleapis/google-cloud-python/commit/09c7fae459bc3eb91bfcb795384245e7fa4bf7ff))
+* Add content caching ([09c7fae](https://github.com/googleapis/google-cloud-python/commit/09c7fae459bc3eb91bfcb795384245e7fa4bf7ff))
+
+
+### Documentation
+
+* Small fixes ([09c7fae](https://github.com/googleapis/google-cloud-python/commit/09c7fae459bc3eb91bfcb795384245e7fa4bf7ff))
+
 ## [0.6.4](https://github.com/googleapis/google-cloud-python/compare/google-ai-generativelanguage-v0.6.3...google-ai-generativelanguage-v0.6.4) (2024-05-16)
 
 
