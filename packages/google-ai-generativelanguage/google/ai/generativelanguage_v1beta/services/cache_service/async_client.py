@@ -36,7 +36,7 @@ from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
-from google.ai.generativelanguage_v1beta3 import gapic_version as package_version
+from google.ai.generativelanguage_v1beta import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.AsyncRetry, gapic_v1.method._MethodDefault, None]
@@ -44,61 +44,65 @@ except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
 from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 
-from google.ai.generativelanguage_v1beta3.services.permission_service import pagers
-from google.ai.generativelanguage_v1beta3.types import permission as gag_permission
-from google.ai.generativelanguage_v1beta3.types import permission
-from google.ai.generativelanguage_v1beta3.types import permission_service
+from google.ai.generativelanguage_v1beta.services.cache_service import pagers
+from google.ai.generativelanguage_v1beta.types import (
+    cached_content as gag_cached_content,
+)
+from google.ai.generativelanguage_v1beta.types import cache_service
+from google.ai.generativelanguage_v1beta.types import cached_content
+from google.ai.generativelanguage_v1beta.types import content
 
-from .client import PermissionServiceClient
-from .transports.base import DEFAULT_CLIENT_INFO, PermissionServiceTransport
-from .transports.grpc_asyncio import PermissionServiceGrpcAsyncIOTransport
+from .client import CacheServiceClient
+from .transports.base import DEFAULT_CLIENT_INFO, CacheServiceTransport
+from .transports.grpc_asyncio import CacheServiceGrpcAsyncIOTransport
 
 
-class PermissionServiceAsyncClient:
-    """Provides methods for managing permissions to PaLM API
-    resources.
+class CacheServiceAsyncClient:
+    """API for managing cache of content (CachedContent resources)
+    that can be used in GenerativeService requests. This way
+    generate content requests can benefit from preprocessing work
+    being done earlier, possibly lowering their computational cost.
+    It is intended to be used with large contexts.
     """
 
-    _client: PermissionServiceClient
+    _client: CacheServiceClient
 
     # Copy defaults from the synchronous client for use here.
     # Note: DEFAULT_ENDPOINT is deprecated. Use _DEFAULT_ENDPOINT_TEMPLATE instead.
-    DEFAULT_ENDPOINT = PermissionServiceClient.DEFAULT_ENDPOINT
-    DEFAULT_MTLS_ENDPOINT = PermissionServiceClient.DEFAULT_MTLS_ENDPOINT
-    _DEFAULT_ENDPOINT_TEMPLATE = PermissionServiceClient._DEFAULT_ENDPOINT_TEMPLATE
-    _DEFAULT_UNIVERSE = PermissionServiceClient._DEFAULT_UNIVERSE
+    DEFAULT_ENDPOINT = CacheServiceClient.DEFAULT_ENDPOINT
+    DEFAULT_MTLS_ENDPOINT = CacheServiceClient.DEFAULT_MTLS_ENDPOINT
+    _DEFAULT_ENDPOINT_TEMPLATE = CacheServiceClient._DEFAULT_ENDPOINT_TEMPLATE
+    _DEFAULT_UNIVERSE = CacheServiceClient._DEFAULT_UNIVERSE
 
-    permission_path = staticmethod(PermissionServiceClient.permission_path)
-    parse_permission_path = staticmethod(PermissionServiceClient.parse_permission_path)
-    tuned_model_path = staticmethod(PermissionServiceClient.tuned_model_path)
-    parse_tuned_model_path = staticmethod(
-        PermissionServiceClient.parse_tuned_model_path
+    cached_content_path = staticmethod(CacheServiceClient.cached_content_path)
+    parse_cached_content_path = staticmethod(
+        CacheServiceClient.parse_cached_content_path
     )
+    model_path = staticmethod(CacheServiceClient.model_path)
+    parse_model_path = staticmethod(CacheServiceClient.parse_model_path)
     common_billing_account_path = staticmethod(
-        PermissionServiceClient.common_billing_account_path
+        CacheServiceClient.common_billing_account_path
     )
     parse_common_billing_account_path = staticmethod(
-        PermissionServiceClient.parse_common_billing_account_path
+        CacheServiceClient.parse_common_billing_account_path
     )
-    common_folder_path = staticmethod(PermissionServiceClient.common_folder_path)
-    parse_common_folder_path = staticmethod(
-        PermissionServiceClient.parse_common_folder_path
-    )
-    common_organization_path = staticmethod(
-        PermissionServiceClient.common_organization_path
-    )
+    common_folder_path = staticmethod(CacheServiceClient.common_folder_path)
+    parse_common_folder_path = staticmethod(CacheServiceClient.parse_common_folder_path)
+    common_organization_path = staticmethod(CacheServiceClient.common_organization_path)
     parse_common_organization_path = staticmethod(
-        PermissionServiceClient.parse_common_organization_path
+        CacheServiceClient.parse_common_organization_path
     )
-    common_project_path = staticmethod(PermissionServiceClient.common_project_path)
+    common_project_path = staticmethod(CacheServiceClient.common_project_path)
     parse_common_project_path = staticmethod(
-        PermissionServiceClient.parse_common_project_path
+        CacheServiceClient.parse_common_project_path
     )
-    common_location_path = staticmethod(PermissionServiceClient.common_location_path)
+    common_location_path = staticmethod(CacheServiceClient.common_location_path)
     parse_common_location_path = staticmethod(
-        PermissionServiceClient.parse_common_location_path
+        CacheServiceClient.parse_common_location_path
     )
 
     @classmethod
@@ -112,9 +116,9 @@ class PermissionServiceAsyncClient:
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            PermissionServiceAsyncClient: The constructed client.
+            CacheServiceAsyncClient: The constructed client.
         """
-        return PermissionServiceClient.from_service_account_info.__func__(PermissionServiceAsyncClient, info, *args, **kwargs)  # type: ignore
+        return CacheServiceClient.from_service_account_info.__func__(CacheServiceAsyncClient, info, *args, **kwargs)  # type: ignore
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -128,9 +132,9 @@ class PermissionServiceAsyncClient:
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            PermissionServiceAsyncClient: The constructed client.
+            CacheServiceAsyncClient: The constructed client.
         """
-        return PermissionServiceClient.from_service_account_file.__func__(PermissionServiceAsyncClient, filename, *args, **kwargs)  # type: ignore
+        return CacheServiceClient.from_service_account_file.__func__(CacheServiceAsyncClient, filename, *args, **kwargs)  # type: ignore
 
     from_service_account_json = from_service_account_file
 
@@ -168,14 +172,14 @@ class PermissionServiceAsyncClient:
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If any errors happen.
         """
-        return PermissionServiceClient.get_mtls_endpoint_and_cert_source(client_options)  # type: ignore
+        return CacheServiceClient.get_mtls_endpoint_and_cert_source(client_options)  # type: ignore
 
     @property
-    def transport(self) -> PermissionServiceTransport:
+    def transport(self) -> CacheServiceTransport:
         """Returns the transport used by the client instance.
 
         Returns:
-            PermissionServiceTransport: The transport used by the client instance.
+            CacheServiceTransport: The transport used by the client instance.
         """
         return self._client.transport
 
@@ -199,7 +203,7 @@ class PermissionServiceAsyncClient:
         return self._client._universe_domain
 
     get_transport_class = functools.partial(
-        type(PermissionServiceClient).get_transport_class, type(PermissionServiceClient)
+        type(CacheServiceClient).get_transport_class, type(CacheServiceClient)
     )
 
     def __init__(
@@ -207,16 +211,12 @@ class PermissionServiceAsyncClient:
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
         transport: Optional[
-            Union[
-                str,
-                PermissionServiceTransport,
-                Callable[..., PermissionServiceTransport],
-            ]
+            Union[str, CacheServiceTransport, Callable[..., CacheServiceTransport]]
         ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
-        """Instantiates the permission service async client.
+        """Instantiates the cache service async client.
 
         Args:
             credentials (Optional[google.auth.credentials.Credentials]): The
@@ -224,10 +224,10 @@ class PermissionServiceAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Optional[Union[str,PermissionServiceTransport,Callable[..., PermissionServiceTransport]]]):
+            transport (Optional[Union[str,CacheServiceTransport,Callable[..., CacheServiceTransport]]]):
                 The transport to use, or a Callable that constructs and returns a new transport to use.
                 If a Callable is given, it will be called with the same set of initialization
-                arguments as used in the PermissionServiceTransport constructor.
+                arguments as used in the CacheServiceTransport constructor.
                 If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
@@ -265,26 +265,22 @@ class PermissionServiceAsyncClient:
             google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
                 creation failed for any reason.
         """
-        self._client = PermissionServiceClient(
+        self._client = CacheServiceClient(
             credentials=credentials,
             transport=transport,
             client_options=client_options,
             client_info=client_info,
         )
 
-    async def create_permission(
+    async def list_cached_contents(
         self,
-        request: Optional[
-            Union[permission_service.CreatePermissionRequest, dict]
-        ] = None,
+        request: Optional[Union[cache_service.ListCachedContentsRequest, dict]] = None,
         *,
-        parent: Optional[str] = None,
-        permission: Optional[gag_permission.Permission] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> gag_permission.Permission:
-        r"""Create a permission to a specific resource.
+    ) -> pagers.ListCachedContentsAsyncPager:
+        r"""Lists CachedContents.
 
         .. code-block:: python
 
@@ -295,36 +291,120 @@ class PermissionServiceAsyncClient:
             # - It may require specifying regional endpoints when creating the service
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.ai import generativelanguage_v1beta3
+            from google.ai import generativelanguage_v1beta
 
-            async def sample_create_permission():
+            async def sample_list_cached_contents():
                 # Create a client
-                client = generativelanguage_v1beta3.PermissionServiceAsyncClient()
+                client = generativelanguage_v1beta.CacheServiceAsyncClient()
 
                 # Initialize request argument(s)
-                request = generativelanguage_v1beta3.CreatePermissionRequest(
-                    parent="parent_value",
+                request = generativelanguage_v1beta.ListCachedContentsRequest(
                 )
 
                 # Make the request
-                response = await client.create_permission(request=request)
+                page_result = client.list_cached_contents(request=request)
+
+                # Handle the response
+                async for response in page_result:
+                    print(response)
+
+        Args:
+            request (Optional[Union[google.ai.generativelanguage_v1beta.types.ListCachedContentsRequest, dict]]):
+                The request object. Request to list CachedContents.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.ai.generativelanguage_v1beta.services.cache_service.pagers.ListCachedContentsAsyncPager:
+                Response with CachedContents list.
+
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cache_service.ListCachedContentsRequest):
+            request = cache_service.ListCachedContentsRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_cached_contents
+        ]
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.ListCachedContentsAsyncPager(
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def create_cached_content(
+        self,
+        request: Optional[Union[cache_service.CreateCachedContentRequest, dict]] = None,
+        *,
+        cached_content: Optional[gag_cached_content.CachedContent] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> gag_cached_content.CachedContent:
+        r"""Creates CachedContent resource.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.ai import generativelanguage_v1beta
+
+            async def sample_create_cached_content():
+                # Create a client
+                client = generativelanguage_v1beta.CacheServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = generativelanguage_v1beta.CreateCachedContentRequest(
+                )
+
+                # Make the request
+                response = await client.create_cached_content(request=request)
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Optional[Union[google.ai.generativelanguage_v1beta3.types.CreatePermissionRequest, dict]]):
-                The request object. Request to create a ``Permission``.
-            parent (:class:`str`):
-                Required. The parent resource of the ``Permission``.
-                Format: tunedModels/{tuned_model}
+            request (Optional[Union[google.ai.generativelanguage_v1beta.types.CreateCachedContentRequest, dict]]):
+                The request object. Request to create CachedContent.
+            cached_content (:class:`google.ai.generativelanguage_v1beta.types.CachedContent`):
+                Required. The cached content to
+                create.
 
-                This corresponds to the ``parent`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            permission (:class:`google.ai.generativelanguage_v1beta3.types.Permission`):
-                Required. The permission to create.
-                This corresponds to the ``permission`` field
+                This corresponds to the ``cached_content`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
@@ -334,36 +414,19 @@ class PermissionServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            google.ai.generativelanguage_v1beta3.types.Permission:
-                Permission resource grants user,
-                group or the rest of the world access to
-                the PaLM API resource (e.g. a tuned
-                model, file).
+            google.ai.generativelanguage_v1beta.types.CachedContent:
+                Content that has been preprocessed
+                and can be used in subsequent request to
+                GenerativeService.
 
-                A role is a collection of permitted
-                operations that allows users to perform
-                specific actions on PaLM API resources.
-                To make them available to users, groups,
-                or service accounts, you assign roles.
-                When you assign a role, you grant
-                permissions that the role contains.
-
-                There are three concentric roles. Each
-                role is a superset of the previous
-                role's permitted operations:
-
-                - reader can use the resource (e.g.
-                  tuned model) for inference
-                - writer has reader's permissions and
-                  additionally can edit and share
-                - owner has writer's permissions and
-                  additionally can delete
+                Cached content can be only used with
+                model it was created for.
 
         """
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([parent, permission])
+        has_flattened_params = any([cached_content])
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -372,27 +435,19 @@ class PermissionServiceAsyncClient:
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(request, permission_service.CreatePermissionRequest):
-            request = permission_service.CreatePermissionRequest(request)
+        if not isinstance(request, cache_service.CreateCachedContentRequest):
+            request = cache_service.CreateCachedContentRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-        if parent is not None:
-            request.parent = parent
-        if permission is not None:
-            request.permission = permission
+        if cached_content is not None:
+            request.cached_content = cached_content
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_permission
+            self._client._transport.create_cached_content
         ]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -408,16 +463,16 @@ class PermissionServiceAsyncClient:
         # Done; return the response.
         return response
 
-    async def get_permission(
+    async def get_cached_content(
         self,
-        request: Optional[Union[permission_service.GetPermissionRequest, dict]] = None,
+        request: Optional[Union[cache_service.GetCachedContentRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> permission.Permission:
-        r"""Gets information about a specific Permission.
+    ) -> cached_content.CachedContent:
+        r"""Reads CachedContent resource.
 
         .. code-block:: python
 
@@ -428,32 +483,29 @@ class PermissionServiceAsyncClient:
             # - It may require specifying regional endpoints when creating the service
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.ai import generativelanguage_v1beta3
+            from google.ai import generativelanguage_v1beta
 
-            async def sample_get_permission():
+            async def sample_get_cached_content():
                 # Create a client
-                client = generativelanguage_v1beta3.PermissionServiceAsyncClient()
+                client = generativelanguage_v1beta.CacheServiceAsyncClient()
 
                 # Initialize request argument(s)
-                request = generativelanguage_v1beta3.GetPermissionRequest(
+                request = generativelanguage_v1beta.GetCachedContentRequest(
                     name="name_value",
                 )
 
                 # Make the request
-                response = await client.get_permission(request=request)
+                response = await client.get_cached_content(request=request)
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Optional[Union[google.ai.generativelanguage_v1beta3.types.GetPermissionRequest, dict]]):
-                The request object. Request for getting information about a specific
-                ``Permission``.
+            request (Optional[Union[google.ai.generativelanguage_v1beta.types.GetCachedContentRequest, dict]]):
+                The request object. Request to read CachedContent.
             name (:class:`str`):
-                Required. The resource name of the permission.
-
-                Format:
-                ``tunedModels/{tuned_model}permissions/{permission}``
+                Required. The resource name referring to the content
+                cache entry. Format: ``cachedContents/{id}``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -465,30 +517,13 @@ class PermissionServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            google.ai.generativelanguage_v1beta3.types.Permission:
-                Permission resource grants user,
-                group or the rest of the world access to
-                the PaLM API resource (e.g. a tuned
-                model, file).
+            google.ai.generativelanguage_v1beta.types.CachedContent:
+                Content that has been preprocessed
+                and can be used in subsequent request to
+                GenerativeService.
 
-                A role is a collection of permitted
-                operations that allows users to perform
-                specific actions on PaLM API resources.
-                To make them available to users, groups,
-                or service accounts, you assign roles.
-                When you assign a role, you grant
-                permissions that the role contains.
-
-                There are three concentric roles. Each
-                role is a superset of the previous
-                role's permitted operations:
-
-                - reader can use the resource (e.g.
-                  tuned model) for inference
-                - writer has reader's permissions and
-                  additionally can edit and share
-                - owner has writer's permissions and
-                  additionally can delete
+                Cached content can be only used with
+                model it was created for.
 
         """
         # Create or coerce a protobuf request object.
@@ -503,8 +538,8 @@ class PermissionServiceAsyncClient:
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(request, permission_service.GetPermissionRequest):
-            request = permission_service.GetPermissionRequest(request)
+        if not isinstance(request, cache_service.GetCachedContentRequest):
+            request = cache_service.GetCachedContentRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -514,7 +549,7 @@ class PermissionServiceAsyncClient:
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_permission
+            self._client._transport.get_cached_content
         ]
 
         # Certain fields should be provided within the metadata header;
@@ -537,139 +572,18 @@ class PermissionServiceAsyncClient:
         # Done; return the response.
         return response
 
-    async def list_permissions(
+    async def update_cached_content(
         self,
-        request: Optional[
-            Union[permission_service.ListPermissionsRequest, dict]
-        ] = None,
+        request: Optional[Union[cache_service.UpdateCachedContentRequest, dict]] = None,
         *,
-        parent: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> pagers.ListPermissionsAsyncPager:
-        r"""Lists permissions for the specific resource.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.ai import generativelanguage_v1beta3
-
-            async def sample_list_permissions():
-                # Create a client
-                client = generativelanguage_v1beta3.PermissionServiceAsyncClient()
-
-                # Initialize request argument(s)
-                request = generativelanguage_v1beta3.ListPermissionsRequest(
-                    parent="parent_value",
-                )
-
-                # Make the request
-                page_result = client.list_permissions(request=request)
-
-                # Handle the response
-                async for response in page_result:
-                    print(response)
-
-        Args:
-            request (Optional[Union[google.ai.generativelanguage_v1beta3.types.ListPermissionsRequest, dict]]):
-                The request object. Request for listing permissions.
-            parent (:class:`str`):
-                Required. The parent resource of the permissions.
-                Format: tunedModels/{tuned_model}
-
-                This corresponds to the ``parent`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.ai.generativelanguage_v1beta3.services.permission_service.pagers.ListPermissionsAsyncPager:
-                Response from ListPermissions containing a paginated list of
-                   permissions.
-
-                Iterating over this object will yield results and
-                resolve additional pages automatically.
-
-        """
-        # Create or coerce a protobuf request object.
-        # - Quick check: If we got a request object, we should *not* have
-        #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([parent])
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # - Use the request object if provided (there's no risk of modifying the input as
-        #   there are no flattened fields), or create one.
-        if not isinstance(request, permission_service.ListPermissionsRequest):
-            request = permission_service.ListPermissionsRequest(request)
-
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
-        if parent is not None:
-            request.parent = parent
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_permissions
-        ]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
-
-        # Validate the universe domain.
-        self._client._validate_universe_domain()
-
-        # Send the request.
-        response = await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # This method is paged; wrap the response in a pager, which provides
-        # an `__aiter__` convenience method.
-        response = pagers.ListPermissionsAsyncPager(
-            method=rpc,
-            request=request,
-            response=response,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    async def update_permission(
-        self,
-        request: Optional[
-            Union[permission_service.UpdatePermissionRequest, dict]
-        ] = None,
-        *,
-        permission: Optional[gag_permission.Permission] = None,
+        cached_content: Optional[gag_cached_content.CachedContent] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> gag_permission.Permission:
-        r"""Updates the permission.
+    ) -> gag_cached_content.CachedContent:
+        r"""Updates CachedContent resource (only expiration is
+        updatable).
 
         .. code-block:: python
 
@@ -680,39 +594,34 @@ class PermissionServiceAsyncClient:
             # - It may require specifying regional endpoints when creating the service
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.ai import generativelanguage_v1beta3
+            from google.ai import generativelanguage_v1beta
 
-            async def sample_update_permission():
+            async def sample_update_cached_content():
                 # Create a client
-                client = generativelanguage_v1beta3.PermissionServiceAsyncClient()
+                client = generativelanguage_v1beta.CacheServiceAsyncClient()
 
                 # Initialize request argument(s)
-                request = generativelanguage_v1beta3.UpdatePermissionRequest(
+                request = generativelanguage_v1beta.UpdateCachedContentRequest(
                 )
 
                 # Make the request
-                response = await client.update_permission(request=request)
+                response = await client.update_cached_content(request=request)
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Optional[Union[google.ai.generativelanguage_v1beta3.types.UpdatePermissionRequest, dict]]):
-                The request object. Request to update the ``Permission``.
-            permission (:class:`google.ai.generativelanguage_v1beta3.types.Permission`):
-                Required. The permission to update.
+            request (Optional[Union[google.ai.generativelanguage_v1beta.types.UpdateCachedContentRequest, dict]]):
+                The request object. Request to update CachedContent.
+            cached_content (:class:`google.ai.generativelanguage_v1beta.types.CachedContent`):
+                Required. The content cache entry to
+                update
 
-                The permission's ``name`` field is used to identify the
-                permission to update.
-
-                This corresponds to the ``permission`` field
+                This corresponds to the ``cached_content`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
-                Required. The list of fields to update. Accepted ones:
-
-                -  role (``Permission.role`` field)
-
+                The list of fields to update.
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -723,36 +632,19 @@ class PermissionServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            google.ai.generativelanguage_v1beta3.types.Permission:
-                Permission resource grants user,
-                group or the rest of the world access to
-                the PaLM API resource (e.g. a tuned
-                model, file).
+            google.ai.generativelanguage_v1beta.types.CachedContent:
+                Content that has been preprocessed
+                and can be used in subsequent request to
+                GenerativeService.
 
-                A role is a collection of permitted
-                operations that allows users to perform
-                specific actions on PaLM API resources.
-                To make them available to users, groups,
-                or service accounts, you assign roles.
-                When you assign a role, you grant
-                permissions that the role contains.
-
-                There are three concentric roles. Each
-                role is a superset of the previous
-                role's permitted operations:
-
-                - reader can use the resource (e.g.
-                  tuned model) for inference
-                - writer has reader's permissions and
-                  additionally can edit and share
-                - owner has writer's permissions and
-                  additionally can delete
+                Cached content can be only used with
+                model it was created for.
 
         """
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([permission, update_mask])
+        has_flattened_params = any([cached_content, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -761,27 +653,27 @@ class PermissionServiceAsyncClient:
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(request, permission_service.UpdatePermissionRequest):
-            request = permission_service.UpdatePermissionRequest(request)
+        if not isinstance(request, cache_service.UpdateCachedContentRequest):
+            request = cache_service.UpdateCachedContentRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-        if permission is not None:
-            request.permission = permission
+        if cached_content is not None:
+            request.cached_content = cached_content
         if update_mask is not None:
             request.update_mask = update_mask
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_permission
+            self._client._transport.update_cached_content
         ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata(
-                (("permission.name", request.permission.name),)
+                (("cached_content.name", request.cached_content.name),)
             ),
         )
 
@@ -799,18 +691,16 @@ class PermissionServiceAsyncClient:
         # Done; return the response.
         return response
 
-    async def delete_permission(
+    async def delete_cached_content(
         self,
-        request: Optional[
-            Union[permission_service.DeletePermissionRequest, dict]
-        ] = None,
+        request: Optional[Union[cache_service.DeleteCachedContentRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
-        r"""Deletes the permission.
+        r"""Deletes CachedContent resource.
 
         .. code-block:: python
 
@@ -821,26 +711,26 @@ class PermissionServiceAsyncClient:
             # - It may require specifying regional endpoints when creating the service
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.ai import generativelanguage_v1beta3
+            from google.ai import generativelanguage_v1beta
 
-            async def sample_delete_permission():
+            async def sample_delete_cached_content():
                 # Create a client
-                client = generativelanguage_v1beta3.PermissionServiceAsyncClient()
+                client = generativelanguage_v1beta.CacheServiceAsyncClient()
 
                 # Initialize request argument(s)
-                request = generativelanguage_v1beta3.DeletePermissionRequest(
+                request = generativelanguage_v1beta.DeleteCachedContentRequest(
                     name="name_value",
                 )
 
                 # Make the request
-                await client.delete_permission(request=request)
+                await client.delete_cached_content(request=request)
 
         Args:
-            request (Optional[Union[google.ai.generativelanguage_v1beta3.types.DeletePermissionRequest, dict]]):
-                The request object. Request to delete the ``Permission``.
+            request (Optional[Union[google.ai.generativelanguage_v1beta.types.DeleteCachedContentRequest, dict]]):
+                The request object. Request to delete CachedContent.
             name (:class:`str`):
-                Required. The resource name of the permission. Format:
-                ``tunedModels/{tuned_model}/permissions/{permission}``
+                Required. The resource name referring to the content
+                cache entry Format: ``cachedContents/{id}``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -863,8 +753,8 @@ class PermissionServiceAsyncClient:
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(request, permission_service.DeletePermissionRequest):
-            request = permission_service.DeletePermissionRequest(request)
+        if not isinstance(request, cache_service.DeleteCachedContentRequest):
+            request = cache_service.DeleteCachedContentRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -874,7 +764,7 @@ class PermissionServiceAsyncClient:
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_permission
+            self._client._transport.delete_cached_content
         ]
 
         # Certain fields should be provided within the metadata header;
@@ -894,95 +784,7 @@ class PermissionServiceAsyncClient:
             metadata=metadata,
         )
 
-    async def transfer_ownership(
-        self,
-        request: Optional[
-            Union[permission_service.TransferOwnershipRequest, dict]
-        ] = None,
-        *,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> permission_service.TransferOwnershipResponse:
-        r"""Transfers ownership of the tuned model.
-        This is the only way to change ownership of the tuned
-        model. The current owner will be downgraded to writer
-        role.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.ai import generativelanguage_v1beta3
-
-            async def sample_transfer_ownership():
-                # Create a client
-                client = generativelanguage_v1beta3.PermissionServiceAsyncClient()
-
-                # Initialize request argument(s)
-                request = generativelanguage_v1beta3.TransferOwnershipRequest(
-                    name="name_value",
-                    email_address="email_address_value",
-                )
-
-                # Make the request
-                response = await client.transfer_ownership(request=request)
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Optional[Union[google.ai.generativelanguage_v1beta3.types.TransferOwnershipRequest, dict]]):
-                The request object. Request to transfer the ownership of
-                the tuned model.
-            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.ai.generativelanguage_v1beta3.types.TransferOwnershipResponse:
-                Response from TransferOwnership.
-        """
-        # Create or coerce a protobuf request object.
-        # - Use the request object if provided (there's no risk of modifying the input as
-        #   there are no flattened fields), or create one.
-        if not isinstance(request, permission_service.TransferOwnershipRequest):
-            request = permission_service.TransferOwnershipRequest(request)
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.transfer_ownership
-        ]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
-
-        # Validate the universe domain.
-        self._client._validate_universe_domain()
-
-        # Send the request.
-        response = await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    async def __aenter__(self) -> "PermissionServiceAsyncClient":
+    async def __aenter__(self) -> "CacheServiceAsyncClient":
         return self
 
     async def __aexit__(self, exc_type, exc, tb):
@@ -994,4 +796,4 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
 )
 
 
-__all__ = ("PermissionServiceAsyncClient",)
+__all__ = ("CacheServiceAsyncClient",)

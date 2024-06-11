@@ -34,8 +34,11 @@ from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
+from google.protobuf import duration_pb2  # type: ignore
+from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import json_format
 from google.protobuf import struct_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 import grpc
 from grpc.experimental import aio
 from proto.marshal.rules import wrappers
@@ -44,18 +47,18 @@ import pytest
 from requests import PreparedRequest, Request, Response
 from requests.sessions import Session
 
-from google.ai.generativelanguage_v1beta.services.generative_service import (
-    GenerativeServiceAsyncClient,
-    GenerativeServiceClient,
+from google.ai.generativelanguage_v1beta.services.cache_service import (
+    CacheServiceAsyncClient,
+    CacheServiceClient,
+    pagers,
     transports,
 )
 from google.ai.generativelanguage_v1beta.types import (
-    generative_service,
-    retriever,
-    safety,
+    cached_content as gag_cached_content,
 )
+from google.ai.generativelanguage_v1beta.types import cache_service
+from google.ai.generativelanguage_v1beta.types import cached_content
 from google.ai.generativelanguage_v1beta.types import content
-from google.ai.generativelanguage_v1beta.types import content as gag_content
 
 
 def client_cert_source_callback():
@@ -91,91 +94,71 @@ def test__get_default_mtls_endpoint():
     sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
     non_googleapi = "api.example.com"
 
-    assert GenerativeServiceClient._get_default_mtls_endpoint(None) is None
+    assert CacheServiceClient._get_default_mtls_endpoint(None) is None
     assert (
-        GenerativeServiceClient._get_default_mtls_endpoint(api_endpoint)
+        CacheServiceClient._get_default_mtls_endpoint(api_endpoint) == api_mtls_endpoint
+    )
+    assert (
+        CacheServiceClient._get_default_mtls_endpoint(api_mtls_endpoint)
         == api_mtls_endpoint
     )
     assert (
-        GenerativeServiceClient._get_default_mtls_endpoint(api_mtls_endpoint)
-        == api_mtls_endpoint
-    )
-    assert (
-        GenerativeServiceClient._get_default_mtls_endpoint(sandbox_endpoint)
+        CacheServiceClient._get_default_mtls_endpoint(sandbox_endpoint)
         == sandbox_mtls_endpoint
     )
     assert (
-        GenerativeServiceClient._get_default_mtls_endpoint(sandbox_mtls_endpoint)
+        CacheServiceClient._get_default_mtls_endpoint(sandbox_mtls_endpoint)
         == sandbox_mtls_endpoint
     )
-    assert (
-        GenerativeServiceClient._get_default_mtls_endpoint(non_googleapi)
-        == non_googleapi
-    )
+    assert CacheServiceClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
 
 
 def test__read_environment_variables():
-    assert GenerativeServiceClient._read_environment_variables() == (
-        False,
-        "auto",
-        None,
-    )
+    assert CacheServiceClient._read_environment_variables() == (False, "auto", None)
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-        assert GenerativeServiceClient._read_environment_variables() == (
-            True,
-            "auto",
-            None,
-        )
+        assert CacheServiceClient._read_environment_variables() == (True, "auto", None)
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
-        assert GenerativeServiceClient._read_environment_variables() == (
-            False,
-            "auto",
-            None,
-        )
+        assert CacheServiceClient._read_environment_variables() == (False, "auto", None)
 
     with mock.patch.dict(
         os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
     ):
         with pytest.raises(ValueError) as excinfo:
-            GenerativeServiceClient._read_environment_variables()
+            CacheServiceClient._read_environment_variables()
     assert (
         str(excinfo.value)
         == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
     )
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
-        assert GenerativeServiceClient._read_environment_variables() == (
+        assert CacheServiceClient._read_environment_variables() == (
             False,
             "never",
             None,
         )
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
-        assert GenerativeServiceClient._read_environment_variables() == (
+        assert CacheServiceClient._read_environment_variables() == (
             False,
             "always",
             None,
         )
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"}):
-        assert GenerativeServiceClient._read_environment_variables() == (
-            False,
-            "auto",
-            None,
-        )
+        assert CacheServiceClient._read_environment_variables() == (False, "auto", None)
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError) as excinfo:
-            GenerativeServiceClient._read_environment_variables()
+            CacheServiceClient._read_environment_variables()
     assert (
         str(excinfo.value)
         == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
     )
 
     with mock.patch.dict(os.environ, {"GOOGLE_CLOUD_UNIVERSE_DOMAIN": "foo.com"}):
-        assert GenerativeServiceClient._read_environment_variables() == (
+        assert CacheServiceClient._read_environment_variables() == (
             False,
             "auto",
             "foo.com",
@@ -186,15 +169,13 @@ def test__get_client_cert_source():
     mock_provided_cert_source = mock.Mock()
     mock_default_cert_source = mock.Mock()
 
-    assert GenerativeServiceClient._get_client_cert_source(None, False) is None
+    assert CacheServiceClient._get_client_cert_source(None, False) is None
     assert (
-        GenerativeServiceClient._get_client_cert_source(
-            mock_provided_cert_source, False
-        )
+        CacheServiceClient._get_client_cert_source(mock_provided_cert_source, False)
         is None
     )
     assert (
-        GenerativeServiceClient._get_client_cert_source(mock_provided_cert_source, True)
+        CacheServiceClient._get_client_cert_source(mock_provided_cert_source, True)
         == mock_provided_cert_source
     )
 
@@ -206,11 +187,11 @@ def test__get_client_cert_source():
             return_value=mock_default_cert_source,
         ):
             assert (
-                GenerativeServiceClient._get_client_cert_source(None, True)
+                CacheServiceClient._get_client_cert_source(None, True)
                 is mock_default_cert_source
             )
             assert (
-                GenerativeServiceClient._get_client_cert_source(
+                CacheServiceClient._get_client_cert_source(
                     mock_provided_cert_source, "true"
                 )
                 is mock_provided_cert_source
@@ -218,66 +199,64 @@ def test__get_client_cert_source():
 
 
 @mock.patch.object(
-    GenerativeServiceClient,
+    CacheServiceClient,
     "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(GenerativeServiceClient),
+    modify_default_endpoint_template(CacheServiceClient),
 )
 @mock.patch.object(
-    GenerativeServiceAsyncClient,
+    CacheServiceAsyncClient,
     "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(GenerativeServiceAsyncClient),
+    modify_default_endpoint_template(CacheServiceAsyncClient),
 )
 def test__get_api_endpoint():
     api_override = "foo.com"
     mock_client_cert_source = mock.Mock()
-    default_universe = GenerativeServiceClient._DEFAULT_UNIVERSE
-    default_endpoint = GenerativeServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
+    default_universe = CacheServiceClient._DEFAULT_UNIVERSE
+    default_endpoint = CacheServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
         UNIVERSE_DOMAIN=default_universe
     )
     mock_universe = "bar.com"
-    mock_endpoint = GenerativeServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
+    mock_endpoint = CacheServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
         UNIVERSE_DOMAIN=mock_universe
     )
 
     assert (
-        GenerativeServiceClient._get_api_endpoint(
+        CacheServiceClient._get_api_endpoint(
             api_override, mock_client_cert_source, default_universe, "always"
         )
         == api_override
     )
     assert (
-        GenerativeServiceClient._get_api_endpoint(
+        CacheServiceClient._get_api_endpoint(
             None, mock_client_cert_source, default_universe, "auto"
         )
-        == GenerativeServiceClient.DEFAULT_MTLS_ENDPOINT
+        == CacheServiceClient.DEFAULT_MTLS_ENDPOINT
     )
     assert (
-        GenerativeServiceClient._get_api_endpoint(None, None, default_universe, "auto")
+        CacheServiceClient._get_api_endpoint(None, None, default_universe, "auto")
         == default_endpoint
     )
     assert (
-        GenerativeServiceClient._get_api_endpoint(
-            None, None, default_universe, "always"
-        )
-        == GenerativeServiceClient.DEFAULT_MTLS_ENDPOINT
+        CacheServiceClient._get_api_endpoint(None, None, default_universe, "always")
+        == CacheServiceClient.DEFAULT_MTLS_ENDPOINT
     )
     assert (
-        GenerativeServiceClient._get_api_endpoint(
+        CacheServiceClient._get_api_endpoint(
             None, mock_client_cert_source, default_universe, "always"
         )
-        == GenerativeServiceClient.DEFAULT_MTLS_ENDPOINT
+        == CacheServiceClient.DEFAULT_MTLS_ENDPOINT
     )
     assert (
-        GenerativeServiceClient._get_api_endpoint(None, None, mock_universe, "never")
+        CacheServiceClient._get_api_endpoint(None, None, mock_universe, "never")
         == mock_endpoint
     )
     assert (
-        GenerativeServiceClient._get_api_endpoint(None, None, default_universe, "never")
+        CacheServiceClient._get_api_endpoint(None, None, default_universe, "never")
         == default_endpoint
     )
 
     with pytest.raises(MutualTLSChannelError) as excinfo:
-        GenerativeServiceClient._get_api_endpoint(
+        CacheServiceClient._get_api_endpoint(
             None, mock_client_cert_source, mock_universe, "auto"
         )
     assert (
@@ -291,30 +270,30 @@ def test__get_universe_domain():
     universe_domain_env = "bar.com"
 
     assert (
-        GenerativeServiceClient._get_universe_domain(
+        CacheServiceClient._get_universe_domain(
             client_universe_domain, universe_domain_env
         )
         == client_universe_domain
     )
     assert (
-        GenerativeServiceClient._get_universe_domain(None, universe_domain_env)
+        CacheServiceClient._get_universe_domain(None, universe_domain_env)
         == universe_domain_env
     )
     assert (
-        GenerativeServiceClient._get_universe_domain(None, None)
-        == GenerativeServiceClient._DEFAULT_UNIVERSE
+        CacheServiceClient._get_universe_domain(None, None)
+        == CacheServiceClient._DEFAULT_UNIVERSE
     )
 
     with pytest.raises(ValueError) as excinfo:
-        GenerativeServiceClient._get_universe_domain("", None)
+        CacheServiceClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
 
 
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name",
     [
-        (GenerativeServiceClient, transports.GenerativeServiceGrpcTransport, "grpc"),
-        (GenerativeServiceClient, transports.GenerativeServiceRestTransport, "rest"),
+        (CacheServiceClient, transports.CacheServiceGrpcTransport, "grpc"),
+        (CacheServiceClient, transports.CacheServiceRestTransport, "rest"),
     ],
 )
 def test__validate_universe_domain(client_class, transport_class, transport_name):
@@ -393,14 +372,12 @@ def test__validate_universe_domain(client_class, transport_class, transport_name
 @pytest.mark.parametrize(
     "client_class,transport_name",
     [
-        (GenerativeServiceClient, "grpc"),
-        (GenerativeServiceAsyncClient, "grpc_asyncio"),
-        (GenerativeServiceClient, "rest"),
+        (CacheServiceClient, "grpc"),
+        (CacheServiceAsyncClient, "grpc_asyncio"),
+        (CacheServiceClient, "rest"),
     ],
 )
-def test_generative_service_client_from_service_account_info(
-    client_class, transport_name
-):
+def test_cache_service_client_from_service_account_info(client_class, transport_name):
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
         service_account.Credentials, "from_service_account_info"
@@ -421,12 +398,12 @@ def test_generative_service_client_from_service_account_info(
 @pytest.mark.parametrize(
     "transport_class,transport_name",
     [
-        (transports.GenerativeServiceGrpcTransport, "grpc"),
-        (transports.GenerativeServiceGrpcAsyncIOTransport, "grpc_asyncio"),
-        (transports.GenerativeServiceRestTransport, "rest"),
+        (transports.CacheServiceGrpcTransport, "grpc"),
+        (transports.CacheServiceGrpcAsyncIOTransport, "grpc_asyncio"),
+        (transports.CacheServiceRestTransport, "rest"),
     ],
 )
-def test_generative_service_client_service_account_always_use_jwt(
+def test_cache_service_client_service_account_always_use_jwt(
     transport_class, transport_name
 ):
     with mock.patch.object(
@@ -447,14 +424,12 @@ def test_generative_service_client_service_account_always_use_jwt(
 @pytest.mark.parametrize(
     "client_class,transport_name",
     [
-        (GenerativeServiceClient, "grpc"),
-        (GenerativeServiceAsyncClient, "grpc_asyncio"),
-        (GenerativeServiceClient, "rest"),
+        (CacheServiceClient, "grpc"),
+        (CacheServiceAsyncClient, "grpc_asyncio"),
+        (CacheServiceClient, "rest"),
     ],
 )
-def test_generative_service_client_from_service_account_file(
-    client_class, transport_name
-):
+def test_cache_service_client_from_service_account_file(client_class, transport_name):
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
         service_account.Credentials, "from_service_account_file"
@@ -479,51 +454,51 @@ def test_generative_service_client_from_service_account_file(
         )
 
 
-def test_generative_service_client_get_transport_class():
-    transport = GenerativeServiceClient.get_transport_class()
+def test_cache_service_client_get_transport_class():
+    transport = CacheServiceClient.get_transport_class()
     available_transports = [
-        transports.GenerativeServiceGrpcTransport,
-        transports.GenerativeServiceRestTransport,
+        transports.CacheServiceGrpcTransport,
+        transports.CacheServiceRestTransport,
     ]
     assert transport in available_transports
 
-    transport = GenerativeServiceClient.get_transport_class("grpc")
-    assert transport == transports.GenerativeServiceGrpcTransport
+    transport = CacheServiceClient.get_transport_class("grpc")
+    assert transport == transports.CacheServiceGrpcTransport
 
 
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name",
     [
-        (GenerativeServiceClient, transports.GenerativeServiceGrpcTransport, "grpc"),
+        (CacheServiceClient, transports.CacheServiceGrpcTransport, "grpc"),
         (
-            GenerativeServiceAsyncClient,
-            transports.GenerativeServiceGrpcAsyncIOTransport,
+            CacheServiceAsyncClient,
+            transports.CacheServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
-        (GenerativeServiceClient, transports.GenerativeServiceRestTransport, "rest"),
+        (CacheServiceClient, transports.CacheServiceRestTransport, "rest"),
     ],
 )
 @mock.patch.object(
-    GenerativeServiceClient,
+    CacheServiceClient,
     "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(GenerativeServiceClient),
+    modify_default_endpoint_template(CacheServiceClient),
 )
 @mock.patch.object(
-    GenerativeServiceAsyncClient,
+    CacheServiceAsyncClient,
     "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(GenerativeServiceAsyncClient),
+    modify_default_endpoint_template(CacheServiceAsyncClient),
 )
-def test_generative_service_client_client_options(
+def test_cache_service_client_client_options(
     client_class, transport_class, transport_name
 ):
     # Check that if channel is provided we won't create a new one.
-    with mock.patch.object(GenerativeServiceClient, "get_transport_class") as gtc:
+    with mock.patch.object(CacheServiceClient, "get_transport_class") as gtc:
         transport = transport_class(credentials=ga_credentials.AnonymousCredentials())
         client = client_class(transport=transport)
         gtc.assert_not_called()
 
     # Check that if channel is provided via str we will create a new one.
-    with mock.patch.object(GenerativeServiceClient, "get_transport_class") as gtc:
+    with mock.patch.object(CacheServiceClient, "get_transport_class") as gtc:
         client = client_class(transport=transport_name)
         gtc.assert_called()
 
@@ -646,56 +621,36 @@ def test_generative_service_client_client_options(
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name,use_client_cert_env",
     [
+        (CacheServiceClient, transports.CacheServiceGrpcTransport, "grpc", "true"),
         (
-            GenerativeServiceClient,
-            transports.GenerativeServiceGrpcTransport,
-            "grpc",
-            "true",
-        ),
-        (
-            GenerativeServiceAsyncClient,
-            transports.GenerativeServiceGrpcAsyncIOTransport,
+            CacheServiceAsyncClient,
+            transports.CacheServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
             "true",
         ),
+        (CacheServiceClient, transports.CacheServiceGrpcTransport, "grpc", "false"),
         (
-            GenerativeServiceClient,
-            transports.GenerativeServiceGrpcTransport,
-            "grpc",
-            "false",
-        ),
-        (
-            GenerativeServiceAsyncClient,
-            transports.GenerativeServiceGrpcAsyncIOTransport,
+            CacheServiceAsyncClient,
+            transports.CacheServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
             "false",
         ),
-        (
-            GenerativeServiceClient,
-            transports.GenerativeServiceRestTransport,
-            "rest",
-            "true",
-        ),
-        (
-            GenerativeServiceClient,
-            transports.GenerativeServiceRestTransport,
-            "rest",
-            "false",
-        ),
+        (CacheServiceClient, transports.CacheServiceRestTransport, "rest", "true"),
+        (CacheServiceClient, transports.CacheServiceRestTransport, "rest", "false"),
     ],
 )
 @mock.patch.object(
-    GenerativeServiceClient,
+    CacheServiceClient,
     "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(GenerativeServiceClient),
+    modify_default_endpoint_template(CacheServiceClient),
 )
 @mock.patch.object(
-    GenerativeServiceAsyncClient,
+    CacheServiceAsyncClient,
     "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(GenerativeServiceAsyncClient),
+    modify_default_endpoint_template(CacheServiceAsyncClient),
 )
 @mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"})
-def test_generative_service_client_mtls_env_auto(
+def test_cache_service_client_mtls_env_auto(
     client_class, transport_class, transport_name, use_client_cert_env
 ):
     # This tests the endpoint autoswitch behavior. Endpoint is autoswitched to the default
@@ -797,20 +752,16 @@ def test_generative_service_client_mtls_env_auto(
                 )
 
 
-@pytest.mark.parametrize(
-    "client_class", [GenerativeServiceClient, GenerativeServiceAsyncClient]
+@pytest.mark.parametrize("client_class", [CacheServiceClient, CacheServiceAsyncClient])
+@mock.patch.object(
+    CacheServiceClient, "DEFAULT_ENDPOINT", modify_default_endpoint(CacheServiceClient)
 )
 @mock.patch.object(
-    GenerativeServiceClient,
+    CacheServiceAsyncClient,
     "DEFAULT_ENDPOINT",
-    modify_default_endpoint(GenerativeServiceClient),
+    modify_default_endpoint(CacheServiceAsyncClient),
 )
-@mock.patch.object(
-    GenerativeServiceAsyncClient,
-    "DEFAULT_ENDPOINT",
-    modify_default_endpoint(GenerativeServiceAsyncClient),
-)
-def test_generative_service_client_get_mtls_endpoint_and_cert_source(client_class):
+def test_cache_service_client_get_mtls_endpoint_and_cert_source(client_class):
     mock_client_cert_source = mock.Mock()
 
     # Test the case GOOGLE_API_USE_CLIENT_CERTIFICATE is "true".
@@ -901,28 +852,26 @@ def test_generative_service_client_get_mtls_endpoint_and_cert_source(client_clas
         )
 
 
-@pytest.mark.parametrize(
-    "client_class", [GenerativeServiceClient, GenerativeServiceAsyncClient]
+@pytest.mark.parametrize("client_class", [CacheServiceClient, CacheServiceAsyncClient])
+@mock.patch.object(
+    CacheServiceClient,
+    "_DEFAULT_ENDPOINT_TEMPLATE",
+    modify_default_endpoint_template(CacheServiceClient),
 )
 @mock.patch.object(
-    GenerativeServiceClient,
+    CacheServiceAsyncClient,
     "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(GenerativeServiceClient),
+    modify_default_endpoint_template(CacheServiceAsyncClient),
 )
-@mock.patch.object(
-    GenerativeServiceAsyncClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(GenerativeServiceAsyncClient),
-)
-def test_generative_service_client_client_api_endpoint(client_class):
+def test_cache_service_client_client_api_endpoint(client_class):
     mock_client_cert_source = client_cert_source_callback
     api_override = "foo.com"
-    default_universe = GenerativeServiceClient._DEFAULT_UNIVERSE
-    default_endpoint = GenerativeServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
+    default_universe = CacheServiceClient._DEFAULT_UNIVERSE
+    default_endpoint = CacheServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
         UNIVERSE_DOMAIN=default_universe
     )
     mock_universe = "bar.com"
-    mock_endpoint = GenerativeServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
+    mock_endpoint = CacheServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
         UNIVERSE_DOMAIN=mock_universe
     )
 
@@ -990,16 +939,16 @@ def test_generative_service_client_client_api_endpoint(client_class):
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name",
     [
-        (GenerativeServiceClient, transports.GenerativeServiceGrpcTransport, "grpc"),
+        (CacheServiceClient, transports.CacheServiceGrpcTransport, "grpc"),
         (
-            GenerativeServiceAsyncClient,
-            transports.GenerativeServiceGrpcAsyncIOTransport,
+            CacheServiceAsyncClient,
+            transports.CacheServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
-        (GenerativeServiceClient, transports.GenerativeServiceRestTransport, "rest"),
+        (CacheServiceClient, transports.CacheServiceRestTransport, "rest"),
     ],
 )
-def test_generative_service_client_client_options_scopes(
+def test_cache_service_client_client_options_scopes(
     client_class, transport_class, transport_name
 ):
     # Check the case scopes are provided.
@@ -1028,26 +977,21 @@ def test_generative_service_client_client_options_scopes(
     "client_class,transport_class,transport_name,grpc_helpers",
     [
         (
-            GenerativeServiceClient,
-            transports.GenerativeServiceGrpcTransport,
+            CacheServiceClient,
+            transports.CacheServiceGrpcTransport,
             "grpc",
             grpc_helpers,
         ),
         (
-            GenerativeServiceAsyncClient,
-            transports.GenerativeServiceGrpcAsyncIOTransport,
+            CacheServiceAsyncClient,
+            transports.CacheServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
             grpc_helpers_async,
         ),
-        (
-            GenerativeServiceClient,
-            transports.GenerativeServiceRestTransport,
-            "rest",
-            None,
-        ),
+        (CacheServiceClient, transports.CacheServiceRestTransport, "rest", None),
     ],
 )
-def test_generative_service_client_client_options_credentials_file(
+def test_cache_service_client_client_options_credentials_file(
     client_class, transport_class, transport_name, grpc_helpers
 ):
     # Check the case credentials file is provided.
@@ -1071,14 +1015,12 @@ def test_generative_service_client_client_options_credentials_file(
         )
 
 
-def test_generative_service_client_client_options_from_dict():
+def test_cache_service_client_client_options_from_dict():
     with mock.patch(
-        "google.ai.generativelanguage_v1beta.services.generative_service.transports.GenerativeServiceGrpcTransport.__init__"
+        "google.ai.generativelanguage_v1beta.services.cache_service.transports.CacheServiceGrpcTransport.__init__"
     ) as grpc_transport:
         grpc_transport.return_value = None
-        client = GenerativeServiceClient(
-            client_options={"api_endpoint": "squid.clam.whelk"}
-        )
+        client = CacheServiceClient(client_options={"api_endpoint": "squid.clam.whelk"})
         grpc_transport.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -1096,20 +1038,20 @@ def test_generative_service_client_client_options_from_dict():
     "client_class,transport_class,transport_name,grpc_helpers",
     [
         (
-            GenerativeServiceClient,
-            transports.GenerativeServiceGrpcTransport,
+            CacheServiceClient,
+            transports.CacheServiceGrpcTransport,
             "grpc",
             grpc_helpers,
         ),
         (
-            GenerativeServiceAsyncClient,
-            transports.GenerativeServiceGrpcAsyncIOTransport,
+            CacheServiceAsyncClient,
+            transports.CacheServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
             grpc_helpers_async,
         ),
     ],
 )
-def test_generative_service_client_create_channel_credentials_file(
+def test_cache_service_client_create_channel_credentials_file(
     client_class, transport_class, transport_name, grpc_helpers
 ):
     # Check the case credentials file is provided.
@@ -1164,12 +1106,12 @@ def test_generative_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        generative_service.GenerateContentRequest,
+        cache_service.ListCachedContentsRequest,
         dict,
     ],
 )
-def test_generate_content(request_type, transport: str = "grpc"):
-    client = GenerativeServiceClient(
+def test_list_cached_contents(request_type, transport: str = "grpc"):
+    client = CacheServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -1179,44 +1121,51 @@ def test_generate_content(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.generate_content), "__call__") as call:
+    with mock.patch.object(
+        type(client.transport.list_cached_contents), "__call__"
+    ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = generative_service.GenerateContentResponse()
-        response = client.generate_content(request)
+        call.return_value = cache_service.ListCachedContentsResponse(
+            next_page_token="next_page_token_value",
+        )
+        response = client.list_cached_contents(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        request = generative_service.GenerateContentRequest()
+        request = cache_service.ListCachedContentsRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, generative_service.GenerateContentResponse)
+    assert isinstance(response, pagers.ListCachedContentsPager)
+    assert response.next_page_token == "next_page_token_value"
 
 
-def test_generate_content_empty_call():
+def test_list_cached_contents_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
-    client = GenerativeServiceClient(
+    client = CacheServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.generate_content), "__call__") as call:
+    with mock.patch.object(
+        type(client.transport.list_cached_contents), "__call__"
+    ) as call:
         call.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client.generate_content()
+        client.list_cached_contents()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == generative_service.GenerateContentRequest()
+        assert args[0] == cache_service.ListCachedContentsRequest()
 
 
-def test_generate_content_non_empty_request_with_auto_populated_field():
+def test_list_cached_contents_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
-    client = GenerativeServiceClient(
+    client = CacheServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
@@ -1224,30 +1173,30 @@ def test_generate_content_non_empty_request_with_auto_populated_field():
     # Populate all string fields in the request which are not UUID4
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
-    request = generative_service.GenerateContentRequest(
-        model="model_value",
-        cached_content="cached_content_value",
+    request = cache_service.ListCachedContentsRequest(
+        page_token="page_token_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.generate_content), "__call__") as call:
+    with mock.patch.object(
+        type(client.transport.list_cached_contents), "__call__"
+    ) as call:
         call.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client.generate_content(request=request)
+        client.list_cached_contents(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == generative_service.GenerateContentRequest(
-            model="model_value",
-            cached_content="cached_content_value",
+        assert args[0] == cache_service.ListCachedContentsRequest(
+            page_token="page_token_value",
         )
 
 
-def test_generate_content_use_cached_wrapped_rpc():
+def test_list_cached_contents_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = GenerativeServiceClient(
+        client = CacheServiceClient(
             credentials=ga_credentials.AnonymousCredentials(),
             transport="grpc",
         )
@@ -1257,7 +1206,9 @@ def test_generate_content_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert client._transport.generate_content in client._transport._wrapped_methods
+        assert (
+            client._transport.list_cached_contents in client._transport._wrapped_methods
+        )
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
@@ -1265,15 +1216,15 @@ def test_generate_content_use_cached_wrapped_rpc():
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
         client._transport._wrapped_methods[
-            client._transport.generate_content
+            client._transport.list_cached_contents
         ] = mock_rpc
         request = {}
-        client.generate_content(request)
+        client.list_cached_contents(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
-        client.generate_content(request)
+        client.list_cached_contents(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
@@ -1281,34 +1232,38 @@ def test_generate_content_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_generate_content_empty_call_async():
+async def test_list_cached_contents_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
-    client = GenerativeServiceAsyncClient(
+    client = CacheServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc_asyncio",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.generate_content), "__call__") as call:
+    with mock.patch.object(
+        type(client.transport.list_cached_contents), "__call__"
+    ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            generative_service.GenerateContentResponse()
+            cache_service.ListCachedContentsResponse(
+                next_page_token="next_page_token_value",
+            )
         )
-        response = await client.generate_content()
+        response = await client.list_cached_contents()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == generative_service.GenerateContentRequest()
+        assert args[0] == cache_service.ListCachedContentsRequest()
 
 
 @pytest.mark.asyncio
-async def test_generate_content_async_use_cached_wrapped_rpc(
+async def test_list_cached_contents_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
-        client = GenerativeServiceAsyncClient(
+        client = CacheServiceAsyncClient(
             credentials=ga_credentials.AnonymousCredentials(),
             transport=transport,
         )
@@ -1319,7 +1274,7 @@ async def test_generate_content_async_use_cached_wrapped_rpc(
 
         # Ensure method has been cached
         assert (
-            client._client._transport.generate_content
+            client._client._transport.list_cached_contents
             in client._client._transport._wrapped_methods
         )
 
@@ -1331,16 +1286,16 @@ async def test_generate_content_async_use_cached_wrapped_rpc(
 
         mock_object = AwaitableMock()
         client._client._transport._wrapped_methods[
-            client._client._transport.generate_content
+            client._client._transport.list_cached_contents
         ] = mock_object
 
         request = {}
-        await client.generate_content(request)
+        await client.list_cached_contents(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert mock_object.call_count == 1
 
-        await client.generate_content(request)
+        await client.list_cached_contents(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
@@ -1348,11 +1303,11 @@ async def test_generate_content_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_generate_content_async(
+async def test_list_cached_contents_async(
     transport: str = "grpc_asyncio",
-    request_type=generative_service.GenerateContentRequest,
+    request_type=cache_service.ListCachedContentsRequest,
 ):
-    client = GenerativeServiceAsyncClient(
+    client = CacheServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -1362,190 +1317,237 @@ async def test_generate_content_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.generate_content), "__call__") as call:
+    with mock.patch.object(
+        type(client.transport.list_cached_contents), "__call__"
+    ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            generative_service.GenerateContentResponse()
+            cache_service.ListCachedContentsResponse(
+                next_page_token="next_page_token_value",
+            )
         )
-        response = await client.generate_content(request)
+        response = await client.list_cached_contents(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = generative_service.GenerateContentRequest()
+        request = cache_service.ListCachedContentsRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, generative_service.GenerateContentResponse)
+    assert isinstance(response, pagers.ListCachedContentsAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
 
 
 @pytest.mark.asyncio
-async def test_generate_content_async_from_dict():
-    await test_generate_content_async(request_type=dict)
+async def test_list_cached_contents_async_from_dict():
+    await test_list_cached_contents_async(request_type=dict)
 
 
-def test_generate_content_field_headers():
-    client = GenerativeServiceClient(
+def test_list_cached_contents_pager(transport_name: str = "grpc"):
+    client = CacheServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport_name,
     )
 
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = generative_service.GenerateContentRequest()
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_cached_contents), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            cache_service.ListCachedContentsResponse(
+                cached_contents=[
+                    cached_content.CachedContent(),
+                    cached_content.CachedContent(),
+                    cached_content.CachedContent(),
+                ],
+                next_page_token="abc",
+            ),
+            cache_service.ListCachedContentsResponse(
+                cached_contents=[],
+                next_page_token="def",
+            ),
+            cache_service.ListCachedContentsResponse(
+                cached_contents=[
+                    cached_content.CachedContent(),
+                ],
+                next_page_token="ghi",
+            ),
+            cache_service.ListCachedContentsResponse(
+                cached_contents=[
+                    cached_content.CachedContent(),
+                    cached_content.CachedContent(),
+                ],
+            ),
+            RuntimeError,
+        )
 
-    request.model = "model_value"
+        expected_metadata = ()
+        pager = client.list_cached_contents(request={})
+
+        assert pager._metadata == expected_metadata
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, cached_content.CachedContent) for i in results)
+
+
+def test_list_cached_contents_pages(transport_name: str = "grpc"):
+    client = CacheServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.generate_content), "__call__") as call:
-        call.return_value = generative_service.GenerateContentResponse()
-        client.generate_content(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "model=model_value",
-    ) in kw["metadata"]
+    with mock.patch.object(
+        type(client.transport.list_cached_contents), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            cache_service.ListCachedContentsResponse(
+                cached_contents=[
+                    cached_content.CachedContent(),
+                    cached_content.CachedContent(),
+                    cached_content.CachedContent(),
+                ],
+                next_page_token="abc",
+            ),
+            cache_service.ListCachedContentsResponse(
+                cached_contents=[],
+                next_page_token="def",
+            ),
+            cache_service.ListCachedContentsResponse(
+                cached_contents=[
+                    cached_content.CachedContent(),
+                ],
+                next_page_token="ghi",
+            ),
+            cache_service.ListCachedContentsResponse(
+                cached_contents=[
+                    cached_content.CachedContent(),
+                    cached_content.CachedContent(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.list_cached_contents(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
 
 
 @pytest.mark.asyncio
-async def test_generate_content_field_headers_async():
-    client = GenerativeServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = generative_service.GenerateContentRequest()
-
-    request.model = "model_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.generate_content), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            generative_service.GenerateContentResponse()
-        )
-        await client.generate_content(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "model=model_value",
-    ) in kw["metadata"]
-
-
-def test_generate_content_flattened():
-    client = GenerativeServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.generate_content), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = generative_service.GenerateContentResponse()
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        client.generate_content(
-            model="model_value",
-            contents=[content.Content(parts=[content.Part(text="text_value")])],
-        )
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].model
-        mock_val = "model_value"
-        assert arg == mock_val
-        arg = args[0].contents
-        mock_val = [content.Content(parts=[content.Part(text="text_value")])]
-        assert arg == mock_val
-
-
-def test_generate_content_flattened_error():
-    client = GenerativeServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.generate_content(
-            generative_service.GenerateContentRequest(),
-            model="model_value",
-            contents=[content.Content(parts=[content.Part(text="text_value")])],
-        )
-
-
-@pytest.mark.asyncio
-async def test_generate_content_flattened_async():
-    client = GenerativeServiceAsyncClient(
+async def test_list_cached_contents_async_pager():
+    client = CacheServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.generate_content), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = generative_service.GenerateContentResponse()
-
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            generative_service.GenerateContentResponse()
+    with mock.patch.object(
+        type(client.transport.list_cached_contents),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            cache_service.ListCachedContentsResponse(
+                cached_contents=[
+                    cached_content.CachedContent(),
+                    cached_content.CachedContent(),
+                    cached_content.CachedContent(),
+                ],
+                next_page_token="abc",
+            ),
+            cache_service.ListCachedContentsResponse(
+                cached_contents=[],
+                next_page_token="def",
+            ),
+            cache_service.ListCachedContentsResponse(
+                cached_contents=[
+                    cached_content.CachedContent(),
+                ],
+                next_page_token="ghi",
+            ),
+            cache_service.ListCachedContentsResponse(
+                cached_contents=[
+                    cached_content.CachedContent(),
+                    cached_content.CachedContent(),
+                ],
+            ),
+            RuntimeError,
         )
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        response = await client.generate_content(
-            model="model_value",
-            contents=[content.Content(parts=[content.Part(text="text_value")])],
+        async_pager = await client.list_cached_contents(
+            request={},
         )
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
 
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].model
-        mock_val = "model_value"
-        assert arg == mock_val
-        arg = args[0].contents
-        mock_val = [content.Content(parts=[content.Part(text="text_value")])]
-        assert arg == mock_val
+        assert len(responses) == 6
+        assert all(isinstance(i, cached_content.CachedContent) for i in responses)
 
 
 @pytest.mark.asyncio
-async def test_generate_content_flattened_error_async():
-    client = GenerativeServiceAsyncClient(
+async def test_list_cached_contents_async_pages():
+    client = CacheServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        await client.generate_content(
-            generative_service.GenerateContentRequest(),
-            model="model_value",
-            contents=[content.Content(parts=[content.Part(text="text_value")])],
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_cached_contents),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            cache_service.ListCachedContentsResponse(
+                cached_contents=[
+                    cached_content.CachedContent(),
+                    cached_content.CachedContent(),
+                    cached_content.CachedContent(),
+                ],
+                next_page_token="abc",
+            ),
+            cache_service.ListCachedContentsResponse(
+                cached_contents=[],
+                next_page_token="def",
+            ),
+            cache_service.ListCachedContentsResponse(
+                cached_contents=[
+                    cached_content.CachedContent(),
+                ],
+                next_page_token="ghi",
+            ),
+            cache_service.ListCachedContentsResponse(
+                cached_contents=[
+                    cached_content.CachedContent(),
+                    cached_content.CachedContent(),
+                ],
+            ),
+            RuntimeError,
         )
+        pages = []
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
+            await client.list_cached_contents(request={})
+        ).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
 
 
 @pytest.mark.parametrize(
     "request_type",
     [
-        generative_service.GenerateAnswerRequest,
+        cache_service.CreateCachedContentRequest,
         dict,
     ],
 )
-def test_generate_answer(request_type, transport: str = "grpc"):
-    client = GenerativeServiceClient(
+def test_create_cached_content(request_type, transport: str = "grpc"):
+    client = CacheServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -1555,47 +1557,55 @@ def test_generate_answer(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.generate_answer), "__call__") as call:
+    with mock.patch.object(
+        type(client.transport.create_cached_content), "__call__"
+    ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = generative_service.GenerateAnswerResponse(
-            answerable_probability=0.234,
+        call.return_value = gag_cached_content.CachedContent(
+            name="name_value",
+            display_name="display_name_value",
+            model="model_value",
         )
-        response = client.generate_answer(request)
+        response = client.create_cached_content(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        request = generative_service.GenerateAnswerRequest()
+        request = cache_service.CreateCachedContentRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, generative_service.GenerateAnswerResponse)
-    assert math.isclose(response.answerable_probability, 0.234, rel_tol=1e-6)
+    assert isinstance(response, gag_cached_content.CachedContent)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.model == "model_value"
 
 
-def test_generate_answer_empty_call():
+def test_create_cached_content_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
-    client = GenerativeServiceClient(
+    client = CacheServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.generate_answer), "__call__") as call:
+    with mock.patch.object(
+        type(client.transport.create_cached_content), "__call__"
+    ) as call:
         call.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client.generate_answer()
+        client.create_cached_content()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == generative_service.GenerateAnswerRequest()
+        assert args[0] == cache_service.CreateCachedContentRequest()
 
 
-def test_generate_answer_non_empty_request_with_auto_populated_field():
+def test_create_cached_content_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
-    client = GenerativeServiceClient(
+    client = CacheServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
@@ -1603,454 +1613,26 @@ def test_generate_answer_non_empty_request_with_auto_populated_field():
     # Populate all string fields in the request which are not UUID4
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
-    request = generative_service.GenerateAnswerRequest(
-        model="model_value",
-    )
+    request = cache_service.CreateCachedContentRequest()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.generate_answer), "__call__") as call:
+    with mock.patch.object(
+        type(client.transport.create_cached_content), "__call__"
+    ) as call:
         call.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client.generate_answer(request=request)
+        client.create_cached_content(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == generative_service.GenerateAnswerRequest(
-            model="model_value",
-        )
+        assert args[0] == cache_service.CreateCachedContentRequest()
 
 
-def test_generate_answer_use_cached_wrapped_rpc():
+def test_create_cached_content_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = GenerativeServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="grpc",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert client._transport.generate_answer in client._transport._wrapped_methods
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[client._transport.generate_answer] = mock_rpc
-        request = {}
-        client.generate_answer(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        client.generate_answer(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-@pytest.mark.asyncio
-async def test_generate_answer_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = GenerativeServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.generate_answer), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            generative_service.GenerateAnswerResponse(
-                answerable_probability=0.234,
-            )
-        )
-        response = await client.generate_answer()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == generative_service.GenerateAnswerRequest()
-
-
-@pytest.mark.asyncio
-async def test_generate_answer_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
-        client = GenerativeServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport=transport,
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert (
-            client._client._transport.generate_answer
-            in client._client._transport._wrapped_methods
-        )
-
-        # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.generate_answer
-        ] = mock_object
-
-        request = {}
-        await client.generate_answer(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
-
-        await client.generate_answer(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
-
-
-@pytest.mark.asyncio
-async def test_generate_answer_async(
-    transport: str = "grpc_asyncio",
-    request_type=generative_service.GenerateAnswerRequest,
-):
-    client = GenerativeServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.generate_answer), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            generative_service.GenerateAnswerResponse(
-                answerable_probability=0.234,
-            )
-        )
-        response = await client.generate_answer(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        request = generative_service.GenerateAnswerRequest()
-        assert args[0] == request
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, generative_service.GenerateAnswerResponse)
-    assert math.isclose(response.answerable_probability, 0.234, rel_tol=1e-6)
-
-
-@pytest.mark.asyncio
-async def test_generate_answer_async_from_dict():
-    await test_generate_answer_async(request_type=dict)
-
-
-def test_generate_answer_field_headers():
-    client = GenerativeServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = generative_service.GenerateAnswerRequest()
-
-    request.model = "model_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.generate_answer), "__call__") as call:
-        call.return_value = generative_service.GenerateAnswerResponse()
-        client.generate_answer(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "model=model_value",
-    ) in kw["metadata"]
-
-
-@pytest.mark.asyncio
-async def test_generate_answer_field_headers_async():
-    client = GenerativeServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = generative_service.GenerateAnswerRequest()
-
-    request.model = "model_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.generate_answer), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            generative_service.GenerateAnswerResponse()
-        )
-        await client.generate_answer(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "model=model_value",
-    ) in kw["metadata"]
-
-
-def test_generate_answer_flattened():
-    client = GenerativeServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.generate_answer), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = generative_service.GenerateAnswerResponse()
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        client.generate_answer(
-            model="model_value",
-            contents=[content.Content(parts=[content.Part(text="text_value")])],
-            safety_settings=[
-                safety.SafetySetting(
-                    category=safety.HarmCategory.HARM_CATEGORY_DEROGATORY
-                )
-            ],
-            answer_style=generative_service.GenerateAnswerRequest.AnswerStyle.ABSTRACTIVE,
-        )
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].model
-        mock_val = "model_value"
-        assert arg == mock_val
-        arg = args[0].contents
-        mock_val = [content.Content(parts=[content.Part(text="text_value")])]
-        assert arg == mock_val
-        arg = args[0].safety_settings
-        mock_val = [
-            safety.SafetySetting(category=safety.HarmCategory.HARM_CATEGORY_DEROGATORY)
-        ]
-        assert arg == mock_val
-        arg = args[0].answer_style
-        mock_val = generative_service.GenerateAnswerRequest.AnswerStyle.ABSTRACTIVE
-        assert arg == mock_val
-
-
-def test_generate_answer_flattened_error():
-    client = GenerativeServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.generate_answer(
-            generative_service.GenerateAnswerRequest(),
-            model="model_value",
-            contents=[content.Content(parts=[content.Part(text="text_value")])],
-            safety_settings=[
-                safety.SafetySetting(
-                    category=safety.HarmCategory.HARM_CATEGORY_DEROGATORY
-                )
-            ],
-            answer_style=generative_service.GenerateAnswerRequest.AnswerStyle.ABSTRACTIVE,
-        )
-
-
-@pytest.mark.asyncio
-async def test_generate_answer_flattened_async():
-    client = GenerativeServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.generate_answer), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = generative_service.GenerateAnswerResponse()
-
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            generative_service.GenerateAnswerResponse()
-        )
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        response = await client.generate_answer(
-            model="model_value",
-            contents=[content.Content(parts=[content.Part(text="text_value")])],
-            safety_settings=[
-                safety.SafetySetting(
-                    category=safety.HarmCategory.HARM_CATEGORY_DEROGATORY
-                )
-            ],
-            answer_style=generative_service.GenerateAnswerRequest.AnswerStyle.ABSTRACTIVE,
-        )
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].model
-        mock_val = "model_value"
-        assert arg == mock_val
-        arg = args[0].contents
-        mock_val = [content.Content(parts=[content.Part(text="text_value")])]
-        assert arg == mock_val
-        arg = args[0].safety_settings
-        mock_val = [
-            safety.SafetySetting(category=safety.HarmCategory.HARM_CATEGORY_DEROGATORY)
-        ]
-        assert arg == mock_val
-        arg = args[0].answer_style
-        mock_val = generative_service.GenerateAnswerRequest.AnswerStyle.ABSTRACTIVE
-        assert arg == mock_val
-
-
-@pytest.mark.asyncio
-async def test_generate_answer_flattened_error_async():
-    client = GenerativeServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        await client.generate_answer(
-            generative_service.GenerateAnswerRequest(),
-            model="model_value",
-            contents=[content.Content(parts=[content.Part(text="text_value")])],
-            safety_settings=[
-                safety.SafetySetting(
-                    category=safety.HarmCategory.HARM_CATEGORY_DEROGATORY
-                )
-            ],
-            answer_style=generative_service.GenerateAnswerRequest.AnswerStyle.ABSTRACTIVE,
-        )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        generative_service.GenerateContentRequest,
-        dict,
-    ],
-)
-def test_stream_generate_content(request_type, transport: str = "grpc"):
-    client = GenerativeServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.stream_generate_content), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = iter([generative_service.GenerateContentResponse()])
-        response = client.stream_generate_content(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        request = generative_service.GenerateContentRequest()
-        assert args[0] == request
-
-    # Establish that the response is the type that we expect.
-    for message in response:
-        assert isinstance(message, generative_service.GenerateContentResponse)
-
-
-def test_stream_generate_content_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = GenerativeServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.stream_generate_content), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.stream_generate_content()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == generative_service.GenerateContentRequest()
-
-
-def test_stream_generate_content_non_empty_request_with_auto_populated_field():
-    # This test is a coverage failsafe to make sure that UUID4 fields are
-    # automatically populated, according to AIP-4235, with non-empty requests.
-    client = GenerativeServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Populate all string fields in the request which are not UUID4
-    # since we want to check that UUID4 are populated automatically
-    # if they meet the requirements of AIP 4235.
-    request = generative_service.GenerateContentRequest(
-        model="model_value",
-        cached_content="cached_content_value",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.stream_generate_content), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.stream_generate_content(request=request)
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == generative_service.GenerateContentRequest(
-            model="model_value",
-            cached_content="cached_content_value",
-        )
-
-
-def test_stream_generate_content_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = GenerativeServiceClient(
+        client = CacheServiceClient(
             credentials=ga_credentials.AnonymousCredentials(),
             transport="grpc",
         )
@@ -2061,7 +1643,7 @@ def test_stream_generate_content_use_cached_wrapped_rpc():
 
         # Ensure method has been cached
         assert (
-            client._transport.stream_generate_content
+            client._transport.create_cached_content
             in client._transport._wrapped_methods
         )
 
@@ -2071,15 +1653,15 @@ def test_stream_generate_content_use_cached_wrapped_rpc():
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
         client._transport._wrapped_methods[
-            client._transport.stream_generate_content
+            client._transport.create_cached_content
         ] = mock_rpc
         request = {}
-        client.stream_generate_content(request)
+        client.create_cached_content(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
-        client.stream_generate_content(request)
+        client.create_cached_content(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
@@ -2087,37 +1669,40 @@ def test_stream_generate_content_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_stream_generate_content_empty_call_async():
+async def test_create_cached_content_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
-    client = GenerativeServiceAsyncClient(
+    client = CacheServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc_asyncio",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.stream_generate_content), "__call__"
+        type(client.transport.create_cached_content), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = mock.Mock(aio.UnaryStreamCall, autospec=True)
-        call.return_value.read = mock.AsyncMock(
-            side_effect=[generative_service.GenerateContentResponse()]
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gag_cached_content.CachedContent(
+                name="name_value",
+                display_name="display_name_value",
+                model="model_value",
+            )
         )
-        response = await client.stream_generate_content()
+        response = await client.create_cached_content()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == generative_service.GenerateContentRequest()
+        assert args[0] == cache_service.CreateCachedContentRequest()
 
 
 @pytest.mark.asyncio
-async def test_stream_generate_content_async_use_cached_wrapped_rpc(
+async def test_create_cached_content_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
-        client = GenerativeServiceAsyncClient(
+        client = CacheServiceAsyncClient(
             credentials=ga_credentials.AnonymousCredentials(),
             transport=transport,
         )
@@ -2128,7 +1713,7 @@ async def test_stream_generate_content_async_use_cached_wrapped_rpc(
 
         # Ensure method has been cached
         assert (
-            client._client._transport.stream_generate_content
+            client._client._transport.create_cached_content
             in client._client._transport._wrapped_methods
         )
 
@@ -2140,16 +1725,16 @@ async def test_stream_generate_content_async_use_cached_wrapped_rpc(
 
         mock_object = AwaitableMock()
         client._client._transport._wrapped_methods[
-            client._client._transport.stream_generate_content
+            client._client._transport.create_cached_content
         ] = mock_object
 
         request = {}
-        await client.stream_generate_content(request)
+        await client.create_cached_content(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert mock_object.call_count == 1
 
-        await client.stream_generate_content(request)
+        await client.create_cached_content(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
@@ -2157,11 +1742,11 @@ async def test_stream_generate_content_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_stream_generate_content_async(
+async def test_create_cached_content_async(
     transport: str = "grpc_asyncio",
-    request_type=generative_service.GenerateContentRequest,
+    request_type=cache_service.CreateCachedContentRequest,
 ):
-    client = GenerativeServiceAsyncClient(
+    client = CacheServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -2172,200 +1757,143 @@ async def test_stream_generate_content_async(
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.stream_generate_content), "__call__"
+        type(client.transport.create_cached_content), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = mock.Mock(aio.UnaryStreamCall, autospec=True)
-        call.return_value.read = mock.AsyncMock(
-            side_effect=[generative_service.GenerateContentResponse()]
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gag_cached_content.CachedContent(
+                name="name_value",
+                display_name="display_name_value",
+                model="model_value",
+            )
         )
-        response = await client.stream_generate_content(request)
+        response = await client.create_cached_content(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = generative_service.GenerateContentRequest()
+        request = cache_service.CreateCachedContentRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
-    message = await response.read()
-    assert isinstance(message, generative_service.GenerateContentResponse)
+    assert isinstance(response, gag_cached_content.CachedContent)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.model == "model_value"
 
 
 @pytest.mark.asyncio
-async def test_stream_generate_content_async_from_dict():
-    await test_stream_generate_content_async(request_type=dict)
+async def test_create_cached_content_async_from_dict():
+    await test_create_cached_content_async(request_type=dict)
 
 
-def test_stream_generate_content_field_headers():
-    client = GenerativeServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = generative_service.GenerateContentRequest()
-
-    request.model = "model_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.stream_generate_content), "__call__"
-    ) as call:
-        call.return_value = iter([generative_service.GenerateContentResponse()])
-        client.stream_generate_content(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "model=model_value",
-    ) in kw["metadata"]
-
-
-@pytest.mark.asyncio
-async def test_stream_generate_content_field_headers_async():
-    client = GenerativeServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = generative_service.GenerateContentRequest()
-
-    request.model = "model_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.stream_generate_content), "__call__"
-    ) as call:
-        call.return_value = mock.Mock(aio.UnaryStreamCall, autospec=True)
-        call.return_value.read = mock.AsyncMock(
-            side_effect=[generative_service.GenerateContentResponse()]
-        )
-        await client.stream_generate_content(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "model=model_value",
-    ) in kw["metadata"]
-
-
-def test_stream_generate_content_flattened():
-    client = GenerativeServiceClient(
+def test_create_cached_content_flattened():
+    client = CacheServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.stream_generate_content), "__call__"
+        type(client.transport.create_cached_content), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = iter([generative_service.GenerateContentResponse()])
+        call.return_value = gag_cached_content.CachedContent()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.stream_generate_content(
-            model="model_value",
-            contents=[content.Content(parts=[content.Part(text="text_value")])],
+        client.create_cached_content(
+            cached_content=gag_cached_content.CachedContent(
+                expire_time=timestamp_pb2.Timestamp(seconds=751)
+            ),
         )
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        arg = args[0].model
-        mock_val = "model_value"
-        assert arg == mock_val
-        arg = args[0].contents
-        mock_val = [content.Content(parts=[content.Part(text="text_value")])]
+        arg = args[0].cached_content
+        mock_val = gag_cached_content.CachedContent(
+            expire_time=timestamp_pb2.Timestamp(seconds=751)
+        )
         assert arg == mock_val
 
 
-def test_stream_generate_content_flattened_error():
-    client = GenerativeServiceClient(
+def test_create_cached_content_flattened_error():
+    client = CacheServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        client.stream_generate_content(
-            generative_service.GenerateContentRequest(),
-            model="model_value",
-            contents=[content.Content(parts=[content.Part(text="text_value")])],
+        client.create_cached_content(
+            cache_service.CreateCachedContentRequest(),
+            cached_content=gag_cached_content.CachedContent(
+                expire_time=timestamp_pb2.Timestamp(seconds=751)
+            ),
         )
 
 
 @pytest.mark.asyncio
-async def test_stream_generate_content_flattened_async():
-    client = GenerativeServiceAsyncClient(
+async def test_create_cached_content_flattened_async():
+    client = CacheServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.stream_generate_content), "__call__"
+        type(client.transport.create_cached_content), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = iter([generative_service.GenerateContentResponse()])
+        call.return_value = gag_cached_content.CachedContent()
 
-        call.return_value = mock.Mock(aio.UnaryStreamCall, autospec=True)
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gag_cached_content.CachedContent()
+        )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.stream_generate_content(
-            model="model_value",
-            contents=[content.Content(parts=[content.Part(text="text_value")])],
+        response = await client.create_cached_content(
+            cached_content=gag_cached_content.CachedContent(
+                expire_time=timestamp_pb2.Timestamp(seconds=751)
+            ),
         )
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        arg = args[0].model
-        mock_val = "model_value"
-        assert arg == mock_val
-        arg = args[0].contents
-        mock_val = [content.Content(parts=[content.Part(text="text_value")])]
+        arg = args[0].cached_content
+        mock_val = gag_cached_content.CachedContent(
+            expire_time=timestamp_pb2.Timestamp(seconds=751)
+        )
         assert arg == mock_val
 
 
 @pytest.mark.asyncio
-async def test_stream_generate_content_flattened_error_async():
-    client = GenerativeServiceAsyncClient(
+async def test_create_cached_content_flattened_error_async():
+    client = CacheServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        await client.stream_generate_content(
-            generative_service.GenerateContentRequest(),
-            model="model_value",
-            contents=[content.Content(parts=[content.Part(text="text_value")])],
+        await client.create_cached_content(
+            cache_service.CreateCachedContentRequest(),
+            cached_content=gag_cached_content.CachedContent(
+                expire_time=timestamp_pb2.Timestamp(seconds=751)
+            ),
         )
 
 
 @pytest.mark.parametrize(
     "request_type",
     [
-        generative_service.EmbedContentRequest,
+        cache_service.GetCachedContentRequest,
         dict,
     ],
 )
-def test_embed_content(request_type, transport: str = "grpc"):
-    client = GenerativeServiceClient(
+def test_get_cached_content(request_type, transport: str = "grpc"):
+    client = CacheServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -2375,44 +1903,55 @@ def test_embed_content(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.embed_content), "__call__") as call:
+    with mock.patch.object(
+        type(client.transport.get_cached_content), "__call__"
+    ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = generative_service.EmbedContentResponse()
-        response = client.embed_content(request)
+        call.return_value = cached_content.CachedContent(
+            name="name_value",
+            display_name="display_name_value",
+            model="model_value",
+        )
+        response = client.get_cached_content(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        request = generative_service.EmbedContentRequest()
+        request = cache_service.GetCachedContentRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, generative_service.EmbedContentResponse)
+    assert isinstance(response, cached_content.CachedContent)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.model == "model_value"
 
 
-def test_embed_content_empty_call():
+def test_get_cached_content_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
-    client = GenerativeServiceClient(
+    client = CacheServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.embed_content), "__call__") as call:
+    with mock.patch.object(
+        type(client.transport.get_cached_content), "__call__"
+    ) as call:
         call.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client.embed_content()
+        client.get_cached_content()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == generative_service.EmbedContentRequest()
+        assert args[0] == cache_service.GetCachedContentRequest()
 
 
-def test_embed_content_non_empty_request_with_auto_populated_field():
+def test_get_cached_content_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
-    client = GenerativeServiceClient(
+    client = CacheServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
@@ -2420,407 +1959,30 @@ def test_embed_content_non_empty_request_with_auto_populated_field():
     # Populate all string fields in the request which are not UUID4
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
-    request = generative_service.EmbedContentRequest(
-        model="model_value",
-        title="title_value",
+    request = cache_service.GetCachedContentRequest(
+        name="name_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.embed_content), "__call__") as call:
+    with mock.patch.object(
+        type(client.transport.get_cached_content), "__call__"
+    ) as call:
         call.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client.embed_content(request=request)
+        client.get_cached_content(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == generative_service.EmbedContentRequest(
-            model="model_value",
-            title="title_value",
+        assert args[0] == cache_service.GetCachedContentRequest(
+            name="name_value",
         )
 
 
-def test_embed_content_use_cached_wrapped_rpc():
+def test_get_cached_content_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = GenerativeServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="grpc",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert client._transport.embed_content in client._transport._wrapped_methods
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[client._transport.embed_content] = mock_rpc
-        request = {}
-        client.embed_content(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        client.embed_content(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-@pytest.mark.asyncio
-async def test_embed_content_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = GenerativeServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.embed_content), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            generative_service.EmbedContentResponse()
-        )
-        response = await client.embed_content()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == generative_service.EmbedContentRequest()
-
-
-@pytest.mark.asyncio
-async def test_embed_content_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
-        client = GenerativeServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport=transport,
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert (
-            client._client._transport.embed_content
-            in client._client._transport._wrapped_methods
-        )
-
-        # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.embed_content
-        ] = mock_object
-
-        request = {}
-        await client.embed_content(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
-
-        await client.embed_content(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
-
-
-@pytest.mark.asyncio
-async def test_embed_content_async(
-    transport: str = "grpc_asyncio", request_type=generative_service.EmbedContentRequest
-):
-    client = GenerativeServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.embed_content), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            generative_service.EmbedContentResponse()
-        )
-        response = await client.embed_content(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        request = generative_service.EmbedContentRequest()
-        assert args[0] == request
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, generative_service.EmbedContentResponse)
-
-
-@pytest.mark.asyncio
-async def test_embed_content_async_from_dict():
-    await test_embed_content_async(request_type=dict)
-
-
-def test_embed_content_field_headers():
-    client = GenerativeServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = generative_service.EmbedContentRequest()
-
-    request.model = "model_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.embed_content), "__call__") as call:
-        call.return_value = generative_service.EmbedContentResponse()
-        client.embed_content(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "model=model_value",
-    ) in kw["metadata"]
-
-
-@pytest.mark.asyncio
-async def test_embed_content_field_headers_async():
-    client = GenerativeServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = generative_service.EmbedContentRequest()
-
-    request.model = "model_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.embed_content), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            generative_service.EmbedContentResponse()
-        )
-        await client.embed_content(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "model=model_value",
-    ) in kw["metadata"]
-
-
-def test_embed_content_flattened():
-    client = GenerativeServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.embed_content), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = generative_service.EmbedContentResponse()
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        client.embed_content(
-            model="model_value",
-            content=gag_content.Content(parts=[gag_content.Part(text="text_value")]),
-        )
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].model
-        mock_val = "model_value"
-        assert arg == mock_val
-        arg = args[0].content
-        mock_val = gag_content.Content(parts=[gag_content.Part(text="text_value")])
-        assert arg == mock_val
-
-
-def test_embed_content_flattened_error():
-    client = GenerativeServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.embed_content(
-            generative_service.EmbedContentRequest(),
-            model="model_value",
-            content=gag_content.Content(parts=[gag_content.Part(text="text_value")]),
-        )
-
-
-@pytest.mark.asyncio
-async def test_embed_content_flattened_async():
-    client = GenerativeServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.embed_content), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = generative_service.EmbedContentResponse()
-
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            generative_service.EmbedContentResponse()
-        )
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        response = await client.embed_content(
-            model="model_value",
-            content=gag_content.Content(parts=[gag_content.Part(text="text_value")]),
-        )
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].model
-        mock_val = "model_value"
-        assert arg == mock_val
-        arg = args[0].content
-        mock_val = gag_content.Content(parts=[gag_content.Part(text="text_value")])
-        assert arg == mock_val
-
-
-@pytest.mark.asyncio
-async def test_embed_content_flattened_error_async():
-    client = GenerativeServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        await client.embed_content(
-            generative_service.EmbedContentRequest(),
-            model="model_value",
-            content=gag_content.Content(parts=[gag_content.Part(text="text_value")]),
-        )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        generative_service.BatchEmbedContentsRequest,
-        dict,
-    ],
-)
-def test_batch_embed_contents(request_type, transport: str = "grpc"):
-    client = GenerativeServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.batch_embed_contents), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = generative_service.BatchEmbedContentsResponse()
-        response = client.batch_embed_contents(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        request = generative_service.BatchEmbedContentsRequest()
-        assert args[0] == request
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, generative_service.BatchEmbedContentsResponse)
-
-
-def test_batch_embed_contents_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = GenerativeServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.batch_embed_contents), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.batch_embed_contents()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == generative_service.BatchEmbedContentsRequest()
-
-
-def test_batch_embed_contents_non_empty_request_with_auto_populated_field():
-    # This test is a coverage failsafe to make sure that UUID4 fields are
-    # automatically populated, according to AIP-4235, with non-empty requests.
-    client = GenerativeServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Populate all string fields in the request which are not UUID4
-    # since we want to check that UUID4 are populated automatically
-    # if they meet the requirements of AIP 4235.
-    request = generative_service.BatchEmbedContentsRequest(
-        model="model_value",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.batch_embed_contents), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.batch_embed_contents(request=request)
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == generative_service.BatchEmbedContentsRequest(
-            model="model_value",
-        )
-
-
-def test_batch_embed_contents_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = GenerativeServiceClient(
+        client = CacheServiceClient(
             credentials=ga_credentials.AnonymousCredentials(),
             transport="grpc",
         )
@@ -2831,7 +1993,7 @@ def test_batch_embed_contents_use_cached_wrapped_rpc():
 
         # Ensure method has been cached
         assert (
-            client._transport.batch_embed_contents in client._transport._wrapped_methods
+            client._transport.get_cached_content in client._transport._wrapped_methods
         )
 
         # Replace cached wrapped function with mock
@@ -2840,15 +2002,15 @@ def test_batch_embed_contents_use_cached_wrapped_rpc():
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
         client._transport._wrapped_methods[
-            client._transport.batch_embed_contents
+            client._transport.get_cached_content
         ] = mock_rpc
         request = {}
-        client.batch_embed_contents(request)
+        client.get_cached_content(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
-        client.batch_embed_contents(request)
+        client.get_cached_content(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
@@ -2856,36 +2018,40 @@ def test_batch_embed_contents_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_batch_embed_contents_empty_call_async():
+async def test_get_cached_content_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
-    client = GenerativeServiceAsyncClient(
+    client = CacheServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc_asyncio",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.batch_embed_contents), "__call__"
+        type(client.transport.get_cached_content), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            generative_service.BatchEmbedContentsResponse()
+            cached_content.CachedContent(
+                name="name_value",
+                display_name="display_name_value",
+                model="model_value",
+            )
         )
-        response = await client.batch_embed_contents()
+        response = await client.get_cached_content()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == generative_service.BatchEmbedContentsRequest()
+        assert args[0] == cache_service.GetCachedContentRequest()
 
 
 @pytest.mark.asyncio
-async def test_batch_embed_contents_async_use_cached_wrapped_rpc(
+async def test_get_cached_content_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
-        client = GenerativeServiceAsyncClient(
+        client = CacheServiceAsyncClient(
             credentials=ga_credentials.AnonymousCredentials(),
             transport=transport,
         )
@@ -2896,7 +2062,7 @@ async def test_batch_embed_contents_async_use_cached_wrapped_rpc(
 
         # Ensure method has been cached
         assert (
-            client._client._transport.batch_embed_contents
+            client._client._transport.get_cached_content
             in client._client._transport._wrapped_methods
         )
 
@@ -2908,16 +2074,16 @@ async def test_batch_embed_contents_async_use_cached_wrapped_rpc(
 
         mock_object = AwaitableMock()
         client._client._transport._wrapped_methods[
-            client._client._transport.batch_embed_contents
+            client._client._transport.get_cached_content
         ] = mock_object
 
         request = {}
-        await client.batch_embed_contents(request)
+        await client.get_cached_content(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert mock_object.call_count == 1
 
-        await client.batch_embed_contents(request)
+        await client.get_cached_content(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
@@ -2925,11 +2091,10 @@ async def test_batch_embed_contents_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_batch_embed_contents_async(
-    transport: str = "grpc_asyncio",
-    request_type=generative_service.BatchEmbedContentsRequest,
+async def test_get_cached_content_async(
+    transport: str = "grpc_asyncio", request_type=cache_service.GetCachedContentRequest
 ):
-    client = GenerativeServiceAsyncClient(
+    client = CacheServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -2940,46 +2105,53 @@ async def test_batch_embed_contents_async(
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.batch_embed_contents), "__call__"
+        type(client.transport.get_cached_content), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            generative_service.BatchEmbedContentsResponse()
+            cached_content.CachedContent(
+                name="name_value",
+                display_name="display_name_value",
+                model="model_value",
+            )
         )
-        response = await client.batch_embed_contents(request)
+        response = await client.get_cached_content(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = generative_service.BatchEmbedContentsRequest()
+        request = cache_service.GetCachedContentRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, generative_service.BatchEmbedContentsResponse)
+    assert isinstance(response, cached_content.CachedContent)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.model == "model_value"
 
 
 @pytest.mark.asyncio
-async def test_batch_embed_contents_async_from_dict():
-    await test_batch_embed_contents_async(request_type=dict)
+async def test_get_cached_content_async_from_dict():
+    await test_get_cached_content_async(request_type=dict)
 
 
-def test_batch_embed_contents_field_headers():
-    client = GenerativeServiceClient(
+def test_get_cached_content_field_headers():
+    client = CacheServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = generative_service.BatchEmbedContentsRequest()
+    request = cache_service.GetCachedContentRequest()
 
-    request.model = "model_value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.batch_embed_contents), "__call__"
+        type(client.transport.get_cached_content), "__call__"
     ) as call:
-        call.return_value = generative_service.BatchEmbedContentsResponse()
-        client.batch_embed_contents(request)
+        call.return_value = cached_content.CachedContent()
+        client.get_cached_content(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
@@ -2990,30 +2162,30 @@ def test_batch_embed_contents_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "model=model_value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
-async def test_batch_embed_contents_field_headers_async():
-    client = GenerativeServiceAsyncClient(
+async def test_get_cached_content_field_headers_async():
+    client = CacheServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = generative_service.BatchEmbedContentsRequest()
+    request = cache_service.GetCachedContentRequest()
 
-    request.model = "model_value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.batch_embed_contents), "__call__"
+        type(client.transport.get_cached_content), "__call__"
     ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            generative_service.BatchEmbedContentsResponse()
+            cached_content.CachedContent()
         )
-        await client.batch_embed_contents(request)
+        await client.get_cached_content(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
@@ -3024,115 +2196,105 @@ async def test_batch_embed_contents_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "model=model_value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
-def test_batch_embed_contents_flattened():
-    client = GenerativeServiceClient(
+def test_get_cached_content_flattened():
+    client = CacheServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.batch_embed_contents), "__call__"
+        type(client.transport.get_cached_content), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = generative_service.BatchEmbedContentsResponse()
+        call.return_value = cached_content.CachedContent()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.batch_embed_contents(
-            model="model_value",
-            requests=[generative_service.EmbedContentRequest(model="model_value")],
+        client.get_cached_content(
+            name="name_value",
         )
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        arg = args[0].model
-        mock_val = "model_value"
-        assert arg == mock_val
-        arg = args[0].requests
-        mock_val = [generative_service.EmbedContentRequest(model="model_value")]
+        arg = args[0].name
+        mock_val = "name_value"
         assert arg == mock_val
 
 
-def test_batch_embed_contents_flattened_error():
-    client = GenerativeServiceClient(
+def test_get_cached_content_flattened_error():
+    client = CacheServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        client.batch_embed_contents(
-            generative_service.BatchEmbedContentsRequest(),
-            model="model_value",
-            requests=[generative_service.EmbedContentRequest(model="model_value")],
+        client.get_cached_content(
+            cache_service.GetCachedContentRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.asyncio
-async def test_batch_embed_contents_flattened_async():
-    client = GenerativeServiceAsyncClient(
+async def test_get_cached_content_flattened_async():
+    client = CacheServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.batch_embed_contents), "__call__"
+        type(client.transport.get_cached_content), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = generative_service.BatchEmbedContentsResponse()
+        call.return_value = cached_content.CachedContent()
 
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            generative_service.BatchEmbedContentsResponse()
+            cached_content.CachedContent()
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.batch_embed_contents(
-            model="model_value",
-            requests=[generative_service.EmbedContentRequest(model="model_value")],
+        response = await client.get_cached_content(
+            name="name_value",
         )
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        arg = args[0].model
-        mock_val = "model_value"
-        assert arg == mock_val
-        arg = args[0].requests
-        mock_val = [generative_service.EmbedContentRequest(model="model_value")]
+        arg = args[0].name
+        mock_val = "name_value"
         assert arg == mock_val
 
 
 @pytest.mark.asyncio
-async def test_batch_embed_contents_flattened_error_async():
-    client = GenerativeServiceAsyncClient(
+async def test_get_cached_content_flattened_error_async():
+    client = CacheServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        await client.batch_embed_contents(
-            generative_service.BatchEmbedContentsRequest(),
-            model="model_value",
-            requests=[generative_service.EmbedContentRequest(model="model_value")],
+        await client.get_cached_content(
+            cache_service.GetCachedContentRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.parametrize(
     "request_type",
     [
-        generative_service.CountTokensRequest,
+        cache_service.UpdateCachedContentRequest,
         dict,
     ],
 )
-def test_count_tokens(request_type, transport: str = "grpc"):
-    client = GenerativeServiceClient(
+def test_update_cached_content(request_type, transport: str = "grpc"):
+    client = CacheServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -3142,49 +2304,55 @@ def test_count_tokens(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.count_tokens), "__call__") as call:
+    with mock.patch.object(
+        type(client.transport.update_cached_content), "__call__"
+    ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = generative_service.CountTokensResponse(
-            total_tokens=1303,
-            cached_content_token_count=2746,
+        call.return_value = gag_cached_content.CachedContent(
+            name="name_value",
+            display_name="display_name_value",
+            model="model_value",
         )
-        response = client.count_tokens(request)
+        response = client.update_cached_content(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        request = generative_service.CountTokensRequest()
+        request = cache_service.UpdateCachedContentRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, generative_service.CountTokensResponse)
-    assert response.total_tokens == 1303
-    assert response.cached_content_token_count == 2746
+    assert isinstance(response, gag_cached_content.CachedContent)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.model == "model_value"
 
 
-def test_count_tokens_empty_call():
+def test_update_cached_content_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
-    client = GenerativeServiceClient(
+    client = CacheServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.count_tokens), "__call__") as call:
+    with mock.patch.object(
+        type(client.transport.update_cached_content), "__call__"
+    ) as call:
         call.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client.count_tokens()
+        client.update_cached_content()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == generative_service.CountTokensRequest()
+        assert args[0] == cache_service.UpdateCachedContentRequest()
 
 
-def test_count_tokens_non_empty_request_with_auto_populated_field():
+def test_update_cached_content_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
-    client = GenerativeServiceClient(
+    client = CacheServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
@@ -3192,28 +2360,26 @@ def test_count_tokens_non_empty_request_with_auto_populated_field():
     # Populate all string fields in the request which are not UUID4
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
-    request = generative_service.CountTokensRequest(
-        model="model_value",
-    )
+    request = cache_service.UpdateCachedContentRequest()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.count_tokens), "__call__") as call:
+    with mock.patch.object(
+        type(client.transport.update_cached_content), "__call__"
+    ) as call:
         call.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client.count_tokens(request=request)
+        client.update_cached_content(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == generative_service.CountTokensRequest(
-            model="model_value",
-        )
+        assert args[0] == cache_service.UpdateCachedContentRequest()
 
 
-def test_count_tokens_use_cached_wrapped_rpc():
+def test_update_cached_content_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = GenerativeServiceClient(
+        client = CacheServiceClient(
             credentials=ga_credentials.AnonymousCredentials(),
             transport="grpc",
         )
@@ -3223,989 +2389,8 @@ def test_count_tokens_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert client._transport.count_tokens in client._transport._wrapped_methods
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[client._transport.count_tokens] = mock_rpc
-        request = {}
-        client.count_tokens(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        client.count_tokens(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-@pytest.mark.asyncio
-async def test_count_tokens_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = GenerativeServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.count_tokens), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            generative_service.CountTokensResponse(
-                total_tokens=1303,
-                cached_content_token_count=2746,
-            )
-        )
-        response = await client.count_tokens()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == generative_service.CountTokensRequest()
-
-
-@pytest.mark.asyncio
-async def test_count_tokens_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
-        client = GenerativeServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport=transport,
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
         assert (
-            client._client._transport.count_tokens
-            in client._client._transport._wrapped_methods
-        )
-
-        # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.count_tokens
-        ] = mock_object
-
-        request = {}
-        await client.count_tokens(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
-
-        await client.count_tokens(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
-
-
-@pytest.mark.asyncio
-async def test_count_tokens_async(
-    transport: str = "grpc_asyncio", request_type=generative_service.CountTokensRequest
-):
-    client = GenerativeServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.count_tokens), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            generative_service.CountTokensResponse(
-                total_tokens=1303,
-                cached_content_token_count=2746,
-            )
-        )
-        response = await client.count_tokens(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        request = generative_service.CountTokensRequest()
-        assert args[0] == request
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, generative_service.CountTokensResponse)
-    assert response.total_tokens == 1303
-    assert response.cached_content_token_count == 2746
-
-
-@pytest.mark.asyncio
-async def test_count_tokens_async_from_dict():
-    await test_count_tokens_async(request_type=dict)
-
-
-def test_count_tokens_field_headers():
-    client = GenerativeServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = generative_service.CountTokensRequest()
-
-    request.model = "model_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.count_tokens), "__call__") as call:
-        call.return_value = generative_service.CountTokensResponse()
-        client.count_tokens(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "model=model_value",
-    ) in kw["metadata"]
-
-
-@pytest.mark.asyncio
-async def test_count_tokens_field_headers_async():
-    client = GenerativeServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = generative_service.CountTokensRequest()
-
-    request.model = "model_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.count_tokens), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            generative_service.CountTokensResponse()
-        )
-        await client.count_tokens(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "model=model_value",
-    ) in kw["metadata"]
-
-
-def test_count_tokens_flattened():
-    client = GenerativeServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.count_tokens), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = generative_service.CountTokensResponse()
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        client.count_tokens(
-            model="model_value",
-            contents=[content.Content(parts=[content.Part(text="text_value")])],
-        )
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].model
-        mock_val = "model_value"
-        assert arg == mock_val
-        arg = args[0].contents
-        mock_val = [content.Content(parts=[content.Part(text="text_value")])]
-        assert arg == mock_val
-
-
-def test_count_tokens_flattened_error():
-    client = GenerativeServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.count_tokens(
-            generative_service.CountTokensRequest(),
-            model="model_value",
-            contents=[content.Content(parts=[content.Part(text="text_value")])],
-        )
-
-
-@pytest.mark.asyncio
-async def test_count_tokens_flattened_async():
-    client = GenerativeServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.count_tokens), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = generative_service.CountTokensResponse()
-
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            generative_service.CountTokensResponse()
-        )
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        response = await client.count_tokens(
-            model="model_value",
-            contents=[content.Content(parts=[content.Part(text="text_value")])],
-        )
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].model
-        mock_val = "model_value"
-        assert arg == mock_val
-        arg = args[0].contents
-        mock_val = [content.Content(parts=[content.Part(text="text_value")])]
-        assert arg == mock_val
-
-
-@pytest.mark.asyncio
-async def test_count_tokens_flattened_error_async():
-    client = GenerativeServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        await client.count_tokens(
-            generative_service.CountTokensRequest(),
-            model="model_value",
-            contents=[content.Content(parts=[content.Part(text="text_value")])],
-        )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        generative_service.GenerateContentRequest,
-        dict,
-    ],
-)
-def test_generate_content_rest(request_type):
-    client = GenerativeServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"model": "models/sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = generative_service.GenerateContentResponse()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = generative_service.GenerateContentResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.generate_content(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, generative_service.GenerateContentResponse)
-
-
-def test_generate_content_rest_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = GenerativeServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="rest",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert client._transport.generate_content in client._transport._wrapped_methods
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.generate_content
-        ] = mock_rpc
-
-        request = {}
-        client.generate_content(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        client.generate_content(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-def test_generate_content_rest_required_fields(
-    request_type=generative_service.GenerateContentRequest,
-):
-    transport_class = transports.GenerativeServiceRestTransport
-
-    request_init = {}
-    request_init["model"] = ""
-    request = request_type(**request_init)
-    pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
-
-    # verify fields with default values are dropped
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).generate_content._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with default values are now present
-
-    jsonified_request["model"] = "model_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).generate_content._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with non-default values are left alone
-    assert "model" in jsonified_request
-    assert jsonified_request["model"] == "model_value"
-
-    client = GenerativeServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request = request_type(**request_init)
-
-    # Designate an appropriate value for the returned response.
-    return_value = generative_service.GenerateContentResponse()
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # We need to mock transcode() because providing default values
-        # for required fields will fail the real version if the http_options
-        # expect actual values for those fields.
-        with mock.patch.object(path_template, "transcode") as transcode:
-            # A uri without fields and an empty body will force all the
-            # request fields to show up in the query_params.
-            pb_request = request_type.pb(request)
-            transcode_result = {
-                "uri": "v1/sample_method",
-                "method": "post",
-                "query_params": pb_request,
-            }
-            transcode_result["body"] = pb_request
-            transcode.return_value = transcode_result
-
-            response_value = Response()
-            response_value.status_code = 200
-
-            # Convert return value to protobuf type
-            return_value = generative_service.GenerateContentResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(return_value)
-
-            response_value._content = json_return_value.encode("UTF-8")
-            req.return_value = response_value
-
-            response = client.generate_content(request)
-
-            expected_params = [("$alt", "json;enum-encoding=int")]
-            actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
-
-
-def test_generate_content_rest_unset_required_fields():
-    transport = transports.GenerativeServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.generate_content._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(())
-        & set(
-            (
-                "model",
-                "contents",
-            )
-        )
-    )
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_generate_content_rest_interceptors(null_interceptor):
-    transport = transports.GenerativeServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.GenerativeServiceRestInterceptor(),
-    )
-    client = GenerativeServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.GenerativeServiceRestInterceptor, "post_generate_content"
-    ) as post, mock.patch.object(
-        transports.GenerativeServiceRestInterceptor, "pre_generate_content"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = generative_service.GenerateContentRequest.pb(
-            generative_service.GenerateContentRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = generative_service.GenerateContentResponse.to_json(
-            generative_service.GenerateContentResponse()
-        )
-
-        request = generative_service.GenerateContentRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = generative_service.GenerateContentResponse()
-
-        client.generate_content(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_generate_content_rest_bad_request(
-    transport: str = "rest", request_type=generative_service.GenerateContentRequest
-):
-    client = GenerativeServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"model": "models/sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.generate_content(request)
-
-
-def test_generate_content_rest_flattened():
-    client = GenerativeServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = generative_service.GenerateContentResponse()
-
-        # get arguments that satisfy an http rule for this method
-        sample_request = {"model": "models/sample1"}
-
-        # get truthy value for each flattened field
-        mock_args = dict(
-            model="model_value",
-            contents=[content.Content(parts=[content.Part(text="text_value")])],
-        )
-        mock_args.update(sample_request)
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = generative_service.GenerateContentResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        client.generate_content(**mock_args)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(req.mock_calls) == 1
-        _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1beta/{model=models/*}:generateContent" % client.transport._host,
-            args[1],
-        )
-
-
-def test_generate_content_rest_flattened_error(transport: str = "rest"):
-    client = GenerativeServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.generate_content(
-            generative_service.GenerateContentRequest(),
-            model="model_value",
-            contents=[content.Content(parts=[content.Part(text="text_value")])],
-        )
-
-
-def test_generate_content_rest_error():
-    client = GenerativeServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        generative_service.GenerateAnswerRequest,
-        dict,
-    ],
-)
-def test_generate_answer_rest(request_type):
-    client = GenerativeServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"model": "models/sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = generative_service.GenerateAnswerResponse(
-            answerable_probability=0.234,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = generative_service.GenerateAnswerResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.generate_answer(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, generative_service.GenerateAnswerResponse)
-    assert math.isclose(response.answerable_probability, 0.234, rel_tol=1e-6)
-
-
-def test_generate_answer_rest_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = GenerativeServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="rest",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert client._transport.generate_answer in client._transport._wrapped_methods
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[client._transport.generate_answer] = mock_rpc
-
-        request = {}
-        client.generate_answer(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        client.generate_answer(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-def test_generate_answer_rest_required_fields(
-    request_type=generative_service.GenerateAnswerRequest,
-):
-    transport_class = transports.GenerativeServiceRestTransport
-
-    request_init = {}
-    request_init["model"] = ""
-    request = request_type(**request_init)
-    pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
-
-    # verify fields with default values are dropped
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).generate_answer._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with default values are now present
-
-    jsonified_request["model"] = "model_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).generate_answer._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with non-default values are left alone
-    assert "model" in jsonified_request
-    assert jsonified_request["model"] == "model_value"
-
-    client = GenerativeServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request = request_type(**request_init)
-
-    # Designate an appropriate value for the returned response.
-    return_value = generative_service.GenerateAnswerResponse()
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # We need to mock transcode() because providing default values
-        # for required fields will fail the real version if the http_options
-        # expect actual values for those fields.
-        with mock.patch.object(path_template, "transcode") as transcode:
-            # A uri without fields and an empty body will force all the
-            # request fields to show up in the query_params.
-            pb_request = request_type.pb(request)
-            transcode_result = {
-                "uri": "v1/sample_method",
-                "method": "post",
-                "query_params": pb_request,
-            }
-            transcode_result["body"] = pb_request
-            transcode.return_value = transcode_result
-
-            response_value = Response()
-            response_value.status_code = 200
-
-            # Convert return value to protobuf type
-            return_value = generative_service.GenerateAnswerResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(return_value)
-
-            response_value._content = json_return_value.encode("UTF-8")
-            req.return_value = response_value
-
-            response = client.generate_answer(request)
-
-            expected_params = [("$alt", "json;enum-encoding=int")]
-            actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
-
-
-def test_generate_answer_rest_unset_required_fields():
-    transport = transports.GenerativeServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.generate_answer._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(())
-        & set(
-            (
-                "model",
-                "contents",
-                "answerStyle",
-            )
-        )
-    )
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_generate_answer_rest_interceptors(null_interceptor):
-    transport = transports.GenerativeServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.GenerativeServiceRestInterceptor(),
-    )
-    client = GenerativeServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.GenerativeServiceRestInterceptor, "post_generate_answer"
-    ) as post, mock.patch.object(
-        transports.GenerativeServiceRestInterceptor, "pre_generate_answer"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = generative_service.GenerateAnswerRequest.pb(
-            generative_service.GenerateAnswerRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = generative_service.GenerateAnswerResponse.to_json(
-            generative_service.GenerateAnswerResponse()
-        )
-
-        request = generative_service.GenerateAnswerRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = generative_service.GenerateAnswerResponse()
-
-        client.generate_answer(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_generate_answer_rest_bad_request(
-    transport: str = "rest", request_type=generative_service.GenerateAnswerRequest
-):
-    client = GenerativeServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"model": "models/sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.generate_answer(request)
-
-
-def test_generate_answer_rest_flattened():
-    client = GenerativeServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = generative_service.GenerateAnswerResponse()
-
-        # get arguments that satisfy an http rule for this method
-        sample_request = {"model": "models/sample1"}
-
-        # get truthy value for each flattened field
-        mock_args = dict(
-            model="model_value",
-            contents=[content.Content(parts=[content.Part(text="text_value")])],
-            safety_settings=[
-                safety.SafetySetting(
-                    category=safety.HarmCategory.HARM_CATEGORY_DEROGATORY
-                )
-            ],
-            answer_style=generative_service.GenerateAnswerRequest.AnswerStyle.ABSTRACTIVE,
-        )
-        mock_args.update(sample_request)
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = generative_service.GenerateAnswerResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        client.generate_answer(**mock_args)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(req.mock_calls) == 1
-        _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1beta/{model=models/*}:generateAnswer" % client.transport._host,
-            args[1],
-        )
-
-
-def test_generate_answer_rest_flattened_error(transport: str = "rest"):
-    client = GenerativeServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.generate_answer(
-            generative_service.GenerateAnswerRequest(),
-            model="model_value",
-            contents=[content.Content(parts=[content.Part(text="text_value")])],
-            safety_settings=[
-                safety.SafetySetting(
-                    category=safety.HarmCategory.HARM_CATEGORY_DEROGATORY
-                )
-            ],
-            answer_style=generative_service.GenerateAnswerRequest.AnswerStyle.ABSTRACTIVE,
-        )
-
-
-def test_generate_answer_rest_error():
-    client = GenerativeServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        generative_service.GenerateContentRequest,
-        dict,
-    ],
-)
-def test_stream_generate_content_rest(request_type):
-    client = GenerativeServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"model": "models/sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = generative_service.GenerateContentResponse()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = generative_service.GenerateContentResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        json_return_value = "[{}]".format(json_return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        with mock.patch.object(response_value, "iter_content") as iter_content:
-            iter_content.return_value = iter(json_return_value)
-            response = client.stream_generate_content(request)
-
-    assert isinstance(response, Iterable)
-    response = next(response)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, generative_service.GenerateContentResponse)
-
-
-def test_stream_generate_content_rest_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = GenerativeServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="rest",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert (
-            client._transport.stream_generate_content
+            client._transport.update_cached_content
             in client._transport._wrapped_methods
         )
 
@@ -4215,310 +2400,58 @@ def test_stream_generate_content_rest_use_cached_wrapped_rpc():
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
         client._transport._wrapped_methods[
-            client._transport.stream_generate_content
+            client._transport.update_cached_content
         ] = mock_rpc
-
         request = {}
-        client.stream_generate_content(request)
+        client.update_cached_content(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
-        client.stream_generate_content(request)
+        client.update_cached_content(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
         assert mock_rpc.call_count == 2
 
 
-def test_stream_generate_content_rest_required_fields(
-    request_type=generative_service.GenerateContentRequest,
-):
-    transport_class = transports.GenerativeServiceRestTransport
-
-    request_init = {}
-    request_init["model"] = ""
-    request = request_type(**request_init)
-    pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
-
-    # verify fields with default values are dropped
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).stream_generate_content._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with default values are now present
-
-    jsonified_request["model"] = "model_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).stream_generate_content._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with non-default values are left alone
-    assert "model" in jsonified_request
-    assert jsonified_request["model"] == "model_value"
-
-    client = GenerativeServiceClient(
+@pytest.mark.asyncio
+async def test_update_cached_content_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CacheServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request = request_type(**request_init)
-
-    # Designate an appropriate value for the returned response.
-    return_value = generative_service.GenerateContentResponse()
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # We need to mock transcode() because providing default values
-        # for required fields will fail the real version if the http_options
-        # expect actual values for those fields.
-        with mock.patch.object(path_template, "transcode") as transcode:
-            # A uri without fields and an empty body will force all the
-            # request fields to show up in the query_params.
-            pb_request = request_type.pb(request)
-            transcode_result = {
-                "uri": "v1/sample_method",
-                "method": "post",
-                "query_params": pb_request,
-            }
-            transcode_result["body"] = pb_request
-            transcode.return_value = transcode_result
-
-            response_value = Response()
-            response_value.status_code = 200
-
-            # Convert return value to protobuf type
-            return_value = generative_service.GenerateContentResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(return_value)
-            json_return_value = "[{}]".format(json_return_value)
-
-            response_value._content = json_return_value.encode("UTF-8")
-            req.return_value = response_value
-
-            with mock.patch.object(response_value, "iter_content") as iter_content:
-                iter_content.return_value = iter(json_return_value)
-                response = client.stream_generate_content(request)
-
-            expected_params = [("$alt", "json;enum-encoding=int")]
-            actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
-
-
-def test_stream_generate_content_rest_unset_required_fields():
-    transport = transports.GenerativeServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
+        transport="grpc_asyncio",
     )
 
-    unset_fields = transport.stream_generate_content._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(())
-        & set(
-            (
-                "model",
-                "contents",
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_cached_content), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gag_cached_content.CachedContent(
+                name="name_value",
+                display_name="display_name_value",
+                model="model_value",
             )
         )
-    )
+        response = await client.update_cached_content()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cache_service.UpdateCachedContentRequest()
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_stream_generate_content_rest_interceptors(null_interceptor):
-    transport = transports.GenerativeServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.GenerativeServiceRestInterceptor(),
-    )
-    client = GenerativeServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.GenerativeServiceRestInterceptor, "post_stream_generate_content"
-    ) as post, mock.patch.object(
-        transports.GenerativeServiceRestInterceptor, "pre_stream_generate_content"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = generative_service.GenerateContentRequest.pb(
-            generative_service.GenerateContentRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = generative_service.GenerateContentResponse.to_json(
-            generative_service.GenerateContentResponse()
-        )
-        req.return_value._content = "[{}]".format(req.return_value._content)
-
-        request = generative_service.GenerateContentRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = generative_service.GenerateContentResponse()
-
-        client.stream_generate_content(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_stream_generate_content_rest_bad_request(
-    transport: str = "rest", request_type=generative_service.GenerateContentRequest
+@pytest.mark.asyncio
+async def test_update_cached_content_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
 ):
-    client = GenerativeServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"model": "models/sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.stream_generate_content(request)
-
-
-def test_stream_generate_content_rest_flattened():
-    client = GenerativeServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = generative_service.GenerateContentResponse()
-
-        # get arguments that satisfy an http rule for this method
-        sample_request = {"model": "models/sample1"}
-
-        # get truthy value for each flattened field
-        mock_args = dict(
-            model="model_value",
-            contents=[content.Content(parts=[content.Part(text="text_value")])],
-        )
-        mock_args.update(sample_request)
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = generative_service.GenerateContentResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-        json_return_value = "[{}]".format(json_return_value)
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        with mock.patch.object(response_value, "iter_content") as iter_content:
-            iter_content.return_value = iter(json_return_value)
-            client.stream_generate_content(**mock_args)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(req.mock_calls) == 1
-        _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1beta/{model=models/*}:streamGenerateContent" % client.transport._host,
-            args[1],
-        )
-
-
-def test_stream_generate_content_rest_flattened_error(transport: str = "rest"):
-    client = GenerativeServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.stream_generate_content(
-            generative_service.GenerateContentRequest(),
-            model="model_value",
-            contents=[content.Content(parts=[content.Part(text="text_value")])],
-        )
-
-
-def test_stream_generate_content_rest_error():
-    client = GenerativeServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        generative_service.EmbedContentRequest,
-        dict,
-    ],
-)
-def test_embed_content_rest(request_type):
-    client = GenerativeServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"model": "models/sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = generative_service.EmbedContentResponse()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = generative_service.EmbedContentResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.embed_content(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, generative_service.EmbedContentResponse)
-
-
-def test_embed_content_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = GenerativeServiceClient(
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = CacheServiceAsyncClient(
             credentials=ga_credentials.AnonymousCredentials(),
-            transport="rest",
+            transport=transport,
         )
 
         # Should wrap all calls on client creation
@@ -4526,306 +2459,676 @@ def test_embed_content_rest_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert client._transport.embed_content in client._transport._wrapped_methods
+        assert (
+            client._client._transport.update_cached_content
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        class AwaitableMock(mock.AsyncMock):
+            def __await__(self):
+                self.await_count += 1
+                return iter([])
+
+        mock_object = AwaitableMock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.update_cached_content
+        ] = mock_object
+
+        request = {}
+        await client.update_cached_content(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_object.call_count == 1
+
+        await client.update_cached_content(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_object.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_update_cached_content_async(
+    transport: str = "grpc_asyncio",
+    request_type=cache_service.UpdateCachedContentRequest,
+):
+    client = CacheServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_cached_content), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gag_cached_content.CachedContent(
+                name="name_value",
+                display_name="display_name_value",
+                model="model_value",
+            )
+        )
+        response = await client.update_cached_content(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = cache_service.UpdateCachedContentRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gag_cached_content.CachedContent)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.model == "model_value"
+
+
+@pytest.mark.asyncio
+async def test_update_cached_content_async_from_dict():
+    await test_update_cached_content_async(request_type=dict)
+
+
+def test_update_cached_content_field_headers():
+    client = CacheServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cache_service.UpdateCachedContentRequest()
+
+    request.cached_content.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_cached_content), "__call__"
+    ) as call:
+        call.return_value = gag_cached_content.CachedContent()
+        client.update_cached_content(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "cached_content.name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_update_cached_content_field_headers_async():
+    client = CacheServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cache_service.UpdateCachedContentRequest()
+
+    request.cached_content.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_cached_content), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gag_cached_content.CachedContent()
+        )
+        await client.update_cached_content(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "cached_content.name=name_value",
+    ) in kw["metadata"]
+
+
+def test_update_cached_content_flattened():
+    client = CacheServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_cached_content), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = gag_cached_content.CachedContent()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.update_cached_content(
+            cached_content=gag_cached_content.CachedContent(
+                expire_time=timestamp_pb2.Timestamp(seconds=751)
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].cached_content
+        mock_val = gag_cached_content.CachedContent(
+            expire_time=timestamp_pb2.Timestamp(seconds=751)
+        )
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+def test_update_cached_content_flattened_error():
+    client = CacheServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_cached_content(
+            cache_service.UpdateCachedContentRequest(),
+            cached_content=gag_cached_content.CachedContent(
+                expire_time=timestamp_pb2.Timestamp(seconds=751)
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_cached_content_flattened_async():
+    client = CacheServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_cached_content), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = gag_cached_content.CachedContent()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gag_cached_content.CachedContent()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.update_cached_content(
+            cached_content=gag_cached_content.CachedContent(
+                expire_time=timestamp_pb2.Timestamp(seconds=751)
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].cached_content
+        mock_val = gag_cached_content.CachedContent(
+            expire_time=timestamp_pb2.Timestamp(seconds=751)
+        )
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_update_cached_content_flattened_error_async():
+    client = CacheServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.update_cached_content(
+            cache_service.UpdateCachedContentRequest(),
+            cached_content=gag_cached_content.CachedContent(
+                expire_time=timestamp_pb2.Timestamp(seconds=751)
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cache_service.DeleteCachedContentRequest,
+        dict,
+    ],
+)
+def test_delete_cached_content(request_type, transport: str = "grpc"):
+    client = CacheServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_cached_content), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+        response = client.delete_cached_content(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = cache_service.DeleteCachedContentRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_cached_content_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CacheServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_cached_content), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.delete_cached_content()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cache_service.DeleteCachedContentRequest()
+
+
+def test_delete_cached_content_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CacheServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cache_service.DeleteCachedContentRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_cached_content), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.delete_cached_content(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cache_service.DeleteCachedContentRequest(
+            name="name_value",
+        )
+
+
+def test_delete_cached_content_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = CacheServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.delete_cached_content
+            in client._transport._wrapped_methods
+        )
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.embed_content] = mock_rpc
-
+        client._transport._wrapped_methods[
+            client._transport.delete_cached_content
+        ] = mock_rpc
         request = {}
-        client.embed_content(request)
+        client.delete_cached_content(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
-        client.embed_content(request)
+        client.delete_cached_content(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
         assert mock_rpc.call_count == 2
 
 
-def test_embed_content_rest_required_fields(
-    request_type=generative_service.EmbedContentRequest,
-):
-    transport_class = transports.GenerativeServiceRestTransport
-
-    request_init = {}
-    request_init["model"] = ""
-    request = request_type(**request_init)
-    pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
-
-    # verify fields with default values are dropped
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).embed_content._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with default values are now present
-
-    jsonified_request["model"] = "model_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).embed_content._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with non-default values are left alone
-    assert "model" in jsonified_request
-    assert jsonified_request["model"] == "model_value"
-
-    client = GenerativeServiceClient(
+@pytest.mark.asyncio
+async def test_delete_cached_content_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CacheServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request = request_type(**request_init)
-
-    # Designate an appropriate value for the returned response.
-    return_value = generative_service.EmbedContentResponse()
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # We need to mock transcode() because providing default values
-        # for required fields will fail the real version if the http_options
-        # expect actual values for those fields.
-        with mock.patch.object(path_template, "transcode") as transcode:
-            # A uri without fields and an empty body will force all the
-            # request fields to show up in the query_params.
-            pb_request = request_type.pb(request)
-            transcode_result = {
-                "uri": "v1/sample_method",
-                "method": "post",
-                "query_params": pb_request,
-            }
-            transcode_result["body"] = pb_request
-            transcode.return_value = transcode_result
-
-            response_value = Response()
-            response_value.status_code = 200
-
-            # Convert return value to protobuf type
-            return_value = generative_service.EmbedContentResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(return_value)
-
-            response_value._content = json_return_value.encode("UTF-8")
-            req.return_value = response_value
-
-            response = client.embed_content(request)
-
-            expected_params = [("$alt", "json;enum-encoding=int")]
-            actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
-
-
-def test_embed_content_rest_unset_required_fields():
-    transport = transports.GenerativeServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
+        transport="grpc_asyncio",
     )
 
-    unset_fields = transport.embed_content._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(())
-        & set(
-            (
-                "model",
-                "content",
-            )
-        )
-    )
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_embed_content_rest_interceptors(null_interceptor):
-    transport = transports.GenerativeServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.GenerativeServiceRestInterceptor(),
-    )
-    client = GenerativeServiceClient(transport=transport)
+    # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.GenerativeServiceRestInterceptor, "post_embed_content"
-    ) as post, mock.patch.object(
-        transports.GenerativeServiceRestInterceptor, "pre_embed_content"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = generative_service.EmbedContentRequest.pb(
-            generative_service.EmbedContentRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = generative_service.EmbedContentResponse.to_json(
-            generative_service.EmbedContentResponse()
-        )
-
-        request = generative_service.EmbedContentRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = generative_service.EmbedContentResponse()
-
-        client.embed_content(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
+        type(client.transport.delete_cached_content), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_cached_content()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cache_service.DeleteCachedContentRequest()
 
 
-def test_embed_content_rest_bad_request(
-    transport: str = "rest", request_type=generative_service.EmbedContentRequest
+@pytest.mark.asyncio
+async def test_delete_cached_content_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
 ):
-    client = GenerativeServiceClient(
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = CacheServiceAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.delete_cached_content
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        class AwaitableMock(mock.AsyncMock):
+            def __await__(self):
+                self.await_count += 1
+                return iter([])
+
+        mock_object = AwaitableMock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.delete_cached_content
+        ] = mock_object
+
+        request = {}
+        await client.delete_cached_content(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_object.call_count == 1
+
+        await client.delete_cached_content(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_object.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_delete_cached_content_async(
+    transport: str = "grpc_asyncio",
+    request_type=cache_service.DeleteCachedContentRequest,
+):
+    client = CacheServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
-    # send a request that will satisfy transcoding
-    request_init = {"model": "models/sample1"}
-    request = request_type(**request_init)
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
 
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.embed_content(request)
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_cached_content), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_cached_content(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = cache_service.DeleteCachedContentRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert response is None
 
 
-def test_embed_content_rest_flattened():
-    client = GenerativeServiceClient(
+@pytest.mark.asyncio
+async def test_delete_cached_content_async_from_dict():
+    await test_delete_cached_content_async(request_type=dict)
+
+
+def test_delete_cached_content_field_headers():
+    client = CacheServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
     )
 
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = generative_service.EmbedContentResponse()
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cache_service.DeleteCachedContentRequest()
 
-        # get arguments that satisfy an http rule for this method
-        sample_request = {"model": "models/sample1"}
+    request.name = "name_value"
 
-        # get truthy value for each flattened field
-        mock_args = dict(
-            model="model_value",
-            content=gag_content.Content(parts=[gag_content.Part(text="text_value")]),
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_cached_content), "__call__"
+    ) as call:
+        call.return_value = None
+        client.delete_cached_content(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_delete_cached_content_field_headers_async():
+    client = CacheServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cache_service.DeleteCachedContentRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_cached_content), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_cached_content(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_delete_cached_content_flattened():
+    client = CacheServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_cached_content), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.delete_cached_content(
+            name="name_value",
         )
-        mock_args.update(sample_request)
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = generative_service.EmbedContentResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        client.embed_content(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
-        assert len(req.mock_calls) == 1
-        _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1beta/{model=models/*}:embedContent" % client.transport._host, args[1]
-        )
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
-def test_embed_content_rest_flattened_error(transport: str = "rest"):
-    client = GenerativeServiceClient(
+def test_delete_cached_content_flattened_error():
+    client = CacheServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
     )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        client.embed_content(
-            generative_service.EmbedContentRequest(),
-            model="model_value",
-            content=gag_content.Content(parts=[gag_content.Part(text="text_value")]),
+        client.delete_cached_content(
+            cache_service.DeleteCachedContentRequest(),
+            name="name_value",
         )
 
 
-def test_embed_content_rest_error():
-    client = GenerativeServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+@pytest.mark.asyncio
+async def test_delete_cached_content_flattened_async():
+    client = CacheServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
     )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_cached_content), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.delete_cached_content(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_delete_cached_content_flattened_error_async():
+    client = CacheServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.delete_cached_content(
+            cache_service.DeleteCachedContentRequest(),
+            name="name_value",
+        )
 
 
 @pytest.mark.parametrize(
     "request_type",
     [
-        generative_service.BatchEmbedContentsRequest,
+        cache_service.ListCachedContentsRequest,
         dict,
     ],
 )
-def test_batch_embed_contents_rest(request_type):
-    client = GenerativeServiceClient(
+def test_list_cached_contents_rest(request_type):
+    client = CacheServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
     # send a request that will satisfy transcoding
-    request_init = {"model": "models/sample1"}
+    request_init = {}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = generative_service.BatchEmbedContentsResponse()
+        return_value = cache_service.ListCachedContentsResponse(
+            next_page_token="next_page_token_value",
+        )
 
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
         # Convert return value to protobuf type
-        return_value = generative_service.BatchEmbedContentsResponse.pb(return_value)
+        return_value = cache_service.ListCachedContentsResponse.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-        response = client.batch_embed_contents(request)
+        response = client.list_cached_contents(request)
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, generative_service.BatchEmbedContentsResponse)
+    assert isinstance(response, pagers.ListCachedContentsPager)
+    assert response.next_page_token == "next_page_token_value"
 
 
-def test_batch_embed_contents_rest_use_cached_wrapped_rpc():
+def test_list_cached_contents_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = GenerativeServiceClient(
+        client = CacheServiceClient(
             credentials=ga_credentials.AnonymousCredentials(),
             transport="rest",
         )
@@ -4836,7 +3139,7 @@ def test_batch_embed_contents_rest_use_cached_wrapped_rpc():
 
         # Ensure method has been cached
         assert (
-            client._transport.batch_embed_contents in client._transport._wrapped_methods
+            client._transport.list_cached_contents in client._transport._wrapped_methods
         )
 
         # Replace cached wrapped function with mock
@@ -4845,138 +3148,44 @@ def test_batch_embed_contents_rest_use_cached_wrapped_rpc():
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
         client._transport._wrapped_methods[
-            client._transport.batch_embed_contents
+            client._transport.list_cached_contents
         ] = mock_rpc
 
         request = {}
-        client.batch_embed_contents(request)
+        client.list_cached_contents(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
-        client.batch_embed_contents(request)
+        client.list_cached_contents(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
         assert mock_rpc.call_count == 2
 
 
-def test_batch_embed_contents_rest_required_fields(
-    request_type=generative_service.BatchEmbedContentsRequest,
-):
-    transport_class = transports.GenerativeServiceRestTransport
-
-    request_init = {}
-    request_init["model"] = ""
-    request = request_type(**request_init)
-    pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
-
-    # verify fields with default values are dropped
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).batch_embed_contents._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with default values are now present
-
-    jsonified_request["model"] = "model_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).batch_embed_contents._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with non-default values are left alone
-    assert "model" in jsonified_request
-    assert jsonified_request["model"] == "model_value"
-
-    client = GenerativeServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request = request_type(**request_init)
-
-    # Designate an appropriate value for the returned response.
-    return_value = generative_service.BatchEmbedContentsResponse()
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # We need to mock transcode() because providing default values
-        # for required fields will fail the real version if the http_options
-        # expect actual values for those fields.
-        with mock.patch.object(path_template, "transcode") as transcode:
-            # A uri without fields and an empty body will force all the
-            # request fields to show up in the query_params.
-            pb_request = request_type.pb(request)
-            transcode_result = {
-                "uri": "v1/sample_method",
-                "method": "post",
-                "query_params": pb_request,
-            }
-            transcode_result["body"] = pb_request
-            transcode.return_value = transcode_result
-
-            response_value = Response()
-            response_value.status_code = 200
-
-            # Convert return value to protobuf type
-            return_value = generative_service.BatchEmbedContentsResponse.pb(
-                return_value
-            )
-            json_return_value = json_format.MessageToJson(return_value)
-
-            response_value._content = json_return_value.encode("UTF-8")
-            req.return_value = response_value
-
-            response = client.batch_embed_contents(request)
-
-            expected_params = [("$alt", "json;enum-encoding=int")]
-            actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
-
-
-def test_batch_embed_contents_rest_unset_required_fields():
-    transport = transports.GenerativeServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.batch_embed_contents._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(())
-        & set(
-            (
-                "model",
-                "requests",
-            )
-        )
-    )
-
-
 @pytest.mark.parametrize("null_interceptor", [True, False])
-def test_batch_embed_contents_rest_interceptors(null_interceptor):
-    transport = transports.GenerativeServiceRestTransport(
+def test_list_cached_contents_rest_interceptors(null_interceptor):
+    transport = transports.CacheServiceRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
-        else transports.GenerativeServiceRestInterceptor(),
+        else transports.CacheServiceRestInterceptor(),
     )
-    client = GenerativeServiceClient(transport=transport)
+    client = CacheServiceClient(transport=transport)
     with mock.patch.object(
         type(client.transport._session), "request"
     ) as req, mock.patch.object(
         path_template, "transcode"
     ) as transcode, mock.patch.object(
-        transports.GenerativeServiceRestInterceptor, "post_batch_embed_contents"
+        transports.CacheServiceRestInterceptor, "post_list_cached_contents"
     ) as post, mock.patch.object(
-        transports.GenerativeServiceRestInterceptor, "pre_batch_embed_contents"
+        transports.CacheServiceRestInterceptor, "pre_list_cached_contents"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-        pb_message = generative_service.BatchEmbedContentsRequest.pb(
-            generative_service.BatchEmbedContentsRequest()
+        pb_message = cache_service.ListCachedContentsRequest.pb(
+            cache_service.ListCachedContentsRequest()
         )
         transcode.return_value = {
             "method": "post",
@@ -4988,21 +3197,19 @@ def test_batch_embed_contents_rest_interceptors(null_interceptor):
         req.return_value = Response()
         req.return_value.status_code = 200
         req.return_value.request = PreparedRequest()
-        req.return_value._content = (
-            generative_service.BatchEmbedContentsResponse.to_json(
-                generative_service.BatchEmbedContentsResponse()
-            )
+        req.return_value._content = cache_service.ListCachedContentsResponse.to_json(
+            cache_service.ListCachedContentsResponse()
         )
 
-        request = generative_service.BatchEmbedContentsRequest()
+        request = cache_service.ListCachedContentsRequest()
         metadata = [
             ("key", "val"),
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = generative_service.BatchEmbedContentsResponse()
+        post.return_value = cache_service.ListCachedContentsResponse()
 
-        client.batch_embed_contents(
+        client.list_cached_contents(
             request,
             metadata=[
                 ("key", "val"),
@@ -5014,16 +3221,16 @@ def test_batch_embed_contents_rest_interceptors(null_interceptor):
         post.assert_called_once()
 
 
-def test_batch_embed_contents_rest_bad_request(
-    transport: str = "rest", request_type=generative_service.BatchEmbedContentsRequest
+def test_list_cached_contents_rest_bad_request(
+    transport: str = "rest", request_type=cache_service.ListCachedContentsRequest
 ):
-    client = GenerativeServiceClient(
+    client = CacheServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
     # send a request that will satisfy transcoding
-    request_init = {"model": "models/sample1"}
+    request_init = {}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -5035,120 +3242,246 @@ def test_batch_embed_contents_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
-        client.batch_embed_contents(request)
+        client.list_cached_contents(request)
 
 
-def test_batch_embed_contents_rest_flattened():
-    client = GenerativeServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = generative_service.BatchEmbedContentsResponse()
-
-        # get arguments that satisfy an http rule for this method
-        sample_request = {"model": "models/sample1"}
-
-        # get truthy value for each flattened field
-        mock_args = dict(
-            model="model_value",
-            requests=[generative_service.EmbedContentRequest(model="model_value")],
-        )
-        mock_args.update(sample_request)
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = generative_service.BatchEmbedContentsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        client.batch_embed_contents(**mock_args)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(req.mock_calls) == 1
-        _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1beta/{model=models/*}:batchEmbedContents" % client.transport._host,
-            args[1],
-        )
-
-
-def test_batch_embed_contents_rest_flattened_error(transport: str = "rest"):
-    client = GenerativeServiceClient(
+def test_list_cached_contents_rest_pager(transport: str = "rest"):
+    client = CacheServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.batch_embed_contents(
-            generative_service.BatchEmbedContentsRequest(),
-            model="model_value",
-            requests=[generative_service.EmbedContentRequest(model="model_value")],
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            cache_service.ListCachedContentsResponse(
+                cached_contents=[
+                    cached_content.CachedContent(),
+                    cached_content.CachedContent(),
+                    cached_content.CachedContent(),
+                ],
+                next_page_token="abc",
+            ),
+            cache_service.ListCachedContentsResponse(
+                cached_contents=[],
+                next_page_token="def",
+            ),
+            cache_service.ListCachedContentsResponse(
+                cached_contents=[
+                    cached_content.CachedContent(),
+                ],
+                next_page_token="ghi",
+            ),
+            cache_service.ListCachedContentsResponse(
+                cached_contents=[
+                    cached_content.CachedContent(),
+                    cached_content.CachedContent(),
+                ],
+            ),
         )
+        # Two responses for two calls
+        response = response + response
 
+        # Wrap the values into proper Response objs
+        response = tuple(
+            cache_service.ListCachedContentsResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
 
-def test_batch_embed_contents_rest_error():
-    client = GenerativeServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+        sample_request = {}
+
+        pager = client.list_cached_contents(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, cached_content.CachedContent) for i in results)
+
+        pages = list(client.list_cached_contents(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
 
 
 @pytest.mark.parametrize(
     "request_type",
     [
-        generative_service.CountTokensRequest,
+        cache_service.CreateCachedContentRequest,
         dict,
     ],
 )
-def test_count_tokens_rest(request_type):
-    client = GenerativeServiceClient(
+def test_create_cached_content_rest(request_type):
+    client = CacheServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
     # send a request that will satisfy transcoding
-    request_init = {"model": "models/sample1"}
+    request_init = {}
+    request_init["cached_content"] = {
+        "expire_time": {"seconds": 751, "nanos": 543},
+        "ttl": {"seconds": 751, "nanos": 543},
+        "name": "name_value",
+        "display_name": "display_name_value",
+        "model": "model_value",
+        "system_instruction": {
+            "parts": [
+                {
+                    "text": "text_value",
+                    "inline_data": {
+                        "mime_type": "mime_type_value",
+                        "data": b"data_blob",
+                    },
+                    "function_call": {"name": "name_value", "args": {"fields": {}}},
+                    "function_response": {"name": "name_value", "response": {}},
+                    "file_data": {
+                        "mime_type": "mime_type_value",
+                        "file_uri": "file_uri_value",
+                    },
+                }
+            ],
+            "role": "role_value",
+        },
+        "contents": {},
+        "tools": [
+            {
+                "function_declarations": [
+                    {
+                        "name": "name_value",
+                        "description": "description_value",
+                        "parameters": {
+                            "type_": 1,
+                            "format_": "format__value",
+                            "description": "description_value",
+                            "nullable": True,
+                            "enum": ["enum_value1", "enum_value2"],
+                            "items": {},
+                            "properties": {},
+                            "required": ["required_value1", "required_value2"],
+                        },
+                    }
+                ]
+            }
+        ],
+        "tool_config": {
+            "function_calling_config": {
+                "mode": 1,
+                "allowed_function_names": [
+                    "allowed_function_names_value1",
+                    "allowed_function_names_value2",
+                ],
+            }
+        },
+        "create_time": {},
+        "update_time": {},
+        "usage_metadata": {"total_token_count": 1836},
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = cache_service.CreateCachedContentRequest.meta.fields["cached_content"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["cached_content"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["cached_content"][field])):
+                    del request_init["cached_content"][field][i][subfield]
+            else:
+                del request_init["cached_content"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = generative_service.CountTokensResponse(
-            total_tokens=1303,
-            cached_content_token_count=2746,
+        return_value = gag_cached_content.CachedContent(
+            name="name_value",
+            display_name="display_name_value",
+            model="model_value",
         )
 
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
         # Convert return value to protobuf type
-        return_value = generative_service.CountTokensResponse.pb(return_value)
+        return_value = gag_cached_content.CachedContent.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-        response = client.count_tokens(request)
+        response = client.create_cached_content(request)
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, generative_service.CountTokensResponse)
-    assert response.total_tokens == 1303
-    assert response.cached_content_token_count == 2746
+    assert isinstance(response, gag_cached_content.CachedContent)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.model == "model_value"
 
 
-def test_count_tokens_rest_use_cached_wrapped_rpc():
+def test_create_cached_content_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = GenerativeServiceClient(
+        client = CacheServiceClient(
             credentials=ga_credentials.AnonymousCredentials(),
             transport="rest",
         )
@@ -5158,35 +3491,39 @@ def test_count_tokens_rest_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert client._transport.count_tokens in client._transport._wrapped_methods
+        assert (
+            client._transport.create_cached_content
+            in client._transport._wrapped_methods
+        )
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.count_tokens] = mock_rpc
+        client._transport._wrapped_methods[
+            client._transport.create_cached_content
+        ] = mock_rpc
 
         request = {}
-        client.count_tokens(request)
+        client.create_cached_content(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
-        client.count_tokens(request)
+        client.create_cached_content(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
         assert mock_rpc.call_count == 2
 
 
-def test_count_tokens_rest_required_fields(
-    request_type=generative_service.CountTokensRequest,
+def test_create_cached_content_rest_required_fields(
+    request_type=cache_service.CreateCachedContentRequest,
 ):
-    transport_class = transports.GenerativeServiceRestTransport
+    transport_class = transports.CacheServiceRestTransport
 
     request_init = {}
-    request_init["model"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
@@ -5197,30 +3534,26 @@ def test_count_tokens_rest_required_fields(
 
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
-    ).count_tokens._get_unset_required_fields(jsonified_request)
+    ).create_cached_content._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
-    jsonified_request["model"] = "model_value"
-
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
-    ).count_tokens._get_unset_required_fields(jsonified_request)
+    ).create_cached_content._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
-    assert "model" in jsonified_request
-    assert jsonified_request["model"] == "model_value"
 
-    client = GenerativeServiceClient(
+    client = CacheServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
-    return_value = generative_service.CountTokensResponse()
+    return_value = gag_cached_content.CachedContent()
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
         # We need to mock transcode() because providing default values
@@ -5242,50 +3575,50 @@ def test_count_tokens_rest_required_fields(
             response_value.status_code = 200
 
             # Convert return value to protobuf type
-            return_value = generative_service.CountTokensResponse.pb(return_value)
+            return_value = gag_cached_content.CachedContent.pb(return_value)
             json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
-            response = client.count_tokens(request)
+            response = client.create_cached_content(request)
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
 
-def test_count_tokens_rest_unset_required_fields():
-    transport = transports.GenerativeServiceRestTransport(
+def test_create_cached_content_rest_unset_required_fields():
+    transport = transports.CacheServiceRestTransport(
         credentials=ga_credentials.AnonymousCredentials
     )
 
-    unset_fields = transport.count_tokens._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("model",)))
+    unset_fields = transport.create_cached_content._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("cachedContent",)))
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
-def test_count_tokens_rest_interceptors(null_interceptor):
-    transport = transports.GenerativeServiceRestTransport(
+def test_create_cached_content_rest_interceptors(null_interceptor):
+    transport = transports.CacheServiceRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
-        else transports.GenerativeServiceRestInterceptor(),
+        else transports.CacheServiceRestInterceptor(),
     )
-    client = GenerativeServiceClient(transport=transport)
+    client = CacheServiceClient(transport=transport)
     with mock.patch.object(
         type(client.transport._session), "request"
     ) as req, mock.patch.object(
         path_template, "transcode"
     ) as transcode, mock.patch.object(
-        transports.GenerativeServiceRestInterceptor, "post_count_tokens"
+        transports.CacheServiceRestInterceptor, "post_create_cached_content"
     ) as post, mock.patch.object(
-        transports.GenerativeServiceRestInterceptor, "pre_count_tokens"
+        transports.CacheServiceRestInterceptor, "pre_create_cached_content"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-        pb_message = generative_service.CountTokensRequest.pb(
-            generative_service.CountTokensRequest()
+        pb_message = cache_service.CreateCachedContentRequest.pb(
+            cache_service.CreateCachedContentRequest()
         )
         transcode.return_value = {
             "method": "post",
@@ -5297,19 +3630,19 @@ def test_count_tokens_rest_interceptors(null_interceptor):
         req.return_value = Response()
         req.return_value.status_code = 200
         req.return_value.request = PreparedRequest()
-        req.return_value._content = generative_service.CountTokensResponse.to_json(
-            generative_service.CountTokensResponse()
+        req.return_value._content = gag_cached_content.CachedContent.to_json(
+            gag_cached_content.CachedContent()
         )
 
-        request = generative_service.CountTokensRequest()
+        request = cache_service.CreateCachedContentRequest()
         metadata = [
             ("key", "val"),
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = generative_service.CountTokensResponse()
+        post.return_value = gag_cached_content.CachedContent()
 
-        client.count_tokens(
+        client.create_cached_content(
             request,
             metadata=[
                 ("key", "val"),
@@ -5321,16 +3654,16 @@ def test_count_tokens_rest_interceptors(null_interceptor):
         post.assert_called_once()
 
 
-def test_count_tokens_rest_bad_request(
-    transport: str = "rest", request_type=generative_service.CountTokensRequest
+def test_create_cached_content_rest_bad_request(
+    transport: str = "rest", request_type=cache_service.CreateCachedContentRequest
 ):
-    client = GenerativeServiceClient(
+    client = CacheServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
     # send a request that will satisfy transcoding
-    request_init = {"model": "models/sample1"}
+    request_init = {}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -5342,11 +3675,11 @@ def test_count_tokens_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
-        client.count_tokens(request)
+        client.create_cached_content(request)
 
 
-def test_count_tokens_rest_flattened():
-    client = GenerativeServiceClient(
+def test_create_cached_content_rest_flattened():
+    client = CacheServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
@@ -5354,15 +3687,16 @@ def test_count_tokens_rest_flattened():
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = generative_service.CountTokensResponse()
+        return_value = gag_cached_content.CachedContent()
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {"model": "models/sample1"}
+        sample_request = {}
 
         # get truthy value for each flattened field
         mock_args = dict(
-            model="model_value",
-            contents=[content.Content(parts=[content.Part(text="text_value")])],
+            cached_content=gag_cached_content.CachedContent(
+                expire_time=timestamp_pb2.Timestamp(seconds=751)
+            ),
         )
         mock_args.update(sample_request)
 
@@ -5370,24 +3704,24 @@ def test_count_tokens_rest_flattened():
         response_value = Response()
         response_value.status_code = 200
         # Convert return value to protobuf type
-        return_value = generative_service.CountTokensResponse.pb(return_value)
+        return_value = gag_cached_content.CachedContent.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
-        client.count_tokens(**mock_args)
+        client.create_cached_content(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/v1beta/{model=models/*}:countTokens" % client.transport._host, args[1]
+            "%s/v1beta/cachedContents" % client.transport._host, args[1]
         )
 
 
-def test_count_tokens_rest_flattened_error(transport: str = "rest"):
-    client = GenerativeServiceClient(
+def test_create_cached_content_rest_flattened_error(transport: str = "rest"):
+    client = CacheServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -5395,48 +3729,1086 @@ def test_count_tokens_rest_flattened_error(transport: str = "rest"):
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        client.count_tokens(
-            generative_service.CountTokensRequest(),
-            model="model_value",
-            contents=[content.Content(parts=[content.Part(text="text_value")])],
+        client.create_cached_content(
+            cache_service.CreateCachedContentRequest(),
+            cached_content=gag_cached_content.CachedContent(
+                expire_time=timestamp_pb2.Timestamp(seconds=751)
+            ),
         )
 
 
-def test_count_tokens_rest_error():
-    client = GenerativeServiceClient(
+def test_create_cached_content_rest_error():
+    client = CacheServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cache_service.GetCachedContentRequest,
+        dict,
+    ],
+)
+def test_get_cached_content_rest(request_type):
+    client = CacheServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "cachedContents/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cached_content.CachedContent(
+            name="name_value",
+            display_name="display_name_value",
+            model="model_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = cached_content.CachedContent.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_cached_content(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, cached_content.CachedContent)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.model == "model_value"
+
+
+def test_get_cached_content_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = CacheServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.get_cached_content in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.get_cached_content
+        ] = mock_rpc
+
+        request = {}
+        client.get_cached_content(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_cached_content(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_get_cached_content_rest_required_fields(
+    request_type=cache_service.GetCachedContentRequest,
+):
+    transport_class = transports.CacheServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_cached_content._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_cached_content._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = CacheServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = cached_content.CachedContent()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = cached_content.CachedContent.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_cached_content(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_cached_content_rest_unset_required_fields():
+    transport = transports.CacheServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_cached_content._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_cached_content_rest_interceptors(null_interceptor):
+    transport = transports.CacheServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CacheServiceRestInterceptor(),
+    )
+    client = CacheServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CacheServiceRestInterceptor, "post_get_cached_content"
+    ) as post, mock.patch.object(
+        transports.CacheServiceRestInterceptor, "pre_get_cached_content"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cache_service.GetCachedContentRequest.pb(
+            cache_service.GetCachedContentRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = cached_content.CachedContent.to_json(
+            cached_content.CachedContent()
+        )
+
+        request = cache_service.GetCachedContentRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = cached_content.CachedContent()
+
+        client.get_cached_content(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_cached_content_rest_bad_request(
+    transport: str = "rest", request_type=cache_service.GetCachedContentRequest
+):
+    client = CacheServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "cachedContents/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_cached_content(request)
+
+
+def test_get_cached_content_rest_flattened():
+    client = CacheServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cached_content.CachedContent()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "cachedContents/sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = cached_content.CachedContent.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_cached_content(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta/{name=cachedContents/*}" % client.transport._host, args[1]
+        )
+
+
+def test_get_cached_content_rest_flattened_error(transport: str = "rest"):
+    client = CacheServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_cached_content(
+            cache_service.GetCachedContentRequest(),
+            name="name_value",
+        )
+
+
+def test_get_cached_content_rest_error():
+    client = CacheServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cache_service.UpdateCachedContentRequest,
+        dict,
+    ],
+)
+def test_update_cached_content_rest(request_type):
+    client = CacheServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"cached_content": {"name": "cachedContents/sample1"}}
+    request_init["cached_content"] = {
+        "expire_time": {"seconds": 751, "nanos": 543},
+        "ttl": {"seconds": 751, "nanos": 543},
+        "name": "cachedContents/sample1",
+        "display_name": "display_name_value",
+        "model": "model_value",
+        "system_instruction": {
+            "parts": [
+                {
+                    "text": "text_value",
+                    "inline_data": {
+                        "mime_type": "mime_type_value",
+                        "data": b"data_blob",
+                    },
+                    "function_call": {"name": "name_value", "args": {"fields": {}}},
+                    "function_response": {"name": "name_value", "response": {}},
+                    "file_data": {
+                        "mime_type": "mime_type_value",
+                        "file_uri": "file_uri_value",
+                    },
+                }
+            ],
+            "role": "role_value",
+        },
+        "contents": {},
+        "tools": [
+            {
+                "function_declarations": [
+                    {
+                        "name": "name_value",
+                        "description": "description_value",
+                        "parameters": {
+                            "type_": 1,
+                            "format_": "format__value",
+                            "description": "description_value",
+                            "nullable": True,
+                            "enum": ["enum_value1", "enum_value2"],
+                            "items": {},
+                            "properties": {},
+                            "required": ["required_value1", "required_value2"],
+                        },
+                    }
+                ]
+            }
+        ],
+        "tool_config": {
+            "function_calling_config": {
+                "mode": 1,
+                "allowed_function_names": [
+                    "allowed_function_names_value1",
+                    "allowed_function_names_value2",
+                ],
+            }
+        },
+        "create_time": {},
+        "update_time": {},
+        "usage_metadata": {"total_token_count": 1836},
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = cache_service.UpdateCachedContentRequest.meta.fields["cached_content"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["cached_content"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["cached_content"][field])):
+                    del request_init["cached_content"][field][i][subfield]
+            else:
+                del request_init["cached_content"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gag_cached_content.CachedContent(
+            name="name_value",
+            display_name="display_name_value",
+            model="model_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = gag_cached_content.CachedContent.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_cached_content(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gag_cached_content.CachedContent)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.model == "model_value"
+
+
+def test_update_cached_content_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = CacheServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.update_cached_content
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.update_cached_content
+        ] = mock_rpc
+
+        request = {}
+        client.update_cached_content(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.update_cached_content(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_update_cached_content_rest_required_fields(
+    request_type=cache_service.UpdateCachedContentRequest,
+):
+    transport_class = transports.CacheServiceRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_cached_content._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_cached_content._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("update_mask",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = CacheServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = gag_cached_content.CachedContent()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = gag_cached_content.CachedContent.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_cached_content(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_cached_content_rest_unset_required_fields():
+    transport = transports.CacheServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_cached_content._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("updateMask",)) & set(("cachedContent",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_cached_content_rest_interceptors(null_interceptor):
+    transport = transports.CacheServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CacheServiceRestInterceptor(),
+    )
+    client = CacheServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CacheServiceRestInterceptor, "post_update_cached_content"
+    ) as post, mock.patch.object(
+        transports.CacheServiceRestInterceptor, "pre_update_cached_content"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cache_service.UpdateCachedContentRequest.pb(
+            cache_service.UpdateCachedContentRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = gag_cached_content.CachedContent.to_json(
+            gag_cached_content.CachedContent()
+        )
+
+        request = cache_service.UpdateCachedContentRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = gag_cached_content.CachedContent()
+
+        client.update_cached_content(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_cached_content_rest_bad_request(
+    transport: str = "rest", request_type=cache_service.UpdateCachedContentRequest
+):
+    client = CacheServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"cached_content": {"name": "cachedContents/sample1"}}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_cached_content(request)
+
+
+def test_update_cached_content_rest_flattened():
+    client = CacheServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gag_cached_content.CachedContent()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"cached_content": {"name": "cachedContents/sample1"}}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            cached_content=gag_cached_content.CachedContent(
+                expire_time=timestamp_pb2.Timestamp(seconds=751)
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = gag_cached_content.CachedContent.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_cached_content(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta/{cached_content.name=cachedContents/*}" % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_cached_content_rest_flattened_error(transport: str = "rest"):
+    client = CacheServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_cached_content(
+            cache_service.UpdateCachedContentRequest(),
+            cached_content=gag_cached_content.CachedContent(
+                expire_time=timestamp_pb2.Timestamp(seconds=751)
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_cached_content_rest_error():
+    client = CacheServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cache_service.DeleteCachedContentRequest,
+        dict,
+    ],
+)
+def test_delete_cached_content_rest(request_type):
+    client = CacheServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "cachedContents/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_cached_content(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_cached_content_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = CacheServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.delete_cached_content
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.delete_cached_content
+        ] = mock_rpc
+
+        request = {}
+        client.delete_cached_content(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.delete_cached_content(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_delete_cached_content_rest_required_fields(
+    request_type=cache_service.DeleteCachedContentRequest,
+):
+    transport_class = transports.CacheServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_cached_content._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_cached_content._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = CacheServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = None
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = ""
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_cached_content(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_cached_content_rest_unset_required_fields():
+    transport = transports.CacheServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_cached_content._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_cached_content_rest_interceptors(null_interceptor):
+    transport = transports.CacheServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CacheServiceRestInterceptor(),
+    )
+    client = CacheServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CacheServiceRestInterceptor, "pre_delete_cached_content"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = cache_service.DeleteCachedContentRequest.pb(
+            cache_service.DeleteCachedContentRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+
+        request = cache_service.DeleteCachedContentRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_cached_content(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_delete_cached_content_rest_bad_request(
+    transport: str = "rest", request_type=cache_service.DeleteCachedContentRequest
+):
+    client = CacheServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "cachedContents/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_cached_content(request)
+
+
+def test_delete_cached_content_rest_flattened():
+    client = CacheServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "cachedContents/sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_cached_content(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta/{name=cachedContents/*}" % client.transport._host, args[1]
+        )
+
+
+def test_delete_cached_content_rest_flattened_error(transport: str = "rest"):
+    client = CacheServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_cached_content(
+            cache_service.DeleteCachedContentRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_cached_content_rest_error():
+    client = CacheServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
-    transport = transports.GenerativeServiceGrpcTransport(
+    transport = transports.CacheServiceGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
-        client = GenerativeServiceClient(
+        client = CacheServiceClient(
             credentials=ga_credentials.AnonymousCredentials(),
             transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
-    transport = transports.GenerativeServiceGrpcTransport(
+    transport = transports.CacheServiceGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
-        client = GenerativeServiceClient(
+        client = CacheServiceClient(
             client_options={"credentials_file": "credentials.json"},
             transport=transport,
         )
 
     # It is an error to provide an api_key and a transport instance.
-    transport = transports.GenerativeServiceGrpcTransport(
+    transport = transports.CacheServiceGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = GenerativeServiceClient(
+        client = CacheServiceClient(
             client_options=options,
             transport=transport,
         )
@@ -5445,16 +4817,16 @@ def test_credentials_transport_error():
     options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = GenerativeServiceClient(
+        client = CacheServiceClient(
             client_options=options, credentials=ga_credentials.AnonymousCredentials()
         )
 
     # It is an error to provide scopes and a transport instance.
-    transport = transports.GenerativeServiceGrpcTransport(
+    transport = transports.CacheServiceGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
-        client = GenerativeServiceClient(
+        client = CacheServiceClient(
             client_options={"scopes": ["1", "2"]},
             transport=transport,
         )
@@ -5462,22 +4834,22 @@ def test_credentials_transport_error():
 
 def test_transport_instance():
     # A client may be instantiated with a custom transport instance.
-    transport = transports.GenerativeServiceGrpcTransport(
+    transport = transports.CacheServiceGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
-    client = GenerativeServiceClient(transport=transport)
+    client = CacheServiceClient(transport=transport)
     assert client.transport is transport
 
 
 def test_transport_get_channel():
     # A client may be instantiated with a custom transport instance.
-    transport = transports.GenerativeServiceGrpcTransport(
+    transport = transports.CacheServiceGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     channel = transport.grpc_channel
     assert channel
 
-    transport = transports.GenerativeServiceGrpcAsyncIOTransport(
+    transport = transports.CacheServiceGrpcAsyncIOTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     channel = transport.grpc_channel
@@ -5487,9 +4859,9 @@ def test_transport_get_channel():
 @pytest.mark.parametrize(
     "transport_class",
     [
-        transports.GenerativeServiceGrpcTransport,
-        transports.GenerativeServiceGrpcAsyncIOTransport,
-        transports.GenerativeServiceRestTransport,
+        transports.CacheServiceGrpcTransport,
+        transports.CacheServiceGrpcAsyncIOTransport,
+        transports.CacheServiceRestTransport,
     ],
 )
 def test_transport_adc(transport_class):
@@ -5508,7 +4880,7 @@ def test_transport_adc(transport_class):
     ],
 )
 def test_transport_kind(transport_name):
-    transport = GenerativeServiceClient.get_transport_class(transport_name)(
+    transport = CacheServiceClient.get_transport_class(transport_name)(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     assert transport.kind == transport_name
@@ -5516,43 +4888,42 @@ def test_transport_kind(transport_name):
 
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
-    client = GenerativeServiceClient(
+    client = CacheServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     assert isinstance(
         client.transport,
-        transports.GenerativeServiceGrpcTransport,
+        transports.CacheServiceGrpcTransport,
     )
 
 
-def test_generative_service_base_transport_error():
+def test_cache_service_base_transport_error():
     # Passing both a credentials object and credentials_file should raise an error
     with pytest.raises(core_exceptions.DuplicateCredentialArgs):
-        transport = transports.GenerativeServiceTransport(
+        transport = transports.CacheServiceTransport(
             credentials=ga_credentials.AnonymousCredentials(),
             credentials_file="credentials.json",
         )
 
 
-def test_generative_service_base_transport():
+def test_cache_service_base_transport():
     # Instantiate the base transport.
     with mock.patch(
-        "google.ai.generativelanguage_v1beta.services.generative_service.transports.GenerativeServiceTransport.__init__"
+        "google.ai.generativelanguage_v1beta.services.cache_service.transports.CacheServiceTransport.__init__"
     ) as Transport:
         Transport.return_value = None
-        transport = transports.GenerativeServiceTransport(
+        transport = transports.CacheServiceTransport(
             credentials=ga_credentials.AnonymousCredentials(),
         )
 
     # Every method on the transport should just blindly
     # raise NotImplementedError.
     methods = (
-        "generate_content",
-        "generate_answer",
-        "stream_generate_content",
-        "embed_content",
-        "batch_embed_contents",
-        "count_tokens",
+        "list_cached_contents",
+        "create_cached_content",
+        "get_cached_content",
+        "update_cached_content",
+        "delete_cached_content",
     )
     for method in methods:
         with pytest.raises(NotImplementedError):
@@ -5570,16 +4941,16 @@ def test_generative_service_base_transport():
             getattr(transport, r)()
 
 
-def test_generative_service_base_transport_with_credentials_file():
+def test_cache_service_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
     with mock.patch.object(
         google.auth, "load_credentials_from_file", autospec=True
     ) as load_creds, mock.patch(
-        "google.ai.generativelanguage_v1beta.services.generative_service.transports.GenerativeServiceTransport._prep_wrapped_messages"
+        "google.ai.generativelanguage_v1beta.services.cache_service.transports.CacheServiceTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
-        transport = transports.GenerativeServiceTransport(
+        transport = transports.CacheServiceTransport(
             credentials_file="credentials.json",
             quota_project_id="octopus",
         )
@@ -5591,22 +4962,22 @@ def test_generative_service_base_transport_with_credentials_file():
         )
 
 
-def test_generative_service_base_transport_with_adc():
+def test_cache_service_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
     with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.ai.generativelanguage_v1beta.services.generative_service.transports.GenerativeServiceTransport._prep_wrapped_messages"
+        "google.ai.generativelanguage_v1beta.services.cache_service.transports.CacheServiceTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
-        transport = transports.GenerativeServiceTransport()
+        transport = transports.CacheServiceTransport()
         adc.assert_called_once()
 
 
-def test_generative_service_auth_adc():
+def test_cache_service_auth_adc():
     # If no credentials are provided, we should use ADC credentials.
     with mock.patch.object(google.auth, "default", autospec=True) as adc:
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
-        GenerativeServiceClient()
+        CacheServiceClient()
         adc.assert_called_once_with(
             scopes=None,
             default_scopes=(),
@@ -5617,11 +4988,11 @@ def test_generative_service_auth_adc():
 @pytest.mark.parametrize(
     "transport_class",
     [
-        transports.GenerativeServiceGrpcTransport,
-        transports.GenerativeServiceGrpcAsyncIOTransport,
+        transports.CacheServiceGrpcTransport,
+        transports.CacheServiceGrpcAsyncIOTransport,
     ],
 )
-def test_generative_service_transport_auth_adc(transport_class):
+def test_cache_service_transport_auth_adc(transport_class):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
     with mock.patch.object(google.auth, "default", autospec=True) as adc:
@@ -5637,12 +5008,12 @@ def test_generative_service_transport_auth_adc(transport_class):
 @pytest.mark.parametrize(
     "transport_class",
     [
-        transports.GenerativeServiceGrpcTransport,
-        transports.GenerativeServiceGrpcAsyncIOTransport,
-        transports.GenerativeServiceRestTransport,
+        transports.CacheServiceGrpcTransport,
+        transports.CacheServiceGrpcAsyncIOTransport,
+        transports.CacheServiceRestTransport,
     ],
 )
-def test_generative_service_transport_auth_gdch_credentials(transport_class):
+def test_cache_service_transport_auth_gdch_credentials(transport_class):
     host = "https://language.com"
     api_audience_tests = [None, "https://language2.com"]
     api_audience_expect = [host, "https://language2.com"]
@@ -5660,11 +5031,11 @@ def test_generative_service_transport_auth_gdch_credentials(transport_class):
 @pytest.mark.parametrize(
     "transport_class,grpc_helpers",
     [
-        (transports.GenerativeServiceGrpcTransport, grpc_helpers),
-        (transports.GenerativeServiceGrpcAsyncIOTransport, grpc_helpers_async),
+        (transports.CacheServiceGrpcTransport, grpc_helpers),
+        (transports.CacheServiceGrpcAsyncIOTransport, grpc_helpers_async),
     ],
 )
-def test_generative_service_transport_create_channel(transport_class, grpc_helpers):
+def test_cache_service_transport_create_channel(transport_class, grpc_helpers):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
     with mock.patch.object(
@@ -5694,12 +5065,9 @@ def test_generative_service_transport_create_channel(transport_class, grpc_helpe
 
 @pytest.mark.parametrize(
     "transport_class",
-    [
-        transports.GenerativeServiceGrpcTransport,
-        transports.GenerativeServiceGrpcAsyncIOTransport,
-    ],
+    [transports.CacheServiceGrpcTransport, transports.CacheServiceGrpcAsyncIOTransport],
 )
-def test_generative_service_grpc_transport_client_cert_source_for_mtls(transport_class):
+def test_cache_service_grpc_transport_client_cert_source_for_mtls(transport_class):
     cred = ga_credentials.AnonymousCredentials()
 
     # Check ssl_channel_credentials is used if provided.
@@ -5737,12 +5105,12 @@ def test_generative_service_grpc_transport_client_cert_source_for_mtls(transport
             )
 
 
-def test_generative_service_http_transport_client_cert_source_for_mtls():
+def test_cache_service_http_transport_client_cert_source_for_mtls():
     cred = ga_credentials.AnonymousCredentials()
     with mock.patch(
         "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
     ) as mock_configure_mtls_channel:
-        transports.GenerativeServiceRestTransport(
+        transports.CacheServiceRestTransport(
             credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
         )
         mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
@@ -5756,8 +5124,8 @@ def test_generative_service_http_transport_client_cert_source_for_mtls():
         "rest",
     ],
 )
-def test_generative_service_host_no_port(transport_name):
-    client = GenerativeServiceClient(
+def test_cache_service_host_no_port(transport_name):
+    client = CacheServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(
             api_endpoint="generativelanguage.googleapis.com"
@@ -5779,8 +5147,8 @@ def test_generative_service_host_no_port(transport_name):
         "rest",
     ],
 )
-def test_generative_service_host_with_port(transport_name):
-    client = GenerativeServiceClient(
+def test_cache_service_host_with_port(transport_name):
+    client = CacheServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(
             api_endpoint="generativelanguage.googleapis.com:8000"
@@ -5800,42 +5168,39 @@ def test_generative_service_host_with_port(transport_name):
         "rest",
     ],
 )
-def test_generative_service_client_transport_session_collision(transport_name):
+def test_cache_service_client_transport_session_collision(transport_name):
     creds1 = ga_credentials.AnonymousCredentials()
     creds2 = ga_credentials.AnonymousCredentials()
-    client1 = GenerativeServiceClient(
+    client1 = CacheServiceClient(
         credentials=creds1,
         transport=transport_name,
     )
-    client2 = GenerativeServiceClient(
+    client2 = CacheServiceClient(
         credentials=creds2,
         transport=transport_name,
     )
-    session1 = client1.transport.generate_content._session
-    session2 = client2.transport.generate_content._session
+    session1 = client1.transport.list_cached_contents._session
+    session2 = client2.transport.list_cached_contents._session
     assert session1 != session2
-    session1 = client1.transport.generate_answer._session
-    session2 = client2.transport.generate_answer._session
+    session1 = client1.transport.create_cached_content._session
+    session2 = client2.transport.create_cached_content._session
     assert session1 != session2
-    session1 = client1.transport.stream_generate_content._session
-    session2 = client2.transport.stream_generate_content._session
+    session1 = client1.transport.get_cached_content._session
+    session2 = client2.transport.get_cached_content._session
     assert session1 != session2
-    session1 = client1.transport.embed_content._session
-    session2 = client2.transport.embed_content._session
+    session1 = client1.transport.update_cached_content._session
+    session2 = client2.transport.update_cached_content._session
     assert session1 != session2
-    session1 = client1.transport.batch_embed_contents._session
-    session2 = client2.transport.batch_embed_contents._session
-    assert session1 != session2
-    session1 = client1.transport.count_tokens._session
-    session2 = client2.transport.count_tokens._session
+    session1 = client1.transport.delete_cached_content._session
+    session2 = client2.transport.delete_cached_content._session
     assert session1 != session2
 
 
-def test_generative_service_grpc_transport_channel():
+def test_cache_service_grpc_transport_channel():
     channel = grpc.secure_channel("http://localhost/", grpc.local_channel_credentials())
 
     # Check that channel is used if provided.
-    transport = transports.GenerativeServiceGrpcTransport(
+    transport = transports.CacheServiceGrpcTransport(
         host="squid.clam.whelk",
         channel=channel,
     )
@@ -5844,11 +5209,11 @@ def test_generative_service_grpc_transport_channel():
     assert transport._ssl_channel_credentials == None
 
 
-def test_generative_service_grpc_asyncio_transport_channel():
+def test_cache_service_grpc_asyncio_transport_channel():
     channel = aio.secure_channel("http://localhost/", grpc.local_channel_credentials())
 
     # Check that channel is used if provided.
-    transport = transports.GenerativeServiceGrpcAsyncIOTransport(
+    transport = transports.CacheServiceGrpcAsyncIOTransport(
         host="squid.clam.whelk",
         channel=channel,
     )
@@ -5861,14 +5226,9 @@ def test_generative_service_grpc_asyncio_transport_channel():
 # removed from grpc/grpc_asyncio transport constructor.
 @pytest.mark.parametrize(
     "transport_class",
-    [
-        transports.GenerativeServiceGrpcTransport,
-        transports.GenerativeServiceGrpcAsyncIOTransport,
-    ],
+    [transports.CacheServiceGrpcTransport, transports.CacheServiceGrpcAsyncIOTransport],
 )
-def test_generative_service_transport_channel_mtls_with_client_cert_source(
-    transport_class,
-):
+def test_cache_service_transport_channel_mtls_with_client_cert_source(transport_class):
     with mock.patch(
         "grpc.ssl_channel_credentials", autospec=True
     ) as grpc_ssl_channel_cred:
@@ -5915,12 +5275,9 @@ def test_generative_service_transport_channel_mtls_with_client_cert_source(
 # removed from grpc/grpc_asyncio transport constructor.
 @pytest.mark.parametrize(
     "transport_class",
-    [
-        transports.GenerativeServiceGrpcTransport,
-        transports.GenerativeServiceGrpcAsyncIOTransport,
-    ],
+    [transports.CacheServiceGrpcTransport, transports.CacheServiceGrpcAsyncIOTransport],
 )
-def test_generative_service_transport_channel_mtls_with_adc(transport_class):
+def test_cache_service_transport_channel_mtls_with_adc(transport_class):
     mock_ssl_cred = mock.Mock()
     with mock.patch.multiple(
         "google.auth.transport.grpc.SslCredentials",
@@ -5962,7 +5319,7 @@ def test_cached_content_path():
     expected = "cachedContents/{id}".format(
         id=id,
     )
-    actual = GenerativeServiceClient.cached_content_path(id)
+    actual = CacheServiceClient.cached_content_path(id)
     assert expected == actual
 
 
@@ -5970,10 +5327,10 @@ def test_parse_cached_content_path():
     expected = {
         "id": "clam",
     }
-    path = GenerativeServiceClient.cached_content_path(**expected)
+    path = CacheServiceClient.cached_content_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = GenerativeServiceClient.parse_cached_content_path(path)
+    actual = CacheServiceClient.parse_cached_content_path(path)
     assert expected == actual
 
 
@@ -5982,7 +5339,7 @@ def test_model_path():
     expected = "models/{model}".format(
         model=model,
     )
-    actual = GenerativeServiceClient.model_path(model)
+    actual = CacheServiceClient.model_path(model)
     assert expected == actual
 
 
@@ -5990,10 +5347,10 @@ def test_parse_model_path():
     expected = {
         "model": "octopus",
     }
-    path = GenerativeServiceClient.model_path(**expected)
+    path = CacheServiceClient.model_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = GenerativeServiceClient.parse_model_path(path)
+    actual = CacheServiceClient.parse_model_path(path)
     assert expected == actual
 
 
@@ -6002,7 +5359,7 @@ def test_common_billing_account_path():
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
-    actual = GenerativeServiceClient.common_billing_account_path(billing_account)
+    actual = CacheServiceClient.common_billing_account_path(billing_account)
     assert expected == actual
 
 
@@ -6010,10 +5367,10 @@ def test_parse_common_billing_account_path():
     expected = {
         "billing_account": "nudibranch",
     }
-    path = GenerativeServiceClient.common_billing_account_path(**expected)
+    path = CacheServiceClient.common_billing_account_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = GenerativeServiceClient.parse_common_billing_account_path(path)
+    actual = CacheServiceClient.parse_common_billing_account_path(path)
     assert expected == actual
 
 
@@ -6022,7 +5379,7 @@ def test_common_folder_path():
     expected = "folders/{folder}".format(
         folder=folder,
     )
-    actual = GenerativeServiceClient.common_folder_path(folder)
+    actual = CacheServiceClient.common_folder_path(folder)
     assert expected == actual
 
 
@@ -6030,10 +5387,10 @@ def test_parse_common_folder_path():
     expected = {
         "folder": "mussel",
     }
-    path = GenerativeServiceClient.common_folder_path(**expected)
+    path = CacheServiceClient.common_folder_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = GenerativeServiceClient.parse_common_folder_path(path)
+    actual = CacheServiceClient.parse_common_folder_path(path)
     assert expected == actual
 
 
@@ -6042,7 +5399,7 @@ def test_common_organization_path():
     expected = "organizations/{organization}".format(
         organization=organization,
     )
-    actual = GenerativeServiceClient.common_organization_path(organization)
+    actual = CacheServiceClient.common_organization_path(organization)
     assert expected == actual
 
 
@@ -6050,10 +5407,10 @@ def test_parse_common_organization_path():
     expected = {
         "organization": "nautilus",
     }
-    path = GenerativeServiceClient.common_organization_path(**expected)
+    path = CacheServiceClient.common_organization_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = GenerativeServiceClient.parse_common_organization_path(path)
+    actual = CacheServiceClient.parse_common_organization_path(path)
     assert expected == actual
 
 
@@ -6062,7 +5419,7 @@ def test_common_project_path():
     expected = "projects/{project}".format(
         project=project,
     )
-    actual = GenerativeServiceClient.common_project_path(project)
+    actual = CacheServiceClient.common_project_path(project)
     assert expected == actual
 
 
@@ -6070,10 +5427,10 @@ def test_parse_common_project_path():
     expected = {
         "project": "abalone",
     }
-    path = GenerativeServiceClient.common_project_path(**expected)
+    path = CacheServiceClient.common_project_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = GenerativeServiceClient.parse_common_project_path(path)
+    actual = CacheServiceClient.parse_common_project_path(path)
     assert expected == actual
 
 
@@ -6084,7 +5441,7 @@ def test_common_location_path():
         project=project,
         location=location,
     )
-    actual = GenerativeServiceClient.common_location_path(project, location)
+    actual = CacheServiceClient.common_location_path(project, location)
     assert expected == actual
 
 
@@ -6093,10 +5450,10 @@ def test_parse_common_location_path():
         "project": "whelk",
         "location": "octopus",
     }
-    path = GenerativeServiceClient.common_location_path(**expected)
+    path = CacheServiceClient.common_location_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = GenerativeServiceClient.parse_common_location_path(path)
+    actual = CacheServiceClient.parse_common_location_path(path)
     assert expected == actual
 
 
@@ -6104,18 +5461,18 @@ def test_client_with_default_client_info():
     client_info = gapic_v1.client_info.ClientInfo()
 
     with mock.patch.object(
-        transports.GenerativeServiceTransport, "_prep_wrapped_messages"
+        transports.CacheServiceTransport, "_prep_wrapped_messages"
     ) as prep:
-        client = GenerativeServiceClient(
+        client = CacheServiceClient(
             credentials=ga_credentials.AnonymousCredentials(),
             client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
     with mock.patch.object(
-        transports.GenerativeServiceTransport, "_prep_wrapped_messages"
+        transports.CacheServiceTransport, "_prep_wrapped_messages"
     ) as prep:
-        transport_class = GenerativeServiceClient.get_transport_class()
+        transport_class = CacheServiceClient.get_transport_class()
         transport = transport_class(
             credentials=ga_credentials.AnonymousCredentials(),
             client_info=client_info,
@@ -6125,7 +5482,7 @@ def test_client_with_default_client_info():
 
 @pytest.mark.asyncio
 async def test_transport_close_async():
-    client = GenerativeServiceAsyncClient(
+    client = CacheServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc_asyncio",
     )
@@ -6144,7 +5501,7 @@ def test_transport_close():
     }
 
     for transport, close_name in transports.items():
-        client = GenerativeServiceClient(
+        client = CacheServiceClient(
             credentials=ga_credentials.AnonymousCredentials(), transport=transport
         )
         with mock.patch.object(
@@ -6161,7 +5518,7 @@ def test_client_ctx():
         "grpc",
     ]
     for transport in transports:
-        client = GenerativeServiceClient(
+        client = CacheServiceClient(
             credentials=ga_credentials.AnonymousCredentials(), transport=transport
         )
         # Test client calls underlying transport.
@@ -6175,11 +5532,8 @@ def test_client_ctx():
 @pytest.mark.parametrize(
     "client_class,transport_class",
     [
-        (GenerativeServiceClient, transports.GenerativeServiceGrpcTransport),
-        (
-            GenerativeServiceAsyncClient,
-            transports.GenerativeServiceGrpcAsyncIOTransport,
-        ),
+        (CacheServiceClient, transports.CacheServiceGrpcTransport),
+        (CacheServiceAsyncClient, transports.CacheServiceGrpcAsyncIOTransport),
     ],
 )
 def test_api_key_credentials(client_class, transport_class):

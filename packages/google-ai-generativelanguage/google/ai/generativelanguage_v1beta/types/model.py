@@ -76,12 +76,12 @@ class Model(proto.Message):
         temperature (float):
             Controls the randomness of the output.
 
-            Values can range over ``[0.0,1.0]``, inclusive. A value
-            closer to ``1.0`` will produce responses that are more
-            varied, while a value closer to ``0.0`` will typically
-            result in less surprising responses from the model. This
-            value specifies default to be used by the backend while
-            making the call to the model.
+            Values can range over ``[0.0,2.0]``, inclusive. A higher
+            value will produce responses that are more varied, while a
+            value closer to ``0.0`` will typically result in less
+            surprising responses from the model. This value specifies
+            default to be used by the backend while making the call to
+            the model.
 
             This field is a member of `oneof`_ ``_temperature``.
         top_p (float):

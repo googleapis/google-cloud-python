@@ -39,12 +39,14 @@ except AttributeError:  # pragma: NO COVER
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 
-from google.ai.generativelanguage_v1beta3.types import permission as gag_permission
-from google.ai.generativelanguage_v1beta3.types import permission
-from google.ai.generativelanguage_v1beta3.types import permission_service
+from google.ai.generativelanguage_v1beta.types import (
+    cached_content as gag_cached_content,
+)
+from google.ai.generativelanguage_v1beta.types import cache_service
+from google.ai.generativelanguage_v1beta.types import cached_content
 
+from .base import CacheServiceTransport
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
-from .base import PermissionServiceTransport
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -53,8 +55,8 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
 )
 
 
-class PermissionServiceRestInterceptor:
-    """Interceptor for PermissionService.
+class CacheServiceRestInterceptor:
+    """Interceptor for CacheService.
 
     Interceptors are used to manipulate requests, request metadata, and responses
     in arbitrary ways.
@@ -64,200 +66,172 @@ class PermissionServiceRestInterceptor:
     * Stripping extraneous information from responses
 
     These use cases and more can be enabled by injecting an
-    instance of a custom subclass when constructing the PermissionServiceRestTransport.
+    instance of a custom subclass when constructing the CacheServiceRestTransport.
 
     .. code-block:: python
-        class MyCustomPermissionServiceInterceptor(PermissionServiceRestInterceptor):
-            def pre_create_permission(self, request, metadata):
+        class MyCustomCacheServiceInterceptor(CacheServiceRestInterceptor):
+            def pre_create_cached_content(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_create_permission(self, response):
+            def post_create_cached_content(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
-            def pre_delete_permission(self, request, metadata):
+            def pre_delete_cached_content(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def pre_get_permission(self, request, metadata):
+            def pre_get_cached_content(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_permission(self, response):
+            def post_get_cached_content(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
-            def pre_list_permissions(self, request, metadata):
+            def pre_list_cached_contents(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_permissions(self, response):
+            def post_list_cached_contents(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
-            def pre_transfer_ownership(self, request, metadata):
+            def pre_update_cached_content(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_transfer_ownership(self, response):
+            def post_update_cached_content(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
-            def pre_update_permission(self, request, metadata):
-                logging.log(f"Received request: {request}")
-                return request, metadata
-
-            def post_update_permission(self, response):
-                logging.log(f"Received response: {response}")
-                return response
-
-        transport = PermissionServiceRestTransport(interceptor=MyCustomPermissionServiceInterceptor())
-        client = PermissionServiceClient(transport=transport)
+        transport = CacheServiceRestTransport(interceptor=MyCustomCacheServiceInterceptor())
+        client = CacheServiceClient(transport=transport)
 
 
     """
 
-    def pre_create_permission(
+    def pre_create_cached_content(
         self,
-        request: permission_service.CreatePermissionRequest,
+        request: cache_service.CreateCachedContentRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[permission_service.CreatePermissionRequest, Sequence[Tuple[str, str]]]:
-        """Pre-rpc interceptor for create_permission
+    ) -> Tuple[cache_service.CreateCachedContentRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for create_cached_content
 
         Override in a subclass to manipulate the request or metadata
-        before they are sent to the PermissionService server.
+        before they are sent to the CacheService server.
         """
         return request, metadata
 
-    def post_create_permission(
-        self, response: gag_permission.Permission
-    ) -> gag_permission.Permission:
-        """Post-rpc interceptor for create_permission
+    def post_create_cached_content(
+        self, response: gag_cached_content.CachedContent
+    ) -> gag_cached_content.CachedContent:
+        """Post-rpc interceptor for create_cached_content
 
         Override in a subclass to manipulate the response
-        after it is returned by the PermissionService server but before
+        after it is returned by the CacheService server but before
         it is returned to user code.
         """
         return response
 
-    def pre_delete_permission(
+    def pre_delete_cached_content(
         self,
-        request: permission_service.DeletePermissionRequest,
+        request: cache_service.DeleteCachedContentRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[permission_service.DeletePermissionRequest, Sequence[Tuple[str, str]]]:
-        """Pre-rpc interceptor for delete_permission
+    ) -> Tuple[cache_service.DeleteCachedContentRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for delete_cached_content
 
         Override in a subclass to manipulate the request or metadata
-        before they are sent to the PermissionService server.
+        before they are sent to the CacheService server.
         """
         return request, metadata
 
-    def pre_get_permission(
+    def pre_get_cached_content(
         self,
-        request: permission_service.GetPermissionRequest,
+        request: cache_service.GetCachedContentRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[permission_service.GetPermissionRequest, Sequence[Tuple[str, str]]]:
-        """Pre-rpc interceptor for get_permission
+    ) -> Tuple[cache_service.GetCachedContentRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_cached_content
 
         Override in a subclass to manipulate the request or metadata
-        before they are sent to the PermissionService server.
+        before they are sent to the CacheService server.
         """
         return request, metadata
 
-    def post_get_permission(
-        self, response: permission.Permission
-    ) -> permission.Permission:
-        """Post-rpc interceptor for get_permission
+    def post_get_cached_content(
+        self, response: cached_content.CachedContent
+    ) -> cached_content.CachedContent:
+        """Post-rpc interceptor for get_cached_content
 
         Override in a subclass to manipulate the response
-        after it is returned by the PermissionService server but before
+        after it is returned by the CacheService server but before
         it is returned to user code.
         """
         return response
 
-    def pre_list_permissions(
+    def pre_list_cached_contents(
         self,
-        request: permission_service.ListPermissionsRequest,
+        request: cache_service.ListCachedContentsRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[permission_service.ListPermissionsRequest, Sequence[Tuple[str, str]]]:
-        """Pre-rpc interceptor for list_permissions
+    ) -> Tuple[cache_service.ListCachedContentsRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for list_cached_contents
 
         Override in a subclass to manipulate the request or metadata
-        before they are sent to the PermissionService server.
+        before they are sent to the CacheService server.
         """
         return request, metadata
 
-    def post_list_permissions(
-        self, response: permission_service.ListPermissionsResponse
-    ) -> permission_service.ListPermissionsResponse:
-        """Post-rpc interceptor for list_permissions
+    def post_list_cached_contents(
+        self, response: cache_service.ListCachedContentsResponse
+    ) -> cache_service.ListCachedContentsResponse:
+        """Post-rpc interceptor for list_cached_contents
 
         Override in a subclass to manipulate the response
-        after it is returned by the PermissionService server but before
+        after it is returned by the CacheService server but before
         it is returned to user code.
         """
         return response
 
-    def pre_transfer_ownership(
+    def pre_update_cached_content(
         self,
-        request: permission_service.TransferOwnershipRequest,
+        request: cache_service.UpdateCachedContentRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[permission_service.TransferOwnershipRequest, Sequence[Tuple[str, str]]]:
-        """Pre-rpc interceptor for transfer_ownership
+    ) -> Tuple[cache_service.UpdateCachedContentRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for update_cached_content
 
         Override in a subclass to manipulate the request or metadata
-        before they are sent to the PermissionService server.
+        before they are sent to the CacheService server.
         """
         return request, metadata
 
-    def post_transfer_ownership(
-        self, response: permission_service.TransferOwnershipResponse
-    ) -> permission_service.TransferOwnershipResponse:
-        """Post-rpc interceptor for transfer_ownership
+    def post_update_cached_content(
+        self, response: gag_cached_content.CachedContent
+    ) -> gag_cached_content.CachedContent:
+        """Post-rpc interceptor for update_cached_content
 
         Override in a subclass to manipulate the response
-        after it is returned by the PermissionService server but before
-        it is returned to user code.
-        """
-        return response
-
-    def pre_update_permission(
-        self,
-        request: permission_service.UpdatePermissionRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[permission_service.UpdatePermissionRequest, Sequence[Tuple[str, str]]]:
-        """Pre-rpc interceptor for update_permission
-
-        Override in a subclass to manipulate the request or metadata
-        before they are sent to the PermissionService server.
-        """
-        return request, metadata
-
-    def post_update_permission(
-        self, response: gag_permission.Permission
-    ) -> gag_permission.Permission:
-        """Post-rpc interceptor for update_permission
-
-        Override in a subclass to manipulate the response
-        after it is returned by the PermissionService server but before
+        after it is returned by the CacheService server but before
         it is returned to user code.
         """
         return response
 
 
 @dataclasses.dataclass
-class PermissionServiceRestStub:
+class CacheServiceRestStub:
     _session: AuthorizedSession
     _host: str
-    _interceptor: PermissionServiceRestInterceptor
+    _interceptor: CacheServiceRestInterceptor
 
 
-class PermissionServiceRestTransport(PermissionServiceTransport):
-    """REST backend transport for PermissionService.
+class CacheServiceRestTransport(CacheServiceTransport):
+    """REST backend transport for CacheService.
 
-    Provides methods for managing permissions to PaLM API
-    resources.
+    API for managing cache of content (CachedContent resources)
+    that can be used in GenerativeService requests. This way
+    generate content requests can benefit from preprocessing work
+    being done earlier, possibly lowering their computational cost.
+    It is intended to be used with large contexts.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -279,7 +253,7 @@ class PermissionServiceRestTransport(PermissionServiceTransport):
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
         always_use_jwt_access: Optional[bool] = False,
         url_scheme: str = "https",
-        interceptor: Optional[PermissionServiceRestInterceptor] = None,
+        interceptor: Optional[CacheServiceRestInterceptor] = None,
         api_audience: Optional[str] = None,
     ) -> None:
         """Instantiate the transport.
@@ -340,12 +314,12 @@ class PermissionServiceRestTransport(PermissionServiceTransport):
         )
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
-        self._interceptor = interceptor or PermissionServiceRestInterceptor()
+        self._interceptor = interceptor or CacheServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _CreatePermission(PermissionServiceRestStub):
+    class _CreateCachedContent(CacheServiceRestStub):
         def __hash__(self):
-            return hash("CreatePermission")
+            return hash("CreateCachedContent")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
@@ -359,17 +333,17 @@ class PermissionServiceRestTransport(PermissionServiceTransport):
 
         def __call__(
             self,
-            request: permission_service.CreatePermissionRequest,
+            request: cache_service.CreateCachedContentRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
-        ) -> gag_permission.Permission:
-            r"""Call the create permission method over HTTP.
+        ) -> gag_cached_content.CachedContent:
+            r"""Call the create cached content method over HTTP.
 
             Args:
-                request (~.permission_service.CreatePermissionRequest):
-                    The request object. Request to create a ``Permission``.
+                request (~.cache_service.CreateCachedContentRequest):
+                    The request object. Request to create CachedContent.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -377,44 +351,27 @@ class PermissionServiceRestTransport(PermissionServiceTransport):
                     sent along with the request as metadata.
 
             Returns:
-                ~.gag_permission.Permission:
-                    Permission resource grants user,
-                group or the rest of the world access to
-                the PaLM API resource (e.g. a tuned
-                model, file).
+                ~.gag_cached_content.CachedContent:
+                    Content that has been preprocessed
+                and can be used in subsequent request to
+                GenerativeService.
 
-                A role is a collection of permitted
-                operations that allows users to perform
-                specific actions on PaLM API resources.
-                To make them available to users, groups,
-                or service accounts, you assign roles.
-                When you assign a role, you grant
-                permissions that the role contains.
-
-                There are three concentric roles. Each
-                role is a superset of the previous
-                role's permitted operations:
-
-                - reader can use the resource (e.g.
-                  tuned model) for inference
-                - writer has reader's permissions and
-                  additionally can edit and share
-                - owner has writer's permissions and
-                  additionally can delete
+                Cached content can be only used with
+                model it was created for.
 
             """
 
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
-                    "uri": "/v1beta3/{parent=tunedModels/*}/permissions",
-                    "body": "permission",
+                    "uri": "/v1beta/cachedContents",
+                    "body": "cached_content",
                 },
             ]
-            request, metadata = self._interceptor.pre_create_permission(
+            request, metadata = self._interceptor.pre_create_cached_content(
                 request, metadata
             )
-            pb_request = permission_service.CreatePermissionRequest.pb(request)
+            pb_request = cache_service.CreateCachedContentRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
@@ -453,16 +410,16 @@ class PermissionServiceRestTransport(PermissionServiceTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = gag_permission.Permission()
-            pb_resp = gag_permission.Permission.pb(resp)
+            resp = gag_cached_content.CachedContent()
+            pb_resp = gag_cached_content.CachedContent.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
-            resp = self._interceptor.post_create_permission(resp)
+            resp = self._interceptor.post_create_cached_content(resp)
             return resp
 
-    class _DeletePermission(PermissionServiceRestStub):
+    class _DeleteCachedContent(CacheServiceRestStub):
         def __hash__(self):
-            return hash("DeletePermission")
+            return hash("DeleteCachedContent")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
@@ -476,17 +433,17 @@ class PermissionServiceRestTransport(PermissionServiceTransport):
 
         def __call__(
             self,
-            request: permission_service.DeletePermissionRequest,
+            request: cache_service.DeleteCachedContentRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ):
-            r"""Call the delete permission method over HTTP.
+            r"""Call the delete cached content method over HTTP.
 
             Args:
-                request (~.permission_service.DeletePermissionRequest):
-                    The request object. Request to delete the ``Permission``.
+                request (~.cache_service.DeleteCachedContentRequest):
+                    The request object. Request to delete CachedContent.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -497,13 +454,13 @@ class PermissionServiceRestTransport(PermissionServiceTransport):
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "delete",
-                    "uri": "/v1beta3/{name=tunedModels/*/permissions/*}",
+                    "uri": "/v1beta/{name=cachedContents/*}",
                 },
             ]
-            request, metadata = self._interceptor.pre_delete_permission(
+            request, metadata = self._interceptor.pre_delete_cached_content(
                 request, metadata
             )
-            pb_request = permission_service.DeletePermissionRequest.pb(request)
+            pb_request = cache_service.DeleteCachedContentRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
 
             uri = transcoded_request["uri"]
@@ -535,9 +492,9 @@ class PermissionServiceRestTransport(PermissionServiceTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _GetPermission(PermissionServiceRestStub):
+    class _GetCachedContent(CacheServiceRestStub):
         def __hash__(self):
-            return hash("GetPermission")
+            return hash("GetCachedContent")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
@@ -551,18 +508,17 @@ class PermissionServiceRestTransport(PermissionServiceTransport):
 
         def __call__(
             self,
-            request: permission_service.GetPermissionRequest,
+            request: cache_service.GetCachedContentRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
-        ) -> permission.Permission:
-            r"""Call the get permission method over HTTP.
+        ) -> cached_content.CachedContent:
+            r"""Call the get cached content method over HTTP.
 
             Args:
-                request (~.permission_service.GetPermissionRequest):
-                    The request object. Request for getting information about a specific
-                ``Permission``.
+                request (~.cache_service.GetCachedContentRequest):
+                    The request object. Request to read CachedContent.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -570,41 +526,26 @@ class PermissionServiceRestTransport(PermissionServiceTransport):
                     sent along with the request as metadata.
 
             Returns:
-                ~.permission.Permission:
-                    Permission resource grants user,
-                group or the rest of the world access to
-                the PaLM API resource (e.g. a tuned
-                model, file).
+                ~.cached_content.CachedContent:
+                    Content that has been preprocessed
+                and can be used in subsequent request to
+                GenerativeService.
 
-                A role is a collection of permitted
-                operations that allows users to perform
-                specific actions on PaLM API resources.
-                To make them available to users, groups,
-                or service accounts, you assign roles.
-                When you assign a role, you grant
-                permissions that the role contains.
-
-                There are three concentric roles. Each
-                role is a superset of the previous
-                role's permitted operations:
-
-                - reader can use the resource (e.g.
-                  tuned model) for inference
-                - writer has reader's permissions and
-                  additionally can edit and share
-                - owner has writer's permissions and
-                  additionally can delete
+                Cached content can be only used with
+                model it was created for.
 
             """
 
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
-                    "uri": "/v1beta3/{name=tunedModels/*/permissions/*}",
+                    "uri": "/v1beta/{name=cachedContents/*}",
                 },
             ]
-            request, metadata = self._interceptor.pre_get_permission(request, metadata)
-            pb_request = permission_service.GetPermissionRequest.pb(request)
+            request, metadata = self._interceptor.pre_get_cached_content(
+                request, metadata
+            )
+            pb_request = cache_service.GetCachedContentRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
 
             uri = transcoded_request["uri"]
@@ -637,40 +578,30 @@ class PermissionServiceRestTransport(PermissionServiceTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = permission.Permission()
-            pb_resp = permission.Permission.pb(resp)
+            resp = cached_content.CachedContent()
+            pb_resp = cached_content.CachedContent.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
-            resp = self._interceptor.post_get_permission(resp)
+            resp = self._interceptor.post_get_cached_content(resp)
             return resp
 
-    class _ListPermissions(PermissionServiceRestStub):
+    class _ListCachedContents(CacheServiceRestStub):
         def __hash__(self):
-            return hash("ListPermissions")
-
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return hash("ListCachedContents")
 
         def __call__(
             self,
-            request: permission_service.ListPermissionsRequest,
+            request: cache_service.ListCachedContentsRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
-        ) -> permission_service.ListPermissionsResponse:
-            r"""Call the list permissions method over HTTP.
+        ) -> cache_service.ListCachedContentsResponse:
+            r"""Call the list cached contents method over HTTP.
 
             Args:
-                request (~.permission_service.ListPermissionsRequest):
-                    The request object. Request for listing permissions.
+                request (~.cache_service.ListCachedContentsRequest):
+                    The request object. Request to list CachedContents.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -678,22 +609,20 @@ class PermissionServiceRestTransport(PermissionServiceTransport):
                     sent along with the request as metadata.
 
             Returns:
-                ~.permission_service.ListPermissionsResponse:
-                    Response from ``ListPermissions`` containing a paginated
-                list of permissions.
-
+                ~.cache_service.ListCachedContentsResponse:
+                    Response with CachedContents list.
             """
 
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
-                    "uri": "/v1beta3/{parent=tunedModels/*}/permissions",
+                    "uri": "/v1beta/cachedContents",
                 },
             ]
-            request, metadata = self._interceptor.pre_list_permissions(
+            request, metadata = self._interceptor.pre_list_cached_contents(
                 request, metadata
             )
-            pb_request = permission_service.ListPermissionsRequest.pb(request)
+            pb_request = cache_service.ListCachedContentsRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
 
             uri = transcoded_request["uri"]
@@ -706,7 +635,6 @@ class PermissionServiceRestTransport(PermissionServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
 
@@ -726,16 +654,16 @@ class PermissionServiceRestTransport(PermissionServiceTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = permission_service.ListPermissionsResponse()
-            pb_resp = permission_service.ListPermissionsResponse.pb(resp)
+            resp = cache_service.ListCachedContentsResponse()
+            pb_resp = cache_service.ListCachedContentsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
-            resp = self._interceptor.post_list_permissions(resp)
+            resp = self._interceptor.post_list_cached_contents(resp)
             return resp
 
-    class _TransferOwnership(PermissionServiceRestStub):
+    class _UpdateCachedContent(CacheServiceRestStub):
         def __hash__(self):
-            return hash("TransferOwnership")
+            return hash("UpdateCachedContent")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
@@ -749,18 +677,17 @@ class PermissionServiceRestTransport(PermissionServiceTransport):
 
         def __call__(
             self,
-            request: permission_service.TransferOwnershipRequest,
+            request: cache_service.UpdateCachedContentRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
-        ) -> permission_service.TransferOwnershipResponse:
-            r"""Call the transfer ownership method over HTTP.
+        ) -> gag_cached_content.CachedContent:
+            r"""Call the update cached content method over HTTP.
 
             Args:
-                request (~.permission_service.TransferOwnershipRequest):
-                    The request object. Request to transfer the ownership of
-                the tuned model.
+                request (~.cache_service.UpdateCachedContentRequest):
+                    The request object. Request to update CachedContent.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -768,140 +695,27 @@ class PermissionServiceRestTransport(PermissionServiceTransport):
                     sent along with the request as metadata.
 
             Returns:
-                ~.permission_service.TransferOwnershipResponse:
-                    Response from ``TransferOwnership``.
-            """
+                ~.gag_cached_content.CachedContent:
+                    Content that has been preprocessed
+                and can be used in subsequent request to
+                GenerativeService.
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1beta3/{name=tunedModels/*}:transferOwnership",
-                    "body": "*",
-                },
-            ]
-            request, metadata = self._interceptor.pre_transfer_ownership(
-                request, metadata
-            )
-            pb_request = permission_service.TransferOwnershipRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
-            )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
-
-            # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
-            )
-
-            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-            # subclass.
-            if response.status_code >= 400:
-                raise core_exceptions.from_http_response(response)
-
-            # Return the response
-            resp = permission_service.TransferOwnershipResponse()
-            pb_resp = permission_service.TransferOwnershipResponse.pb(resp)
-
-            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
-            resp = self._interceptor.post_transfer_ownership(resp)
-            return resp
-
-    class _UpdatePermission(PermissionServiceRestStub):
-        def __hash__(self):
-            return hash("UpdatePermission")
-
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "updateMask": {},
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
-
-        def __call__(
-            self,
-            request: permission_service.UpdatePermissionRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-        ) -> gag_permission.Permission:
-            r"""Call the update permission method over HTTP.
-
-            Args:
-                request (~.permission_service.UpdatePermissionRequest):
-                    The request object. Request to update the ``Permission``.
-                retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                    should be retried.
-                timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
-
-            Returns:
-                ~.gag_permission.Permission:
-                    Permission resource grants user,
-                group or the rest of the world access to
-                the PaLM API resource (e.g. a tuned
-                model, file).
-
-                A role is a collection of permitted
-                operations that allows users to perform
-                specific actions on PaLM API resources.
-                To make them available to users, groups,
-                or service accounts, you assign roles.
-                When you assign a role, you grant
-                permissions that the role contains.
-
-                There are three concentric roles. Each
-                role is a superset of the previous
-                role's permitted operations:
-
-                - reader can use the resource (e.g.
-                  tuned model) for inference
-                - writer has reader's permissions and
-                  additionally can edit and share
-                - owner has writer's permissions and
-                  additionally can delete
+                Cached content can be only used with
+                model it was created for.
 
             """
 
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "patch",
-                    "uri": "/v1beta3/{permission.name=tunedModels/*/permissions/*}",
-                    "body": "permission",
+                    "uri": "/v1beta/{cached_content.name=cachedContents/*}",
+                    "body": "cached_content",
                 },
             ]
-            request, metadata = self._interceptor.pre_update_permission(
+            request, metadata = self._interceptor.pre_update_cached_content(
                 request, metadata
             )
-            pb_request = permission_service.UpdatePermissionRequest.pb(request)
+            pb_request = cache_service.UpdateCachedContentRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
@@ -940,70 +754,61 @@ class PermissionServiceRestTransport(PermissionServiceTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = gag_permission.Permission()
-            pb_resp = gag_permission.Permission.pb(resp)
+            resp = gag_cached_content.CachedContent()
+            pb_resp = gag_cached_content.CachedContent.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
-            resp = self._interceptor.post_update_permission(resp)
+            resp = self._interceptor.post_update_cached_content(resp)
             return resp
 
     @property
-    def create_permission(
+    def create_cached_content(
         self,
     ) -> Callable[
-        [permission_service.CreatePermissionRequest], gag_permission.Permission
+        [cache_service.CreateCachedContentRequest], gag_cached_content.CachedContent
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreatePermission(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CreateCachedContent(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_permission(
+    def delete_cached_content(
         self,
-    ) -> Callable[[permission_service.DeletePermissionRequest], empty_pb2.Empty]:
+    ) -> Callable[[cache_service.DeleteCachedContentRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeletePermission(self._session, self._host, self._interceptor)  # type: ignore
+        return self._DeleteCachedContent(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_permission(
-        self,
-    ) -> Callable[[permission_service.GetPermissionRequest], permission.Permission]:
-        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
-        # In C++ this would require a dynamic_cast
-        return self._GetPermission(self._session, self._host, self._interceptor)  # type: ignore
-
-    @property
-    def list_permissions(
+    def get_cached_content(
         self,
     ) -> Callable[
-        [permission_service.ListPermissionsRequest],
-        permission_service.ListPermissionsResponse,
+        [cache_service.GetCachedContentRequest], cached_content.CachedContent
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListPermissions(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GetCachedContent(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def transfer_ownership(
+    def list_cached_contents(
         self,
     ) -> Callable[
-        [permission_service.TransferOwnershipRequest],
-        permission_service.TransferOwnershipResponse,
+        [cache_service.ListCachedContentsRequest],
+        cache_service.ListCachedContentsResponse,
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._TransferOwnership(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListCachedContents(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_permission(
+    def update_cached_content(
         self,
     ) -> Callable[
-        [permission_service.UpdatePermissionRequest], gag_permission.Permission
+        [cache_service.UpdateCachedContentRequest], gag_cached_content.CachedContent
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpdatePermission(self._session, self._host, self._interceptor)  # type: ignore
+        return self._UpdateCachedContent(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def kind(self) -> str:
@@ -1013,4 +818,4 @@ class PermissionServiceRestTransport(PermissionServiceTransport):
         self._session.close()
 
 
-__all__ = ("PermissionServiceRestTransport",)
+__all__ = ("CacheServiceRestTransport",)
