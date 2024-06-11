@@ -56,9 +56,13 @@ s.move(
         "docs/multiprocessing.rst",
         "noxfile.py",
         "README.rst",
+
         # exclude .kokoro/build.sh which is customized due to support for conda
         ".kokoro/build.sh",
-    ],
+        
+        # exclude this file as we have an alternate prerelease.cfg
+        ".kokoro/presubmit/prerelease-deps.cfg",
+    ]
 )
 
 # ----------------------------------------------------------------------------
