@@ -39,7 +39,7 @@ jobs:
       - name: Build the documentation.
         run: nox -s docs
   unit:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     strategy:
       matrix:
         python: ['3.7', '3.8', '3.9', '3.10', '3.11', '3.12', '3.13']
@@ -83,7 +83,7 @@ jobs:
           name: coverage-artifact-${{ matrix.variant }}-${{ env.PYTHON_VERSION_TRIMMED }}
           path: .coverage-${{ matrix.variant }}-${{ env.PYTHON_VERSION_TRIMMED }}
   prerelease:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     strategy:
       matrix:
         python: ['3.12']
