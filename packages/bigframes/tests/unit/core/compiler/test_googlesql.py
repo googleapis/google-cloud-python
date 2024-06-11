@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from unittest.mock import Mock
+
 import pytest
 
 import bigframes.core.compile.googlesql as sql
@@ -36,16 +38,13 @@ def test_table_expression(table_id, dataset_id, project_id, expected):
 @pytest.mark.parametrize(
     ("table_name", "alias", "expected"),
     [
-        pytest.param(None, None, None, marks=pytest.mark.xfail(raises=ValueError)),
         pytest.param("a", None, "`a`"),
         pytest.param("a", "aa", "`a` AS `aa`"),
     ],
 )
 def test_from_item_w_table_name(table_name, alias, expected):
     expr = sql.FromItem(
-        table_name=None
-        if table_name is None
-        else sql.TableExpression(table_id=table_name),
+        sql.TableExpression(table_id=table_name),
         as_alias=None
         if alias is None
         else sql.AsAlias(sql.AliasExpression(alias=alias)),
@@ -55,7 +54,7 @@ def test_from_item_w_table_name(table_name, alias, expected):
 
 def test_from_item_w_query_expr():
     from_clause = sql.FromClause(
-        sql.FromItem(table_name=sql.TableExpression(table_id="table_a"))
+        sql.FromItem(expression=sql.TableExpression(table_id="table_a"))
     )
     select = sql.Select(
         select_list=[sql.SelectAll(sql.StarExpression())],
@@ -65,17 +64,28 @@ def test_from_item_w_query_expr():
     expected = "SELECT\n*\nFROM\n`table_a`"
 
     # A QueryExpr object
-    expr = sql.FromItem(query_expr=query_expr)
+    expr = sql.FromItem(expression=query_expr)
     assert expr.sql() == f"({expected})"
 
     # A str object
-    expr = sql.FromItem(query_expr=expected)
+    expr = sql.FromItem(expression=expected)
     assert expr.sql() == f"({expected})"
 
 
 def test_from_item_w_cte():
-    expr = sql.FromItem(cte_name=sql.CTEExpression("test"))
+    expr = sql.FromItem(expression=sql.CTEExpression("test"))
     assert expr.sql() == "`test`"
+
+
+def test_from_item_w_table_ref():
+    mock_table_ref = Mock()
+    mock_table_ref.table_id = "mock_table"
+    mock_table_ref.dataset_id = "mock_dataset"
+    mock_table_ref.project = "mock_project"
+
+    from_item = sql.FromItem.from_table_ref(mock_table_ref)
+
+    assert from_item.sql() == "`mock_project`.`mock_dataset`.`mock_table`"
 
 
 @pytest.mark.parametrize(
@@ -98,9 +108,9 @@ def test_select():
     select_2 = sql.SelectExpression(
         expression=sql.ColumnExpression("b"), alias=sql.AliasExpression(alias="bb")
     )
-    from_1 = sql.FromItem(table_name=sql.TableExpression(table_id="table_a"))
+    from_1 = sql.FromItem(expression=sql.TableExpression(table_id="table_a"))
     from_2 = sql.FromItem(
-        query_expr="SELECT * FROM project.table_b",
+        expression="SELECT * FROM project.table_b",
         as_alias=sql.AsAlias(sql.AliasExpression(alias="table_b")),
     )
     expr = sql.Select(
@@ -115,7 +125,7 @@ def test_select():
 def test_query_expr_w_cte():
     # Test a simple SELECT query.
     from_clause1 = sql.FromClause(
-        sql.FromItem(table_name=sql.TableExpression(table_id="table_a"))
+        sql.FromItem(expression=sql.TableExpression(table_id="table_a"))
     )
     select1 = sql.Select(
         select_list=[sql.SelectAll(sql.StarExpression())],
@@ -143,13 +153,18 @@ def test_query_expr_w_cte():
             sql.SelectAll(sql.StarExpression(parent=cte2.cte_name)),
         ],
         from_clause_list=[
-            sql.FromClause(sql.FromItem(cte_name=cte1.cte_name)),
-            sql.FromClause(sql.FromItem(cte_name=cte2.cte_name)),
+            sql.FromClause(sql.FromItem(expression=cte1.cte_name)),
+            sql.FromClause(sql.FromItem(expression=cte2.cte_name)),
         ],
+        distinct=True,
     )
-    select2_sql = "SELECT\n`a`.`column_x`,\n`b`.*\nFROM\n`a`,\n`b`"
+    select2_sql = "SELECT\nDISTINCT\n`a`.`column_x`,\n`b`.*\nFROM\n`a`,\n`b`"
     assert select2.sql() == select2_sql
 
     query2 = sql.QueryExpr(select=select2, with_cte_list=with_cte_list)
     query2_sql = f"WITH {cte1_sql},\n{cte2_sql}\n{select2_sql}"
     assert query2.sql() == query2_sql
+
+
+def test_escape_chars():
+    assert sql._escape_chars("\a\b\f\n\r\t\v\\?'\"`") == r"\a\b\f\n\r\t\v\\\?\'\"\`"

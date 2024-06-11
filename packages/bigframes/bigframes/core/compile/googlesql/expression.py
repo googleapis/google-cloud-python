@@ -72,10 +72,10 @@ class TableExpression(Expression):
     def sql(self) -> str:
         text = []
         if self.project_id is not None:
-            text.append(f"`{self.project_id}`")
+            text.append(f"`{_escape_chars(self.project_id)}`")
         if self.dataset_id is not None:
-            text.append(f"`{self.dataset_id}`")
-        text.append(f"`{self.table_id}`")
+            text.append(f"`{_escape_chars(self.dataset_id)}`")
+        text.append(f"`{_escape_chars(self.table_id)}`")
         return ".".join(text)
 
 
@@ -84,7 +84,7 @@ class AliasExpression(Expression):
     alias: str
 
     def sql(self) -> str:
-        return f"`{self.alias}`"
+        return f"`{_escape_chars(self.alias)}`"
 
 
 @dataclasses.dataclass
@@ -92,4 +92,26 @@ class CTEExpression(Expression):
     name: str
 
     def sql(self) -> str:
-        return f"`{self.name}`"
+        return f"`{_escape_chars(self.name)}`"
+
+
+def _escape_chars(value: str):
+    """Escapes all special charactesrs"""
+    # https://cloud.google.com/bigquery/docs/reference/standard-sql/lexical#string_and_bytes_literals
+    trans_table = str.maketrans(
+        {
+            "\a": r"\a",
+            "\b": r"\b",
+            "\f": r"\f",
+            "\n": r"\n",
+            "\r": r"\r",
+            "\t": r"\t",
+            "\v": r"\v",
+            "\\": r"\\",
+            "?": r"\?",
+            '"': r"\"",
+            "'": r"\'",
+            "`": r"\`",
+        }
+    )
+    return value.translate(trans_table)

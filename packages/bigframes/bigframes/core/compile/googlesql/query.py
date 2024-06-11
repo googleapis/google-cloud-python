@@ -16,9 +16,13 @@ from __future__ import annotations
 
 import dataclasses
 import typing
+from typing import TYPE_CHECKING
 
 import bigframes.core.compile.googlesql.abc as abc
 import bigframes.core.compile.googlesql.expression as expr
+
+if TYPE_CHECKING:
+    import google.cloud.bigquery as bigquery
 
 """This module provides a structured representation of GoogleSQL syntax using nodes.
 Each node's name and child nodes are designed to strictly follow the official GoogleSQL
@@ -51,9 +55,13 @@ class Select(abc.SQLSyntax):
 
     select_list: typing.Sequence[typing.Union[SelectExpression, SelectAll]]
     from_clause_list: typing.Sequence[FromClause] = ()
+    distinct: bool = False
 
     def sql(self) -> str:
         text = ["SELECT"]
+
+        if self.distinct:
+            text.append("DISTINCT")
 
         select_list_sql = ",\n".join([select.sql() for select in self.select_list])
         text.append(select_list_sql)
@@ -104,39 +112,38 @@ class FromClause(abc.SQLSyntax):
 class FromItem(abc.SQLSyntax):
     """This class represents GoogleSQL `from_item` syntax."""
 
-    table_name: typing.Optional[expr.TableExpression] = None
     # Note: Temporarily introduces the `str` type to interact with pre-existing,
     # compiled SQL strings.
-    query_expr: typing.Optional[QueryExpr | str] = None
-    cte_name: typing.Optional[expr.CTEExpression] = None
+    expression: typing.Union[expr.TableExpression, QueryExpr, str, expr.CTEExpression]
     as_alias: typing.Optional[AsAlias] = None
 
-    def __post_init__(self):
-        non_none = sum(
-            expr is not None
-            for expr in [
-                self.table_name,
-                self.query_expr,
-                self.cte_name,
-            ]
+    @classmethod
+    def from_table_ref(
+        cls,
+        table_ref: bigquery.TableReference,
+        as_alias: typing.Optional[AsAlias] = None,
+    ):
+        return cls(
+            expression=expr.TableExpression(
+                table_id=table_ref.table_id,
+                dataset_id=table_ref.dataset_id,
+                project_id=table_ref.project,
+            ),
+            as_alias=as_alias,
         )
-        if non_none != 1:
-            raise ValueError("Exactly one of expressions must be provided.")
 
     def sql(self) -> str:
-        if self.table_name is not None:
-            text = self.table_name.sql()
-        elif self.query_expr is not None:
-            text = (
-                self.query_expr
-                if isinstance(self.query_expr, str)
-                else self.query_expr.sql()
-            )
-            text = f"({text})"
-        elif self.cte_name is not None:
-            text = self.cte_name.sql()
+        if isinstance(self.expression, (expr.TableExpression, expr.CTEExpression)):
+            text = self.expression.sql()
+        elif isinstance(self.expression, str):
+            text = f"({self.expression})"
+        elif isinstance(self.expression, QueryExpr):
+            text = f"({self.expression.sql()})"
         else:
-            raise ValueError("One of from items must be provided.")
+            raise ValueError(
+                f"Unsupported expression type {type(self.expression).__name__};"
+                "expected one of TableExpression, QueryExpr, str, or CTEExpression."
+            )
 
         if self.as_alias is None:
             return text

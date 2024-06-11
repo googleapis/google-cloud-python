@@ -19,8 +19,9 @@ Utility functions for SQL construction.
 
 import datetime
 import math
-import textwrap
 from typing import Iterable, Mapping, TYPE_CHECKING, Union
+
+import bigframes.core.compile.googlesql as googlesql
 
 # Literals and identifiers matching this pattern can be unquoted
 unquoted = r"^[A-Za-z_][A-Za-z_0-9]*$"
@@ -38,7 +39,7 @@ def simple_literal(value: str | int | bool | float | datetime.datetime):
     # https://cloud.google.com/bigquery/docs/reference/standard-sql/lexical#literals
     if isinstance(value, str):
         # Single quoting seems to work nicer with ibis than double quoting
-        return f"'{escape_special_characters(value)}'"
+        return f"'{googlesql._escape_chars(value)}'"
     elif isinstance(value, (bool, int)):
         return str(value)
     elif isinstance(value, float):
@@ -65,29 +66,7 @@ def identifier(id: str) -> str:
     """Return a string representing column reference in a SQL."""
     # https://cloud.google.com/bigquery/docs/reference/standard-sql/lexical#identifiers
     # Just always escape, otherwise need to check against every reserved sql keyword
-    return f"`{escape_special_characters(id)}`"
-
-
-def escape_special_characters(value: str):
-    """Escapes all special charactesrs"""
-    # https://cloud.google.com/bigquery/docs/reference/standard-sql/lexical#string_and_bytes_literals
-    trans_table = str.maketrans(
-        {
-            "\a": r"\a",
-            "\b": r"\b",
-            "\f": r"\f",
-            "\n": r"\n",
-            "\r": r"\r",
-            "\t": r"\t",
-            "\v": r"\v",
-            "\\": r"\\",
-            "?": r"\?",
-            '"': r"\"",
-            "'": r"\'",
-            "`": r"\`",
-        }
-    )
-    return value.translate(trans_table)
+    return f"`{googlesql._escape_chars(id)}`"
 
 
 def cast_as_string(column_name: str) -> str:
@@ -107,10 +86,6 @@ def csv(values: Iterable[str]) -> str:
     return ", ".join(values)
 
 
-def table_reference(table_ref: bigquery.TableReference) -> str:
-    return f"`{escape_special_characters(table_ref.project)}`.`{escape_special_characters(table_ref.dataset_id)}`.`{escape_special_characters(table_ref.table_id)}`"
-
-
 def infix_op(opname: str, left_arg: str, right_arg: str):
     # Maybe should add parentheses??
     return f"{left_arg} {opname} {right_arg}"
@@ -118,27 +93,45 @@ def infix_op(opname: str, left_arg: str, right_arg: str):
 
 ### Writing SELECT expressions
 def select_from_subquery(columns: Iterable[str], subquery: str, distinct: bool = False):
-    selection = ", ".join(map(identifier, columns))
-    distinct_clause = "DISTINCT " if distinct else ""
+    select_list = [
+        googlesql.SelectExpression(expression=googlesql.ColumnExpression(name=column))
+        for column in columns
+    ]
+    from_clause_list = [googlesql.FromClause(googlesql.FromItem(expression=subquery))]
 
-    return textwrap.dedent(
-        f"SELECT {distinct_clause}{selection}\nFROM (\n" f"{subquery}\n" ")\n"
+    select_expr = googlesql.Select(
+        select_list=select_list, from_clause_list=from_clause_list, distinct=distinct
     )
+    return select_expr.sql()
 
 
 def select_from_table_ref(
     columns: Iterable[str], table_ref: bigquery.TableReference, distinct: bool = False
 ):
-    selection = ", ".join(map(identifier, columns))
-    distinct_clause = "DISTINCT " if distinct else ""
+    select_list = [
+        googlesql.SelectExpression(expression=googlesql.ColumnExpression(name=column))
+        for column in columns
+    ]
+    from_clause_list = [
+        googlesql.FromClause(googlesql.FromItem.from_table_ref(table_ref))
+    ]
 
-    return textwrap.dedent(
-        f"SELECT {distinct_clause}{selection}\nFROM {table_reference(table_ref)}"
+    select_expr = googlesql.Select(
+        select_list=select_list, from_clause_list=from_clause_list, distinct=distinct
     )
+    return select_expr.sql()
 
 
 def select_table(table_ref: bigquery.TableReference):
-    return textwrap.dedent(f"SELECT * FROM {table_reference(table_ref)}")
+    select_list = [googlesql.SelectAll(expression=googlesql.StarExpression())]
+    from_clause_list = [
+        googlesql.FromClause(googlesql.FromItem.from_table_ref(table_ref))
+    ]
+
+    select_expr = googlesql.Select(
+        select_list=select_list, from_clause_list=from_clause_list
+    )
+    return select_expr.sql()
 
 
 def is_distinct_sql(columns: Iterable[str], table_ref: bigquery.TableReference) -> str:
