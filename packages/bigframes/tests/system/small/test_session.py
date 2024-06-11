@@ -11,7 +11,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
 import io
 import random
 import re
@@ -22,6 +21,7 @@ import typing
 from typing import List, Optional, Sequence
 import warnings
 
+import bigframes_vendored.pandas.io.gbq as vendored_pandas_gbq
 import google
 import google.cloud.bigquery as bigquery
 import numpy as np
@@ -302,10 +302,13 @@ def test_read_gbq_w_primary_keys_table_and_filters(
 
     df = session.read_gbq(
         f"{table.project}.{table.dataset_id}.{table.table_id}",
-        filters=[
-            ("name", "LIKE", "W%"),
-            ("total_people", ">", 100),
-        ],  # type: ignore
+        filters=typing.cast(
+            vendored_pandas_gbq.FiltersType,
+            [
+                ("name", "LIKE", "W%"),
+                ("total_people", ">", 100),
+            ],
+        ),
     )
     result = df.to_pandas()
 
@@ -397,7 +400,10 @@ def test_read_gbq_on_linked_dataset_warns(session):
 def test_read_gbq_table_clustered_with_filter(session: bigframes.Session):
     df = session.read_gbq_table(
         "bigquery-public-data.cloud_storage_geo_index.landsat_index",
-        filters=[[("sensor_id", "LIKE", "OLI%")], [("sensor_id", "LIKE", "%TIRS")]],  # type: ignore
+        filters=typing.cast(
+            vendored_pandas_gbq.FiltersType,
+            [[("sensor_id", "LIKE", "OLI%")], [("sensor_id", "LIKE", "%TIRS")]],
+        ),
         columns=["sensor_id"],
     )
     sensors = df.groupby(["sensor_id"]).agg("count").to_pandas(ordered=False)
@@ -581,8 +587,8 @@ def test_read_pandas(session, scalars_dfs):
 
 
 def test_read_pandas_series(session):
-    # TODO(b/340887657): fix type error
-    idx = pd.Index([2, 7, 1, 2, 8], dtype=pd.Int64Dtype())  # type: ignore
+
+    idx: pd.Index = pd.Index([2, 7, 1, 2, 8], dtype=pd.Int64Dtype())
     pd_series = pd.Series([3, 1, 4, 1, 5], dtype=pd.Int64Dtype(), index=idx)
     bf_series = session.read_pandas(pd_series)
 
@@ -590,8 +596,8 @@ def test_read_pandas_series(session):
 
 
 def test_read_pandas_index(session):
-    # TODO(b/340887657): fix type error
-    pd_idx = pd.Index([2, 7, 1, 2, 8], dtype=pd.Int64Dtype())  # type: ignore
+
+    pd_idx: pd.Index = pd.Index([2, 7, 1, 2, 8], dtype=pd.Int64Dtype())
     bf_idx = session.read_pandas(pd_idx)
 
     pd.testing.assert_index_equal(bf_idx.to_pandas(), pd_idx)
@@ -609,8 +615,9 @@ def test_read_pandas_inline_respects_location():
     df = session.read_pandas(pd.DataFrame([[1, 2, 3], [4, 5, 6]]))
     repr(df)
 
-    # TODO(b/340887657): fix type error
-    table = session.bqclient.get_table(df.query_job.destination)  # type: ignore
+    assert df.query_job is not None
+
+    table = session.bqclient.get_table(df.query_job.destination)
     assert table.location == "europe-west1"
 
 
