@@ -739,43 +739,48 @@ class TableAsync:
         """
         if not sharded_query:
             raise ValueError("empty sharded_query")
-        # reduce operation_timeout between batches
         operation_timeout, attempt_timeout = _get_timeouts(
             operation_timeout, attempt_timeout, self
         )
-        timeout_generator = _attempt_timeout_generator(
+        # make sure each rpc stays within overall operation timeout
+        rpc_timeout_generator = _attempt_timeout_generator(
             operation_timeout, operation_timeout
         )
-        # submit shards in batches if the number of shards goes over _CONCURRENCY_LIMIT
-        batched_queries = [
-            sharded_query[i : i + _CONCURRENCY_LIMIT]
-            for i in range(0, len(sharded_query), _CONCURRENCY_LIMIT)
-        ]
-        # run batches and collect results
-        results_list = []
-        error_dict = {}
-        shard_idx = 0
-        for batch in batched_queries:
-            batch_operation_timeout = next(timeout_generator)
-            routine_list = [
-                self.read_rows(
+
+        # limit the number of concurrent requests using a semaphore
+        concurrency_sem = asyncio.Semaphore(_CONCURRENCY_LIMIT)
+
+        async def read_rows_with_semaphore(query):
+            async with concurrency_sem:
+                # calculate new timeout based on time left in overall operation
+                shard_timeout = next(rpc_timeout_generator)
+                if shard_timeout <= 0:
+                    raise DeadlineExceeded(
+                        "Operation timeout exceeded before starting query"
+                    )
+                return await self.read_rows(
                     query,
-                    operation_timeout=batch_operation_timeout,
-                    attempt_timeout=min(attempt_timeout, batch_operation_timeout),
+                    operation_timeout=shard_timeout,
+                    attempt_timeout=min(attempt_timeout, shard_timeout),
                     retryable_errors=retryable_errors,
                 )
-                for query in batch
-            ]
-            batch_result = await asyncio.gather(*routine_list, return_exceptions=True)
-            for result in batch_result:
-                if isinstance(result, Exception):
-                    error_dict[shard_idx] = result
-                elif isinstance(result, BaseException):
-                    # BaseException not expected; raise immediately
-                    raise result
-                else:
-                    results_list.extend(result)
-                shard_idx += 1
+
+        routine_list = [read_rows_with_semaphore(query) for query in sharded_query]
+        batch_result = await asyncio.gather(*routine_list, return_exceptions=True)
+
+        # collect results and errors
+        error_dict = {}
+        shard_idx = 0
+        results_list = []
+        for result in batch_result:
+            if isinstance(result, Exception):
+                error_dict[shard_idx] = result
+            elif isinstance(result, BaseException):
+                # BaseException not expected; raise immediately
+                raise result
+            else:
+                results_list.extend(result)
+            shard_idx += 1
         if error_dict:
             # if any sub-request failed, raise an exception instead of returning results
             raise ShardedReadRowsExceptionGroup(
