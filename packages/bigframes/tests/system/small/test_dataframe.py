@@ -270,6 +270,44 @@ def test_get_columns_default(scalars_dfs):
     assert result == "default_val"
 
 
+@pytest.mark.parametrize(
+    ("loc", "column", "value", "allow_duplicates"),
+    [
+        (0, 666, 2, False),
+        (5, "float64_col", 2.2, True),
+        (13, "rowindex_2", [8, 7, 6, 5, 4, 3, 2, 1, 0], True),
+        pytest.param(
+            14,
+            "test",
+            2,
+            False,
+            marks=pytest.mark.xfail(
+                raises=IndexError,
+            ),
+        ),
+        pytest.param(
+            12,
+            "int64_col",
+            2,
+            False,
+            marks=pytest.mark.xfail(
+                raises=ValueError,
+            ),
+        ),
+    ],
+)
+def test_insert(scalars_dfs, loc, column, value, allow_duplicates):
+    scalars_df, scalars_pandas_df = scalars_dfs
+    # insert works inplace, so will influence other tests.
+    # make a copy to avoid inplace changes.
+    bf_df = scalars_df.copy()
+    pd_df = scalars_pandas_df.copy()
+    bf_df.insert(loc, column, value, allow_duplicates)
+    pd_df.insert(loc, column, value, allow_duplicates)
+
+    pd.testing.assert_frame_equal(bf_df.to_pandas(), pd_df, check_dtype=False)
+
+
 def test_drop_column(scalars_dfs):
     scalars_df, scalars_pandas_df = scalars_dfs
     col_name = "int64_col"

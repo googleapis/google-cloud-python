@@ -1067,6 +1067,51 @@ class DataFrame(generic.NDFrame):
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
+    def insert(self, loc, column, value, allow_duplicates=False):
+        """Insert column into DataFrame at specified location.
+
+        Raises a ValueError if `column` is already contained in the DataFrame,
+        unless `allow_duplicates` is set to True.
+
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> df = bpd.DataFrame({'col1': [1, 2], 'col2': [3, 4]})
+
+        Insert a new column named 'col3' between 'col1' and 'col2' with all entries set to 5.
+
+            >>> df.insert(1, 'col3', 5)
+            >>> df
+               col1  col3  col2
+            0     1     5     3
+            1     2     5     4
+            <BLANKLINE>
+            [2 rows x 3 columns]
+
+        Insert another column named 'col2' at the beginning of the DataFrame with values [5, 6]
+
+            >>> df.insert(0, 'col2', [5, 6], allow_duplicates=True)
+            >>> df
+               col2  col1  col3  col2
+            0     5     1     5     3
+            1     6     2     5     4
+            <BLANKLINE>
+            [2 rows x 4 columns]
+
+        Args:
+            loc (int):
+                Insertion index. Must verify 0 <= loc <= len(columns).
+            column (str, number, or hashable object):
+                Label of the inserted column.
+            value (Scalar, Series, or array-like):
+                Content of the inserted column.
+            allow_duplicates (bool, default False):
+                Allow duplicate column labels to be created.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
     def drop(
         self, labels=None, *, axis=0, index=None, columns=None, level=None
     ) -> DataFrame | None:

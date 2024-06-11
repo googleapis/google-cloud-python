@@ -1305,6 +1305,34 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         column_ids = self._sql_names(columns)
         return DataFrame(block_ops.nsmallest(self._block, n, column_ids, keep=keep))
 
+    def insert(
+        self,
+        loc: int,
+        column: blocks.Label,
+        value: SingleItemValue,
+        allow_duplicates: bool = False,
+    ):
+        column_count = len(self.columns)
+        if loc > column_count:
+            raise IndexError(
+                f"Column index {loc} is out of bounds with {column_count} total columns."
+            )
+        if (column in self.columns) and not allow_duplicates:
+            raise ValueError(f"cannot insert {column}, already exists")
+
+        temp_column = bigframes.core.guid.generate_guid(prefix=str(column))
+        df = self._assign_single_item(temp_column, value)
+
+        block = df._get_block()
+        value_columns = typing.cast(List, block.value_columns)
+        value_columns, new_column = value_columns[:-1], value_columns[-1]
+        value_columns.insert(loc, new_column)
+
+        block = block.select_columns(value_columns)
+        block = block.rename(columns={temp_column: column})
+
+        self._set_block(block)
+
     def drop(
         self,
         labels: typing.Any = None,
