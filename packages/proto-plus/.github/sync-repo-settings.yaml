@@ -7,9 +7,6 @@ branchProtectionRules:
   requiredStatusCheckContexts:
     - 'style-check'
     - 'docs'
-    - 'unit (3.6, cpp)'
-    - 'unit (3.6, python)'
-    - 'unit (3.6, upb)'
     - 'unit (3.7, cpp)'
     - 'unit (3.7, python)'
     - 'unit (3.7, upb)'

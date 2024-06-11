@@ -22,7 +22,6 @@ CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 
 
 PYTHON_VERSIONS = [
-    "3.6",
     "3.7",
     "3.8",
     "3.9",
