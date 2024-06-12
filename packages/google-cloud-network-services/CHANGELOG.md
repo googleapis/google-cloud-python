@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.12](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-services-v0.5.11...google-cloud-network-services-v0.5.12) (2024-06-12)
+
+
+### Documentation
+
+* [google-cloud-network-services] Add a comment for the NetworkServices service ([#12794](https://github.com/googleapis/google-cloud-python/issues/12794)) ([4a672dc](https://github.com/googleapis/google-cloud-python/commit/4a672dc077d173d170d6cb4888cd7f4643ce04c6))
+
 ## [0.5.11](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-services-v0.5.10...google-cloud-network-services-v0.5.11) (2024-06-05)
 
 
