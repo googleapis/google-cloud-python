@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from matplotlib.collections import PathCollection
 import numpy as np
 import pandas as pd
 import pandas._testing as tm
@@ -258,9 +259,10 @@ def test_scatter_args_s(s):
 
     ax = df.plot.scatter(x="a", y="b", s="s")
     pd_ax = pd_df.plot.scatter(x="a", y="b", s="s")
-    # TODO(b/340891723): fix type error
+
+    assert isinstance(pd_ax.collections[0], PathCollection)
     tm.assert_numpy_array_equal(
-        ax.collections[0].get_sizes(), pd_ax.collections[0].get_sizes()  # type: ignore
+        ax.collections[0].get_sizes(), pd_ax.collections[0].get_sizes()
     )
 
 
