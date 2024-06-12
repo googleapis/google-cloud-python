@@ -139,11 +139,17 @@ class SecurityCenterService(proto.Message):
                 State is enabled.
             DISABLED (3):
                 State is disabled.
+            INGEST_ONLY (4):
+                SCC is configured to ingest findings from this service but
+                not enable this service. Not a valid
+                intended_enablement_state (that is, this is a readonly
+                state).
         """
         ENABLEMENT_STATE_UNSPECIFIED = 0
         INHERITED = 1
         ENABLED = 2
         DISABLED = 3
+        INGEST_ONLY = 4
 
     class ModuleSettings(proto.Message):
         r"""The settings for individual modules.
@@ -788,8 +794,10 @@ class CreateSecurityHealthAnalyticsCustomModuleRequest(proto.Message):
             that a subsequent request to actually create the
             module could still fail because:
 
-            - The state could have changed (e.g. IAM permission lost) or
-            - A failure occurred during creation of the module. Defaults to false.
+             1. the state could have changed (e.g. IAM
+                permission lost) or
+             2. A failure occurred during creation of the
+                module. Defaults to false.
     """
 
     parent: str = proto.Field(
@@ -828,10 +836,10 @@ class UpdateSecurityHealthAnalyticsCustomModuleRequest(proto.Message):
             indicates the request is valid while an error
             response indicates the request is invalid. Note
             that a subsequent request to actually update the
-            module could still fail because:
-
-            - The state could have changed (e.g. IAM permission lost) or
-            - A failure occurred while trying to update the module.
+            module could still fail because 1. the state
+            could have changed (e.g. IAM permission lost) or
+            2. A failure occurred while trying to update the
+                module.
     """
 
     update_mask: field_mask_pb2.FieldMask = proto.Field(
@@ -871,10 +879,10 @@ class DeleteSecurityHealthAnalyticsCustomModuleRequest(proto.Message):
             indicates the request is valid while an error
             response indicates the request is invalid. Note
             that a subsequent request to actually delete the
-            module could still fail because:
-
-            - The state could have changed (e.g. IAM permission lost) or
-            - A failure occurred while trying to delete the module.
+            module could still fail because 1. the state
+            could have changed (e.g. IAM permission lost) or
+            2. A failure occurred while trying to delete the
+                module.
     """
 
     name: str = proto.Field(
@@ -1704,10 +1712,10 @@ class CreateEventThreatDetectionCustomModuleRequest(proto.Message):
             indicates the request is valid while an error
             response indicates the request is invalid. Note
             that a subsequent request to actually create the
-            module could still fail because:
-
-            - The state could have changed (e.g. IAM permission lost) or
-            - A failure occurred during creation of the module.
+            module could still fail because 1. the state
+            could have changed (e.g. IAM permission lost) or
+            2. A failure occurred during creation of the
+                module.
     """
 
     parent: str = proto.Field(
@@ -1747,10 +1755,10 @@ class UpdateEventThreatDetectionCustomModuleRequest(proto.Message):
             indicates the request is valid while an error
             response indicates the request is invalid. Note
             that a subsequent request to actually update the
-            module could still fail because:
-
-            - The state could have changed (e.g. IAM permission lost) or
-            - A failure occurred while trying to update the module.
+            module could still fail because 1. the state
+            could have changed (e.g. IAM permission lost) or
+            2. A failure occurred while trying to update the
+                module.
     """
 
     update_mask: field_mask_pb2.FieldMask = proto.Field(
@@ -1790,10 +1798,10 @@ class DeleteEventThreatDetectionCustomModuleRequest(proto.Message):
             indicates the request is valid while an error
             response indicates the request is invalid. Note
             that a subsequent request to actually delete the
-            module could still fail because:
-
-            - The state could have changed (e.g. IAM permission lost) or
-            - A failure occurred while trying to delete the module.
+            module could still fail because 1. the state
+            could have changed (e.g. IAM permission lost) or
+            2. A failure occurred while trying to delete the
+                module.
     """
 
     name: str = proto.Field(
