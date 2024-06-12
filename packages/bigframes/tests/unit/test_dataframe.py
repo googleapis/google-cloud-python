@@ -15,7 +15,21 @@
 import google.cloud.bigquery
 import pytest
 
+import bigframes.dataframe
+
 from . import resources
+
+
+def test_dataframe_repr_with_uninitialized_object():
+    """Ensures DataFrame.__init__ can be paused in a visual debugger without crashing.
+
+    Regression test for https://github.com/googleapis/python-bigquery-dataframes/issues/728
+    """
+    # Avoid calling __init__ to simulate pausing __init__ in a debugger.
+    # https://stackoverflow.com/a/6384982/101923
+    dataframe = bigframes.dataframe.DataFrame.__new__(bigframes.dataframe.DataFrame)
+    got = repr(dataframe)
+    assert "DataFrame" in got
 
 
 def test_dataframe_to_gbq_invalid_destination(monkeypatch: pytest.MonkeyPatch):

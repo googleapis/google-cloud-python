@@ -574,9 +574,18 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         return DataFrame(block)
 
     def __getattr__(self, key: str):
+        # Protect against recursion errors with uninitialized DataFrame
+        # objects. See:
+        # https://github.com/googleapis/python-bigquery-dataframes/issues/728
+        # and
+        # https://nedbatchelder.com/blog/201010/surprising_getattr_recursion.html
+        if key == "_block":
+            raise AttributeError("_block")
+
         if key in self._block.column_labels:
             return self.__getitem__(key)
-        elif hasattr(pandas.DataFrame, key):
+
+        if hasattr(pandas.DataFrame, key):
             raise AttributeError(
                 textwrap.dedent(
                     f"""
@@ -585,8 +594,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
                     """
                 )
             )
-        else:
-            raise AttributeError(key)
+        raise AttributeError(key)
 
     def __setattr__(self, key: str, value):
         if key in ["_block", "_query_job"]:
@@ -616,6 +624,11 @@ class DataFrame(vendored_pandas_frame.DataFrame):
 
         Only represents the first `bigframes.options.display.max_rows`.
         """
+        # Protect against errors with uninitialized DataFrame. See:
+        # https://github.com/googleapis/python-bigquery-dataframes/issues/728
+        if not hasattr(self, "_block"):
+            return object.__repr__(self)
+
         opts = bigframes.options.display
         max_results = opts.max_rows
         if opts.repr_mode == "deferred":
