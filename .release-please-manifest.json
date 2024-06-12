@@ -111,7 +111,7 @@
     "packages/google-cloud-network-connectivity": "2.4.3",
     "packages/google-cloud-network-management": "1.17.1",
     "packages/google-cloud-network-security": "0.9.9",
-    "packages/google-cloud-network-services": "0.5.11",
+    "packages/google-cloud-network-services": "0.5.12",
     "packages/google-cloud-notebooks": "1.10.3",
     "packages/google-cloud-optimization": "1.8.3",
     "packages/google-cloud-orchestration-airflow": "1.12.1",
