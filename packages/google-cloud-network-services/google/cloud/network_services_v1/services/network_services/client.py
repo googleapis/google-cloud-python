@@ -125,7 +125,7 @@ class NetworkServicesClientMeta(type):
 
 
 class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
-    """"""
+    """Service describing handlers for resources."""
 
     @staticmethod
     def _get_default_mtls_endpoint(api_endpoint):
