@@ -17,6 +17,7 @@
 
 import copy
 import dataclasses
+from functools import cached_property
 import glob
 import os
 import re
@@ -389,29 +390,17 @@ class Document:
     gcs_uri: Optional[str] = dataclasses.field(default=None, repr=False)
     gcs_input_uri: Optional[str] = dataclasses.field(default=None, repr=False)
 
-    _pages: Optional[List[Page]] = dataclasses.field(
-        init=False, repr=False, default=None
-    )
-    _entities: List[Entity] = dataclasses.field(init=False, repr=False, default=None)
-    _text: str = dataclasses.field(init=False, repr=False, default=None)
-
-    @property
+    @cached_property
     def pages(self):
-        if self._pages is None:
-            self._pages = _pages_from_shards(shards=self.shards)
-        return self._pages
+        return _pages_from_shards(shards=self.shards)
 
-    @property
+    @cached_property
     def entities(self):
-        if self._entities is None:
-            self._entities = _entities_from_shards(shards=self.shards)
-        return self._entities
+        return _entities_from_shards(shards=self.shards)
 
-    @property
+    @cached_property
     def text(self):
-        if self._text is None:
-            self._text = "".join(shard.text for shard in self.shards)
-        return self._text
+        return "".join(shard.text for shard in self.shards)
 
     @classmethod
     def from_document_path(

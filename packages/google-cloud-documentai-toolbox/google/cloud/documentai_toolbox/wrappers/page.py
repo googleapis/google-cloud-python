@@ -17,6 +17,7 @@
 
 from abc import ABC
 import dataclasses
+from functools import cached_property
 from typing import List, Optional, Type, cast
 
 import pandas as pd
@@ -42,30 +43,19 @@ class Table:
     documentai_object: documentai.Document.Page.Table = dataclasses.field(repr=False)
     _page: "Page" = dataclasses.field(repr=False)
 
-    _body_rows: Optional[List[List[str]]] = dataclasses.field(
-        init=False, repr=False, default=None
-    )
-    _header_rows: Optional[List[List[str]]] = dataclasses.field(
-        init=False, repr=False, default=None
-    )
-
-    @property
+    @cached_property
     def body_rows(self):
-        if self._body_rows is None:
-            self._body_rows = _table_rows_from_documentai_table_rows(
-                table_rows=list(self.documentai_object.body_rows),
-                text=self._page._document_text,
-            )
-        return self._body_rows
+        return _table_rows_from_documentai_table_rows(
+            table_rows=list(self.documentai_object.body_rows),
+            text=self._page._document_text,
+        )
 
-    @property
+    @cached_property
     def header_rows(self):
-        if self._header_rows is None:
-            self._header_rows = _table_rows_from_documentai_table_rows(
-                table_rows=list(self.documentai_object.header_rows),
-                text=self._page._document_text,
-            )
-        return self._header_rows
+        return _table_rows_from_documentai_table_rows(
+            table_rows=list(self.documentai_object.header_rows),
+            text=self._page._document_text,
+        )
 
     def to_dataframe(self) -> pd.DataFrame:
         r"""Returns pd.DataFrame from documentai.table
@@ -104,30 +94,21 @@ class FormField:
     )
     _page: "Page" = dataclasses.field(repr=False)
 
-    _field_name: Optional[str] = dataclasses.field(init=False, repr=False, default=None)
-    _field_value: Optional[str] = dataclasses.field(
-        init=False, repr=False, default=None
-    )
-
-    @property
+    @cached_property
     def field_name(self):
-        if self._field_name is None:
-            self._field_name = _trim_text(
-                _text_from_layout(
-                    self.documentai_object.field_name, self._page._document_text
-                )
+        return _trim_text(
+            _text_from_layout(
+                self.documentai_object.field_name, self._page._document_text
             )
-        return self._field_name
+        )
 
-    @property
+    @cached_property
     def field_value(self):
-        if self._field_value is None:
-            self._field_value = _trim_text(
-                _text_from_layout(
-                    self.documentai_object.field_value, self._page._document_text
-                )
+        return _trim_text(
+            _text_from_layout(
+                self.documentai_object.field_value, self._page._document_text
             )
-        return self._field_value
+        )
 
 
 @dataclasses.dataclass
@@ -137,33 +118,24 @@ class _BasePageElement(ABC):
     documentai_object: ElementWithLayout = dataclasses.field(repr=False)
     _page: "Page" = dataclasses.field(repr=False)
 
-    _text: Optional[str] = dataclasses.field(init=False, repr=False, default=None)
-    _hocr_bounding_box: Optional[str] = dataclasses.field(
-        init=False, repr=False, default=None
-    )
-
-    @property
+    @cached_property
     def text(self):
         """
         Text of the page element.
         """
-        if self._text is None:
-            self._text = _text_from_layout(
-                layout=self.documentai_object.layout, text=self._page._document_text
-            )
-        return self._text
+        return _text_from_layout(
+            layout=self.documentai_object.layout, text=self._page._document_text
+        )
 
-    @property
+    @cached_property
     def hocr_bounding_box(self):
         """
         hOCR bounding box of the page element.
         """
-        if self._hocr_bounding_box is None:
-            self._hocr_bounding_box = _get_hocr_bounding_box(
-                element_with_layout=self.documentai_object,
-                page_dimension=self._page.documentai_object.dimension,
-            )
-        return self._hocr_bounding_box
+        return _get_hocr_bounding_box(
+            element_with_layout=self.documentai_object,
+            page_dimension=self._page.documentai_object.dimension,
+        )
 
 
 @dataclasses.dataclass
@@ -178,7 +150,7 @@ class Symbol(_BasePageElement):
             Required. The text of the Symbol.
     """
 
-    @property
+    @cached_property
     def hocr_bounding_box(self):
         # Symbols are not represented in hOCR
         return None
@@ -197,18 +169,12 @@ class Token(_BasePageElement):
             Optional. The Symbols contained within the Token.
     """
 
-    _symbols: Optional[List[Symbol]] = dataclasses.field(
-        init=False, repr=False, default=None
-    )
-
-    @property
+    @cached_property
     def symbols(self):
-        if self._symbols is None:
-            self._symbols = cast(
-                List[Symbol],
-                _get_children_of_element(self.documentai_object, self._page.symbols),
-            )
-        return self._symbols
+        return cast(
+            List[Symbol],
+            _get_children_of_element(self.documentai_object, self._page.symbols),
+        )
 
 
 @dataclasses.dataclass
@@ -224,18 +190,12 @@ class Line(_BasePageElement):
             Optional. The Tokens contained within the Line.
     """
 
-    _tokens: Optional[List[Token]] = dataclasses.field(
-        init=False, repr=False, default=None
-    )
-
-    @property
+    @cached_property
     def tokens(self):
-        if self._tokens is None:
-            self._tokens = cast(
-                List[Token],
-                _get_children_of_element(self.documentai_object, self._page.tokens),
-            )
-        return self._tokens
+        return cast(
+            List[Token],
+            _get_children_of_element(self.documentai_object, self._page.tokens),
+        )
 
 
 @dataclasses.dataclass
@@ -255,14 +215,12 @@ class Paragraph(_BasePageElement):
         init=False, repr=False, default=None
     )
 
-    @property
+    @cached_property
     def lines(self):
-        if self._lines is None:
-            self._lines = cast(
-                List[Line],
-                _get_children_of_element(self.documentai_object, self._page.lines),
-            )
-        return self._lines
+        return cast(
+            List[Line],
+            _get_children_of_element(self.documentai_object, self._page.lines),
+        )
 
 
 @dataclasses.dataclass
@@ -278,18 +236,12 @@ class Block(_BasePageElement):
             Optional. The Paragraphs contained within the Block.
     """
 
-    _paragraphs: Optional[List[Paragraph]] = dataclasses.field(
-        init=False, repr=False, default=None
-    )
-
-    @property
+    @cached_property
     def paragraphs(self):
-        if self._paragraphs is None:
-            self._paragraphs = cast(
-                List[Paragraph],
-                _get_children_of_element(self.documentai_object, self._page.paragraphs),
-            )
-        return self._paragraphs
+        return cast(
+            List[Paragraph],
+            _get_children_of_element(self.documentai_object, self._page.paragraphs),
+        )
 
 
 @dataclasses.dataclass
@@ -304,7 +256,7 @@ class MathFormula(_BasePageElement):
             Required. The text of the MathFormula.
     """
 
-    @property
+    @cached_property
     def hocr_bounding_box(self):
         # Math Formulas are not represented in hOCR
         return None
@@ -473,38 +425,6 @@ class Page:
     documentai_object: documentai.Document.Page = dataclasses.field(repr=False)
     _document_text: str = dataclasses.field(repr=False)
 
-    _text: Optional[str] = dataclasses.field(init=False, repr=False, default=None)
-    _page_number: Optional[int] = dataclasses.field(
-        init=False, repr=False, default=None
-    )
-    _form_fields: Optional[List[FormField]] = dataclasses.field(
-        init=False, repr=False, default=None
-    )
-    _symbols: Optional[List[Symbol]] = dataclasses.field(
-        init=False, repr=False, default=None
-    )
-    _tokens: Optional[List[Token]] = dataclasses.field(
-        init=False, repr=False, default=None
-    )
-    _lines: Optional[List[Line]] = dataclasses.field(
-        init=False, repr=False, default=None
-    )
-    _paragraphs: Optional[List[Paragraph]] = dataclasses.field(
-        init=False, repr=False, default=None
-    )
-    _blocks: Optional[List[Block]] = dataclasses.field(
-        init=False, repr=False, default=None
-    )
-    _tables: Optional[List[Table]] = dataclasses.field(
-        init=False, repr=False, default=None
-    )
-    _math_formulas: Optional[List[MathFormula]] = dataclasses.field(
-        init=False, repr=False, default=None
-    )
-    _hocr_bounding_box: Optional[str] = dataclasses.field(
-        init=False, repr=False, default=None
-    )
-
     def _get_elements(self, element_type: Type, attribute_name: str) -> List:
         """
         Helper method to create elements based on specified type.
@@ -514,77 +434,55 @@ class Page:
             element_type(documentai_object=element, _page=self) for element in elements
         ]
 
-    @property
+    @cached_property
     def text(self):
-        if self._text is None:
-            self._text = _text_from_layout(
-                self.documentai_object.layout, text=self._document_text
-            )
-        return self._text
+        return _text_from_layout(
+            self.documentai_object.layout, text=self._document_text
+        )
 
-    @property
+    @cached_property
     def page_number(self):
-        if self._page_number is None:
-            self._page_number = self.documentai_object.page_number
-        return self._page_number
+        return self.documentai_object.page_number
 
-    @property
+    @cached_property
     def tables(self):
-        if self._tables is None:
-            self._tables = self._get_elements(Table, "tables")
-        return self._tables
+        return self._get_elements(Table, "tables")
 
-    @property
+    @cached_property
     def form_fields(self):
-        if self._form_fields is None:
-            self._form_fields = self._get_elements(FormField, "form_fields")
-        return self._form_fields
+        return self._get_elements(FormField, "form_fields")
 
-    @property
+    @cached_property
     def math_formulas(self):
-        if self._math_formulas is None:
-            self._math_formulas = [
-                MathFormula(documentai_object=visual_element, _page=self)
-                for visual_element in self.documentai_object.visual_elements
-                if visual_element.type_ == "math_formula"
-            ]
-        return self._math_formulas
+        return [
+            MathFormula(documentai_object=visual_element, _page=self)
+            for visual_element in self.documentai_object.visual_elements
+            if visual_element.type_ == "math_formula"
+        ]
 
-    @property
+    @cached_property
     def symbols(self):
-        if self._symbols is None:
-            self._symbols = self._get_elements(Symbol, "symbols")
-        return self._symbols
+        return self._get_elements(Symbol, "symbols")
 
-    @property
+    @cached_property
     def tokens(self):
-        if self._tokens is None:
-            self._tokens = self._get_elements(Token, "tokens")
-        return self._tokens
+        return self._get_elements(Token, "tokens")
 
-    @property
+    @cached_property
     def lines(self):
-        if self._lines is None:
-            self._lines = self._get_elements(Line, "lines")
-        return self._lines
+        return self._get_elements(Line, "lines")
 
-    @property
+    @cached_property
     def paragraphs(self):
-        if self._paragraphs is None:
-            self._paragraphs = self._get_elements(Paragraph, "paragraphs")
-        return self._paragraphs
+        return self._get_elements(Paragraph, "paragraphs")
 
-    @property
+    @cached_property
     def blocks(self):
-        if self._blocks is None:
-            self._blocks = self._get_elements(Block, "blocks")
-        return self._blocks
+        return self._get_elements(Block, "blocks")
 
-    @property
+    @cached_property
     def hocr_bounding_box(self):
-        if self._hocr_bounding_box is None:
-            self._hocr_bounding_box = _get_hocr_bounding_box(
-                element_with_layout=self.documentai_object,
-                page_dimension=self.documentai_object.dimension,
-            )
-        return self._hocr_bounding_box
+        return _get_hocr_bounding_box(
+            element_with_layout=self.documentai_object,
+            page_dimension=self.documentai_object.dimension,
+        )
