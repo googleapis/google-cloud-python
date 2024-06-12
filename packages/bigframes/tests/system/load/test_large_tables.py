@@ -94,8 +94,7 @@ def test_to_pandas_large_table():
     # df will be downloaded locally
     expected_row_count, expected_column_count = df.shape
 
-    # TODO(b/340893653): fix type error
-    df = df.to_pandas()  # type: ignore
-    row_count, column_count = df.shape
+    df_converted = df.to_pandas()
+    row_count, column_count = df_converted.shape
     assert column_count == expected_column_count
     assert row_count == expected_row_count
