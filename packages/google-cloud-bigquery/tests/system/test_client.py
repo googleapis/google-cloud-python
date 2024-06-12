@@ -1789,19 +1789,34 @@ class TestBigQuery(unittest.TestCase):
 
         expected_data = [
             [
+                ("by", "pg"),
+                ("id", 1),
+                (
+                    "timestamp",
+                    datetime.datetime(
+                        2006, 10, 9, 18, 21, 51, tzinfo=datetime.timezone.utc
+                    ),
+                ),
+            ],
+            [
                 ("by", "phyllis"),
                 ("id", 2),
-                ("timestamp", datetime.datetime(2006, 10, 9, 18, 30, 28, tzinfo=UTC)),
+                (
+                    "timestamp",
+                    datetime.datetime(
+                        2006, 10, 9, 18, 30, 28, tzinfo=datetime.timezone.utc
+                    ),
+                ),
             ],
             [
                 ("by", "phyllis"),
                 ("id", 3),
-                ("timestamp", datetime.datetime(2006, 10, 9, 18, 40, 33, tzinfo=UTC)),
-            ],
-            [
-                ("by", "onebeerdave"),
-                ("id", 4),
-                ("timestamp", datetime.datetime(2006, 10, 9, 18, 47, 42, tzinfo=UTC)),
+                (
+                    "timestamp",
+                    datetime.datetime(
+                        2006, 10, 9, 18, 40, 33, tzinfo=datetime.timezone.utc
+                    ),
+                ),
             ],
         ]
 
