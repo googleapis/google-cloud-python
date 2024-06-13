@@ -68,6 +68,10 @@ Python >= 3.8
 .. _active: https://devguide.python.org/devcycle/#in-development-main-branch
 .. _maintenance: https://devguide.python.org/devcycle/#maintenance-branches
 
+Unsupported Python Versions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Python <= 3.7
+
 **NOTE**:
 Python 3.7 was marked as `unsupported`_ by the python community in June 2023.
 We recommend that all developers upgrade to Python 3.8 and newer as soon as
@@ -77,10 +81,6 @@ for download, but releases after January 1 2024 will only target Python 3.8 and
 newer.
 
 .. _unsupported: https://devguide.python.org/versions/#unsupported-versions
-
-Unsupported Python Versions
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Python <= 3.6
 
 If you are using an `end-of-life`_
 version of Python, we recommend that you update as soon as possible to an actively supported version.
