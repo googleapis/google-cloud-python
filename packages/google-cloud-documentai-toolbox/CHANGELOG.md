@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.13.4-alpha](https://github.com/googleapis/python-documentai-toolbox/compare/v0.13.3-alpha...v0.13.4-alpha) (2024-06-13)
+
+
+### Bug Fixes
+
+* Change `if` condition typo in `_get_children_of_element()` ([#313](https://github.com/googleapis/python-documentai-toolbox/issues/313)) ([7495e0e](https://github.com/googleapis/python-documentai-toolbox/commit/7495e0ed73635bebee92141529974f261bd3a8dd))
+
 ## [0.13.3-alpha](https://github.com/googleapis/python-documentai-toolbox/compare/v0.13.2-alpha...v0.13.3-alpha) (2024-03-11)
 
 
