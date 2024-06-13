@@ -359,9 +359,11 @@ def _get_children_of_element(
     return [
         child
         for child in children
-        if child.documentai_object.layout.text_anchor.text_segments[0].start_index
-        >= start_index
-        if child.documentai_object.layout.text_anchor.text_segments[0].end_index
+        if start_index
+        <= child.documentai_object.layout.text_anchor.text_segments[0].start_index
+        < end_index
+        and start_index
+        < child.documentai_object.layout.text_anchor.text_segments[0].end_index
         <= end_index
     ]
 
