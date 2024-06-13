@@ -23,7 +23,6 @@ from typing import Iterable, Optional, Sequence
 import warnings
 
 import google.cloud.bigquery
-import ibis.expr.types as ibis_types
 import pandas
 import pyarrow as pa
 import pyarrow.feather as pa_feather
@@ -59,30 +58,6 @@ class ArrayValue:
     """
 
     node: nodes.BigFrameNode
-
-    # DO NOT use, on deprecation path
-    @classmethod
-    def from_ibis(
-        cls,
-        session: Session,
-        table: ibis_types.Table,
-        columns: Sequence[ibis_types.Value],
-        hidden_ordering_columns: Sequence[ibis_types.Value],
-        ordering: orderings.ExpressionOrdering,
-    ):
-        import bigframes.core.compile.ibis_types
-
-        node = nodes.ReadGbqNode(
-            table=table,
-            table_session=session,
-            columns=tuple(
-                bigframes.core.compile.ibis_types.ibis_value_to_canonical_type(column)
-                for column in columns
-            ),
-            hidden_ordering_columns=tuple(hidden_ordering_columns),
-            ordering=ordering,
-        )
-        return cls(node)
 
     @classmethod
     def from_pyarrow(cls, arrow_table: pa.Table, session: Session):

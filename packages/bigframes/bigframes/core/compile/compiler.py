@@ -224,22 +224,6 @@ def compile_read_table_ordered(node: nodes.ReadTableNode):
 
 
 @_compile_node.register
-def compile_readgbq(node: nodes.ReadGbqNode, ordered: bool = True):
-    if ordered:
-        return compiled.OrderedIR(
-            node.table,
-            node.columns,
-            node.hidden_ordering_columns,
-            node.ordering,
-        )
-    else:
-        return compiled.UnorderedIR(
-            node.table,
-            node.columns,
-        )
-
-
-@_compile_node.register
 def compile_promote_offsets(node: nodes.PromoteOffsetsNode, ordered: bool = True):
     result = compile_ordered_ir(node.child).promote_offsets(node.col_id)
     return result if ordered else result.to_unordered()

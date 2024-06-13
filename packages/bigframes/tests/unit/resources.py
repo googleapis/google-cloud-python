@@ -20,6 +20,7 @@ import google.auth.credentials
 import google.cloud.bigquery
 import ibis
 import pandas
+import pyarrow as pa
 import pytest
 
 import bigframes
@@ -130,18 +131,9 @@ def create_arrayvalue(
     df: pandas.DataFrame, total_ordering_columns: List[str]
 ) -> core.ArrayValue:
     session = create_pandas_session({"test_table": df})
-    ibis_table = session.ibis_client.table("test_table")
-    columns = tuple(ibis_table[key] for key in ibis_table.columns)
-    ordering = bigframes.core.ordering.ExpressionOrdering(
-        tuple(
-            [core.orderings.ascending_over(column) for column in total_ordering_columns]
-        ),
-        total_ordering_columns=frozenset(total_ordering_columns),
-    )
-    return core.ArrayValue.from_ibis(
+    return core.ArrayValue.from_pyarrow(
+        arrow_table=pa.Table.from_pandas(df, preserve_index=False),
         session=session,
-        table=ibis_table,
-        columns=columns,
-        hidden_ordering_columns=(),
-        ordering=ordering,
+    ).order_by(
+        [bigframes.core.ordering.ascending_over(col) for col in total_ordering_columns]
     )
