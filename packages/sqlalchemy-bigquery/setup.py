@@ -22,6 +22,7 @@ import io
 import itertools
 import os
 import re
+import setuptools
 from setuptools import setup
 
 # Package metadata.
@@ -67,6 +68,16 @@ extras = {
 
 extras["all"] = set(itertools.chain.from_iterable(extras.values()))
 
+packages = [
+    package
+    for package in setuptools.find_namespace_packages()
+    if package.startswith("sqlalchemy_bigquery")
+] + [
+    package
+    for package in setuptools.find_namespace_packages("third_party")
+    if package.startswith("sqlalchemy_bigquery_vendored")
+]
+
 setup(
     name=name,
     version=version,
@@ -75,7 +86,11 @@ setup(
     long_description_content_type="text/x-rst",
     author="The Sqlalchemy-Bigquery Authors",
     author_email="googleapis-packages@google.com",
-    packages=["sqlalchemy_bigquery"],
+    package_dir={
+        "sqlalchemy-bigquery": "sqlalchemy_bigquery",
+        "sqlalchemy_bigquery_vendored": "third_party/sqlalchemy_bigquery_vendored",
+    },
+    packages=packages,
     url="https://github.com/googleapis/python-bigquery-sqlalchemy",
     keywords=["bigquery", "sqlalchemy"],
     classifiers=[

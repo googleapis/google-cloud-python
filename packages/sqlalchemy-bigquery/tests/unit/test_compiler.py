@@ -161,6 +161,35 @@ def prepare_implicit_join_base_query(
     return q
 
 
+# Test vendored method update_from_clause()
+# from sqlalchemy_bigquery_vendored.sqlalchemy.postgresql.base.PGCompiler
+def test_update_from_clause(faux_conn, metadata):
+    table1 = setup_table(
+        faux_conn,
+        "table1",
+        metadata,
+        sqlalchemy.Column("foo", sqlalchemy.String),
+        sqlalchemy.Column("bar", sqlalchemy.Integer),
+    )
+    table2 = setup_table(
+        faux_conn,
+        "table2",
+        metadata,
+        sqlalchemy.Column("foo", sqlalchemy.String),
+        sqlalchemy.Column("bar", sqlalchemy.Integer),
+    )
+
+    stmt = (
+        sqlalchemy.update(table1)
+        .where(table1.c.foo == table2.c.foo)
+        .where(table2.c.bar == 1)
+        .values(bar=2)
+    )
+    expected_sql = "UPDATE `table1` SET `bar`=%(bar:INT64)s FROM `table2` WHERE `table1`.`foo` = `table2`.`foo` AND `table2`.`bar` = %(bar_1:INT64)s"
+    found_sql = stmt.compile(faux_conn).string
+    assert found_sql == expected_sql
+
+
 @sqlalchemy_before_2_0
 def test_no_implicit_join_asterix_for_inner_unnest_before_2_0(faux_conn, metadata):
     # See: https://github.com/googleapis/python-bigquery-sqlalchemy/issues/368

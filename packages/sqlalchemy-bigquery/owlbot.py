@@ -15,6 +15,7 @@
 """This script is used to synthesize generated parts of this library."""
 
 import pathlib
+import re
 
 import synthtool as s
 from synthtool import gcp
@@ -76,6 +77,11 @@ s.replace(
     "import re\nimport shutil",
 )
 
+s.replace(
+    ["noxfile.py"],
+    "LINT_PATHS = \[",
+    "LINT_PATHS = [\"third_party\", "
+)
 
 s.replace(
     ["noxfile.py"],
@@ -83,6 +89,12 @@ s.replace(
     "--cov=sqlalchemy_bigquery",
 )
 
+s.replace(
+    ["noxfile.py"],
+    """os.path.join("tests", "unit"),""",
+    """os.path.join("tests", "unit"),
+        os.path.join("third_party", "sqlalchemy_bigquery_vendored"),""",
+)
 
 s.replace(
     ["noxfile.py"],
@@ -282,6 +294,15 @@ profile_file=.sqlalchemy_dialect_compliance-profiles.txt
 addopts= --tb native -v -r fxX -p no:warnings
 python_files=tests/*test_*.py
 """,
+)
+
+
+# Make sure build includes all necessary files.
+s.replace(
+    ["MANIFEST.in"],
+    re.escape("recursive-include google"),
+    """recursive-include third_party/sqlalchemy_bigquery_vendored *
+recursive-include sqlalchemy_bigquery""",
 )
 
 # ----------------------------------------------------------------------------
