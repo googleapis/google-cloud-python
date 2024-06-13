@@ -146,7 +146,9 @@ def create_temp_table(
     destination.schema = schema
     if cluster_columns:
         destination.clustering_fields = cluster_columns
-    bqclient.create_table(destination)
+    # Ok if already exists, since this will only happen from retries internal to this method
+    # as the requested table id has a random UUID4 component.
+    bqclient.create_table(destination, exists_ok=True)
     return f"{table_ref.project}.{table_ref.dataset_id}.{table_ref.table_id}"
 
 
