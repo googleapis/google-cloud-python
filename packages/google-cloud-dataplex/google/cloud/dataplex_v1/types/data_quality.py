@@ -384,9 +384,10 @@ class DataQualityRuleResult(proto.Message):
             rules.
         assertion_row_count (int):
             Output only. The number of rows returned by
-            the sql statement in the SqlAssertion rule.
+            the SQL statement in a SQL assertion rule.
 
-            This field is only valid for SqlAssertion rules.
+            This field is only valid for SQL assertion
+            rules.
     """
 
     rule: "DataQualityRule" = proto.Field(
@@ -534,7 +535,8 @@ class DataQualityRule(proto.Message):
             This field is a member of `oneof`_ ``rule_type``.
         sql_assertion (google.cloud.dataplex_v1.types.DataQualityRule.SqlAssertion):
             Aggregate rule which evaluates the number of
-            rows returned for the provided statement.
+            rows returned for the provided statement. If any
+            rows are returned, this rule fails.
 
             This field is a member of `oneof`_ ``rule_type``.
         column (str):
@@ -770,17 +772,20 @@ class DataQualityRule(proto.Message):
         )
 
     class SqlAssertion(proto.Message):
-        r"""Queries for rows returned by the provided SQL statement. If any rows
-        are are returned, this rule fails.
+        r"""A SQL statement that is evaluated to return rows that match an
+        invalid state. If any rows are are returned, this rule fails.
 
-        The SQL statement needs to use BigQuery standard SQL syntax, and
-        must not contain any semicolons.
+        The SQL statement must use BigQuery standard SQL syntax, and must
+        not contain any semicolons.
 
-        ${data()} can be used to reference the rows being evaluated, i.e.
-        the table after all additional filters (row filters, incremental
-        data filters, sampling) are applied.
+        You can use the data reference parameter ``${data()}`` to reference
+        the source table with all of its precondition filters applied.
+        Examples of precondition filters include row filters, incremental
+        data filters, and sampling. For more information, see `Data
+        reference
+        parameter <https://cloud.google.com/dataplex/docs/auto-data-quality-overview#data-reference-parameter>`__.
 
-        Example: SELECT \* FROM ${data()} WHERE price < 0
+        Example: ``SELECT * FROM ${data()} WHERE price < 0``
 
         Attributes:
             sql_statement (str):
