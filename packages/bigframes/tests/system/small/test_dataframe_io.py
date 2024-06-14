@@ -16,6 +16,7 @@ from typing import Tuple
 
 import google.api_core.exceptions
 import pandas as pd
+import pandas.testing
 import pyarrow as pa
 import pytest
 
@@ -33,6 +34,102 @@ import bigframes
 import bigframes.dataframe
 import bigframes.features
 import bigframes.pandas as bpd
+
+
+def test_sql_executes(scalars_df_default_index, bigquery_client):
+    """Test that DataFrame.sql returns executable SQL.
+
+    DF.sql is used in public documentation such as
+    https://cloud.google.com/blog/products/data-analytics/using-bigquery-dataframes-with-carto-geospatial-tools
+    as a way to pass a DataFrame on to carto without executing the SQL
+    immediately.
+
+    Make sure that this SQL can be run outside of BigQuery DataFrames (assuming
+    similar credentials / access to the referenced tables).
+    """
+    # Do some operations to make for more complex SQL.
+    df = (
+        scalars_df_default_index.drop(columns=["geography_col"])
+        .groupby("string_col")
+        .max()
+    )
+    df.index.name = None  # Don't include unnamed indexes.
+    query = df.sql
+
+    bf_result = df.to_pandas().sort_values("rowindex").reset_index(drop=True)
+    bq_result = (
+        bigquery_client.query_and_wait(query)
+        .to_dataframe()
+        .sort_values("rowindex")
+        .reset_index(drop=True)
+    )
+    pandas.testing.assert_frame_equal(bf_result, bq_result, check_dtype=False)
+
+
+def test_sql_executes_and_includes_named_index(
+    scalars_df_default_index, bigquery_client
+):
+    """Test that DataFrame.sql returns executable SQL.
+
+    DF.sql is used in public documentation such as
+    https://cloud.google.com/blog/products/data-analytics/using-bigquery-dataframes-with-carto-geospatial-tools
+    as a way to pass a DataFrame on to carto without executing the SQL
+    immediately.
+
+    Make sure that this SQL can be run outside of BigQuery DataFrames (assuming
+    similar credentials / access to the referenced tables).
+    """
+    # Do some operations to make for more complex SQL.
+    df = (
+        scalars_df_default_index.drop(columns=["geography_col"])
+        .groupby("string_col")
+        .max()
+    )
+    query = df.sql
+
+    bf_result = df.to_pandas().sort_values("rowindex")
+    bq_result = (
+        bigquery_client.query_and_wait(query)
+        .to_dataframe()
+        .set_index("string_col")
+        .sort_values("rowindex")
+    )
+    pandas.testing.assert_frame_equal(
+        bf_result, bq_result, check_dtype=False, check_index_type=False
+    )
+
+
+def test_sql_executes_and_includes_named_multiindex(
+    scalars_df_default_index, bigquery_client
+):
+    """Test that DataFrame.sql returns executable SQL.
+
+    DF.sql is used in public documentation such as
+    https://cloud.google.com/blog/products/data-analytics/using-bigquery-dataframes-with-carto-geospatial-tools
+    as a way to pass a DataFrame on to carto without executing the SQL
+    immediately.
+
+    Make sure that this SQL can be run outside of BigQuery DataFrames (assuming
+    similar credentials / access to the referenced tables).
+    """
+    # Do some operations to make for more complex SQL.
+    df = (
+        scalars_df_default_index.drop(columns=["geography_col"])
+        .groupby(["string_col", "bool_col"])
+        .max()
+    )
+    query = df.sql
+
+    bf_result = df.to_pandas().sort_values("rowindex")
+    bq_result = (
+        bigquery_client.query_and_wait(query)
+        .to_dataframe()
+        .set_index(["string_col", "bool_col"])
+        .sort_values("rowindex")
+    )
+    pandas.testing.assert_frame_equal(
+        bf_result, bq_result, check_dtype=False, check_index_type=False
+    )
 
 
 def test_to_pandas_w_correct_dtypes(scalars_df_default_index):

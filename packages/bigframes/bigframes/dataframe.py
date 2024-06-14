@@ -379,7 +379,8 @@ class DataFrame(vendored_pandas_frame.DataFrame):
     @property
     def sql(self) -> str:
         """Compiles this DataFrame's expression tree to SQL."""
-        sql, _, _ = self._to_sql_query(include_index=False)
+        include_index = self.index.name is not None or len(self.index.names) > 1
+        sql, _, _ = self._to_sql_query(include_index=include_index)
         return sql
 
     @property
