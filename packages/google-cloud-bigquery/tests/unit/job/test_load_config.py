@@ -843,3 +843,42 @@ class TestLoadJobConfig(_Base):
 
         config.parquet_options = None
         self.assertNotIn("parquetOptions", config._properties["load"])
+
+    def test_column_name_character_map_missing(self):
+        from google.cloud.bigquery.job.load import ColumnNameCharacterMap
+
+        config = self._get_target_class()()
+        self.assertEqual(
+            config.column_name_character_map,
+            ColumnNameCharacterMap.COLUMN_NAME_CHARACTER_MAP_UNSPECIFIED,
+        )
+
+    def test_column_name_character_map_hit(self):
+        from google.cloud.bigquery.job.load import ColumnNameCharacterMap
+
+        config = self._get_target_class()()
+        config._properties["load"]["columnNameCharacterMap"] = "STRICT"
+        self.assertEqual(
+            config.column_name_character_map,
+            ColumnNameCharacterMap.STRICT,
+        )
+
+    def test_column_name_character_map_setter(self):
+        from google.cloud.bigquery.job.load import ColumnNameCharacterMap
+
+        config = self._get_target_class()()
+        config.column_name_character_map = "V1"
+        self.assertEqual(
+            config._properties["load"]["columnNameCharacterMap"],
+            ColumnNameCharacterMap.V1,
+        )
+
+    def test_column_name_character_map_none(self):
+        from google.cloud.bigquery.job.load import ColumnNameCharacterMap
+
+        config = self._get_target_class()()
+        config.column_name_character_map = None
+        self.assertEqual(
+            config._properties["load"]["columnNameCharacterMap"],
+            ColumnNameCharacterMap.COLUMN_NAME_CHARACTER_MAP_UNSPECIFIED,
+        )

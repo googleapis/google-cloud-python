@@ -32,6 +32,26 @@ from google.cloud.bigquery.job.base import _JobReference
 from google.cloud.bigquery.query import ConnectionProperty
 
 
+class ColumnNameCharacterMap:
+    """Indicates the character map used for column names.
+
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#columnnamecharactermap
+    """
+
+    COLUMN_NAME_CHARACTER_MAP_UNSPECIFIED = "COLUMN_NAME_CHARACTER_MAP_UNSPECIFIED"
+    """Unspecified column name character map."""
+
+    STRICT = "STRICT"
+    """Support flexible column name and reject invalid column names."""
+
+    V1 = "V1"
+    """	Support alphanumeric + underscore characters and names must start with
+    a letter or underscore. Invalid column names will be normalized."""
+
+    V2 = "V2"
+    """Support flexible column name. Invalid column names will be normalized."""
+
+
 class LoadJobConfig(_JobConfig):
     """Configuration options for load jobs.
 
@@ -596,6 +616,27 @@ class LoadJobConfig(_JobConfig):
             self._set_sub_prop("parquetOptions", value.to_api_repr())
         else:
             self._del_sub_prop("parquetOptions")
+
+    @property
+    def column_name_character_map(self) -> str:
+        """Optional[google.cloud.bigquery.job.ColumnNameCharacterMap]:
+        Character map supported for column names in CSV/Parquet loads. Defaults
+        to STRICT and can be overridden by Project Config Service. Using this
+        option with unsupported load formats will result in an error.
+
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobConfigurationLoad.FIELDS.column_name_character_map
+        """
+        return self._get_sub_prop(
+            "columnNameCharacterMap",
+            ColumnNameCharacterMap.COLUMN_NAME_CHARACTER_MAP_UNSPECIFIED,
+        )
+
+    @column_name_character_map.setter
+    def column_name_character_map(self, value: Optional[str]):
+        if value is None:
+            value = ColumnNameCharacterMap.COLUMN_NAME_CHARACTER_MAP_UNSPECIFIED
+        self._set_sub_prop("columnNameCharacterMap", value)
 
 
 class LoadJob(_AsyncJob):
