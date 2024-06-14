@@ -7,15 +7,16 @@ branchProtectionRules:
   requiresCodeOwnerReviews: true
   requiresStrictStatusChecks: false
   requiredStatusCheckContexts:
+# TODO(b/347075426): Restore owlbot as required check
+#    - 'OwlBot Post Processor'
     - 'conventionalcommits.org'
     - 'cla/google'
-    - 'OwlBot Post Processor'
     - 'docs'
     - 'lint'
     - 'unit (3.9)'
     - 'unit (3.10)'
     - 'unit (3.11)'
-    - 'unit (3.12)'    
+    - 'unit (3.12)'
     - 'cover'
     - 'Kokoro presubmit'
 permissionRules:
