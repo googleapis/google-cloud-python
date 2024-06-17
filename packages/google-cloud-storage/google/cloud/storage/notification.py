@@ -255,7 +255,7 @@ class BucketNotification(object):
         """
         if self.notification_id is not None:
             raise ValueError(
-                f"Notification already exists w/ id: {self.notification_id}"
+                f"notification_id already set to {self.notification_id}; must be None to create a Notification."
             )
 
         client = self._require_client(client)
