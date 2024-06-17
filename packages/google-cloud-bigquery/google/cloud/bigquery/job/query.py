@@ -1532,8 +1532,9 @@ class QueryJob(_AsyncJob):
         # Setting max_results should be equivalent to setting page_size with
         # regards to allowing the user to tune how many results to download
         # while we wait for the query to finish. See internal issue:
-        # 344008814.
-        if page_size is None and max_results is not None:
+        # 344008814. But if start_index is set, user is trying to access a
+        # specific page, so we don't need to set page_size. See issue #1950.
+        if page_size is None and max_results is not None and start_index is None:
             page_size = max_results
 
         # When timeout has default sentinel value ``object()``, do not pass
