@@ -1384,6 +1384,26 @@ class Block:
             raise ValueError("Unexpected number of value columns.")
         return expr.select_columns([*index_columns, *value_columns])
 
+    def grouped_head(
+        self,
+        by_column_ids: typing.Sequence[str],
+        value_columns: typing.Sequence[str],
+        n: int,
+    ):
+        window_spec = window_specs.cumulative_rows(grouping_keys=tuple(by_column_ids))
+
+        block, result_id = self.apply_window_op(
+            value_columns[0],
+            agg_ops.rank_op,
+            window_spec=window_spec,
+        )
+
+        cond = ops.lt_op.as_expr(result_id, ex.const(n + 1))
+        block, cond_id = block.project_expr(cond)
+        block = block.filter_by_id(cond_id)
+        if value_columns:
+            return block.select_columns(value_columns)
+
     def slice(
         self,
         start: typing.Optional[int] = None,

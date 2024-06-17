@@ -53,6 +53,13 @@ def test_dataframe_groupby_numeric_aggregate(
     pd.testing.assert_frame_equal(pd_result, bf_result_computed, check_dtype=False)
 
 
+def test_dataframe_groupby_head(scalars_df_index, scalars_pandas_df_index):
+    col_names = ["int64_too", "float64_col", "int64_col", "bool_col", "string_col"]
+    bf_result = scalars_df_index[col_names].groupby("bool_col").head(2).to_pandas()
+    pd_result = scalars_pandas_df_index[col_names].groupby("bool_col").head(2)
+    pd.testing.assert_frame_equal(pd_result, bf_result, check_dtype=False)
+
+
 def test_dataframe_groupby_median(scalars_df_index, scalars_pandas_df_index):
     col_names = ["int64_too", "float64_col", "int64_col", "bool_col", "string_col"]
     bf_result = (
@@ -440,6 +447,19 @@ def test_series_groupby_agg_list(scalars_df_index, scalars_pandas_df_index):
     pd.testing.assert_frame_equal(
         pd_result, bf_result_computed, check_dtype=False, check_names=False
     )
+
+
+@pytest.mark.parametrize("dropna", [True, False])
+def test_series_groupby_head(scalars_df_index, scalars_pandas_df_index, dropna):
+    bf_result = (
+        scalars_df_index.groupby("bool_col", dropna=dropna)["int64_too"]
+        .head(1)
+        .to_pandas()
+    )
+    pd_result = scalars_pandas_df_index.groupby("bool_col", dropna=dropna)[
+        "int64_too"
+    ].head(1)
+    pd.testing.assert_series_equal(pd_result, bf_result, check_dtype=False)
 
 
 def test_series_groupby_kurt(scalars_df_index, scalars_pandas_df_index):

@@ -104,6 +104,18 @@ class DataFrameGroupBy(vendored_pandas_groupby.DataFrameGroupBy):
                 dropna=self._dropna,
             )
 
+    def head(self, n: int = 5) -> df.DataFrame:
+        block = self._block
+        if self._dropna:
+            block = block_ops.dropna(self._block, self._by_col_ids, how="any")
+        return df.DataFrame(
+            block.grouped_head(
+                by_column_ids=self._by_col_ids,
+                value_columns=self._block.value_columns,
+                n=n,
+            )
+        )
+
     def size(self) -> typing.Union[df.DataFrame, series.Series]:
         agg_block, _ = self._block.aggregate_size(
             by_column_ids=self._by_col_ids,
@@ -497,6 +509,16 @@ class SeriesGroupBy(vendored_pandas_groupby.SeriesGroupBy):
         self._by_col_ids = by_col_ids
         self._value_name = value_name
         self._dropna = dropna  # Applies to aggregations but not windowing
+
+    def head(self, n: int = 5) -> series.Series:
+        block = self._block
+        if self._dropna:
+            block = block_ops.dropna(self._block, self._by_col_ids, how="any")
+        return series.Series(
+            block.grouped_head(
+                by_column_ids=self._by_col_ids, value_columns=[self._value_column], n=n
+            )
+        )
 
     def all(self) -> series.Series:
         return self._aggregate(agg_ops.all_op)
