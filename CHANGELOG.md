@@ -3,7 +3,7 @@ Please refer to each API's `CHANGELOG.md` file under the `packages/` directory
 Changelogs
 -----
 - [google-ads-admanager==0.1.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-ads-admanager/CHANGELOG.md)
-- [google-ai-generativelanguage==0.6.4](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-ai-generativelanguage/CHANGELOG.md)
+- [google-ai-generativelanguage==0.6.5](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-ai-generativelanguage/CHANGELOG.md)
 - [google-analytics-admin==0.22.7](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-analytics-admin/CHANGELOG.md)
 - [google-analytics-data==0.18.8](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-analytics-data/CHANGELOG.md)
 - [google-apps-card==0.1.2](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-apps-card/CHANGELOG.md)
@@ -114,7 +114,7 @@ Changelogs
 - [google-cloud-network-connectivity==2.4.3](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-network-connectivity/CHANGELOG.md)
 - [google-cloud-network-management==1.17.1](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-network-management/CHANGELOG.md)
 - [google-cloud-network-security==0.9.9](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-network-security/CHANGELOG.md)
-- [google-cloud-network-services==0.5.11](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-network-services/CHANGELOG.md)
+- [google-cloud-network-services==0.5.12](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-network-services/CHANGELOG.md)
 - [google-cloud-notebooks==1.10.3](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-notebooks/CHANGELOG.md)
 - [google-cloud-optimization==1.8.3](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-optimization/CHANGELOG.md)
 - [google-cloud-orchestration-airflow==1.12.1](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-orchestration-airflow/CHANGELOG.md)
