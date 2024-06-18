@@ -5,7 +5,7 @@
     "product_documentation": "https://cloud.google.com/storage/docs/reference/rpc/google.storage.control.v2",
     "client_documentation": "https://cloud.google.com/python/docs/reference/google-cloud-storage-control/latest",
     "issue_tracker": "https://issuetracker.google.com/issues/new?component=187243&template=1162869",
-    "release_level": "preview",
+    "release_level": "stable",
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "repo": "googleapis/google-cloud-python",
