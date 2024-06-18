@@ -234,6 +234,56 @@ def test_create_subscription(
     subscriber_client.delete_subscription(request={"subscription": subscription_path})
 
 
+def test_optimistic_subscribe(
+    subscriber_client: pubsub_v1.SubscriberClient,
+    topic: str,
+    publisher_client: pubsub_v1.PublisherClient,
+    capsys: CaptureFixture[str],
+) -> None:
+    subscription_id = f"subscription_for_optimistic_subscribe-{PY_VERSION}-{UUID}"
+    subscription_path = subscriber_client.subscription_path(PROJECT_ID, subscription_id)
+    # Ensure there is no pre-existing subscription.
+    # So that we can test the case where optimistic subscribe fails.
+    try:
+        subscriber_client.delete_subscription(
+            request={"subscription": subscription_path}
+        )
+    except NotFound:
+        pass
+
+    # Invoke optimistic_subscribe when the subscription is not present.
+    # This tests scenario where optimistic subscribe fails.
+    subscriber.optimistic_subscribe(PROJECT_ID, TOPIC, subscription_id, 5)
+    out, _ = capsys.readouterr()
+    # Verify optimistic subscription failed.
+    assert f"Subscription {subscription_path} not found, creating it." in out
+    # Verify that subscription created due to optimistic subscribe failure.
+    assert f"Subscription {subscription_path} created" in out
+    # Verify that subscription didn't already exist.
+    assert "Successfully subscribed until the timeout passed." not in out
+
+    # Invoke optimistic_subscribe when the subscription is present.
+    # This tests scenario where optimistic subscribe succeeds.
+    subscriber.optimistic_subscribe(PROJECT_ID, TOPIC, subscription_id, 5)
+
+    out, _ = capsys.readouterr()
+    # Verify optimistic subscription succeeded.
+    assert f"Subscription {subscription_path} not found, creating it." not in out
+    # Verify that subscription was not created due to optimistic subscribe failure.
+    assert f"Subscription {subscription_path} created" not in out
+    # Verify that subscription already existed.
+    assert "Successfully subscribed until the timeout passed." in out
+
+    # Test case where optimistic subscribe throws an exception other than NotFound
+    # or TimeoutError.
+    subscriber.optimistic_subscribe(PROJECT_ID, TOPIC, "123", 5)
+    out, _ = capsys.readouterr()
+    assert "Exception occurred when attempting optimistic subscribe:" in out
+
+    # Clean up resources created during test.
+    subscriber_client.delete_subscription(request={"subscription": subscription_path})
+
+
 def test_create_subscription_with_dead_letter_policy(
     subscriber_client: pubsub_v1.SubscriberClient,
     dead_letter_topic: str,
