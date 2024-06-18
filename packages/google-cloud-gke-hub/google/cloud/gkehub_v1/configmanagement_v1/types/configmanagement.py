@@ -28,6 +28,7 @@ __protobuf__ = proto.module(
         "MembershipSpec",
         "ConfigSync",
         "GitConfig",
+        "OciConfig",
         "PolicyController",
         "HierarchyControllerConfig",
         "HierarchyControllerDeploymentState",
@@ -36,6 +37,7 @@ __protobuf__ = proto.module(
         "OperatorState",
         "InstallError",
         "ConfigSyncState",
+        "ConfigSyncError",
         "ConfigSyncVersion",
         "ConfigSyncDeploymentState",
         "SyncState",
@@ -63,11 +65,14 @@ class DeploymentState(proto.Enum):
         ERROR (3):
             Deployment was attempted to be installed, but
             has errors
+        PENDING (4):
+            Deployment is installing or terminating
     """
     DEPLOYMENT_STATE_UNSPECIFIED = 0
     NOT_INSTALLED = 1
     INSTALLED = 2
     ERROR = 3
+    PENDING = 4
 
 
 class MembershipState(proto.Message):
@@ -75,12 +80,9 @@ class MembershipState(proto.Message):
 
     Attributes:
         cluster_name (str):
-            The user-defined name for the cluster used by
-            ClusterSelectors to group clusters together. This should
-            match Membership's membership_name, unless the user
-            installed ACM on the cluster manually prior to enabling the
-            ACM hub feature. Unique within a Anthos Config Management
-            installation.
+            This field is set to the ``cluster_name`` field of the
+            Membership Spec if it is not empty. Otherwise, it is set to
+            the cluster's fleet membership name.
         membership_spec (google.cloud.gkehub.configmanagement_v1.types.MembershipSpec):
             Membership configuration in the cluster. This
             represents the actual state in the cluster,
@@ -142,7 +144,39 @@ class MembershipSpec(proto.Message):
             cluster.
         version (str):
             Version of ACM installed.
+        cluster (str):
+            The user-specified cluster name used by
+            Config Sync cluster-name-selector annotation or
+            ClusterSelector, for applying configs to only a
+            subset of clusters.
+            Omit this field if the cluster's fleet
+            membership name is used by Config Sync
+            cluster-name-selector annotation or
+            ClusterSelector. Set this field if a name
+            different from the cluster's fleet membership
+            name is used by Config Sync
+            cluster-name-selector annotation or
+            ClusterSelector.
+        management (google.cloud.gkehub.configmanagement_v1.types.MembershipSpec.Management):
+            Enables automatic Feature management.
     """
+
+    class Management(proto.Enum):
+        r"""Whether to automatically manage the Feature.
+
+        Values:
+            MANAGEMENT_UNSPECIFIED (0):
+                Unspecified
+            MANAGEMENT_AUTOMATIC (1):
+                Google will manage the Feature for the
+                cluster.
+            MANAGEMENT_MANUAL (2):
+                User will manually manage the Feature for the
+                cluster.
+        """
+        MANAGEMENT_UNSPECIFIED = 0
+        MANAGEMENT_AUTOMATIC = 1
+        MANAGEMENT_MANUAL = 2
 
     config_sync: "ConfigSync" = proto.Field(
         proto.MESSAGE,
@@ -163,17 +197,54 @@ class MembershipSpec(proto.Message):
         proto.STRING,
         number=10,
     )
+    cluster: str = proto.Field(
+        proto.STRING,
+        number=11,
+    )
+    management: Management = proto.Field(
+        proto.ENUM,
+        number=12,
+        enum=Management,
+    )
 
 
 class ConfigSync(proto.Message):
     r"""Configuration for Config Sync
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         git (google.cloud.gkehub.configmanagement_v1.types.GitConfig):
             Git repo configuration for the cluster.
         source_format (str):
             Specifies whether the Config Sync Repo is
-            in “hierarchical” or “unstructured” mode.
+            in "hierarchical" or "unstructured" mode.
+        enabled (bool):
+            Enables the installation of ConfigSync.
+            If set to true, ConfigSync resources will be
+            created and the other ConfigSync fields will be
+            applied if exist.
+            If set to false, all other ConfigSync fields
+            will be ignored, ConfigSync resources will be
+            deleted.
+            If omitted, ConfigSync resources will be managed
+            depends on the presence of the git or oci field.
+
+            This field is a member of `oneof`_ ``_enabled``.
+        prevent_drift (bool):
+            Set to true to enable the Config Sync admission webhook to
+            prevent drifts. If set to ``false``, disables the Config
+            Sync admission webhook and does not prevent drifts.
+        oci (google.cloud.gkehub.configmanagement_v1.types.OciConfig):
+            OCI repo configuration for the cluster
+        metrics_gcp_service_account_email (str):
+            The Email of the Google Cloud Service Account (GSA) used for
+            exporting Config Sync metrics to Cloud Monitoring when
+            Workload Identity is enabled. The GSA should have the
+            Monitoring Metric Writer (roles/monitoring.metricWriter) IAM
+            role. The Kubernetes ServiceAccount ``default`` in the
+            namespace ``config-management-monitoring`` should be bound
+            to the GSA.
     """
 
     git: "GitConfig" = proto.Field(
@@ -184,6 +255,24 @@ class ConfigSync(proto.Message):
     source_format: str = proto.Field(
         proto.STRING,
         number=8,
+    )
+    enabled: bool = proto.Field(
+        proto.BOOL,
+        number=10,
+        optional=True,
+    )
+    prevent_drift: bool = proto.Field(
+        proto.BOOL,
+        number=11,
+    )
+    oci: "OciConfig" = proto.Field(
+        proto.MESSAGE,
+        number=12,
+        message="OciConfig",
+    )
+    metrics_gcp_service_account_email: str = proto.Field(
+        proto.STRING,
+        number=15,
     )
 
 
@@ -209,13 +298,15 @@ class GitConfig(proto.Message):
             Default HEAD.
         secret_type (str):
             Type of secret configured for access to the
-            Git repo.
+            Git repo. Must be one of ssh, cookiefile,
+            gcenode, token, gcpserviceaccount or none. The
+            validation of this is case-sensitive. Required.
         https_proxy (str):
             URL for the HTTPS proxy to be used when
             communicating with the Git repo.
         gcp_service_account_email (str):
-            The GCP Service Account Email used for auth when secret_type
-            is gcpServiceAccount.
+            The Google Cloud Service Account Email used for auth when
+            secret_type is gcpServiceAccount.
     """
 
     sync_repo: str = proto.Field(
@@ -249,6 +340,51 @@ class GitConfig(proto.Message):
     gcp_service_account_email: str = proto.Field(
         proto.STRING,
         number=8,
+    )
+
+
+class OciConfig(proto.Message):
+    r"""OCI repo configuration for a single cluster
+
+    Attributes:
+        sync_repo (str):
+            The OCI image repository URL for the package to sync from.
+            e.g.
+            ``LOCATION-docker.pkg.dev/PROJECT_ID/REPOSITORY_NAME/PACKAGE_NAME``.
+        policy_dir (str):
+            The absolute path of the directory that
+            contains the local resources.  Default: the root
+            directory of the image.
+        sync_wait_secs (int):
+            Period in seconds between consecutive syncs.
+            Default: 15.
+        secret_type (str):
+            Type of secret configured for access to the
+            Git repo.
+        gcp_service_account_email (str):
+            The Google Cloud Service Account Email used for auth when
+            secret_type is gcpServiceAccount.
+    """
+
+    sync_repo: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    policy_dir: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    sync_wait_secs: int = proto.Field(
+        proto.INT64,
+        number=3,
+    )
+    secret_type: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    gcp_service_account_email: str = proto.Field(
+        proto.STRING,
+        number=5,
     )
 
 
@@ -464,7 +600,62 @@ class ConfigSyncState(proto.Message):
         sync_state (google.cloud.gkehub.configmanagement_v1.types.SyncState):
             The state of ConfigSync's process to sync
             configs to a cluster
+        errors (MutableSequence[google.cloud.gkehub.configmanagement_v1.types.ConfigSyncError]):
+            Errors pertaining to the installation of
+            Config Sync.
+        rootsync_crd (google.cloud.gkehub.configmanagement_v1.types.ConfigSyncState.CRDState):
+            The state of the RootSync CRD
+        reposync_crd (google.cloud.gkehub.configmanagement_v1.types.ConfigSyncState.CRDState):
+            The state of the Reposync CRD
+        state (google.cloud.gkehub.configmanagement_v1.types.ConfigSyncState.State):
+            The state of CS
+            This field summarizes the other fields in this
+            message.
     """
+
+    class CRDState(proto.Enum):
+        r"""CRDState representing the state of a CRD
+
+        Values:
+            CRD_STATE_UNSPECIFIED (0):
+                CRD's state cannot be determined
+            NOT_INSTALLED (1):
+                CRD is not installed
+            INSTALLED (2):
+                CRD is installed
+            TERMINATING (3):
+                CRD is terminating (i.e., it has been deleted
+                and is cleaning up)
+            INSTALLING (4):
+                CRD is installing
+        """
+        CRD_STATE_UNSPECIFIED = 0
+        NOT_INSTALLED = 1
+        INSTALLED = 2
+        TERMINATING = 3
+        INSTALLING = 4
+
+    class State(proto.Enum):
+        r"""
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                CS's state cannot be determined.
+            CONFIG_SYNC_NOT_INSTALLED (1):
+                CS is not installed.
+            CONFIG_SYNC_INSTALLED (2):
+                The expected CS version is installed
+                successfully.
+            CONFIG_SYNC_ERROR (3):
+                CS encounters errors.
+            CONFIG_SYNC_PENDING (4):
+                CS is installing or terminating.
+        """
+        STATE_UNSPECIFIED = 0
+        CONFIG_SYNC_NOT_INSTALLED = 1
+        CONFIG_SYNC_INSTALLED = 2
+        CONFIG_SYNC_ERROR = 3
+        CONFIG_SYNC_PENDING = 4
 
     version: "ConfigSyncVersion" = proto.Field(
         proto.MESSAGE,
@@ -480,6 +671,41 @@ class ConfigSyncState(proto.Message):
         proto.MESSAGE,
         number=3,
         message="SyncState",
+    )
+    errors: MutableSequence["ConfigSyncError"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=4,
+        message="ConfigSyncError",
+    )
+    rootsync_crd: CRDState = proto.Field(
+        proto.ENUM,
+        number=5,
+        enum=CRDState,
+    )
+    reposync_crd: CRDState = proto.Field(
+        proto.ENUM,
+        number=6,
+        enum=CRDState,
+    )
+    state: State = proto.Field(
+        proto.ENUM,
+        number=7,
+        enum=State,
+    )
+
+
+class ConfigSyncError(proto.Message):
+    r"""Errors pertaining to the installation of Config Sync
+
+    Attributes:
+        error_message (str):
+            A string representing the user facing error
+            message
+    """
+
+    error_message: str = proto.Field(
+        proto.STRING,
+        number=1,
     )
 
 
@@ -502,6 +728,8 @@ class ConfigSyncVersion(proto.Message):
         root_reconciler (str):
             Version of the deployed reconciler container
             in root-reconciler pod
+        admission_webhook (str):
+            Version of the deployed admission_webhook pod
     """
 
     importer: str = proto.Field(
@@ -528,6 +756,10 @@ class ConfigSyncVersion(proto.Message):
         proto.STRING,
         number=6,
     )
+    admission_webhook: str = proto.Field(
+        proto.STRING,
+        number=7,
+    )
 
 
 class ConfigSyncDeploymentState(proto.Message):
@@ -546,6 +778,8 @@ class ConfigSyncDeploymentState(proto.Message):
             Deployment state of reconciler-manager pod
         root_reconciler (google.cloud.gkehub.configmanagement_v1.types.DeploymentState):
             Deployment state of root-reconciler
+        admission_webhook (google.cloud.gkehub.configmanagement_v1.types.DeploymentState):
+            Deployment state of admission-webhook
     """
 
     importer: "DeploymentState" = proto.Field(
@@ -578,6 +812,11 @@ class ConfigSyncDeploymentState(proto.Message):
         number=6,
         enum="DeploymentState",
     )
+    admission_webhook: "DeploymentState" = proto.Field(
+        proto.ENUM,
+        number=7,
+        enum="DeploymentState",
+    )
 
 
 class SyncState(proto.Message):
@@ -608,27 +847,26 @@ class SyncState(proto.Message):
     """
 
     class SyncCode(proto.Enum):
-        r"""An enum representing an ACM's status syncing configs to a
-        cluster
+        r"""An enum representing Config Sync's status of syncing configs
+        to a cluster.
 
         Values:
             SYNC_CODE_UNSPECIFIED (0):
-                ACM cannot determine a sync code
+                Config Sync cannot determine a sync code
             SYNCED (1):
-                ACM successfully synced the git Repo with the
-                cluster
+                Config Sync successfully synced the git Repo
+                with the cluster
             PENDING (2):
-                ACM is in the progress of syncing a new
-                change
+                Config Sync is in the progress of syncing a
+                new change
             ERROR (3):
-                Indicates an error configuring ACM, and user
-                action is required
+                Indicates an error configuring Config Sync,
+                and user action is required
             NOT_CONFIGURED (4):
-                ACM has been installed (operator manifest
-                deployed), but not configured.
+                Config Sync has been installed but not
+                configured
             NOT_INSTALLED (5):
-                ACM has not been installed (no operator pod
-                found)
+                Config Sync has not been installed
             UNAUTHORIZED (6):
                 Error authorizing with the cluster
             UNREACHABLE (7):
