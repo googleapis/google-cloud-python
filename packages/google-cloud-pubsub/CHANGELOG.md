@@ -5,6 +5,13 @@
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
 
+## [2.21.4](https://github.com/googleapis/python-pubsub/compare/v2.21.3...v2.21.4) (2024-06-18)
+
+
+### Documentation
+
+* **samples:** Add code sample for optimistic subscribe ([#1182](https://github.com/googleapis/python-pubsub/issues/1182)) ([d8e8aa5](https://github.com/googleapis/python-pubsub/commit/d8e8aa59ab0288fdaf5a1cc5e476581e73d0f82c))
+
 ## [2.21.3](https://github.com/googleapis/python-pubsub/compare/v2.21.2...v2.21.3) (2024-06-10)
 
 
