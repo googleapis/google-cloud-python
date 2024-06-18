@@ -1,21 +1,21 @@
 Python Client for Storage Control API
 =====================================
 
-|preview| |pypi| |versions|
+|stable| |pypi| |versions|
 
 `Storage Control API`_: Lets you perform metadata-specific, control plane, and long-running operations apart from the Storage API. Separating these operations from the Storage API improves API standardization and lets you run faster releases.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. |preview| image:: https://img.shields.io/badge/support-preview-orange.svg
+.. |stable| image:: https://img.shields.io/badge/support-stable-gold.svg
    :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#stability-levels
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-storage-control.svg
    :target: https://pypi.org/project/google-cloud-storage-control/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-storage-control.svg
    :target: https://pypi.org/project/google-cloud-storage-control/
 .. _Storage Control API: https://cloud.google.com/storage/docs/reference/rpc/google.storage.control.v2
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/google-cloud-storage-control/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/google-cloud-storage-control/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/storage/docs/reference/rpc/google.storage.control.v2
 
 Quick Start
