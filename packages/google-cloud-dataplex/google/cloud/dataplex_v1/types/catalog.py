@@ -1848,7 +1848,7 @@ class SearchEntriesResult(proto.Message):
         linked_resource (str):
             Linked resource name.
         dataplex_entry (google.cloud.dataplex_v1.types.Entry):
-            Entry format of the result.
+
         snippets (google.cloud.dataplex_v1.types.SearchEntriesResult.Snippets):
             Snippets.
     """

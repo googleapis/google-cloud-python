@@ -211,8 +211,7 @@ class Attributes(proto.Message):
             Date on which the item should expire, as specified upon
             insertion, in `ISO
             8601 <http://en.wikipedia.org/wiki/ISO_8601>`__ format. The
-            actual expiration date in Google Shopping is exposed in
-            ``productstatuses`` as
+            actual expiration date is exposed in ``productstatuses`` as
             `googleExpirationDate <https://support.google.com/merchants/answer/6324499>`__
             and might be earlier if ``expirationDate`` is too far in the
             future. Note: It may take 2+ days from the expiration date
@@ -616,7 +615,7 @@ class CssProductStatus(proto.Message):
             Date on which the item has been last updated, in `ISO
             8601 <http://en.wikipedia.org/wiki/ISO_8601>`__ format.
         google_expiration_date (google.protobuf.timestamp_pb2.Timestamp):
-            Date on which the item expires in Google Shopping, in `ISO
+            Date on which the item expires, in `ISO
             8601 <http://en.wikipedia.org/wiki/ISO_8601>`__ format.
     """
 
