@@ -19,9 +19,8 @@
 """Generated protocol buffer code."""
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import descriptor_pool as _descriptor_pool
-from google.protobuf import message as _message
-from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
+from google.protobuf.internal import builder as _builder
 
 # @@protoc_insertion_point(imports)
 
@@ -37,87 +36,26 @@ DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(
     b'\n#google/api/monitored_resource.proto\x12\ngoogle.api\x1a\x16google/api/label.proto\x1a\x1dgoogle/api/launch_stage.proto\x1a\x1cgoogle/protobuf/struct.proto"\xc0\x01\n\x1bMonitoredResourceDescriptor\x12\x0c\n\x04name\x18\x05 \x01(\t\x12\x0c\n\x04type\x18\x01 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x02 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t\x12+\n\x06labels\x18\x04 \x03(\x0b\x32\x1b.google.api.LabelDescriptor\x12-\n\x0claunch_stage\x18\x07 \x01(\x0e\x32\x17.google.api.LaunchStage"\x8b\x01\n\x11MonitoredResource\x12\x0c\n\x04type\x18\x01 \x01(\t\x12\x39\n\x06labels\x18\x02 \x03(\x0b\x32).google.api.MonitoredResource.LabelsEntry\x1a-\n\x0bLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"\xca\x01\n\x19MonitoredResourceMetadata\x12.\n\rsystem_labels\x18\x01 \x01(\x0b\x32\x17.google.protobuf.Struct\x12J\n\x0buser_labels\x18\x02 \x03(\x0b\x32\x35.google.api.MonitoredResourceMetadata.UserLabelsEntry\x1a\x31\n\x0fUserLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x42y\n\x0e\x63om.google.apiB\x16MonitoredResourceProtoP\x01ZCgoogle.golang.org/genproto/googleapis/api/monitoredres;monitoredres\xf8\x01\x01\xa2\x02\x04GAPIb\x06proto3'
 )
 
-
-_MONITOREDRESOURCEDESCRIPTOR = DESCRIPTOR.message_types_by_name[
-    "MonitoredResourceDescriptor"
-]
-_MONITOREDRESOURCE = DESCRIPTOR.message_types_by_name["MonitoredResource"]
-_MONITOREDRESOURCE_LABELSENTRY = _MONITOREDRESOURCE.nested_types_by_name["LabelsEntry"]
-_MONITOREDRESOURCEMETADATA = DESCRIPTOR.message_types_by_name[
-    "MonitoredResourceMetadata"
-]
-_MONITOREDRESOURCEMETADATA_USERLABELSENTRY = (
-    _MONITOREDRESOURCEMETADATA.nested_types_by_name["UserLabelsEntry"]
+_globals = globals()
+_builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
+_builder.BuildTopDescriptorsAndMessages(
+    DESCRIPTOR, "google.api.monitored_resource_pb2", _globals
 )
-MonitoredResourceDescriptor = _reflection.GeneratedProtocolMessageType(
-    "MonitoredResourceDescriptor",
-    (_message.Message,),
-    {
-        "DESCRIPTOR": _MONITOREDRESOURCEDESCRIPTOR,
-        "__module__": "google.api.monitored_resource_pb2"
-        # @@protoc_insertion_point(class_scope:google.api.MonitoredResourceDescriptor)
-    },
-)
-_sym_db.RegisterMessage(MonitoredResourceDescriptor)
-
-MonitoredResource = _reflection.GeneratedProtocolMessageType(
-    "MonitoredResource",
-    (_message.Message,),
-    {
-        "LabelsEntry": _reflection.GeneratedProtocolMessageType(
-            "LabelsEntry",
-            (_message.Message,),
-            {
-                "DESCRIPTOR": _MONITOREDRESOURCE_LABELSENTRY,
-                "__module__": "google.api.monitored_resource_pb2"
-                # @@protoc_insertion_point(class_scope:google.api.MonitoredResource.LabelsEntry)
-            },
-        ),
-        "DESCRIPTOR": _MONITOREDRESOURCE,
-        "__module__": "google.api.monitored_resource_pb2"
-        # @@protoc_insertion_point(class_scope:google.api.MonitoredResource)
-    },
-)
-_sym_db.RegisterMessage(MonitoredResource)
-_sym_db.RegisterMessage(MonitoredResource.LabelsEntry)
-
-MonitoredResourceMetadata = _reflection.GeneratedProtocolMessageType(
-    "MonitoredResourceMetadata",
-    (_message.Message,),
-    {
-        "UserLabelsEntry": _reflection.GeneratedProtocolMessageType(
-            "UserLabelsEntry",
-            (_message.Message,),
-            {
-                "DESCRIPTOR": _MONITOREDRESOURCEMETADATA_USERLABELSENTRY,
-                "__module__": "google.api.monitored_resource_pb2"
-                # @@protoc_insertion_point(class_scope:google.api.MonitoredResourceMetadata.UserLabelsEntry)
-            },
-        ),
-        "DESCRIPTOR": _MONITOREDRESOURCEMETADATA,
-        "__module__": "google.api.monitored_resource_pb2"
-        # @@protoc_insertion_point(class_scope:google.api.MonitoredResourceMetadata)
-    },
-)
-_sym_db.RegisterMessage(MonitoredResourceMetadata)
-_sym_db.RegisterMessage(MonitoredResourceMetadata.UserLabelsEntry)
-
 if _descriptor._USE_C_DESCRIPTORS == False:
-
     DESCRIPTOR._options = None
     DESCRIPTOR._serialized_options = b"\n\016com.google.apiB\026MonitoredResourceProtoP\001ZCgoogle.golang.org/genproto/googleapis/api/monitoredres;monitoredres\370\001\001\242\002\004GAPI"
     _MONITOREDRESOURCE_LABELSENTRY._options = None
     _MONITOREDRESOURCE_LABELSENTRY._serialized_options = b"8\001"
     _MONITOREDRESOURCEMETADATA_USERLABELSENTRY._options = None
     _MONITOREDRESOURCEMETADATA_USERLABELSENTRY._serialized_options = b"8\001"
-    _MONITOREDRESOURCEDESCRIPTOR._serialized_start = 137
-    _MONITOREDRESOURCEDESCRIPTOR._serialized_end = 329
-    _MONITOREDRESOURCE._serialized_start = 332
-    _MONITOREDRESOURCE._serialized_end = 471
-    _MONITOREDRESOURCE_LABELSENTRY._serialized_start = 426
-    _MONITOREDRESOURCE_LABELSENTRY._serialized_end = 471
-    _MONITOREDRESOURCEMETADATA._serialized_start = 474
-    _MONITOREDRESOURCEMETADATA._serialized_end = 676
-    _MONITOREDRESOURCEMETADATA_USERLABELSENTRY._serialized_start = 627
-    _MONITOREDRESOURCEMETADATA_USERLABELSENTRY._serialized_end = 676
+    _globals["_MONITOREDRESOURCEDESCRIPTOR"]._serialized_start = 137
+    _globals["_MONITOREDRESOURCEDESCRIPTOR"]._serialized_end = 329
+    _globals["_MONITOREDRESOURCE"]._serialized_start = 332
+    _globals["_MONITOREDRESOURCE"]._serialized_end = 471
+    _globals["_MONITOREDRESOURCE_LABELSENTRY"]._serialized_start = 426
+    _globals["_MONITOREDRESOURCE_LABELSENTRY"]._serialized_end = 471
+    _globals["_MONITOREDRESOURCEMETADATA"]._serialized_start = 474
+    _globals["_MONITOREDRESOURCEMETADATA"]._serialized_end = 676
+    _globals["_MONITOREDRESOURCEMETADATA_USERLABELSENTRY"]._serialized_start = 627
+    _globals["_MONITOREDRESOURCEMETADATA_USERLABELSENTRY"]._serialized_end = 676
 # @@protoc_insertion_point(module_scope)

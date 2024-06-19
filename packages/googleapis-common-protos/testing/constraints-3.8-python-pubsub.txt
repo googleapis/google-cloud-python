@@ -5,5 +5,5 @@
 #
 # e.g., if setup.py has "foo >= 1.14.0, < 2.0.0dev",
 # Then this file should have foo==1.14.0
-protobuf==3.20.2
+protobuf==4.21.6
 grpcio==1.51.3

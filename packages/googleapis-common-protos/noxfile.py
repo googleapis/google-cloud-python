@@ -16,17 +16,14 @@ import os
 import pathlib
 from pathlib import Path
 import re
-import unittest
+import tempfile
 
 import nox
 
 BLACK_VERSION = "black==22.3.0"
 
-# NOTE: Pin the version of grpcio-tools to 1.48.2 for compatibility with
-# Protobuf 3.19.5. Please ensure that the minimum required version of
-# protobuf in setup.py is compatible with the pb2 files generated
-# by grpcio-tools before changing the pinned version below.
-GRPCIO_TOOLS_VERSION = "grpcio-tools==1.48.2"
+# `grpcio-tools` 1.59.0 or newer is required for protobuf 5.x compatibility.
+GRPCIO_TOOLS_VERSION = "grpcio-tools==1.59.0"
 
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 UNIT_TEST_PYTHON_VERSIONS = ["3.7", "3.8", "3.9", "3.10", "3.11", "3.12"]
@@ -51,37 +48,44 @@ def lint_setup_py(session):
     session.run("python", "setup.py", "check", "--strict")
 
 
-def unit(session, repository=None, package=None, prerelease=False):
+def unit(session, repository, package, prerelease, protobuf_implementation, working_dir):
     """Run the unit test suite."""
+
+    downstream_dir = repository
+    if package:
+        downstream_dir = f"{repository}/packages/{package}"
+
     # Install all test dependencies, then install this package in-place.
     session.install("asyncmock", "pytest-asyncio")
 
     # Pin mock due to https://github.com/googleapis/python-pubsub/issues/840
     session.install("mock==5.0.0", "pytest", "pytest-cov")
 
-    if package:
-        downstream_parent_dir = f"{CURRENT_DIRECTORY}/{repository}/packages/{package}"
-    else:
-        downstream_parent_dir = f"{CURRENT_DIRECTORY}/{repository}"
-
-    install_command = ["-e", downstream_parent_dir]
-
+    install_command = ["-e", f"{working_dir}/{downstream_dir}"]
     if prerelease:
         install_prerelease_dependencies(
             session,
-            f"{downstream_parent_dir}/testing/constraints-{UNIT_TEST_PYTHON_VERSIONS[0]}.txt",
+            f"{working_dir}/{downstream_dir}/testing/constraints-{UNIT_TEST_PYTHON_VERSIONS[0]}.txt",
         )
-        # Use the `--no-deps` options to install googleapis-api-common-protos without dependencies
-        # since we are using pre-release versions of dependencies
+        # Use the `--no-deps` options to allow pre-release versions of dependencies to be installed
         install_command.extend(["--no-deps"])
     else:
-        # Install the pinned dependencies in constraints file
-        install_command.extend(
-            ["-c", f"{downstream_parent_dir}/testing/constraints-{session.python}.txt"]
-        )
+        contraints_file = f"{CURRENT_DIRECTORY}/testing/constraints-{session.python}-{repository}.txt"
+        if not Path(contraints_file).exists():
+            contraints_file = f"{CURRENT_DIRECTORY}/testing/constraints-{session.python}.txt"
 
-    # This *must* be the last install command to get the package from source.
+        install_command.extend(["-c", contraints_file])
+
+    # These *must* be the last 3 install commands to get the packages from source.
     session.install(*install_command)
+
+    # Remove the 'cpp' implementation once support for Protobuf 3.x is dropped.
+    # The 'cpp' implementation requires Protobuf<4.
+    if protobuf_implementation == "cpp":
+        session.install("protobuf<4")
+
+    # Install this library from source
+    session.install(".", "--no-deps", "--ignore-installed")
 
     # Print out package versions of dependencies
     session.run(
@@ -94,19 +98,23 @@ def unit(session, repository=None, package=None, prerelease=False):
         "python", "-c", "import google.api_core; print(google.api_core.__version__)"
     )
 
-    # Run py.test against the unit tests.
-    session.run(
-        "py.test",
-        "--quiet",
-        "--cov=google/cloud",
-        "--cov=tests/unit",
-        "--cov-append",
-        "--cov-config=.coveragerc",
-        "--cov-report=",
-        "--cov-fail-under=0",
-        os.path.join("tests", "unit"),
-        *session.posargs,
-    )
+    # Run py.test against the unit tests in the downstream repository
+    with session.chdir(f"{working_dir}/{downstream_dir}"):
+        session.run(
+            "py.test",
+            "--quiet",
+            "--cov=google/cloud",
+            "--cov=tests/unit",
+            "--cov-append",
+            "--cov-config=.coveragerc",
+            "--cov-report=",
+            "--cov-fail-under=0",
+            os.path.join("tests", "unit"),
+            *session.posargs,
+            env={
+                "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
+            },
+        )
 
 
 def install_prerelease_dependencies(session, constraints_path):
@@ -143,84 +151,76 @@ def install_prerelease_dependencies(session, constraints_path):
         session.install(*other_deps)
 
 
-def system(session):
-    """Run the system test suite."""
-    system_test_path = os.path.join("tests", "system.py")
-    system_test_folder_path = os.path.join("tests", "system")
-    # Sanity check: Only run tests if the environment variable is set.
-    if not os.environ.get("GOOGLE_APPLICATION_CREDENTIALS", ""):
-        session.skip("Credentials must be set via environment variable")
-
-    system_test_exists = os.path.exists(system_test_path)
-    system_test_folder_exists = os.path.exists(system_test_folder_path)
-    # Sanity check: only run tests if found.
-    if not system_test_exists and not system_test_folder_exists:
-        session.skip("System tests were not found")
-
-    # Run py.test against the system tests.
-    if system_test_exists:
-        session.run("py.test", "--verbose", system_test_path, *session.posargs)
-    if system_test_folder_exists:
-        session.run("py.test", "--verbose", system_test_folder_path, *session.posargs)
-
-
 @nox.session(python=UNIT_TEST_PYTHON_VERSIONS)
 @nox.parametrize(
-    "library, prerelease",
+    "library,prerelease,protobuf_implementation",
     [
-        (("python-pubsub", None), False),
-        (("python-pubsub", None), True),
-        (("google-cloud-python", "google-cloud-speech"), False),
-        (("google-cloud-python", "google-cloud-speech"), True),
+        (("python-pubsub", None), False, "python"),
+        (("python-pubsub", None), False, "upb"),
+        (("python-pubsub", None), False, "cpp"),
+        (("python-pubsub", None), True, "python"),
+        (("python-pubsub", None), True, "upb"),
+        (("python-pubsub", None), True, "cpp"),
+        (("google-cloud-python", "google-cloud-speech"), False, "python"),
+        (("google-cloud-python", "google-cloud-speech"), False, "upb"),
+        (("google-cloud-python", "google-cloud-speech"), False, "cpp"),
+        (("google-cloud-python", "google-cloud-speech"), True, "python"),
+        (("google-cloud-python", "google-cloud-speech"), True, "upb"),
+        (("google-cloud-python", "google-cloud-speech"), True, "cpp"),
     ],
-    ids=["pubsub", "speech"],
 )
-def test(session, library, prerelease):
+def test(session, library, prerelease, protobuf_implementation):
     """Run tests from a downstream libraries.
 
     To verify that any changes we make here will not break downstream libraries, clone
-    a few and run their unit and system tests.
+    a few and run their unit tests.
 
-    NOTE: The unit and system test functions above are copied from the templates.
+    NOTE: The unit test functions above are copied from the templates.
     They will need to be updated when the templates change.
 
     * Pub/Sub: GAPIC with handwritten layer.
     * Speech: Full GAPIC, has long running operations.
     """
     if prerelease and session.python != UNIT_TEST_PYTHON_VERSIONS[-1]:
-        unittest.skip("Prerelease test is only run using the latest python runtime")
+        session.skip("Prerelease test is only run using the latest python runtime")
+
+    if protobuf_implementation == "cpp" and session.python in ("3.11", "3.12"):
+        session.skip("cpp implementation is not supported in python 3.11+")
 
     repository, package = library
-    try:
-        session.run("git", "-C", repository, "pull", external=True)
-    except nox.command.CommandFailed:
+    with tempfile.TemporaryDirectory() as working_dir:
         session.run(
             "git",
             "clone",
             "--single-branch",
             f"https://github.com/googleapis/{repository}",
+            f"{working_dir}/{repository}",
             external=True,
         )
 
-    session.cd(repository)
-    if package:
-        session.cd(f"packages/{package}")
-
-    unit(session, repository, package, prerelease)
-
-    # system tests are run on 3.7 only
-    if session.python == "3.7":
-        if repository == "python-pubsub":
-            session.install("google-cloud-testutils")
-            session.install("psutil")
-            session.install("flaky")
-        system(session)
+        unit(
+            session=session,
+            repository=repository,
+            package=package,
+            prerelease=prerelease,
+            protobuf_implementation=protobuf_implementation,
+            working_dir=working_dir
+        )
 
 
 @nox.session(python=UNIT_TEST_PYTHON_VERSIONS)
-def tests_local(session):
+@nox.parametrize("protobuf_implementation", ["python", "upb", "cpp"])
+def tests_local(session, protobuf_implementation):
     """Run tests in this local repo."""
     # Install all test dependencies, then install this package in-place.
+
+    # TODO(https://github.com/googleapis/proto-plus-python/issues/389):
+    # Remove the 'cpp' implementation once support for Protobuf 3.x is dropped.
+    # The 'cpp' implementation requires Protobuf == 3.x however version 3.x
+    # does not support Python 3.11 and newer. The 'cpp' implementation
+    # must be excluded from the test matrix for these runtimes.
+    if protobuf_implementation == "cpp" and session.python in ("3.11", "3.12"):
+        session.skip("cpp implementation is not supported in python 3.11+")
 
     constraints_path = str(
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
@@ -237,6 +237,11 @@ def tests_local(session):
 
     session.install("-e", ".", "-c", constraints_path)
 
+    # Remove the 'cpp' implementation once support for Protobuf 3.x is dropped.
+    # The 'cpp' implementation requires Protobuf<4.
+    if protobuf_implementation == "cpp":
+        session.install("protobuf<4")
+
     # Run py.test against the unit tests.
     session.run(
         "py.test",
@@ -250,6 +255,9 @@ def tests_local(session):
         "--cov-fail-under=0",
         os.path.join("tests", "unit"),
         *session.posargs,
+        env={
+            "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
+        },
     )
 
 
