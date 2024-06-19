@@ -40,7 +40,7 @@ def compile_ordered(
 ) -> str:
     """Compile node into sql where rows are sorted with ORDER BY."""
     return compiler.compile_ordered_ir(node).to_sql(
-        col_id_overrides=col_id_overrides, sorted=True
+        col_id_overrides=col_id_overrides, ordered=True
     )
 
 

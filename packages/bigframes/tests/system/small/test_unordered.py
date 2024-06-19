@@ -12,9 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 import pandas as pd
+import pyarrow as pa
 
 import bigframes.pandas as bpd
-from tests.system.utils import assert_pandas_df_equal
+from tests.system.utils import assert_pandas_df_equal, skip_legacy_pandas
 
 
 def test_unordered_mode_cache_aggregate(unordered_session):
@@ -26,3 +27,35 @@ def test_unordered_mode_cache_aggregate(unordered_session):
     pd_result = pd_df - pd_df.mean()
 
     assert_pandas_df_equal(bf_result, pd_result, ignore_order=True)
+
+
+@skip_legacy_pandas
+def test_unordered_mode_read_gbq(unordered_session):
+    df = unordered_session.read_gbq(
+        """SELECT
+        [1, 3, 2] AS array_column,
+        STRUCT(
+            "a" AS string_field,
+            1.2 AS float_field) AS struct_column"""
+    )
+    expected = pd.DataFrame(
+        {
+            "array_column": pd.Series(
+                [[1, 3, 2]],
+                dtype=(pd.ArrowDtype(pa.list_(pa.int64()))),
+            ),
+            "struct_column": pd.Series(
+                [{"string_field": "a", "float_field": 1.2}],
+                dtype=pd.ArrowDtype(
+                    pa.struct(
+                        [
+                            ("string_field", pa.string()),
+                            ("float_field", pa.float64()),
+                        ]
+                    )
+                ),
+            ),
+        }
+    )
+    # Don't need ignore_order as there is only 1 row
+    assert_pandas_df_equal(df.to_pandas(), expected)

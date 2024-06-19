@@ -209,7 +209,7 @@ class Block:
             except Exception:
                 pass
 
-        iter, _ = self.session._execute(row_count_expr, sorted=False)
+        iter, _ = self.session._execute(row_count_expr, ordered=False)
         row_count = next(iter)[0]
         return (row_count, len(self.value_columns))
 
@@ -518,7 +518,7 @@ class Block:
         dtypes = dict(zip(self.index_columns, self.index.dtypes))
         dtypes.update(zip(self.value_columns, self.dtypes))
         _, query_job = self.session._query_to_destination(
-            self.session._to_sql(self.expr, sorted=True),
+            self.session._to_sql(self.expr, ordered=self.session._strictly_ordered),
             list(self.index_columns),
             api_name="cached",
             do_clustering=False,
@@ -553,7 +553,7 @@ class Block:
         """Run query and download results as a pandas DataFrame. Return the total number of results as well."""
         # TODO(swast): Allow for dry run and timeout.
         _, query_job = self.session._query_to_destination(
-            self.session._to_sql(self.expr, sorted=materialize_options.ordered),
+            self.session._to_sql(self.expr, ordered=materialize_options.ordered),
             list(self.index_columns),
             api_name="cached",
             do_clustering=False,
@@ -1736,7 +1736,7 @@ class Block:
         original_row_index = (
             original_row_index
             if original_row_index is not None
-            else self.index.to_pandas()
+            else self.index.to_pandas(ordered=True)
         )
         original_row_count = len(original_row_index)
         if original_row_count > bigframes.constants.MAX_COLUMNS:
@@ -2507,7 +2507,7 @@ class BlockIndexProperties:
         """Column(s) to use as row labels."""
         return self._block._index_columns
 
-    def to_pandas(self) -> pd.Index:
+    def to_pandas(self, *, ordered: Optional[bool] = None) -> pd.Index:
         """Executes deferred operations and downloads the results."""
         if len(self.column_ids) == 0:
             raise bigframes.exceptions.NullIndexError(
@@ -2517,7 +2517,12 @@ class BlockIndexProperties:
         index_columns = list(self._block.index_columns)
         dtypes = dict(zip(index_columns, self.dtypes))
         expr = self._expr.select_columns(index_columns)
-        results, _ = self.session._execute(expr)
+        results, _ = self.session._execute(
+            expr,
+            ordered=ordered
+            if (ordered is not None)
+            else self.session._strictly_ordered,
+        )
         df = expr.session._rows_to_dataframe(results, dtypes)
         df = df.set_index(index_columns)
         index = df.index

@@ -70,6 +70,8 @@ class BigQueryOptions:
         application_name: Optional[str] = None,
         kms_key_name: Optional[str] = None,
         skip_bq_connection_check: bool = False,
+        *,
+        _strictly_ordered: bool = True,
     ):
         self._credentials = credentials
         self._project = project
@@ -80,6 +82,8 @@ class BigQueryOptions:
         self._kms_key_name = kms_key_name
         self._skip_bq_connection_check = skip_bq_connection_check
         self._session_started = False
+        # Determines the ordering strictness for the session. For internal use only.
+        self._strictly_ordered_internal = _strictly_ordered
 
     @property
     def application_name(self) -> Optional[str]:
@@ -235,3 +239,8 @@ class BigQueryOptions:
             raise ValueError(SESSION_STARTED_MESSAGE.format(attribute="kms_key_name"))
 
         self._kms_key_name = value
+
+    @property
+    def _strictly_ordered(self) -> bool:
+        """Internal use only. Controls whether total row order is always maintained for DataFrame/Series."""
+        return self._strictly_ordered_internal

@@ -297,7 +297,13 @@ class Session(
         self._execution_count = 0
         # Whether this session treats objects as totally ordered.
         # Will expose as feature later, only False for internal testing
-        self._strictly_ordered = True
+        self._strictly_ordered: bool = context._strictly_ordered
+        # Sequential index needs total ordering to generate, so use null index with unstrict ordering.
+        self._default_index_type: bigframes.enums.DefaultIndexKind = (
+            bigframes.enums.DefaultIndexKind.SEQUENTIAL_INT64
+            if context._strictly_ordered
+            else bigframes.enums.DefaultIndexKind.NULL
+        )
 
     @property
     def bqclient(self):
@@ -882,11 +888,11 @@ class Session(
         # Create Default Sequential Index if still have no index
         # ----------------------------------------------------
 
-        # If no index columns provided or found, fall back to sequential index
+        # If no index columns provided or found, fall back to session default
         if (index_col != bigframes.enums.DefaultIndexKind.NULL) and len(
             index_cols
         ) == 0:
-            index_col = bigframes.enums.DefaultIndexKind.SEQUENTIAL_INT64
+            index_col = self._default_index_type
 
         index_names: Sequence[Hashable] = index_cols
         if index_col == bigframes.enums.DefaultIndexKind.SEQUENTIAL_INT64:
@@ -1935,14 +1941,14 @@ class Session(
         array_value: core.ArrayValue,
         job_config: Optional[bigquery.job.QueryJobConfig] = None,
         *,
-        sorted: bool = True,
+        ordered: bool = True,
         dry_run=False,
         col_id_overrides: Mapping[str, str] = {},
     ) -> tuple[bigquery.table.RowIterator, bigquery.QueryJob]:
         if not dry_run:
             self._add_execution(1)
         sql = self._to_sql(
-            array_value, sorted=sorted, col_id_overrides=col_id_overrides
+            array_value, ordered=ordered, col_id_overrides=col_id_overrides
         )  # type:ignore
         if job_config is None:
             job_config = bigquery.QueryJobConfig(dry_run=dry_run)
@@ -1977,12 +1983,12 @@ class Session(
         array_value: core.ArrayValue,
         offset_column: typing.Optional[str] = None,
         col_id_overrides: typing.Mapping[str, str] = {},
-        sorted: bool = False,
+        ordered: bool = False,
     ) -> str:
         if offset_column:
             array_value = array_value.promote_offsets(offset_column)
         node_w_cached = self._with_cached_executions(array_value.node)
-        if sorted:
+        if ordered:
             return bigframes.core.compile.compile_ordered(
                 node_w_cached, col_id_overrides=col_id_overrides
             )

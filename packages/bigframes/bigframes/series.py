@@ -323,7 +323,7 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         sampling_method: Optional[str] = None,
         random_state: Optional[int] = None,
         *,
-        ordered: bool = True,
+        ordered: Optional[bool] = None,
     ) -> pandas.Series:
         """Writes Series to pandas Series.
 
@@ -343,9 +343,10 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
                 The seed for the uniform downsampling algorithm. If provided, the uniform method may
                 take longer to execute and require more computation. If set to a value other than
                 None, this will supersede the global config.
-            ordered (bool, default True):
+            ordered (bool, default None):
                 Determines whether the resulting pandas series will be deterministically ordered.
-                In some cases, unordered may result in a faster-executing query.
+                In some cases, unordered may result in a faster-executing query. If set to a value
+                other than None, will override Session default.
 
 
         Returns:
@@ -357,7 +358,7 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
             max_download_size=max_download_size,
             sampling_method=sampling_method,
             random_state=random_state,
-            ordered=ordered,
+            ordered=ordered if ordered is not None else self._session._strictly_ordered,
         )
         self._set_internal_query_job(query_job)
         series = df.squeeze(axis=1)
