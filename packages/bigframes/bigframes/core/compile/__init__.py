@@ -11,13 +11,22 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+from __future__ import annotations
 
-from bigframes.core.compile.compiled import OrderedIR, UnorderedIR
-from bigframes.core.compile.compiler import compile_ordered_ir, compile_unordered_ir
+from bigframes.core.compile.api import (
+    compile_ordered,
+    compile_peek,
+    compile_raw,
+    compile_unordered,
+    test_only_ibis_inferred_schema,
+    test_only_try_evaluate,
+)
 
 __all__ = [
-    "compile_ordered_ir",
-    "compile_unordered_ir",
-    "OrderedIR",
-    "UnorderedIR",
+    "compile_peek",
+    "compile_unordered",
+    "compile_ordered",
+    "compile_raw",
+    "test_only_try_evaluate",
+    "test_only_ibis_inferred_schema",
 ]

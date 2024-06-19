@@ -923,6 +923,15 @@ class OrderedIR(BaseIbisIR):
             )
         return typing.cast(str, sql)
 
+    def raw_sql(self) -> str:
+        """Return sql with all hidden columns. Used to cache with ordering information."""
+        return ibis_bigquery.Backend().compile(
+            self._to_ibis_expr(
+                ordering_mode="unordered",
+                expose_hidden_cols=True,
+            )
+        )
+
     def _to_ibis_expr(
         self,
         *,

@@ -375,6 +375,19 @@ class CachedTableNode(BigFrameNode):
 
     ordering: typing.Optional[orderings.ExpressionOrdering] = field()
 
+    def __post_init__(self):
+        # enforce invariants
+        physical_names = set(map(lambda i: i.name, self.physical_schema))
+        logical_names = self.original_node.schema.names
+        if not set(logical_names).issubset(physical_names):
+            raise ValueError(
+                f"Requested schema {logical_names} cannot be derived from table schema {self.physical_schema}"
+            )
+        if not set(self.hidden_columns).issubset(physical_names):
+            raise ValueError(
+                f"Requested hidden columns {self.hidden_columns} cannot be derived from table schema {self.physical_schema}"
+            )
+
     @property
     def session(self):
         return self.original_node.session
