@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.5](https://github.com/googleapis/google-cloud-python/compare/google-shopping-css-v0.1.4...google-shopping-css-v0.1.5) (2024-06-19)
+
+
+### Documentation
+
+* Remove "in Google Shopping" from documentation comments ([3a0a439](https://github.com/googleapis/google-cloud-python/commit/3a0a439ce9e43f88959babfa267e14bae10f8538))
+
 ## [0.1.4](https://github.com/googleapis/google-cloud-python/compare/google-shopping-css-v0.1.3...google-shopping-css-v0.1.4) (2024-03-05)
 
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.11](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securitycentermanagement-v0.1.10...google-cloud-securitycentermanagement-v0.1.11) (2024-06-19)
+
+
+### Features
+
+* add an INGEST_ONLY EnablementState ([5363fa3](https://github.com/googleapis/google-cloud-python/commit/5363fa34a5c2bb524321d0b09c5f467e784ddb3c))
+
 ## [0.1.10](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securitycentermanagement-v0.1.9...google-cloud-securitycentermanagement-v0.1.10) (2024-06-10)
 
 

@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.0.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataplex-v2.0.0...google-cloud-dataplex-v2.0.1) (2024-06-19)
+
+
+### Documentation
+
+* clarify DataQualityRule.sql_assertion descriptions ([74db0f8](https://github.com/googleapis/google-cloud-python/commit/74db0f812620a936fc055f49e0837aa30264fbda))
+* fix links to RuleType proto references ([74db0f8](https://github.com/googleapis/google-cloud-python/commit/74db0f812620a936fc055f49e0837aa30264fbda))
+
 ## [2.0.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataplex-v1.13.0...google-cloud-dataplex-v2.0.0) (2024-05-16)
 
 
