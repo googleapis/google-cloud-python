@@ -101,9 +101,11 @@ class ResponseMock(requests.Response):
         # json.dumps returns a string surrounded with quotes that need to be stripped
         # in order to be an actual JSON.
         json_responses = [
-            self._response_message_cls.to_json(r).strip('"')
-            if issubclass(self._response_message_cls, proto.Message)
-            else MessageToJson(r).strip('"')
+            (
+                self._response_message_cls.to_json(r).strip('"')
+                if issubclass(self._response_message_cls, proto.Message)
+                else MessageToJson(r).strip('"')
+            )
             for r in responses
         ]
         logging.info(f"Sending JSON stream: {json_responses}")

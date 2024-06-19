@@ -14,7 +14,9 @@
 
 """Package for interacting with the google.longrunning.operations meta-API."""
 
-from google.api_core.operations_v1.abstract_operations_client import AbstractOperationsClient
+from google.api_core.operations_v1.abstract_operations_client import (
+    AbstractOperationsClient,
+)
 from google.api_core.operations_v1.operations_async_client import OperationsAsyncClient
 from google.api_core.operations_v1.operations_client import OperationsClient
 from google.api_core.operations_v1.transports.rest import OperationsRestTransport
@@ -23,5 +25,5 @@ __all__ = [
     "AbstractOperationsClient",
     "OperationsAsyncClient",
     "OperationsClient",
-    "OperationsRestTransport"
+    "OperationsRestTransport",
 ]
