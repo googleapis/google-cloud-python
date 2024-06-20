@@ -19,9 +19,8 @@
 """Generated protocol buffer code."""
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import descriptor_pool as _descriptor_pool
-from google.protobuf import message as _message
-from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
+from google.protobuf.internal import builder as _builder
 
 # @@protoc_insertion_point(imports)
 
@@ -35,23 +34,14 @@ DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(
     b'\n&google/iam/v1/logging/audit_data.proto\x12\x15google.iam.v1.logging\x1a\x1agoogle/iam/v1/policy.proto"=\n\tAuditData\x12\x30\n\x0cpolicy_delta\x18\x02 \x01(\x0b\x32\x1a.google.iam.v1.PolicyDeltaB\x86\x01\n\x19\x63om.google.iam.v1.loggingB\x0e\x41uditDataProtoP\x01Z9cloud.google.com/go/iam/apiv1/logging/loggingpb;loggingpb\xaa\x02\x1bGoogle.Cloud.Iam.V1.Loggingb\x06proto3'
 )
 
-
-_AUDITDATA = DESCRIPTOR.message_types_by_name["AuditData"]
-AuditData = _reflection.GeneratedProtocolMessageType(
-    "AuditData",
-    (_message.Message,),
-    {
-        "DESCRIPTOR": _AUDITDATA,
-        "__module__": "google.iam.v1.logging.audit_data_pb2"
-        # @@protoc_insertion_point(class_scope:google.iam.v1.logging.AuditData)
-    },
+_globals = globals()
+_builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
+_builder.BuildTopDescriptorsAndMessages(
+    DESCRIPTOR, "google.iam.v1.logging.audit_data_pb2", _globals
 )
-_sym_db.RegisterMessage(AuditData)
-
 if _descriptor._USE_C_DESCRIPTORS == False:
-
     DESCRIPTOR._options = None
     DESCRIPTOR._serialized_options = b"\n\031com.google.iam.v1.loggingB\016AuditDataProtoP\001Z9cloud.google.com/go/iam/apiv1/logging/loggingpb;loggingpb\252\002\033Google.Cloud.Iam.V1.Logging"
-    _AUDITDATA._serialized_start = 93
-    _AUDITDATA._serialized_end = 154
+    _globals["_AUDITDATA"]._serialized_start = 93
+    _globals["_AUDITDATA"]._serialized_end = 154
 # @@protoc_insertion_point(module_scope)

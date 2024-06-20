@@ -19,9 +19,8 @@
 """Generated protocol buffer code."""
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import descriptor_pool as _descriptor_pool
-from google.protobuf import message as _message
-from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
+from google.protobuf.internal import builder as _builder
 
 # @@protoc_insertion_point(imports)
 
@@ -41,62 +40,12 @@ DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(
     b'\n\x1egoogle/iam/v1/iam_policy.proto\x12\rgoogle.iam.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a\x1bgoogle/iam/v1/options.proto\x1a\x1agoogle/iam/v1/policy.proto\x1a google/protobuf/field_mask.proto"\x8f\x01\n\x13SetIamPolicyRequest\x12\x1b\n\x08resource\x18\x01 \x01(\tB\t\xe0\x41\x02\xfa\x41\x03\n\x01*\x12*\n\x06policy\x18\x02 \x01(\x0b\x32\x15.google.iam.v1.PolicyB\x03\xe0\x41\x02\x12/\n\x0bupdate_mask\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.FieldMask"d\n\x13GetIamPolicyRequest\x12\x1b\n\x08resource\x18\x01 \x01(\tB\t\xe0\x41\x02\xfa\x41\x03\n\x01*\x12\x30\n\x07options\x18\x02 \x01(\x0b\x32\x1f.google.iam.v1.GetPolicyOptions"R\n\x19TestIamPermissionsRequest\x12\x1b\n\x08resource\x18\x01 \x01(\tB\t\xe0\x41\x02\xfa\x41\x03\n\x01*\x12\x18\n\x0bpermissions\x18\x02 \x03(\tB\x03\xe0\x41\x02"1\n\x1aTestIamPermissionsResponse\x12\x13\n\x0bpermissions\x18\x01 \x03(\t2\xb4\x03\n\tIAMPolicy\x12t\n\x0cSetIamPolicy\x12".google.iam.v1.SetIamPolicyRequest\x1a\x15.google.iam.v1.Policy")\x82\xd3\xe4\x93\x02#"\x1e/v1/{resource=**}:setIamPolicy:\x01*\x12t\n\x0cGetIamPolicy\x12".google.iam.v1.GetIamPolicyRequest\x1a\x15.google.iam.v1.Policy")\x82\xd3\xe4\x93\x02#"\x1e/v1/{resource=**}:getIamPolicy:\x01*\x12\x9a\x01\n\x12TestIamPermissions\x12(.google.iam.v1.TestIamPermissionsRequest\x1a).google.iam.v1.TestIamPermissionsResponse"/\x82\xd3\xe4\x93\x02)"$/v1/{resource=**}:testIamPermissions:\x01*\x1a\x1e\xca\x41\x1biam-meta-api.googleapis.comB\x7f\n\x11\x63om.google.iam.v1B\x0eIamPolicyProtoP\x01Z)cloud.google.com/go/iam/apiv1/iampb;iampb\xf8\x01\x01\xaa\x02\x13Google.Cloud.Iam.V1\xca\x02\x13Google\\Cloud\\Iam\\V1b\x06proto3'
 )
 
-
-_SETIAMPOLICYREQUEST = DESCRIPTOR.message_types_by_name["SetIamPolicyRequest"]
-_GETIAMPOLICYREQUEST = DESCRIPTOR.message_types_by_name["GetIamPolicyRequest"]
-_TESTIAMPERMISSIONSREQUEST = DESCRIPTOR.message_types_by_name[
-    "TestIamPermissionsRequest"
-]
-_TESTIAMPERMISSIONSRESPONSE = DESCRIPTOR.message_types_by_name[
-    "TestIamPermissionsResponse"
-]
-SetIamPolicyRequest = _reflection.GeneratedProtocolMessageType(
-    "SetIamPolicyRequest",
-    (_message.Message,),
-    {
-        "DESCRIPTOR": _SETIAMPOLICYREQUEST,
-        "__module__": "google.iam.v1.iam_policy_pb2"
-        # @@protoc_insertion_point(class_scope:google.iam.v1.SetIamPolicyRequest)
-    },
+_globals = globals()
+_builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
+_builder.BuildTopDescriptorsAndMessages(
+    DESCRIPTOR, "google.iam.v1.iam_policy_pb2", _globals
 )
-_sym_db.RegisterMessage(SetIamPolicyRequest)
-
-GetIamPolicyRequest = _reflection.GeneratedProtocolMessageType(
-    "GetIamPolicyRequest",
-    (_message.Message,),
-    {
-        "DESCRIPTOR": _GETIAMPOLICYREQUEST,
-        "__module__": "google.iam.v1.iam_policy_pb2"
-        # @@protoc_insertion_point(class_scope:google.iam.v1.GetIamPolicyRequest)
-    },
-)
-_sym_db.RegisterMessage(GetIamPolicyRequest)
-
-TestIamPermissionsRequest = _reflection.GeneratedProtocolMessageType(
-    "TestIamPermissionsRequest",
-    (_message.Message,),
-    {
-        "DESCRIPTOR": _TESTIAMPERMISSIONSREQUEST,
-        "__module__": "google.iam.v1.iam_policy_pb2"
-        # @@protoc_insertion_point(class_scope:google.iam.v1.TestIamPermissionsRequest)
-    },
-)
-_sym_db.RegisterMessage(TestIamPermissionsRequest)
-
-TestIamPermissionsResponse = _reflection.GeneratedProtocolMessageType(
-    "TestIamPermissionsResponse",
-    (_message.Message,),
-    {
-        "DESCRIPTOR": _TESTIAMPERMISSIONSRESPONSE,
-        "__module__": "google.iam.v1.iam_policy_pb2"
-        # @@protoc_insertion_point(class_scope:google.iam.v1.TestIamPermissionsResponse)
-    },
-)
-_sym_db.RegisterMessage(TestIamPermissionsResponse)
-
-_IAMPOLICY = DESCRIPTOR.services_by_name["IAMPolicy"]
 if _descriptor._USE_C_DESCRIPTORS == False:
-
     DESCRIPTOR._options = None
     DESCRIPTOR._serialized_options = b"\n\021com.google.iam.v1B\016IamPolicyProtoP\001Z)cloud.google.com/go/iam/apiv1/iampb;iampb\370\001\001\252\002\023Google.Cloud.Iam.V1\312\002\023Google\\Cloud\\Iam\\V1"
     _SETIAMPOLICYREQUEST.fields_by_name["resource"]._options = None
@@ -137,14 +86,14 @@ if _descriptor._USE_C_DESCRIPTORS == False:
     ]._serialized_options = (
         b'\202\323\344\223\002)"$/v1/{resource=**}:testIamPermissions:\001*'
     )
-    _SETIAMPOLICYREQUEST._serialized_start = 256
-    _SETIAMPOLICYREQUEST._serialized_end = 399
-    _GETIAMPOLICYREQUEST._serialized_start = 401
-    _GETIAMPOLICYREQUEST._serialized_end = 501
-    _TESTIAMPERMISSIONSREQUEST._serialized_start = 503
-    _TESTIAMPERMISSIONSREQUEST._serialized_end = 585
-    _TESTIAMPERMISSIONSRESPONSE._serialized_start = 587
-    _TESTIAMPERMISSIONSRESPONSE._serialized_end = 636
-    _IAMPOLICY._serialized_start = 639
-    _IAMPOLICY._serialized_end = 1075
+    _globals["_SETIAMPOLICYREQUEST"]._serialized_start = 256
+    _globals["_SETIAMPOLICYREQUEST"]._serialized_end = 399
+    _globals["_GETIAMPOLICYREQUEST"]._serialized_start = 401
+    _globals["_GETIAMPOLICYREQUEST"]._serialized_end = 501
+    _globals["_TESTIAMPERMISSIONSREQUEST"]._serialized_start = 503
+    _globals["_TESTIAMPERMISSIONSREQUEST"]._serialized_end = 585
+    _globals["_TESTIAMPERMISSIONSRESPONSE"]._serialized_start = 587
+    _globals["_TESTIAMPERMISSIONSRESPONSE"]._serialized_end = 636
+    _globals["_IAMPOLICY"]._serialized_start = 639
+    _globals["_IAMPOLICY"]._serialized_end = 1075
 # @@protoc_insertion_point(module_scope)

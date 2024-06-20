@@ -24,7 +24,8 @@ jobs:
       env:
         COVERAGE_FILE: .coverage-${{ matrix.python }}
       run: |
-        nox -s unit-${{ matrix.python }}
+        nox -s unit_local-${{ matrix.python }}
+        nox -s unit_remote-${{ matrix.python }}
     - name: Upload coverage results
       uses: actions/upload-artifact@v4
       with:
