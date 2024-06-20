@@ -5,6 +5,19 @@
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
 
+## [3.25.0](https://github.com/googleapis/python-bigquery/compare/v3.24.0...v3.25.0) (2024-06-17)
+
+
+### Features
+
+* Add prefer_bqstorage_client option for Connection ([#1945](https://github.com/googleapis/python-bigquery/issues/1945)) ([bfdeb3f](https://github.com/googleapis/python-bigquery/commit/bfdeb3fdbc1d5b26fcd3d1433abfb0be49d12018))
+* Support load job option ColumnNameCharacterMap ([#1952](https://github.com/googleapis/python-bigquery/issues/1952)) ([7e522ee](https://github.com/googleapis/python-bigquery/commit/7e522eea776cd9a74f8078c4236f63d5ff11f20e))
+
+
+### Bug Fixes
+
+* Do not overwrite page_size with max_results when start_index is set ([#1956](https://github.com/googleapis/python-bigquery/issues/1956)) ([7d0fcee](https://github.com/googleapis/python-bigquery/commit/7d0fceefdf28278c1f2cdaab571de9b235320998))
+
 ## [3.24.0](https://github.com/googleapis/python-bigquery/compare/v3.23.1...v3.24.0) (2024-06-04)
 
 
