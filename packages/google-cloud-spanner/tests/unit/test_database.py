@@ -1083,6 +1083,7 @@ class TestDatabase(_BaseTest):
         query_options=None,
         request_options=None,
         retried=False,
+        exclude_txn_from_change_streams=False,
     ):
         from google.api_core.exceptions import Aborted
         from google.api_core.retry import Retry
@@ -1129,13 +1130,19 @@ class TestDatabase(_BaseTest):
             api.execute_streaming_sql.return_value = iterator
 
         row_count = database.execute_partitioned_dml(
-            dml, params, param_types, query_options, request_options
+            dml,
+            params,
+            param_types,
+            query_options,
+            request_options,
+            exclude_txn_from_change_streams,
         )
 
         self.assertEqual(row_count, 2)
 
         txn_options = TransactionOptions(
-            partitioned_dml=TransactionOptions.PartitionedDml()
+            partitioned_dml=TransactionOptions.PartitionedDml(),
+            exclude_txn_from_change_streams=exclude_txn_from_change_streams,
         )
 
         api.begin_transaction.assert_called_with(
@@ -1249,6 +1256,11 @@ class TestDatabase(_BaseTest):
 
     def test_execute_partitioned_dml_wo_params_retry_aborted(self):
         self._execute_partitioned_dml_helper(dml=DML_WO_PARAM, retried=True)
+
+    def test_execute_partitioned_dml_w_exclude_txn_from_change_streams(self):
+        self._execute_partitioned_dml_helper(
+            dml=DML_WO_PARAM, exclude_txn_from_change_streams=True
+        )
 
     def test_session_factory_defaults(self):
         from google.cloud.spanner_v1.session import Session

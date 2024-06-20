@@ -55,6 +55,7 @@ class Transaction(_SnapshotBase, _BatchBase):
     _execute_sql_count = 0
     _lock = threading.Lock()
     _read_only = False
+    exclude_txn_from_change_streams = False
 
     def __init__(self, session):
         if session._transaction is not None:
@@ -86,7 +87,10 @@ class Transaction(_SnapshotBase, _BatchBase):
 
         if self._transaction_id is None:
             return TransactionSelector(
-                begin=TransactionOptions(read_write=TransactionOptions.ReadWrite())
+                begin=TransactionOptions(
+                    read_write=TransactionOptions.ReadWrite(),
+                    exclude_txn_from_change_streams=self.exclude_txn_from_change_streams,
+                )
             )
         else:
             return TransactionSelector(id=self._transaction_id)
@@ -137,7 +141,10 @@ class Transaction(_SnapshotBase, _BatchBase):
             metadata.append(
                 _metadata_with_leader_aware_routing(database._route_to_leader_enabled)
             )
-        txn_options = TransactionOptions(read_write=TransactionOptions.ReadWrite())
+        txn_options = TransactionOptions(
+            read_write=TransactionOptions.ReadWrite(),
+            exclude_txn_from_change_streams=self.exclude_txn_from_change_streams,
+        )
         with trace_call("CloudSpanner.BeginTransaction", self._session):
             method = functools.partial(
                 api.begin_transaction,

@@ -259,7 +259,12 @@ class TestBatch(_BaseTest, OpenTelemetryBase):
             "CloudSpanner.Commit", attributes=dict(BASE_ATTRIBUTES, num_mutations=1)
         )
 
-    def _test_commit_with_options(self, request_options=None, max_commit_delay_in=None):
+    def _test_commit_with_options(
+        self,
+        request_options=None,
+        max_commit_delay_in=None,
+        exclude_txn_from_change_streams=False,
+    ):
         import datetime
         from google.cloud.spanner_v1 import CommitResponse
         from google.cloud.spanner_v1 import TransactionOptions
@@ -276,7 +281,9 @@ class TestBatch(_BaseTest, OpenTelemetryBase):
         batch.transaction_tag = self.TRANSACTION_TAG
         batch.insert(TABLE_NAME, COLUMNS, VALUES)
         committed = batch.commit(
-            request_options=request_options, max_commit_delay=max_commit_delay_in
+            request_options=request_options,
+            max_commit_delay=max_commit_delay_in,
+            exclude_txn_from_change_streams=exclude_txn_from_change_streams,
         )
 
         self.assertEqual(committed, now)
@@ -301,6 +308,10 @@ class TestBatch(_BaseTest, OpenTelemetryBase):
         self.assertEqual(mutations, batch._mutations)
         self.assertIsInstance(single_use_txn, TransactionOptions)
         self.assertTrue(type(single_use_txn).pb(single_use_txn).HasField("read_write"))
+        self.assertEqual(
+            single_use_txn.exclude_txn_from_change_streams,
+            exclude_txn_from_change_streams,
+        )
         self.assertEqual(
             metadata,
             [
@@ -353,6 +364,14 @@ class TestBatch(_BaseTest, OpenTelemetryBase):
         self._test_commit_with_options(
             request_options=request_options,
             max_commit_delay_in=datetime.timedelta(milliseconds=100),
+        )
+
+    def test_commit_w_exclude_txn_from_change_streams(self):
+        request_options = RequestOptions(
+            request_tag="tag-1",
+        )
+        self._test_commit_with_options(
+            request_options=request_options, exclude_txn_from_change_streams=True
         )
 
     def test_context_mgr_already_committed(self):
@@ -499,7 +518,9 @@ class TestMutationGroups(_BaseTest, OpenTelemetryBase):
             attributes=dict(BASE_ATTRIBUTES, num_mutation_groups=1),
         )
 
-    def _test_batch_write_with_request_options(self, request_options=None):
+    def _test_batch_write_with_request_options(
+        self, request_options=None, exclude_txn_from_change_streams=False
+    ):
         import datetime
         from google.cloud.spanner_v1 import BatchWriteResponse
         from google.cloud._helpers import UTC
@@ -519,7 +540,10 @@ class TestMutationGroups(_BaseTest, OpenTelemetryBase):
         group = groups.group()
         group.insert(TABLE_NAME, COLUMNS, VALUES)
 
-        response_iter = groups.batch_write(request_options)
+        response_iter = groups.batch_write(
+            request_options,
+            exclude_txn_from_change_streams=exclude_txn_from_change_streams,
+        )
         self.assertEqual(len(response_iter), 1)
         self.assertEqual(response_iter[0], response)
 
@@ -528,6 +552,7 @@ class TestMutationGroups(_BaseTest, OpenTelemetryBase):
             mutation_groups,
             actual_request_options,
             metadata,
+            request_exclude_txn_from_change_streams,
         ) = api._batch_request
         self.assertEqual(session, self.SESSION_NAME)
         self.assertEqual(mutation_groups, groups._mutation_groups)
@@ -545,6 +570,9 @@ class TestMutationGroups(_BaseTest, OpenTelemetryBase):
         else:
             expected_request_options = request_options
         self.assertEqual(actual_request_options, expected_request_options)
+        self.assertEqual(
+            request_exclude_txn_from_change_streams, exclude_txn_from_change_streams
+        )
 
         self.assertSpanAttributes(
             "CloudSpanner.BatchWrite",
@@ -566,6 +594,11 @@ class TestMutationGroups(_BaseTest, OpenTelemetryBase):
     def test_batch_write_w_incorrect_tag_dictionary_error(self):
         with self.assertRaises(ValueError):
             self._test_batch_write_with_request_options({"incorrect_tag": "tag-1-1"})
+
+    def test_batch_write_w_exclude_txn_from_change_streams(self):
+        self._test_batch_write_with_request_options(
+            exclude_txn_from_change_streams=True
+        )
 
 
 class _Session(object):
@@ -625,6 +658,7 @@ class _FauxSpannerAPI:
             request.mutation_groups,
             request.request_options,
             metadata,
+            request.exclude_txn_from_change_streams,
         )
         if self._rpc_error:
             raise Unknown("error")

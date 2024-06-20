@@ -137,6 +137,7 @@ class TestTransaction(OpenTelemetryBase):
         api,
         count=0,
         query_options=None,
+        exclude_txn_from_change_streams=False,
     ):
         stats_pb = ResultSetStats(row_count_exact=1)
 
@@ -145,6 +146,7 @@ class TestTransaction(OpenTelemetryBase):
         api.execute_sql.return_value = ResultSet(stats=stats_pb, metadata=metadata_pb)
 
         transaction.transaction_tag = self.TRANSACTION_TAG
+        transaction.exclude_txn_from_change_streams = exclude_txn_from_change_streams
         transaction._execute_sql_count = count
 
         row_count = transaction.execute_update(
@@ -160,11 +162,19 @@ class TestTransaction(OpenTelemetryBase):
         self.assertEqual(row_count, count + 1)
 
     def _execute_update_expected_request(
-        self, database, query_options=None, begin=True, count=0
+        self,
+        database,
+        query_options=None,
+        begin=True,
+        count=0,
+        exclude_txn_from_change_streams=False,
     ):
         if begin is True:
             expected_transaction = TransactionSelector(
-                begin=TransactionOptions(read_write=TransactionOptions.ReadWrite())
+                begin=TransactionOptions(
+                    read_write=TransactionOptions.ReadWrite(),
+                    exclude_txn_from_change_streams=exclude_txn_from_change_streams,
+                )
             )
         else:
             expected_transaction = TransactionSelector(id=self.TRANSACTION_ID)
@@ -558,6 +568,29 @@ class TestTransaction(OpenTelemetryBase):
             ],
             retry=RETRY,
             timeout=TIMEOUT,
+        )
+
+    def test_transaction_should_include_begin_w_exclude_txn_from_change_streams_with_first_update(
+        self,
+    ):
+        database = _Database()
+        session = _Session(database)
+        api = database.spanner_api = self._make_spanner_api()
+        transaction = self._make_one(session)
+        self._execute_update_helper(
+            transaction=transaction, api=api, exclude_txn_from_change_streams=True
+        )
+
+        api.execute_sql.assert_called_once_with(
+            request=self._execute_update_expected_request(
+                database=database, exclude_txn_from_change_streams=True
+            ),
+            retry=RETRY,
+            timeout=TIMEOUT,
+            metadata=[
+                ("google-cloud-resource-prefix", database.name),
+                ("x-goog-spanner-route-to-leader", "true"),
+            ],
         )
 
     def test_transaction_should_use_transaction_id_if_error_with_first_batch_update(

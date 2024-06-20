@@ -147,7 +147,11 @@ class Batch(_BatchBase):
             raise ValueError("Batch already committed")
 
     def commit(
-        self, return_commit_stats=False, request_options=None, max_commit_delay=None
+        self,
+        return_commit_stats=False,
+        request_options=None,
+        max_commit_delay=None,
+        exclude_txn_from_change_streams=False,
     ):
         """Commit mutations to the database.
 
@@ -178,7 +182,10 @@ class Batch(_BatchBase):
             metadata.append(
                 _metadata_with_leader_aware_routing(database._route_to_leader_enabled)
             )
-        txn_options = TransactionOptions(read_write=TransactionOptions.ReadWrite())
+        txn_options = TransactionOptions(
+            read_write=TransactionOptions.ReadWrite(),
+            exclude_txn_from_change_streams=exclude_txn_from_change_streams,
+        )
         trace_attributes = {"num_mutations": len(self._mutations)}
 
         if request_options is None:
@@ -270,7 +277,7 @@ class MutationGroups(_SessionWrapper):
         self._mutation_groups.append(mutation_group)
         return MutationGroup(self._session, mutation_group.mutations)
 
-    def batch_write(self, request_options=None):
+    def batch_write(self, request_options=None, exclude_txn_from_change_streams=False):
         """Executes batch_write.
 
         :type request_options:
@@ -279,6 +286,13 @@ class MutationGroups(_SessionWrapper):
                 (Optional) Common options for this request.
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.spanner_v1.types.RequestOptions`.
+
+        :type exclude_txn_from_change_streams: bool
+        :param exclude_txn_from_change_streams:
+          (Optional) If true, instructs the transaction to be excluded from being recorded in change streams
+          with the DDL option `allow_txn_exclusion=true`. This does not exclude the transaction from
+          being recorded in the change streams with the DDL option `allow_txn_exclusion` being false or
+          unset.
 
         :rtype: :class:`Iterable[google.cloud.spanner_v1.types.BatchWriteResponse]`
         :returns: a sequence of responses for each batch.
@@ -302,6 +316,7 @@ class MutationGroups(_SessionWrapper):
             session=self._session.name,
             mutation_groups=self._mutation_groups,
             request_options=request_options,
+            exclude_txn_from_change_streams=exclude_txn_from_change_streams,
         )
         with trace_call("CloudSpanner.BatchWrite", self._session, trace_attributes):
             method = functools.partial(
