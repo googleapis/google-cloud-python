@@ -1,2 +1,0 @@
-recursive-include google/cloud/backupdr *.py
-recursive-include google/cloud/backupdr_v1 *.py
