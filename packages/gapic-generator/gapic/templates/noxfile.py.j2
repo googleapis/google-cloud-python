@@ -43,11 +43,23 @@ nox.sessions = [
 ]
 
 @nox.session(python=ALL_PYTHON)
-def unit(session):
+@nox.parametrize(
+    "protobuf_implementation",
+    [ "python", "upb", "cpp" ],
+)
+def unit(session, protobuf_implementation):
     """Run the unit test suite."""
 
+    if protobuf_implementation == "cpp" and session.python in ("3.11", "3.12"):
+        session.skip("cpp implementation is not supported in python 3.11+")
+
     session.install('coverage', 'pytest', 'pytest-cov', 'pytest-asyncio', 'asyncmock; python_version < "3.8"')
-    session.install('-e', '.')
+    session.install('-e', '.', "-c", f"testing/constraints-{session.python}.txt")
+
+    # Remove the 'cpp' implementation once support for Protobuf 3.x is dropped.
+    # The 'cpp' implementation requires Protobuf<4.
+    if protobuf_implementation == "cpp":
+        session.install("protobuf<4")
 
     session.run(
         'py.test',
@@ -57,12 +69,22 @@ def unit(session):
         '--cov-config=.coveragerc',
         '--cov-report=term',
         '--cov-report=html',
-        os.path.join('tests', 'unit', ''.join(session.posargs))
+        os.path.join('tests', 'unit', ''.join(session.posargs)),
+        env={
+            "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
+        },
     )
 
 @nox.session(python=ALL_PYTHON[-1])
-def prerelease_deps(session):
+@nox.parametrize(
+    "protobuf_implementation",
+    [ "python", "upb", "cpp" ],
+)
+def prerelease_deps(session, protobuf_implementation):
     """Run the unit test suite against pre-release versions of dependencies."""
+
+    if protobuf_implementation == "cpp" and session.python in ("3.11", "3.12"):
+        session.skip("cpp implementation is not supported in python 3.11+")
 
     # Install test environment dependencies
     session.install('coverage', 'pytest', 'pytest-cov', 'pytest-asyncio', 'asyncmock; python_version < "3.8"')
@@ -131,7 +153,10 @@ def prerelease_deps(session):
         '--cov-config=.coveragerc',
         '--cov-report=term',
         '--cov-report=html',
-        os.path.join('tests', 'unit', ''.join(session.posargs))
+        os.path.join('tests', 'unit', ''.join(session.posargs)),
+        env={
+            "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
+        },
     )
 
 
