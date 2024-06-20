@@ -45,8 +45,8 @@ class ColumnExpression(Expression):
 
     def sql(self) -> str:
         if self.parent is not None:
-            return f"{self.parent.sql()}.`{self.name}`"
-        return f"`{self.name}`"
+            return f"{self.parent.sql()}.{identifier(self.name)}"
+        return identifier(self.name)
 
 
 @dataclasses.dataclass
@@ -72,10 +72,10 @@ class TableExpression(Expression):
     def sql(self) -> str:
         text = []
         if self.project_id is not None:
-            text.append(f"`{_escape_chars(self.project_id)}`")
+            text.append(identifier(self.project_id))
         if self.dataset_id is not None:
-            text.append(f"`{_escape_chars(self.dataset_id)}`")
-        text.append(f"`{_escape_chars(self.table_id)}`")
+            text.append(identifier(self.dataset_id))
+        text.append(identifier(self.table_id))
         return ".".join(text)
 
 
@@ -84,7 +84,7 @@ class AliasExpression(Expression):
     alias: str
 
     def sql(self) -> str:
-        return f"`{_escape_chars(self.alias)}`"
+        return identifier(self.alias)
 
 
 @dataclasses.dataclass
@@ -92,7 +92,14 @@ class CTEExpression(Expression):
     name: str
 
     def sql(self) -> str:
-        return f"`{_escape_chars(self.name)}`"
+        return identifier(self.name)
+
+
+def identifier(id: str) -> str:
+    """Return a string representing column reference in a SQL."""
+    # https://cloud.google.com/bigquery/docs/reference/standard-sql/lexical#identifiers
+    # Just always escape, otherwise need to check against every reserved sql keyword
+    return f"`{_escape_chars(id)}`"
 
 
 def _escape_chars(value: str):

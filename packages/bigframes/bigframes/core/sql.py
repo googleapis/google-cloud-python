@@ -23,10 +23,6 @@ from typing import Iterable, Mapping, TYPE_CHECKING, Union
 
 import bigframes.core.compile.googlesql as googlesql
 
-# Literals and identifiers matching this pattern can be unquoted
-unquoted = r"^[A-Za-z_][A-Za-z_0-9]*$"
-
-
 if TYPE_CHECKING:
     import google.cloud.bigquery as bigquery
 
@@ -62,23 +58,16 @@ def multi_literal(*values: str):
     return "(" + ", ".join(literal_strings) + ")"
 
 
-def identifier(id: str) -> str:
-    """Return a string representing column reference in a SQL."""
-    # https://cloud.google.com/bigquery/docs/reference/standard-sql/lexical#identifiers
-    # Just always escape, otherwise need to check against every reserved sql keyword
-    return f"`{googlesql._escape_chars(id)}`"
-
-
 def cast_as_string(column_name: str) -> str:
     """Return a string representing string casting of a column."""
 
-    return f"CAST({identifier(column_name)} AS STRING)"
+    return f"CAST({googlesql.identifier(column_name)} AS STRING)"
 
 
 def to_json_string(column_name: str) -> str:
     """Return a string representing JSON version of a column."""
 
-    return f"TO_JSON_STRING({identifier(column_name)})"
+    return f"TO_JSON_STRING({googlesql.identifier(column_name)})"
 
 
 def csv(values: Iterable[str]) -> str:
@@ -91,55 +80,12 @@ def infix_op(opname: str, left_arg: str, right_arg: str):
     return f"{left_arg} {opname} {right_arg}"
 
 
-### Writing SELECT expressions
-def select_from_subquery(columns: Iterable[str], subquery: str, distinct: bool = False):
-    select_list = [
-        googlesql.SelectExpression(expression=googlesql.ColumnExpression(name=column))
-        for column in columns
-    ]
-    from_clause_list = [googlesql.FromClause(googlesql.FromItem(expression=subquery))]
-
-    select_expr = googlesql.Select(
-        select_list=select_list, from_clause_list=from_clause_list, distinct=distinct
-    )
-    return select_expr.sql()
-
-
-def select_from_table_ref(
-    columns: Iterable[str], table_ref: bigquery.TableReference, distinct: bool = False
-):
-    select_list = [
-        googlesql.SelectExpression(expression=googlesql.ColumnExpression(name=column))
-        for column in columns
-    ]
-    from_clause_list = [
-        googlesql.FromClause(googlesql.FromItem.from_table_ref(table_ref))
-    ]
-
-    select_expr = googlesql.Select(
-        select_list=select_list, from_clause_list=from_clause_list, distinct=distinct
-    )
-    return select_expr.sql()
-
-
-def select_table(table_ref: bigquery.TableReference):
-    select_list = [googlesql.SelectAll(expression=googlesql.StarExpression())]
-    from_clause_list = [
-        googlesql.FromClause(googlesql.FromItem.from_table_ref(table_ref))
-    ]
-
-    select_expr = googlesql.Select(
-        select_list=select_list, from_clause_list=from_clause_list
-    )
-    return select_expr.sql()
-
-
 def is_distinct_sql(columns: Iterable[str], table_ref: bigquery.TableReference) -> str:
     is_unique_sql = f"""WITH full_table AS (
-        {select_from_table_ref(columns, table_ref)}
+        {googlesql.Select().from_(table_ref).select(columns).sql()}
     ),
     distinct_table AS (
-        {select_from_table_ref(columns, table_ref, distinct=True)}
+        {googlesql.Select().from_(table_ref).select(columns, distinct=True).sql()}
     )
 
     SELECT (SELECT COUNT(*) FROM full_table) AS `total_count`,

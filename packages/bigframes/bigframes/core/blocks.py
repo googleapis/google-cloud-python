@@ -40,6 +40,7 @@ import bigframes._config.sampling_options as sampling_options
 import bigframes.constants
 import bigframes.constants as constants
 import bigframes.core as core
+import bigframes.core.compile.googlesql as googlesql
 import bigframes.core.expression as ex
 import bigframes.core.expression as scalars
 import bigframes.core.guid as guid
@@ -2417,7 +2418,9 @@ class Block:
         select_columns = (
             [ordering_column_name] + list(self.index_columns) + [row_json_column_name]
         )
-        select_columns_csv = sql.csv([sql.identifier(col) for col in select_columns])
+        select_columns_csv = sql.csv(
+            [googlesql.identifier(col) for col in select_columns]
+        )
         json_sql = f"""\
 With T0 AS (
 {textwrap.indent(expr_sql, "    ")}
@@ -2430,7 +2433,7 @@ T1 AS (
                "values", [{column_references_csv}],
                "indexlength", {index_columns_count},
                "dtype", {pandas_row_dtype}
-           ) AS {sql.identifier(row_json_column_name)} FROM T0
+           ) AS {googlesql.identifier(row_json_column_name)} FROM T0
 )
 SELECT {select_columns_csv} FROM T1
 """

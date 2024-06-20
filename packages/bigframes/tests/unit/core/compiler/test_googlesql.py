@@ -12,8 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from unittest.mock import Mock
+from unittest.mock import MagicMock
 
+import google.cloud.bigquery as bigquery
 import pytest
 
 import bigframes.core.compile.googlesql as sql
@@ -78,12 +79,12 @@ def test_from_item_w_cte():
 
 
 def test_from_item_w_table_ref():
-    mock_table_ref = Mock()
+    mock_table_ref = MagicMock(spec=bigquery.TableReference)
     mock_table_ref.table_id = "mock_table"
     mock_table_ref.dataset_id = "mock_dataset"
     mock_table_ref.project = "mock_project"
 
-    from_item = sql.FromItem.from_table_ref(mock_table_ref)
+    from_item = sql.FromItem.from_source(mock_table_ref)
 
     assert from_item.sql() == "`mock_project`.`mock_dataset`.`mock_table`"
 
@@ -119,6 +120,54 @@ def test_select():
     )
     expected = "SELECT\n`a`,\n`b` AS `bb`\nFROM\n`table_a`,\n(SELECT * FROM project.table_b) AS `table_b`"
 
+    assert expr.sql() == expected
+
+
+@pytest.mark.parametrize(
+    "columns, source, expected",
+    [
+        (
+            ["a", "b", "c"],
+            "select * from test",
+            "SELECT\nDISTINCT\n`a`,\n`b`,\n`c`\nFROM\n(select * from test)",
+        ),
+        (
+            "a",
+            "select * from test",
+            "SELECT\nDISTINCT\n`a`\nFROM\n(select * from test)",
+        ),
+    ],
+)
+def test_select_from_str(columns, source, expected):
+    expr = sql.Select().from_(source).select(columns, distinct=True)
+    assert expr.sql() == expected
+
+
+@pytest.mark.parametrize(
+    ("columns", "distinct", "expected"),
+    [
+        pytest.param(
+            ["a", "b", "c"],
+            True,
+            "SELECT\nDISTINCT\n`a`,\n`b`,\n`c`\nFROM\n`mock_project`.`mock_dataset`.`mock_table`",
+        ),
+        pytest.param(
+            None,
+            True,
+            "SELECT\nDISTINCT\n*\nFROM\n`mock_project`.`mock_dataset`.`mock_table`",
+        ),
+        pytest.param(
+            None, False, "SELECT\n*\nFROM\n`mock_project`.`mock_dataset`.`mock_table`"
+        ),
+    ],
+)
+def test_select_from_table_ref(columns, distinct, expected):
+    mock_table_ref = MagicMock(spec=bigquery.TableReference)
+    mock_table_ref.table_id = "mock_table"
+    mock_table_ref.dataset_id = "mock_dataset"
+    mock_table_ref.project = "mock_project"
+
+    expr = sql.Select().from_(mock_table_ref).select(columns, distinct=distinct)
     assert expr.sql() == expected
 
 
@@ -164,6 +213,10 @@ def test_query_expr_w_cte():
     query2 = sql.QueryExpr(select=select2, with_cte_list=with_cte_list)
     query2_sql = f"WITH {cte1_sql},\n{cte2_sql}\n{select2_sql}"
     assert query2.sql() == query2_sql
+
+
+def test_identifier():
+    assert sql.identifier("\aa") == r"`\aa`"
 
 
 def test_escape_chars():

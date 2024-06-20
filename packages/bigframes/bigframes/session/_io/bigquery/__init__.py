@@ -32,6 +32,7 @@ import google.cloud.bigquery.table
 
 import bigframes
 from bigframes.core import log_adapter
+import bigframes.core.compile.googlesql as googlesql
 import bigframes.core.sql
 import bigframes.formatting_helpers as formatting_helpers
 
@@ -480,7 +481,7 @@ def compile_filters(filters: third_party_pandas_gbq.FiltersType) -> str:
 
             operator_str = valid_operators[operator]
 
-            column_ref = bigframes.core.sql.identifier(column)
+            column_ref = googlesql.identifier(column)
             if operator_str in ["IN", "NOT IN"]:
                 value_literal = bigframes.core.sql.multi_literal(*value)
             else:

@@ -22,6 +22,7 @@ from bigframes.core.compile.googlesql.expression import (
     AliasExpression,
     ColumnExpression,
     CTEExpression,
+    identifier,
     StarExpression,
     TableExpression,
 )
@@ -38,6 +39,7 @@ from bigframes.core.compile.googlesql.query import (
 
 __all__ = [
     "_escape_chars",
+    "identifier",
     "AliasExpression",
     "AsAlias",
     "ColumnExpression",

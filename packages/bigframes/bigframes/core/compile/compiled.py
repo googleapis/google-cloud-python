@@ -28,6 +28,7 @@ import ibis.expr.types as ibis_types
 import pandas
 
 import bigframes.core.compile.aggregate_compiler as agg_compiler
+import bigframes.core.compile.googlesql
 import bigframes.core.compile.ibis_types
 import bigframes.core.compile.scalar_op_compiler as op_compilers
 import bigframes.core.expression as ex
@@ -905,7 +906,12 @@ class OrderedIR(BaseIbisIR):
             output_columns = [
                 col_id_overrides.get(col, col) for col in baked_ir.column_ids
             ]
-            sql = bigframes.core.sql.select_from_subquery(output_columns, sql)
+            sql = (
+                bigframes.core.compile.googlesql.Select()
+                .from_(sql)
+                .select(output_columns)
+                .sql()
+            )
 
             # Single row frames may not have any ordering columns
             if len(baked_ir._ordering.all_ordering_columns) > 0:
