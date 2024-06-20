@@ -272,6 +272,9 @@ def showcase_library(
             # See https://github.com/googleapis/gapic-generator-python/issues/1788
             # Install the library without a constraints file.
             session.install("-e", tmp_dir)
+
+        # Remove once https://github.com/googleapis/python-api-core/pull/650 is merged
+        session.install("google-api-core>=2.19.1rc0")
         yield tmp_dir
 
 
