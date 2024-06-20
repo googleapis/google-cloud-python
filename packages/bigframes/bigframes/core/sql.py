@@ -61,7 +61,9 @@ def multi_literal(*values: str):
 def cast_as_string(column_name: str) -> str:
     """Return a string representing string casting of a column."""
 
-    return f"CAST({googlesql.identifier(column_name)} AS STRING)"
+    return googlesql.Cast(
+        googlesql.ColumnExpression(column_name), googlesql.DataType.STRING
+    ).sql()
 
 
 def to_json_string(column_name: str) -> str:
