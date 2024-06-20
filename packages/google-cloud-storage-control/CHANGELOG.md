@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storage-control-v0.2.0...google-cloud-storage-control-v1.0.0) (2024-06-19)
+
+
+### Features
+
+* bump release level to production/stable ([4a15440](https://github.com/googleapis/google-cloud-python/commit/4a154403f07321af6ea051fa81b58ee2651de34f))
+
 ## [0.2.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storage-control-v0.1.3...google-cloud-storage-control-v0.2.0) (2024-05-07)
 
 
