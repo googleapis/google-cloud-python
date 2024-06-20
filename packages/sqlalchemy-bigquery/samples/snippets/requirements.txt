@@ -30,4 +30,4 @@ shapely==2.0.4
 six==1.16.0
 sqlalchemy===1.4.27
 typing-extensions==4.12.1
-urllib3==2.2.1
+urllib3==2.2.2
