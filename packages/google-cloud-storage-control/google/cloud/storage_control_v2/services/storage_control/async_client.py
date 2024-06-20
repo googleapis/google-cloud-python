@@ -286,7 +286,6 @@ class StorageControlAsyncClient:
     ) -> storage_control.Folder:
         r"""Creates a new folder. This operation is only
         applicable to a hierarchical namespace enabled bucket.
-        Hierarchical namespace buckets are in allowlist preview.
 
         .. code-block:: python
 
@@ -320,8 +319,6 @@ class StorageControlAsyncClient:
                 The request object. Request message for CreateFolder.
                 This operation is only applicable to a
                 hierarchical namespace enabled bucket.
-                Hierarchical namespace buckets are in
-                allowlist preview.
             parent (:class:`str`):
                 Required. Name of the bucket in which
                 the folder will reside. The bucket must
@@ -361,8 +358,7 @@ class StorageControlAsyncClient:
             google.cloud.storage_control_v2.types.Folder:
                 A folder resource. This resource can
                 only exist in a hierarchical namespace
-                enabled bucket. Hierarchical namespace
-                buckets are in allowlist preview.
+                enabled bucket.
 
         """
         # Create or coerce a protobuf request object.
@@ -423,8 +419,7 @@ class StorageControlAsyncClient:
     ) -> None:
         r"""Permanently deletes an empty folder. This operation
         is only applicable to a hierarchical namespace enabled
-        bucket. Hierarchical namespace buckets are in allowlist
-        preview.
+        bucket.
 
         .. code-block:: python
 
@@ -454,8 +449,6 @@ class StorageControlAsyncClient:
                 The request object. Request message for DeleteFolder.
                 This operation is only applicable to a
                 hierarchical namespace enabled bucket.
-                Hierarchical namespace buckets are in
-                allowlist preview.
             name (:class:`str`):
                 Required. Name of the folder. Format:
                 ``projects/{project}/buckets/{bucket}/folders/{folder}``
@@ -520,8 +513,7 @@ class StorageControlAsyncClient:
     ) -> storage_control.Folder:
         r"""Returns metadata for the specified folder. This
         operation is only applicable to a hierarchical namespace
-        enabled bucket. Hierarchical namespace buckets are in
-        allowlist preview.
+        enabled bucket.
 
         .. code-block:: python
 
@@ -554,8 +546,6 @@ class StorageControlAsyncClient:
                 The request object. Request message for GetFolder. This
                 operation is only applicable to a
                 hierarchical namespace enabled bucket.
-                Hierarchical namespace buckets are in
-                allowlist preview.
             name (:class:`str`):
                 Required. Name of the folder. Format:
                 ``projects/{project}/buckets/{bucket}/folders/{folder}``
@@ -573,8 +563,7 @@ class StorageControlAsyncClient:
             google.cloud.storage_control_v2.types.Folder:
                 A folder resource. This resource can
                 only exist in a hierarchical namespace
-                enabled bucket. Hierarchical namespace
-                buckets are in allowlist preview.
+                enabled bucket.
 
         """
         # Create or coerce a protobuf request object.
@@ -631,7 +620,6 @@ class StorageControlAsyncClient:
     ) -> pagers.ListFoldersAsyncPager:
         r"""Retrieves a list of folders. This operation is only
         applicable to a hierarchical namespace enabled bucket.
-        Hierarchical namespace buckets are in allowlist preview.
 
         .. code-block:: python
 
@@ -665,8 +653,6 @@ class StorageControlAsyncClient:
                 The request object. Request message for ListFolders. This
                 operation is only applicable to a
                 hierarchical namespace enabled bucket.
-                Hierarchical namespace buckets are in
-                allowlist preview.
             parent (:class:`str`):
                 Required. Name of the bucket in which
                 to look for folders. The bucket must be
@@ -754,7 +740,6 @@ class StorageControlAsyncClient:
         enabled bucket. During a rename, the source and
         destination folders are locked until the long running
         operation completes.
-        Hierarchical namespace buckets are in allowlist preview.
 
         .. code-block:: python
 
@@ -792,8 +777,6 @@ class StorageControlAsyncClient:
                 The request object. Request message for RenameFolder.
                 This operation is only applicable to a
                 hierarchical namespace enabled bucket.
-                Hierarchical namespace buckets are in
-                allowlist preview.
             name (:class:`str`):
                 Required. Name of the source folder being renamed.
                 Format:
@@ -818,8 +801,7 @@ class StorageControlAsyncClient:
                 An object representing a long-running operation.
 
                 The result type for the operation will be :class:`google.cloud.storage_control_v2.types.Folder` A folder resource. This resource can only exist in a hierarchical namespace
-                   enabled bucket. Hierarchical namespace buckets are in
-                   allowlist preview.
+                   enabled bucket.
 
         """
         # Create or coerce a protobuf request object.
