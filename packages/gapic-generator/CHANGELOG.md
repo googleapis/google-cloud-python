@@ -1,6 +1,14 @@
 # Changelog
 
 
+## [1.18.1](https://github.com/googleapis/gapic-generator-python/compare/v1.18.0...v1.18.1) (2024-06-20)
+
+
+### Bug Fixes
+
+* Allow protobuf 5.x ([#2042](https://github.com/googleapis/gapic-generator-python/issues/2042)) ([1998b81](https://github.com/googleapis/gapic-generator-python/commit/1998b813d2525cef8e46d606de494f0847e156bf))
+* Fix credentials typing issue in transport layer ([#2043](https://github.com/googleapis/gapic-generator-python/issues/2043)) ([205fe5e](https://github.com/googleapis/gapic-generator-python/commit/205fe5e9445eb2f6811f022c68003d23c95f186b))
+
 ## [1.18.0](https://github.com/googleapis/gapic-generator-python/compare/v1.17.1...v1.18.0) (2024-05-08)
 
 
