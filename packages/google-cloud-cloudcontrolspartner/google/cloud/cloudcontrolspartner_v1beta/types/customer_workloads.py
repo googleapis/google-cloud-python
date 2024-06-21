@@ -45,8 +45,7 @@ class Workload(proto.Message):
     Attributes:
         name (str):
             Identifier. Format:
-
-            organizations/{organization}/locations/{location}/customers/{customer}/workloads/{workload}
+            ``organizations/{organization}/locations/{location}/customers/{customer}/workloads/{workload}``
         folder_id (int):
             Output only. Folder id this workload is
             associated with
@@ -145,10 +144,8 @@ class ListWorkloadsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. Parent resource
-            Format:
-
-            organizations/{organization}/locations/{location}/customers/{customer}
+            Required. Parent resource Format:
+            ``organizations/{organization}/locations/{location}/customers/{customer}``
         page_size (int):
             The maximum number of workloads to return.
             The service may return fewer than this value. If
@@ -224,8 +221,7 @@ class GetWorkloadRequest(proto.Message):
     Attributes:
         name (str):
             Required. Format:
-
-            organizations/{organization}/locations/{location}/customers/{customer}/workloads/{workload}
+            ``organizations/{organization}/locations/{location}/customers/{customer}/workloads/{workload}``
     """
 
     name: str = proto.Field(
