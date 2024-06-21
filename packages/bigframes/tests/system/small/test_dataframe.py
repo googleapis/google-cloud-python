@@ -4328,6 +4328,18 @@ def test_df_cached(scalars_df_index):
     pandas.testing.assert_frame_equal(df.to_pandas(), df_cached_copy.to_pandas())
 
 
+def test_df_cache_with_implicit_join(scalars_df_index):
+    """expectation is that cache will be used, but no explicit join will be performed"""
+    df = scalars_df_index[["int64_col", "int64_too"]].sort_index().reset_index() + 3
+    df.cache()
+    bf_result = df + (df * 2)
+    sql = bf_result.sql
+
+    # Very crude asserts, want sql to not use join and not use base table, only reference cached table
+    assert "JOIN" not in sql
+    assert "bigframes_testing" not in sql
+
+
 def test_df_dot_inline(session):
     df1 = pd.DataFrame([[1, 2, 3], [2, 5, 7]])
     df2 = pd.DataFrame([[2, 4, 8], [1, 5, 10], [3, 6, 9]])

@@ -505,11 +505,11 @@ class ArrayValue:
         join_type: join_def.JoinType,
         mappings: typing.Tuple[join_def.JoinColumnMapping, ...],
     ) -> typing.Optional[ArrayValue]:
-        left_side = bigframes.core.rewrite.SquashedSelect.from_node(self.node)
-        right_side = bigframes.core.rewrite.SquashedSelect.from_node(other.node)
-        result = left_side.maybe_merge(right_side, join_type, mappings)
+        result = bigframes.core.rewrite.join_as_projection(
+            self.node, other.node, mappings, join_type
+        )
         if result is not None:
-            return ArrayValue(result.expand())
+            return ArrayValue(result)
         return None
 
     def explode(self, column_ids: typing.Sequence[str]) -> ArrayValue:
@@ -528,7 +528,3 @@ class ArrayValue:
             The row numbers of result is non-deterministic, avoid to use.
         """
         return ArrayValue(nodes.RandomSampleNode(self.node, fraction))
-
-    def merge_projections(self) -> ArrayValue:
-        new_node = bigframes.core.rewrite.maybe_squash_projection(self.node)
-        return ArrayValue(new_node)
