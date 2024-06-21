@@ -145,6 +145,13 @@ def test_label_encoder_correct(
     assert sql == "ML.LABEL_ENCODER(col_a, 1000000, 0) OVER() AS encoded_col_a"
 
 
+def test_polynomial_expand(
+    base_sql_generator: ml_sql.BaseSqlGenerator,
+):
+    sql = base_sql_generator.ml_polynomial_expand(["col_a", "col_b"], 2, "poly_exp")
+    assert sql == "ML.POLYNOMIAL_EXPAND(STRUCT(col_a, col_b), 2) AS poly_exp"
+
+
 def test_distance_correct(
     base_sql_generator: ml_sql.BaseSqlGenerator,
     mock_df: bpd.DataFrame,

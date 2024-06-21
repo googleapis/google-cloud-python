@@ -24,6 +24,7 @@ import bigframes_vendored.sklearn.preprocessing._data
 import bigframes_vendored.sklearn.preprocessing._discretization
 import bigframes_vendored.sklearn.preprocessing._encoder
 import bigframes_vendored.sklearn.preprocessing._label
+import bigframes_vendored.sklearn.preprocessing._polynomial
 
 from bigframes.core import log_adapter
 from bigframes.ml import base, core, globals, utils
@@ -659,6 +660,109 @@ class LabelEncoder(
             bpd.DataFrame,
             df[self._output_names],
         )
+
+
+@log_adapter.class_logger
+class PolynomialFeatures(
+    base.Transformer,
+    bigframes_vendored.sklearn.preprocessing._polynomial.PolynomialFeatures,
+):
+    __doc__ = (
+        bigframes_vendored.sklearn.preprocessing._polynomial.PolynomialFeatures.__doc__
+    )
+
+    def __init__(self, degree: int = 2):
+        self.degree = degree
+        self._bqml_model: Optional[core.BqmlModel] = None
+        self._bqml_model_factory = globals.bqml_model_factory()
+        self._base_sql_generator = globals.base_sql_generator()
+
+    # TODO(garrettwu): implement __hash__
+    def __eq__(self, other: Any) -> bool:
+        return (
+            type(other) is PolynomialFeatures and self._bqml_model == other._bqml_model
+        )
+
+    def _compile_to_sql(self, columns: List[str], X=None) -> List[Tuple[str, str]]:
+        """Compile this transformer to a list of SQL expressions that can be included in
+        a BQML TRANSFORM clause
+
+        Args:
+            columns:
+                a list of column names to transform.
+            X (default None):
+                Ignored.
+
+        Returns: a list of tuples of (sql_expression, output_name)"""
+        output_name = "poly_feat"
+        return [
+            (
+                self._base_sql_generator.ml_polynomial_expand(
+                    columns, self.degree, output_name
+                ),
+                output_name,
+            )
+        ]
+
+    @classmethod
+    def _parse_from_sql(cls, sql: str) -> tuple[PolynomialFeatures, str]:
+        """Parse SQL to tuple(PolynomialFeatures, column_label).
+
+        Args:
+            sql: SQL string of format "ML.POLYNOMIAL_EXPAND(STRUCT(col_label0, col_label1, ...), degree)"
+
+        Returns:
+            tuple(MaxAbsScaler, column_label)"""
+        col_label = sql[sql.find("STRUCT(") + 7 : sql.find(")")]
+        degree = int(sql[sql.rfind(",") + 1 : sql.rfind(")")])
+        return cls(degree), col_label
+
+    def fit(
+        self,
+        X: Union[bpd.DataFrame, bpd.Series],
+        y=None,  # ignored
+    ) -> PolynomialFeatures:
+        (X,) = utils.convert_to_dataframe(X)
+
+        compiled_transforms = self._compile_to_sql(X.columns.tolist())
+        transform_sqls = [transform_sql for transform_sql, _ in compiled_transforms]
+
+        self._bqml_model = self._bqml_model_factory.create_model(
+            X,
+            options={"model_type": "transform_only"},
+            transforms=transform_sqls,
+        )
+
+        # TODO(garrettwu): generalize the approach to other transformers
+        output_names = []
+        for transform_col in self._bqml_model._model._properties["transformColumns"]:
+            transform_col_dict = cast(dict, transform_col)
+            # pass the columns that are not transformed
+            if "transformSql" not in transform_col_dict:
+                continue
+            transform_sql: str = transform_col_dict["transformSql"]
+            if not transform_sql.startswith("ML."):
+                continue
+
+            output_names.append(transform_col_dict["name"])
+
+        self._output_names = output_names
+
+        return self
+
+    def transform(self, X: Union[bpd.DataFrame, bpd.Series]) -> bpd.DataFrame:
+        if not self._bqml_model:
+            raise RuntimeError("Must be fitted before transform")
+
+        (X,) = utils.convert_to_dataframe(X)
+
+        df = self._bqml_model.transform(X)
+        return typing.cast(
+            bpd.DataFrame,
+            df[self._output_names],
+        )
+
+    # TODO(garrettwu): to_gbq()
 
 
 PreprocessingType = Union[

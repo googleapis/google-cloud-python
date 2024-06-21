@@ -73,6 +73,11 @@ class BaseSqlGenerator:
         """Encode a BQ STRUCT as options."""
         return f"STRUCT({self.build_structs(**kwargs)})"
 
+    def struct_columns(self, columns: Iterable[str]) -> str:
+        """Encode a BQ Table columns to a STRUCT."""
+        columns_str = ", ".join(columns)
+        return f"STRUCT({columns_str})"
+
     def input(self, **kwargs: str) -> str:
         """Encode a BQML INPUT clause."""
         return f"INPUT({self.build_schema(**kwargs)})"
@@ -152,6 +157,13 @@ class BaseSqlGenerator:
         """Encode ML.LABEL_ENCODER for BQML.
         https://cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-label-encoder for params."""
         return f"""ML.LABEL_ENCODER({numeric_expr_sql}, {top_k}, {frequency_threshold}) OVER() AS {name}"""
+
+    def ml_polynomial_expand(
+        self, columns: Iterable[str], degree: int, name: str
+    ) -> str:
+        """Encode ML.POLYNOMIAL_EXPAND.
+        https://cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-polynomial-expand"""
+        return f"""ML.POLYNOMIAL_EXPAND({self.struct_columns(columns)}, {degree}) AS {name}"""
 
     def ml_distance(
         self,
