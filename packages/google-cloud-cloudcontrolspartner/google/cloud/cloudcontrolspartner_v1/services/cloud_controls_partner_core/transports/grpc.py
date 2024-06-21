@@ -414,7 +414,8 @@ class CloudControlsPartnerCoreGrpcTransport(CloudControlsPartnerCoreTransport):
     ]:
         r"""Return a callable for the list access approval requests method over gRPC.
 
-        Lists access requests associated with a workload
+        Deprecated: Only returns access approval requests
+        directly associated with an assured workload folder.
 
         Returns:
             Callable[[~.ListAccessApprovalRequestsRequest],
