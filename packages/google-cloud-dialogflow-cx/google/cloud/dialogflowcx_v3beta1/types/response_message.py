@@ -20,6 +20,8 @@ from typing import MutableMapping, MutableSequence
 from google.protobuf import struct_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.cloud.dialogflowcx_v3beta1.types import tool_call as gcdc_tool_call
+
 __protobuf__ = proto.module(
     package="google.cloud.dialogflow.cx.v3beta1",
     manifest={
@@ -119,6 +121,11 @@ class ResponseMessage(proto.Message):
         knowledge_info_card (google.cloud.dialogflowcx_v3beta1.types.ResponseMessage.KnowledgeInfoCard):
             Represents info card for knowledge answers,
             to be better rendered in Dialogflow Messenger.
+
+            This field is a member of `oneof`_ ``message``.
+        tool_call (google.cloud.dialogflowcx_v3beta1.types.ToolCall):
+            Returns the definition of a tool call that
+            should be executed by the client.
 
             This field is a member of `oneof`_ ``message``.
         channel (str):
@@ -444,6 +451,12 @@ class ResponseMessage(proto.Message):
         number=20,
         oneof="message",
         message=KnowledgeInfoCard,
+    )
+    tool_call: gcdc_tool_call.ToolCall = proto.Field(
+        proto.MESSAGE,
+        number=22,
+        oneof="message",
+        message=gcdc_tool_call.ToolCall,
     )
     channel: str = proto.Field(
         proto.STRING,

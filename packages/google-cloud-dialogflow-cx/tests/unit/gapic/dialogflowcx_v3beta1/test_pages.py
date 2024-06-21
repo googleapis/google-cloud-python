@@ -61,7 +61,7 @@ from google.cloud.dialogflowcx_v3beta1.types import (
 )
 from google.cloud.dialogflowcx_v3beta1.types import page
 from google.cloud.dialogflowcx_v3beta1.types import page as gcdc_page
-from google.cloud.dialogflowcx_v3beta1.types import response_message
+from google.cloud.dialogflowcx_v3beta1.types import response_message, tool_call
 
 
 def client_cert_source_callback():
@@ -3874,6 +3874,11 @@ def test_create_page_rest(request_type):
                     },
                     "telephony_transfer_call": {"phone_number": "phone_number_value"},
                     "knowledge_info_card": {},
+                    "tool_call": {
+                        "tool": "tool_value",
+                        "action": "action_value",
+                        "input_parameters": {},
+                    },
                     "channel": "channel_value",
                 }
             ],
@@ -3915,6 +3920,8 @@ def test_create_page_rest(request_type):
                     "enabled": True,
                     "max_digits": 1065,
                     "finish_digit": "finish_digit_value",
+                    "interdigit_timeout_duration": {},
+                    "endpointing_timeout_duration": {},
                 },
                 "logging_settings": {
                     "enable_stackdriver_logging": True,
@@ -4399,6 +4406,11 @@ def test_update_page_rest(request_type):
                     },
                     "telephony_transfer_call": {"phone_number": "phone_number_value"},
                     "knowledge_info_card": {},
+                    "tool_call": {
+                        "tool": "tool_value",
+                        "action": "action_value",
+                        "input_parameters": {},
+                    },
                     "channel": "channel_value",
                 }
             ],
@@ -4440,6 +4452,8 @@ def test_update_page_rest(request_type):
                     "enabled": True,
                     "max_digits": 1065,
                     "finish_digit": "finish_digit_value",
+                    "interdigit_timeout_duration": {},
+                    "endpointing_timeout_duration": {},
                 },
                 "logging_settings": {
                     "enable_stackdriver_logging": True,
@@ -5833,12 +5847,43 @@ def test_parse_page_path():
     assert expected == actual
 
 
-def test_transition_route_group_path():
+def test_tool_path():
     project = "scallop"
     location = "abalone"
     agent = "squid"
-    flow = "clam"
-    transition_route_group = "whelk"
+    tool = "clam"
+    expected = (
+        "projects/{project}/locations/{location}/agents/{agent}/tools/{tool}".format(
+            project=project,
+            location=location,
+            agent=agent,
+            tool=tool,
+        )
+    )
+    actual = PagesClient.tool_path(project, location, agent, tool)
+    assert expected == actual
+
+
+def test_parse_tool_path():
+    expected = {
+        "project": "whelk",
+        "location": "octopus",
+        "agent": "oyster",
+        "tool": "nudibranch",
+    }
+    path = PagesClient.tool_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = PagesClient.parse_tool_path(path)
+    assert expected == actual
+
+
+def test_transition_route_group_path():
+    project = "cuttlefish"
+    location = "mussel"
+    agent = "winkle"
+    flow = "nautilus"
+    transition_route_group = "scallop"
     expected = "projects/{project}/locations/{location}/agents/{agent}/flows/{flow}/transitionRouteGroups/{transition_route_group}".format(
         project=project,
         location=location,
@@ -5854,11 +5899,11 @@ def test_transition_route_group_path():
 
 def test_parse_transition_route_group_path():
     expected = {
-        "project": "octopus",
-        "location": "oyster",
-        "agent": "nudibranch",
-        "flow": "cuttlefish",
-        "transition_route_group": "mussel",
+        "project": "abalone",
+        "location": "squid",
+        "agent": "clam",
+        "flow": "whelk",
+        "transition_route_group": "octopus",
     }
     path = PagesClient.transition_route_group_path(**expected)
 
@@ -5868,10 +5913,10 @@ def test_parse_transition_route_group_path():
 
 
 def test_webhook_path():
-    project = "winkle"
-    location = "nautilus"
-    agent = "scallop"
-    webhook = "abalone"
+    project = "oyster"
+    location = "nudibranch"
+    agent = "cuttlefish"
+    webhook = "mussel"
     expected = "projects/{project}/locations/{location}/agents/{agent}/webhooks/{webhook}".format(
         project=project,
         location=location,
@@ -5884,10 +5929,10 @@ def test_webhook_path():
 
 def test_parse_webhook_path():
     expected = {
-        "project": "squid",
-        "location": "clam",
-        "agent": "whelk",
-        "webhook": "octopus",
+        "project": "winkle",
+        "location": "nautilus",
+        "agent": "scallop",
+        "webhook": "abalone",
     }
     path = PagesClient.webhook_path(**expected)
 
@@ -5897,7 +5942,7 @@ def test_parse_webhook_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "oyster"
+    billing_account = "squid"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -5907,7 +5952,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "nudibranch",
+        "billing_account": "clam",
     }
     path = PagesClient.common_billing_account_path(**expected)
 
@@ -5917,7 +5962,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "cuttlefish"
+    folder = "whelk"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -5927,7 +5972,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "mussel",
+        "folder": "octopus",
     }
     path = PagesClient.common_folder_path(**expected)
 
@@ -5937,7 +5982,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "winkle"
+    organization = "oyster"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -5947,7 +5992,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "nautilus",
+        "organization": "nudibranch",
     }
     path = PagesClient.common_organization_path(**expected)
 
@@ -5957,7 +6002,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "scallop"
+    project = "cuttlefish"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -5967,7 +6012,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "abalone",
+        "project": "mussel",
     }
     path = PagesClient.common_project_path(**expected)
 
@@ -5977,8 +6022,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "squid"
-    location = "clam"
+    project = "winkle"
+    location = "nautilus"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -5989,8 +6034,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "whelk",
-        "location": "octopus",
+        "project": "scallop",
+        "location": "abalone",
     }
     path = PagesClient.common_location_path(**expected)
 

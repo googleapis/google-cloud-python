@@ -82,6 +82,10 @@ class Agent(proto.Message):
     [TransitionRouteGroups][google.cloud.dialogflow.cx.v3beta1.TransitionRouteGroup]
     and so on to manage the conversation flows.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
@@ -123,22 +127,23 @@ class Agent(proto.Message):
         speech_to_text_settings (google.cloud.dialogflowcx_v3beta1.types.SpeechToTextSettings):
             Speech recognition related settings.
         start_flow (str):
-            Immutable. Name of the start flow in this agent. A start
-            flow will be automatically created when the agent is
-            created, and can only be deleted by deleting the agent.
-            Format:
+            Name of the start flow in this agent. A start flow will be
+            automatically created when the agent is created, and can
+            only be deleted by deleting the agent. Format:
             ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>``.
+            Currently only the default start flow with id
+            "00000000-0000-0000-0000-000000000000" is allowed.
+
+            This field is a member of `oneof`_ ``session_entry_resource``.
         start_playbook (str):
-            Optional. Name of the start playbook in this agent. A start
-            playbook will be automatically created when the agent is
-            created, and can only be deleted by deleting the agent.
-            Format:
+            Name of the start playbook in this agent. A start playbook
+            will be automatically created when the agent is created, and
+            can only be deleted by deleting the agent. Format:
             ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/playbooks/<Playbook ID>``.
             Currently only the default playbook with id
             "00000000-0000-0000-0000-000000000000" is allowed.
 
-            Only one of ``start_flow`` or ``start_playbook`` should be
-            set, but not both.
+            This field is a member of `oneof`_ ``session_entry_resource``.
         security_settings (str):
             Name of the
             [SecuritySettings][google.cloud.dialogflow.cx.v3beta1.SecuritySettings]
@@ -334,10 +339,12 @@ class Agent(proto.Message):
     start_flow: str = proto.Field(
         proto.STRING,
         number=16,
+        oneof="session_entry_resource",
     )
     start_playbook: str = proto.Field(
         proto.STRING,
         number=39,
+        oneof="session_entry_resource",
     )
     security_settings: str = proto.Field(
         proto.STRING,

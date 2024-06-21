@@ -64,12 +64,12 @@
       "regionTag": "dialogflow_v3beta1_generated_Agents_CreateAgent_async",
       "segments": [
         {
-          "end": 57,
+          "end": 58,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 57,
+          "end": 58,
           "start": 27,
           "type": "SHORT"
         },
@@ -79,18 +79,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 51,
+          "end": 52,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 54,
-          "start": 52,
+          "end": 55,
+          "start": 53,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 58,
-          "start": 55,
+          "end": 59,
+          "start": 56,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -148,12 +148,12 @@
       "regionTag": "dialogflow_v3beta1_generated_Agents_CreateAgent_sync",
       "segments": [
         {
-          "end": 57,
+          "end": 58,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 57,
+          "end": 58,
           "start": 27,
           "type": "SHORT"
         },
@@ -163,18 +163,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 51,
+          "end": 52,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 54,
-          "start": 52,
+          "end": 55,
+          "start": 53,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 58,
-          "start": 55,
+          "end": 59,
+          "start": 56,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -1346,12 +1346,12 @@
       "regionTag": "dialogflow_v3beta1_generated_Agents_UpdateAgent_async",
       "segments": [
         {
-          "end": 56,
+          "end": 57,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 56,
+          "end": 57,
           "start": 27,
           "type": "SHORT"
         },
@@ -1361,18 +1361,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 50,
+          "end": 51,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 53,
-          "start": 51,
+          "end": 54,
+          "start": 52,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 57,
-          "start": 54,
+          "end": 58,
+          "start": 55,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -1430,12 +1430,12 @@
       "regionTag": "dialogflow_v3beta1_generated_Agents_UpdateAgent_sync",
       "segments": [
         {
-          "end": 56,
+          "end": 57,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 56,
+          "end": 57,
           "start": 27,
           "type": "SHORT"
         },
@@ -1445,18 +1445,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 50,
+          "end": 51,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 53,
-          "start": 51,
+          "end": 54,
+          "start": 52,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 57,
-          "start": 54,
+          "end": 58,
+          "start": 55,
           "type": "RESPONSE_HANDLING"
         }
       ],
