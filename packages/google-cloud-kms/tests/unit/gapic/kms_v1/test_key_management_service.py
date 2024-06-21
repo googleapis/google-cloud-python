@@ -16725,6 +16725,7 @@ def test_create_crypto_key_rest(request_type):
         "import_only": True,
         "destroy_scheduled_duration": {},
         "crypto_key_backend": "crypto_key_backend_value",
+        "key_access_justifications_policy": {"allowed_access_reasons": [1]},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -18371,6 +18372,7 @@ def test_update_crypto_key_rest(request_type):
         "import_only": True,
         "destroy_scheduled_duration": {},
         "crypto_key_backend": "crypto_key_backend_value",
+        "key_access_justifications_policy": {"allowed_access_reasons": [1]},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
