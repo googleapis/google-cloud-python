@@ -18,6 +18,7 @@ from __future__ import annotations
 from typing import MutableMapping, MutableSequence
 
 from google.protobuf import timestamp_pb2  # type: ignore
+from google.protobuf import wrappers_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -204,6 +205,10 @@ class ManagementServer(proto.Message):
             Output only. The hostname or ip address of
             the exposed AGM endpoints, used by BAs to
             connect to BA proxy.
+        satisfies_pzs (google.protobuf.wrappers_pb2.BoolValue):
+            Output only. Reserved for future use.
+        satisfies_pzi (bool):
+            Output only. Reserved for future use.
     """
 
     class InstanceType(proto.Enum):
@@ -324,6 +329,15 @@ class ManagementServer(proto.Message):
     ba_proxy_uri: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=18,
+    )
+    satisfies_pzs: wrappers_pb2.BoolValue = proto.Field(
+        proto.MESSAGE,
+        number=19,
+        message=wrappers_pb2.BoolValue,
+    )
+    satisfies_pzi: bool = proto.Field(
+        proto.BOOL,
+        number=20,
     )
 
 
