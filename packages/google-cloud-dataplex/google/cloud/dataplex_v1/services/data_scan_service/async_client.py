@@ -1308,8 +1308,11 @@ class DataScanServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> datascans.GenerateDataQualityRulesResponse:
-        r"""Generates recommended DataQualityRule from a data
-        profiling DataScan.
+        r"""Generates recommended data quality rules based on the
+        results of a data profiling scan.
+
+        Use the recommendations to build rules for a data
+        quality scan.
 
         .. code-block:: python
 
@@ -1339,15 +1342,16 @@ class DataScanServiceAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.dataplex_v1.types.GenerateDataQualityRulesRequest, dict]]):
-                The request object. Generate recommended DataQualityRules
-                request.
+                The request object. Request details for generating data
+                quality rule recommendations.
             name (:class:`str`):
-                Required. The name should be either
+                Required. The name must be one of the following:
 
-                -  the name of a datascan with at least one successful
-                   completed data profiling job, or
-                -  the name of a successful completed data profiling
-                   datascan job.
+                -  The name of a data scan with at least one successful,
+                   completed data profiling job
+                -  The name of a successful, completed data profiling
+                   job (a data scan job where the job type is data
+                   profiling)
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1360,8 +1364,8 @@ class DataScanServiceAsyncClient:
 
         Returns:
             google.cloud.dataplex_v1.types.GenerateDataQualityRulesResponse:
-                Generate recommended DataQualityRules
-                response.
+                Response details for data quality
+                rule recommendations.
 
         """
         # Create or coerce a protobuf request object.
