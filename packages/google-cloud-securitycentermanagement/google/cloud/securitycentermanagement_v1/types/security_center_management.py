@@ -577,12 +577,12 @@ class CustomConfig(proto.Message):
                 message=expr_pb2.Expr,
             )
 
-        properties: MutableSequence["CustomConfig.CustomOutputSpec.Property"] = (
-            proto.RepeatedField(
-                proto.MESSAGE,
-                number=1,
-                message="CustomConfig.CustomOutputSpec.Property",
-            )
+        properties: MutableSequence[
+            "CustomConfig.CustomOutputSpec.Property"
+        ] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="CustomConfig.CustomOutputSpec.Property",
         )
 
     class ResourceSelector(proto.Message):
@@ -2044,12 +2044,12 @@ class ListSecurityCenterServicesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    security_center_services: MutableSequence["SecurityCenterService"] = (
-        proto.RepeatedField(
-            proto.MESSAGE,
-            number=1,
-            message="SecurityCenterService",
-        )
+    security_center_services: MutableSequence[
+        "SecurityCenterService"
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="SecurityCenterService",
     )
     next_page_token: str = proto.Field(
         proto.STRING,
