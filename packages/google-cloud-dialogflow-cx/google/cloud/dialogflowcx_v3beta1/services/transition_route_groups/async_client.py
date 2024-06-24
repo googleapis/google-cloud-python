@@ -79,6 +79,8 @@ class TransitionRouteGroupsAsyncClient:
     parse_intent_path = staticmethod(TransitionRouteGroupsClient.parse_intent_path)
     page_path = staticmethod(TransitionRouteGroupsClient.page_path)
     parse_page_path = staticmethod(TransitionRouteGroupsClient.parse_page_path)
+    tool_path = staticmethod(TransitionRouteGroupsClient.tool_path)
+    parse_tool_path = staticmethod(TransitionRouteGroupsClient.parse_tool_path)
     transition_route_group_path = staticmethod(
         TransitionRouteGroupsClient.transition_route_group_path
     )

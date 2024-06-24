@@ -1086,8 +1086,6 @@ def test_create_tool(request_type, transport: str = "grpc"):
             name="name_value",
             display_name="display_name_value",
             description="description_value",
-            actions=["actions_value"],
-            schemas=["schemas_value"],
             tool_type=gcdc_tool.Tool.ToolType.CUSTOMIZED_TOOL,
         )
         response = client.create_tool(request)
@@ -1103,8 +1101,6 @@ def test_create_tool(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
-    assert response.actions == ["actions_value"]
-    assert response.schemas == ["schemas_value"]
     assert response.tool_type == gcdc_tool.Tool.ToolType.CUSTOMIZED_TOOL
 
 
@@ -1207,8 +1203,6 @@ async def test_create_tool_empty_call_async():
                 name="name_value",
                 display_name="display_name_value",
                 description="description_value",
-                actions=["actions_value"],
-                schemas=["schemas_value"],
                 tool_type=gcdc_tool.Tool.ToolType.CUSTOMIZED_TOOL,
             )
         )
@@ -1285,8 +1279,6 @@ async def test_create_tool_async(
                 name="name_value",
                 display_name="display_name_value",
                 description="description_value",
-                actions=["actions_value"],
-                schemas=["schemas_value"],
                 tool_type=gcdc_tool.Tool.ToolType.CUSTOMIZED_TOOL,
             )
         )
@@ -1303,8 +1295,6 @@ async def test_create_tool_async(
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
-    assert response.actions == ["actions_value"]
-    assert response.schemas == ["schemas_value"]
     assert response.tool_type == gcdc_tool.Tool.ToolType.CUSTOMIZED_TOOL
 
 
@@ -2334,8 +2324,6 @@ def test_get_tool(request_type, transport: str = "grpc"):
             name="name_value",
             display_name="display_name_value",
             description="description_value",
-            actions=["actions_value"],
-            schemas=["schemas_value"],
             tool_type=tool.Tool.ToolType.CUSTOMIZED_TOOL,
         )
         response = client.get_tool(request)
@@ -2351,8 +2339,6 @@ def test_get_tool(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
-    assert response.actions == ["actions_value"]
-    assert response.schemas == ["schemas_value"]
     assert response.tool_type == tool.Tool.ToolType.CUSTOMIZED_TOOL
 
 
@@ -2455,8 +2441,6 @@ async def test_get_tool_empty_call_async():
                 name="name_value",
                 display_name="display_name_value",
                 description="description_value",
-                actions=["actions_value"],
-                schemas=["schemas_value"],
                 tool_type=tool.Tool.ToolType.CUSTOMIZED_TOOL,
             )
         )
@@ -2531,8 +2515,6 @@ async def test_get_tool_async(
                 name="name_value",
                 display_name="display_name_value",
                 description="description_value",
-                actions=["actions_value"],
-                schemas=["schemas_value"],
                 tool_type=tool.Tool.ToolType.CUSTOMIZED_TOOL,
             )
         )
@@ -2549,8 +2531,6 @@ async def test_get_tool_async(
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
-    assert response.actions == ["actions_value"]
-    assert response.schemas == ["schemas_value"]
     assert response.tool_type == tool.Tool.ToolType.CUSTOMIZED_TOOL
 
 
@@ -2722,8 +2702,6 @@ def test_update_tool(request_type, transport: str = "grpc"):
             name="name_value",
             display_name="display_name_value",
             description="description_value",
-            actions=["actions_value"],
-            schemas=["schemas_value"],
             tool_type=gcdc_tool.Tool.ToolType.CUSTOMIZED_TOOL,
         )
         response = client.update_tool(request)
@@ -2739,8 +2717,6 @@ def test_update_tool(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
-    assert response.actions == ["actions_value"]
-    assert response.schemas == ["schemas_value"]
     assert response.tool_type == gcdc_tool.Tool.ToolType.CUSTOMIZED_TOOL
 
 
@@ -2839,8 +2815,6 @@ async def test_update_tool_empty_call_async():
                 name="name_value",
                 display_name="display_name_value",
                 description="description_value",
-                actions=["actions_value"],
-                schemas=["schemas_value"],
                 tool_type=gcdc_tool.Tool.ToolType.CUSTOMIZED_TOOL,
             )
         )
@@ -2917,8 +2891,6 @@ async def test_update_tool_async(
                 name="name_value",
                 display_name="display_name_value",
                 description="description_value",
-                actions=["actions_value"],
-                schemas=["schemas_value"],
                 tool_type=gcdc_tool.Tool.ToolType.CUSTOMIZED_TOOL,
             )
         )
@@ -2935,8 +2907,6 @@ async def test_update_tool_async(
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
-    assert response.actions == ["actions_value"]
-    assert response.schemas == ["schemas_value"]
     assert response.tool_type == gcdc_tool.Tool.ToolType.CUSTOMIZED_TOOL
 
 
@@ -3466,8 +3436,6 @@ def test_create_tool_rest(request_type):
         "name": "name_value",
         "display_name": "display_name_value",
         "description": "description_value",
-        "actions": ["actions_value1", "actions_value2"],
-        "schemas": ["schemas_value1", "schemas_value2"],
         "open_api_spec": {
             "text_schema": "text_schema_value",
             "authentication": {
@@ -3576,8 +3544,6 @@ def test_create_tool_rest(request_type):
             name="name_value",
             display_name="display_name_value",
             description="description_value",
-            actions=["actions_value"],
-            schemas=["schemas_value"],
             tool_type=gcdc_tool.Tool.ToolType.CUSTOMIZED_TOOL,
         )
 
@@ -3597,8 +3563,6 @@ def test_create_tool_rest(request_type):
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
-    assert response.actions == ["actions_value"]
-    assert response.schemas == ["schemas_value"]
     assert response.tool_type == gcdc_tool.Tool.ToolType.CUSTOMIZED_TOOL
 
 
@@ -4512,8 +4476,6 @@ def test_get_tool_rest(request_type):
             name="name_value",
             display_name="display_name_value",
             description="description_value",
-            actions=["actions_value"],
-            schemas=["schemas_value"],
             tool_type=tool.Tool.ToolType.CUSTOMIZED_TOOL,
         )
 
@@ -4533,8 +4495,6 @@ def test_get_tool_rest(request_type):
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
-    assert response.actions == ["actions_value"]
-    assert response.schemas == ["schemas_value"]
     assert response.tool_type == tool.Tool.ToolType.CUSTOMIZED_TOOL
 
 
@@ -4820,8 +4780,6 @@ def test_update_tool_rest(request_type):
         "name": "projects/sample1/locations/sample2/agents/sample3/tools/sample4",
         "display_name": "display_name_value",
         "description": "description_value",
-        "actions": ["actions_value1", "actions_value2"],
-        "schemas": ["schemas_value1", "schemas_value2"],
         "open_api_spec": {
             "text_schema": "text_schema_value",
             "authentication": {
@@ -4930,8 +4888,6 @@ def test_update_tool_rest(request_type):
             name="name_value",
             display_name="display_name_value",
             description="description_value",
-            actions=["actions_value"],
-            schemas=["schemas_value"],
             tool_type=gcdc_tool.Tool.ToolType.CUSTOMIZED_TOOL,
         )
 
@@ -4951,8 +4907,6 @@ def test_update_tool_rest(request_type):
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
-    assert response.actions == ["actions_value"]
-    assert response.schemas == ["schemas_value"]
     assert response.tool_type == gcdc_tool.Tool.ToolType.CUSTOMIZED_TOOL
 
 

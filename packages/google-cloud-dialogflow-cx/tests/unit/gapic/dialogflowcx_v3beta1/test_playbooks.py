@@ -5002,7 +5002,7 @@ def test_create_playbook_rest(request_type):
             {"name": "name_value", "type_": 1, "description": "description_value"}
         ],
         "output_parameter_definitions": {},
-        "steps": [{"text": "text_value", "steps": {}}],
+        "instruction": {"steps": [{"text": "text_value", "steps": {}}]},
         "token_count": 1193,
         "create_time": {"seconds": 751, "nanos": 543},
         "update_time": {},
@@ -6389,7 +6389,7 @@ def test_update_playbook_rest(request_type):
             {"name": "name_value", "type_": 1, "description": "description_value"}
         ],
         "output_parameter_definitions": {},
-        "steps": [{"text": "text_value", "steps": {}}],
+        "instruction": {"steps": [{"text": "text_value", "steps": {}}]},
         "token_count": 1193,
         "create_time": {"seconds": 751, "nanos": 543},
         "update_time": {},
@@ -6805,7 +6805,7 @@ def test_create_playbook_version_rest(request_type):
                 {"name": "name_value", "type_": 1, "description": "description_value"}
             ],
             "output_parameter_definitions": {},
-            "steps": [{"text": "text_value", "steps": {}}],
+            "instruction": {"steps": [{"text": "text_value", "steps": {}}]},
             "token_count": 1193,
             "create_time": {"seconds": 751, "nanos": 543},
             "update_time": {},
@@ -6825,23 +6825,11 @@ def test_create_playbook_version_rest(request_type):
                 "name": "name_value",
                 "playbook_input": {
                     "preceding_conversation_summary": "preceding_conversation_summary_value",
-                    "parameters": [
-                        {
-                            "name": "name_value",
-                            "value": {
-                                "null_value": 0,
-                                "number_value": 0.1285,
-                                "string_value": "string_value_value",
-                                "bool_value": True,
-                                "struct_value": {"fields": {}},
-                                "list_value": {"values": {}},
-                            },
-                        }
-                    ],
+                    "action_parameters": {"fields": {}},
                 },
                 "playbook_output": {
                     "execution_summary": "execution_summary_value",
-                    "parameters": {},
+                    "action_parameters": {},
                 },
                 "actions": [
                     {
@@ -6850,8 +6838,8 @@ def test_create_playbook_version_rest(request_type):
                         "tool_use": {
                             "tool": "tool_value",
                             "action": "action_value",
-                            "input_parameters": {},
-                            "output_parameters": {},
+                            "input_action_parameters": {},
+                            "output_action_parameters": {},
                         },
                         "playbook_invocation": {
                             "playbook": "playbook_value",
@@ -6861,8 +6849,8 @@ def test_create_playbook_version_rest(request_type):
                         },
                         "flow_invocation": {
                             "flow": "flow_value",
-                            "input_parameters": {},
-                            "output_parameters": {},
+                            "input_action_parameters": {},
+                            "output_action_parameters": {},
                             "flow_state": 1,
                         },
                     }

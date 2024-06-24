@@ -1663,13 +1663,12 @@ def test_get_agent(request_type, transport: str = "grpc"):
             time_zone="time_zone_value",
             description="description_value",
             avatar_uri="avatar_uri_value",
-            start_flow="start_flow_value",
-            start_playbook="start_playbook_value",
             security_settings="security_settings_value",
             enable_stackdriver_logging=True,
             enable_spell_correction=True,
             enable_multi_language_training=True,
             locked=True,
+            start_flow="start_flow_value",
         )
         response = client.get_agent(request)
 
@@ -1688,8 +1687,6 @@ def test_get_agent(request_type, transport: str = "grpc"):
     assert response.time_zone == "time_zone_value"
     assert response.description == "description_value"
     assert response.avatar_uri == "avatar_uri_value"
-    assert response.start_flow == "start_flow_value"
-    assert response.start_playbook == "start_playbook_value"
     assert response.security_settings == "security_settings_value"
     assert response.enable_stackdriver_logging is True
     assert response.enable_spell_correction is True
@@ -1800,8 +1797,6 @@ async def test_get_agent_empty_call_async():
                 time_zone="time_zone_value",
                 description="description_value",
                 avatar_uri="avatar_uri_value",
-                start_flow="start_flow_value",
-                start_playbook="start_playbook_value",
                 security_settings="security_settings_value",
                 enable_stackdriver_logging=True,
                 enable_spell_correction=True,
@@ -1884,8 +1879,6 @@ async def test_get_agent_async(
                 time_zone="time_zone_value",
                 description="description_value",
                 avatar_uri="avatar_uri_value",
-                start_flow="start_flow_value",
-                start_playbook="start_playbook_value",
                 security_settings="security_settings_value",
                 enable_stackdriver_logging=True,
                 enable_spell_correction=True,
@@ -1910,8 +1903,6 @@ async def test_get_agent_async(
     assert response.time_zone == "time_zone_value"
     assert response.description == "description_value"
     assert response.avatar_uri == "avatar_uri_value"
-    assert response.start_flow == "start_flow_value"
-    assert response.start_playbook == "start_playbook_value"
     assert response.security_settings == "security_settings_value"
     assert response.enable_stackdriver_logging is True
     assert response.enable_spell_correction is True
@@ -2091,13 +2082,12 @@ def test_create_agent(request_type, transport: str = "grpc"):
             time_zone="time_zone_value",
             description="description_value",
             avatar_uri="avatar_uri_value",
-            start_flow="start_flow_value",
-            start_playbook="start_playbook_value",
             security_settings="security_settings_value",
             enable_stackdriver_logging=True,
             enable_spell_correction=True,
             enable_multi_language_training=True,
             locked=True,
+            start_flow="start_flow_value",
         )
         response = client.create_agent(request)
 
@@ -2116,8 +2106,6 @@ def test_create_agent(request_type, transport: str = "grpc"):
     assert response.time_zone == "time_zone_value"
     assert response.description == "description_value"
     assert response.avatar_uri == "avatar_uri_value"
-    assert response.start_flow == "start_flow_value"
-    assert response.start_playbook == "start_playbook_value"
     assert response.security_settings == "security_settings_value"
     assert response.enable_stackdriver_logging is True
     assert response.enable_spell_correction is True
@@ -2228,8 +2216,6 @@ async def test_create_agent_empty_call_async():
                 time_zone="time_zone_value",
                 description="description_value",
                 avatar_uri="avatar_uri_value",
-                start_flow="start_flow_value",
-                start_playbook="start_playbook_value",
                 security_settings="security_settings_value",
                 enable_stackdriver_logging=True,
                 enable_spell_correction=True,
@@ -2314,8 +2300,6 @@ async def test_create_agent_async(
                 time_zone="time_zone_value",
                 description="description_value",
                 avatar_uri="avatar_uri_value",
-                start_flow="start_flow_value",
-                start_playbook="start_playbook_value",
                 security_settings="security_settings_value",
                 enable_stackdriver_logging=True,
                 enable_spell_correction=True,
@@ -2340,8 +2324,6 @@ async def test_create_agent_async(
     assert response.time_zone == "time_zone_value"
     assert response.description == "description_value"
     assert response.avatar_uri == "avatar_uri_value"
-    assert response.start_flow == "start_flow_value"
-    assert response.start_playbook == "start_playbook_value"
     assert response.security_settings == "security_settings_value"
     assert response.enable_stackdriver_logging is True
     assert response.enable_spell_correction is True
@@ -2531,13 +2513,12 @@ def test_update_agent(request_type, transport: str = "grpc"):
             time_zone="time_zone_value",
             description="description_value",
             avatar_uri="avatar_uri_value",
-            start_flow="start_flow_value",
-            start_playbook="start_playbook_value",
             security_settings="security_settings_value",
             enable_stackdriver_logging=True,
             enable_spell_correction=True,
             enable_multi_language_training=True,
             locked=True,
+            start_flow="start_flow_value",
         )
         response = client.update_agent(request)
 
@@ -2556,8 +2537,6 @@ def test_update_agent(request_type, transport: str = "grpc"):
     assert response.time_zone == "time_zone_value"
     assert response.description == "description_value"
     assert response.avatar_uri == "avatar_uri_value"
-    assert response.start_flow == "start_flow_value"
-    assert response.start_playbook == "start_playbook_value"
     assert response.security_settings == "security_settings_value"
     assert response.enable_stackdriver_logging is True
     assert response.enable_spell_correction is True
@@ -2664,8 +2643,6 @@ async def test_update_agent_empty_call_async():
                 time_zone="time_zone_value",
                 description="description_value",
                 avatar_uri="avatar_uri_value",
-                start_flow="start_flow_value",
-                start_playbook="start_playbook_value",
                 security_settings="security_settings_value",
                 enable_stackdriver_logging=True,
                 enable_spell_correction=True,
@@ -2750,8 +2727,6 @@ async def test_update_agent_async(
                 time_zone="time_zone_value",
                 description="description_value",
                 avatar_uri="avatar_uri_value",
-                start_flow="start_flow_value",
-                start_playbook="start_playbook_value",
                 security_settings="security_settings_value",
                 enable_stackdriver_logging=True,
                 enable_spell_correction=True,
@@ -2776,8 +2751,6 @@ async def test_update_agent_async(
     assert response.time_zone == "time_zone_value"
     assert response.description == "description_value"
     assert response.avatar_uri == "avatar_uri_value"
-    assert response.start_flow == "start_flow_value"
-    assert response.start_playbook == "start_playbook_value"
     assert response.security_settings == "security_settings_value"
     assert response.enable_stackdriver_logging is True
     assert response.enable_spell_correction is True
@@ -5770,13 +5743,12 @@ def test_get_agent_rest(request_type):
             time_zone="time_zone_value",
             description="description_value",
             avatar_uri="avatar_uri_value",
-            start_flow="start_flow_value",
-            start_playbook="start_playbook_value",
             security_settings="security_settings_value",
             enable_stackdriver_logging=True,
             enable_spell_correction=True,
             enable_multi_language_training=True,
             locked=True,
+            start_flow="start_flow_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -5799,8 +5771,6 @@ def test_get_agent_rest(request_type):
     assert response.time_zone == "time_zone_value"
     assert response.description == "description_value"
     assert response.avatar_uri == "avatar_uri_value"
-    assert response.start_flow == "start_flow_value"
-    assert response.start_playbook == "start_playbook_value"
     assert response.security_settings == "security_settings_value"
     assert response.enable_stackdriver_logging is True
     assert response.enable_spell_correction is True
@@ -6109,6 +6079,8 @@ def test_create_agent_rest(request_type):
                 "enabled": True,
                 "max_digits": 1065,
                 "finish_digit": "finish_digit_value",
+                "interdigit_timeout_duration": {},
+                "endpointing_timeout_duration": {},
             },
             "logging_settings": {
                 "enable_stackdriver_logging": True,
@@ -6209,13 +6181,12 @@ def test_create_agent_rest(request_type):
             time_zone="time_zone_value",
             description="description_value",
             avatar_uri="avatar_uri_value",
-            start_flow="start_flow_value",
-            start_playbook="start_playbook_value",
             security_settings="security_settings_value",
             enable_stackdriver_logging=True,
             enable_spell_correction=True,
             enable_multi_language_training=True,
             locked=True,
+            start_flow="start_flow_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -6238,8 +6209,6 @@ def test_create_agent_rest(request_type):
     assert response.time_zone == "time_zone_value"
     assert response.description == "description_value"
     assert response.avatar_uri == "avatar_uri_value"
-    assert response.start_flow == "start_flow_value"
-    assert response.start_playbook == "start_playbook_value"
     assert response.security_settings == "security_settings_value"
     assert response.enable_stackdriver_logging is True
     assert response.enable_spell_correction is True
@@ -6561,6 +6530,8 @@ def test_update_agent_rest(request_type):
                 "enabled": True,
                 "max_digits": 1065,
                 "finish_digit": "finish_digit_value",
+                "interdigit_timeout_duration": {},
+                "endpointing_timeout_duration": {},
             },
             "logging_settings": {
                 "enable_stackdriver_logging": True,
@@ -6661,13 +6632,12 @@ def test_update_agent_rest(request_type):
             time_zone="time_zone_value",
             description="description_value",
             avatar_uri="avatar_uri_value",
-            start_flow="start_flow_value",
-            start_playbook="start_playbook_value",
             security_settings="security_settings_value",
             enable_stackdriver_logging=True,
             enable_spell_correction=True,
             enable_multi_language_training=True,
             locked=True,
+            start_flow="start_flow_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -6690,8 +6660,6 @@ def test_update_agent_rest(request_type):
     assert response.time_zone == "time_zone_value"
     assert response.description == "description_value"
     assert response.avatar_uri == "avatar_uri_value"
-    assert response.start_flow == "start_flow_value"
-    assert response.start_playbook == "start_playbook_value"
     assert response.security_settings == "security_settings_value"
     assert response.enable_stackdriver_logging is True
     assert response.enable_spell_correction is True

@@ -858,8 +858,7 @@ class CloudControlsPartnerCoreClient(metaclass=CloudControlsPartnerCoreClientMet
                 workload.
             name (str):
                 Required. Format:
-
-                organizations/{organization}/locations/{location}/customers/{customer}/workloads/{workload}
+                ``organizations/{organization}/locations/{location}/customers/{customer}/workloads/{workload}``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -962,10 +961,8 @@ class CloudControlsPartnerCoreClient(metaclass=CloudControlsPartnerCoreClientMet
             request (Union[google.cloud.cloudcontrolspartner_v1beta.types.ListWorkloadsRequest, dict]):
                 The request object. Request to list customer workloads.
             parent (str):
-                Required. Parent resource
-                Format:
-
-                organizations/{organization}/locations/{location}/customers/{customer}
+                Required. Parent resource Format:
+                ``organizations/{organization}/locations/{location}/customers/{customer}``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1079,8 +1076,7 @@ class CloudControlsPartnerCoreClient(metaclass=CloudControlsPartnerCoreClientMet
                 The request object. Message for getting a customer
             name (str):
                 Required. Format:
-
-                organizations/{organization}/locations/{location}/customers/{customer}
+                ``organizations/{organization}/locations/{location}/customers/{customer}``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1183,9 +1179,8 @@ class CloudControlsPartnerCoreClient(metaclass=CloudControlsPartnerCoreClientMet
             request (Union[google.cloud.cloudcontrolspartner_v1beta.types.ListCustomersRequest, dict]):
                 The request object. Request to list customers
             parent (str):
-                Required. Parent resource
-                Format:
-                organizations/{organization}/locations/{location}
+                Required. Parent resource Format:
+                ``organizations/{organization}/locations/{location}``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1300,8 +1295,7 @@ class CloudControlsPartnerCoreClient(metaclass=CloudControlsPartnerCoreClientMet
                 connections associated with a workload
             name (str):
                 Required. Format:
-
-                organizations/{organization}/locations/{location}/customers/{customer}/workloads/{workload}/ekmConnections
+                ``organizations/{organization}/locations/{location}/customers/{customer}/workloads/{workload}/ekmConnections``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1405,9 +1399,8 @@ class CloudControlsPartnerCoreClient(metaclass=CloudControlsPartnerCoreClientMet
                 The request object. Request for getting the partner
                 permissions granted for a workload
             name (str):
-                Required. Name of the resource to get
-                in the format:
-                organizations/{organization}/locations/{location}/customers/{customer}/workloads/{workload}/partnerPermissions
+                Required. Name of the resource to get in the format:
+                ``organizations/{organization}/locations/{location}/customers/{customer}/workloads/{workload}/partnerPermissions``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1478,7 +1471,8 @@ class CloudControlsPartnerCoreClient(metaclass=CloudControlsPartnerCoreClientMet
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListAccessApprovalRequestsPager:
-        r"""Lists access requests associated with a workload
+        r"""Deprecated: Only returns access approval requests
+        directly associated with an assured workload folder.
 
         .. code-block:: python
 
@@ -1512,10 +1506,8 @@ class CloudControlsPartnerCoreClient(metaclass=CloudControlsPartnerCoreClientMet
                 The request object. Request for getting the access
                 requests associated with a workload.
             parent (str):
-                Required. Parent resource
-                Format:
-
-                organizations/{organization}/locations/{location}/customers/{customer}/workloads/{workload}
+                Required. Parent resource Format:
+                ``organizations/{organization}/locations/{location}/customers/{customer}/workloads/{workload}``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1535,6 +1527,11 @@ class CloudControlsPartnerCoreClient(metaclass=CloudControlsPartnerCoreClientMet
                 automatically.
 
         """
+        warnings.warn(
+            "CloudControlsPartnerCoreClient.list_access_approval_requests is deprecated",
+            DeprecationWarning,
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -1635,7 +1632,7 @@ class CloudControlsPartnerCoreClient(metaclass=CloudControlsPartnerCoreClientMet
                 The request object. Message for getting a Partner
             name (str):
                 Required. Format:
-                organizations/{organization}/locations/{location}/partner
+                ``organizations/{organization}/locations/{location}/partner``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this

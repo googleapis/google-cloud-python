@@ -335,12 +335,6 @@ class Tool(proto.Message):
         description (str):
             Required. High level description of the Tool
             and its usage.
-        actions (MutableSequence[str]):
-            The list of derived action names for the
-            tool.
-        schemas (MutableSequence[str]):
-            The list of derived type schemas for the
-            tool.
         open_api_spec (google.cloud.dialogflowcx_v3beta1.types.Tool.OpenApiTool):
             OpenAPI specification of the Tool.
 
@@ -700,14 +694,6 @@ class Tool(proto.Message):
     description: str = proto.Field(
         proto.STRING,
         number=3,
-    )
-    actions: MutableSequence[str] = proto.RepeatedField(
-        proto.STRING,
-        number=6,
-    )
-    schemas: MutableSequence[str] = proto.RepeatedField(
-        proto.STRING,
-        number=7,
     )
     open_api_spec: OpenApiTool = proto.Field(
         proto.MESSAGE,
