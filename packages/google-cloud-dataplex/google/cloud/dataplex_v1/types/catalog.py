@@ -862,6 +862,13 @@ class EntrySource(proto.Message):
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             The update time of the resource in the source
             system.
+        location (str):
+            Output only. Location of the resource in the
+            source system. Entry will be searchable by this
+            location. By default, this should match the
+            location of the EntryGroup containing this
+            entry. A different value allows capturing source
+            location for data external to GCP.
     """
 
     class Ancestor(proto.Message):
@@ -923,6 +930,10 @@ class EntrySource(proto.Message):
         proto.MESSAGE,
         number=11,
         message=timestamp_pb2.Timestamp,
+    )
+    location: str = proto.Field(
+        proto.STRING,
+        number=12,
     )
 
 
@@ -1654,7 +1665,7 @@ class ListEntriesRequest(proto.Message):
             "entry_source.display_name=AnExampleDisplayName"
             "entry_type=projects/example-project/locations/global/entryTypes/example-entry_type"
             "entry_type=projects/example-project/locations/us/entryTypes/a*
-            OR `entry_type=projects/another-project/locations/*"` "NOT
+            OR entry_type=projects/another-project/locations/*" "NOT
             entry_source.display_name=AnotherExampleDisplayName".
     """
 

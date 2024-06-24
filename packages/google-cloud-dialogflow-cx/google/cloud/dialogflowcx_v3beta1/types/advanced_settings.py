@@ -135,6 +135,12 @@ class AdvancedSettings(proto.Message):
             finish_digit (str):
                 The digit that terminates a DTMF digit
                 sequence.
+            interdigit_timeout_duration (google.protobuf.duration_pb2.Duration):
+                Interdigit timeout setting for matching dtmf
+                input to regex.
+            endpointing_timeout_duration (google.protobuf.duration_pb2.Duration):
+                Endpoint timeout setting for matching dtmf
+                input to regex.
         """
 
         enabled: bool = proto.Field(
@@ -148,6 +154,16 @@ class AdvancedSettings(proto.Message):
         finish_digit: str = proto.Field(
             proto.STRING,
             number=3,
+        )
+        interdigit_timeout_duration: duration_pb2.Duration = proto.Field(
+            proto.MESSAGE,
+            number=6,
+            message=duration_pb2.Duration,
+        )
+        endpointing_timeout_duration: duration_pb2.Duration = proto.Field(
+            proto.MESSAGE,
+            number=7,
+            message=duration_pb2.Duration,
         )
 
     class LoggingSettings(proto.Message):
