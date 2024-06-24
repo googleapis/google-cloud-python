@@ -35,8 +35,7 @@ class EkmConnections(proto.Message):
     Attributes:
         name (str):
             Identifier. Format:
-
-            organizations/{organization}/locations/{location}/customers/{customer}/workloads/{workload}/ekmConnections
+            ``organizations/{organization}/locations/{location}/customers/{customer}/workloads/{workload}/ekmConnections``
         ekm_connections (MutableSequence[google.cloud.cloudcontrolspartner_v1beta.types.EkmConnection]):
             The EKM connections associated with the
             workload
@@ -60,8 +59,7 @@ class GetEkmConnectionsRequest(proto.Message):
     Attributes:
         name (str):
             Required. Format:
-
-            organizations/{organization}/locations/{location}/customers/{customer}/workloads/{workload}/ekmConnections
+            ``organizations/{organization}/locations/{location}/customers/{customer}/workloads/{workload}/ekmConnections``
     """
 
     name: str = proto.Field(
