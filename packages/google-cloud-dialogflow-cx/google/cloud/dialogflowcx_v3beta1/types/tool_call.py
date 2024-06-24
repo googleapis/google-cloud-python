@@ -23,9 +23,40 @@ import proto  # type: ignore
 __protobuf__ = proto.module(
     package="google.cloud.dialogflow.cx.v3beta1",
     manifest={
+        "ToolCall",
         "ToolCallResult",
     },
 )
+
+
+class ToolCall(proto.Message):
+    r"""Represents a call of a specific tool's action with the
+    specified inputs.
+
+    Attributes:
+        tool (str):
+            The [tool][Tool] associated with this call. Format:
+            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/tools/<Tool ID>``.
+        action (str):
+            The name of the tool's action associated with
+            this call.
+        input_parameters (google.protobuf.struct_pb2.Struct):
+            The action's input parameters.
+    """
+
+    tool: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    action: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    input_parameters: struct_pb2.Struct = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=struct_pb2.Struct,
+    )
 
 
 class ToolCallResult(proto.Message):

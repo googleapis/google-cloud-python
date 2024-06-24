@@ -59,6 +59,7 @@ from google.cloud.dialogflowcx_v3beta1.types import (
     gcs,
     page,
     response_message,
+    tool_call,
 )
 from google.cloud.dialogflowcx_v3beta1.types import (
     transition_route_group as gcdc_transition_route_group,
@@ -4207,6 +4208,11 @@ def test_create_transition_route_group_rest(request_type):
                                 "phone_number": "phone_number_value"
                             },
                             "knowledge_info_card": {},
+                            "tool_call": {
+                                "tool": "tool_value",
+                                "action": "action_value",
+                                "input_parameters": {},
+                            },
                             "channel": "channel_value",
                         }
                     ],
@@ -4250,6 +4256,8 @@ def test_create_transition_route_group_rest(request_type):
                             "enabled": True,
                             "max_digits": 1065,
                             "finish_digit": "finish_digit_value",
+                            "interdigit_timeout_duration": {},
+                            "endpointing_timeout_duration": {},
                         },
                         "logging_settings": {
                             "enable_stackdriver_logging": True,
@@ -4722,6 +4730,11 @@ def test_update_transition_route_group_rest(request_type):
                                 "phone_number": "phone_number_value"
                             },
                             "knowledge_info_card": {},
+                            "tool_call": {
+                                "tool": "tool_value",
+                                "action": "action_value",
+                                "input_parameters": {},
+                            },
                             "channel": "channel_value",
                         }
                     ],
@@ -4765,6 +4778,8 @@ def test_update_transition_route_group_rest(request_type):
                             "enabled": True,
                             "max_digits": 1065,
                             "finish_digit": "finish_digit_value",
+                            "interdigit_timeout_duration": {},
+                            "endpointing_timeout_duration": {},
                         },
                         "logging_settings": {
                             "enable_stackdriver_logging": True,
@@ -6140,12 +6155,43 @@ def test_parse_page_path():
     assert expected == actual
 
 
-def test_transition_route_group_path():
+def test_tool_path():
     project = "whelk"
     location = "octopus"
     agent = "oyster"
-    flow = "nudibranch"
-    transition_route_group = "cuttlefish"
+    tool = "nudibranch"
+    expected = (
+        "projects/{project}/locations/{location}/agents/{agent}/tools/{tool}".format(
+            project=project,
+            location=location,
+            agent=agent,
+            tool=tool,
+        )
+    )
+    actual = TransitionRouteGroupsClient.tool_path(project, location, agent, tool)
+    assert expected == actual
+
+
+def test_parse_tool_path():
+    expected = {
+        "project": "cuttlefish",
+        "location": "mussel",
+        "agent": "winkle",
+        "tool": "nautilus",
+    }
+    path = TransitionRouteGroupsClient.tool_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = TransitionRouteGroupsClient.parse_tool_path(path)
+    assert expected == actual
+
+
+def test_transition_route_group_path():
+    project = "scallop"
+    location = "abalone"
+    agent = "squid"
+    flow = "clam"
+    transition_route_group = "whelk"
     expected = "projects/{project}/locations/{location}/agents/{agent}/flows/{flow}/transitionRouteGroups/{transition_route_group}".format(
         project=project,
         location=location,
@@ -6161,11 +6207,11 @@ def test_transition_route_group_path():
 
 def test_parse_transition_route_group_path():
     expected = {
-        "project": "mussel",
-        "location": "winkle",
-        "agent": "nautilus",
-        "flow": "scallop",
-        "transition_route_group": "abalone",
+        "project": "octopus",
+        "location": "oyster",
+        "agent": "nudibranch",
+        "flow": "cuttlefish",
+        "transition_route_group": "mussel",
     }
     path = TransitionRouteGroupsClient.transition_route_group_path(**expected)
 
@@ -6175,10 +6221,10 @@ def test_parse_transition_route_group_path():
 
 
 def test_webhook_path():
-    project = "squid"
-    location = "clam"
-    agent = "whelk"
-    webhook = "octopus"
+    project = "winkle"
+    location = "nautilus"
+    agent = "scallop"
+    webhook = "abalone"
     expected = "projects/{project}/locations/{location}/agents/{agent}/webhooks/{webhook}".format(
         project=project,
         location=location,
@@ -6191,10 +6237,10 @@ def test_webhook_path():
 
 def test_parse_webhook_path():
     expected = {
-        "project": "oyster",
-        "location": "nudibranch",
-        "agent": "cuttlefish",
-        "webhook": "mussel",
+        "project": "squid",
+        "location": "clam",
+        "agent": "whelk",
+        "webhook": "octopus",
     }
     path = TransitionRouteGroupsClient.webhook_path(**expected)
 
@@ -6204,7 +6250,7 @@ def test_parse_webhook_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "winkle"
+    billing_account = "oyster"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -6214,7 +6260,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "nautilus",
+        "billing_account": "nudibranch",
     }
     path = TransitionRouteGroupsClient.common_billing_account_path(**expected)
 
@@ -6224,7 +6270,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "scallop"
+    folder = "cuttlefish"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -6234,7 +6280,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "abalone",
+        "folder": "mussel",
     }
     path = TransitionRouteGroupsClient.common_folder_path(**expected)
 
@@ -6244,7 +6290,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "squid"
+    organization = "winkle"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -6254,7 +6300,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "clam",
+        "organization": "nautilus",
     }
     path = TransitionRouteGroupsClient.common_organization_path(**expected)
 
@@ -6264,7 +6310,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "whelk"
+    project = "scallop"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -6274,7 +6320,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "octopus",
+        "project": "abalone",
     }
     path = TransitionRouteGroupsClient.common_project_path(**expected)
 
@@ -6284,8 +6330,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "oyster"
-    location = "nudibranch"
+    project = "squid"
+    location = "clam"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -6296,8 +6342,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "cuttlefish",
-        "location": "mussel",
+        "project": "whelk",
+        "location": "octopus",
     }
     path = TransitionRouteGroupsClient.common_location_path(**expected)
 
