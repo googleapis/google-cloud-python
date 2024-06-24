@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-monitoring/#history
 
+## [2.22.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-monitoring-v2.21.0...google-cloud-monitoring-v2.22.0) (2024-06-24)
+
+
+### Features
+
+* Add support to add links in AlertPolicy ([7fcde4f](https://github.com/googleapis/google-cloud-python/commit/7fcde4f8c1d8cbc5351cb3fb799450bbb78d5a2a))
+
 ## [2.21.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-monitoring-v2.20.0...google-cloud-monitoring-v2.21.0) (2024-04-17)
 
 

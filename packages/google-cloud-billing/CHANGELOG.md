@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.13.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-billing-v1.13.3...google-cloud-billing-v1.13.4) (2024-06-24)
+
+
+### Documentation
+
+* Genereal documentation improvements ([73dd30d](https://github.com/googleapis/google-cloud-python/commit/73dd30dd4eac8721b5db7e664df1c885f5b3d65c))
+
 ## [1.13.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-billing-v1.13.2...google-cloud-billing-v1.13.3) (2024-03-05)
 
 
