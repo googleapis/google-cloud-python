@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.13.1](https://github.com/googleapis/python-grpc-google-iam-v1/compare/v0.13.0...v0.13.1) (2024-06-20)
+
+
+### Bug Fixes
+
+* **deps:** Require protobuf&gt;=3.20.2, protobuf&lt;6 ([ac15e1c](https://github.com/googleapis/python-grpc-google-iam-v1/commit/ac15e1c5c1d8e97b96be76734099eceb1f12d5c3))
+* Regenerate pb2 files for compatibility with protobuf 5.x ([ac15e1c](https://github.com/googleapis/python-grpc-google-iam-v1/commit/ac15e1c5c1d8e97b96be76734099eceb1f12d5c3))
+
 ## [0.13.0](https://github.com/googleapis/python-grpc-google-iam-v1/compare/v0.12.7...v0.13.0) (2023-11-29)
 
 
