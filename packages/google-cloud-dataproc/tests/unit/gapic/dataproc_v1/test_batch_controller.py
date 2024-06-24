@@ -2932,6 +2932,8 @@ def test_create_batch_rest(request_type):
             "repository_config": {
                 "pypi_repository_config": {"pypi_repository": "pypi_repository_value"}
             },
+            "autotuning_config": {"scenarios": [2]},
+            "cohort": "cohort_value",
         },
         "environment_config": {
             "execution_config": {
