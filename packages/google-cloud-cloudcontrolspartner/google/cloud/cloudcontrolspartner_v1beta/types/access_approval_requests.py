@@ -37,7 +37,7 @@ class AccessApprovalRequest(proto.Message):
     Attributes:
         name (str):
             Identifier. Format:
-            organizations/{organization}/locations/{location}/customers/{customer}/workloads/{workload}/accessApprovalRequests/{access_approval_request}.
+            ``organizations/{organization}/locations/{location}/customers/{customer}/workloads/{workload}/accessApprovalRequests/{access_approval_request}``
         request_time (google.protobuf.timestamp_pb2.Timestamp):
             The time at which approval was requested.
         requested_reason (google.cloud.cloudcontrolspartner_v1beta.types.AccessReason):
@@ -77,10 +77,8 @@ class ListAccessApprovalRequestsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. Parent resource
-            Format:
-
-            organizations/{organization}/locations/{location}/customers/{customer}/workloads/{workload}
+            Required. Parent resource Format:
+            ``organizations/{organization}/locations/{location}/customers/{customer}/workloads/{workload}``
         page_size (int):
             Optional. The maximum number of access
             requests to return. The service may return fewer

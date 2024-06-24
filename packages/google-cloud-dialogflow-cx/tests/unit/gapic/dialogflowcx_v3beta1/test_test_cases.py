@@ -6841,6 +6841,11 @@ def test_create_test_case_rest(request_type):
                                         "phone_number": "phone_number_value"
                                     },
                                     "knowledge_info_card": {},
+                                    "tool_call": {
+                                        "tool": "tool_value",
+                                        "action": "action_value",
+                                        "input_parameters": {},
+                                    },
                                     "channel": "channel_value",
                                 }
                             ],
@@ -6884,6 +6889,8 @@ def test_create_test_case_rest(request_type):
                                     "enabled": True,
                                     "max_digits": 1065,
                                     "finish_digit": "finish_digit_value",
+                                    "interdigit_timeout_duration": {},
+                                    "endpointing_timeout_duration": {},
                                 },
                                 "logging_settings": {
                                     "enable_stackdriver_logging": True,
@@ -7486,6 +7493,11 @@ def test_update_test_case_rest(request_type):
                                         "phone_number": "phone_number_value"
                                     },
                                     "knowledge_info_card": {},
+                                    "tool_call": {
+                                        "tool": "tool_value",
+                                        "action": "action_value",
+                                        "input_parameters": {},
+                                    },
                                     "channel": "channel_value",
                                 }
                             ],
@@ -7529,6 +7541,8 @@ def test_update_test_case_rest(request_type):
                                     "enabled": True,
                                     "max_digits": 1065,
                                     "finish_digit": "finish_digit_value",
+                                    "interdigit_timeout_duration": {},
+                                    "endpointing_timeout_duration": {},
                                 },
                                 "logging_settings": {
                                     "enable_stackdriver_logging": True,

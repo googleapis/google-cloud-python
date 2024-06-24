@@ -327,9 +327,8 @@ class CloudControlsPartnerMonitoringAsyncClient:
                 The request object. Message for requesting list of
                 Violations
             parent (:class:`str`):
-                Required. Parent resource
-                Format
-                organizations/{organization}/locations/{location}/customers/{customer}/workloads/{workload}
+                Required. Parent resource Format
+                ``organizations/{organization}/locations/{location}/customers/{customer}/workloads/{workload}``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -446,8 +445,7 @@ class CloudControlsPartnerMonitoringAsyncClient:
                 The request object. Message for getting a Violation
             name (:class:`str`):
                 Required. Format:
-
-                organizations/{organization}/locations/{location}/customers/{customer}/workloads/{workload}/violations/{violation}
+                ``organizations/{organization}/locations/{location}/customers/{customer}/workloads/{workload}/violations/{violation}``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this

@@ -288,6 +288,30 @@ class PagesClient(metaclass=PagesClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
+    def tool_path(
+        project: str,
+        location: str,
+        agent: str,
+        tool: str,
+    ) -> str:
+        """Returns a fully-qualified tool string."""
+        return "projects/{project}/locations/{location}/agents/{agent}/tools/{tool}".format(
+            project=project,
+            location=location,
+            agent=agent,
+            tool=tool,
+        )
+
+    @staticmethod
+    def parse_tool_path(path: str) -> Dict[str, str]:
+        """Parses a tool path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/agents/(?P<agent>.+?)/tools/(?P<tool>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def transition_route_group_path(
         project: str,
         location: str,

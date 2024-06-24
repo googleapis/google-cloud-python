@@ -19166,6 +19166,8 @@ def test_get_security_center_service_rest_required_fields(
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
     ).get_security_center_service._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("show_eligible_modules_only",))
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -19221,7 +19223,7 @@ def test_get_security_center_service_rest_unset_required_fields():
     )
 
     unset_fields = transport.get_security_center_service._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
+    assert set(unset_fields) == (set(("showEligibleModulesOnly",)) & set(("name",)))
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -19492,6 +19494,7 @@ def test_list_security_center_services_rest_required_fields(
         (
             "page_size",
             "page_token",
+            "show_eligible_modules_only",
         )
     )
     jsonified_request.update(unset_fields)
@@ -19558,6 +19561,7 @@ def test_list_security_center_services_rest_unset_required_fields():
             (
                 "pageSize",
                 "pageToken",
+                "showEligibleModulesOnly",
             )
         )
         & set(("parent",))

@@ -106,7 +106,6 @@ from .environment import (
 )
 from .example import (
     Action,
-    ActionParameter,
     AgentUtterance,
     CreateExampleRequest,
     DeleteExampleRequest,
@@ -314,7 +313,7 @@ from .tool import (
     Tool,
     UpdateToolRequest,
 )
-from .tool_call import ToolCallResult
+from .tool_call import ToolCall, ToolCallResult
 from .transition_route_group import (
     CreateTransitionRouteGroupRequest,
     DeleteTransitionRouteGroupRequest,
@@ -430,7 +429,6 @@ __all__ = (
     "RunContinuousTestResponse",
     "UpdateEnvironmentRequest",
     "Action",
-    "ActionParameter",
     "AgentUtterance",
     "CreateExampleRequest",
     "DeleteExampleRequest",
@@ -617,6 +615,7 @@ __all__ = (
     "ListToolsResponse",
     "Tool",
     "UpdateToolRequest",
+    "ToolCall",
     "ToolCallResult",
     "CreateTransitionRouteGroupRequest",
     "DeleteTransitionRouteGroupRequest",

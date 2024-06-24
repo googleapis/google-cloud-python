@@ -445,16 +445,17 @@ class ListDataScanJobsResponse(proto.Message):
 
 
 class GenerateDataQualityRulesRequest(proto.Message):
-    r"""Generate recommended DataQualityRules request.
+    r"""Request details for generating data quality rule
+    recommendations.
 
     Attributes:
         name (str):
-            Required. The name should be either
+            Required. The name must be one of the following:
 
-            -  the name of a datascan with at least one successful
-               completed data profiling job, or
-            -  the name of a successful completed data profiling
-               datascan job.
+            -  The name of a data scan with at least one successful,
+               completed data profiling job
+            -  The name of a successful, completed data profiling job (a
+               data scan job where the job type is data profiling)
     """
 
     name: str = proto.Field(
@@ -464,12 +465,13 @@ class GenerateDataQualityRulesRequest(proto.Message):
 
 
 class GenerateDataQualityRulesResponse(proto.Message):
-    r"""Generate recommended DataQualityRules response.
+    r"""Response details for data quality rule recommendations.
 
     Attributes:
         rule (MutableSequence[google.cloud.dataplex_v1.types.DataQualityRule]):
-            Generated recommended {@link
-            DataQualityRule}s.
+            The data quality rules that Dataplex
+            generates based on the results of a data
+            profiling scan.
     """
 
     rule: MutableSequence[data_quality.DataQualityRule] = proto.RepeatedField(
