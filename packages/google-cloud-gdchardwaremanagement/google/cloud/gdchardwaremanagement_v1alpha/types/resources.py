@@ -301,13 +301,13 @@ class Site(proto.Message):
             Optional. Any additional notes for this Site.
             Please include information about:
 
-             - security or access restrictions
-             - any regulations affecting the technicians
+            - security or access restrictions
+            - any regulations affecting the technicians
               visiting the site
-             - any special process or approval required to
+            - any special process or approval required to
               move the equipment
-             - whether a representative will be available
-              during site visits
+            - whether a representative will be available
+              during site visits              
     """
 
     name: str = proto.Field(
