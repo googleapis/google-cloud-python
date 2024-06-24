@@ -3567,6 +3567,7 @@ def test_create_security_settings_rest(request_type):
             "audio_export_pattern": "audio_export_pattern_value",
             "enable_audio_redaction": True,
             "audio_format": 1,
+            "store_tts_audio": True,
         },
         "insights_export_settings": {"enable_insights_export": True},
     }
@@ -4344,6 +4345,7 @@ def test_update_security_settings_rest(request_type):
             "audio_export_pattern": "audio_export_pattern_value",
             "enable_audio_redaction": True,
             "audio_format": 1,
+            "store_tts_audio": True,
         },
         "insights_export_settings": {"enable_insights_export": True},
     }

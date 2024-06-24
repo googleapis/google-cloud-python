@@ -243,7 +243,37 @@ class AlertPolicy(proto.Message):
                 variables <https://cloud.google.com/monitoring/alerts/doc-variables>`__.
                 If this field is missing or empty, a default subject line
                 will be generated.
+            links (MutableSequence[google.cloud.monitoring_v3.types.AlertPolicy.Documentation.Link]):
+                Optional. Links to content such as playbooks,
+                repositories, and other resources. This field
+                can contain up to 3 entries.
         """
+
+        class Link(proto.Message):
+            r"""Links to content such as playbooks, repositories, and other
+            resources.
+
+            Attributes:
+                display_name (str):
+                    A short display name for the link. The
+                    display name must not be empty or exceed 63
+                    characters. Example: "playbook".
+                url (str):
+                    The url of a webpage. A url can be templatized by using
+                    variables in the path or the query parameters. The total
+                    length of a URL should not exceed 2083 characters before and
+                    after variable expansion. Example:
+                    "https://my_domain.com/playbook?name=${resource.name}".
+            """
+
+            display_name: str = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+            url: str = proto.Field(
+                proto.STRING,
+                number=2,
+            )
 
         content: str = proto.Field(
             proto.STRING,
@@ -256,6 +286,11 @@ class AlertPolicy(proto.Message):
         subject: str = proto.Field(
             proto.STRING,
             number=3,
+        )
+        links: MutableSequence["AlertPolicy.Documentation.Link"] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=4,
+            message="AlertPolicy.Documentation.Link",
         )
 
     class Condition(proto.Message):

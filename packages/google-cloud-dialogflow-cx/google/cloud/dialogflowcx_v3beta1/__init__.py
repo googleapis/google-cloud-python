@@ -144,7 +144,6 @@ from .types.environment import (
 )
 from .types.example import (
     Action,
-    ActionParameter,
     AgentUtterance,
     CreateExampleRequest,
     DeleteExampleRequest,
@@ -352,7 +351,7 @@ from .types.tool import (
     Tool,
     UpdateToolRequest,
 )
-from .types.tool_call import ToolCallResult
+from .types.tool_call import ToolCall, ToolCallResult
 from .types.transition_route_group import (
     CreateTransitionRouteGroupRequest,
     DeleteTransitionRouteGroupRequest,
@@ -414,7 +413,6 @@ __all__ = (
     "VersionsAsyncClient",
     "WebhooksAsyncClient",
     "Action",
-    "ActionParameter",
     "AdvancedSettings",
     "Agent",
     "AgentUtterance",
@@ -690,6 +688,7 @@ __all__ = (
     "TextInput",
     "TextToSpeechSettings",
     "Tool",
+    "ToolCall",
     "ToolCallResult",
     "ToolUse",
     "ToolsClient",

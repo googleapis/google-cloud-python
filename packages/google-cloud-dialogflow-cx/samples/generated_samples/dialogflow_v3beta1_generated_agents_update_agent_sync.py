@@ -40,6 +40,7 @@ def sample_update_agent():
 
     # Initialize request argument(s)
     agent = dialogflowcx_v3beta1.Agent()
+    agent.start_flow = "start_flow_value"
     agent.display_name = "display_name_value"
     agent.default_language_code = "default_language_code_value"
     agent.time_zone = "time_zone_value"

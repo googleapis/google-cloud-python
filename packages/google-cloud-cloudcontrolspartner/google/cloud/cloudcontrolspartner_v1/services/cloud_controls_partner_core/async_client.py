@@ -28,6 +28,7 @@ from typing import (
     Type,
     Union,
 )
+import warnings
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -979,7 +980,8 @@ class CloudControlsPartnerCoreAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListAccessApprovalRequestsAsyncPager:
-        r"""Lists access requests associated with a workload
+        r"""Deprecated: Only returns access approval requests
+        directly associated with an assured workload folder.
 
         .. code-block:: python
 
@@ -1034,6 +1036,11 @@ class CloudControlsPartnerCoreAsyncClient:
                 automatically.
 
         """
+        warnings.warn(
+            "CloudControlsPartnerCoreAsyncClient.list_access_approval_requests is deprecated",
+            DeprecationWarning,
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.

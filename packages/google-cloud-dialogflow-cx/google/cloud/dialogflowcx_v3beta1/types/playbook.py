@@ -214,9 +214,8 @@ class Playbook(proto.Message):
         output_parameter_definitions (MutableSequence[google.cloud.dialogflowcx_v3beta1.types.ParameterDefinition]):
             Optional. Defined structured output
             parameters for this playbook.
-        steps (MutableSequence[google.cloud.dialogflowcx_v3beta1.types.Playbook.Step]):
-            Ordered list of step by step execution
-            instructions to accomplish target goal.
+        instruction (google.cloud.dialogflowcx_v3beta1.types.Playbook.Instruction):
+            Instruction to accomplish target goal.
         token_count (int):
             Output only. Estimated number of tokes
             current playbook takes when sent to the LLM.
@@ -271,6 +270,21 @@ class Playbook(proto.Message):
             message="Playbook.Step",
         )
 
+    class Instruction(proto.Message):
+        r"""Message of the Instruction of the playbook.
+
+        Attributes:
+            steps (MutableSequence[google.cloud.dialogflowcx_v3beta1.types.Playbook.Step]):
+                Ordered list of step by step execution
+                instructions to accomplish target goal.
+        """
+
+        steps: MutableSequence["Playbook.Step"] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message="Playbook.Step",
+        )
+
     name: str = proto.Field(
         proto.STRING,
         number=1,
@@ -297,10 +311,10 @@ class Playbook(proto.Message):
         number=6,
         message=parameter_definition.ParameterDefinition,
     )
-    steps: MutableSequence[Step] = proto.RepeatedField(
+    instruction: Instruction = proto.Field(
         proto.MESSAGE,
-        number=4,
-        message=Step,
+        number=17,
+        message=Instruction,
     )
     token_count: int = proto.Field(
         proto.INT64,

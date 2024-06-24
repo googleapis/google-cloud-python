@@ -34,8 +34,7 @@ class PartnerPermissions(proto.Message):
     Attributes:
         name (str):
             Identifier. Format:
-
-            organizations/{organization}/locations/{location}/customers/{customer}/workloads/{workload}/partnerPermissions
+            ``organizations/{organization}/locations/{location}/customers/{customer}/workloads/{workload}/partnerPermissions``
         partner_permissions (MutableSequence[google.cloud.cloudcontrolspartner_v1beta.types.PartnerPermissions.Permission]):
             The partner permissions granted for the
             workload
@@ -82,9 +81,8 @@ class GetPartnerPermissionsRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. Name of the resource to get in the
-            format:
-            organizations/{organization}/locations/{location}/customers/{customer}/workloads/{workload}/partnerPermissions
+            Required. Name of the resource to get in the format:
+            ``organizations/{organization}/locations/{location}/customers/{customer}/workloads/{workload}/partnerPermissions``
     """
 
     name: str = proto.Field(

@@ -1256,11 +1256,6 @@ class BackupDRRestTransport(BackupDRTransport):
                     "uri": "/v1/{resource=projects/*/locations/*/managementServers/*}:testIamPermissions",
                     "body": "*",
                 },
-                {
-                    "method": "post",
-                    "uri": "/v1/{resource=projects/*/locations/*/backupVaults/*}:testIamPermissions",
-                    "body": "*",
-                },
             ]
 
             request, metadata = self._interceptor.pre_test_iam_permissions(

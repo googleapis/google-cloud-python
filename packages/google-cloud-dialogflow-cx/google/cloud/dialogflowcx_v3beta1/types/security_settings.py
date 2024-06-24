@@ -381,6 +381,9 @@ class SecuritySettings(proto.Message):
             audio_format (google.cloud.dialogflowcx_v3beta1.types.SecuritySettings.AudioExportSettings.AudioFormat):
                 File format for exported audio file.
                 Currently only in telephony recordings.
+            store_tts_audio (bool):
+                Whether to store TTS audio. By default, TTS
+                audio from the virtual agent is not exported.
         """
 
         class AudioFormat(proto.Enum):
@@ -418,6 +421,10 @@ class SecuritySettings(proto.Message):
             proto.ENUM,
             number=4,
             enum="SecuritySettings.AudioExportSettings.AudioFormat",
+        )
+        store_tts_audio: bool = proto.Field(
+            proto.BOOL,
+            number=6,
         )
 
     class InsightsExportSettings(proto.Message):
