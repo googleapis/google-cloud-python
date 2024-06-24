@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+## [2.19.1](https://github.com/googleapis/python-api-core/compare/v2.19.0...v2.19.1) (2024-06-19)
+
+
+### Bug Fixes
+
+* Add support for protobuf 5.x ([#644](https://github.com/googleapis/python-api-core/issues/644)) ([fda0ca6](https://github.com/googleapis/python-api-core/commit/fda0ca6f0664ac5044671591ed62618175a7393f))
+* Ignore unknown fields in rest streaming. ([#651](https://github.com/googleapis/python-api-core/issues/651)) ([1203fb9](https://github.com/googleapis/python-api-core/commit/1203fb97d2685535f89113e944c4764c1deb595e))
+
 ## [2.19.0](https://github.com/googleapis/python-api-core/compare/v2.18.0...v2.19.0) (2024-04-29)
 
 
