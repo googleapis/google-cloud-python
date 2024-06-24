@@ -307,7 +307,7 @@ class Site(proto.Message):
             - any special process or approval required to
               move the equipment
             - whether a representative will be available
-              during site visits              
+              during site visits
     """
 
     name: str = proto.Field(
