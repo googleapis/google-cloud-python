@@ -63,7 +63,6 @@ class PendingRenameInfo(proto.Message):
 class Folder(proto.Message):
     r"""A folder resource. This resource can only exist in a
     hierarchical namespace enabled bucket.
-    Hierarchical namespace buckets are in allowlist preview.
 
     Attributes:
         name (str):
@@ -116,7 +115,6 @@ class Folder(proto.Message):
 class GetFolderRequest(proto.Message):
     r"""Request message for GetFolder. This operation is only
     applicable to a hierarchical namespace enabled bucket.
-    Hierarchical namespace buckets are in allowlist preview.
 
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
@@ -166,7 +164,6 @@ class GetFolderRequest(proto.Message):
 class CreateFolderRequest(proto.Message):
     r"""Request message for CreateFolder. This operation is only
     applicable to a hierarchical namespace enabled bucket.
-    Hierarchical namespace buckets are in allowlist preview.
 
     Attributes:
         parent (str):
@@ -220,7 +217,6 @@ class CreateFolderRequest(proto.Message):
 class DeleteFolderRequest(proto.Message):
     r"""Request message for DeleteFolder. This operation is only
     applicable to a hierarchical namespace enabled bucket.
-    Hierarchical namespace buckets are in allowlist preview.
 
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
@@ -270,7 +266,6 @@ class DeleteFolderRequest(proto.Message):
 class ListFoldersRequest(proto.Message):
     r"""Request message for ListFolders. This operation is only
     applicable to a hierarchical namespace enabled bucket.
-    Hierarchical namespace buckets are in allowlist preview.
 
     Attributes:
         parent (str):
@@ -379,7 +374,6 @@ class ListFoldersResponse(proto.Message):
 class RenameFolderRequest(proto.Message):
     r"""Request message for RenameFolder. This operation is only
     applicable to a hierarchical namespace enabled bucket.
-    Hierarchical namespace buckets are in allowlist preview.
 
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields

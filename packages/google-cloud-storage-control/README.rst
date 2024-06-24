@@ -15,7 +15,7 @@ Python Client for Storage Control API
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-storage-control.svg
    :target: https://pypi.org/project/google-cloud-storage-control/
 .. _Storage Control API: https://cloud.google.com/storage/docs/reference/rpc/google.storage.control.v2
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/google-cloud-storage-control/latest/summary_overview
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/google-cloud-storage-control/latest
 .. _Product Documentation:  https://cloud.google.com/storage/docs/reference/rpc/google.storage.control.v2
 
 Quick Start
