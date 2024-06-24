@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.1.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataplex-v2.0.1...google-cloud-dataplex-v2.1.0) (2024-06-24)
+
+
+### Features
+
+* exposing EntrySource.location field that contains location of a resource in the source system ([9264874](https://github.com/googleapis/google-cloud-python/commit/9264874e8ab6cff0a837a3afbba33848e6100fd8))
+
+
+### Documentation
+
+* Scrub descriptions for GenerateDataQualityRules ([9264874](https://github.com/googleapis/google-cloud-python/commit/9264874e8ab6cff0a837a3afbba33848e6100fd8))
+
 ## [2.0.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataplex-v2.0.0...google-cloud-dataplex-v2.0.1) (2024-06-19)
 
 

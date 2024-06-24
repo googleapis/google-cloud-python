@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.12](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securitycentermanagement-v0.1.11...google-cloud-securitycentermanagement-v0.1.12) (2024-06-24)
+
+
+### Features
+
+* add `show_eligible_modules_only` field to `GetSecurityCenterServiceRequest` message ([2e0f94e](https://github.com/googleapis/google-cloud-python/commit/2e0f94e0f96054a884af7fe8ae80612e04faa91a))
+* add `TOXIC_COMBINATION` to `FindingClass` enum ([2e0f94e](https://github.com/googleapis/google-cloud-python/commit/2e0f94e0f96054a884af7fe8ae80612e04faa91a))
+
 ## [0.1.11](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securitycentermanagement-v0.1.10...google-cloud-securitycentermanagement-v0.1.11) (2024-06-19)
 
 
