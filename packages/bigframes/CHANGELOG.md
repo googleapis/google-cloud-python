@@ -4,6 +4,26 @@
 
 [1]: https://pypi.org/project/bigframes/#history
 
+## [1.10.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v1.9.0...v1.10.0) (2024-06-21)
+
+
+### Features
+
+* Add dataframe.insert ([#770](https://github.com/googleapis/python-bigquery-dataframes/issues/770)) ([e8bab68](https://github.com/googleapis/python-bigquery-dataframes/commit/e8bab681a2d07636e5809e804f4fd81b0d582685))
+* Add groupby head API ([#791](https://github.com/googleapis/python-bigquery-dataframes/issues/791)) ([44202bc](https://github.com/googleapis/python-bigquery-dataframes/commit/44202bc3541df03154ea0b2cca8eac18094a91a9))
+* Add ml.preprocessing.PolynomialFeatures class ([#793](https://github.com/googleapis/python-bigquery-dataframes/issues/793)) ([b4fbb51](https://github.com/googleapis/python-bigquery-dataframes/commit/b4fbb518711922c09ac6f55f3b8f6ab57c89114b))
+* Bigframes.streaming module for continuous queries ([#703](https://github.com/googleapis/python-bigquery-dataframes/issues/703)) ([0433a1c](https://github.com/googleapis/python-bigquery-dataframes/commit/0433a1cff57fddda26b2c57adc0ea71f3fdd3201))
+* Include index columns in DataFrame.sql if they are named ([#788](https://github.com/googleapis/python-bigquery-dataframes/issues/788)) ([c8d16c0](https://github.com/googleapis/python-bigquery-dataframes/commit/c8d16c0f72a25bce854b80be517114e1603c947e))
+
+
+### Bug Fixes
+
+* Allow `__repr__` to work with uninitialed DataFrame/Series/Index ([#778](https://github.com/googleapis/python-bigquery-dataframes/issues/778)) ([e14c7a9](https://github.com/googleapis/python-bigquery-dataframes/commit/e14c7a9e7a9cb8847e0382b135fc06c7b82b872a))
+* Df.loc with the 2nd input as bigframes boolean Series ([#789](https://github.com/googleapis/python-bigquery-dataframes/issues/789)) ([a4ac82e](https://github.com/googleapis/python-bigquery-dataframes/commit/a4ac82e06221581ddfcfc1246a3e3cd65a8bb00e))
+* Ensure numpy version matches in `remote_function` deployment ([#798](https://github.com/googleapis/python-bigquery-dataframes/issues/798)) ([324d93c](https://github.com/googleapis/python-bigquery-dataframes/commit/324d93cb31191520b790bbbc501468b8d1d8467d))
+* Fix temp table creation retries by now throwing if table already exists. ([#787](https://github.com/googleapis/python-bigquery-dataframes/issues/787)) ([0e57d1f](https://github.com/googleapis/python-bigquery-dataframes/commit/0e57d1f1f8a150ba6faac5f667bb5b4c78f4c0a3))
+* Self-join optimization doesn't needlessly invalidate caching ([#797](https://github.com/googleapis/python-bigquery-dataframes/issues/797)) ([1b96b80](https://github.com/googleapis/python-bigquery-dataframes/commit/1b96b8027a550e1601a5360f2af35d24a8806da9))
+
 ## [1.9.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v1.8.0...v1.9.0) (2024-06-10)
 
 
