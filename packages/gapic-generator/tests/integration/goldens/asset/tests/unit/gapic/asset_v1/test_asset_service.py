@@ -923,11 +923,7 @@ async def test_export_assets_async_use_cached_wrapped_rpc(transport: str = "grpc
         assert client._client._transport.export_assets in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[client._client._transport.export_assets] = mock_object
 
         request = {}
@@ -1200,11 +1196,7 @@ async def test_list_assets_async_use_cached_wrapped_rpc(transport: str = "grpc_a
         assert client._client._transport.list_assets in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[client._client._transport.list_assets] = mock_object
 
         request = {}
@@ -1743,11 +1735,7 @@ async def test_batch_get_assets_history_async_use_cached_wrapped_rpc(transport: 
         assert client._client._transport.batch_get_assets_history in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[client._client._transport.batch_get_assets_history] = mock_object
 
         request = {}
@@ -2027,11 +2015,7 @@ async def test_create_feed_async_use_cached_wrapped_rpc(transport: str = "grpc_a
         assert client._client._transport.create_feed in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[client._client._transport.create_feed] = mock_object
 
         request = {}
@@ -2401,11 +2385,7 @@ async def test_get_feed_async_use_cached_wrapped_rpc(transport: str = "grpc_asyn
         assert client._client._transport.get_feed in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[client._client._transport.get_feed] = mock_object
 
         request = {}
@@ -2760,11 +2740,7 @@ async def test_list_feeds_async_use_cached_wrapped_rpc(transport: str = "grpc_as
         assert client._client._transport.list_feeds in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[client._client._transport.list_feeds] = mock_object
 
         request = {}
@@ -3122,11 +3098,7 @@ async def test_update_feed_async_use_cached_wrapped_rpc(transport: str = "grpc_a
         assert client._client._transport.update_feed in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[client._client._transport.update_feed] = mock_object
 
         request = {}
@@ -3479,11 +3451,7 @@ async def test_delete_feed_async_use_cached_wrapped_rpc(transport: str = "grpc_a
         assert client._client._transport.delete_feed in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[client._client._transport.delete_feed] = mock_object
 
         request = {}
@@ -3836,11 +3804,7 @@ async def test_search_all_resources_async_use_cached_wrapped_rpc(transport: str 
         assert client._client._transport.search_all_resources in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[client._client._transport.search_all_resources] = mock_object
 
         request = {}
@@ -4408,11 +4372,7 @@ async def test_search_all_iam_policies_async_use_cached_wrapped_rpc(transport: s
         assert client._client._transport.search_all_iam_policies in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[client._client._transport.search_all_iam_policies] = mock_object
 
         request = {}
@@ -4964,11 +4924,7 @@ async def test_analyze_iam_policy_async_use_cached_wrapped_rpc(transport: str = 
         assert client._client._transport.analyze_iam_policy in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[client._client._transport.analyze_iam_policy] = mock_object
 
         request = {}
@@ -5237,11 +5193,7 @@ async def test_analyze_iam_policy_longrunning_async_use_cached_wrapped_rpc(trans
         assert client._client._transport.analyze_iam_policy_longrunning in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[client._client._transport.analyze_iam_policy_longrunning] = mock_object
 
         request = {}
@@ -5511,11 +5463,7 @@ async def test_analyze_move_async_use_cached_wrapped_rpc(transport: str = "grpc_
         assert client._client._transport.analyze_move in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[client._client._transport.analyze_move] = mock_object
 
         request = {}
@@ -5790,11 +5738,7 @@ async def test_query_assets_async_use_cached_wrapped_rpc(transport: str = "grpc_
         assert client._client._transport.query_assets in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[client._client._transport.query_assets] = mock_object
 
         request = {}
@@ -6075,11 +6019,7 @@ async def test_create_saved_query_async_use_cached_wrapped_rpc(transport: str = 
         assert client._client._transport.create_saved_query in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[client._client._transport.create_saved_query] = mock_object
 
         request = {}
@@ -6464,11 +6404,7 @@ async def test_get_saved_query_async_use_cached_wrapped_rpc(transport: str = "gr
         assert client._client._transport.get_saved_query in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[client._client._transport.get_saved_query] = mock_object
 
         request = {}
@@ -6828,11 +6764,7 @@ async def test_list_saved_queries_async_use_cached_wrapped_rpc(transport: str = 
         assert client._client._transport.list_saved_queries in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[client._client._transport.list_saved_queries] = mock_object
 
         request = {}
@@ -7381,11 +7313,7 @@ async def test_update_saved_query_async_use_cached_wrapped_rpc(transport: str = 
         assert client._client._transport.update_saved_query in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[client._client._transport.update_saved_query] = mock_object
 
         request = {}
@@ -7746,11 +7674,7 @@ async def test_delete_saved_query_async_use_cached_wrapped_rpc(transport: str = 
         assert client._client._transport.delete_saved_query in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[client._client._transport.delete_saved_query] = mock_object
 
         request = {}
@@ -8094,11 +8018,7 @@ async def test_batch_get_effective_iam_policies_async_use_cached_wrapped_rpc(tra
         assert client._client._transport.batch_get_effective_iam_policies in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[client._client._transport.batch_get_effective_iam_policies] = mock_object
 
         request = {}
@@ -8370,11 +8290,7 @@ async def test_analyze_org_policies_async_use_cached_wrapped_rpc(transport: str 
         assert client._client._transport.analyze_org_policies in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[client._client._transport.analyze_org_policies] = mock_object
 
         request = {}
@@ -8942,11 +8858,7 @@ async def test_analyze_org_policy_governed_containers_async_use_cached_wrapped_r
         assert client._client._transport.analyze_org_policy_governed_containers in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[client._client._transport.analyze_org_policy_governed_containers] = mock_object
 
         request = {}
@@ -9514,11 +9426,7 @@ async def test_analyze_org_policy_governed_assets_async_use_cached_wrapped_rpc(t
         assert client._client._transport.analyze_org_policy_governed_assets in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[client._client._transport.analyze_org_policy_governed_assets] = mock_object
 
         request = {}

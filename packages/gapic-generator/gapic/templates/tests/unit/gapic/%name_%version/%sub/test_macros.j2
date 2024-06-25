@@ -321,11 +321,7 @@ async def test_{{ method_name }}_async_use_cached_wrapped_rpc(transport: str = "
         assert client._client._transport.{{method.transport_safe_name|snake_case}} in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[client._client._transport.{{method.transport_safe_name|snake_case}}] = mock_object
 
         {% if method.client_streaming %}

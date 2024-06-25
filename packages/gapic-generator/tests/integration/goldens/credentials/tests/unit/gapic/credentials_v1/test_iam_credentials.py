@@ -912,11 +912,7 @@ async def test_generate_access_token_async_use_cached_wrapped_rpc(transport: str
         assert client._client._transport.generate_access_token in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[client._client._transport.generate_access_token] = mock_object
 
         request = {}
@@ -1294,11 +1290,7 @@ async def test_generate_id_token_async_use_cached_wrapped_rpc(transport: str = "
         assert client._client._transport.generate_id_token in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[client._client._transport.generate_id_token] = mock_object
 
         request = {}
@@ -1681,11 +1673,7 @@ async def test_sign_blob_async_use_cached_wrapped_rpc(transport: str = "grpc_asy
         assert client._client._transport.sign_blob in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[client._client._transport.sign_blob] = mock_object
 
         request = {}
@@ -2062,11 +2050,7 @@ async def test_sign_jwt_async_use_cached_wrapped_rpc(transport: str = "grpc_asyn
         assert client._client._transport.sign_jwt in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[client._client._transport.sign_jwt] = mock_object
 
         request = {}
