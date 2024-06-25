@@ -590,7 +590,7 @@ def test_remote_function_restore_with_bigframes_series(
         add_one_uniq, add_one_uniq_dir = make_uniq_udf(add_one)
 
         # Expected cloud function name for the unique udf
-        add_one_uniq_cf_name = get_cloud_function_name(add_one_uniq)
+        add_one_uniq_cf_name, _ = get_cloud_function_name(add_one_uniq)
 
         # There should be no cloud function yet for the unique udf
         cloud_functions = list(

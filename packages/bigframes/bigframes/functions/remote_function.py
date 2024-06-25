@@ -102,6 +102,24 @@ def _get_hash(def_, package_requirements=None):
     return hashlib.md5(def_repr).hexdigest()
 
 
+def _get_updated_package_requirements(package_requirements, is_row_processor):
+    requirements = [f"cloudpickle=={cloudpickle.__version__}"]
+    if is_row_processor:
+        # bigframes remote function will send an entire row of data as json,
+        # which would be converted to a pandas series and processed
+        # Ensure numpy versions match to avoid unpickling problems. See
+        # internal issue b/347934471.
+        requirements.append(f"numpy=={numpy.__version__}")
+        requirements.append(f"pandas=={pandas.__version__}")
+        requirements.append(f"pyarrow=={pyarrow.__version__}")
+
+    if package_requirements:
+        requirements.extend(package_requirements)
+
+    requirements = sorted(requirements)
+    return requirements
+
+
 def routine_ref_to_string_for_query(routine_ref: bigquery.RoutineReference) -> str:
     return f"`{routine_ref.project}.{routine_ref.dataset_id}`.{routine_ref.routine_id}"
 
@@ -112,13 +130,22 @@ class IbisSignature(NamedTuple):
     output_type: IbisDataType
 
 
-def get_cloud_function_name(def_, uniq_suffix=None, package_requirements=None):
+def get_cloud_function_name(
+    def_, uniq_suffix=None, package_requirements=None, is_row_processor=False
+):
     "Get a name for the cloud function for the given user defined function."
+
+    # Augment user package requirements with any internal package
+    # requirements
+    package_requirements = _get_updated_package_requirements(
+        package_requirements, is_row_processor
+    )
+
     cf_name = _get_hash(def_, package_requirements)
     cf_name = f"bigframes-{cf_name}"  # for identification
     if uniq_suffix:
         cf_name = f"{cf_name}-{uniq_suffix}"
-    return cf_name
+    return cf_name, package_requirements
 
 
 def get_remote_function_name(def_, uniq_suffix=None, package_requirements=None):
@@ -277,21 +304,10 @@ class RemoteFunctionClient:
         """
 
         # requirements.txt
-        requirements = ["cloudpickle >= 2.1.0"]
-        if is_row_processor:
-            # bigframes remote function will send an entire row of data as json,
-            # which would be converted to a pandas series and processed
-            # Ensure numpy versions match to avoid unpickling problems. See
-            # internal issue b/347934471.
-            requirements.append(f"numpy=={numpy.__version__}")
-            requirements.append(f"pandas=={pandas.__version__}")
-            requirements.append(f"pyarrow=={pyarrow.__version__}")
         if package_requirements:
-            requirements.extend(package_requirements)
-        requirements = sorted(requirements)
-        requirements_txt = os.path.join(directory, "requirements.txt")
-        with open(requirements_txt, "w") as f:
-            f.write("\n".join(requirements))
+            requirements_txt = os.path.join(directory, "requirements.txt")
+            with open(requirements_txt, "w") as f:
+                f.write("\n".join(package_requirements))
 
         # main.py
         entry_point = bigframes.functions.remote_function_template.generate_cloud_function_main_code(
@@ -469,9 +485,10 @@ class RemoteFunctionClient:
             )
 
         # Derive the name of the cloud function underlying the intended BQ
-        # remote function
-        cloud_function_name = get_cloud_function_name(
-            def_, uniq_suffix, package_requirements
+        # remote function, also collect updated package requirements as
+        # determined in the name resolution
+        cloud_function_name, package_requirements = get_cloud_function_name(
+            def_, uniq_suffix, package_requirements, is_row_processor
         )
         cf_endpoint = self.get_cloud_function_endpoint(cloud_function_name)
 
