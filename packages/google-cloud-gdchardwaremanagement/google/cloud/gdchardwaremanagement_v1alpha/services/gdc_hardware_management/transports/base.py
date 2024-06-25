@@ -522,6 +522,11 @@ class GDCHardwareManagementTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.signal_zone_state: gapic_v1.method.wrap_method(
+                self.signal_zone_state,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -824,6 +829,15 @@ class GDCHardwareManagementTransport(abc.ABC):
         self,
     ) -> Callable[
         [service.DeleteZoneRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def signal_zone_state(
+        self,
+    ) -> Callable[
+        [service.SignalZoneStateRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()

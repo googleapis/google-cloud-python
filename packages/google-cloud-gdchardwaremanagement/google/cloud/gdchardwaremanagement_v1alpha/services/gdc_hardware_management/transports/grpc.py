@@ -1076,6 +1076,32 @@ class GDCHardwareManagementGrpcTransport(GDCHardwareManagementTransport):
             )
         return self._stubs["delete_zone"]
 
+    @property
+    def signal_zone_state(
+        self,
+    ) -> Callable[[service.SignalZoneStateRequest], operations_pb2.Operation]:
+        r"""Return a callable for the signal zone state method over gRPC.
+
+        Signals the state of a zone.
+
+        Returns:
+            Callable[[~.SignalZoneStateRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "signal_zone_state" not in self._stubs:
+            self._stubs["signal_zone_state"] = self.grpc_channel.unary_unary(
+                "/google.cloud.gdchardwaremanagement.v1alpha.GDCHardwareManagement/SignalZoneState",
+                request_serializer=service.SignalZoneStateRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["signal_zone_state"]
+
     def close(self):
         self.grpc_channel.close()
 

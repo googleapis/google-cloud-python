@@ -1102,6 +1102,34 @@ class GDCHardwareManagementGrpcAsyncIOTransport(GDCHardwareManagementTransport):
             )
         return self._stubs["delete_zone"]
 
+    @property
+    def signal_zone_state(
+        self,
+    ) -> Callable[
+        [service.SignalZoneStateRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the signal zone state method over gRPC.
+
+        Signals the state of a zone.
+
+        Returns:
+            Callable[[~.SignalZoneStateRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "signal_zone_state" not in self._stubs:
+            self._stubs["signal_zone_state"] = self.grpc_channel.unary_unary(
+                "/google.cloud.gdchardwaremanagement.v1alpha.GDCHardwareManagement/SignalZoneState",
+                request_serializer=service.SignalZoneStateRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["signal_zone_state"]
+
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
@@ -1497,6 +1525,11 @@ class GDCHardwareManagementGrpcAsyncIOTransport(GDCHardwareManagementTransport):
                     deadline=60.0,
                 ),
                 default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.signal_zone_state: gapic_v1.method_async.wrap_method(
+                self.signal_zone_state,
+                default_timeout=None,
                 client_info=client_info,
             ),
         }

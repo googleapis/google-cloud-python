@@ -13636,6 +13636,7 @@ def test_get_zone(request_type, transport: str = "grpc"):
             display_name="display_name_value",
             state=resources.Zone.State.ADDITIONAL_INFO_NEEDED,
             ciq_uri="ciq_uri_value",
+            globally_unique_id="globally_unique_id_value",
         )
         response = client.get_zone(request)
 
@@ -13651,6 +13652,7 @@ def test_get_zone(request_type, transport: str = "grpc"):
     assert response.display_name == "display_name_value"
     assert response.state == resources.Zone.State.ADDITIONAL_INFO_NEEDED
     assert response.ciq_uri == "ciq_uri_value"
+    assert response.globally_unique_id == "globally_unique_id_value"
 
 
 def test_get_zone_empty_call():
@@ -13753,6 +13755,7 @@ async def test_get_zone_empty_call_async():
                 display_name="display_name_value",
                 state=resources.Zone.State.ADDITIONAL_INFO_NEEDED,
                 ciq_uri="ciq_uri_value",
+                globally_unique_id="globally_unique_id_value",
             )
         )
         response = await client.get_zone()
@@ -13827,6 +13830,7 @@ async def test_get_zone_async(
                 display_name="display_name_value",
                 state=resources.Zone.State.ADDITIONAL_INFO_NEEDED,
                 ciq_uri="ciq_uri_value",
+                globally_unique_id="globally_unique_id_value",
             )
         )
         response = await client.get_zone(request)
@@ -13843,6 +13847,7 @@ async def test_get_zone_async(
     assert response.display_name == "display_name_value"
     assert response.state == resources.Zone.State.ADDITIONAL_INFO_NEEDED
     assert response.ciq_uri == "ciq_uri_value"
+    assert response.globally_unique_id == "globally_unique_id_value"
 
 
 @pytest.mark.asyncio
@@ -15121,6 +15126,405 @@ async def test_delete_zone_flattened_error_async():
         await client.delete_zone(
             service.DeleteZoneRequest(),
             name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.SignalZoneStateRequest,
+        dict,
+    ],
+)
+def test_signal_zone_state(request_type, transport: str = "grpc"):
+    client = GDCHardwareManagementClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.signal_zone_state), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.signal_zone_state(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = service.SignalZoneStateRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_signal_zone_state_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = GDCHardwareManagementClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.signal_zone_state), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.signal_zone_state()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.SignalZoneStateRequest()
+
+
+def test_signal_zone_state_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = GDCHardwareManagementClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service.SignalZoneStateRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.signal_zone_state), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.signal_zone_state(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.SignalZoneStateRequest(
+            name="name_value",
+        )
+
+
+def test_signal_zone_state_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = GDCHardwareManagementClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.signal_zone_state in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.signal_zone_state
+        ] = mock_rpc
+        request = {}
+        client.signal_zone_state(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.signal_zone_state(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_signal_zone_state_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = GDCHardwareManagementAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.signal_zone_state), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.signal_zone_state()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.SignalZoneStateRequest()
+
+
+@pytest.mark.asyncio
+async def test_signal_zone_state_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = GDCHardwareManagementAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.signal_zone_state
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        class AwaitableMock(mock.AsyncMock):
+            def __await__(self):
+                self.await_count += 1
+                return iter([])
+
+        mock_object = AwaitableMock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.signal_zone_state
+        ] = mock_object
+
+        request = {}
+        await client.signal_zone_state(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_object.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        await client.signal_zone_state(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_object.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_signal_zone_state_async(
+    transport: str = "grpc_asyncio", request_type=service.SignalZoneStateRequest
+):
+    client = GDCHardwareManagementAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.signal_zone_state), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.signal_zone_state(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = service.SignalZoneStateRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_signal_zone_state_async_from_dict():
+    await test_signal_zone_state_async(request_type=dict)
+
+
+def test_signal_zone_state_field_headers():
+    client = GDCHardwareManagementClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.SignalZoneStateRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.signal_zone_state), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.signal_zone_state(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_signal_zone_state_field_headers_async():
+    client = GDCHardwareManagementAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.SignalZoneStateRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.signal_zone_state), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.signal_zone_state(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_signal_zone_state_flattened():
+    client = GDCHardwareManagementClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.signal_zone_state), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.signal_zone_state(
+            name="name_value",
+            state_signal=service.SignalZoneStateRequest.StateSignal.READY_FOR_SITE_TURNUP,
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].state_signal
+        mock_val = service.SignalZoneStateRequest.StateSignal.READY_FOR_SITE_TURNUP
+        assert arg == mock_val
+
+
+def test_signal_zone_state_flattened_error():
+    client = GDCHardwareManagementClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.signal_zone_state(
+            service.SignalZoneStateRequest(),
+            name="name_value",
+            state_signal=service.SignalZoneStateRequest.StateSignal.READY_FOR_SITE_TURNUP,
+        )
+
+
+@pytest.mark.asyncio
+async def test_signal_zone_state_flattened_async():
+    client = GDCHardwareManagementAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.signal_zone_state), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.signal_zone_state(
+            name="name_value",
+            state_signal=service.SignalZoneStateRequest.StateSignal.READY_FOR_SITE_TURNUP,
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].state_signal
+        mock_val = service.SignalZoneStateRequest.StateSignal.READY_FOR_SITE_TURNUP
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_signal_zone_state_flattened_error_async():
+    client = GDCHardwareManagementAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.signal_zone_state(
+            service.SignalZoneStateRequest(),
+            name="name_value",
+            state_signal=service.SignalZoneStateRequest.StateSignal.READY_FOR_SITE_TURNUP,
         )
 
 
@@ -25396,6 +25800,7 @@ def test_get_zone_rest(request_type):
             display_name="display_name_value",
             state=resources.Zone.State.ADDITIONAL_INFO_NEEDED,
             ciq_uri="ciq_uri_value",
+            globally_unique_id="globally_unique_id_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -25415,6 +25820,7 @@ def test_get_zone_rest(request_type):
     assert response.display_name == "display_name_value"
     assert response.state == resources.Zone.State.ADDITIONAL_INFO_NEEDED
     assert response.ciq_uri == "ciq_uri_value"
+    assert response.globally_unique_id == "globally_unique_id_value"
 
 
 def test_get_zone_rest_use_cached_wrapped_rpc():
@@ -25727,6 +26133,7 @@ def test_create_zone_rest(request_type):
             },
             "kubernetes_ipv4_subnet": {},
         },
+        "globally_unique_id": "globally_unique_id_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -26155,6 +26562,7 @@ def test_update_zone_rest(request_type):
             },
             "kubernetes_ipv4_subnet": {},
         },
+        "globally_unique_id": "globally_unique_id_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -26821,6 +27229,316 @@ def test_delete_zone_rest_error():
     )
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.SignalZoneStateRequest,
+        dict,
+    ],
+)
+def test_signal_zone_state_rest(request_type):
+    client = GDCHardwareManagementClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/zones/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.signal_zone_state(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_signal_zone_state_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = GDCHardwareManagementClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.signal_zone_state in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.signal_zone_state
+        ] = mock_rpc
+
+        request = {}
+        client.signal_zone_state(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.signal_zone_state(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_signal_zone_state_rest_required_fields(
+    request_type=service.SignalZoneStateRequest,
+):
+    transport_class = transports.GDCHardwareManagementRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).signal_zone_state._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).signal_zone_state._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = GDCHardwareManagementClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.signal_zone_state(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_signal_zone_state_rest_unset_required_fields():
+    transport = transports.GDCHardwareManagementRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.signal_zone_state._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "name",
+                "stateSignal",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_signal_zone_state_rest_interceptors(null_interceptor):
+    transport = transports.GDCHardwareManagementRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.GDCHardwareManagementRestInterceptor(),
+    )
+    client = GDCHardwareManagementClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.GDCHardwareManagementRestInterceptor, "post_signal_zone_state"
+    ) as post, mock.patch.object(
+        transports.GDCHardwareManagementRestInterceptor, "pre_signal_zone_state"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.SignalZoneStateRequest.pb(service.SignalZoneStateRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = service.SignalZoneStateRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.signal_zone_state(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_signal_zone_state_rest_bad_request(
+    transport: str = "rest", request_type=service.SignalZoneStateRequest
+):
+    client = GDCHardwareManagementClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/zones/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.signal_zone_state(request)
+
+
+def test_signal_zone_state_rest_flattened():
+    client = GDCHardwareManagementClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "projects/sample1/locations/sample2/zones/sample3"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+            state_signal=service.SignalZoneStateRequest.StateSignal.READY_FOR_SITE_TURNUP,
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.signal_zone_state(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{name=projects/*/locations/*/zones/*}:signal"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_signal_zone_state_rest_flattened_error(transport: str = "rest"):
+    client = GDCHardwareManagementClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.signal_zone_state(
+            service.SignalZoneStateRequest(),
+            name="name_value",
+            state_signal=service.SignalZoneStateRequest.StateSignal.READY_FOR_SITE_TURNUP,
+        )
+
+
+def test_signal_zone_state_rest_error():
+    client = GDCHardwareManagementClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.GDCHardwareManagementGrpcTransport(
@@ -26992,6 +27710,7 @@ def test_gdc_hardware_management_base_transport():
         "create_zone",
         "update_zone",
         "delete_zone",
+        "signal_zone_state",
         "get_location",
         "list_locations",
         "get_operation",
@@ -27377,6 +28096,9 @@ def test_gdc_hardware_management_client_transport_session_collision(transport_na
     assert session1 != session2
     session1 = client1.transport.delete_zone._session
     session2 = client2.transport.delete_zone._session
+    assert session1 != session2
+    session1 = client1.transport.signal_zone_state._session
+    session2 = client2.transport.signal_zone_state._session
     assert session1 != session2
 
 
