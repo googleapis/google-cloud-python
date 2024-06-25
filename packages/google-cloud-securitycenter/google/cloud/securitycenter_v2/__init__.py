@@ -36,6 +36,7 @@ from .types.exfiltration import ExfilResource, Exfiltration
 from .types.external_system import ExternalSystem
 from .types.file import File
 from .types.finding import Finding
+from .types.group_membership import GroupMembership
 from .types.iam_binding import IamBinding
 from .types.indicator import Indicator
 from .types.kernel_rootkit import KernelRootkit
@@ -107,6 +108,7 @@ from .types.securitycenter_service import (
 )
 from .types.simulation import Simulation
 from .types.source import Source
+from .types.toxic_combination import ToxicCombination
 from .types.valued_resource import ResourceValueConfigMetadata, ValuedResource
 from .types.vulnerability import (
     Cve,
@@ -166,6 +168,7 @@ __all__ = (
     "GetValuedResourceRequest",
     "GroupFindingsRequest",
     "GroupFindingsResponse",
+    "GroupMembership",
     "GroupResult",
     "IamBinding",
     "Indicator",
@@ -211,6 +214,7 @@ __all__ = (
     "SetMuteRequest",
     "Simulation",
     "Source",
+    "ToxicCombination",
     "UpdateBigQueryExportRequest",
     "UpdateExternalSystemRequest",
     "UpdateFindingRequest",

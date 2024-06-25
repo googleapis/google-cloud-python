@@ -30,6 +30,7 @@ from .exfiltration import ExfilResource, Exfiltration
 from .external_system import ExternalSystem
 from .file import File
 from .finding import Finding
+from .group_membership import GroupMembership
 from .iam_binding import IamBinding
 from .indicator import Indicator
 from .kernel_rootkit import KernelRootkit
@@ -101,6 +102,7 @@ from .securitycenter_service import (
 )
 from .simulation import Simulation
 from .source import Source
+from .toxic_combination import ToxicCombination
 from .valued_resource import ResourceValueConfigMetadata, ValuedResource
 from .vulnerability import (
     Cve,
@@ -133,6 +135,7 @@ __all__ = (
     "ExternalSystem",
     "File",
     "Finding",
+    "GroupMembership",
     "IamBinding",
     "Indicator",
     "KernelRootkit",
@@ -205,6 +208,7 @@ __all__ = (
     "UpdateSourceRequest",
     "Simulation",
     "Source",
+    "ToxicCombination",
     "ResourceValueConfigMetadata",
     "ValuedResource",
     "Cve",

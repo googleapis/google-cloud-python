@@ -69,6 +69,7 @@ from google.cloud.securitycenter_v2.types import (
     exfiltration,
 )
 from google.cloud.securitycenter_v2.types import (
+    group_membership,
     iam_binding,
     indicator,
     kernel_rootkit,
@@ -81,6 +82,11 @@ from google.cloud.securitycenter_v2.types import (
     security_posture,
     securitycenter_service,
     simulation,
+)
+from google.cloud.securitycenter_v2.types import (
+    toxic_combination,
+    valued_resource,
+    vulnerability,
 )
 from google.cloud.securitycenter_v2.types import external_system as gcs_external_system
 from google.cloud.securitycenter_v2.types import (
@@ -101,7 +107,6 @@ from google.cloud.securitycenter_v2.types import resource_value_config
 from google.cloud.securitycenter_v2.types import security_marks
 from google.cloud.securitycenter_v2.types import source
 from google.cloud.securitycenter_v2.types import source as gcs_source
-from google.cloud.securitycenter_v2.types import valued_resource, vulnerability
 
 from .client import SecurityCenterClient
 from .transports.base import DEFAULT_CLIENT_INFO, SecurityCenterTransport
