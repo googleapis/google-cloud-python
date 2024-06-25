@@ -1491,6 +1491,21 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-gdchardwaremanagement": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
+            "component": "google-cloud-gdchardwaremanagement",
+            "extra-files": [
+                "google/cloud/gdchardwaremanagement/gapic_version.py",
+                "google/cloud/gdchardwaremanagement_v1alpha/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.gdchardwaremanagement.v1alpha.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-gke-backup": {
             "bump-minor-pre-major": true,
             "bump-patch-for-minor-pre-major": true,
