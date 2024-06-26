@@ -41,6 +41,8 @@ __protobuf__ = proto.module(
         "TokenProperties",
         "FraudPreventionAssessment",
         "FraudSignals",
+        "SmsTollFraudVerdict",
+        "PhoneFraudAssessment",
         "AccountDefenderAssessment",
         "CreateKeyRequest",
         "ListKeysRequest",
@@ -674,6 +676,10 @@ class Assessment(proto.Message):
         fraud_signals (google.cloud.recaptchaenterprise_v1.types.FraudSignals):
             Output only. Fraud Signals specific to the
             users involved in a payment transaction.
+        phone_fraud_assessment (google.cloud.recaptchaenterprise_v1.types.PhoneFraudAssessment):
+            Output only. Assessment returned when a site key, a token,
+            and a phone number as ``user_id`` are provided. Account
+            defender and SMS toll fraud protection need to be enabled.
     """
 
     name: str = proto.Field(
@@ -724,6 +730,11 @@ class Assessment(proto.Message):
         proto.MESSAGE,
         number=13,
         message="FraudSignals",
+    )
+    phone_fraud_assessment: "PhoneFraudAssessment" = proto.Field(
+        proto.MESSAGE,
+        number=12,
+        message="PhoneFraudAssessment",
     )
 
 
@@ -1612,6 +1623,58 @@ class FraudSignals(proto.Message):
         proto.MESSAGE,
         number=2,
         message=CardSignals,
+    )
+
+
+class SmsTollFraudVerdict(proto.Message):
+    r"""Information about SMS toll fraud.
+
+    Attributes:
+        risk (float):
+            Output only. Probability of an SMS event
+            being fraudulent. Values are from 0.0 (lowest)
+            to 1.0 (highest).
+        reasons (MutableSequence[google.cloud.recaptchaenterprise_v1.types.SmsTollFraudVerdict.SmsTollFraudReason]):
+            Output only. Reasons contributing to the SMS
+            toll fraud verdict.
+    """
+
+    class SmsTollFraudReason(proto.Enum):
+        r"""Reasons contributing to the SMS toll fraud verdict.
+
+        Values:
+            SMS_TOLL_FRAUD_REASON_UNSPECIFIED (0):
+                Default unspecified reason
+            INVALID_PHONE_NUMBER (1):
+                The provided phone number was invalid
+        """
+        SMS_TOLL_FRAUD_REASON_UNSPECIFIED = 0
+        INVALID_PHONE_NUMBER = 1
+
+    risk: float = proto.Field(
+        proto.FLOAT,
+        number=1,
+    )
+    reasons: MutableSequence[SmsTollFraudReason] = proto.RepeatedField(
+        proto.ENUM,
+        number=2,
+        enum=SmsTollFraudReason,
+    )
+
+
+class PhoneFraudAssessment(proto.Message):
+    r"""Assessment for Phone Fraud
+
+    Attributes:
+        sms_toll_fraud_verdict (google.cloud.recaptchaenterprise_v1.types.SmsTollFraudVerdict):
+            Output only. Assessment of this phone event
+            for risk of SMS toll fraud.
+    """
+
+    sms_toll_fraud_verdict: "SmsTollFraudVerdict" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="SmsTollFraudVerdict",
     )
 
 
