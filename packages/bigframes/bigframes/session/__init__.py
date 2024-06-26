@@ -1539,7 +1539,9 @@ class Session(
         the code samples at: https://cloud.google.com/bigquery/docs/remote-functions#bigquery-dataframes.
 
         .. note::
-            ``input_types=Series`` scenario is in preview.
+            ``input_types=Series`` scenario is in preview. It currently only
+            supports dataframe with column types ``Int64``/``Float64``/``boolean``/
+            ``string``/``binary[pyarrow]``.
 
         .. note::
             Please make sure following is setup before using this API:
