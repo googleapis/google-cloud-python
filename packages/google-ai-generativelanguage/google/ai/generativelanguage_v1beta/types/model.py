@@ -76,14 +76,18 @@ class Model(proto.Message):
         temperature (float):
             Controls the randomness of the output.
 
-            Values can range over ``[0.0,2.0]``, inclusive. A higher
-            value will produce responses that are more varied, while a
-            value closer to ``0.0`` will typically result in less
-            surprising responses from the model. This value specifies
-            default to be used by the backend while making the call to
-            the model.
+            Values can range over ``[0.0,max_temperature]``, inclusive.
+            A higher value will produce responses that are more varied,
+            while a value closer to ``0.0`` will typically result in
+            less surprising responses from the model. This value
+            specifies default to be used by the backend while making the
+            call to the model.
 
             This field is a member of `oneof`_ ``_temperature``.
+        max_temperature (float):
+            The maximum temperature this model can use.
+
+            This field is a member of `oneof`_ ``_max_temperature``.
         top_p (float):
             For Nucleus sampling.
 
@@ -140,6 +144,11 @@ class Model(proto.Message):
     temperature: float = proto.Field(
         proto.FLOAT,
         number=9,
+        optional=True,
+    )
+    max_temperature: float = proto.Field(
+        proto.FLOAT,
+        number=13,
         optional=True,
     )
     top_p: float = proto.Field(
