@@ -86,7 +86,7 @@
     "packages/google-cloud-eventarc-publishing": "0.6.9",
     "packages/google-cloud-filestore": "1.9.3",
     "packages/google-cloud-functions": "1.16.3",
-    "packages/google-cloud-gdchardwaremanagement": "0.0.0",
+    "packages/google-cloud-gdchardwaremanagement": "0.1.0",
     "packages/google-cloud-gke-backup": "0.5.9",
     "packages/google-cloud-gke-connect-gateway": "0.8.9",
     "packages/google-cloud-gke-hub": "1.14.0",
