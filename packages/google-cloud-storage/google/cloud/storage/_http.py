@@ -18,6 +18,7 @@ import functools
 from google.cloud import _http
 from google.cloud.storage import __version__
 from google.cloud.storage import _helpers
+from google.cloud.storage._opentelemetry_tracing import create_trace_span
 
 
 class Connection(_http.JSONConnection):
@@ -65,14 +66,25 @@ class Connection(_http.JSONConnection):
 
     def api_request(self, *args, **kwargs):
         retry = kwargs.pop("retry", None)
-        kwargs["extra_api_info"] = _helpers._get_invocation_id()
+        invocation_id = _helpers._get_invocation_id()
+        kwargs["extra_api_info"] = invocation_id
+        span_attributes = {
+            "gccl-invocation-id": invocation_id,
+        }
         call = functools.partial(super(Connection, self).api_request, *args, **kwargs)
-        if retry:
-            # If this is a ConditionalRetryPolicy, check conditions.
-            try:
-                retry = retry.get_retry_policy_if_conditions_met(**kwargs)
-            except AttributeError:  # This is not a ConditionalRetryPolicy.
-                pass
+        with create_trace_span(
+            name="Storage.Connection.api_request",
+            attributes=span_attributes,
+            client=self._client,
+            api_request=kwargs,
+            retry=retry,
+        ):
             if retry:
-                call = retry(call)
-        return call()
+                # If this is a ConditionalRetryPolicy, check conditions.
+                try:
+                    retry = retry.get_retry_policy_if_conditions_met(**kwargs)
+                except AttributeError:  # This is not a ConditionalRetryPolicy.
+                    pass
+                if retry:
+                    call = retry(call)
+            return call()

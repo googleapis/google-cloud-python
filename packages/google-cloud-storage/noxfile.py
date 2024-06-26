@@ -75,12 +75,16 @@ def lint_setup_py(session):
     session.run("python", "setup.py", "check", "--restructuredtext", "--strict")
 
 
-def default(session):
+def default(session, install_extras=True):
     constraints_path = str(
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
     )
     # Install all test dependencies, then install this package in-place.
     session.install("mock", "pytest", "pytest-cov", "-c", constraints_path)
+
+    if install_extras:
+        session.install("opentelemetry-api", "opentelemetry-sdk")
+
     session.install("-e", ".", "-c", constraints_path)
 
     # Run py.test against the unit tests.

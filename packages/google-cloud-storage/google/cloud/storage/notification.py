@@ -21,6 +21,7 @@ import re
 
 from google.api_core.exceptions import NotFound
 
+from google.cloud.storage._opentelemetry_tracing import create_trace_span
 from google.cloud.storage.constants import _DEFAULT_TIMEOUT
 from google.cloud.storage.retry import DEFAULT_RETRY
 
@@ -230,6 +231,7 @@ class BucketNotification(object):
         self._properties.clear()
         self._properties.update(response)
 
+    @create_trace_span(name="Storage.BucketNotification.create")
     def create(self, client=None, timeout=_DEFAULT_TIMEOUT, retry=None):
         """API wrapper: create the notification.
 
@@ -282,6 +284,7 @@ class BucketNotification(object):
             retry=retry,
         )
 
+    @create_trace_span(name="Storage.BucketNotification.exists")
     def exists(self, client=None, timeout=_DEFAULT_TIMEOUT, retry=DEFAULT_RETRY):
         """Test whether this notification exists.
 
@@ -329,6 +332,7 @@ class BucketNotification(object):
         else:
             return True
 
+    @create_trace_span(name="Storage.BucketNotification.reload")
     def reload(self, client=None, timeout=_DEFAULT_TIMEOUT, retry=DEFAULT_RETRY):
         """Update this notification from the server configuration.
 
@@ -371,6 +375,7 @@ class BucketNotification(object):
         )
         self._set_properties(response)
 
+    @create_trace_span(name="Storage.BucketNotification.delete")
     def delete(self, client=None, timeout=_DEFAULT_TIMEOUT, retry=DEFAULT_RETRY):
         """Delete this notification.
 

@@ -63,6 +63,7 @@ from google.cloud.storage._signing import generate_signed_url_v4
 from google.cloud.storage._helpers import _NUM_RETRIES_MESSAGE
 from google.cloud.storage._helpers import _API_VERSION
 from google.cloud.storage._helpers import _virtual_hosted_style_base_url
+from google.cloud.storage._opentelemetry_tracing import create_trace_span
 from google.cloud.storage.acl import ACL
 from google.cloud.storage.acl import ObjectACL
 from google.cloud.storage.constants import _DEFAULT_TIMEOUT
@@ -639,6 +640,7 @@ class Blob(_PropertyMixin):
             access_token=access_token,
         )
 
+    @create_trace_span(name="Storage.Blob.exists")
     def exists(
         self,
         client=None,
@@ -744,6 +746,7 @@ class Blob(_PropertyMixin):
             return False
         return True
 
+    @create_trace_span(name="Storage.Blob.delete")
     def delete(
         self,
         client=None,
@@ -1005,11 +1008,21 @@ class Blob(_PropertyMixin):
 
         retry_strategy = _api_core_retry_to_resumable_media_retry(retry)
 
+        extra_attributes = {
+            "url.full": download_url,
+            "download.chunk_size": f"{self.chunk_size}",
+            "download.raw_download": raw_download,
+            "upload.checksum": f"{checksum}",
+        }
+        args = {"timeout": timeout}
+
         if self.chunk_size is None:
             if raw_download:
                 klass = RawDownload
+                download_class = "RawDownload"
             else:
                 klass = Download
+                download_class = "Download"
 
             download = klass(
                 download_url,
@@ -1020,8 +1033,13 @@ class Blob(_PropertyMixin):
                 checksum=checksum,
             )
             download._retry_strategy = retry_strategy
-            response = download.consume(transport, timeout=timeout)
-            self._extract_headers_from_download(response)
+            with create_trace_span(
+                name=f"Storage.{download_class}/consume",
+                attributes=extra_attributes,
+                api_request=args,
+            ):
+                response = download.consume(transport, timeout=timeout)
+                self._extract_headers_from_download(response)
         else:
             if checksum:
                 msg = _CHUNKED_DOWNLOAD_CHECKSUM_MESSAGE.format(checksum)
@@ -1029,8 +1047,10 @@ class Blob(_PropertyMixin):
 
             if raw_download:
                 klass = RawChunkedDownload
+                download_class = "RawChunkedDownload"
             else:
                 klass = ChunkedDownload
+                download_class = "ChunkedDownload"
 
             download = klass(
                 download_url,
@@ -1042,9 +1062,15 @@ class Blob(_PropertyMixin):
             )
 
             download._retry_strategy = retry_strategy
-            while not download.finished:
-                download.consume_next_chunk(transport, timeout=timeout)
+            with create_trace_span(
+                name=f"Storage.{download_class}/consumeNextChunk",
+                attributes=extra_attributes,
+                api_request=args,
+            ):
+                while not download.finished:
+                    download.consume_next_chunk(transport, timeout=timeout)
 
+    @create_trace_span(name="Storage.Blob.downloadToFile")
     def download_to_file(
         self,
         file_obj,
@@ -1207,6 +1233,7 @@ class Blob(_PropertyMixin):
             mtime = updated.timestamp()
             os.utime(file_obj.name, (mtime, mtime))
 
+    @create_trace_span(name="Storage.Blob.downloadToFilename")
     def download_to_filename(
         self,
         filename,
@@ -1332,6 +1359,7 @@ class Blob(_PropertyMixin):
             retry=retry,
         )
 
+    @create_trace_span(name="Storage.Blob.downloadAsBytes")
     def download_as_bytes(
         self,
         client=None,
@@ -1456,6 +1484,7 @@ class Blob(_PropertyMixin):
         )
         return string_buffer.getvalue()
 
+    @create_trace_span(name="Storage.Blob.downloadAsString")
     def download_as_string(
         self,
         client=None,
@@ -1568,6 +1597,7 @@ class Blob(_PropertyMixin):
             retry=retry,
         )
 
+    @create_trace_span(name="Storage.Blob.downloadAsText")
     def download_as_text(
         self,
         client=None,
@@ -1959,11 +1989,22 @@ class Blob(_PropertyMixin):
             retry, num_retries
         )
 
-        response = upload.transmit(
-            transport, data, object_metadata, content_type, timeout=timeout
-        )
+        extra_attributes = {
+            "url.full": upload_url,
+            "upload.checksum": f"{checksum}",
+        }
+        args = {"timeout": timeout}
+        with create_trace_span(
+            name="Storage.MultipartUpload/transmit",
+            attributes=extra_attributes,
+            client=client,
+            api_request=args,
+        ):
+            response = upload.transmit(
+                transport, data, object_metadata, content_type, timeout=timeout
+            )
 
-        return response
+            return response
 
     def _initiate_resumable_upload(
         self,
@@ -2297,14 +2338,27 @@ class Blob(_PropertyMixin):
             retry=retry,
             command=command,
         )
-        while not upload.finished:
-            try:
-                response = upload.transmit_next_chunk(transport, timeout=timeout)
-            except resumable_media.DataCorruption:
-                # Attempt to delete the corrupted object.
-                self.delete()
-                raise
-        return response
+        extra_attributes = {
+            "url.full": upload.resumable_url,
+            "upload.chunk_size": upload.chunk_size,
+            "upload.checksum": f"{checksum}",
+        }
+        args = {"timeout": timeout}
+        # import pdb; pdb.set_trace()
+        with create_trace_span(
+            name="Storage.ResumableUpload/transmitNextChunk",
+            attributes=extra_attributes,
+            client=client,
+            api_request=args,
+        ):
+            while not upload.finished:
+                try:
+                    response = upload.transmit_next_chunk(transport, timeout=timeout)
+                except resumable_media.DataCorruption:
+                    # Attempt to delete the corrupted object.
+                    self.delete()
+                    raise
+            return response
 
     def _do_upload(
         self,
@@ -2660,6 +2714,7 @@ class Blob(_PropertyMixin):
         except resumable_media.InvalidResponse as exc:
             _raise_from_invalid_response(exc)
 
+    @create_trace_span(name="Storage.Blob.uploadFromFile")
     def upload_from_file(
         self,
         file_obj,
@@ -2831,6 +2886,7 @@ class Blob(_PropertyMixin):
                 **kwargs,
             )
 
+    @create_trace_span(name="Storage.Blob.uploadFromFilename")
     def upload_from_filename(
         self,
         filename,
@@ -2959,6 +3015,7 @@ class Blob(_PropertyMixin):
             retry=retry,
         )
 
+    @create_trace_span(name="Storage.Blob.uploadFromString")
     def upload_from_string(
         self,
         data,
@@ -3081,6 +3138,7 @@ class Blob(_PropertyMixin):
             retry=retry,
         )
 
+    @create_trace_span(name="Storage.Blob.createResumableUploadSession")
     def create_resumable_upload_session(
         self,
         content_type=None,
@@ -3254,6 +3312,7 @@ class Blob(_PropertyMixin):
         except resumable_media.InvalidResponse as exc:
             _raise_from_invalid_response(exc)
 
+    @create_trace_span(name="Storage.Blob.getIamPolicy")
     def get_iam_policy(
         self,
         client=None,
@@ -3322,6 +3381,7 @@ class Blob(_PropertyMixin):
         )
         return Policy.from_api_repr(info)
 
+    @create_trace_span(name="Storage.Blob.setIamPolicy")
     def set_iam_policy(
         self,
         policy,
@@ -3383,6 +3443,7 @@ class Blob(_PropertyMixin):
         )
         return Policy.from_api_repr(info)
 
+    @create_trace_span(name="Storage.Blob.testIamPermissions")
     def test_iam_permissions(
         self, permissions, client=None, timeout=_DEFAULT_TIMEOUT, retry=DEFAULT_RETRY
     ):
@@ -3437,6 +3498,7 @@ class Blob(_PropertyMixin):
 
         return resp.get("permissions", [])
 
+    @create_trace_span(name="Storage.Blob.makePublic")
     def make_public(
         self,
         client=None,
@@ -3490,6 +3552,7 @@ class Blob(_PropertyMixin):
             retry=retry,
         )
 
+    @create_trace_span(name="Storage.Blob.makePrivate")
     def make_private(
         self,
         client=None,
@@ -3543,6 +3606,7 @@ class Blob(_PropertyMixin):
             retry=retry,
         )
 
+    @create_trace_span(name="Storage.Blob.compose")
     def compose(
         self,
         sources,
@@ -3682,6 +3746,7 @@ class Blob(_PropertyMixin):
         )
         self._set_properties(api_response)
 
+    @create_trace_span(name="Storage.Blob.rewrite")
     def rewrite(
         self,
         source,
@@ -3846,6 +3911,7 @@ class Blob(_PropertyMixin):
 
         return api_response["rewriteToken"], rewritten, size
 
+    @create_trace_span(name="Storage.Blob.updateStorageClass")
     def update_storage_class(
         self,
         new_class,
@@ -3979,6 +4045,7 @@ class Blob(_PropertyMixin):
                 retry=retry,
             )
 
+    @create_trace_span(name="Storage.Blob.open")
     def open(
         self,
         mode="r",

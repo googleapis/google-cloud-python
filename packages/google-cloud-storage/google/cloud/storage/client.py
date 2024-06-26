@@ -41,6 +41,7 @@ from google.cloud.storage._helpers import _DEFAULT_SCHEME
 from google.cloud.storage._helpers import _STORAGE_HOST_TEMPLATE
 from google.cloud.storage._helpers import _NOW
 from google.cloud.storage._helpers import _UTC
+from google.cloud.storage._opentelemetry_tracing import create_trace_span
 
 from google.cloud.storage._http import Connection
 from google.cloud.storage._signing import (
@@ -337,6 +338,7 @@ class Client(ClientWithProject):
         """
         return self._batch_stack.top
 
+    @create_trace_span(name="Storage.Client.getServiceAccountEmail")
     def get_service_account_email(
         self, project=None, timeout=_DEFAULT_TIMEOUT, retry=DEFAULT_RETRY
     ):
@@ -481,9 +483,20 @@ class Client(ClientWithProject):
         timeout=_DEFAULT_TIMEOUT,
         retry=DEFAULT_RETRY,
     ):
-        api_request = functools.partial(
-            self._connection.api_request, timeout=timeout, retry=retry
-        )
+        kwargs = {
+            "method": "GET",
+            "path": path,
+            "timeout": timeout,
+        }
+        with create_trace_span(
+            name="Storage.Client._list_resource_returns_iterator",
+            client=self,
+            api_request=kwargs,
+            retry=retry,
+        ):
+            api_request = functools.partial(
+                self._connection.api_request, timeout=timeout, retry=retry
+            )
         return page_iterator.HTTPIterator(
             client=self,
             api_request=api_request,
@@ -798,6 +811,7 @@ class Client(ClientWithProject):
             bucket = Bucket(self, name=bucket_or_name)
         return bucket
 
+    @create_trace_span(name="Storage.Client.getBucket")
     def get_bucket(
         self,
         bucket_or_name,
@@ -863,6 +877,7 @@ class Client(ClientWithProject):
         )
         return bucket
 
+    @create_trace_span(name="Storage.Client.lookupBucket")
     def lookup_bucket(
         self,
         bucket_name,
@@ -910,6 +925,7 @@ class Client(ClientWithProject):
         except NotFound:
             return None
 
+    @create_trace_span(name="Storage.Client.createBucket")
     def create_bucket(
         self,
         bucket_or_name,
@@ -1053,6 +1069,7 @@ class Client(ClientWithProject):
         bucket._set_properties(api_response)
         return bucket
 
+    @create_trace_span(name="Storage.Client.downloadBlobToFile")
     def download_blob_to_file(
         self,
         blob_or_uri,
@@ -1167,6 +1184,7 @@ class Client(ClientWithProject):
             retry=retry,
         )
 
+    @create_trace_span(name="Storage.Client.listBlobs")
     def list_blobs(
         self,
         bucket_or_name,
@@ -1356,6 +1374,7 @@ class Client(ClientWithProject):
         iterator.prefixes = set()
         return iterator
 
+    @create_trace_span(name="Storage.Client.listBuckets")
     def list_buckets(
         self,
         max_results=None,
@@ -1461,6 +1480,7 @@ class Client(ClientWithProject):
             retry=retry,
         )
 
+    @create_trace_span(name="Storage.Client.createHmacKey")
     def create_hmac_key(
         self,
         service_account_email,
@@ -1525,6 +1545,7 @@ class Client(ClientWithProject):
         secret = api_response["secret"]
         return metadata, secret
 
+    @create_trace_span(name="Storage.Client.listHmacKeys")
     def list_hmac_keys(
         self,
         max_results=None,
@@ -1594,6 +1615,7 @@ class Client(ClientWithProject):
             retry=retry,
         )
 
+    @create_trace_span(name="Storage.Client.getHmacKeyMetadata")
     def get_hmac_key_metadata(
         self, access_id, project_id=None, user_project=None, timeout=_DEFAULT_TIMEOUT
     ):

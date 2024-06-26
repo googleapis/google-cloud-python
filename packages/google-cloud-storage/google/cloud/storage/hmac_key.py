@@ -20,6 +20,7 @@ See [HMAC keys documentation](https://cloud.google.com/storage/docs/authenticati
 from google.cloud.exceptions import NotFound
 from google.cloud._helpers import _rfc3339_nanos_to_datetime
 
+from google.cloud.storage._opentelemetry_tracing import create_trace_span
 from google.cloud.storage.constants import _DEFAULT_TIMEOUT
 from google.cloud.storage.retry import DEFAULT_RETRY
 from google.cloud.storage.retry import DEFAULT_RETRY_IF_ETAG_IN_JSON
@@ -187,6 +188,7 @@ class HMACKeyMetadata(object):
         """
         return self._user_project
 
+    @create_trace_span(name="Storage.HmacKey.exists")
     def exists(self, timeout=_DEFAULT_TIMEOUT, retry=DEFAULT_RETRY):
         """Determine whether or not the key for this metadata exists.
 
@@ -219,6 +221,7 @@ class HMACKeyMetadata(object):
         else:
             return True
 
+    @create_trace_span(name="Storage.HmacKey.reload")
     def reload(self, timeout=_DEFAULT_TIMEOUT, retry=DEFAULT_RETRY):
         """Reload properties from Cloud Storage.
 
@@ -246,6 +249,7 @@ class HMACKeyMetadata(object):
             retry=retry,
         )
 
+    @create_trace_span(name="Storage.HmacKey.update")
     def update(self, timeout=_DEFAULT_TIMEOUT, retry=DEFAULT_RETRY_IF_ETAG_IN_JSON):
         """Save writable properties to Cloud Storage.
 
@@ -274,6 +278,7 @@ class HMACKeyMetadata(object):
             retry=retry,
         )
 
+    @create_trace_span(name="Storage.HmacKey.delete")
     def delete(self, timeout=_DEFAULT_TIMEOUT, retry=DEFAULT_RETRY):
         """Delete the key from Cloud Storage.
 
