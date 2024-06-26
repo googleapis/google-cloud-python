@@ -69,8 +69,9 @@ class SetUpSpaceRequest(proto.Message):
             Chat app with a different authenticated user
             returns an error.
         memberships (MutableSequence[google.apps.chat_v1.types.Membership]):
-            Optional. The Google Chat users to invite to join the space.
-            Omit the calling user, as they are added automatically.
+            Optional. The Google Chat users or groups to invite to join
+            the space. Omit the calling user, as they are added
+            automatically.
 
             The set currently allows up to 20 memberships (in addition
             to the caller).
@@ -85,6 +86,11 @@ class SetUpSpaceRequest(proto.Message):
             can be ``users/example@gmail.com``. To invite Gmail users or
             users from external Google Workspace domains, user's email
             must be used for ``{user}``.
+
+            For Google group membership, the ``Membership.group_member``
+            field must contain a ``group`` with ``name`` populated
+            (format ``groups/{group}``). You can only add Google groups
+            when setting ``Space.spaceType`` to ``SPACE``.
 
             Optional when setting ``Space.spaceType`` to ``SPACE``.
 
