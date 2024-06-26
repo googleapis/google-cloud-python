@@ -16,7 +16,6 @@
 
 from __future__ import annotations
 
-import collections.abc
 import copy
 import datetime
 import itertools
@@ -84,6 +83,7 @@ import bigframes.core.compile
 import bigframes.core.guid
 import bigframes.core.nodes as nodes
 import bigframes.core.ordering as order
+import bigframes.core.pruning
 import bigframes.core.schema as schemata
 import bigframes.core.tree_properties as traversals
 import bigframes.core.tree_properties as tree_properties
@@ -100,6 +100,7 @@ from bigframes.functions.remote_function import remote_function as bigframes_rf
 import bigframes.session._io.bigquery as bf_io_bigquery
 import bigframes.session._io.bigquery.read_gbq_table as bf_read_gbq_table
 import bigframes.session.clients
+import bigframes.session.planner
 import bigframes.version
 
 # Avoid circular imports.
@@ -342,13 +343,15 @@ class Session(
     @property
     def objects(
         self,
-    ) -> collections.abc.Set[
+    ) -> Iterable[
         Union[
             bigframes.core.indexes.Index, bigframes.series.Series, dataframe.DataFrame
         ]
     ]:
+        still_alive = [i for i in self._objects if i() is not None]
+        self._objects = still_alive
         # Create a set with strong references, be careful not to hold onto this needlessly, as will prevent garbage collection.
-        return set(i() for i in self._objects if i() is not None)  # type: ignore
+        return tuple(i() for i in self._objects if i() is not None)  # type: ignore
 
     @property
     def _project(self):
@@ -1876,20 +1879,33 @@ class Session(
             raise ValueError(
                 "Caching with offsets only supported in strictly ordered mode."
             )
+        offset_column = bigframes.core.guid.generate_guid("bigframes_offsets")
         sql = bigframes.core.compile.compile_unordered(
             self._with_cached_executions(
-                array_value.promote_offsets("bigframes_offsets").node
+                array_value.promote_offsets(offset_column).node
             )
         )
 
         tmp_table = self._sql_to_temp_table(
-            sql, cluster_cols=["bigframes_offsets"], api_name="cached"
+            sql, cluster_cols=[offset_column], api_name="cached"
         )
         cached_replacement = array_value.as_cached(
             cache_table=self.bqclient.get_table(tmp_table),
-            ordering=order.ExpressionOrdering.from_offset_col("bigframes_offsets"),
+            ordering=order.ExpressionOrdering.from_offset_col(offset_column),
         ).node
         self._cached_executions[array_value.node] = cached_replacement
+
+    def _cache_with_session_awareness(self, array_value: core.ArrayValue) -> None:
+        # this is the occurence count across the whole session
+        forest = [obj._block.expr.node for obj in self.objects]
+        # These node types are cheap to re-compute
+        target, cluster_cols = bigframes.session.planner.session_aware_cache_plan(
+            array_value.node, forest
+        )
+        if len(cluster_cols) > 0:
+            self._cache_with_cluster_cols(core.ArrayValue(target), cluster_cols)
+        else:
+            self._cache_with_offsets(core.ArrayValue(target))
 
     def _simplify_with_caching(self, array_value: core.ArrayValue):
         """Attempts to handle the complexity by caching duplicated subtrees and breaking the query into pieces."""

@@ -1970,6 +1970,70 @@ def test_head_then_series_operation(scalars_dfs):
     )
 
 
+def test_series_peek(scalars_dfs):
+    scalars_df, scalars_pandas_df = scalars_dfs
+    peek_result = scalars_df["float64_col"].peek(n=3, force=False)
+    pd.testing.assert_series_equal(
+        peek_result,
+        scalars_pandas_df["float64_col"].reindex_like(peek_result),
+    )
+
+
+def test_series_peek_multi_index(scalars_dfs):
+    scalars_df, scalars_pandas_df = scalars_dfs
+    bf_series = scalars_df.set_index(["string_col", "bool_col"])["float64_col"]
+    bf_series.name = ("2-part", "name")
+    pd_series = scalars_pandas_df.set_index(["string_col", "bool_col"])["float64_col"]
+    pd_series.name = ("2-part", "name")
+    peek_result = bf_series.peek(n=3, force=False)
+    pd.testing.assert_series_equal(
+        peek_result,
+        pd_series.reindex_like(peek_result),
+    )
+
+
+def test_series_peek_filtered(scalars_dfs):
+    scalars_df, scalars_pandas_df = scalars_dfs
+    peek_result = scalars_df[scalars_df.int64_col > 0]["float64_col"].peek(
+        n=3, force=False
+    )
+    pd_result = scalars_pandas_df[scalars_pandas_df.int64_col > 0]["float64_col"]
+    pd.testing.assert_series_equal(
+        peek_result,
+        pd_result.reindex_like(peek_result),
+    )
+
+
+@skip_legacy_pandas
+def test_series_peek_force(scalars_dfs):
+    scalars_df, scalars_pandas_df = scalars_dfs
+
+    cumsum_df = scalars_df[["int64_col", "int64_too"]].cumsum()
+    df_filtered = cumsum_df[cumsum_df.int64_col > 0]["int64_too"]
+    peek_result = df_filtered.peek(n=3, force=True)
+    pd_cumsum_df = scalars_pandas_df[["int64_col", "int64_too"]].cumsum()
+    pd_result = pd_cumsum_df[pd_cumsum_df.int64_col > 0]["int64_too"]
+    pd.testing.assert_series_equal(
+        peek_result,
+        pd_result.reindex_like(peek_result),
+    )
+
+
+@skip_legacy_pandas
+def test_series_peek_force_float(scalars_dfs):
+    scalars_df, scalars_pandas_df = scalars_dfs
+
+    cumsum_df = scalars_df[["int64_col", "float64_col"]].cumsum()
+    df_filtered = cumsum_df[cumsum_df.float64_col > 0]["float64_col"]
+    peek_result = df_filtered.peek(n=3, force=True)
+    pd_cumsum_df = scalars_pandas_df[["int64_col", "float64_col"]].cumsum()
+    pd_result = pd_cumsum_df[pd_cumsum_df.float64_col > 0]["float64_col"]
+    pd.testing.assert_series_equal(
+        peek_result,
+        pd_result.reindex_like(peek_result),
+    )
+
+
 def test_shift(scalars_df_index, scalars_pandas_df_index):
     col_name = "int64_col"
     bf_result = scalars_df_index[col_name].shift().to_pandas()

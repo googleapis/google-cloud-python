@@ -2286,13 +2286,13 @@ class Block:
             idx_labels,
         )
 
-    def cached(self, *, optimize_offsets=False, force: bool = False) -> None:
+    def cached(self, *, force: bool = False, session_aware: bool = False) -> None:
         """Write the block to a session table."""
         # use a heuristic for whether something needs to be cached
         if (not force) and self.session._is_trivially_executable(self.expr):
             return
-        if optimize_offsets:
-            self.session._cache_with_offsets(self.expr)
+        elif session_aware:
+            self.session._cache_with_session_awareness(self.expr)
         else:
             self.session._cache_with_cluster_cols(
                 self.expr, cluster_cols=self.index_columns

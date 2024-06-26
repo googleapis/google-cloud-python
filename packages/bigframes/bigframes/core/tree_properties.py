@@ -15,7 +15,7 @@ from __future__ import annotations
 
 import functools
 import itertools
-from typing import Callable, Dict, Optional
+from typing import Callable, Dict, Optional, Sequence
 
 import bigframes.core.nodes as nodes
 
@@ -89,6 +89,43 @@ def select_cache_target(
             _with_caching(node).planning_complexity, node_counts[node]
         ),
     )
+
+
+def count_nodes(forest: Sequence[nodes.BigFrameNode]) -> dict[nodes.BigFrameNode, int]:
+    """
+    Counts the number of instances of each subtree present within a forest.
+
+    Memoizes internally to accelerate execution, but cache not persisted (not reused between invocations).
+
+    Args:
+        forest (Sequence of BigFrameNode):
+            The roots of each tree in the forest
+
+    Returns:
+        dict[BigFramesNode, int]: The number of occurences of each subtree.
+    """
+
+    def _combine_counts(
+        left: Dict[nodes.BigFrameNode, int], right: Dict[nodes.BigFrameNode, int]
+    ) -> Dict[nodes.BigFrameNode, int]:
+        return {
+            key: left.get(key, 0) + right.get(key, 0)
+            for key in itertools.chain(left.keys(), right.keys())
+        }
+
+    empty_counts: Dict[nodes.BigFrameNode, int] = {}
+
+    @functools.cache
+    def _node_counts_inner(
+        subtree: nodes.BigFrameNode,
+    ) -> Dict[nodes.BigFrameNode, int]:
+        """Helper function to count occurences of duplicate nodes in a subtree. Considers only nodes in a complexity range"""
+        child_counts = [_node_counts_inner(child) for child in subtree.child_nodes]
+        node_counts = functools.reduce(_combine_counts, child_counts, empty_counts)
+        return _combine_counts(node_counts, {subtree: 1})
+
+    counts = [_node_counts_inner(root) for root in forest]
+    return functools.reduce(_combine_counts, counts, empty_counts)
 
 
 def replace_nodes(

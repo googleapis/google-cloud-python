@@ -74,52 +74,95 @@ class SimpleDtypeInfo:
     logical_bytes: int = (
         8  # this is approximate only, some types are variably sized, also, compression
     )
+    orderable: bool = False
+    clusterable: bool = False
 
 
 # TODO: Missing BQ types: INTERVAL, JSON, RANGE
 # TODO: Add mappings to python types
 SIMPLE_TYPES = (
     SimpleDtypeInfo(
-        dtype=INT_DTYPE, arrow_dtype=pa.int64(), type_kind=("INT64", "INTEGER")
+        dtype=INT_DTYPE,
+        arrow_dtype=pa.int64(),
+        type_kind=("INT64", "INTEGER"),
+        orderable=True,
+        clusterable=True,
     ),
     SimpleDtypeInfo(
-        dtype=FLOAT_DTYPE, arrow_dtype=pa.float64(), type_kind=("FLOAT64", "FLOAT")
+        dtype=FLOAT_DTYPE,
+        arrow_dtype=pa.float64(),
+        type_kind=("FLOAT64", "FLOAT"),
+        orderable=True,
     ),
     SimpleDtypeInfo(
         dtype=BOOL_DTYPE,
         arrow_dtype=pa.bool_(),
         type_kind=("BOOL", "BOOLEAN"),
         logical_bytes=1,
+        orderable=True,
+        clusterable=True,
     ),
-    SimpleDtypeInfo(dtype=STRING_DTYPE, arrow_dtype=pa.string(), type_kind=("STRING",)),
     SimpleDtypeInfo(
-        dtype=DATE_DTYPE, arrow_dtype=pa.date32(), type_kind=("DATE",), logical_bytes=4
+        dtype=STRING_DTYPE,
+        arrow_dtype=pa.string(),
+        type_kind=("STRING",),
+        orderable=True,
+        clusterable=True,
     ),
-    SimpleDtypeInfo(dtype=TIME_DTYPE, arrow_dtype=pa.time64("us"), type_kind=("TIME",)),
     SimpleDtypeInfo(
-        dtype=DATETIME_DTYPE, arrow_dtype=pa.timestamp("us"), type_kind=("DATETIME",)
+        dtype=DATE_DTYPE,
+        arrow_dtype=pa.date32(),
+        type_kind=("DATE",),
+        logical_bytes=4,
+        orderable=True,
+        clusterable=True,
+    ),
+    SimpleDtypeInfo(
+        dtype=TIME_DTYPE,
+        arrow_dtype=pa.time64("us"),
+        type_kind=("TIME",),
+        orderable=True,
+    ),
+    SimpleDtypeInfo(
+        dtype=DATETIME_DTYPE,
+        arrow_dtype=pa.timestamp("us"),
+        type_kind=("DATETIME",),
+        orderable=True,
+        clusterable=True,
     ),
     SimpleDtypeInfo(
         dtype=TIMESTAMP_DTYPE,
         arrow_dtype=pa.timestamp("us", tz="UTC"),
         type_kind=("TIMESTAMP",),
+        orderable=True,
+        clusterable=True,
     ),
-    SimpleDtypeInfo(dtype=BYTES_DTYPE, arrow_dtype=pa.binary(), type_kind=("BYTES",)),
+    SimpleDtypeInfo(
+        dtype=BYTES_DTYPE, arrow_dtype=pa.binary(), type_kind=("BYTES",), orderable=True
+    ),
     SimpleDtypeInfo(
         dtype=NUMERIC_DTYPE,
         arrow_dtype=pa.decimal128(38, 9),
         type_kind=("NUMERIC",),
         logical_bytes=16,
+        orderable=True,
+        clusterable=True,
     ),
     SimpleDtypeInfo(
         dtype=BIGNUMERIC_DTYPE,
         arrow_dtype=pa.decimal256(76, 38),
         type_kind=("BIGNUMERIC",),
         logical_bytes=32,
+        orderable=True,
+        clusterable=True,
     ),
     # Geo has no corresponding arrow dtype
     SimpleDtypeInfo(
-        dtype=GEO_DTYPE, arrow_dtype=None, type_kind=("GEOGRAPHY",), logical_bytes=40
+        dtype=GEO_DTYPE,
+        arrow_dtype=None,
+        type_kind=("GEOGRAPHY",),
+        logical_bytes=40,
+        clusterable=True,
     ),
 )
 
@@ -209,9 +252,25 @@ def is_comparable(type: ExpressionType) -> bool:
     return (type is not None) and is_orderable(type)
 
 
+_ORDERABLE_SIMPLE_TYPES = set(
+    mapping.dtype for mapping in SIMPLE_TYPES if mapping.orderable
+)
+
+
 def is_orderable(type: ExpressionType) -> bool:
     # On BQ side, ARRAY, STRUCT, GEOGRAPHY, JSON are not orderable
-    return not is_array_like(type) and not is_struct_like(type) and (type != GEO_DTYPE)
+    return type in _ORDERABLE_SIMPLE_TYPES
+
+
+_CLUSTERABLE_SIMPLE_TYPES = set(
+    mapping.dtype for mapping in SIMPLE_TYPES if mapping.clusterable
+)
+
+
+def is_clusterable(type: ExpressionType) -> bool:
+    # https://cloud.google.com/bigquery/docs/clustered-tables#cluster_column_types
+    # This is based on default database type mapping, could in theory represent in non-default bq type to cluster.
+    return type in _CLUSTERABLE_SIMPLE_TYPES
 
 
 def is_bool_coercable(type: ExpressionType) -> bool:

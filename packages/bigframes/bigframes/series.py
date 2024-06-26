@@ -623,6 +623,40 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
     def tail(self, n: int = 5) -> Series:
         return typing.cast(Series, self.iloc[-n:])
 
+    def peek(self, n: int = 5, *, force: bool = True) -> pandas.DataFrame:
+        """
+        Preview n arbitrary elements from the series without guarantees about row selection or ordering.
+
+        ``Series.peek(force=False)`` will always be very fast, but will not succeed if data requires
+        full data scanning. Using ``force=True`` will always succeed, but may be perform queries.
+        Query results will be cached so that future steps will benefit from these queries.
+
+        Args:
+            n (int, default 5):
+                The number of rows to select from the series. Which N rows are returned is non-deterministic.
+            force (bool, default True):
+                If the data cannot be peeked efficiently, the series will instead be fully materialized as part
+                of the operation if ``force=True``. If ``force=False``, the operation will throw a ValueError.
+        Returns:
+            pandas.Series: A pandas Series with n rows.
+
+        Raises:
+            ValueError: If force=False and data cannot be efficiently peeked.
+        """
+        maybe_result = self._block.try_peek(n)
+        if maybe_result is None:
+            if force:
+                self._cached()
+                maybe_result = self._block.try_peek(n, force=True)
+                assert maybe_result is not None
+            else:
+                raise ValueError(
+                    "Cannot peek efficiently when data has aggregates, joins or window functions applied. Use force=True to fully compute dataframe."
+                )
+        as_series = maybe_result.squeeze(axis=1)
+        as_series.name = self.name
+        return as_series
+
     def nlargest(self, n: int = 5, keep: str = "first") -> Series:
         if keep not in ("first", "last", "all"):
             raise ValueError("'keep must be one of 'first', 'last', or 'all'")
@@ -1419,7 +1453,7 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
 
         # return Series with materialized result so that any error in the remote
         # function is caught early
-        materialized_series = result_series._cached()
+        materialized_series = result_series._cached(session_aware=False)
         return materialized_series
 
     def combine(
@@ -1794,10 +1828,11 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         Returns:
             Series: Self
         """
-        return self._cached(force=True)
+        # Do not use session-aware cashing if user-requested
+        return self._cached(force=True, session_aware=False)
 
-    def _cached(self, *, force: bool = True) -> Series:
-        self._block.cached(force=force)
+    def _cached(self, *, force: bool = True, session_aware: bool = True) -> Series:
+        self._block.cached(force=force, session_aware=session_aware)
         return self
 
     def _optimize_query_complexity(self):
