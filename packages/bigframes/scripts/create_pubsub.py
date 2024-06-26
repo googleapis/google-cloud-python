@@ -18,7 +18,7 @@
 import os
 import sys
 
-import google.cloud.bigtable as bigtable
+from google.cloud import pubsub_v1
 
 PROJECT_ID = os.getenv("GOOGLE_CLOUD_PROJECT")
 
@@ -30,43 +30,19 @@ if not PROJECT_ID:
     sys.exit(1)
 
 
-def create_instance(client):
-    instance_name = "streaming-testing-instance"
-    instance = bigtable.instance.Instance(
-        instance_name,
-        client,
-    )
-    cluster_id = "streaming-testing-instance-c1"
-    cluster = instance.cluster(
-        cluster_id,
-        location_id="us-west1-a",
-        serve_nodes=1,
-    )
-    if not instance.exists():
-        operation = instance.create(
-            clusters=[cluster],
-        )
-        operation.result(timeout=480)
-        print(f"Created instance {instance_name}")
-    return instance
+def create_topic(topic_id):
+    # based on
+    # https://cloud.google.com/pubsub/docs/samples/pubsub-quickstart-create-topic?hl=en
 
+    publisher = pubsub_v1.PublisherClient()
+    topic_path = publisher.topic_path(PROJECT_ID, topic_id)
 
-def create_table(instance):
-    table_id = "table-testing"
-    table = bigtable.table.Table(
-        table_id,
-        instance,
-    )
-    if not table.exists():
-        table.create()
-        print(f"Created table {table_id}")
+    topic = publisher.create_topic(request={"name": topic_path})
+    print(f"Created topic: {topic.name}")
 
 
 def main():
-    client = bigtable.Client(project=PROJECT_ID, admin=True)
-
-    instance = create_instance(client)
-    create_table(instance)
+    create_topic("penguins")
 
 
 if __name__ == "__main__":

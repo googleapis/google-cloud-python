@@ -40,6 +40,7 @@ dependencies = [
     "geopandas >=0.12.2",
     "google-auth >=2.15.0,<3.0dev",
     "google-cloud-bigtable >=2.24.0",
+    "google-cloud-pubsub >=2.21.4",
     "google-cloud-bigquery[bqstorage,pandas] >=3.16.0",
     "google-cloud-functions >=1.12.0",
     "google-cloud-bigquery-connection >=1.12.0",

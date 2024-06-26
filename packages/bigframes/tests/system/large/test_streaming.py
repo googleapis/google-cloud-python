@@ -22,16 +22,43 @@ def test_streaming_to_bigtable():
     job_id_prefix = "test_streaming_"
     sql = """SELECT
         body_mass_g, island as rowkey
-        FROM birds.penguins"""
+        FROM birds.penguins_bigtable_streaming"""
     query_job = bigframes.streaming.to_bigtable(
         sql,
-        "streaming-testing-instance",
-        "table-testing",
+        instance="streaming-testing-instance",
+        table="table-testing",
+        service_account_email="streaming-testing@bigframes-load-testing.iam.gserviceaccount.com",
         app_profile=None,
         truncate=True,
         overwrite=True,
         auto_create_column_families=True,
         bigtable_options={},
+        job_id=None,
+        job_id_prefix=job_id_prefix,
+    )
+
+    try:
+        # wait 100 seconds in order to ensure the query doesn't stop
+        # (i.e. it is continuous)
+        time.sleep(100)
+        assert query_job.error_result is None
+        assert query_job.errors is None
+        assert query_job.running()
+        assert str(query_job.job_id).startswith(job_id_prefix)
+    finally:
+        query_job.cancel()
+
+
+def test_streaming_to_pubsub():
+    # launch a continuous query
+    job_id_prefix = "test_streaming_pubsub_"
+    sql = """SELECT
+        island
+        FROM birds.penguins_pubsub_streaming"""
+    query_job = bigframes.streaming.to_pubsub(
+        sql,
+        topic="penguins",
+        service_account_email="streaming-testing@bigframes-load-testing.iam.gserviceaccount.com",
         job_id=None,
         job_id_prefix=job_id_prefix,
     )
