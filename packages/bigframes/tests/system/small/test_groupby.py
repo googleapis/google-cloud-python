@@ -140,11 +140,23 @@ def test_dataframe_groupby_agg_string(
     )
 
 
+def test_dataframe_groupby_agg_size_string(scalars_df_index, scalars_pandas_df_index):
+    col_names = ["int64_too", "float64_col", "int64_col", "bool_col", "string_col"]
+    bf_result = scalars_df_index[col_names].groupby("string_col").agg("size")
+    pd_result = scalars_pandas_df_index[col_names].groupby("string_col").agg("size")
+
+    pd.testing.assert_series_equal(pd_result, bf_result.to_pandas(), check_dtype=False)
+
+
 def test_dataframe_groupby_agg_list(scalars_df_index, scalars_pandas_df_index):
     col_names = ["int64_too", "float64_col", "int64_col", "bool_col", "string_col"]
-    bf_result = scalars_df_index[col_names].groupby("string_col").agg(["count", "min"])
+    bf_result = (
+        scalars_df_index[col_names].groupby("string_col").agg(["count", "min", "size"])
+    )
     pd_result = (
-        scalars_pandas_df_index[col_names].groupby("string_col").agg(["count", "min"])
+        scalars_pandas_df_index[col_names]
+        .groupby("string_col")
+        .agg(["count", "min", "size"])
     )
     bf_result_computed = bf_result.to_pandas()
 
@@ -161,8 +173,8 @@ def test_dataframe_groupby_agg_list_w_column_multi_index(
     pd_df = scalars_pandas_df_index[columns].copy()
     pd_df.columns = multi_columns
 
-    bf_result = bf_df.groupby(level=0).agg(["count", "min"])
-    pd_result = pd_df.groupby(level=0).agg(["count", "min"])
+    bf_result = bf_df.groupby(level=0).agg(["count", "min", "size"])
+    pd_result = pd_df.groupby(level=0).agg(["count", "min", "size"])
 
     bf_result_computed = bf_result.to_pandas()
     pd.testing.assert_frame_equal(pd_result, bf_result_computed, check_dtype=False)
@@ -182,12 +194,12 @@ def test_dataframe_groupby_agg_dict_with_list(
     bf_result = (
         scalars_df_index[col_names]
         .groupby("string_col", as_index=as_index)
-        .agg({"int64_too": ["mean", "max"], "string_col": "count"})
+        .agg({"int64_too": ["mean", "max"], "string_col": "count", "bool_col": "size"})
     )
     pd_result = (
         scalars_pandas_df_index[col_names]
         .groupby("string_col", as_index=as_index)
-        .agg({"int64_too": ["mean", "max"], "string_col": "count"})
+        .agg({"int64_too": ["mean", "max"], "string_col": "count", "bool_col": "size"})
     )
     bf_result_computed = bf_result.to_pandas()
 
@@ -413,16 +425,21 @@ def test_dataframe_groupby_nonnumeric_with_mean():
 # ==============
 
 
-def test_series_groupby_agg_string(scalars_df_index, scalars_pandas_df_index):
+@pytest.mark.parametrize(
+    ("agg"),
+    [
+        ("count"),
+        ("size"),
+    ],
+)
+def test_series_groupby_agg_string(scalars_df_index, scalars_pandas_df_index, agg):
     bf_result = (
-        scalars_df_index["int64_col"]
-        .groupby(scalars_df_index["string_col"])
-        .agg("count")
+        scalars_df_index["int64_col"].groupby(scalars_df_index["string_col"]).agg(agg)
     )
     pd_result = (
         scalars_pandas_df_index["int64_col"]
         .groupby(scalars_pandas_df_index["string_col"])
-        .agg("count")
+        .agg(agg)
     )
     bf_result_computed = bf_result.to_pandas()
 
@@ -435,12 +452,12 @@ def test_series_groupby_agg_list(scalars_df_index, scalars_pandas_df_index):
     bf_result = (
         scalars_df_index["int64_col"]
         .groupby(scalars_df_index["string_col"])
-        .agg(["sum", "mean"])
+        .agg(["sum", "mean", "size"])
     )
     pd_result = (
         scalars_pandas_df_index["int64_col"]
         .groupby(scalars_pandas_df_index["string_col"])
-        .agg(["sum", "mean"])
+        .agg(["sum", "mean", "size"])
     )
     bf_result_computed = bf_result.to_pandas()
 

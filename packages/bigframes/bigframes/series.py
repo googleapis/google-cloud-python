@@ -968,7 +968,6 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
                 )
             )
         else:
-
             return self._apply_aggregation(
                 agg_ops.lookup_agg_func(typing.cast(str, func))
             )
@@ -1246,7 +1245,9 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         values, index = self._align_n([other1, other2], how)
         return (values[0], values[1], values[2], index)
 
-    def _apply_aggregation(self, op: agg_ops.UnaryAggregateOp) -> Any:
+    def _apply_aggregation(
+        self, op: agg_ops.UnaryAggregateOp | agg_ops.NullaryAggregateOp
+    ) -> Any:
         return self._block.get_stat(self._value_column, op)
 
     def _apply_window_op(

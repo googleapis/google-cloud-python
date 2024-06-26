@@ -487,7 +487,9 @@ first_op = FirstOp()
 
 
 # TODO: Alternative names and lookup from numpy function objects
-_AGGREGATIONS_LOOKUP: dict[str, UnaryAggregateOp] = {
+_AGGREGATIONS_LOOKUP: typing.Dict[
+    str, typing.Union[UnaryAggregateOp, NullaryAggregateOp]
+] = {
     op.name: op
     for op in [
         sum_op,
@@ -506,10 +508,14 @@ _AGGREGATIONS_LOOKUP: dict[str, UnaryAggregateOp] = {
         ApproxQuartilesOp(2),
         ApproxQuartilesOp(3),
     ]
+    + [
+        # Add size_op separately to avoid Mypy type inference errors.
+        size_op,
+    ]
 }
 
 
-def lookup_agg_func(key: str) -> UnaryAggregateOp:
+def lookup_agg_func(key: str) -> typing.Union[UnaryAggregateOp, NullaryAggregateOp]:
     if callable(key):
         raise NotImplementedError(
             "Aggregating with callable object not supported, pass method name as string instead (eg. 'sum' instead of np.sum)."

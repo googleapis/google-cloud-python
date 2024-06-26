@@ -506,15 +506,32 @@ def test_series_dropna(scalars_dfs, ignore_index):
     pd.testing.assert_series_equal(pd_result, bf_result, check_index_type=False)
 
 
-def test_series_agg_single_string(scalars_dfs):
+@pytest.mark.parametrize(
+    ("agg",),
+    (
+        ("sum",),
+        ("size",),
+    ),
+)
+def test_series_agg_single_string(scalars_dfs, agg):
     scalars_df, scalars_pandas_df = scalars_dfs
-    bf_result = scalars_df["int64_col"].agg("sum")
-    pd_result = scalars_pandas_df["int64_col"].agg("sum")
+    bf_result = scalars_df["int64_col"].agg(agg)
+    pd_result = scalars_pandas_df["int64_col"].agg(agg)
     assert math.isclose(pd_result, bf_result)
 
 
 def test_series_agg_multi_string(scalars_dfs):
-    aggregations = ["sum", "mean", "std", "var", "min", "max", "nunique", "count"]
+    aggregations = [
+        "sum",
+        "mean",
+        "std",
+        "var",
+        "min",
+        "max",
+        "nunique",
+        "count",
+        "size",
+    ]
     scalars_df, scalars_pandas_df = scalars_dfs
     bf_result = scalars_df["int64_col"].agg(aggregations).to_pandas()
     pd_result = scalars_pandas_df["int64_col"].agg(aggregations)

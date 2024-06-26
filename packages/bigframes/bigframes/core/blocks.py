@@ -995,7 +995,7 @@ class Block:
 
     def aggregate_all_and_stack(
         self,
-        operation: agg_ops.UnaryAggregateOp,
+        operation: typing.Union[agg_ops.UnaryAggregateOp, agg_ops.NullaryAggregateOp],
         *,
         axis: int | str = 0,
         value_col_id: str = "values",
@@ -1004,7 +1004,12 @@ class Block:
         axis_n = utils.get_axis_number(axis)
         if axis_n == 0:
             aggregations = [
-                (ex.UnaryAggregation(operation, ex.free_var(col_id)), col_id)
+                (
+                    ex.UnaryAggregation(operation, ex.free_var(col_id))
+                    if isinstance(operation, agg_ops.UnaryAggregateOp)
+                    else ex.NullaryAggregation(operation),
+                    col_id,
+                )
                 for col_id in self.value_columns
             ]
             index_id = guid.generate_guid()
@@ -1033,6 +1038,11 @@ class Block:
                 (ex.UnaryAggregation(agg_ops.AnyValueOp(), ex.free_var(col_id)), col_id)
                 for col_id in [*self.index_columns]
             ]
+            # TODO: may need add NullaryAggregation in main_aggregation
+            # when agg add support for axis=1, needed for agg("size", axis=1)
+            assert isinstance(
+                operation, agg_ops.UnaryAggregateOp
+            ), f"Expected a unary operation, but got {operation}. Please report this error and how you got here to the BigQuery DataFrames team (bit.ly/bigframes-feedback)."
             main_aggregation = (
                 ex.UnaryAggregation(operation, ex.free_var(value_col_id)),
                 value_col_id,
@@ -1125,7 +1135,11 @@ class Block:
     def aggregate(
         self,
         by_column_ids: typing.Sequence[str] = (),
-        aggregations: typing.Sequence[typing.Tuple[str, agg_ops.UnaryAggregateOp]] = (),
+        aggregations: typing.Sequence[
+            typing.Tuple[
+                str, typing.Union[agg_ops.UnaryAggregateOp, agg_ops.NullaryAggregateOp]
+            ]
+        ] = (),
         *,
         dropna: bool = True,
     ) -> typing.Tuple[Block, typing.Sequence[str]]:
@@ -1139,7 +1153,9 @@ class Block:
         """
         agg_specs = [
             (
-                ex.UnaryAggregation(operation, ex.free_var(input_id)),
+                ex.UnaryAggregation(operation, ex.free_var(input_id))
+                if isinstance(operation, agg_ops.UnaryAggregateOp)
+                else ex.NullaryAggregation(operation),
                 guid.generate_guid(),
             )
             for input_id, operation in aggregations
@@ -1175,18 +1191,32 @@ class Block:
             output_col_ids,
         )
 
-    def get_stat(self, column_id: str, stat: agg_ops.UnaryAggregateOp):
+    def get_stat(
+        self,
+        column_id: str,
+        stat: typing.Union[agg_ops.UnaryAggregateOp, agg_ops.NullaryAggregateOp],
+    ):
         """Gets aggregates immediately, and caches it"""
         if stat.name in self._stats_cache[column_id]:
             return self._stats_cache[column_id][stat.name]
 
         # TODO: Convert nonstandard stats into standard stats where possible (popvar, etc.)
         # if getting a standard stat, just go get the rest of them
-        standard_stats = self._standard_stats(column_id)
+        standard_stats = typing.cast(
+            typing.Sequence[
+                typing.Union[agg_ops.UnaryAggregateOp, agg_ops.NullaryAggregateOp]
+            ],
+            self._standard_stats(column_id),
+        )
         stats_to_fetch = standard_stats if stat in standard_stats else [stat]
 
         aggregations = [
-            (ex.UnaryAggregation(stat, ex.free_var(column_id)), stat.name)
+            (
+                ex.UnaryAggregation(stat, ex.free_var(column_id))
+                if isinstance(stat, agg_ops.UnaryAggregateOp)
+                else ex.NullaryAggregation(stat),
+                stat.name,
+            )
             for stat in stats_to_fetch
         ]
         expr = self.expr.aggregate(aggregations)
@@ -1231,13 +1261,20 @@ class Block:
     def summarize(
         self,
         column_ids: typing.Sequence[str],
-        stats: typing.Sequence[agg_ops.UnaryAggregateOp],
+        stats: typing.Sequence[
+            typing.Union[agg_ops.UnaryAggregateOp, agg_ops.NullaryAggregateOp]
+        ],
     ):
         """Get a list of stats as a deferred block object."""
         label_col_id = guid.generate_guid()
         labels = [stat.name for stat in stats]
         aggregations = [
-            (ex.UnaryAggregation(stat, ex.free_var(col_id)), f"{col_id}-{stat.name}")
+            (
+                ex.UnaryAggregation(stat, ex.free_var(col_id))
+                if isinstance(stat, agg_ops.UnaryAggregateOp)
+                else ex.NullaryAggregation(stat),
+                f"{col_id}-{stat.name}",
+            )
             for stat in stats
             for col_id in column_ids
         ]

@@ -286,10 +286,10 @@ class DataFrameGroupBy(vendored_pandas_groupby.DataFrameGroupBy):
             block, window_spec, self._selected_cols, drop_null_groups=self._dropna
         )
 
-    def agg(self, func=None, **kwargs) -> df.DataFrame:
+    def agg(self, func=None, **kwargs) -> typing.Union[df.DataFrame, series.Series]:
         if func:
             if isinstance(func, str):
-                return self._agg_string(func)
+                return self.size() if func == "size" else self._agg_string(func)
             elif utils.is_dict_like(func):
                 return self._agg_dict(func)
             elif utils.is_list_like(func):
@@ -315,7 +315,11 @@ class DataFrameGroupBy(vendored_pandas_groupby.DataFrameGroupBy):
         return dataframe if self._as_index else self._convert_index(dataframe)
 
     def _agg_dict(self, func: typing.Mapping) -> df.DataFrame:
-        aggregations: typing.List[typing.Tuple[str, agg_ops.UnaryAggregateOp]] = []
+        aggregations: typing.List[
+            typing.Tuple[
+                str, typing.Union[agg_ops.UnaryAggregateOp, agg_ops.NullaryAggregateOp]
+            ]
+        ] = []
         column_labels = []
 
         want_aggfunc_level = any(utils.is_list_like(aggs) for aggs in func.values())

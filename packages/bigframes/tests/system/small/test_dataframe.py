@@ -2485,12 +2485,19 @@ def test_dataframe_agg_single_string(scalars_dfs):
     )
 
 
-def test_dataframe_agg_int_single_string(scalars_dfs):
+@pytest.mark.parametrize(
+    ("agg",),
+    (
+        ("sum",),
+        ("size",),
+    ),
+)
+def test_dataframe_agg_int_single_string(scalars_dfs, agg):
     numeric_cols = ["int64_col", "int64_too", "bool_col"]
     scalars_df, scalars_pandas_df = scalars_dfs
 
-    bf_result = scalars_df[numeric_cols].agg("sum").to_pandas()
-    pd_result = scalars_pandas_df[numeric_cols].agg("sum")
+    bf_result = scalars_df[numeric_cols].agg(agg).to_pandas()
+    pd_result = scalars_pandas_df[numeric_cols].agg(agg)
 
     assert bf_result.dtype == "Int64"
     pd.testing.assert_series_equal(
@@ -2537,6 +2544,7 @@ def test_dataframe_agg_int_multi_string(scalars_dfs):
         "sum",
         "nunique",
         "count",
+        "size",
     ]
     scalars_df, scalars_pandas_df = scalars_dfs
     bf_result = scalars_df[numeric_cols].agg(aggregations).to_pandas()
