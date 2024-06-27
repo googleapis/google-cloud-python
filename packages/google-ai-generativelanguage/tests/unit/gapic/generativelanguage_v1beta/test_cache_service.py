@@ -3343,6 +3343,8 @@ def test_create_cached_content_rest(request_type):
                         "mime_type": "mime_type_value",
                         "file_uri": "file_uri_value",
                     },
+                    "executable_code": {"language": 1, "code": "code_value"},
+                    "code_execution_result": {"outcome": 1, "output": "output_value"},
                 }
             ],
             "role": "role_value",
@@ -3365,7 +3367,8 @@ def test_create_cached_content_rest(request_type):
                             "required": ["required_value1", "required_value2"],
                         },
                     }
-                ]
+                ],
+                "code_execution": {},
             }
         ],
         "tool_config": {
@@ -4087,6 +4090,8 @@ def test_update_cached_content_rest(request_type):
                         "mime_type": "mime_type_value",
                         "file_uri": "file_uri_value",
                     },
+                    "executable_code": {"language": 1, "code": "code_value"},
+                    "code_execution_result": {"outcome": 1, "output": "output_value"},
                 }
             ],
             "role": "role_value",
@@ -4109,7 +4114,8 @@ def test_update_cached_content_rest(request_type):
                             "required": ["required_value1", "required_value2"],
                         },
                     }
-                ]
+                ],
+                "code_execution": {},
             }
         ],
         "tool_config": {

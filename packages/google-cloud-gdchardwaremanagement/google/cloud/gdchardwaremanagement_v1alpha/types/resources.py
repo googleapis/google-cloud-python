@@ -878,6 +878,9 @@ class Zone(proto.Message):
         network_config (google.cloud.gdchardwaremanagement_v1alpha.types.ZoneNetworkConfig):
             Optional. Networking configuration for this
             zone.
+        globally_unique_id (str):
+            Output only. Globally unique identifier
+            generated for this Edge Zone.
     """
 
     class State(proto.Enum):
@@ -891,6 +894,12 @@ class Zone(proto.Message):
                 customer to make progress.
             PREPARING (2):
                 Google is preparing the Zone.
+            READY_FOR_CUSTOMER_FACTORY_TURNUP_CHECKS (5):
+                Factory turnup has succeeded.
+            READY_FOR_SITE_TURNUP (6):
+                The Zone is ready for site turnup.
+            CUSTOMER_FACTORY_TURNUP_CHECKS_FAILED (7):
+                The Zone failed in factory turnup checks.
             ACTIVE (3):
                 The Zone is available to use.
             CANCELLED (4):
@@ -899,6 +908,9 @@ class Zone(proto.Message):
         STATE_UNSPECIFIED = 0
         ADDITIONAL_INFO_NEEDED = 1
         PREPARING = 2
+        READY_FOR_CUSTOMER_FACTORY_TURNUP_CHECKS = 5
+        READY_FOR_SITE_TURNUP = 6
+        CUSTOMER_FACTORY_TURNUP_CHECKS_FAILED = 7
         ACTIVE = 3
         CANCELLED = 4
 
@@ -943,6 +955,10 @@ class Zone(proto.Message):
         proto.MESSAGE,
         number=11,
         message="ZoneNetworkConfig",
+    )
+    globally_unique_id: str = proto.Field(
+        proto.STRING,
+        number=12,
     )
 
 

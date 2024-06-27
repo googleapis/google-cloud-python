@@ -66,6 +66,7 @@ __protobuf__ = proto.module(
         "CreateZoneRequest",
         "UpdateZoneRequest",
         "DeleteZoneRequest",
+        "SignalZoneStateRequest",
         "OperationMetadata",
     },
 )
@@ -1329,6 +1330,51 @@ class DeleteZoneRequest(proto.Message):
     request_id: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+
+
+class SignalZoneStateRequest(proto.Message):
+    r"""A request to signal the state of a zone.
+
+    Attributes:
+        name (str):
+            Required. The name of the zone. Format:
+            ``projects/{project}/locations/{location}/zones/{zone}``
+        request_id (str):
+            Optional. An optional unique identifier for this request.
+            See `AIP-155 <https://google.aip.dev/155>`__.
+        state_signal (google.cloud.gdchardwaremanagement_v1alpha.types.SignalZoneStateRequest.StateSignal):
+            Required. The state signal to send for this
+            zone.
+    """
+
+    class StateSignal(proto.Enum):
+        r"""Valid state signals for a zone.
+
+        Values:
+            STATE_SIGNAL_UNSPECIFIED (0):
+                State signal of the zone is unspecified.
+            READY_FOR_SITE_TURNUP (1):
+                The Zone is ready for site turnup.
+            FACTORY_TURNUP_CHECKS_FAILED (2):
+                The Zone failed in factory turnup checks.
+        """
+        STATE_SIGNAL_UNSPECIFIED = 0
+        READY_FOR_SITE_TURNUP = 1
+        FACTORY_TURNUP_CHECKS_FAILED = 2
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    state_signal: StateSignal = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=StateSignal,
     )
 
 

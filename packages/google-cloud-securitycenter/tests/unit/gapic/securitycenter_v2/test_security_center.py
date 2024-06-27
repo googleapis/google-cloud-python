@@ -46,6 +46,7 @@ from google.iam.v1 import options_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
+from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import json_format
@@ -73,6 +74,7 @@ from google.cloud.securitycenter_v2.types import (
     attack_path,
     backup_disaster_recovery,
     bigquery_export,
+    cloud_armor,
     cloud_dlp_data_profile,
     cloud_dlp_inspection,
     compliance,
@@ -83,6 +85,7 @@ from google.cloud.securitycenter_v2.types import (
     exfiltration,
 )
 from google.cloud.securitycenter_v2.types import (
+    group_membership,
     iam_binding,
     indicator,
     kernel_rootkit,
@@ -96,6 +99,11 @@ from google.cloud.securitycenter_v2.types import (
     security_posture,
     securitycenter_service,
     simulation,
+)
+from google.cloud.securitycenter_v2.types import (
+    toxic_combination,
+    valued_resource,
+    vulnerability,
 )
 from google.cloud.securitycenter_v2.types import external_system as gcs_external_system
 from google.cloud.securitycenter_v2.types import (
@@ -111,13 +119,13 @@ from google.cloud.securitycenter_v2.types import finding
 from google.cloud.securitycenter_v2.types import finding as gcs_finding
 from google.cloud.securitycenter_v2.types import mute_config
 from google.cloud.securitycenter_v2.types import mute_config as gcs_mute_config
+from google.cloud.securitycenter_v2.types import notebook
 from google.cloud.securitycenter_v2.types import notification_config
-from google.cloud.securitycenter_v2.types import org_policy, process
+from google.cloud.securitycenter_v2.types import org_policy, process, resource
 from google.cloud.securitycenter_v2.types import resource_value_config
 from google.cloud.securitycenter_v2.types import security_marks
 from google.cloud.securitycenter_v2.types import source
 from google.cloud.securitycenter_v2.types import source as gcs_source
-from google.cloud.securitycenter_v2.types import valued_resource, vulnerability
 
 
 def client_cert_source_callback():
@@ -6133,6 +6141,7 @@ def test_get_simulation(request_type, transport: str = "grpc"):
         # Designate an appropriate return value for the call.
         call.return_value = simulation.Simulation(
             name="name_value",
+            cloud_provider=resource.CloudProvider.GOOGLE_CLOUD_PLATFORM,
         )
         response = client.get_simulation(request)
 
@@ -6145,6 +6154,7 @@ def test_get_simulation(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, simulation.Simulation)
     assert response.name == "name_value"
+    assert response.cloud_provider == resource.CloudProvider.GOOGLE_CLOUD_PLATFORM
 
 
 def test_get_simulation_empty_call():
@@ -6244,6 +6254,7 @@ async def test_get_simulation_empty_call_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             simulation.Simulation(
                 name="name_value",
+                cloud_provider=resource.CloudProvider.GOOGLE_CLOUD_PLATFORM,
             )
         )
         response = await client.get_simulation()
@@ -6318,6 +6329,7 @@ async def test_get_simulation_async(
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             simulation.Simulation(
                 name="name_value",
+                cloud_provider=resource.CloudProvider.GOOGLE_CLOUD_PLATFORM,
             )
         )
         response = await client.get_simulation(request)
@@ -6331,6 +6343,7 @@ async def test_get_simulation_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, simulation.Simulation)
     assert response.name == "name_value"
+    assert response.cloud_provider == resource.CloudProvider.GOOGLE_CLOUD_PLATFORM
 
 
 @pytest.mark.asyncio
@@ -8121,6 +8134,7 @@ def test_get_resource_value_config(request_type, transport: str = "grpc"):
             resource_type="resource_type_value",
             scope="scope_value",
             description="description_value",
+            cloud_provider=resource.CloudProvider.GOOGLE_CLOUD_PLATFORM,
         )
         response = client.get_resource_value_config(request)
 
@@ -8138,6 +8152,7 @@ def test_get_resource_value_config(request_type, transport: str = "grpc"):
     assert response.resource_type == "resource_type_value"
     assert response.scope == "scope_value"
     assert response.description == "description_value"
+    assert response.cloud_provider == resource.CloudProvider.GOOGLE_CLOUD_PLATFORM
 
 
 def test_get_resource_value_config_empty_call():
@@ -8253,6 +8268,7 @@ async def test_get_resource_value_config_empty_call_async():
                 resource_type="resource_type_value",
                 scope="scope_value",
                 description="description_value",
+                cloud_provider=resource.CloudProvider.GOOGLE_CLOUD_PLATFORM,
             )
         )
         response = await client.get_resource_value_config()
@@ -8334,6 +8350,7 @@ async def test_get_resource_value_config_async(
                 resource_type="resource_type_value",
                 scope="scope_value",
                 description="description_value",
+                cloud_provider=resource.CloudProvider.GOOGLE_CLOUD_PLATFORM,
             )
         )
         response = await client.get_resource_value_config(request)
@@ -8352,6 +8369,7 @@ async def test_get_resource_value_config_async(
     assert response.resource_type == "resource_type_value"
     assert response.scope == "scope_value"
     assert response.description == "description_value"
+    assert response.cloud_provider == resource.CloudProvider.GOOGLE_CLOUD_PLATFORM
 
 
 @pytest.mark.asyncio
@@ -18080,6 +18098,7 @@ def test_update_resource_value_config(request_type, transport: str = "grpc"):
             resource_type="resource_type_value",
             scope="scope_value",
             description="description_value",
+            cloud_provider=resource.CloudProvider.GOOGLE_CLOUD_PLATFORM,
         )
         response = client.update_resource_value_config(request)
 
@@ -18097,6 +18116,7 @@ def test_update_resource_value_config(request_type, transport: str = "grpc"):
     assert response.resource_type == "resource_type_value"
     assert response.scope == "scope_value"
     assert response.description == "description_value"
+    assert response.cloud_provider == resource.CloudProvider.GOOGLE_CLOUD_PLATFORM
 
 
 def test_update_resource_value_config_empty_call():
@@ -18208,6 +18228,7 @@ async def test_update_resource_value_config_empty_call_async():
                 resource_type="resource_type_value",
                 scope="scope_value",
                 description="description_value",
+                cloud_provider=resource.CloudProvider.GOOGLE_CLOUD_PLATFORM,
             )
         )
         response = await client.update_resource_value_config()
@@ -18289,6 +18310,7 @@ async def test_update_resource_value_config_async(
                 resource_type="resource_type_value",
                 scope="scope_value",
                 description="description_value",
+                cloud_provider=resource.CloudProvider.GOOGLE_CLOUD_PLATFORM,
             )
         )
         response = await client.update_resource_value_config(request)
@@ -18307,6 +18329,7 @@ async def test_update_resource_value_config_async(
     assert response.resource_type == "resource_type_value"
     assert response.scope == "scope_value"
     assert response.description == "description_value"
+    assert response.cloud_provider == resource.CloudProvider.GOOGLE_CLOUD_PLATFORM
 
 
 @pytest.mark.asyncio
@@ -20648,6 +20671,38 @@ def test_create_finding_rest(request_type):
             }
         ],
         "load_balancers": [{"name": "name_value"}],
+        "cloud_armor": {
+            "security_policy": {
+                "name": "name_value",
+                "type_": "type__value",
+                "preview": True,
+            },
+            "requests": {
+                "ratio": 0.543,
+                "short_term_allowed": 1934,
+                "long_term_allowed": 1806,
+                "long_term_denied": 1679,
+            },
+            "adaptive_protection": {"confidence": 0.1038},
+            "attack": {
+                "volume_pps": 1098,
+                "volume_bps": 1084,
+                "classification": "classification_value",
+            },
+            "threat_vector": "threat_vector_value",
+            "duration": {"seconds": 751, "nanos": 543},
+        },
+        "notebook": {
+            "name": "name_value",
+            "service": "service_value",
+            "last_author": "last_author_value",
+            "notebook_update_time": {},
+        },
+        "toxic_combination": {
+            "attack_exposure_score": 0.2253,
+            "related_findings": ["related_findings_value1", "related_findings_value2"],
+        },
+        "group_memberships": [{"group_type": 1, "group_id": "group_id_value"}],
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -23815,6 +23870,7 @@ def test_get_simulation_rest(request_type):
         # Designate an appropriate value for the returned response.
         return_value = simulation.Simulation(
             name="name_value",
+            cloud_provider=resource.CloudProvider.GOOGLE_CLOUD_PLATFORM,
         )
 
         # Wrap the value into a proper Response obj
@@ -23831,6 +23887,7 @@ def test_get_simulation_rest(request_type):
     # Establish that the response is the type that we expect.
     assert isinstance(response, simulation.Simulation)
     assert response.name == "name_value"
+    assert response.cloud_provider == resource.CloudProvider.GOOGLE_CLOUD_PLATFORM
 
 
 def test_get_simulation_rest_use_cached_wrapped_rpc():
@@ -25376,6 +25433,7 @@ def test_get_resource_value_config_rest(request_type):
             resource_type="resource_type_value",
             scope="scope_value",
             description="description_value",
+            cloud_provider=resource.CloudProvider.GOOGLE_CLOUD_PLATFORM,
         )
 
         # Wrap the value into a proper Response obj
@@ -25397,6 +25455,7 @@ def test_get_resource_value_config_rest(request_type):
     assert response.resource_type == "resource_type_value"
     assert response.scope == "scope_value"
     assert response.description == "description_value"
+    assert response.cloud_provider == resource.CloudProvider.GOOGLE_CLOUD_PLATFORM
 
 
 def test_get_resource_value_config_rest_use_cached_wrapped_rpc():
@@ -31877,6 +31936,38 @@ def test_update_finding_rest(request_type):
             }
         ],
         "load_balancers": [{"name": "name_value"}],
+        "cloud_armor": {
+            "security_policy": {
+                "name": "name_value",
+                "type_": "type__value",
+                "preview": True,
+            },
+            "requests": {
+                "ratio": 0.543,
+                "short_term_allowed": 1934,
+                "long_term_allowed": 1806,
+                "long_term_denied": 1679,
+            },
+            "adaptive_protection": {"confidence": 0.1038},
+            "attack": {
+                "volume_pps": 1098,
+                "volume_bps": 1084,
+                "classification": "classification_value",
+            },
+            "threat_vector": "threat_vector_value",
+            "duration": {"seconds": 751, "nanos": 543},
+        },
+        "notebook": {
+            "name": "name_value",
+            "service": "service_value",
+            "last_author": "last_author_value",
+            "notebook_update_time": {},
+        },
+        "toxic_combination": {
+            "attack_exposure_score": 0.2253,
+            "related_findings": ["related_findings_value1", "related_findings_value2"],
+        },
+        "group_memberships": [{"group_type": 1, "group_id": "group_id_value"}],
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -33100,6 +33191,7 @@ def test_update_resource_value_config_rest(request_type):
         "description": "description_value",
         "create_time": {"seconds": 751, "nanos": 543},
         "update_time": {},
+        "cloud_provider": 1,
         "sensitive_data_protection_mapping": {
             "high_sensitivity_mapping": 1,
             "medium_sensitivity_mapping": 1,
@@ -33188,6 +33280,7 @@ def test_update_resource_value_config_rest(request_type):
             resource_type="resource_type_value",
             scope="scope_value",
             description="description_value",
+            cloud_provider=resource.CloudProvider.GOOGLE_CLOUD_PLATFORM,
         )
 
         # Wrap the value into a proper Response obj
@@ -33209,6 +33302,7 @@ def test_update_resource_value_config_rest(request_type):
     assert response.resource_type == "resource_type_value"
     assert response.scope == "scope_value"
     assert response.description == "description_value"
+    assert response.cloud_provider == resource.CloudProvider.GOOGLE_CLOUD_PLATFORM
 
 
 def test_update_resource_value_config_rest_use_cached_wrapped_rpc():

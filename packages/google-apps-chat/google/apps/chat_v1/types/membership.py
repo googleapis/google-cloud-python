@@ -73,9 +73,7 @@ class Membership(proto.Message):
             This field is a member of `oneof`_ ``memberType``.
         group_member (google.apps.chat_v1.types.Group):
             The Google Group the membership corresponds
-            to. Only supports read operations. Other
-            operations, like creating or updating a
-            membership, aren't currently supported.
+            to.
 
             This field is a member of `oneof`_ ``memberType``.
         create_time (google.protobuf.timestamp_pb2.Timestamp):

@@ -5059,6 +5059,7 @@ def test_get_subnet(request_type, transport: str = "grpc"):
             ipv4_cidr=["ipv4_cidr_value"],
             ipv6_cidr=["ipv6_cidr_value"],
             vlan_id=733,
+            bonding_type=resources.Subnet.BondingType.BONDED,
             state=resources.ResourceState.STATE_PENDING,
         )
         response = client.get_subnet(request)
@@ -5077,6 +5078,7 @@ def test_get_subnet(request_type, transport: str = "grpc"):
     assert response.ipv4_cidr == ["ipv4_cidr_value"]
     assert response.ipv6_cidr == ["ipv6_cidr_value"]
     assert response.vlan_id == 733
+    assert response.bonding_type == resources.Subnet.BondingType.BONDED
     assert response.state == resources.ResourceState.STATE_PENDING
 
 
@@ -5182,6 +5184,7 @@ async def test_get_subnet_empty_call_async():
                 ipv4_cidr=["ipv4_cidr_value"],
                 ipv6_cidr=["ipv6_cidr_value"],
                 vlan_id=733,
+                bonding_type=resources.Subnet.BondingType.BONDED,
                 state=resources.ResourceState.STATE_PENDING,
             )
         )
@@ -5259,6 +5262,7 @@ async def test_get_subnet_async(
                 ipv4_cidr=["ipv4_cidr_value"],
                 ipv6_cidr=["ipv6_cidr_value"],
                 vlan_id=733,
+                bonding_type=resources.Subnet.BondingType.BONDED,
                 state=resources.ResourceState.STATE_PENDING,
             )
         )
@@ -5278,6 +5282,7 @@ async def test_get_subnet_async(
     assert response.ipv4_cidr == ["ipv4_cidr_value"]
     assert response.ipv6_cidr == ["ipv6_cidr_value"]
     assert response.vlan_id == 733
+    assert response.bonding_type == resources.Subnet.BondingType.BONDED
     assert response.state == resources.ResourceState.STATE_PENDING
 
 
@@ -15321,6 +15326,7 @@ def test_get_subnet_rest(request_type):
             ipv4_cidr=["ipv4_cidr_value"],
             ipv6_cidr=["ipv6_cidr_value"],
             vlan_id=733,
+            bonding_type=resources.Subnet.BondingType.BONDED,
             state=resources.ResourceState.STATE_PENDING,
         )
 
@@ -15343,6 +15349,7 @@ def test_get_subnet_rest(request_type):
     assert response.ipv4_cidr == ["ipv4_cidr_value"]
     assert response.ipv6_cidr == ["ipv6_cidr_value"]
     assert response.vlan_id == 733
+    assert response.bonding_type == resources.Subnet.BondingType.BONDED
     assert response.state == resources.ResourceState.STATE_PENDING
 
 
@@ -15632,6 +15639,7 @@ def test_create_subnet_rest(request_type):
         "ipv4_cidr": ["ipv4_cidr_value1", "ipv4_cidr_value2"],
         "ipv6_cidr": ["ipv6_cidr_value1", "ipv6_cidr_value2"],
         "vlan_id": 733,
+        "bonding_type": 1,
         "state": 1,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
@@ -16049,6 +16057,7 @@ def test_update_subnet_rest(request_type):
         "ipv4_cidr": ["ipv4_cidr_value1", "ipv4_cidr_value2"],
         "ipv6_cidr": ["ipv6_cidr_value1", "ipv6_cidr_value2"],
         "vlan_id": 733,
+        "bonding_type": 1,
         "state": 1,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
