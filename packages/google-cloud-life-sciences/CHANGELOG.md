@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.9.10](https://github.com/googleapis/google-cloud-python/compare/google-cloud-life-sciences-v0.9.9...google-cloud-life-sciences-v0.9.10) (2024-06-27)
+
+
+### Documentation
+
+* [google-cloud-life-sciences] modify example accelerator type ([#12840](https://github.com/googleapis/google-cloud-python/issues/12840)) ([9210610](https://github.com/googleapis/google-cloud-python/commit/9210610dd2f6593dfe1c14039f9024ead8d19795))
+
 ## [0.9.9](https://github.com/googleapis/google-cloud-python/compare/google-cloud-life-sciences-v0.9.8...google-cloud-life-sciences-v0.9.9) (2024-03-05)
 
 

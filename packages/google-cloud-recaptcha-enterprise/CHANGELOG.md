@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.21.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-recaptcha-enterprise-v1.20.0...google-cloud-recaptcha-enterprise-v1.21.0) (2024-06-27)
+
+
+### Features
+
+* [google-cloud-recaptcha-enterprise] added SMS Toll Fraud assessment ([#12838](https://github.com/googleapis/google-cloud-python/issues/12838)) ([386499f](https://github.com/googleapis/google-cloud-python/commit/386499fe11525d2646b79f9e41829b2c055f63b2))
+
 ## [1.20.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-recaptcha-enterprise-v1.19.1...google-cloud-recaptcha-enterprise-v1.20.0) (2024-04-24)
 
 

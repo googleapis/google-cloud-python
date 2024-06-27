@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.8](https://github.com/googleapis/google-cloud-python/compare/google-cloud-edgenetwork-v0.1.7...google-cloud-edgenetwork-v0.1.8) (2024-06-27)
+
+
+### Features
+
+* [google-cloud-edgenetwork] A new field `bonding_type` is added to message `.google.cloud.edgenetwork.v1.Subnet` ([#12842](https://github.com/googleapis/google-cloud-python/issues/12842)) ([5f272b3](https://github.com/googleapis/google-cloud-python/commit/5f272b3293fe54dd7d73930cdd2e634b15ed3e2f))
+
 ## [0.1.7](https://github.com/googleapis/google-cloud-python/compare/google-cloud-edgenetwork-v0.1.6...google-cloud-edgenetwork-v0.1.7) (2024-03-22)
 
 
