@@ -39,6 +39,7 @@ __protobuf__ = proto.module(
         "KubernetesSoftwareConfig",
         "GkeNodePoolTarget",
         "GkeNodePoolConfig",
+        "AutotuningConfig",
         "RepositoryConfig",
         "PyPiRepositoryConfig",
     },
@@ -138,6 +139,13 @@ class RuntimeConfig(proto.Message):
         repository_config (google.cloud.dataproc_v1.types.RepositoryConfig):
             Optional. Dependency repository
             configuration.
+        autotuning_config (google.cloud.dataproc_v1.types.AutotuningConfig):
+            Optional. Autotuning configuration of the
+            workload.
+        cohort (str):
+            Optional. Cohort identifier. Identifies
+            families of the workloads having the same shape,
+            e.g. daily ETL jobs.
     """
 
     version: str = proto.Field(
@@ -157,6 +165,15 @@ class RuntimeConfig(proto.Message):
         proto.MESSAGE,
         number=5,
         message="RepositoryConfig",
+    )
+    autotuning_config: "AutotuningConfig" = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message="AutotuningConfig",
+    )
+    cohort: str = proto.Field(
+        proto.STRING,
+        number=7,
     )
 
 
@@ -867,6 +884,43 @@ class GkeNodePoolConfig(proto.Message):
         proto.MESSAGE,
         number=4,
         message=GkeNodePoolAutoscalingConfig,
+    )
+
+
+class AutotuningConfig(proto.Message):
+    r"""Autotuning configuration of the workload.
+
+    Attributes:
+        scenarios (MutableSequence[google.cloud.dataproc_v1.types.AutotuningConfig.Scenario]):
+            Optional. Scenarios for which tunings are
+            applied.
+    """
+
+    class Scenario(proto.Enum):
+        r"""Scenario represents a specific goal that autotuning will
+        attempt to achieve by modifying workloads.
+
+        Values:
+            SCENARIO_UNSPECIFIED (0):
+                Default value.
+            SCALING (2):
+                Scaling recommendations such as
+                initialExecutors.
+            BROADCAST_HASH_JOIN (3):
+                Adding hints for potential relation
+                broadcasts.
+            MEMORY (4):
+                Memory management for workloads.
+        """
+        SCENARIO_UNSPECIFIED = 0
+        SCALING = 2
+        BROADCAST_HASH_JOIN = 3
+        MEMORY = 4
+
+    scenarios: MutableSequence[Scenario] = proto.RepeatedField(
+        proto.ENUM,
+        number=2,
+        enum=Scenario,
     )
 
 
