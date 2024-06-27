@@ -1,2 +1,3 @@
 # Make sure we test with pandas 1.3.0. The Python version isn't that relevant.
 pandas==1.3.0
+numpy<2.0.0
