@@ -15,7 +15,7 @@ Python Client for Cloud Dataplex
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-dataplex.svg
    :target: https://pypi.org/project/google-cloud-dataplex/
 .. _Cloud Dataplex: https://cloud.google.com/dataplex
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/dataplex/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/dataplex/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/dataplex
 
 Quick Start
