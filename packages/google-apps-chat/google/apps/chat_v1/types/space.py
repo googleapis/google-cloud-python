@@ -408,7 +408,7 @@ class GetSpaceRequest(proto.Message):
     Attributes:
         name (str):
             Required. Resource name of the space, in the form
-            "spaces/*".
+            `spaces/*`.
 
             Format: ``spaces/{space}``
     """
