@@ -1030,6 +1030,7 @@ class RouterStatus(proto.Message):
                     The DOWN state indicating BGP session is not
                     established yet.
             """
+
             UNKNOWN = 0
             UP = 1
             DOWN = 2
