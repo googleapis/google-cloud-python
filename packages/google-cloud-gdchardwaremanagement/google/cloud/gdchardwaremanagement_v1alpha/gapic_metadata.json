@@ -140,6 +140,11 @@
                 "list_zones"
               ]
             },
+            "SignalZoneState": {
+              "methods": [
+                "signal_zone_state"
+              ]
+            },
             "SubmitOrder": {
               "methods": [
                 "submit_order"
@@ -305,6 +310,11 @@
                 "list_zones"
               ]
             },
+            "SignalZoneState": {
+              "methods": [
+                "signal_zone_state"
+              ]
+            },
             "SubmitOrder": {
               "methods": [
                 "submit_order"
@@ -468,6 +478,11 @@
             "ListZones": {
               "methods": [
                 "list_zones"
+              ]
+            },
+            "SignalZoneState": {
+              "methods": [
+                "signal_zone_state"
               ]
             },
             "SubmitOrder": {
