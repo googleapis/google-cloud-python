@@ -12,6 +12,7 @@ ans = (
     .groupby("id6", as_index=False, dropna=False)
     .head(2)
 )
+ans = ans.reset_index(drop=True)
 print(ans.shape)
 chk = [ans["v3"].sum()]
 print(chk)
