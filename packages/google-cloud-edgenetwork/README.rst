@@ -15,7 +15,7 @@ Python Client for Distributed Cloud Edge Network API
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-edgenetwork.svg
    :target: https://pypi.org/project/google-cloud-edgenetwork/
 .. _Distributed Cloud Edge Network API: https://cloud.google.com/distributed-cloud/edge/latest/docs/overview
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/google-cloud-edgenetwork/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/google-cloud-edgenetwork/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/distributed-cloud/edge/latest/docs/overview
 
 Quick Start

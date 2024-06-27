@@ -198,10 +198,39 @@ class Subnet(proto.Message):
         vlan_id (int):
             Optional. VLAN id provided by user. If not
             specified we assign one automatically.
+        bonding_type (google.cloud.edgenetwork_v1.types.Subnet.BondingType):
+            Optional. A bonding type in the subnet
+            creation specifies whether a VLAN being created
+            will be present on Bonded or Non-Bonded or Both
+            port types. In addition, this flag is to be used
+            to set the specific network configuration which
+            clusters can then use for their workloads based
+            on the bonding choice.
         state (google.cloud.edgenetwork_v1.types.ResourceState):
             Output only. Current stage of the resource to
             the device by config push.
     """
+
+    class BondingType(proto.Enum):
+        r"""Bonding type in the subnet.
+
+        Values:
+            BONDING_TYPE_UNSPECIFIED (0):
+                Unspecified
+                Bonding type will be unspecified by default and
+                if the user chooses to not specify a bonding
+                type at time of creating the VLAN. This will be
+                treated as mixed bonding where the VLAN will
+                have both bonded and non-bonded connectivity to
+                machines.
+            BONDED (1):
+                Single homed.
+            NON_BONDED (2):
+                Multi homed.
+        """
+        BONDING_TYPE_UNSPECIFIED = 0
+        BONDED = 1
+        NON_BONDED = 2
 
     name: str = proto.Field(
         proto.STRING,
@@ -241,6 +270,11 @@ class Subnet(proto.Message):
     vlan_id: int = proto.Field(
         proto.INT32,
         number=9,
+    )
+    bonding_type: BondingType = proto.Field(
+        proto.ENUM,
+        number=11,
+        enum=BondingType,
     )
     state: "ResourceState" = proto.Field(
         proto.ENUM,
@@ -996,6 +1030,7 @@ class RouterStatus(proto.Message):
                     The DOWN state indicating BGP session is not
                     established yet.
             """
+
             UNKNOWN = 0
             UP = 1
             DOWN = 2

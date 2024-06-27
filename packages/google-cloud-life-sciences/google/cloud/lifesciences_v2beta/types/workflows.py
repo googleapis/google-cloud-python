@@ -740,7 +740,7 @@ class Accelerator(proto.Message):
     Attributes:
         type_ (str):
             The accelerator type string (for example,
-            "nvidia-tesla-k80").
+            "nvidia-tesla-t4").
 
             Only NVIDIA GPU accelerators are currently supported. If an
             NVIDIA GPU is attached, the required runtime libraries will
