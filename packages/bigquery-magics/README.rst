@@ -8,17 +8,17 @@ right hardware and infrastructure. Google `BigQuery`_ solves this problem by
 enabling super-fast, SQL queries against append-mostly tables, using the
 processing power of Google's infrastructure.
 
--  `Client Library Documentation`_
+-  `Library Documentation`_
 -  `Product Documentation`_
 
 .. |GA| image:: https://img.shields.io/badge/support-GA-gold.svg
    :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#general-availability
-.. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-bigquery.svg
-   :target: https://pypi.org/project/google-cloud-bigquery/
-.. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-bigquery.svg
-   :target: https://pypi.org/project/google-cloud-bigquery/
+.. |pypi| image:: https://img.shields.io/pypi/v/bigquery-magics.svg
+   :target: https://pypi.org/project/bigquery-magics/
+.. |versions| image:: https://img.shields.io/pypi/pyversions/bigquery-magics.svg
+   :target: https://pypi.org/project/bigquery-magics/
 .. _BigQuery: https://cloud.google.com/bigquery/what-is-bigquery
-.. _Client Library Documentation: https://googleapis.dev/python/bigquery/latest
+.. _Library Documentation: https://googleapis.dev/python/bigquery-magics/latest
 .. _Product Documentation: https://cloud.google.com/bigquery/docs/reference/v2/
 
 Quick Start
