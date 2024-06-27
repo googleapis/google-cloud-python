@@ -1800,3 +1800,63 @@ SELECT "pandas na" AS text, NULL AS num
         cleanup_remote_function_assets(
             session.bqclient, session.cloudfunctionsclient, float_parser_remote
         )
+
+
+@pytest.mark.parametrize(
+    ("memory_mib_args", "expected_memory"),
+    [
+        pytest.param({}, "1024Mi", id="no-set"),
+        pytest.param({"cloud_function_memory_mib": None}, "256M", id="set-None"),
+        pytest.param({"cloud_function_memory_mib": 128}, "128Mi", id="set-128"),
+        pytest.param({"cloud_function_memory_mib": 1024}, "1024Mi", id="set-1024"),
+        pytest.param({"cloud_function_memory_mib": 4096}, "4096Mi", id="set-4096"),
+        pytest.param({"cloud_function_memory_mib": 32768}, "32768Mi", id="set-32768"),
+    ],
+)
+@pytest.mark.flaky(retries=2, delay=120)
+def test_remote_function_gcf_memory(
+    session, scalars_dfs, memory_mib_args, expected_memory
+):
+    try:
+
+        def square(x: int) -> int:
+            return x * x
+
+        square_remote = session.remote_function(reuse=False, **memory_mib_args)(square)
+
+        # Assert that the GCF is created with the intended memory
+        gcf = session.cloudfunctionsclient.get_function(
+            name=square_remote.bigframes_cloud_function
+        )
+        assert gcf.service_config.available_memory == expected_memory
+
+        scalars_df, scalars_pandas_df = scalars_dfs
+
+        bf_result = scalars_df["int64_too"].apply(square_remote).to_pandas()
+        pd_result = scalars_pandas_df["int64_too"].apply(square)
+
+        pandas.testing.assert_series_equal(bf_result, pd_result, check_dtype=False)
+    finally:
+        # clean up the gcp assets created for the remote function
+        cleanup_remote_function_assets(
+            session.bqclient, session.cloudfunctionsclient, square_remote
+        )
+
+
+@pytest.mark.parametrize(
+    ("memory_mib",),
+    [
+        pytest.param(127, id="127-too-low"),
+        pytest.param(32769, id="set-32769-too-high"),
+    ],
+)
+@pytest.mark.flaky(retries=2, delay=120)
+def test_remote_function_gcf_memory_unsupported(session, memory_mib):
+    with pytest.raises(
+        google.api_core.exceptions.InvalidArgument,
+        match="Invalid value specified for container memory",
+    ):
+
+        @session.remote_function(reuse=False, cloud_function_memory_mib=memory_mib)
+        def square(x: int) -> int:
+            return x * x

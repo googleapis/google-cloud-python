@@ -331,6 +331,7 @@ class RemoteFunctionClient:
         max_instance_count=None,
         is_row_processor=False,
         vpc_connector=None,
+        memory_mib=1024,
     ):
         """Create a cloud function from the given user defined function.
 
@@ -410,7 +411,8 @@ class RemoteFunctionClient:
                 self._cloud_function_docker_repository
             )
             function.service_config = functions_v2.ServiceConfig()
-            function.service_config.available_memory = "1024M"
+            if memory_mib is not None:
+                function.service_config.available_memory = f"{memory_mib}Mi"
             if timeout_seconds is not None:
                 if timeout_seconds > 1200:
                     raise ValueError(
@@ -473,6 +475,7 @@ class RemoteFunctionClient:
         cloud_function_max_instance_count,
         is_row_processor,
         cloud_function_vpc_connector,
+        cloud_function_memory_mib,
     ):
         """Provision a BigQuery remote function."""
         # If reuse of any existing function with the same name (indicated by the
@@ -504,6 +507,7 @@ class RemoteFunctionClient:
                 max_instance_count=cloud_function_max_instance_count,
                 is_row_processor=is_row_processor,
                 vpc_connector=cloud_function_vpc_connector,
+                memory_mib=cloud_function_memory_mib,
             )
         else:
             logger.info(f"Cloud function {cloud_function_name} already exists.")
@@ -667,6 +671,7 @@ def remote_function(
     cloud_function_timeout: Optional[int] = 600,
     cloud_function_max_instances: Optional[int] = None,
     cloud_function_vpc_connector: Optional[str] = None,
+    cloud_function_memory_mib: Optional[int] = 1024,
 ):
     """Decorator to turn a user defined function into a BigQuery remote function.
 
@@ -817,6 +822,15 @@ def remote_function(
             function. This is useful if your code needs access to data or
             service(s) that are on a VPC network. See for more details
             https://cloud.google.com/functions/docs/networking/connecting-vpc.
+        cloud_function_memory_mib (int, Optional):
+            The amounts of memory (in mebibytes) to allocate for the cloud
+            function (2nd gen) created. This also dictates a corresponding
+            amount of allocated CPU for the function. By default a memory of
+            1024 MiB is set for the cloud functions created to support
+            BigQuery DataFrames remote function. If you want to let the
+            default memory of cloud functions be allocated, pass `None`. See
+            for more details
+            https://cloud.google.com/functions/docs/configuring/memory.
     """
     # Some defaults may be used from the session if not provided otherwise
     import bigframes.exceptions as bf_exceptions
@@ -1027,6 +1041,7 @@ def remote_function(
             cloud_function_max_instance_count=cloud_function_max_instances,
             is_row_processor=is_row_processor,
             cloud_function_vpc_connector=cloud_function_vpc_connector,
+            cloud_function_memory_mib=cloud_function_memory_mib,
         )
 
         # TODO: Move ibis logic to compiler step

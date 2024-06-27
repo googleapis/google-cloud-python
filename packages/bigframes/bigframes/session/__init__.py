@@ -1537,6 +1537,7 @@ class Session(
         cloud_function_timeout: Optional[int] = 600,
         cloud_function_max_instances: Optional[int] = None,
         cloud_function_vpc_connector: Optional[str] = None,
+        cloud_function_memory_mib: Optional[int] = 1024,
     ):
         """Decorator to turn a user defined function into a BigQuery remote function. Check out
         the code samples at: https://cloud.google.com/bigquery/docs/remote-functions#bigquery-dataframes.
@@ -1670,6 +1671,15 @@ class Session(
                 function. This is useful if your code needs access to data or
                 service(s) that are on a VPC network. See for more details
                 https://cloud.google.com/functions/docs/networking/connecting-vpc.
+            cloud_function_memory_mib (int, Optional):
+                The amounts of memory (in mebibytes) to allocate for the cloud
+                function (2nd gen) created. This also dictates a corresponding
+                amount of allocated CPU for the function. By default a memory of
+                1024 MiB is set for the cloud functions created to support
+                BigQuery DataFrames remote function. If you want to let the
+                default memory of cloud functions be allocated, pass `None`. See
+                for more details
+                https://cloud.google.com/functions/docs/configuring/memory.
         Returns:
             callable: A remote function object pointing to the cloud assets created
             in the background to support the remote execution. The cloud assets can be
@@ -1695,6 +1705,7 @@ class Session(
             cloud_function_timeout=cloud_function_timeout,
             cloud_function_max_instances=cloud_function_max_instances,
             cloud_function_vpc_connector=cloud_function_vpc_connector,
+            cloud_function_memory_mib=cloud_function_memory_mib,
         )
 
     def read_gbq_function(
