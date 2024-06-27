@@ -5,6 +5,18 @@
 [1]: https://pypi.org/project/google-cloud-firestore/#history
 
 
+## [2.16.1](https://github.com/googleapis/python-firestore/compare/v2.16.0...v2.16.1) (2024-04-17)
+
+
+### Bug Fixes
+
+* __repr__ method in vector.py ([#903](https://github.com/googleapis/python-firestore/issues/903)) ([6886f2b](https://github.com/googleapis/python-firestore/commit/6886f2bbfb8e2320be58ba1b129733c8f2c5f8ba))
+
+
+### Documentation
+
+* Allow 14 week backup retention for Firestore daily backups ([#899](https://github.com/googleapis/python-firestore/issues/899)) ([9521ded](https://github.com/googleapis/python-firestore/commit/9521deddc5a4b16956f37136f84928ac99688022))
+
 ## [2.16.0](https://github.com/googleapis/python-firestore/compare/v2.15.0...v2.16.0) (2024-04-02)
 
 
