@@ -667,6 +667,12 @@ Libraries
      - `API Issues <https://issuetracker.google.com/savedsearches/559782>`_
      - `File an API Issue <https://issuetracker.google.com/issues/new?component=187243>`_
      - `Client Library Issues <https://github.com/googleapis/python-storage/issues>`_
+   * - `Storage Control API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-storage-control>`_
+     - stable
+     - |PyPI-google-cloud-storage-control|
+     - `API Issues <https://issuetracker.google.com/issues?q=componentid:187243>`_
+     - `File an API Issue <https://issuetracker.google.com/issues/new?component=187243&template=1162869>`_
+     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Storage Transfer Service <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-storage-transfer>`_
      - stable
      - |PyPI-google-cloud-storage-transfer|
@@ -1069,6 +1075,12 @@ Libraries
      -
      -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
+   * - `GDC Hardware Management API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-gdchardwaremanagement>`_
+     - preview
+     - |PyPI-google-cloud-gdchardwaremanagement|
+     - `API Issues <https://issuetracker.google.com/issues?q=componentid:1563150>`_
+     - `File an API Issue <https://issuetracker.google.com/issues/new?component=1563150>`_
+     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `GKE Connect Gateway <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-gke-connect-gateway>`_
      - preview
      - |PyPI-google-cloud-gke-connect-gateway|
@@ -1345,12 +1357,6 @@ Libraries
      - `API Issues <https://issuetracker.google.com/issues?q=componentid:1356349>`_
      - `File an API Issue <https://issuetracker.google.com/issues/new?component=1356349>`_
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
-   * - `Storage Control API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-storage-control>`_
-     - preview
-     - |PyPI-google-cloud-storage-control|
-     - `API Issues <https://issuetracker.google.com/issues?q=componentid:187243>`_
-     - `File an API Issue <https://issuetracker.google.com/issues/new?component=187243&template=1162869>`_
-     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Storage Insights API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-storageinsights>`_
      - preview
      - |PyPI-google-cloud-storageinsights|
@@ -1604,6 +1610,8 @@ Libraries
      :target: https://pypi.org/project/google-cloud-monitoring
 .. |PyPI-google-cloud-storage| image:: https://img.shields.io/pypi/v/google-cloud-storage.svg
      :target: https://pypi.org/project/google-cloud-storage
+.. |PyPI-google-cloud-storage-control| image:: https://img.shields.io/pypi/v/google-cloud-storage-control.svg
+     :target: https://pypi.org/project/google-cloud-storage-control
 .. |PyPI-google-cloud-storage-transfer| image:: https://img.shields.io/pypi/v/google-cloud-storage-transfer.svg
      :target: https://pypi.org/project/google-cloud-storage-transfer
 .. |PyPI-google-cloud-tpu| image:: https://img.shields.io/pypi/v/google-cloud-tpu.svg
@@ -1738,6 +1746,8 @@ Libraries
      :target: https://pypi.org/project/google-cloud-error-reporting
 .. |PyPI-google-cloud-eventarc-publishing| image:: https://img.shields.io/pypi/v/google-cloud-eventarc-publishing.svg
      :target: https://pypi.org/project/google-cloud-eventarc-publishing
+.. |PyPI-google-cloud-gdchardwaremanagement| image:: https://img.shields.io/pypi/v/google-cloud-gdchardwaremanagement.svg
+     :target: https://pypi.org/project/google-cloud-gdchardwaremanagement
 .. |PyPI-google-cloud-gke-connect-gateway| image:: https://img.shields.io/pypi/v/google-cloud-gke-connect-gateway.svg
      :target: https://pypi.org/project/google-cloud-gke-connect-gateway
 .. |PyPI-google-ai-generativelanguage| image:: https://img.shields.io/pypi/v/google-ai-generativelanguage.svg
@@ -1830,8 +1840,6 @@ Libraries
      :target: https://pypi.org/project/google-shopping-type
 .. |PyPI-google-maps-solar| image:: https://img.shields.io/pypi/v/google-maps-solar.svg
      :target: https://pypi.org/project/google-maps-solar
-.. |PyPI-google-cloud-storage-control| image:: https://img.shields.io/pypi/v/google-cloud-storage-control.svg
-     :target: https://pypi.org/project/google-cloud-storage-control
 .. |PyPI-google-cloud-storageinsights| image:: https://img.shields.io/pypi/v/google-cloud-storageinsights.svg
      :target: https://pypi.org/project/google-cloud-storageinsights
 .. |PyPI-google-cloud-support| image:: https://img.shields.io/pypi/v/google-cloud-support.svg
