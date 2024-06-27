@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storage-control-v1.0.0...google-cloud-storage-control-v1.0.1) (2024-06-24)
+
+
+### Documentation
+
+* remove allowlist note from Folders RPCs ([41a3afd](https://github.com/googleapis/google-cloud-python/commit/41a3afda46a7c3f02bff3f92f15cd49daf92083e))
+
 ## [1.0.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storage-control-v0.2.0...google-cloud-storage-control-v1.0.0) (2024-06-19)
 
 

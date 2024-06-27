@@ -81,7 +81,10 @@ from google.ai.generativelanguage_v1beta.types.citation import (
 )
 from google.ai.generativelanguage_v1beta.types.content import (
     Blob,
+    CodeExecution,
+    CodeExecutionResult,
     Content,
+    ExecutableCode,
     FileData,
     FunctionCall,
     FunctionCallingConfig,
@@ -254,7 +257,10 @@ __all__ = (
     "CitationMetadata",
     "CitationSource",
     "Blob",
+    "CodeExecution",
+    "CodeExecutionResult",
     "Content",
+    "ExecutableCode",
     "FileData",
     "FunctionCall",
     "FunctionCallingConfig",

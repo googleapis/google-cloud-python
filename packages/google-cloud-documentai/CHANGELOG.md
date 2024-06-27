@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.29.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-v2.29.0...google-cloud-documentai-v2.29.1) (2024-06-24)
+
+
+### Documentation
+
+* Update the comment to add a note about `documentai.processors.create` permission ([9318d94](https://github.com/googleapis/google-cloud-python/commit/9318d94ce12bd7a2e242f1ac9cbe491307c84ea6))
+
 ## [2.29.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-v2.28.0...google-cloud-documentai-v2.29.0) (2024-06-05)
 
 

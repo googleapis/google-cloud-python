@@ -221,7 +221,7 @@ class Endpoint(proto.Message):
             provide forwarding information in the control
             plane. Format:
 
-             projects/{project}/global/forwardingRules/{id}
+            projects/{project}/global/forwardingRules/{id}
             or
             projects/{project}/regions/{region}/forwardingRules/{id}
         forwarding_rule_target (google.cloud.network_management_v1.types.Endpoint.ForwardingRuleTarget):

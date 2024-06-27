@@ -47,7 +47,10 @@ from .types.cached_content import CachedContent
 from .types.citation import CitationMetadata, CitationSource
 from .types.content import (
     Blob,
+    CodeExecution,
+    CodeExecutionResult,
     Content,
+    ExecutableCode,
     FileData,
     FunctionCall,
     FunctionCallingConfig,
@@ -220,6 +223,8 @@ __all__ = (
     "ChunkData",
     "CitationMetadata",
     "CitationSource",
+    "CodeExecution",
+    "CodeExecutionResult",
     "Condition",
     "Content",
     "ContentEmbedding",
@@ -257,6 +262,7 @@ __all__ = (
     "EmbedTextResponse",
     "Embedding",
     "Example",
+    "ExecutableCode",
     "File",
     "FileData",
     "FileServiceClient",
