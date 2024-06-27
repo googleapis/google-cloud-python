@@ -140,6 +140,7 @@ from .sessions import (
     TerminateSessionRequest,
 )
 from .shared import (
+    AutotuningConfig,
     Component,
     EnvironmentConfig,
     ExecutionConfig,
@@ -293,6 +294,7 @@ __all__ = (
     "ListSessionsResponse",
     "Session",
     "TerminateSessionRequest",
+    "AutotuningConfig",
     "EnvironmentConfig",
     "ExecutionConfig",
     "GkeClusterConfig",

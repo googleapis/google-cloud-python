@@ -19,6 +19,13 @@ from .attack_exposure import AttackExposure
 from .attack_path import AttackPath
 from .backup_disaster_recovery import BackupDisasterRecovery
 from .bigquery_export import BigQueryExport
+from .cloud_armor import (
+    AdaptiveProtection,
+    Attack,
+    CloudArmor,
+    Requests,
+    SecurityPolicy,
+)
 from .cloud_dlp_data_profile import CloudDlpDataProfile
 from .cloud_dlp_inspection import CloudDlpInspection
 from .compliance import Compliance
@@ -30,6 +37,8 @@ from .exfiltration import ExfilResource, Exfiltration
 from .external_system import ExternalSystem
 from .file import File
 from .finding import Finding
+from .folder import Folder
+from .group_membership import GroupMembership
 from .iam_binding import IamBinding
 from .indicator import Indicator
 from .kernel_rootkit import KernelRootkit
@@ -39,11 +48,19 @@ from .load_balancer import LoadBalancer
 from .log_entry import CloudLoggingEntry, LogEntry
 from .mitre_attack import MitreAttack
 from .mute_config import MuteConfig
+from .notebook import Notebook
 from .notification_config import NotificationConfig
 from .notification_message import NotificationMessage
 from .org_policy import OrgPolicy
 from .process import EnvironmentVariable, Process
-from .resource import Resource
+from .resource import (
+    AwsMetadata,
+    AzureMetadata,
+    CloudProvider,
+    GcpMetadata,
+    Resource,
+    ResourcePath,
+)
 from .resource_value_config import ResourceValue, ResourceValueConfig
 from .security_marks import SecurityMarks
 from .security_posture import SecurityPosture
@@ -101,6 +118,7 @@ from .securitycenter_service import (
 )
 from .simulation import Simulation
 from .source import Source
+from .toxic_combination import ToxicCombination
 from .valued_resource import ResourceValueConfigMetadata, ValuedResource
 from .vulnerability import (
     Cve,
@@ -120,6 +138,11 @@ __all__ = (
     "AttackPath",
     "BackupDisasterRecovery",
     "BigQueryExport",
+    "AdaptiveProtection",
+    "Attack",
+    "CloudArmor",
+    "Requests",
+    "SecurityPolicy",
     "CloudDlpDataProfile",
     "CloudDlpInspection",
     "Compliance",
@@ -133,6 +156,8 @@ __all__ = (
     "ExternalSystem",
     "File",
     "Finding",
+    "Folder",
+    "GroupMembership",
     "IamBinding",
     "Indicator",
     "KernelRootkit",
@@ -143,12 +168,18 @@ __all__ = (
     "LogEntry",
     "MitreAttack",
     "MuteConfig",
+    "Notebook",
     "NotificationConfig",
     "NotificationMessage",
     "OrgPolicy",
     "EnvironmentVariable",
     "Process",
+    "AwsMetadata",
+    "AzureMetadata",
+    "GcpMetadata",
     "Resource",
+    "ResourcePath",
+    "CloudProvider",
     "ResourceValueConfig",
     "ResourceValue",
     "SecurityMarks",
@@ -205,6 +236,7 @@ __all__ = (
     "UpdateSourceRequest",
     "Simulation",
     "Source",
+    "ToxicCombination",
     "ResourceValueConfigMetadata",
     "ValuedResource",
     "Cve",

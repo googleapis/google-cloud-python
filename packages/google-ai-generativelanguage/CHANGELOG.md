@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.6](https://github.com/googleapis/google-cloud-python/compare/google-ai-generativelanguage-v0.6.5...google-ai-generativelanguage-v0.6.6) (2024-06-26)
+
+
+### Features
+
+* [google-ai-generativelanguage] Add code execution ([#12843](https://github.com/googleapis/google-cloud-python/issues/12843)) ([e4fcb00](https://github.com/googleapis/google-cloud-python/commit/e4fcb0097b4f6debbcf584bd3d35a8281a954cfd))
+
 ## [0.6.5](https://github.com/googleapis/google-cloud-python/compare/google-ai-generativelanguage-v0.6.4...google-ai-generativelanguage-v0.6.5) (2024-06-11)
 
 

@@ -75,6 +75,7 @@ from google.cloud.securitycenter_v1.types import (
     security_health_analytics_custom_config,
 )
 from google.cloud.securitycenter_v1.types import (
+    group_membership,
     iam_binding,
     indicator,
     kernel_rootkit,
@@ -87,6 +88,7 @@ from google.cloud.securitycenter_v1.types import (
     security_posture,
     securitycenter_service,
 )
+from google.cloud.securitycenter_v1.types import toxic_combination, vulnerability
 from google.cloud.securitycenter_v1.types import external_system as gcs_external_system
 from google.cloud.securitycenter_v1.types import (
     notification_config as gcs_notification_config,
@@ -111,7 +113,6 @@ from google.cloud.securitycenter_v1.types import organization_settings
 from google.cloud.securitycenter_v1.types import security_marks
 from google.cloud.securitycenter_v1.types import source
 from google.cloud.securitycenter_v1.types import source as gcs_source
-from google.cloud.securitycenter_v1.types import vulnerability
 
 from .client import SecurityCenterClient
 from .transports.base import DEFAULT_CLIENT_INFO, SecurityCenterTransport
