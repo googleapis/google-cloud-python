@@ -25,6 +25,13 @@ from .types.attack_exposure import AttackExposure
 from .types.attack_path import AttackPath
 from .types.backup_disaster_recovery import BackupDisasterRecovery
 from .types.bigquery_export import BigQueryExport
+from .types.cloud_armor import (
+    AdaptiveProtection,
+    Attack,
+    CloudArmor,
+    Requests,
+    SecurityPolicy,
+)
 from .types.cloud_dlp_data_profile import CloudDlpDataProfile
 from .types.cloud_dlp_inspection import CloudDlpInspection
 from .types.compliance import Compliance
@@ -36,6 +43,8 @@ from .types.exfiltration import ExfilResource, Exfiltration
 from .types.external_system import ExternalSystem
 from .types.file import File
 from .types.finding import Finding
+from .types.folder import Folder
+from .types.group_membership import GroupMembership
 from .types.iam_binding import IamBinding
 from .types.indicator import Indicator
 from .types.kernel_rootkit import KernelRootkit
@@ -45,11 +54,19 @@ from .types.load_balancer import LoadBalancer
 from .types.log_entry import CloudLoggingEntry, LogEntry
 from .types.mitre_attack import MitreAttack
 from .types.mute_config import MuteConfig
+from .types.notebook import Notebook
 from .types.notification_config import NotificationConfig
 from .types.notification_message import NotificationMessage
 from .types.org_policy import OrgPolicy
 from .types.process import EnvironmentVariable, Process
-from .types.resource import Resource
+from .types.resource import (
+    AwsMetadata,
+    AzureMetadata,
+    CloudProvider,
+    GcpMetadata,
+    Resource,
+    ResourcePath,
+)
 from .types.resource_value_config import ResourceValue, ResourceValueConfig
 from .types.security_marks import SecurityMarks
 from .types.security_posture import SecurityPosture
@@ -107,6 +124,7 @@ from .types.securitycenter_service import (
 )
 from .types.simulation import Simulation
 from .types.source import Source
+from .types.toxic_combination import ToxicCombination
 from .types.valued_resource import ResourceValueConfigMetadata, ValuedResource
 from .types.vulnerability import (
     Cve,
@@ -120,18 +138,24 @@ from .types.vulnerability import (
 __all__ = (
     "SecurityCenterAsyncClient",
     "Access",
+    "AdaptiveProtection",
     "Application",
+    "Attack",
     "AttackExposure",
     "AttackPath",
+    "AwsMetadata",
+    "AzureMetadata",
     "BackupDisasterRecovery",
     "BatchCreateResourceValueConfigsRequest",
     "BatchCreateResourceValueConfigsResponse",
     "BigQueryExport",
     "BulkMuteFindingsRequest",
     "BulkMuteFindingsResponse",
+    "CloudArmor",
     "CloudDlpDataProfile",
     "CloudDlpInspection",
     "CloudLoggingEntry",
+    "CloudProvider",
     "Compliance",
     "Connection",
     "Contact",
@@ -156,6 +180,8 @@ __all__ = (
     "ExternalSystem",
     "File",
     "Finding",
+    "Folder",
+    "GcpMetadata",
     "Geolocation",
     "GetBigQueryExportRequest",
     "GetMuteConfigRequest",
@@ -166,6 +192,7 @@ __all__ = (
     "GetValuedResourceRequest",
     "GroupFindingsRequest",
     "GroupFindingsResponse",
+    "GroupMembership",
     "GroupResult",
     "IamBinding",
     "Indicator",
@@ -192,25 +219,30 @@ __all__ = (
     "LogEntry",
     "MitreAttack",
     "MuteConfig",
+    "Notebook",
     "NotificationConfig",
     "NotificationMessage",
     "OrgPolicy",
     "Package",
     "Process",
     "Reference",
+    "Requests",
     "Resource",
+    "ResourcePath",
     "ResourceValue",
     "ResourceValueConfig",
     "ResourceValueConfigMetadata",
     "SecurityBulletin",
     "SecurityCenterClient",
     "SecurityMarks",
+    "SecurityPolicy",
     "SecurityPosture",
     "ServiceAccountDelegationInfo",
     "SetFindingStateRequest",
     "SetMuteRequest",
     "Simulation",
     "Source",
+    "ToxicCombination",
     "UpdateBigQueryExportRequest",
     "UpdateExternalSystemRequest",
     "UpdateFindingRequest",
