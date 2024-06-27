@@ -44,6 +44,7 @@ import google.cloud.bigquery as bigquery
 import numpy
 import pandas
 import pandas.io.formats.format
+import pyarrow
 import tabulate
 
 import bigframes
@@ -1182,6 +1183,34 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             frame = self._drop_non_numeric()
 
         return DataFrame(frame._block.calculate_pairwise_metric(agg_ops.CovOp()))
+
+    def to_arrow(
+        self,
+        *,
+        ordered: Optional[bool] = None,
+    ) -> pyarrow.Table:
+        """Write DataFrame to an Arrow table / record batch.
+
+        Args:
+            ordered (bool, default None):
+                Determines whether the resulting Arrow table will be deterministically ordered.
+                In some cases, unordered may result in a faster-executing query. If set to a value
+                other than None, will override Session default.
+
+        Returns:
+            pyarrow.Table: A pyarrow Table with all rows and columns of this DataFrame.
+        """
+        warnings.warn(
+            "to_arrow is in preview. Types and unnamed / duplicate name columns may change in future.",
+            category=bigframes.exceptions.PreviewWarning,
+        )
+
+        self._optimize_query_complexity()
+        pa_table, query_job = self._block.to_arrow(
+            ordered=ordered if ordered is not None else self._session._strictly_ordered,
+        )
+        self._set_internal_query_job(query_job)
+        return pa_table
 
     def to_pandas(
         self,

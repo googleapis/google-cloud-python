@@ -467,6 +467,36 @@ class Block:
                 f"This error should only occur while testing. Ibis schema: {ibis_schema} does not match actual schema: {actual_schema}"
             )
 
+    def to_arrow(
+        self,
+        *,
+        ordered: bool = True,
+    ) -> Tuple[pa.Table, bigquery.QueryJob]:
+        """Run query and download results as a pyarrow Table."""
+        # pa.Table.from_pandas puts index columns last, so update the expression to match.
+        expr = self.expr.select_columns(
+            list(self.value_columns) + list(self.index_columns)
+        )
+
+        _, query_job = self.session._query_to_destination(
+            self.session._to_sql(expr, ordered=ordered),
+            list(self.index_columns),
+            api_name="cached",
+            do_clustering=False,
+        )
+        results_iterator = query_job.result()
+        pa_table = results_iterator.to_arrow()
+
+        pa_index_labels = []
+        for index_level, index_label in enumerate(self._index_labels):
+            if isinstance(index_label, str):
+                pa_index_labels.append(index_label)
+            else:
+                pa_index_labels.append(f"__index_level_{index_level}__")
+
+        pa_table = pa_table.rename_columns(list(self.column_labels) + pa_index_labels)
+        return pa_table, query_job
+
     def to_pandas(
         self,
         max_download_size: Optional[int] = None,
