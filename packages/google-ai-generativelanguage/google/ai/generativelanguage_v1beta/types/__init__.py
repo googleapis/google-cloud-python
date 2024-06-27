@@ -25,7 +25,10 @@ from .cached_content import CachedContent
 from .citation import CitationMetadata, CitationSource
 from .content import (
     Blob,
+    CodeExecution,
+    CodeExecutionResult,
     Content,
+    ExecutableCode,
     FileData,
     FunctionCall,
     FunctionCallingConfig,
@@ -182,7 +185,10 @@ __all__ = (
     "CitationMetadata",
     "CitationSource",
     "Blob",
+    "CodeExecution",
+    "CodeExecutionResult",
     "Content",
+    "ExecutableCode",
     "FileData",
     "FunctionCall",
     "FunctionCallingConfig",

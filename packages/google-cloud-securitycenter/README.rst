@@ -15,7 +15,7 @@ Python Client for Google Cloud Security Command Center
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-securitycenter.svg
    :target: https://pypi.org/project/google-cloud-securitycenter/
 .. _Google Cloud Security Command Center: https://cloud.google.com/security-command-center
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/securitycenter/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/securitycenter/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/security-command-center
 
 Quick Start

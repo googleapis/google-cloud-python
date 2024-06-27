@@ -431,7 +431,7 @@ class GenerateContentResponse(proto.Message):
                     ``safety_ratings`` to understand which safety category
                     blocked it.
                 OTHER (2):
-                    Prompt was blocked due to unknown reaasons.
+                    Prompt was blocked due to unknown reasons.
             """
             BLOCK_REASON_UNSPECIFIED = 0
             SAFETY = 1

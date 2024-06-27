@@ -89,6 +89,7 @@ from google.cloud.securitycenter_v1.types import (
     security_health_analytics_custom_config,
 )
 from google.cloud.securitycenter_v1.types import (
+    group_membership,
     iam_binding,
     indicator,
     kernel_rootkit,
@@ -102,6 +103,7 @@ from google.cloud.securitycenter_v1.types import (
     security_posture,
     securitycenter_service,
 )
+from google.cloud.securitycenter_v1.types import toxic_combination, vulnerability
 from google.cloud.securitycenter_v1.types import external_system as gcs_external_system
 from google.cloud.securitycenter_v1.types import (
     notification_config as gcs_notification_config,
@@ -127,7 +129,6 @@ from google.cloud.securitycenter_v1.types import organization_settings
 from google.cloud.securitycenter_v1.types import security_marks
 from google.cloud.securitycenter_v1.types import source
 from google.cloud.securitycenter_v1.types import source as gcs_source
-from google.cloud.securitycenter_v1.types import vulnerability
 
 
 def client_cert_source_callback():
@@ -23243,6 +23244,11 @@ def test_create_finding_rest(request_type):
             "last_author": "last_author_value",
             "notebook_update_time": {},
         },
+        "toxic_combination": {
+            "attack_exposure_score": 0.2253,
+            "related_findings": ["related_findings_value1", "related_findings_value2"],
+        },
+        "group_memberships": [{"group_type": 1, "group_id": "group_id_value"}],
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -34472,6 +34478,11 @@ def test_update_finding_rest(request_type):
             "last_author": "last_author_value",
             "notebook_update_time": {},
         },
+        "toxic_combination": {
+            "attack_exposure_score": 0.2253,
+            "related_findings": ["related_findings_value1", "related_findings_value2"],
+        },
+        "group_memberships": [{"group_type": 1, "group_id": "group_id_value"}],
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency

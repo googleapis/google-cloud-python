@@ -27,7 +27,12 @@ from google.cloud.securitycenter_v1.types import (
     contact_details,
     container,
 )
-from google.cloud.securitycenter_v1.types import external_system, file, iam_binding
+from google.cloud.securitycenter_v1.types import (
+    external_system,
+    file,
+    group_membership,
+    iam_binding,
+)
 from google.cloud.securitycenter_v1.types import (
     backup_disaster_recovery as gcs_backup_disaster_recovery,
 )
@@ -43,6 +48,9 @@ from google.cloud.securitycenter_v1.types import mitre_attack as gcs_mitre_attac
 from google.cloud.securitycenter_v1.types import security_marks as gcs_security_marks
 from google.cloud.securitycenter_v1.types import (
     security_posture as gcs_security_posture,
+)
+from google.cloud.securitycenter_v1.types import (
+    toxic_combination as gcs_toxic_combination,
 )
 from google.cloud.securitycenter_v1.types import vulnerability as gcs_vulnerability
 from google.cloud.securitycenter_v1.types import access as gcs_access
@@ -268,6 +276,20 @@ class Finding(proto.Message):
             Fields related to Cloud Armor findings.
         notebook (google.cloud.securitycenter_v1.types.Notebook):
             Notebook associated with the finding.
+        toxic_combination (google.cloud.securitycenter_v1.types.ToxicCombination):
+            Contains details about a group of security
+            issues that, when the issues occur together,
+            represent a greater risk than when the issues
+            occur independently. A group of such issues is
+            referred to as a toxic combination.
+            This field cannot be updated. Its value is
+            ignored in all update requests.
+        group_memberships (MutableSequence[google.cloud.securitycenter_v1.types.GroupMembership]):
+            Contains details about groups of which this
+            finding is a member. A group is a collection of
+            findings that are related in some way. This
+            field cannot be updated. Its value is ignored in
+            all update requests.
     """
 
     class State(proto.Enum):
@@ -419,6 +441,12 @@ class Finding(proto.Message):
             POSTURE_VIOLATION (6):
                 Describes a potential security risk due to a
                 change in the security posture.
+            TOXIC_COMBINATION (7):
+                Describes a group of security issues that,
+                when the issues occur together, represent a
+                greater risk than when the issues occur
+                independently. A group of such issues is
+                referred to as a toxic combination.
         """
         FINDING_CLASS_UNSPECIFIED = 0
         THREAT = 1
@@ -427,6 +455,7 @@ class Finding(proto.Message):
         OBSERVATION = 4
         SCC_ERROR = 5
         POSTURE_VIOLATION = 6
+        TOXIC_COMBINATION = 7
 
     name: str = proto.Field(
         proto.STRING,
@@ -655,6 +684,18 @@ class Finding(proto.Message):
         proto.MESSAGE,
         number=63,
         message=gcs_notebook.Notebook,
+    )
+    toxic_combination: gcs_toxic_combination.ToxicCombination = proto.Field(
+        proto.MESSAGE,
+        number=64,
+        message=gcs_toxic_combination.ToxicCombination,
+    )
+    group_memberships: MutableSequence[
+        group_membership.GroupMembership
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=65,
+        message=group_membership.GroupMembership,
     )
 
 
