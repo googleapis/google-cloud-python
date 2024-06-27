@@ -56,10 +56,12 @@ from google.cloud.securitycenter_v2.types import (
 from google.cloud.securitycenter_v2.types import vulnerability as gcs_vulnerability
 from google.cloud.securitycenter_v2.types import access as gcs_access
 from google.cloud.securitycenter_v2.types import application as gcs_application
+from google.cloud.securitycenter_v2.types import cloud_armor as gcs_cloud_armor
 from google.cloud.securitycenter_v2.types import database as gcs_database
 from google.cloud.securitycenter_v2.types import indicator as gcs_indicator
 from google.cloud.securitycenter_v2.types import kubernetes as gcs_kubernetes
 from google.cloud.securitycenter_v2.types import load_balancer, log_entry
+from google.cloud.securitycenter_v2.types import notebook as gcs_notebook
 from google.cloud.securitycenter_v2.types import org_policy, process
 
 __protobuf__ = proto.module(
@@ -310,6 +312,10 @@ class Finding(proto.Message):
         load_balancers (MutableSequence[google.cloud.securitycenter_v2.types.LoadBalancer]):
             The load balancers associated with the
             finding.
+        cloud_armor (google.cloud.securitycenter_v2.types.CloudArmor):
+            Fields related to Cloud Armor findings.
+        notebook (google.cloud.securitycenter_v2.types.Notebook):
+            Notebook associated with the finding.
         toxic_combination (google.cloud.securitycenter_v2.types.ToxicCombination):
             Contains details about a group of security
             issues that, when the issues occur together,
@@ -711,6 +717,16 @@ class Finding(proto.Message):
         proto.MESSAGE,
         number=50,
         message=load_balancer.LoadBalancer,
+    )
+    cloud_armor: gcs_cloud_armor.CloudArmor = proto.Field(
+        proto.MESSAGE,
+        number=51,
+        message=gcs_cloud_armor.CloudArmor,
+    )
+    notebook: gcs_notebook.Notebook = proto.Field(
+        proto.MESSAGE,
+        number=55,
+        message=gcs_notebook.Notebook,
     )
     toxic_combination: gcs_toxic_combination.ToxicCombination = proto.Field(
         proto.MESSAGE,
