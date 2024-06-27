@@ -62,6 +62,7 @@ from google.cloud.securitycenter_v1.types.external_system import ExternalSystem
 from google.cloud.securitycenter_v1.types.file import File
 from google.cloud.securitycenter_v1.types.finding import Finding
 from google.cloud.securitycenter_v1.types.folder import Folder
+from google.cloud.securitycenter_v1.types.group_membership import GroupMembership
 from google.cloud.securitycenter_v1.types.iam_binding import IamBinding
 from google.cloud.securitycenter_v1.types.indicator import Indicator
 from google.cloud.securitycenter_v1.types.kernel_rootkit import KernelRootkit
@@ -152,6 +153,7 @@ from google.cloud.securitycenter_v1.types.securitycenter_service import (
     UpdateSourceRequest,
 )
 from google.cloud.securitycenter_v1.types.source import Source
+from google.cloud.securitycenter_v1.types.toxic_combination import ToxicCombination
 from google.cloud.securitycenter_v1.types.vulnerability import (
     Cve,
     Cvssv3,
@@ -191,6 +193,7 @@ __all__ = (
     "File",
     "Finding",
     "Folder",
+    "GroupMembership",
     "IamBinding",
     "Indicator",
     "KernelRootkit",
@@ -271,6 +274,7 @@ __all__ = (
     "UpdateSecurityMarksRequest",
     "UpdateSourceRequest",
     "Source",
+    "ToxicCombination",
     "Cve",
     "Cvssv3",
     "Package",

@@ -46,6 +46,7 @@ from .types.external_system import ExternalSystem
 from .types.file import File
 from .types.finding import Finding
 from .types.folder import Folder
+from .types.group_membership import GroupMembership
 from .types.iam_binding import IamBinding
 from .types.indicator import Indicator
 from .types.kernel_rootkit import KernelRootkit
@@ -128,6 +129,7 @@ from .types.securitycenter_service import (
     UpdateSourceRequest,
 )
 from .types.source import Source
+from .types.toxic_combination import ToxicCombination
 from .types.vulnerability import (
     Cve,
     Cvssv3,
@@ -191,6 +193,7 @@ __all__ = (
     "GroupAssetsResponse",
     "GroupFindingsRequest",
     "GroupFindingsResponse",
+    "GroupMembership",
     "GroupResult",
     "IamBinding",
     "Indicator",
@@ -243,6 +246,7 @@ __all__ = (
     "SimulateSecurityHealthAnalyticsCustomModuleRequest",
     "SimulateSecurityHealthAnalyticsCustomModuleResponse",
     "Source",
+    "ToxicCombination",
     "UpdateBigQueryExportRequest",
     "UpdateExternalSystemRequest",
     "UpdateFindingRequest",
