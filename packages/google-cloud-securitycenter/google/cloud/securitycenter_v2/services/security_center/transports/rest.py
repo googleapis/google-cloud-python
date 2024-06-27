@@ -1605,6 +1605,11 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
                     "uri": "/v2/{parent=organizations/*}/resourceValueConfigs:batchCreate",
                     "body": "*",
                 },
+                {
+                    "method": "post",
+                    "uri": "/v2/{parent=organizations/*/locations/*}/resourceValueConfigs:batchCreate",
+                    "body": "*",
+                },
             ]
             (
                 request,
@@ -2661,6 +2666,10 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
                     "method": "delete",
                     "uri": "/v2/{name=organizations/*/resourceValueConfigs/*}",
                 },
+                {
+                    "method": "delete",
+                    "uri": "/v2/{name=organizations/*/locations/*/resourceValueConfigs/*}",
+                },
             ]
             request, metadata = self._interceptor.pre_delete_resource_value_config(
                 request, metadata
@@ -3212,8 +3221,8 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
 
             Returns:
                 ~.resource_value_config.ResourceValueConfig:
-                    A resource value config (RVC) is a
-                mapping configuration of user's
+                    A resource value configuration (RVC)
+                is a mapping configuration of user's
                 resources to resource values. Used in
                 Attack path simulations.
 
@@ -3223,6 +3232,10 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
                 {
                     "method": "get",
                     "uri": "/v2/{name=organizations/*/resourceValueConfigs/*}",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v2/{name=organizations/*/locations/*/resourceValueConfigs/*}",
                 },
             ]
             request, metadata = self._interceptor.pre_get_resource_value_config(
@@ -3316,6 +3329,10 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
                 {
                     "method": "get",
                     "uri": "/v2/{name=organizations/*/simulations/*}",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v2/{name=organizations/*/locations/*/simulations/*}",
                 },
             ]
             request, metadata = self._interceptor.pre_get_simulation(request, metadata)
@@ -3495,6 +3512,10 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
                 {
                     "method": "get",
                     "uri": "/v2/{name=organizations/*/simulations/*/valuedResources/*}",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v2/{name=organizations/*/locations/*/simulations/*/valuedResources/*}",
                 },
             ]
             request, metadata = self._interceptor.pre_get_valued_resource(
@@ -3714,7 +3735,15 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
                 },
                 {
                     "method": "get",
+                    "uri": "/v2/{parent=organizations/*/locations/*/simulations/*/valuedResources/*}/attackPaths",
+                },
+                {
+                    "method": "get",
                     "uri": "/v2/{parent=organizations/*/simulations/*/attackExposureResults/*}/attackPaths",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v2/{parent=organizations/*/locations/*/simulations/*/attackExposureResults/*}/attackPaths",
                 },
             ]
             request, metadata = self._interceptor.pre_list_attack_paths(
@@ -4225,6 +4254,10 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
                 {
                     "method": "get",
                     "uri": "/v2/{parent=organizations/*}/resourceValueConfigs",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v2/{parent=organizations/*/locations/*}/resourceValueConfigs",
                 },
             ]
             request, metadata = self._interceptor.pre_list_resource_value_configs(
@@ -5609,8 +5642,8 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
 
                 Returns:
                     ~.gcs_resource_value_config.ResourceValueConfig:
-                        A resource value config (RVC) is a
-                    mapping configuration of user's
+                        A resource value configuration (RVC)
+                    is a mapping configuration of user's
                     resources to resource values. Used in
                     Attack path simulations.
 
@@ -5620,6 +5653,11 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
                 {
                     "method": "patch",
                     "uri": "/v2/{resource_value_config.name=organizations/*/resourceValueConfigs/*}",
+                    "body": "resource_value_config",
+                },
+                {
+                    "method": "patch",
+                    "uri": "/v2/{resource_value_config.name=organizations/*/locations/*/resourceValueConfigs/*}",
                     "body": "resource_value_config",
                 },
             ]

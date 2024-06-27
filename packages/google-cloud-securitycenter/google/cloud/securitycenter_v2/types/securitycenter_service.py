@@ -32,6 +32,7 @@ from google.cloud.securitycenter_v2.types import security_marks as gcs_security_
 from google.cloud.securitycenter_v2.types import attack_path, bigquery_export
 from google.cloud.securitycenter_v2.types import finding as gcs_finding
 from google.cloud.securitycenter_v2.types import mute_config as gcs_mute_config
+from google.cloud.securitycenter_v2.types import resource as gcs_resource
 from google.cloud.securitycenter_v2.types import source as gcs_source
 from google.cloud.securitycenter_v2.types import valued_resource
 
@@ -670,14 +671,6 @@ class GroupFindingsRequest(proto.Message):
             for grouping. The string value should follow SQL syntax:
             comma separated list of fields. For example:
             "parent,resource_name".
-
-            The following fields are supported:
-
-            -  resource_name
-            -  category
-            -  state
-            -  parent
-            -  severity
         page_token (str):
             The value returned by the last ``GroupFindingsResponse``;
             indicates that this is a continuation of a prior
@@ -1126,6 +1119,13 @@ class ListFindingsResponse(proto.Message):
             r"""Information related to the Google Cloud resource that is
             associated with this finding.
 
+            This message has `oneof`_ fields (mutually exclusive fields).
+            For each oneof, at most one member field can be set at the same time.
+            Setting any member of the oneof automatically clears all other
+            members.
+
+            .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
             Attributes:
                 name (str):
                     The full resource name of the resource. See:
@@ -1134,6 +1134,42 @@ class ListFindingsResponse(proto.Message):
                     The human readable name of the resource.
                 type_ (str):
                     The full resource type of the resource.
+                cloud_provider (google.cloud.securitycenter_v2.types.CloudProvider):
+                    Indicates which cloud provider the finding is
+                    from.
+                service (str):
+                    The service or resource provider associated
+                    with the resource.
+                location (str):
+                    The region or location of the service (if
+                    applicable).
+                gcp_metadata (google.cloud.securitycenter_v2.types.GcpMetadata):
+                    The GCP metadata associated with the finding.
+
+                    This field is a member of `oneof`_ ``cloud_provider_metadata``.
+                aws_metadata (google.cloud.securitycenter_v2.types.AwsMetadata):
+                    The AWS metadata associated with the finding.
+
+                    This field is a member of `oneof`_ ``cloud_provider_metadata``.
+                azure_metadata (google.cloud.securitycenter_v2.types.AzureMetadata):
+                    The Azure metadata associated with the
+                    finding.
+
+                    This field is a member of `oneof`_ ``cloud_provider_metadata``.
+                resource_path (google.cloud.securitycenter_v2.types.ResourcePath):
+                    Provides the path to the resource within the
+                    resource hierarchy.
+                resource_path_string (str):
+                    A string representation of the resource path. For Google
+                    Cloud, it has the format of
+                    organizations/{organization_id}/folders/{folder_id}/folders/{folder_id}/projects/{project_id}
+                    where there can be any number of folders. For AWS, it has
+                    the format of
+                    org/{organization_id}/ou/{organizational_unit_id}/ou/{organizational_unit_id}/account/{account_id}
+                    where there can be any number of organizational units. For
+                    Azure, it has the format of
+                    mg/{management_group_id}/mg/{management_group_id}/subscription/{subscription_id}/rg/{resource_group_name}
+                    where there can be any number of management groups.
             """
 
             name: str = proto.Field(
@@ -1147,6 +1183,46 @@ class ListFindingsResponse(proto.Message):
             type_: str = proto.Field(
                 proto.STRING,
                 number=3,
+            )
+            cloud_provider: gcs_resource.CloudProvider = proto.Field(
+                proto.ENUM,
+                number=4,
+                enum=gcs_resource.CloudProvider,
+            )
+            service: str = proto.Field(
+                proto.STRING,
+                number=5,
+            )
+            location: str = proto.Field(
+                proto.STRING,
+                number=6,
+            )
+            gcp_metadata: gcs_resource.GcpMetadata = proto.Field(
+                proto.MESSAGE,
+                number=7,
+                oneof="cloud_provider_metadata",
+                message=gcs_resource.GcpMetadata,
+            )
+            aws_metadata: gcs_resource.AwsMetadata = proto.Field(
+                proto.MESSAGE,
+                number=8,
+                oneof="cloud_provider_metadata",
+                message=gcs_resource.AwsMetadata,
+            )
+            azure_metadata: gcs_resource.AzureMetadata = proto.Field(
+                proto.MESSAGE,
+                number=9,
+                oneof="cloud_provider_metadata",
+                message=gcs_resource.AzureMetadata,
+            )
+            resource_path: gcs_resource.ResourcePath = proto.Field(
+                proto.MESSAGE,
+                number=10,
+                message=gcs_resource.ResourcePath,
+            )
+            resource_path_string: str = proto.Field(
+                proto.STRING,
+                number=11,
             )
 
         finding: gcs_finding.Finding = proto.Field(
@@ -1767,8 +1843,12 @@ class UpdateResourceValueConfigRequest(proto.Message):
             Required. The resource value config being
             updated.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            The list of fields to be updated.
-            If empty all mutable fields will be updated.
+            The list of fields to be updated. If empty all mutable
+            fields will be updated.
+
+            To update nested fields, include the top level field in the
+            mask For example, to update gcp_metadata.resource_type,
+            include the "gcp_metadata" field mask
     """
 
     resource_value_config: gcs_resource_value_config.ResourceValueConfig = proto.Field(

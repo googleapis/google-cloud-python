@@ -20,7 +20,7 @@ from typing import MutableMapping, MutableSequence
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.securitycenter_v2.types import valued_resource
+from google.cloud.securitycenter_v2.types import resource, valued_resource
 
 __protobuf__ = proto.module(
     package="google.cloud.securitycenter.v2",
@@ -43,6 +43,9 @@ class Simulation(proto.Message):
         resource_value_configs_metadata (MutableSequence[google.cloud.securitycenter_v2.types.ResourceValueConfigMetadata]):
             Resource value configurations' metadata used
             in this simulation. Maximum of 100.
+        cloud_provider (google.cloud.securitycenter_v2.types.CloudProvider):
+            Indicates which cloud provider was used in
+            this simulation.
     """
 
     name: str = proto.Field(
@@ -60,6 +63,11 @@ class Simulation(proto.Message):
         proto.MESSAGE,
         number=3,
         message=valued_resource.ResourceValueConfigMetadata,
+    )
+    cloud_provider: resource.CloudProvider = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum=resource.CloudProvider,
     )
 
 

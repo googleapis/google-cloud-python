@@ -65,6 +65,7 @@ from google.cloud.securitycenter_v2.types import (
     attack_path,
     backup_disaster_recovery,
     bigquery_export,
+    cloud_armor,
     cloud_dlp_data_profile,
     cloud_dlp_inspection,
     compliance,
@@ -74,6 +75,7 @@ from google.cloud.securitycenter_v2.types import (
     exfiltration,
 )
 from google.cloud.securitycenter_v2.types import (
+    group_membership,
     iam_binding,
     indicator,
     kernel_rootkit,
@@ -86,6 +88,11 @@ from google.cloud.securitycenter_v2.types import (
     security_posture,
     securitycenter_service,
     simulation,
+)
+from google.cloud.securitycenter_v2.types import (
+    toxic_combination,
+    valued_resource,
+    vulnerability,
 )
 from google.cloud.securitycenter_v2.types import external_system as gcs_external_system
 from google.cloud.securitycenter_v2.types import (
@@ -100,13 +107,13 @@ from google.cloud.securitycenter_v2.types import finding
 from google.cloud.securitycenter_v2.types import finding as gcs_finding
 from google.cloud.securitycenter_v2.types import mute_config
 from google.cloud.securitycenter_v2.types import mute_config as gcs_mute_config
+from google.cloud.securitycenter_v2.types import notebook
 from google.cloud.securitycenter_v2.types import notification_config
-from google.cloud.securitycenter_v2.types import org_policy, process
+from google.cloud.securitycenter_v2.types import org_policy, process, resource
 from google.cloud.securitycenter_v2.types import resource_value_config
 from google.cloud.securitycenter_v2.types import security_marks
 from google.cloud.securitycenter_v2.types import source
 from google.cloud.securitycenter_v2.types import source as gcs_source
-from google.cloud.securitycenter_v2.types import valued_resource, vulnerability
 
 from .transports.base import DEFAULT_CLIENT_INFO, SecurityCenterTransport
 from .transports.grpc import SecurityCenterGrpcTransport
@@ -3211,8 +3218,8 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
 
         Returns:
             google.cloud.securitycenter_v2.types.ResourceValueConfig:
-                A resource value config (RVC) is a
-                mapping configuration of user's
+                A resource value configuration (RVC)
+                is a mapping configuration of user's
                 resources to resource values. Used in
                 Attack path simulations.
 
@@ -3465,14 +3472,6 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
                 use for grouping. The string value should follow SQL
                 syntax: comma separated list of fields. For example:
                 "parent,resource_name".
-
-                The following fields are supported:
-
-                -  resource_name
-                -  category
-                -  state
-                -  parent
-                -  severity
 
                 This corresponds to the ``group_by`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -5830,9 +5829,13 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
-                The list of fields to be updated.
-                If empty all mutable fields will be
-                updated.
+                The list of fields to be updated. If empty all mutable
+                fields will be updated.
+
+                To update nested fields, include the top level field in
+                the mask For example, to update
+                gcp_metadata.resource_type, include the "gcp_metadata"
+                field mask
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -5845,8 +5848,8 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
 
         Returns:
             google.cloud.securitycenter_v2.types.ResourceValueConfig:
-                A resource value config (RVC) is a
-                mapping configuration of user's
+                A resource value configuration (RVC)
+                is a mapping configuration of user's
                 resources to resource values. Used in
                 Attack path simulations.
 

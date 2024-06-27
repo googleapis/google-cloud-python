@@ -445,11 +445,19 @@ class JobNotification(proto.Message):
 
     Attributes:
         pubsub_topic (str):
-            The Pub/Sub topic where notifications like the job state
-            changes will be published. The topic must exist in the same
-            project as the job and billings will be charged to this
-            project. If not specified, no Pub/Sub messages will be sent.
-            Topic format: ``projects/{project}/topics/{topic}``.
+            The Pub/Sub topic where notifications for the job, like
+            state changes, will be published. If undefined, no Pub/Sub
+            notifications are sent for this job.
+
+            Specify the topic using the following format:
+            ``projects/{project}/topics/{topic}``. Notably, if you want
+            to specify a Pub/Sub topic that is in a different project
+            than the job, your administrator must grant your project's
+            Batch service agent permission to publish to that topic.
+
+            For more information about configuring Pub/Sub notifications
+            for a job, see
+            https://cloud.google.com/batch/docs/enable-notifications.
         message (google.cloud.batch_v1alpha.types.JobNotification.Message):
             The attribute requirements of messages to be
             sent to this Pub/Sub topic. Without this field,
@@ -676,7 +684,10 @@ class AllocationPolicy(proto.Message):
                 Disk type as shown in ``gcloud compute disk-types list``.
                 For example, local SSD uses type "local-ssd". Persistent
                 disks and boot disks use "pd-balanced", "pd-extreme",
-                "pd-ssd" or "pd-standard".
+                "pd-ssd" or "pd-standard". If not specified, "pd-standard"
+                will be used as the default type for non-boot disks,
+                "pd-balanced" will be used as the default type for boot
+                disks.
             size_gb (int):
                 Disk size in GB.
 
