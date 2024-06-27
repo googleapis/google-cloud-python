@@ -4,6 +4,21 @@
 
 [1]: https://pypi.org/project/google-cloud-securitycenter/#history
 
+## [1.32.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securitycenter-v1.31.0...google-cloud-securitycenter-v1.32.0) (2024-06-27)
+
+
+### Features
+
+* Add toxic_combination and group_memberships fields to finding ([83c851e](https://github.com/googleapis/google-cloud-python/commit/83c851e2aa497b3e5ae940f71dff4c45fa00be8f))
+* added cloud provider field to list findings response ([83c851e](https://github.com/googleapis/google-cloud-python/commit/83c851e2aa497b3e5ae940f71dff4c45fa00be8f))
+* added http configuration rule to ResourceValueConfig and ValuedResource API methods ([83c851e](https://github.com/googleapis/google-cloud-python/commit/83c851e2aa497b3e5ae940f71dff4c45fa00be8f))
+* added toxic combination field to finding ([83c851e](https://github.com/googleapis/google-cloud-python/commit/83c851e2aa497b3e5ae940f71dff4c45fa00be8f))
+
+
+### Documentation
+
+* Updated comments for ResourceValueConfig ([83c851e](https://github.com/googleapis/google-cloud-python/commit/83c851e2aa497b3e5ae940f71dff4c45fa00be8f))
+
 ## [1.31.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securitycenter-v1.30.1...google-cloud-securitycenter-v1.31.0) (2024-04-17)
 
 

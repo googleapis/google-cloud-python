@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-oslogin/#history
 
+## [2.14.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-os-login-v2.14.3...google-cloud-os-login-v2.14.4) (2024-06-27)
+
+
+### Documentation
+
+* [google-cloud-os-login] A comment for field `parent` in message `.google.cloud.oslogin.v1beta.SignSshPublicKeyRequest` is changed ([#12831](https://github.com/googleapis/google-cloud-python/issues/12831)) ([7ce3bf4](https://github.com/googleapis/google-cloud-python/commit/7ce3bf4332dcebf5cdb2e2165003367134e9a6c2))
+
 ## [2.14.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-os-login-v2.14.2...google-cloud-os-login-v2.14.3) (2024-03-05)
 
 

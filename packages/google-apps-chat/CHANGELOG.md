@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.1.7](https://github.com/googleapis/google-cloud-python/compare/google-apps-chat-v0.1.6...google-apps-chat-v0.1.7) (2024-06-27)
+
+
+### Documentation
+
+* Update doc for `CreateMembership` in service `ChatService` to support group members ([5c8eaae](https://github.com/googleapis/google-cloud-python/commit/5c8eaae2289427f56c730bbf3e7e78b15a35580a))
+* Update doc for field `group_member` in message `google.chat.v1.Membership` ([5c8eaae](https://github.com/googleapis/google-cloud-python/commit/5c8eaae2289427f56c730bbf3e7e78b15a35580a))
+* Update doc for SetUpSpace in service ChatService to support group members ([5c8eaae](https://github.com/googleapis/google-cloud-python/commit/5c8eaae2289427f56c730bbf3e7e78b15a35580a))
+
 ## [0.1.6](https://github.com/googleapis/google-cloud-python/compare/google-apps-chat-v0.1.5...google-apps-chat-v0.1.6) (2024-05-16)
 
 

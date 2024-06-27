@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-gdchardwaremanagement-v0.1.0...google-cloud-gdchardwaremanagement-v0.1.1) (2024-06-27)
+
+
+### Features
+
+* add additional zone states ([a4bfef9](https://github.com/googleapis/google-cloud-python/commit/a4bfef92d5b6f30e40ef257b33748ce4b708e2ff))
+
 ## 0.1.0 (2024-06-26)
 
 

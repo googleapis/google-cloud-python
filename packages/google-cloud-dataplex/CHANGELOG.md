@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.2.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataplex-v2.1.0...google-cloud-dataplex-v2.2.0) (2024-06-27)
+
+
+### Features
+
+* [google-cloud-dataplex] expose data scan execution create time to customers ([#12846](https://github.com/googleapis/google-cloud-python/issues/12846)) ([2726a72](https://github.com/googleapis/google-cloud-python/commit/2726a721b0eecd05216fa018cce8d91407853187))
+
 ## [2.1.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataplex-v2.0.1...google-cloud-dataplex-v2.1.0) (2024-06-24)
 
 
