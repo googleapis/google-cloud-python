@@ -15,7 +15,7 @@ Python Client for reCAPTCHA Enterprise
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-recaptcha-enterprise.svg
    :target: https://pypi.org/project/google-cloud-recaptcha-enterprise/
 .. _reCAPTCHA Enterprise: https://cloud.google.com/recaptcha-enterprise
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/recaptchaenterprise/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/recaptchaenterprise/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/recaptcha-enterprise
 
 Quick Start
