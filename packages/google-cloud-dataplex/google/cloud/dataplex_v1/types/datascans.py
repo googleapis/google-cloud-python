@@ -605,6 +605,9 @@ class DataScan(proto.Message):
                 The time when the latest DataScanJob started.
             latest_job_end_time (google.protobuf.timestamp_pb2.Timestamp):
                 The time when the latest DataScanJob ended.
+            latest_job_create_time (google.protobuf.timestamp_pb2.Timestamp):
+                Optional. The time when the DataScanJob
+                execution was created.
         """
 
         latest_job_start_time: timestamp_pb2.Timestamp = proto.Field(
@@ -615,6 +618,11 @@ class DataScan(proto.Message):
         latest_job_end_time: timestamp_pb2.Timestamp = proto.Field(
             proto.MESSAGE,
             number=5,
+            message=timestamp_pb2.Timestamp,
+        )
+        latest_job_create_time: timestamp_pb2.Timestamp = proto.Field(
+            proto.MESSAGE,
+            number=6,
             message=timestamp_pb2.Timestamp,
         )
 
