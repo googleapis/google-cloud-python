@@ -40,6 +40,7 @@ from .external_system import ExternalSystem
 from .file import File
 from .finding import Finding
 from .folder import Folder
+from .group_membership import GroupMembership
 from .iam_binding import IamBinding
 from .indicator import Indicator
 from .kernel_rootkit import KernelRootkit
@@ -120,6 +121,7 @@ from .securitycenter_service import (
     UpdateSourceRequest,
 )
 from .source import Source
+from .toxic_combination import ToxicCombination
 from .vulnerability import (
     Cve,
     Cvssv3,
@@ -157,6 +159,7 @@ __all__ = (
     "File",
     "Finding",
     "Folder",
+    "GroupMembership",
     "IamBinding",
     "Indicator",
     "KernelRootkit",
@@ -237,6 +240,7 @@ __all__ = (
     "UpdateSecurityMarksRequest",
     "UpdateSourceRequest",
     "Source",
+    "ToxicCombination",
     "Cve",
     "Cvssv3",
     "Package",

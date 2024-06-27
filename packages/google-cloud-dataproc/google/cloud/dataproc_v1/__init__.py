@@ -171,6 +171,7 @@ from .types.sessions import (
     TerminateSessionRequest,
 )
 from .types.shared import (
+    AutotuningConfig,
     Component,
     EnvironmentConfig,
     ExecutionConfig,
@@ -226,6 +227,7 @@ __all__ = (
     "AutoscalingConfig",
     "AutoscalingPolicy",
     "AutoscalingPolicyServiceClient",
+    "AutotuningConfig",
     "AuxiliaryNodeGroup",
     "AuxiliaryServicesConfig",
     "BasicAutoscalingAlgorithm",
