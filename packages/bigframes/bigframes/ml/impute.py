@@ -18,7 +18,7 @@ scikit-learn's preprocessing module: https://scikit-learn.org/stable/modules/imp
 from __future__ import annotations
 
 import typing
-from typing import Any, List, Literal, Optional, Tuple, Union
+from typing import Iterable, List, Literal, Optional, Tuple, Union
 
 import bigframes_vendored.sklearn.impute._base
 
@@ -44,17 +44,12 @@ class SimpleImputer(
         self._bqml_model_factory = globals.bqml_model_factory()
         self._base_sql_generator = globals.base_sql_generator()
 
-    # TODO(garrettwu): implement __hash__
-    def __eq__(self, other: Any) -> bool:
-        return (
-            type(other) is SimpleImputer
-            and self.strategy == other.strategy
-            and self._bqml_model == other._bqml_model
-        )
+    def _keys(self):
+        return (self._bqml_model, self.strategy)
 
     def _compile_to_sql(
         self,
-        columns: List[str],
+        columns: Iterable[str],
         X=None,
     ) -> List[Tuple[str, str]]:
         """Compile this transformer to a list of SQL expressions that can be included in

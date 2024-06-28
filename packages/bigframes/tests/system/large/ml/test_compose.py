@@ -123,7 +123,7 @@ def test_columntransformer_save_load(new_penguins_df, dataset_id):
         ("standard_scaler", preprocessing.StandardScaler(), "culmen_length_mm"),
         ("standard_scaler", preprocessing.StandardScaler(), "flipper_length_mm"),
     ]
-    assert reloaded_transformer.transformers_ == expected
+    assert set(reloaded_transformer.transformers) == set(expected)
     assert reloaded_transformer._bqml_model is not None
 
     result = transformer.fit_transform(

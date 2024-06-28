@@ -907,3 +907,35 @@ def test_poly_features_params(new_penguins_df):
         ],
         [1633, 1672, 1690],
     )
+
+
+def test_poly_features_save_load(new_penguins_df, dataset_id):
+    transformer = preprocessing.PolynomialFeatures(degree=3)
+    transformer.fit(new_penguins_df[["culmen_length_mm", "culmen_depth_mm"]])
+
+    reloaded_transformer = transformer.to_gbq(
+        f"{dataset_id}.temp_configured_model", replace=True
+    )
+    assert isinstance(reloaded_transformer, preprocessing.PolynomialFeatures)
+    assert reloaded_transformer.degree == 3
+    assert reloaded_transformer._bqml_model is not None
+
+    result = reloaded_transformer.transform(
+        new_penguins_df[["culmen_length_mm", "culmen_depth_mm"]]
+    ).to_pandas()
+
+    utils.check_pandas_df_schema_and_index(
+        result,
+        [
+            "poly_feat_culmen_length_mm",
+            "poly_feat_culmen_length_mm_culmen_length_mm",
+            "poly_feat_culmen_length_mm_culmen_length_mm_culmen_length_mm",
+            "poly_feat_culmen_length_mm_culmen_length_mm_culmen_depth_mm",
+            "poly_feat_culmen_length_mm_culmen_depth_mm",
+            "poly_feat_culmen_length_mm_culmen_depth_mm_culmen_depth_mm",
+            "poly_feat_culmen_depth_mm",
+            "poly_feat_culmen_depth_mm_culmen_depth_mm",
+            "poly_feat_culmen_depth_mm_culmen_depth_mm_culmen_depth_mm",
+        ],
+        [1633, 1672, 1690],
+    )

@@ -64,6 +64,7 @@ class Pipeline(
                 preprocessing.MinMaxScaler,
                 preprocessing.KBinsDiscretizer,
                 preprocessing.LabelEncoder,
+                preprocessing.PolynomialFeatures,
                 impute.SimpleImputer,
             ),
         ):

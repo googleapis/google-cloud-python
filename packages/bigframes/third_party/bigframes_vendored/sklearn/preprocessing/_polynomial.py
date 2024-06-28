@@ -8,7 +8,12 @@ from bigframes import constants
 
 
 class PolynomialFeatures(TransformerMixin, BaseEstimator):
-    """Generate polynomial and interaction features."""
+    """Generate polynomial and interaction features.
+
+    Args:
+        degree (int):
+            Specifies the maximal degree of the polynomial features. Valid values [1, 4]. Default to 2.
+    """
 
     def fit(self, X, y=None):
         """Compute number of output features.

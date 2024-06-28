@@ -487,6 +487,11 @@ def test_pipeline_columntransformer_fit_predict(session, penguins_df_default_ind
                             preprocessing.LabelEncoder(),
                             "species",
                         ),
+                        (
+                            "poly_feats",
+                            preprocessing.PolynomialFeatures(),
+                            ["culmen_length_mm", "flipper_length_mm"],
+                        ),
                     ]
                 ),
             ),
@@ -568,6 +573,11 @@ def test_pipeline_columntransformer_to_gbq(penguins_df_default_index, dataset_id
                             ["culmen_length_mm", "flipper_length_mm"],
                         ),
                         (
+                            "polynomial_features",
+                            preprocessing.PolynomialFeatures(),
+                            ["culmen_length_mm", "flipper_length_mm"],
+                        ),
+                        (
                             "label",
                             preprocessing.LabelEncoder(),
                             "species",
@@ -589,7 +599,7 @@ def test_pipeline_columntransformer_to_gbq(penguins_df_default_index, dataset_id
     )
 
     assert isinstance(pl_loaded._transform, compose.ColumnTransformer)
-    transformers = pl_loaded._transform.transformers_
+    transformers = pl_loaded._transform.transformers
     expected = [
         (
             "one_hot_encoder",
@@ -629,9 +639,14 @@ def test_pipeline_columntransformer_to_gbq(penguins_df_default_index, dataset_id
             impute.SimpleImputer(),
             "flipper_length_mm",
         ),
+        (
+            "polynomial_features",
+            preprocessing.PolynomialFeatures(),
+            ("culmen_length_mm", "flipper_length_mm"),
+        ),
     ]
 
-    assert transformers == expected
+    assert set(transformers) == set(expected)
 
     assert isinstance(pl_loaded._estimator, linear_model.LinearRegression)
     assert pl_loaded._estimator.fit_intercept is False
@@ -846,6 +861,39 @@ def test_pipeline_simple_imputer_to_gbq(penguins_df_default_index, dataset_id):
 
     simple_imputer = pl_loaded._transform
     assert simple_imputer.strategy == "most_frequent"
+
+    assert isinstance(pl_loaded._estimator, linear_model.LinearRegression)
+    assert pl_loaded._estimator.fit_intercept is False
+
+
+def test_pipeline_poly_features_to_gbq(penguins_df_default_index, dataset_id):
+    pl = pipeline.Pipeline(
+        [
+            (
+                "transform",
+                preprocessing.PolynomialFeatures(degree=3),
+            ),
+            ("estimator", linear_model.LinearRegression(fit_intercept=False)),
+        ]
+    )
+
+    df = penguins_df_default_index.dropna()
+    X_train = df[
+        [
+            "culmen_length_mm",
+            "flipper_length_mm",
+        ]
+    ]
+    y_train = df[["body_mass_g"]]
+    pl.fit(X_train, y_train)
+
+    pl_loaded = pl.to_gbq(
+        f"{dataset_id}.test_penguins_pipeline_poly_features", replace=True
+    )
+    assert isinstance(pl_loaded._transform, preprocessing.PolynomialFeatures)
+
+    poly_features = pl_loaded._transform
+    assert poly_features.degree == 3
 
     assert isinstance(pl_loaded._estimator, linear_model.LinearRegression)
     assert pl_loaded._estimator.fit_intercept is False

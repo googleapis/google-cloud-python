@@ -112,6 +112,15 @@ class BqmlModel(BaseBqml):
             self.model_name
         )
 
+    def _keys(self):
+        return (self._session, self._model)
+
+    def __eq__(self, other):
+        return isinstance(other, self.__class__) and self._keys() == other._keys()
+
+    def __hash__(self):
+        return hash(self._keys())
+
     @property
     def session(self) -> bigframes.Session:
         """Get the BigQuery DataFrames session that this BQML model wrapper is tied to"""

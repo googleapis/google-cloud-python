@@ -21,7 +21,7 @@ from __future__ import annotations
 import re
 import types
 import typing
-from typing import cast, List, Optional, Tuple, Union
+from typing import cast, Iterable, List, Optional, Set, Tuple, Union
 
 import bigframes_vendored.sklearn.compose._column_transformer
 from google.cloud import bigquery
@@ -40,6 +40,7 @@ _BQML_TRANSFROM_TYPE_MAPPING = types.MappingProxyType(
         "ML.BUCKETIZE": preprocessing.KBinsDiscretizer,
         "ML.QUANTILE_BUCKETIZE": preprocessing.KBinsDiscretizer,
         "ML.LABEL_ENCODER": preprocessing.LabelEncoder,
+        "ML.POLYNOMIAL_EXPAND": preprocessing.PolynomialFeatures,
         "ML.IMPUTER": impute.SimpleImputer,
     }
 )
@@ -56,20 +57,23 @@ class ColumnTransformer(
 
     def __init__(
         self,
-        transformers: List[
+        transformers: Iterable[
             Tuple[
                 str,
                 Union[preprocessing.PreprocessingType, impute.SimpleImputer],
-                Union[str, List[str]],
+                Union[str, Iterable[str]],
             ]
         ],
     ):
         # TODO: if any(transformers) has fitted raise warning
-        self.transformers = transformers
+        self.transformers = list(transformers)
         self._bqml_model: Optional[core.BqmlModel] = None
         self._bqml_model_factory = globals.bqml_model_factory()
         # call self.transformers_ to check chained transformers
         self.transformers_
+
+    def _keys(self):
+        return (self.transformers, self._bqml_model)
 
     @property
     def transformers_(
@@ -107,13 +111,13 @@ class ColumnTransformer(
         """Extract transformers as ColumnTransformer obj from a BQ Model. Keep the _bqml_model field as None."""
         assert "transformColumns" in bq_model._properties
 
-        transformers: List[
+        transformers_set: Set[
             Tuple[
                 str,
                 Union[preprocessing.PreprocessingType, impute.SimpleImputer],
                 Union[str, List[str]],
             ]
-        ] = []
+        ] = set()
 
         def camel_to_snake(name):
             name = re.sub("(.)([A-Z][a-z]+)", r"\1_\2", name)
@@ -134,7 +138,7 @@ class ColumnTransformer(
             for prefix in _BQML_TRANSFROM_TYPE_MAPPING:
                 if transform_sql.startswith(prefix):
                     transformer_cls = _BQML_TRANSFROM_TYPE_MAPPING[prefix]
-                    transformers.append(
+                    transformers_set.add(
                         (
                             camel_to_snake(transformer_cls.__name__),
                             *transformer_cls._parse_from_sql(transform_sql),  # type: ignore
@@ -148,7 +152,7 @@ class ColumnTransformer(
                     f"Unsupported transformer type. {constants.FEEDBACK_LINK}"
                 )
 
-        transformer = cls(transformers=transformers)
+        transformer = cls(transformers=list(transformers_set))
         transformer._output_names = output_names
 
         return transformer
@@ -159,23 +163,37 @@ class ColumnTransformer(
         ColumnTransformer, Union[preprocessing.PreprocessingType, impute.SimpleImputer]
     ]:
         """Try to merge the column transformer to a simple transformer. Depends on all the columns in bq_model are transformed with the same transformer."""
-        transformers = self.transformers_
+        transformers = self.transformers
 
         assert len(transformers) > 0
         _, transformer_0, column_0 = transformers[0]
+        feature_columns_sorted = sorted(
+            [
+                cast(str, feature_column.name)
+                for feature_column in bq_model.feature_columns
+            ]
+        )
+
+        if (
+            len(transformers) == 1
+            and isinstance(transformer_0, preprocessing.PolynomialFeatures)
+            and sorted(column_0) == feature_columns_sorted
+        ):
+            transformer_0._output_names = self._output_names
+            return transformer_0
+
+        if not isinstance(column_0, str):
+            return self
         columns = [column_0]
         for _, transformer, column in transformers[1:]:
+            if not isinstance(column, str):
+                return self
             # all transformers are the same
             if transformer != transformer_0:
                 return self
             columns.append(column)
         # all feature columns are transformed
-        if sorted(
-            [
-                cast(str, feature_column.name)
-                for feature_column in bq_model.feature_columns
-            ]
-        ) == sorted(columns):
+        if sorted(columns) == feature_columns_sorted:
             transformer_0._output_names = self._output_names
             return transformer_0
 
@@ -197,12 +215,12 @@ class ColumnTransformer(
 
         Returns:
             a list of tuples of (sql_expression, output_name)"""
-        return [
-            transformer._compile_to_sql([column], X=X)[0]
-            for column in columns
-            for _, transformer, target_column in self.transformers_
-            if column == target_column
-        ]
+        result = []
+        for _, transformer, target_columns in self.transformers:
+            if isinstance(target_columns, str):
+                target_columns = [target_columns]
+            result += transformer._compile_to_sql(target_columns, X=X)
+        return result
 
     def fit(
         self,

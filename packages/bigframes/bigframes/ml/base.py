@@ -184,6 +184,16 @@ class BaseTransformer(BaseEstimator):
     def __init__(self):
         self._bqml_model: Optional[core.BqmlModel] = None
 
+    @abc.abstractmethod
+    def _keys(self):
+        pass
+
+    def __eq__(self, other) -> bool:
+        return type(self) is type(other) and self._keys() == other._keys()
+
+    def __hash__(self) -> int:
+        return hash(self._keys())
+
     _T = TypeVar("_T", bound="BaseTransformer")
 
     def to_gbq(self: _T, model_name: str, replace: bool = False) -> _T:
