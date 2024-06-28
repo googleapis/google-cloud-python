@@ -47,5 +47,9 @@ class NullIndexError(ValueError):
     """Object has no index."""
 
 
+class OrderRequiredError(ValueError):
+    """Operation requires total row ordering to be enabled."""
+
+
 class TimeTravelDisabledWarning(Warning):
     """A query was reattempted without time travel."""

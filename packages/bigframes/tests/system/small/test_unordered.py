@@ -13,7 +13,9 @@
 # limitations under the License.
 import pandas as pd
 import pyarrow as pa
+import pytest
 
+import bigframes.exceptions
 import bigframes.pandas as bpd
 from tests.system.utils import assert_pandas_df_equal, skip_legacy_pandas
 
@@ -59,3 +61,52 @@ def test_unordered_mode_read_gbq(unordered_session):
     )
     # Don't need ignore_order as there is only 1 row
     assert_pandas_df_equal(df.to_pandas(), expected)
+
+
+@pytest.mark.parametrize(
+    ("keep"),
+    [
+        pytest.param(
+            "first",
+            marks=pytest.mark.xfail(raises=bigframes.exceptions.OrderRequiredError),
+        ),
+        pytest.param(
+            False,
+        ),
+    ],
+)
+def test_unordered_drop_duplicates(unordered_session, keep):
+    pd_df = pd.DataFrame({"a": [1, 1, 3], "b": [4, 4, 6]}, dtype=pd.Int64Dtype())
+    bf_df = bpd.DataFrame(pd_df, session=unordered_session)
+
+    bf_result = bf_df.drop_duplicates(keep=keep)
+    pd_result = pd_df.drop_duplicates(keep=keep)
+
+    assert_pandas_df_equal(bf_result.to_pandas(), pd_result, ignore_order=True)
+
+
+@pytest.mark.parametrize(
+    ("function"),
+    [
+        pytest.param(
+            lambda x: x.cumsum(),
+            id="cumsum",
+        ),
+        pytest.param(
+            lambda x: x.idxmin(),
+            id="idxmin",
+        ),
+        pytest.param(
+            lambda x: x.a.iloc[1::2],
+            id="series_iloc",
+        ),
+    ],
+)
+def test_unordered_mode_blocks_windowing(unordered_session, function):
+    pd_df = pd.DataFrame({"a": [1, 2, 3], "b": [4, 5, 6]}, dtype=pd.Int64Dtype())
+    df = bpd.DataFrame(pd_df, session=unordered_session)
+    with pytest.raises(
+        bigframes.exceptions.OrderRequiredError,
+        match=r"Op.*not supported when strict ordering is disabled",
+    ):
+        function(df)

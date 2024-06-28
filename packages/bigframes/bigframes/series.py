@@ -43,6 +43,7 @@ import bigframes.core.indexes as indexes
 import bigframes.core.ordering as order
 import bigframes.core.scalar as scalars
 import bigframes.core.utils as utils
+import bigframes.core.validations as validations
 import bigframes.core.window
 import bigframes.core.window_spec
 import bigframes.dataframe
@@ -92,10 +93,12 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         return bigframes.core.indexers.LocSeriesIndexer(self)
 
     @property
+    @validations.requires_strict_ordering()
     def iloc(self) -> bigframes.core.indexers.IlocSeriesIndexer:
         return bigframes.core.indexers.IlocSeriesIndexer(self)
 
     @property
+    @validations.requires_strict_ordering()
     def iat(self) -> bigframes.core.indexers.IatSeriesIndexer:
         return bigframes.core.indexers.IatSeriesIndexer(self)
 
@@ -160,6 +163,7 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         return structs.StructAccessor(self._block)
 
     @property
+    @validations.requires_strict_ordering()
     def T(self) -> Series:
         return self.transpose()
 
@@ -171,6 +175,7 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
     def _session(self) -> bigframes.Session:
         return self._get_block().expr.session
 
+    @validations.requires_strict_ordering()
     def transpose(self) -> Series:
         return self
 
@@ -266,6 +271,7 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
             return False
         return block_ops.equals(self._block, other._block)
 
+    @validations.requires_strict_ordering()
     def reset_index(
         self,
         *,
@@ -454,11 +460,13 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
             ignore_self=True,
         )
 
+    @validations.requires_strict_ordering()
     def cumsum(self) -> Series:
         return self._apply_window_op(
             agg_ops.sum_op, bigframes.core.window_spec.cumulative_rows()
         )
 
+    @validations.requires_strict_ordering()
     def ffill(self, *, limit: typing.Optional[int] = None) -> Series:
         window = bigframes.core.window_spec.rows(preceding=limit, following=0)
         return self._apply_window_op(agg_ops.LastNonNullOp(), window)
@@ -466,25 +474,30 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
     pad = ffill
     pad.__doc__ = inspect.getdoc(vendored_pandas_series.Series.ffill)
 
+    @validations.requires_strict_ordering()
     def bfill(self, *, limit: typing.Optional[int] = None) -> Series:
         window = bigframes.core.window_spec.rows(preceding=0, following=limit)
         return self._apply_window_op(agg_ops.FirstNonNullOp(), window)
 
+    @validations.requires_strict_ordering()
     def cummax(self) -> Series:
         return self._apply_window_op(
             agg_ops.max_op, bigframes.core.window_spec.cumulative_rows()
         )
 
+    @validations.requires_strict_ordering()
     def cummin(self) -> Series:
         return self._apply_window_op(
             agg_ops.min_op, bigframes.core.window_spec.cumulative_rows()
         )
 
+    @validations.requires_strict_ordering()
     def cumprod(self) -> Series:
         return self._apply_window_op(
             agg_ops.product_op, bigframes.core.window_spec.cumulative_rows()
         )
 
+    @validations.requires_strict_ordering()
     def shift(self, periods: int = 1) -> Series:
         window = bigframes.core.window_spec.rows(
             preceding=periods if periods > 0 else None,
@@ -492,6 +505,7 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         )
         return self._apply_window_op(agg_ops.ShiftOp(periods), window)
 
+    @validations.requires_strict_ordering()
     def diff(self, periods: int = 1) -> Series:
         window = bigframes.core.window_spec.rows(
             preceding=periods if periods > 0 else None,
@@ -499,11 +513,13 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         )
         return self._apply_window_op(agg_ops.DiffOp(periods), window)
 
+    @validations.requires_strict_ordering()
     def pct_change(self, periods: int = 1) -> Series:
         # Future versions of pandas will not perfrom ffill automatically
         series = self.ffill()
         return Series(block_ops.pct_change(series._block, periods=periods))
 
+    @validations.requires_strict_ordering()
     def rank(
         self,
         axis=0,
@@ -595,6 +611,7 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         )
         return Series(block.select_column(result))
 
+    @validations.requires_strict_ordering()
     @requires_index
     def interpolate(self, method: str = "linear") -> Series:
         if method == "pad":
@@ -617,9 +634,11 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
             result = result.reset_index()
         return Series(result)
 
+    @validations.requires_strict_ordering()
     def head(self, n: int = 5) -> Series:
         return typing.cast(Series, self.iloc[0:n])
 
+    @validations.requires_strict_ordering()
     def tail(self, n: int = 5) -> Series:
         return typing.cast(Series, self.iloc[-n:])
 
@@ -660,6 +679,8 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
     def nlargest(self, n: int = 5, keep: str = "first") -> Series:
         if keep not in ("first", "last", "all"):
             raise ValueError("'keep must be one of 'first', 'last', or 'all'")
+        if keep != "all":
+            validations.enforce_ordered(self, "nlargest(keep != 'all')")
         return Series(
             block_ops.nlargest(self._block, n, [self._value_column], keep=keep)
         )
@@ -667,6 +688,8 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
     def nsmallest(self, n: int = 5, keep: str = "first") -> Series:
         if keep not in ("first", "last", "all"):
             raise ValueError("'keep must be one of 'first', 'last', or 'all'")
+        if keep != "all":
+            validations.enforce_ordered(self, "nsmallest(keep != 'all')")
         return Series(
             block_ops.nsmallest(self._block, n, [self._value_column], keep=keep)
         )
@@ -1116,6 +1139,7 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         )
         return Series(block.select_column(result_id).with_column_labels([self.name]))
 
+    @validations.requires_strict_ordering()
     def argmax(self) -> int:
         block, row_nums = self._block.promote_offsets()
         block = block.order_by(
@@ -1128,6 +1152,7 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
             scalars.Scalar, Series(block.select_column(row_nums)).iloc[0]
         )
 
+    @validations.requires_strict_ordering()
     def argmin(self) -> int:
         block, row_nums = self._block.promote_offsets()
         block = block.order_by(
@@ -1193,12 +1218,14 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         return indexes.Index(block).to_pandas()[0]
 
     @property
+    @validations.requires_strict_ordering()
     def is_monotonic_increasing(self) -> bool:
         return typing.cast(
             bool, self._block.is_monotonic_increasing(self._value_column)
         )
 
     @property
+    @validations.requires_strict_ordering()
     def is_monotonic_decreasing(self) -> bool:
         return typing.cast(
             bool, self._block.is_monotonic_decreasing(self._value_column)
@@ -1306,6 +1333,7 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         block = block.order_by(ordering)
         return Series(block)
 
+    @validations.requires_strict_ordering()
     def rolling(self, window: int, min_periods=None) -> bigframes.core.window.Window:
         # To get n size window, need current row and n-1 preceding rows.
         window_spec = bigframes.core.window_spec.rows(
@@ -1315,6 +1343,7 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
             self._block, window_spec, self._block.value_columns, is_series=True
         )
 
+    @validations.requires_strict_ordering()
     def expanding(self, min_periods: int = 1) -> bigframes.core.window.Window:
         window_spec = bigframes.core.window_spec.cumulative_rows(
             min_periods=min_periods
@@ -1579,13 +1608,18 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         return self.reindex(other.index, validate=validate)
 
     def drop_duplicates(self, *, keep: str = "first") -> Series:
+        if keep is not False:
+            validations.enforce_ordered(self, "drop_duplicates(keep != False)")
         block = block_ops.drop_duplicates(self._block, (self._value_column,), keep)
         return Series(block)
 
+    @validations.requires_strict_ordering()
     def unique(self) -> Series:
         return self.drop_duplicates()
 
     def duplicated(self, keep: str = "first") -> Series:
+        if keep is not False:
+            validations.enforce_ordered(self, "duplicated(keep != False)")
         block, indicator = block_ops.indicate_duplicates(
             self._block, (self._value_column,), keep
         )
@@ -1751,6 +1785,7 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         result_df = self_df.join(map_df, on="series")
         return result_df[self.name]
 
+    @validations.requires_strict_ordering()
     def sample(
         self,
         n: Optional[int] = None,

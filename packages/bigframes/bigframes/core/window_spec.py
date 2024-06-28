@@ -152,3 +152,13 @@ class WindowSpec:
     ordering: Tuple[orderings.OrderingExpression, ...] = tuple()
     bounds: Union[RowsWindowBounds, RangeWindowBounds, None] = None
     min_periods: int = 0
+
+    @property
+    def row_bounded(self):
+        """
+        Whether the window is bounded by row offsets.
+
+        This is relevant for determining whether the window requires a total order
+        to calculate deterministically.
+        """
+        return isinstance(self.bounds, RowsWindowBounds)

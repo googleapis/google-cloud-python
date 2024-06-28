@@ -344,10 +344,12 @@ class ArrayValue:
         never_skip_nulls: will disable null skipping for operators that would otherwise do so
         skip_reproject_unsafe: skips the reprojection step, can be used when performing many non-dependent window operations, user responsible for not nesting window expressions, or using outputs as join, filter or aggregation keys before a reprojection
         """
-        if not self.session._strictly_ordered:
-            # TODO: Support unbounded windows with aggregate ops and some row-order-independent analytic ops
-            # TODO: Support non-deterministic windowing
-            raise ValueError("Windowed ops not supported in unordered mode")
+        # TODO: Support non-deterministic windowing
+        if window_spec.row_bounded or not op.order_independent:
+            if not self.session._strictly_ordered:
+                raise ValueError(
+                    "Order-dependent windowed ops not supported in unordered mode"
+                )
         return ArrayValue(
             nodes.WindowOpNode(
                 child=self.node,
