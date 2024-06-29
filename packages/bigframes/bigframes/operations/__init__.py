@@ -707,6 +707,30 @@ class StrConcatOp(BinaryOp):
 strconcat_op = StrConcatOp()
 
 
+## JSON Ops
+@dataclasses.dataclass(frozen=True)
+class JSONSet(BinaryOp):
+    name: typing.ClassVar[str] = "json_set"
+    json_path: str
+
+    def output_type(self, *input_types):
+        left_type = input_types[0]
+        right_type = input_types[1]
+        if not dtypes.is_json_like(left_type):
+            raise TypeError(
+                "Input type must be an valid JSON object or JSON-formatted string type."
+                + f" Received type: {left_type}"
+            )
+        if not dtypes.is_json_encoding_type(right_type):
+            raise TypeError(
+                "The value to be assigned must be a type that can be encoded as JSON."
+                + f"Received type: {right_type}"
+            )
+
+        # After JSON type implementation, ONLY return JSON data.
+        return left_type
+
+
 # Ternary Ops
 @dataclasses.dataclass(frozen=True)
 class WhereOp(TernaryOp):

@@ -2,8 +2,8 @@
 from __future__ import annotations
 
 import ibis.expr.datatypes as dt
-from ibis.expr.operations.core import Unary
+import ibis.expr.operations.core as ibis_ops_core
 
 
-class ToJsonString(Unary):
+class ToJsonString(ibis_ops_core.Unary):
     dtype = dt.string

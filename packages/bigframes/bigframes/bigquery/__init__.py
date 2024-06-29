@@ -36,6 +36,10 @@ if typing.TYPE_CHECKING:
     import bigframes.series as series
 
 
+# Array functions defined from
+# https://cloud.google.com/bigquery/docs/reference/standard-sql/array_functions
+
+
 def array_length(series: series.Series) -> series.Series:
     """Compute the length of each array element in the Series.
 
@@ -152,6 +156,56 @@ def array_to_string(series: series.Series, delimiter: str) -> series.Series:
 
     """
     return series._apply_unary_op(ops.ArrayToStringOp(delimiter=delimiter))
+
+
+# JSON functions defined from
+# https://cloud.google.com/bigquery/docs/reference/standard-sql/json_functions
+
+
+def json_set(
+    series: series.Series,
+    json_path_value_pairs: typing.Sequence[typing.Tuple[str, typing.Any]],
+) -> series.Series:
+    """Produces a new JSON value within a Series by inserting or replacing values at
+    specified paths.
+
+    **Examples:**
+
+        >>> import bigframes.pandas as bpd
+        >>> import bigframes.bigquery as bbq
+        >>> import numpy as np
+        >>> bpd.options.display.progress_bar = None
+
+        >>> s = bpd.read_gbq("SELECT JSON '{\\\"a\\\": 1}' AS data")["data"]
+        >>> bbq.json_set(s, json_path_value_pairs=[("$.a", 100), ("$.b", "hi")])
+            0    {"a":100,"b":"hi"}
+            Name: data, dtype: string
+
+    Args:
+        series (bigframes.series.Series):
+            The Series containing JSON data (as native JSON objects or JSON-formatted strings).
+        json_path_value_pairs (Sequence[Tuple[str, typing.Any]]):
+            Pairs of JSON path and the new value to insert/replace.
+
+    Returns:
+        bigframes.series.Series: A new Series with the transformed JSON data.
+
+    """
+    # SQLGlot parser does not support the "create_if_missing => true" syntax, so
+    # create_if_missing is not currently implemented.
+
+    for json_path_value_pair in json_path_value_pairs:
+        if len(json_path_value_pair) != 2:
+            raise ValueError(
+                "Incorrect format: Expected (<json_path>, <json_value>), but found: "
+                + f"{json_path_value_pair}"
+            )
+
+        json_path, json_value = json_path_value_pair
+        series = series._apply_binary_op(
+            json_value, ops.JSONSet(json_path=json_path), alignment="left"
+        )
+    return series
 
 
 def vector_search(
