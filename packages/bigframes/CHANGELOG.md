@@ -4,6 +4,30 @@
 
 [1]: https://pypi.org/project/bigframes/#history
 
+## [1.11.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v1.10.0...v1.11.0) (2024-07-01)
+
+
+### Features
+
+* Add .agg support for size ([#792](https://github.com/googleapis/python-bigquery-dataframes/issues/792)) ([87e6018](https://github.com/googleapis/python-bigquery-dataframes/commit/87e60182c964c369079165e87ce73dd0c0481a5a))
+* Add `bigframes.bigquery.json_set` ([#782](https://github.com/googleapis/python-bigquery-dataframes/issues/782)) ([1b613e0](https://github.com/googleapis/python-bigquery-dataframes/commit/1b613e00eddf18fa40ed1d08ff19c4ebeeac2197))
+* Add `bigframes.streaming.to_pubsub` method to create continuous query that writes to Pub/Sub ([#801](https://github.com/googleapis/python-bigquery-dataframes/issues/801)) ([b47f32d](https://github.com/googleapis/python-bigquery-dataframes/commit/b47f32d74a0c9eb908be690b2dd56b0f5579b133))
+* Add `DataFrame.to_arrow` to create Arrow Table from DataFrame ([#807](https://github.com/googleapis/python-bigquery-dataframes/issues/807)) ([1e3feda](https://github.com/googleapis/python-bigquery-dataframes/commit/1e3feda9e8fe9d08a0e3838066f6414f8015197d))
+* Add `PolynomialFeatures` support to `to_gbq` and pipelines ([#805](https://github.com/googleapis/python-bigquery-dataframes/issues/805)) ([57d98b9](https://github.com/googleapis/python-bigquery-dataframes/commit/57d98b9e3298583ec40c04665ab84e6ad2b948fb))
+* Add Series.peek to preview data efficiently ([#727](https://github.com/googleapis/python-bigquery-dataframes/issues/727)) ([580e1b9](https://github.com/googleapis/python-bigquery-dataframes/commit/580e1b9e965d883a67f91a6db8311c2416ca8fe5))
+* Expose gcf memory param in `remote_function` ([#803](https://github.com/googleapis/python-bigquery-dataframes/issues/803)) ([014765c](https://github.com/googleapis/python-bigquery-dataframes/commit/014765c22410a0b4559896d163c440f46f7ce98f))
+* More informative error when query plan too complex ([#811](https://github.com/googleapis/python-bigquery-dataframes/issues/811)) ([136dc24](https://github.com/googleapis/python-bigquery-dataframes/commit/136dc24e160339d27f6335e7b28f08cd95d2c67d))
+
+
+### Bug Fixes
+
+* Include internally required packages in `remote_function` hash ([#799](https://github.com/googleapis/python-bigquery-dataframes/issues/799)) ([4b8fc15](https://github.com/googleapis/python-bigquery-dataframes/commit/4b8fc15ec2c126566269f84d75289198fee2c655))
+
+
+### Documentation
+
+* Document dtype limitation on row processing `remote_function` ([#800](https://github.com/googleapis/python-bigquery-dataframes/issues/800)) ([487dff6](https://github.com/googleapis/python-bigquery-dataframes/commit/487dff6ac147683aef529e1ff8c197dce3fb437c))
+
 ## [1.10.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v1.9.0...v1.10.0) (2024-06-21)
 
 
