@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.31.0](https://github.com/googleapis/google-auth-library-python/compare/v2.30.0...v2.31.0) (2024-06-27)
+
+
+### Features
+
+* Adds X509 workload cert logic ([#1527](https://github.com/googleapis/google-auth-library-python/issues/1527)) ([05220e0](https://github.com/googleapis/google-auth-library-python/commit/05220e06a23b3d4c398628918dab113abcce52db))
+
+
+### Bug Fixes
+
+* Added py.typed to MANIFEST.in ([#1526](https://github.com/googleapis/google-auth-library-python/issues/1526)) ([1829a3b](https://github.com/googleapis/google-auth-library-python/commit/1829a3be18aea5eca8b7272111d75eb61a6077b1))
+* Pass trust_env kwarg to ClientSession ([#1533](https://github.com/googleapis/google-auth-library-python/issues/1533)) ([6c15c9a](https://github.com/googleapis/google-auth-library-python/commit/6c15c9ad0ff90cf9bac044b38e72956aa3039cf6)), closes [#1530](https://github.com/googleapis/google-auth-library-python/issues/1530)
+
 ## [2.30.0](https://github.com/googleapis/google-auth-library-python/compare/v2.29.0...v2.30.0) (2024-06-06)
 
 
