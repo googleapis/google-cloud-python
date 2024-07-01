@@ -28,7 +28,7 @@ def test_blobwriter_and_blobreader(
     # Test BlobWriter works.
     info = file_data["big"]
     with open(info["path"], "rb") as file_obj:
-        with blob.open("wb", chunk_size=256 * 1024) as writer:
+        with blob.open("wb", chunk_size=256 * 1024, if_generation_match=0) as writer:
             writer.write(file_obj.read(100))
             writer.write(file_obj.read(256 * 1024))
             writer.write(file_obj.read())
@@ -63,7 +63,7 @@ def test_blobwriter_and_blobreader_text_mode(
     text_data = "\n".join([base_multibyte_text_string + str(x) for x in range(100)])
 
     # Test text BlobWriter works.
-    with blob.open("wt") as writer:
+    with blob.open("wt", if_generation_match=0) as writer:
         writer.write(text_data[:100])
         writer.write(text_data[100:])
     blobs_to_delete.append(blob)
