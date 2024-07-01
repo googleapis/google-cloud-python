@@ -15,7 +15,7 @@ Python Client for BigQuery Analytics Hub
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-bigquery-data-exchange.svg
    :target: https://pypi.org/project/google-cloud-bigquery-data-exchange/
 .. _BigQuery Analytics Hub: https://cloud.google.com/bigquery/docs/analytics-hub-introduction
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/analyticshub/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/analyticshub/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/bigquery/docs/analytics-hub-introduction
 
 Quick Start

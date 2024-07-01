@@ -15,7 +15,7 @@ Python Client for Cloud VM Migration
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-vm-migration.svg
    :target: https://pypi.org/project/google-cloud-vm-migration/
 .. _Cloud VM Migration: https://cloud.google.com/migrate/compute-engine/docs
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/vmmigration/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/vmmigration/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/migrate/compute-engine/docs
 
 Quick Start

@@ -15,7 +15,7 @@ Python Client for Google Cloud Text-to-Speech
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-texttospeech.svg
    :target: https://pypi.org/project/google-cloud-texttospeech/
 .. _Google Cloud Text-to-Speech: https://cloud.google.com/text-to-speech
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/texttospeech/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/texttospeech/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/text-to-speech
 
 Quick Start
