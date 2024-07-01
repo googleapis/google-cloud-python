@@ -570,6 +570,18 @@ def test_read_gbq_with_custom_global_labels(
     assert len(bigframes.options.compute.extra_query_labels) == 0
 
 
+def test_read_gbq_external_table(session: bigframes.Session):
+    # Verify the table is external to ensure it hasn't been altered
+    external_table_id = "bigframes-dev.bigframes_tests_sys.parquet_external_table"
+    external_table = session.bqclient.get_table(external_table_id)
+    assert external_table.table_type == "EXTERNAL"
+
+    df = session.read_gbq(external_table_id)
+
+    assert list(df.columns) == ["idx", "s1", "s2", "s3", "s4", "i1", "f1", "i2", "f2"]
+    assert df["i1"].max() == 99
+
+
 def test_read_gbq_model(session, penguins_linear_model_name):
     model = session.read_gbq_model(penguins_linear_model_name)
     assert isinstance(model, bigframes.ml.linear_model.LinearRegression)
