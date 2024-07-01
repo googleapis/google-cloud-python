@@ -51,5 +51,9 @@ class OrderRequiredError(ValueError):
     """Operation requires total row ordering to be enabled."""
 
 
+class QueryComplexityError(RuntimeError):
+    """Query plan is too complex to execute."""
+
+
 class TimeTravelDisabledWarning(Warning):
     """A query was reattempted without time travel."""

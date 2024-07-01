@@ -1833,14 +1833,22 @@ class Session(
         Starts BigQuery query job and waits for results.
         """
         job_config = self._prepare_query_job_config(job_config)
-        return bigframes.session._io.bigquery.start_query_with_client(
-            self,
-            sql,
-            job_config,
-            max_results,
-            timeout,
-            api_name=api_name,
-        )
+        try:
+            return bigframes.session._io.bigquery.start_query_with_client(
+                self,
+                sql,
+                job_config,
+                max_results,
+                timeout,
+                api_name=api_name,
+            )
+        except google.api_core.exceptions.BadRequest as e:
+            # Unfortunately, this error type does not have a separate error code or exception type
+            if "Resources exceeded during query execution" in e.message:
+                new_message = "Computation is too complex to execute as a single query. Try using DataFrame.cache() on intermediate results, or setting bigframes.options.compute.enable_multi_query_execution."
+                raise bigframes.exceptions.QueryComplexityError(new_message) from e
+            else:
+                raise
 
     def _start_query_ml_ddl(
         self,
