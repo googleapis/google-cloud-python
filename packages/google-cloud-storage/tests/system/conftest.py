@@ -150,7 +150,11 @@ def hierarchy_bucket_name():
 @pytest.fixture(scope="session")
 def hierarchy_bucket(storage_client, hierarchy_bucket_name, file_data):
     bucket = storage_client.bucket(hierarchy_bucket_name)
-    _helpers.retry_429_503(bucket.create)()
+    # Create the hierarchy bucket only if it doesn't yet exist.
+    try:
+        storage_client.get_bucket(bucket)
+    except exceptions.NotFound:
+        _helpers.retry_429_503(bucket.create)()
 
     simple_path = _file_data["simple"]["path"]
     for filename in _hierarchy_filenames:
