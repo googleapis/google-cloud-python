@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [1.18.2](https://github.com/googleapis/gapic-generator-python/compare/v1.18.1...v1.18.2) (2024-07-02)
+
+
+### Bug Fixes
+
+* Fix AwaitableMock test coverage ([b48c935](https://github.com/googleapis/gapic-generator-python/commit/b48c935b55b840ad2deff451c5229f32bc386e9c))
+
 ## [1.18.1](https://github.com/googleapis/gapic-generator-python/compare/v1.18.0...v1.18.1) (2024-06-20)
 
 
