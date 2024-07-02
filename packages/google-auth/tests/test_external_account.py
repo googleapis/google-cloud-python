@@ -235,10 +235,16 @@ class TestCredentials(object):
         return request
 
     @classmethod
-    def assert_token_request_kwargs(cls, request_kwargs, headers, request_data):
+    def assert_token_request_kwargs(
+        cls, request_kwargs, headers, request_data, cert=None
+    ):
         assert request_kwargs["url"] == cls.TOKEN_URL
         assert request_kwargs["method"] == "POST"
         assert request_kwargs["headers"] == headers
+        if cert is not None:
+            assert request_kwargs["cert"] == cert
+        else:
+            assert "cert" not in request_kwargs
         assert request_kwargs["body"] is not None
         body_tuples = urllib.parse.parse_qsl(request_kwargs["body"])
         for (k, v) in body_tuples:
@@ -246,10 +252,16 @@ class TestCredentials(object):
         assert len(body_tuples) == len(request_data.keys())
 
     @classmethod
-    def assert_impersonation_request_kwargs(cls, request_kwargs, headers, request_data):
+    def assert_impersonation_request_kwargs(
+        cls, request_kwargs, headers, request_data, cert=None
+    ):
         assert request_kwargs["url"] == cls.SERVICE_ACCOUNT_IMPERSONATION_URL
         assert request_kwargs["method"] == "POST"
         assert request_kwargs["headers"] == headers
+        if cert is not None:
+            assert request_kwargs["cert"] == cert
+        else:
+            assert "cert" not in request_kwargs
         assert request_kwargs["body"] is not None
         body_json = json.loads(request_kwargs["body"].decode("utf-8"))
         assert body_json == request_data
@@ -670,6 +682,56 @@ class TestCredentials(object):
         return_value=LANG_LIBRARY_METRICS_HEADER_VALUE,
     )
     @mock.patch("google.auth._helpers.utcnow", return_value=datetime.datetime.min)
+    @mock.patch(
+        "google.auth.external_account.Credentials._mtls_required", return_value=True
+    )
+    @mock.patch(
+        "google.auth.external_account.Credentials._get_mtls_cert_and_key_paths",
+        return_value=("path/to/cert.pem", "path/to/key.pem"),
+    )
+    def test_refresh_with_mtls(
+        self,
+        mock_get_mtls_cert_and_key_paths,
+        mock_mtls_required,
+        unused_utcnow,
+        mock_auth_lib_value,
+    ):
+        response = self.SUCCESS_RESPONSE.copy()
+        # Test custom expiration to confirm expiry is set correctly.
+        response["expires_in"] = 2800
+        expected_expiry = datetime.datetime.min + datetime.timedelta(
+            seconds=response["expires_in"]
+        )
+        headers = {
+            "Content-Type": "application/x-www-form-urlencoded",
+            "x-goog-api-client": "gl-python/3.7 auth/1.1 google-byoid-sdk sa-impersonation/false config-lifetime/false",
+        }
+        request_data = {
+            "grant_type": "urn:ietf:params:oauth:grant-type:token-exchange",
+            "audience": self.AUDIENCE,
+            "requested_token_type": "urn:ietf:params:oauth:token-type:access_token",
+            "subject_token": "subject_token_0",
+            "subject_token_type": self.SUBJECT_TOKEN_TYPE,
+        }
+        request = self.make_mock_request(status=http_client.OK, data=response)
+        credentials = self.make_credentials()
+
+        credentials.refresh(request)
+
+        expected_cert_path = ("path/to/cert.pem", "path/to/key.pem")
+        self.assert_token_request_kwargs(
+            request.call_args[1], headers, request_data, expected_cert_path
+        )
+        assert credentials.valid
+        assert credentials.expiry == expected_expiry
+        assert not credentials.expired
+        assert credentials.token == response["access_token"]
+
+    @mock.patch(
+        "google.auth.metrics.python_and_auth_lib_version",
+        return_value=LANG_LIBRARY_METRICS_HEADER_VALUE,
+    )
+    @mock.patch("google.auth._helpers.utcnow", return_value=datetime.datetime.min)
     def test_refresh_workforce_without_client_auth_success(
         self, unused_utcnow, test_auth_lib_value
     ):
@@ -863,6 +925,101 @@ class TestCredentials(object):
             request.call_args_list[1][1],
             impersonation_headers,
             impersonation_request_data,
+        )
+        assert credentials.valid
+        assert credentials.expiry == expected_expiry
+        assert not credentials.expired
+        assert credentials.token == impersonation_response["accessToken"]
+
+    @mock.patch(
+        "google.auth.metrics.token_request_access_token_impersonate",
+        return_value=IMPERSONATE_ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE,
+    )
+    @mock.patch(
+        "google.auth.metrics.python_and_auth_lib_version",
+        return_value=LANG_LIBRARY_METRICS_HEADER_VALUE,
+    )
+    @mock.patch(
+        "google.auth.external_account.Credentials._mtls_required", return_value=True
+    )
+    @mock.patch(
+        "google.auth.external_account.Credentials._get_mtls_cert_and_key_paths",
+        return_value=("path/to/cert.pem", "path/to/key.pem"),
+    )
+    def test_refresh_impersonation_with_mtls_success(
+        self,
+        mock_get_mtls_cert_and_key_paths,
+        mock_mtls_required,
+        mock_metrics_header_value,
+        mock_auth_lib_value,
+    ):
+        # Simulate service account access token expires in 2800 seconds.
+        expire_time = (
+            _helpers.utcnow().replace(microsecond=0) + datetime.timedelta(seconds=2800)
+        ).isoformat("T") + "Z"
+        expected_expiry = datetime.datetime.strptime(expire_time, "%Y-%m-%dT%H:%M:%SZ")
+        # STS token exchange request/response.
+        token_response = self.SUCCESS_RESPONSE.copy()
+        token_headers = {
+            "Content-Type": "application/x-www-form-urlencoded",
+            "x-goog-api-client": "gl-python/3.7 auth/1.1 google-byoid-sdk sa-impersonation/true config-lifetime/false",
+        }
+        token_request_data = {
+            "grant_type": "urn:ietf:params:oauth:grant-type:token-exchange",
+            "audience": self.AUDIENCE,
+            "requested_token_type": "urn:ietf:params:oauth:token-type:access_token",
+            "subject_token": "subject_token_0",
+            "subject_token_type": self.SUBJECT_TOKEN_TYPE,
+            "scope": "https://www.googleapis.com/auth/iam",
+        }
+        # Service account impersonation request/response.
+        impersonation_response = {
+            "accessToken": "SA_ACCESS_TOKEN",
+            "expireTime": expire_time,
+        }
+        impersonation_headers = {
+            "Content-Type": "application/json",
+            "authorization": "Bearer {}".format(token_response["access_token"]),
+            "x-goog-api-client": IMPERSONATE_ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE,
+            "x-allowed-locations": "0x0",
+        }
+        impersonation_request_data = {
+            "delegates": None,
+            "scope": self.SCOPES,
+            "lifetime": "3600s",
+        }
+        # Initialize mock request to handle token exchange and service account
+        # impersonation request.
+        request = self.make_mock_request(
+            status=http_client.OK,
+            data=token_response,
+            impersonation_status=http_client.OK,
+            impersonation_data=impersonation_response,
+        )
+        # Initialize credentials with service account impersonation.
+        credentials = self.make_credentials(
+            service_account_impersonation_url=self.SERVICE_ACCOUNT_IMPERSONATION_URL,
+            scopes=self.SCOPES,
+        )
+
+        credentials.refresh(request)
+
+        # Only 2 requests should be processed.
+        assert len(request.call_args_list) == 2
+        # Verify token exchange request parameters.
+        expected_cert_paths = ("path/to/cert.pem", "path/to/key.pem")
+        self.assert_token_request_kwargs(
+            request.call_args_list[0][1],
+            token_headers,
+            token_request_data,
+            expected_cert_paths,
+        )
+        # Verify service account impersonation request parameters.
+        self.assert_impersonation_request_kwargs(
+            request.call_args_list[1][1],
+            impersonation_headers,
+            impersonation_request_data,
+            expected_cert_paths,
         )
         assert credentials.valid
         assert credentials.expiry == expected_expiry

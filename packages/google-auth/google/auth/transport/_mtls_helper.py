@@ -105,9 +105,50 @@ def _get_workload_cert_and_key(certificate_config_path=None):
         google.auth.exceptions.ClientCertError: if problems occurs when retrieving
         the certificate or key information.
     """
-    absolute_path = _get_cert_config_path(certificate_config_path)
+
+    cert_path, key_path = _get_workload_cert_and_key_paths(certificate_config_path)
+
+    if cert_path is None and key_path is None:
+        return None, None
+
+    return _read_cert_and_key_files(cert_path, key_path)
+
+
+def _get_cert_config_path(certificate_config_path=None):
+    """Get the certificate configuration path based on the following order:
+
+    1: Explicit override, if set
+    2: Environment variable, if set
+    3: Well-known location
+
+    Returns "None" if the selected config file does not exist.
+
+    Args:
+        certificate_config_path (string): The certificate config path. If provided, the well known
+        location and environment variable will be ignored.
+
+    Returns:
+        The absolute path of the certificate config file, and None if the file does not exist.
+    """
+
+    if certificate_config_path is None:
+        env_path = environ.get(_CERTIFICATE_CONFIGURATION_ENV, None)
+        if env_path is not None and env_path != "":
+            certificate_config_path = env_path
+        else:
+            certificate_config_path = _CERTIFICATE_CONFIGURATION_DEFAULT_PATH
+
+    certificate_config_path = path.expanduser(certificate_config_path)
+    if not path.exists(certificate_config_path):
+        return None
+    return certificate_config_path
+
+
+def _get_workload_cert_and_key_paths(config_path):
+    absolute_path = _get_cert_config_path(config_path)
     if absolute_path is None:
         return None, None
+
     data = _load_json_file(absolute_path)
 
     if "cert_configs" not in data:
@@ -142,37 +183,7 @@ def _get_workload_cert_and_key(certificate_config_path=None):
         )
     key_path = workload["key_path"]
 
-    return _read_cert_and_key_files(cert_path, key_path)
-
-
-def _get_cert_config_path(certificate_config_path=None):
-    """Gets the certificate configuration full path using the following order of precedence:
-
-    1: Explicit override, if set
-    2: Environment variable, if set
-    3: Well-known location
-
-    Returns "None" if the selected config file does not exist.
-
-    Args:
-        certificate_config_path (string): The certificate config path. If provided, the well known
-        location and environment variable will be ignored.
-
-    Returns:
-        The absolute path of the certificate config file, and None if the file does not exist.
-    """
-
-    if certificate_config_path is None:
-        env_path = environ.get(_CERTIFICATE_CONFIGURATION_ENV, None)
-        if env_path is not None and env_path != "":
-            certificate_config_path = env_path
-        else:
-            certificate_config_path = _CERTIFICATE_CONFIGURATION_DEFAULT_PATH
-
-    certificate_config_path = path.expanduser(certificate_config_path)
-    if not path.exists(certificate_config_path):
-        return None
-    return certificate_config_path
+    return cert_path, key_path
 
 
 def _read_cert_and_key_files(cert_path, key_path):
