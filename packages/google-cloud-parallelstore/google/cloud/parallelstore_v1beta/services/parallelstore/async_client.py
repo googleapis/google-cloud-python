@@ -98,6 +98,10 @@ class ParallelstoreAsyncClient:
     parse_instance_path = staticmethod(ParallelstoreClient.parse_instance_path)
     network_path = staticmethod(ParallelstoreClient.network_path)
     parse_network_path = staticmethod(ParallelstoreClient.parse_network_path)
+    service_account_path = staticmethod(ParallelstoreClient.service_account_path)
+    parse_service_account_path = staticmethod(
+        ParallelstoreClient.parse_service_account_path
+    )
     common_billing_account_path = staticmethod(
         ParallelstoreClient.common_billing_account_path
     )

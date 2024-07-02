@@ -41,9 +41,9 @@ class parallelstoreCallTransformer(cst.CSTTransformer):
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
         'create_instance': ('parent', 'instance_id', 'instance', 'request_id', ),
         'delete_instance': ('name', 'request_id', ),
-        'export_data': ('name', 'source_parallelstore', 'destination_gcs_bucket', 'request_id', ),
+        'export_data': ('name', 'source_parallelstore', 'destination_gcs_bucket', 'request_id', 'service_account', ),
         'get_instance': ('name', ),
-        'import_data': ('name', 'source_gcs_bucket', 'destination_parallelstore', 'request_id', ),
+        'import_data': ('name', 'source_gcs_bucket', 'destination_parallelstore', 'request_id', 'service_account', ),
         'list_instances': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
         'update_instance': ('update_mask', 'instance', 'request_id', ),
     }
