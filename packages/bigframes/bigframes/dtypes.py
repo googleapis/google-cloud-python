@@ -70,7 +70,9 @@ class SimpleDtypeInfo:
 
     dtype: Dtype
     arrow_dtype: typing.Optional[pa.DataType]
-    type_kind: typing.Tuple[str, ...]  # Should all correspond to the same db type
+    type_kind: typing.Tuple[
+        str, ...
+    ]  # Should all correspond to the same db type. Put preferred canonical sql type name first
     logical_bytes: int = (
         8  # this is approximate only, some types are variably sized, also, compression
     )
@@ -84,20 +86,23 @@ SIMPLE_TYPES = (
     SimpleDtypeInfo(
         dtype=INT_DTYPE,
         arrow_dtype=pa.int64(),
-        type_kind=("INT64", "INTEGER"),
+        type_kind=("INTEGER", "INT64"),
         orderable=True,
         clusterable=True,
     ),
     SimpleDtypeInfo(
         dtype=FLOAT_DTYPE,
         arrow_dtype=pa.float64(),
-        type_kind=("FLOAT64", "FLOAT"),
+        type_kind=("FLOAT", "FLOAT64"),
         orderable=True,
     ),
     SimpleDtypeInfo(
         dtype=BOOL_DTYPE,
         arrow_dtype=pa.bool_(),
-        type_kind=("BOOL", "BOOLEAN"),
+        type_kind=(
+            "BOOLEAN",
+            "BOOL",
+        ),
         logical_bytes=1,
         orderable=True,
         clusterable=True,
@@ -143,7 +148,7 @@ SIMPLE_TYPES = (
     SimpleDtypeInfo(
         dtype=NUMERIC_DTYPE,
         arrow_dtype=pa.decimal128(38, 9),
-        type_kind=("NUMERIC",),
+        type_kind=("NUMERIC", "DECIMAL"),
         logical_bytes=16,
         orderable=True,
         clusterable=True,
@@ -151,7 +156,7 @@ SIMPLE_TYPES = (
     SimpleDtypeInfo(
         dtype=BIGNUMERIC_DTYPE,
         arrow_dtype=pa.decimal256(76, 38),
-        type_kind=("BIGNUMERIC",),
+        type_kind=("BIGNUMERIC", "BIGDECIMAL"),
         logical_bytes=32,
         orderable=True,
         clusterable=True,
@@ -417,6 +422,7 @@ _TK_TO_BIGFRAMES = {
     for mapping in SIMPLE_TYPES
     for type_kind in mapping.type_kind
 }
+_BIGFRAMES_TO_TK = {mapping.dtype: mapping.type_kind[0] for mapping in SIMPLE_TYPES}
 
 
 def convert_schema_field(
@@ -440,10 +446,42 @@ def convert_schema_field(
         if is_repeated:
             pa_type = pa.list_(bigframes_dtype_to_arrow_dtype(singular_type))
             return field.name, pd.ArrowDtype(pa_type)
-        else:
-            return field.name, singular_type
+        return field.name, singular_type
     else:
         raise ValueError(f"Cannot handle type: {field.field_type}")
+
+
+def convert_to_schema_field(
+    name: str,
+    bigframes_dtype: Dtype,
+) -> google.cloud.bigquery.SchemaField:
+    if bigframes_dtype in _BIGFRAMES_TO_TK:
+        return google.cloud.bigquery.SchemaField(
+            name, _BIGFRAMES_TO_TK[bigframes_dtype]
+        )
+    if isinstance(bigframes_dtype, pd.ArrowDtype):
+        if pa.types.is_list(bigframes_dtype.pyarrow_dtype):
+            inner_type = arrow_dtype_to_bigframes_dtype(
+                bigframes_dtype.pyarrow_dtype.value_type
+            )
+            inner_field = convert_to_schema_field(name, inner_type)
+            return google.cloud.bigquery.SchemaField(
+                name, inner_field.field_type, mode="REPEATED", fields=inner_field.fields
+            )
+        if pa.types.is_struct(bigframes_dtype.pyarrow_dtype):
+            inner_fields: list[pa.Field] = []
+            struct_type = typing.cast(pa.StructType, bigframes_dtype.pyarrow_dtype)
+            for i in range(struct_type.num_fields):
+                field = struct_type.field(i)
+                inner_bf_type = arrow_dtype_to_bigframes_dtype(field.type)
+                inner_fields.append(convert_to_schema_field(field.name, inner_bf_type))
+
+            return google.cloud.bigquery.SchemaField(
+                name, "RECORD", fields=inner_fields
+            )
+    raise ValueError(
+        f"No arrow conversion for {bigframes_dtype}. {constants.FEEDBACK_LINK}"
+    )
 
 
 def bf_type_from_type_kind(

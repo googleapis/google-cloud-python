@@ -444,27 +444,24 @@ class Block:
         # Runs strict validations to ensure internal type predictions and ibis are completely in sync
         # Do not execute these validations outside of testing suite.
         if "PYTEST_CURRENT_TEST" in os.environ:
-            self._validate_result_schema(result_dataframe)
+            self._validate_result_schema(result.schema)
         return result_dataframe
 
-    def _validate_result_schema(self, result_df: pd.DataFrame):
+    def _validate_result_schema(
+        self, bq_result_schema: list[bigquery.schema.SchemaField]
+    ):
+        actual_schema = tuple(bq_result_schema)
         ibis_schema = self.expr._compiled_schema
         internal_schema = self.expr.node.schema
-        actual_schema = bf_schema.ArraySchema(
-            tuple(
-                bf_schema.SchemaItem(name, dtype)  # type: ignore
-                for name, dtype in result_df.dtypes.items()
-            )
-        )
         if not bigframes.features.PANDAS_VERSIONS.is_arrow_list_dtype_usable:
             return
-        if internal_schema != actual_schema:
+        if internal_schema.to_bigquery() != actual_schema:
             raise ValueError(
-                f"This error should only occur while testing. BigFrames internal schema: {internal_schema} does not match actual schema: {actual_schema}"
+                f"This error should only occur while testing. BigFrames internal schema: {internal_schema.to_bigquery()} does not match actual schema: {actual_schema}"
             )
-        if ibis_schema != actual_schema:
+        if ibis_schema.to_bigquery() != actual_schema:
             raise ValueError(
-                f"This error should only occur while testing. Ibis schema: {ibis_schema} does not match actual schema: {actual_schema}"
+                f"This error should only occur while testing. Ibis schema: {ibis_schema.to_bigquery()} does not match actual schema: {actual_schema}"
             )
 
     def to_arrow(
