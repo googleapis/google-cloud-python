@@ -15,7 +15,7 @@ Python Client for Discovery Engine API
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-discoveryengine.svg
    :target: https://pypi.org/project/google-cloud-discoveryengine/
 .. _Discovery Engine API: https://cloud.google.com/discovery-engine/
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/discoveryengine/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/discoveryengine/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/discovery-engine/
 
 Quick Start

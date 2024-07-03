@@ -100,12 +100,18 @@ class Answer(proto.Message):
                 Google skips the answer if there is a potential
                 policy violation detected. This includes content
                 that may be violent or toxic.
+            NO_RELEVANT_CONTENT (5):
+                The no relevant content case.
+
+                Google skips the answer if there is no relevant
+                content in the retrieved search results.
         """
         ANSWER_SKIPPED_REASON_UNSPECIFIED = 0
         ADVERSARIAL_QUERY_IGNORED = 1
         NON_ANSWER_SEEKING_QUERY_IGNORED = 2
         OUT_OF_DOMAIN_QUERY_IGNORED = 3
         POTENTIAL_POLICY_VIOLATION = 4
+        NO_RELEVANT_CONTENT = 5
 
     class Citation(proto.Message):
         r"""Citation info for a segment.
@@ -410,6 +416,12 @@ class Answer(proto.Message):
                         chunk_info (MutableSequence[google.cloud.discoveryengine_v1.types.Answer.Step.Action.Observation.SearchResult.ChunkInfo]):
                             If citation_type is CHUNK_LEVEL_CITATION and chunk mode is
                             on, populate chunk info.
+                        struct_data (google.protobuf.struct_pb2.Struct):
+                            Data representation. The structured JSON data for the
+                            document. It's populated from the struct data from the
+                            Document (code pointer: http://shortn/_objzAfIiHq), or the
+                            Chunk in search result (code pointer:
+                            http://shortn/_Ipo6KFFGBL).
                     """
 
                     class SnippetInfo(proto.Message):
@@ -487,6 +499,11 @@ class Answer(proto.Message):
                         proto.MESSAGE,
                         number=5,
                         message="Answer.Step.Action.Observation.SearchResult.ChunkInfo",
+                    )
+                    struct_data: struct_pb2.Struct = proto.Field(
+                        proto.MESSAGE,
+                        number=6,
+                        message=struct_pb2.Struct,
                     )
 
                 search_results: MutableSequence[

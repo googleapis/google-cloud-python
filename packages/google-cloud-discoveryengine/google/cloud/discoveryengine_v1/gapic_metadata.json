@@ -15,9 +15,19 @@
                 "complete_query"
               ]
             },
+            "ImportCompletionSuggestions": {
+              "methods": [
+                "import_completion_suggestions"
+              ]
+            },
             "ImportSuggestionDenyListEntries": {
               "methods": [
                 "import_suggestion_deny_list_entries"
+              ]
+            },
+            "PurgeCompletionSuggestions": {
+              "methods": [
+                "purge_completion_suggestions"
               ]
             },
             "PurgeSuggestionDenyListEntries": {
@@ -35,9 +45,19 @@
                 "complete_query"
               ]
             },
+            "ImportCompletionSuggestions": {
+              "methods": [
+                "import_completion_suggestions"
+              ]
+            },
             "ImportSuggestionDenyListEntries": {
               "methods": [
                 "import_suggestion_deny_list_entries"
+              ]
+            },
+            "PurgeCompletionSuggestions": {
+              "methods": [
+                "purge_completion_suggestions"
               ]
             },
             "PurgeSuggestionDenyListEntries": {
@@ -55,9 +75,19 @@
                 "complete_query"
               ]
             },
+            "ImportCompletionSuggestions": {
+              "methods": [
+                "import_completion_suggestions"
+              ]
+            },
             "ImportSuggestionDenyListEntries": {
               "methods": [
                 "import_suggestion_deny_list_entries"
+              ]
+            },
+            "PurgeCompletionSuggestions": {
+              "methods": [
+                "purge_completion_suggestions"
               ]
             },
             "PurgeSuggestionDenyListEntries": {

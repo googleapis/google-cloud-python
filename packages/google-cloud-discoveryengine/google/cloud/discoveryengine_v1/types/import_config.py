@@ -35,6 +35,7 @@ __protobuf__ = proto.module(
         "BigtableSource",
         "FhirStoreSource",
         "CloudSqlSource",
+        "AlloyDbSource",
         "FirestoreSource",
         "ImportErrorConfig",
         "ImportUserEventsRequest",
@@ -46,6 +47,9 @@ __protobuf__ = proto.module(
         "ImportSuggestionDenyListEntriesRequest",
         "ImportSuggestionDenyListEntriesResponse",
         "ImportSuggestionDenyListEntriesMetadata",
+        "ImportCompletionSuggestionsRequest",
+        "ImportCompletionSuggestionsResponse",
+        "ImportCompletionSuggestionsMetadata",
     },
 )
 
@@ -538,6 +542,65 @@ class CloudSqlSource(proto.Message):
     )
 
 
+class AlloyDbSource(proto.Message):
+    r"""AlloyDB source import data from.
+
+    Attributes:
+        project_id (str):
+            The project ID that the AlloyDB source is in
+            with a length limit of 128 characters. If not
+            specified, inherits the project ID from the
+            parent request.
+        location_id (str):
+            Required. The AlloyDB location to copy the
+            data from with a length limit of 256 characters.
+        cluster_id (str):
+            Required. The AlloyDB cluster to copy the
+            data from with a length limit of 256 characters.
+        database_id (str):
+            Required. The AlloyDB database to copy the
+            data from with a length limit of 256 characters.
+        table_id (str):
+            Required. The AlloyDB table to copy the data
+            from with a length limit of 256 characters.
+        gcs_staging_dir (str):
+            Intermediate Cloud Storage directory used for
+            the import with a length limit of 2,000
+            characters. Can be specified if one wants to
+            have the AlloyDB export to a specific Cloud
+            Storage directory.
+
+            Ensure that the AlloyDB service account has the
+            necessary Cloud Storage Admin permissions to
+            access the specified Cloud Storage directory.
+    """
+
+    project_id: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    location_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    cluster_id: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    database_id: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    table_id: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    gcs_staging_dir: str = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+
+
 class FirestoreSource(proto.Message):
     r"""Firestore source import data from.
 
@@ -850,6 +913,10 @@ class ImportDocumentsRequest(proto.Message):
             Firestore input source.
 
             This field is a member of `oneof`_ ``source``.
+        alloy_db_source (google.cloud.discoveryengine_v1.types.AlloyDbSource):
+            AlloyDB input source.
+
+            This field is a member of `oneof`_ ``source``.
         bigtable_source (google.cloud.discoveryengine_v1.types.BigtableSource):
             Cloud Bigtable input source.
 
@@ -1021,6 +1088,12 @@ class ImportDocumentsRequest(proto.Message):
         number=13,
         oneof="source",
         message="FirestoreSource",
+    )
+    alloy_db_source: "AlloyDbSource" = proto.Field(
+        proto.MESSAGE,
+        number=14,
+        oneof="source",
+        message="AlloyDbSource",
     )
     bigtable_source: "BigtableSource" = proto.Field(
         proto.MESSAGE,
@@ -1209,6 +1282,157 @@ class ImportSuggestionDenyListEntriesMetadata(proto.Message):
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
+    )
+
+
+class ImportCompletionSuggestionsRequest(proto.Message):
+    r"""Request message for
+    [CompletionService.ImportCompletionSuggestions][google.cloud.discoveryengine.v1.CompletionService.ImportCompletionSuggestions]
+    method.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        inline_source (google.cloud.discoveryengine_v1.types.ImportCompletionSuggestionsRequest.InlineSource):
+            The Inline source for suggestion entries.
+
+            This field is a member of `oneof`_ ``source``.
+        gcs_source (google.cloud.discoveryengine_v1.types.GcsSource):
+            Cloud Storage location for the input content.
+
+            This field is a member of `oneof`_ ``source``.
+        bigquery_source (google.cloud.discoveryengine_v1.types.BigQuerySource):
+            BigQuery input source.
+
+            This field is a member of `oneof`_ ``source``.
+        parent (str):
+            Required. The parent data store resource name for which to
+            import customer autocomplete suggestions.
+
+            Follows pattern
+            ``projects/*/locations/*/collections/*/dataStores/*``
+        error_config (google.cloud.discoveryengine_v1.types.ImportErrorConfig):
+            The desired location of errors incurred
+            during the Import.
+    """
+
+    class InlineSource(proto.Message):
+        r"""The inline source for CompletionSuggestions.
+
+        Attributes:
+            suggestions (MutableSequence[google.cloud.discoveryengine_v1.types.CompletionSuggestion]):
+                Required. A list of all denylist entries to
+                import. Max of 1000 items.
+        """
+
+        suggestions: MutableSequence[
+            completion.CompletionSuggestion
+        ] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=completion.CompletionSuggestion,
+        )
+
+    inline_source: InlineSource = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="source",
+        message=InlineSource,
+    )
+    gcs_source: "GcsSource" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        oneof="source",
+        message="GcsSource",
+    )
+    bigquery_source: "BigQuerySource" = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        oneof="source",
+        message="BigQuerySource",
+    )
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    error_config: "ImportErrorConfig" = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message="ImportErrorConfig",
+    )
+
+
+class ImportCompletionSuggestionsResponse(proto.Message):
+    r"""Response of the
+    [CompletionService.ImportCompletionSuggestions][google.cloud.discoveryengine.v1.CompletionService.ImportCompletionSuggestions]
+    method. If the long running operation is done, this message is
+    returned by the google.longrunning.Operations.response field if the
+    operation is successful.
+
+    Attributes:
+        error_samples (MutableSequence[google.rpc.status_pb2.Status]):
+            A sample of errors encountered while
+            processing the request.
+        error_config (google.cloud.discoveryengine_v1.types.ImportErrorConfig):
+            The desired location of errors incurred
+            during the Import.
+    """
+
+    error_samples: MutableSequence[status_pb2.Status] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=status_pb2.Status,
+    )
+    error_config: "ImportErrorConfig" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="ImportErrorConfig",
+    )
+
+
+class ImportCompletionSuggestionsMetadata(proto.Message):
+    r"""Metadata related to the progress of the
+    ImportCompletionSuggestions operation. This will be returned by
+    the google.longrunning.Operation.metadata field.
+
+    Attributes:
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Operation create time.
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
+            Operation last update time. If the operation
+            is done, this is also the finish time.
+        success_count (int):
+            Count of
+            [CompletionSuggestion][google.cloud.discoveryengine.v1.CompletionSuggestion]s
+            successfully imported.
+        failure_count (int):
+            Count of
+            [CompletionSuggestion][google.cloud.discoveryengine.v1.CompletionSuggestion]s
+            that failed to be imported.
+    """
+
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    success_count: int = proto.Field(
+        proto.INT64,
+        number=3,
+    )
+    failure_count: int = proto.Field(
+        proto.INT64,
+        number=4,
     )
 
 

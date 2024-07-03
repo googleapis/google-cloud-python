@@ -84,11 +84,27 @@ class CompletionServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_import_completion_suggestions(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_import_completion_suggestions(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_import_suggestion_deny_list_entries(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
             def post_import_suggestion_deny_list_entries(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_purge_completion_suggestions(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_purge_completion_suggestions(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -129,6 +145,31 @@ class CompletionServiceRestInterceptor:
         """
         return response
 
+    def pre_import_completion_suggestions(
+        self,
+        request: import_config.ImportCompletionSuggestionsRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        import_config.ImportCompletionSuggestionsRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for import_completion_suggestions
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CompletionService server.
+        """
+        return request, metadata
+
+    def post_import_completion_suggestions(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for import_completion_suggestions
+
+        Override in a subclass to manipulate the response
+        after it is returned by the CompletionService server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_import_suggestion_deny_list_entries(
         self,
         request: import_config.ImportSuggestionDenyListEntriesRequest,
@@ -147,6 +188,31 @@ class CompletionServiceRestInterceptor:
         self, response: operations_pb2.Operation
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for import_suggestion_deny_list_entries
+
+        Override in a subclass to manipulate the response
+        after it is returned by the CompletionService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_purge_completion_suggestions(
+        self,
+        request: purge_config.PurgeCompletionSuggestionsRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        purge_config.PurgeCompletionSuggestionsRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for purge_completion_suggestions
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CompletionService server.
+        """
+        return request, metadata
+
+    def post_purge_completion_suggestions(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for purge_completion_suggestions
 
         Override in a subclass to manipulate the response
         after it is returned by the CompletionService server but before
@@ -609,6 +675,109 @@ class CompletionServiceRestTransport(CompletionServiceTransport):
             resp = self._interceptor.post_complete_query(resp)
             return resp
 
+    class _ImportCompletionSuggestions(CompletionServiceRestStub):
+        def __hash__(self):
+            return hash("ImportCompletionSuggestions")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: import_config.ImportCompletionSuggestionsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the import completion
+            suggestions method over HTTP.
+
+                Args:
+                    request (~.import_config.ImportCompletionSuggestionsRequest):
+                        The request object. Request message for
+                    [CompletionService.ImportCompletionSuggestions][google.cloud.discoveryengine.v1.CompletionService.ImportCompletionSuggestions]
+                    method.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+
+                Returns:
+                    ~.operations_pb2.Operation:
+                        This resource represents a
+                    long-running operation that is the
+                    result of a network API call.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1/{parent=projects/*/locations/*/collections/*/dataStores/*}/completionSuggestions:import",
+                    "body": "*",
+                },
+                {
+                    "method": "post",
+                    "uri": "/v1/{parent=projects/*/locations/*/dataStores/*}/completionSuggestions:import",
+                    "body": "*",
+                },
+            ]
+            request, metadata = self._interceptor.pre_import_completion_suggestions(
+                request, metadata
+            )
+            pb_request = import_config.ImportCompletionSuggestionsRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"], use_integers_for_enums=True
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_import_completion_suggestions(resp)
+            return resp
+
     class _ImportSuggestionDenyListEntries(CompletionServiceRestStub):
         def __hash__(self):
             return hash("ImportSuggestionDenyListEntries")
@@ -715,6 +884,109 @@ class CompletionServiceRestTransport(CompletionServiceTransport):
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_import_suggestion_deny_list_entries(resp)
+            return resp
+
+    class _PurgeCompletionSuggestions(CompletionServiceRestStub):
+        def __hash__(self):
+            return hash("PurgeCompletionSuggestions")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: purge_config.PurgeCompletionSuggestionsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the purge completion
+            suggestions method over HTTP.
+
+                Args:
+                    request (~.purge_config.PurgeCompletionSuggestionsRequest):
+                        The request object. Request message for
+                    [CompletionService.PurgeCompletionSuggestions][google.cloud.discoveryengine.v1.CompletionService.PurgeCompletionSuggestions]
+                    method.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+
+                Returns:
+                    ~.operations_pb2.Operation:
+                        This resource represents a
+                    long-running operation that is the
+                    result of a network API call.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1/{parent=projects/*/locations/*/collections/*/dataStores/*}/completionSuggestions:purge",
+                    "body": "*",
+                },
+                {
+                    "method": "post",
+                    "uri": "/v1/{parent=projects/*/locations/*/dataStores/*}/completionSuggestions:purge",
+                    "body": "*",
+                },
+            ]
+            request, metadata = self._interceptor.pre_purge_completion_suggestions(
+                request, metadata
+            )
+            pb_request = purge_config.PurgeCompletionSuggestionsRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"], use_integers_for_enums=True
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_purge_completion_suggestions(resp)
             return resp
 
     class _PurgeSuggestionDenyListEntries(CompletionServiceRestStub):
@@ -835,6 +1107,16 @@ class CompletionServiceRestTransport(CompletionServiceTransport):
         return self._CompleteQuery(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def import_completion_suggestions(
+        self,
+    ) -> Callable[
+        [import_config.ImportCompletionSuggestionsRequest], operations_pb2.Operation
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ImportCompletionSuggestions(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def import_suggestion_deny_list_entries(
         self,
     ) -> Callable[
@@ -843,6 +1125,16 @@ class CompletionServiceRestTransport(CompletionServiceTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ImportSuggestionDenyListEntries(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def purge_completion_suggestions(
+        self,
+    ) -> Callable[
+        [purge_config.PurgeCompletionSuggestionsRequest], operations_pb2.Operation
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._PurgeCompletionSuggestions(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def purge_suggestion_deny_list_entries(

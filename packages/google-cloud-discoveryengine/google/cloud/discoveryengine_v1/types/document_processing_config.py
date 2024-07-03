@@ -40,6 +40,8 @@ class DocumentProcessingConfig(proto.Message):
             The full resource name of the Document Processing Config.
             Format:
             ``projects/*/locations/*/collections/*/dataStores/*/documentProcessingConfig``.
+        chunking_config (google.cloud.discoveryengine_v1.types.DocumentProcessingConfig.ChunkingConfig):
+            Whether chunking mode is enabled.
         default_parsing_config (google.cloud.discoveryengine_v1.types.DocumentProcessingConfig.ParsingConfig):
             Configurations for default Document parser.
             If not specified, we will configure it as
@@ -54,10 +56,57 @@ class DocumentProcessingConfig(proto.Message):
                digital parsing, ocr parsing or layout parsing is
                supported.
             -  ``html``: Override parsing config for HTML files, only
-               digital parsing and or layout parsing are supported.
+               digital parsing and layout parsing are supported.
             -  ``docx``: Override parsing config for DOCX files, only
-               digital parsing and or layout parsing are supported.
+               digital parsing and layout parsing are supported.
+            -  ``pptx``: Override parsing config for PPTX files, only
+               digital parsing and layout parsing are supported.
     """
+
+    class ChunkingConfig(proto.Message):
+        r"""Configuration for chunking config.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            layout_based_chunking_config (google.cloud.discoveryengine_v1.types.DocumentProcessingConfig.ChunkingConfig.LayoutBasedChunkingConfig):
+                Configuration for the layout based chunking.
+
+                This field is a member of `oneof`_ ``chunk_mode``.
+        """
+
+        class LayoutBasedChunkingConfig(proto.Message):
+            r"""Configuration for the layout based chunking.
+
+            Attributes:
+                chunk_size (int):
+                    The token size limit for each chunk.
+
+                    Supported values: 100-500 (inclusive).
+                    Default value: 500.
+                include_ancestor_headings (bool):
+                    Whether to include appending different levels
+                    of headings to chunks from the middle of the
+                    document to prevent context loss.
+
+                    Default value: False.
+            """
+
+            chunk_size: int = proto.Field(
+                proto.INT32,
+                number=1,
+            )
+            include_ancestor_headings: bool = proto.Field(
+                proto.BOOL,
+                number=2,
+            )
+
+        layout_based_chunking_config: "DocumentProcessingConfig.ChunkingConfig.LayoutBasedChunkingConfig" = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            oneof="chunk_mode",
+            message="DocumentProcessingConfig.ChunkingConfig.LayoutBasedChunkingConfig",
+        )
 
     class ParsingConfig(proto.Message):
         r"""Related configurations applied to a specific type of document
@@ -78,6 +127,10 @@ class DocumentProcessingConfig(proto.Message):
             ocr_parsing_config (google.cloud.discoveryengine_v1.types.DocumentProcessingConfig.ParsingConfig.OcrParsingConfig):
                 Configurations applied to OCR parser.
                 Currently it only applies to PDFs.
+
+                This field is a member of `oneof`_ ``type_dedicated_config``.
+            layout_parsing_config (google.cloud.discoveryengine_v1.types.DocumentProcessingConfig.ParsingConfig.LayoutParsingConfig):
+                Configurations applied to layout parser.
 
                 This field is a member of `oneof`_ ``type_dedicated_config``.
         """
@@ -107,6 +160,9 @@ class DocumentProcessingConfig(proto.Message):
                 number=2,
             )
 
+        class LayoutParsingConfig(proto.Message):
+            r"""The layout parsing configurations for documents."""
+
         digital_parsing_config: "DocumentProcessingConfig.ParsingConfig.DigitalParsingConfig" = proto.Field(
             proto.MESSAGE,
             number=1,
@@ -119,10 +175,21 @@ class DocumentProcessingConfig(proto.Message):
             oneof="type_dedicated_config",
             message="DocumentProcessingConfig.ParsingConfig.OcrParsingConfig",
         )
+        layout_parsing_config: "DocumentProcessingConfig.ParsingConfig.LayoutParsingConfig" = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            oneof="type_dedicated_config",
+            message="DocumentProcessingConfig.ParsingConfig.LayoutParsingConfig",
+        )
 
     name: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+    chunking_config: ChunkingConfig = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=ChunkingConfig,
     )
     default_parsing_config: ParsingConfig = proto.Field(
         proto.MESSAGE,

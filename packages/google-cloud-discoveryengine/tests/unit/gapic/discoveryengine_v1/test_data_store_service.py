@@ -3376,6 +3376,12 @@ def test_create_data_store_rest(request_type):
         "create_time": {"seconds": 751, "nanos": 543},
         "document_processing_config": {
             "name": "name_value",
+            "chunking_config": {
+                "layout_based_chunking_config": {
+                    "chunk_size": 1075,
+                    "include_ancestor_headings": True,
+                }
+            },
             "default_parsing_config": {
                 "digital_parsing_config": {},
                 "ocr_parsing_config": {
@@ -3385,6 +3391,7 @@ def test_create_data_store_rest(request_type):
                     ],
                     "use_native_text": True,
                 },
+                "layout_parsing_config": {},
             },
             "parsing_config_overrides": {},
         },
@@ -4804,6 +4811,12 @@ def test_update_data_store_rest(request_type):
         "create_time": {"seconds": 751, "nanos": 543},
         "document_processing_config": {
             "name": "name_value",
+            "chunking_config": {
+                "layout_based_chunking_config": {
+                    "chunk_size": 1075,
+                    "include_ancestor_headings": True,
+                }
+            },
             "default_parsing_config": {
                 "digital_parsing_config": {},
                 "ocr_parsing_config": {
@@ -4813,6 +4826,7 @@ def test_update_data_store_rest(request_type):
                     ],
                     "use_native_text": True,
                 },
+                "layout_parsing_config": {},
             },
             "parsing_config_overrides": {},
         },
