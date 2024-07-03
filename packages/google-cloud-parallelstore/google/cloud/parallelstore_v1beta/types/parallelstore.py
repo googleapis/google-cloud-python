@@ -624,6 +624,12 @@ class ImportDataRequest(proto.Message):
             The request ID must be a valid UUID with the
             exception that zero UUID is not supported
             (00000000-0000-0000-0000-000000000000).
+        service_account (str):
+            Optional. User-specified Service Account (SA) credentials to
+            be used when performing the transfer. Format:
+            ``projects/{project_id}/serviceAccounts/{service_account}``
+            If unspecified, the Parallelstore service agent is used:
+            service-<PROJECT_NUMBER>@gcp-sa-parallelstore.iam.gserviceaccount.com)
     """
 
     source_gcs_bucket: "SourceGcsBucket" = proto.Field(
@@ -645,6 +651,10 @@ class ImportDataRequest(proto.Message):
     request_id: str = proto.Field(
         proto.STRING,
         number=4,
+    )
+    service_account: str = proto.Field(
+        proto.STRING,
+        number=5,
     )
 
 
@@ -686,6 +696,12 @@ class ExportDataRequest(proto.Message):
             The request ID must be a valid UUID with the
             exception that zero UUID is not supported
             (00000000-0000-0000-0000-000000000000).
+        service_account (str):
+            Optional. User-specified Service Account (SA) credentials to
+            be used when performing the transfer. Format:
+            ``projects/{project_id}/serviceAccounts/{service_account}``
+            If unspecified, the Parallelstore service agent is used:
+            service-<PROJECT_NUMBER>@gcp-sa-parallelstore.iam.gserviceaccount.com)
     """
 
     source_parallelstore: "SourceParallelstore" = proto.Field(
@@ -707,6 +723,10 @@ class ExportDataRequest(proto.Message):
     request_id: str = proto.Field(
         proto.STRING,
         number=4,
+    )
+    service_account: str = proto.Field(
+        proto.STRING,
+        number=5,
     )
 
 
