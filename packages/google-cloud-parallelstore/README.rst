@@ -15,7 +15,7 @@ Python Client for Parallelstore API
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-parallelstore.svg
    :target: https://pypi.org/project/google-cloud-parallelstore/
 .. _Parallelstore API: https://cloud.google.com/parallelstore
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/google-cloud-parallelstore/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/google-cloud-parallelstore/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/parallelstore
 
 Quick Start

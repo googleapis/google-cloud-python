@@ -25,6 +25,7 @@ import proto  # type: ignore
 __protobuf__ = proto.module(
     package="google.cloud.bigquery.analyticshub.v1",
     manifest={
+        "DiscoveryType",
         "DataExchange",
         "SharingEnvironmentConfig",
         "DataProvider",
@@ -66,10 +67,33 @@ __protobuf__ = proto.module(
 )
 
 
+class DiscoveryType(proto.Enum):
+    r"""Specifies the type of discovery on the discovery page. Note
+    that this does not control the visibility of the
+    exchange/listing which is defined by IAM permission.
+
+    Values:
+        DISCOVERY_TYPE_UNSPECIFIED (0):
+            Unspecified. Defaults to DISCOVERY_TYPE_PRIVATE.
+        DISCOVERY_TYPE_PRIVATE (1):
+            The Data exchange/listing can be discovered
+            in the 'Private' results list.
+        DISCOVERY_TYPE_PUBLIC (2):
+            The Data exchange/listing can be discovered
+            in the 'Public' results list.
+    """
+    DISCOVERY_TYPE_UNSPECIFIED = 0
+    DISCOVERY_TYPE_PRIVATE = 1
+    DISCOVERY_TYPE_PUBLIC = 2
+
+
 class DataExchange(proto.Message):
     r"""A data exchange is a container that lets you share data.
     Along with the descriptive information about the data exchange,
     it contains listings that reference shared datasets.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         name (str):
@@ -111,6 +135,13 @@ class DataExchange(proto.Message):
         sharing_environment_config (google.cloud.bigquery_analyticshub_v1.types.SharingEnvironmentConfig):
             Optional. Configurable data sharing
             environment option for a data exchange.
+        discovery_type (google.cloud.bigquery_analyticshub_v1.types.DiscoveryType):
+            Optional. Type of discovery on the discovery page for all
+            the listings under this exchange. Updating this field also
+            updates (overwrites) the discovery_type field for all the
+            listings under this exchange.
+
+            This field is a member of `oneof`_ ``_discovery_type``.
     """
 
     name: str = proto.Field(
@@ -145,6 +176,12 @@ class DataExchange(proto.Message):
         proto.MESSAGE,
         number=8,
         message="SharingEnvironmentConfig",
+    )
+    discovery_type: "DiscoveryType" = proto.Field(
+        proto.ENUM,
+        number=9,
+        optional=True,
+        enum="DiscoveryType",
     )
 
 
@@ -425,6 +462,11 @@ class Listing(proto.Message):
             Optional. If set, restricted export
             configuration will be propagated and enforced on
             the linked dataset.
+        discovery_type (google.cloud.bigquery_analyticshub_v1.types.DiscoveryType):
+            Optional. Type of discovery of the listing on
+            the discovery page.
+
+            This field is a member of `oneof`_ ``_discovery_type``.
     """
 
     class State(proto.Enum):
@@ -525,6 +567,10 @@ class Listing(proto.Message):
                 the entire dataset (all resources) are shared.
                 This field is only valid for data clean room
                 exchanges.
+            restricted_export_policy (google.cloud.bigquery_analyticshub_v1.types.Listing.BigQueryDatasetSource.RestrictedExportPolicy):
+                Optional. If set, restricted export policy
+                will be propagated and enforced on the linked
+                dataset.
         """
 
         class SelectedResource(proto.Message):
@@ -547,6 +593,39 @@ class Listing(proto.Message):
                 oneof="resource",
             )
 
+        class RestrictedExportPolicy(proto.Message):
+            r"""Restricted export policy used to configure restricted export
+            on linked dataset.
+
+            Attributes:
+                enabled (google.protobuf.wrappers_pb2.BoolValue):
+                    Optional. If true, enable restricted export.
+                restrict_direct_table_access (google.protobuf.wrappers_pb2.BoolValue):
+                    Optional. If true, restrict direct table
+                    access (read api/tabledata.list) on linked
+                    table.
+                restrict_query_result (google.protobuf.wrappers_pb2.BoolValue):
+                    Optional. If true, restrict export of query
+                    result derived from restricted linked dataset
+                    table.
+            """
+
+            enabled: wrappers_pb2.BoolValue = proto.Field(
+                proto.MESSAGE,
+                number=1,
+                message=wrappers_pb2.BoolValue,
+            )
+            restrict_direct_table_access: wrappers_pb2.BoolValue = proto.Field(
+                proto.MESSAGE,
+                number=2,
+                message=wrappers_pb2.BoolValue,
+            )
+            restrict_query_result: wrappers_pb2.BoolValue = proto.Field(
+                proto.MESSAGE,
+                number=3,
+                message=wrappers_pb2.BoolValue,
+            )
+
         dataset: str = proto.Field(
             proto.STRING,
             number=1,
@@ -557,6 +636,11 @@ class Listing(proto.Message):
             proto.MESSAGE,
             number=2,
             message="Listing.BigQueryDatasetSource.SelectedResource",
+        )
+        restricted_export_policy: "Listing.BigQueryDatasetSource.RestrictedExportPolicy" = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            message="Listing.BigQueryDatasetSource.RestrictedExportPolicy",
         )
 
     class RestrictedExportConfig(proto.Message):
@@ -646,6 +730,12 @@ class Listing(proto.Message):
         proto.MESSAGE,
         number=13,
         message=RestrictedExportConfig,
+    )
+    discovery_type: "DiscoveryType" = proto.Field(
+        proto.ENUM,
+        number=14,
+        optional=True,
+        enum="DiscoveryType",
     )
 
 
@@ -1142,8 +1232,8 @@ class SubscribeListingRequest(proto.Message):
 
     Attributes:
         destination_dataset (google.cloud.bigquery_analyticshub_v1.types.DestinationDataset):
-            BigQuery destination dataset to create for
-            the subscriber.
+            Input only. BigQuery destination dataset to
+            create for the subscriber.
 
             This field is a member of `oneof`_ ``destination``.
         name (str):
@@ -1285,8 +1375,22 @@ class ListSubscriptionsRequest(proto.Message):
             subscription. e.g.
             projects/myproject/locations/US
         filter (str):
-            The filter expression may be used to filter
-            by Data Exchange or Listing.
+            An expression for filtering the results of the request.
+            Eligible fields for filtering are:
+
+            -  ``listing``
+            -  ``data_exchange``
+
+            Alternatively, a literal wrapped in double quotes may be
+            provided. This will be checked for an exact match against
+            both fields above.
+
+            In all cases, the full Data Exchange or Listing resource
+            name must be provided. Some example of using filters:
+
+            -  data_exchange="projects/myproject/locations/us/dataExchanges/123"
+            -  listing="projects/123/locations/us/dataExchanges/456/listings/789"
+            -  "projects/myproject/locations/us/dataExchanges/123".
         page_size (int):
             The maximum number of results to return in a
             single response page.

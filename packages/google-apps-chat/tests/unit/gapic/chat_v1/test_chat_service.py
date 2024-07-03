@@ -1096,6 +1096,11 @@ def test_chat_service_client_create_channel_credentials_file(
             credentials_file=None,
             quota_project_id=None,
             default_scopes=(
+                "https://www.googleapis.com/auth/chat.admin.delete",
+                "https://www.googleapis.com/auth/chat.admin.memberships",
+                "https://www.googleapis.com/auth/chat.admin.memberships.readonly",
+                "https://www.googleapis.com/auth/chat.admin.spaces",
+                "https://www.googleapis.com/auth/chat.admin.spaces.readonly",
                 "https://www.googleapis.com/auth/chat.bot",
                 "https://www.googleapis.com/auth/chat.delete",
                 "https://www.googleapis.com/auth/chat.import",
@@ -5341,6 +5346,7 @@ def test_get_space(request_type, transport: str = "grpc"):
             space_history_state=history_state.HistoryState.HISTORY_OFF,
             import_mode=True,
             admin_installed=True,
+            space_uri="space_uri_value",
         )
         response = client.get_space(request)
 
@@ -5366,6 +5372,7 @@ def test_get_space(request_type, transport: str = "grpc"):
     assert response.space_history_state == history_state.HistoryState.HISTORY_OFF
     assert response.import_mode is True
     assert response.admin_installed is True
+    assert response.space_uri == "space_uri_value"
 
 
 def test_get_space_empty_call():
@@ -5475,6 +5482,7 @@ async def test_get_space_empty_call_async():
                 space_history_state=history_state.HistoryState.HISTORY_OFF,
                 import_mode=True,
                 admin_installed=True,
+                space_uri="space_uri_value",
             )
         )
         response = await client.get_space()
@@ -5556,6 +5564,7 @@ async def test_get_space_async(
                 space_history_state=history_state.HistoryState.HISTORY_OFF,
                 import_mode=True,
                 admin_installed=True,
+                space_uri="space_uri_value",
             )
         )
         response = await client.get_space(request)
@@ -5582,6 +5591,7 @@ async def test_get_space_async(
     assert response.space_history_state == history_state.HistoryState.HISTORY_OFF
     assert response.import_mode is True
     assert response.admin_installed is True
+    assert response.space_uri == "space_uri_value"
 
 
 @pytest.mark.asyncio
@@ -5760,6 +5770,7 @@ def test_create_space(request_type, transport: str = "grpc"):
             space_history_state=history_state.HistoryState.HISTORY_OFF,
             import_mode=True,
             admin_installed=True,
+            space_uri="space_uri_value",
         )
         response = client.create_space(request)
 
@@ -5785,6 +5796,7 @@ def test_create_space(request_type, transport: str = "grpc"):
     assert response.space_history_state == history_state.HistoryState.HISTORY_OFF
     assert response.import_mode is True
     assert response.admin_installed is True
+    assert response.space_uri == "space_uri_value"
 
 
 def test_create_space_empty_call():
@@ -5894,6 +5906,7 @@ async def test_create_space_empty_call_async():
                 space_history_state=history_state.HistoryState.HISTORY_OFF,
                 import_mode=True,
                 admin_installed=True,
+                space_uri="space_uri_value",
             )
         )
         response = await client.create_space()
@@ -5977,6 +5990,7 @@ async def test_create_space_async(
                 space_history_state=history_state.HistoryState.HISTORY_OFF,
                 import_mode=True,
                 admin_installed=True,
+                space_uri="space_uri_value",
             )
         )
         response = await client.create_space(request)
@@ -6003,6 +6017,7 @@ async def test_create_space_async(
     assert response.space_history_state == history_state.HistoryState.HISTORY_OFF
     assert response.import_mode is True
     assert response.admin_installed is True
+    assert response.space_uri == "space_uri_value"
 
 
 @pytest.mark.asyncio
@@ -6122,6 +6137,7 @@ def test_set_up_space(request_type, transport: str = "grpc"):
             space_history_state=history_state.HistoryState.HISTORY_OFF,
             import_mode=True,
             admin_installed=True,
+            space_uri="space_uri_value",
         )
         response = client.set_up_space(request)
 
@@ -6147,6 +6163,7 @@ def test_set_up_space(request_type, transport: str = "grpc"):
     assert response.space_history_state == history_state.HistoryState.HISTORY_OFF
     assert response.import_mode is True
     assert response.admin_installed is True
+    assert response.space_uri == "space_uri_value"
 
 
 def test_set_up_space_empty_call():
@@ -6256,6 +6273,7 @@ async def test_set_up_space_empty_call_async():
                 space_history_state=history_state.HistoryState.HISTORY_OFF,
                 import_mode=True,
                 admin_installed=True,
+                space_uri="space_uri_value",
             )
         )
         response = await client.set_up_space()
@@ -6339,6 +6357,7 @@ async def test_set_up_space_async(
                 space_history_state=history_state.HistoryState.HISTORY_OFF,
                 import_mode=True,
                 admin_installed=True,
+                space_uri="space_uri_value",
             )
         )
         response = await client.set_up_space(request)
@@ -6365,6 +6384,7 @@ async def test_set_up_space_async(
     assert response.space_history_state == history_state.HistoryState.HISTORY_OFF
     assert response.import_mode is True
     assert response.admin_installed is True
+    assert response.space_uri == "space_uri_value"
 
 
 @pytest.mark.asyncio
@@ -6404,6 +6424,7 @@ def test_update_space(request_type, transport: str = "grpc"):
             space_history_state=history_state.HistoryState.HISTORY_OFF,
             import_mode=True,
             admin_installed=True,
+            space_uri="space_uri_value",
         )
         response = client.update_space(request)
 
@@ -6429,6 +6450,7 @@ def test_update_space(request_type, transport: str = "grpc"):
     assert response.space_history_state == history_state.HistoryState.HISTORY_OFF
     assert response.import_mode is True
     assert response.admin_installed is True
+    assert response.space_uri == "space_uri_value"
 
 
 def test_update_space_empty_call():
@@ -6534,6 +6556,7 @@ async def test_update_space_empty_call_async():
                 space_history_state=history_state.HistoryState.HISTORY_OFF,
                 import_mode=True,
                 admin_installed=True,
+                space_uri="space_uri_value",
             )
         )
         response = await client.update_space()
@@ -6617,6 +6640,7 @@ async def test_update_space_async(
                 space_history_state=history_state.HistoryState.HISTORY_OFF,
                 import_mode=True,
                 admin_installed=True,
+                space_uri="space_uri_value",
             )
         )
         response = await client.update_space(request)
@@ -6643,6 +6667,7 @@ async def test_update_space_async(
     assert response.space_history_state == history_state.HistoryState.HISTORY_OFF
     assert response.import_mode is True
     assert response.admin_installed is True
+    assert response.space_uri == "space_uri_value"
 
 
 @pytest.mark.asyncio
@@ -7484,6 +7509,7 @@ def test_find_direct_message(request_type, transport: str = "grpc"):
             space_history_state=history_state.HistoryState.HISTORY_OFF,
             import_mode=True,
             admin_installed=True,
+            space_uri="space_uri_value",
         )
         response = client.find_direct_message(request)
 
@@ -7509,6 +7535,7 @@ def test_find_direct_message(request_type, transport: str = "grpc"):
     assert response.space_history_state == history_state.HistoryState.HISTORY_OFF
     assert response.import_mode is True
     assert response.admin_installed is True
+    assert response.space_uri == "space_uri_value"
 
 
 def test_find_direct_message_empty_call():
@@ -7628,6 +7655,7 @@ async def test_find_direct_message_empty_call_async():
                 space_history_state=history_state.HistoryState.HISTORY_OFF,
                 import_mode=True,
                 admin_installed=True,
+                space_uri="space_uri_value",
             )
         )
         response = await client.find_direct_message()
@@ -7713,6 +7741,7 @@ async def test_find_direct_message_async(
                 space_history_state=history_state.HistoryState.HISTORY_OFF,
                 import_mode=True,
                 admin_installed=True,
+                space_uri="space_uri_value",
             )
         )
         response = await client.find_direct_message(request)
@@ -7739,6 +7768,7 @@ async def test_find_direct_message_async(
     assert response.space_history_state == history_state.HistoryState.HISTORY_OFF
     assert response.import_mode is True
     assert response.admin_installed is True
+    assert response.space_uri == "space_uri_value"
 
 
 @pytest.mark.asyncio
@@ -11762,6 +11792,8 @@ def test_create_message_rest(request_type):
             "import_mode": True,
             "create_time": {},
             "admin_installed": True,
+            "access_settings": {"access_state": 1, "audience": "audience_value"},
+            "space_uri": "space_uri_value",
         },
         "fallback_text": "fallback_text_value",
         "action_response": {
@@ -13893,6 +13925,8 @@ def test_update_message_rest(request_type):
             "import_mode": True,
             "create_time": {},
             "admin_installed": True,
+            "access_settings": {"access_state": 1, "audience": "audience_value"},
+            "space_uri": "space_uri_value",
         },
         "fallback_text": "fallback_text_value",
         "action_response": {
@@ -15417,6 +15451,7 @@ def test_get_space_rest(request_type):
             space_history_state=history_state.HistoryState.HISTORY_OFF,
             import_mode=True,
             admin_installed=True,
+            space_uri="space_uri_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -15446,6 +15481,7 @@ def test_get_space_rest(request_type):
     assert response.space_history_state == history_state.HistoryState.HISTORY_OFF
     assert response.import_mode is True
     assert response.admin_installed is True
+    assert response.space_uri == "space_uri_value"
 
 
 def test_get_space_rest_use_cached_wrapped_rpc():
@@ -15735,6 +15771,8 @@ def test_create_space_rest(request_type):
         "import_mode": True,
         "create_time": {"seconds": 751, "nanos": 543},
         "admin_installed": True,
+        "access_settings": {"access_state": 1, "audience": "audience_value"},
+        "space_uri": "space_uri_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -15820,6 +15858,7 @@ def test_create_space_rest(request_type):
             space_history_state=history_state.HistoryState.HISTORY_OFF,
             import_mode=True,
             admin_installed=True,
+            space_uri="space_uri_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -15849,6 +15888,7 @@ def test_create_space_rest(request_type):
     assert response.space_history_state == history_state.HistoryState.HISTORY_OFF
     assert response.import_mode is True
     assert response.admin_installed is True
+    assert response.space_uri == "space_uri_value"
 
 
 def test_create_space_rest_use_cached_wrapped_rpc():
@@ -16134,6 +16174,7 @@ def test_set_up_space_rest(request_type):
             space_history_state=history_state.HistoryState.HISTORY_OFF,
             import_mode=True,
             admin_installed=True,
+            space_uri="space_uri_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -16163,6 +16204,7 @@ def test_set_up_space_rest(request_type):
     assert response.space_history_state == history_state.HistoryState.HISTORY_OFF
     assert response.import_mode is True
     assert response.admin_installed is True
+    assert response.space_uri == "space_uri_value"
 
 
 def test_set_up_space_rest_use_cached_wrapped_rpc():
@@ -16393,6 +16435,8 @@ def test_update_space_rest(request_type):
         "import_mode": True,
         "create_time": {"seconds": 751, "nanos": 543},
         "admin_installed": True,
+        "access_settings": {"access_state": 1, "audience": "audience_value"},
+        "space_uri": "space_uri_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -16478,6 +16522,7 @@ def test_update_space_rest(request_type):
             space_history_state=history_state.HistoryState.HISTORY_OFF,
             import_mode=True,
             admin_installed=True,
+            space_uri="space_uri_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -16507,6 +16552,7 @@ def test_update_space_rest(request_type):
     assert response.space_history_state == history_state.HistoryState.HISTORY_OFF
     assert response.import_mode is True
     assert response.admin_installed is True
+    assert response.space_uri == "space_uri_value"
 
 
 def test_update_space_rest_use_cached_wrapped_rpc():
@@ -17324,6 +17370,7 @@ def test_find_direct_message_rest(request_type):
             space_history_state=history_state.HistoryState.HISTORY_OFF,
             import_mode=True,
             admin_installed=True,
+            space_uri="space_uri_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -17353,6 +17400,7 @@ def test_find_direct_message_rest(request_type):
     assert response.space_history_state == history_state.HistoryState.HISTORY_OFF
     assert response.import_mode is True
     assert response.admin_installed is True
+    assert response.space_uri == "space_uri_value"
 
 
 def test_find_direct_message_rest_use_cached_wrapped_rpc():
@@ -20935,6 +20983,11 @@ def test_chat_service_base_transport_with_credentials_file():
             "credentials.json",
             scopes=None,
             default_scopes=(
+                "https://www.googleapis.com/auth/chat.admin.delete",
+                "https://www.googleapis.com/auth/chat.admin.memberships",
+                "https://www.googleapis.com/auth/chat.admin.memberships.readonly",
+                "https://www.googleapis.com/auth/chat.admin.spaces",
+                "https://www.googleapis.com/auth/chat.admin.spaces.readonly",
                 "https://www.googleapis.com/auth/chat.bot",
                 "https://www.googleapis.com/auth/chat.delete",
                 "https://www.googleapis.com/auth/chat.import",
@@ -20976,6 +21029,11 @@ def test_chat_service_auth_adc():
         adc.assert_called_once_with(
             scopes=None,
             default_scopes=(
+                "https://www.googleapis.com/auth/chat.admin.delete",
+                "https://www.googleapis.com/auth/chat.admin.memberships",
+                "https://www.googleapis.com/auth/chat.admin.memberships.readonly",
+                "https://www.googleapis.com/auth/chat.admin.spaces",
+                "https://www.googleapis.com/auth/chat.admin.spaces.readonly",
                 "https://www.googleapis.com/auth/chat.bot",
                 "https://www.googleapis.com/auth/chat.delete",
                 "https://www.googleapis.com/auth/chat.import",
@@ -21014,6 +21072,11 @@ def test_chat_service_transport_auth_adc(transport_class):
         adc.assert_called_once_with(
             scopes=["1", "2"],
             default_scopes=(
+                "https://www.googleapis.com/auth/chat.admin.delete",
+                "https://www.googleapis.com/auth/chat.admin.memberships",
+                "https://www.googleapis.com/auth/chat.admin.memberships.readonly",
+                "https://www.googleapis.com/auth/chat.admin.spaces",
+                "https://www.googleapis.com/auth/chat.admin.spaces.readonly",
                 "https://www.googleapis.com/auth/chat.bot",
                 "https://www.googleapis.com/auth/chat.delete",
                 "https://www.googleapis.com/auth/chat.import",
@@ -21084,6 +21147,11 @@ def test_chat_service_transport_create_channel(transport_class, grpc_helpers):
             credentials_file=None,
             quota_project_id="octopus",
             default_scopes=(
+                "https://www.googleapis.com/auth/chat.admin.delete",
+                "https://www.googleapis.com/auth/chat.admin.memberships",
+                "https://www.googleapis.com/auth/chat.admin.memberships.readonly",
+                "https://www.googleapis.com/auth/chat.admin.spaces",
+                "https://www.googleapis.com/auth/chat.admin.spaces.readonly",
                 "https://www.googleapis.com/auth/chat.bot",
                 "https://www.googleapis.com/auth/chat.delete",
                 "https://www.googleapis.com/auth/chat.import",

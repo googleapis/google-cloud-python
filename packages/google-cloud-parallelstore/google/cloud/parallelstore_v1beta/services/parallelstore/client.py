@@ -274,6 +274,26 @@ class ParallelstoreClient(metaclass=ParallelstoreClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
+    def service_account_path(
+        project: str,
+        service_account: str,
+    ) -> str:
+        """Returns a fully-qualified service_account string."""
+        return "projects/{project}/serviceAccounts/{service_account}".format(
+            project=project,
+            service_account=service_account,
+        )
+
+    @staticmethod
+    def parse_service_account_path(path: str) -> Dict[str, str]:
+        """Parses a service_account path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/serviceAccounts/(?P<service_account>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def common_billing_account_path(
         billing_account: str,
     ) -> str:
