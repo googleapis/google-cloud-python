@@ -2369,6 +2369,7 @@ def test_get_data_exchange(request_type, transport: str = "grpc"):
             documentation="documentation_value",
             listing_count=1410,
             icon=b"icon_blob",
+            discovery_type=analyticshub.DiscoveryType.DISCOVERY_TYPE_PRIVATE,
         )
         response = client.get_data_exchange(request)
 
@@ -2387,6 +2388,7 @@ def test_get_data_exchange(request_type, transport: str = "grpc"):
     assert response.documentation == "documentation_value"
     assert response.listing_count == 1410
     assert response.icon == b"icon_blob"
+    assert response.discovery_type == analyticshub.DiscoveryType.DISCOVERY_TYPE_PRIVATE
 
 
 def test_get_data_exchange_empty_call():
@@ -2500,6 +2502,7 @@ async def test_get_data_exchange_empty_call_async():
                 documentation="documentation_value",
                 listing_count=1410,
                 icon=b"icon_blob",
+                discovery_type=analyticshub.DiscoveryType.DISCOVERY_TYPE_PRIVATE,
             )
         )
         response = await client.get_data_exchange()
@@ -2581,6 +2584,7 @@ async def test_get_data_exchange_async(
                 documentation="documentation_value",
                 listing_count=1410,
                 icon=b"icon_blob",
+                discovery_type=analyticshub.DiscoveryType.DISCOVERY_TYPE_PRIVATE,
             )
         )
         response = await client.get_data_exchange(request)
@@ -2600,6 +2604,7 @@ async def test_get_data_exchange_async(
     assert response.documentation == "documentation_value"
     assert response.listing_count == 1410
     assert response.icon == b"icon_blob"
+    assert response.discovery_type == analyticshub.DiscoveryType.DISCOVERY_TYPE_PRIVATE
 
 
 @pytest.mark.asyncio
@@ -2788,6 +2793,7 @@ def test_create_data_exchange(request_type, transport: str = "grpc"):
             documentation="documentation_value",
             listing_count=1410,
             icon=b"icon_blob",
+            discovery_type=analyticshub.DiscoveryType.DISCOVERY_TYPE_PRIVATE,
         )
         response = client.create_data_exchange(request)
 
@@ -2806,6 +2812,7 @@ def test_create_data_exchange(request_type, transport: str = "grpc"):
     assert response.documentation == "documentation_value"
     assert response.listing_count == 1410
     assert response.icon == b"icon_blob"
+    assert response.discovery_type == analyticshub.DiscoveryType.DISCOVERY_TYPE_PRIVATE
 
 
 def test_create_data_exchange_empty_call():
@@ -2923,6 +2930,7 @@ async def test_create_data_exchange_empty_call_async():
                 documentation="documentation_value",
                 listing_count=1410,
                 icon=b"icon_blob",
+                discovery_type=analyticshub.DiscoveryType.DISCOVERY_TYPE_PRIVATE,
             )
         )
         response = await client.create_data_exchange()
@@ -3004,6 +3012,7 @@ async def test_create_data_exchange_async(
                 documentation="documentation_value",
                 listing_count=1410,
                 icon=b"icon_blob",
+                discovery_type=analyticshub.DiscoveryType.DISCOVERY_TYPE_PRIVATE,
             )
         )
         response = await client.create_data_exchange(request)
@@ -3023,6 +3032,7 @@ async def test_create_data_exchange_async(
     assert response.documentation == "documentation_value"
     assert response.listing_count == 1410
     assert response.icon == b"icon_blob"
+    assert response.discovery_type == analyticshub.DiscoveryType.DISCOVERY_TYPE_PRIVATE
 
 
 @pytest.mark.asyncio
@@ -3221,6 +3231,7 @@ def test_update_data_exchange(request_type, transport: str = "grpc"):
             documentation="documentation_value",
             listing_count=1410,
             icon=b"icon_blob",
+            discovery_type=analyticshub.DiscoveryType.DISCOVERY_TYPE_PRIVATE,
         )
         response = client.update_data_exchange(request)
 
@@ -3239,6 +3250,7 @@ def test_update_data_exchange(request_type, transport: str = "grpc"):
     assert response.documentation == "documentation_value"
     assert response.listing_count == 1410
     assert response.icon == b"icon_blob"
+    assert response.discovery_type == analyticshub.DiscoveryType.DISCOVERY_TYPE_PRIVATE
 
 
 def test_update_data_exchange_empty_call():
@@ -3350,6 +3362,7 @@ async def test_update_data_exchange_empty_call_async():
                 documentation="documentation_value",
                 listing_count=1410,
                 icon=b"icon_blob",
+                discovery_type=analyticshub.DiscoveryType.DISCOVERY_TYPE_PRIVATE,
             )
         )
         response = await client.update_data_exchange()
@@ -3431,6 +3444,7 @@ async def test_update_data_exchange_async(
                 documentation="documentation_value",
                 listing_count=1410,
                 icon=b"icon_blob",
+                discovery_type=analyticshub.DiscoveryType.DISCOVERY_TYPE_PRIVATE,
             )
         )
         response = await client.update_data_exchange(request)
@@ -3450,6 +3464,7 @@ async def test_update_data_exchange_async(
     assert response.documentation == "documentation_value"
     assert response.listing_count == 1410
     assert response.icon == b"icon_blob"
+    assert response.discovery_type == analyticshub.DiscoveryType.DISCOVERY_TYPE_PRIVATE
 
 
 @pytest.mark.asyncio
@@ -4584,6 +4599,7 @@ def test_get_listing(request_type, transport: str = "grpc"):
             icon=b"icon_blob",
             categories=[analyticshub.Listing.Category.CATEGORY_OTHERS],
             request_access="request_access_value",
+            discovery_type=analyticshub.DiscoveryType.DISCOVERY_TYPE_PRIVATE,
         )
         response = client.get_listing(request)
 
@@ -4604,6 +4620,7 @@ def test_get_listing(request_type, transport: str = "grpc"):
     assert response.icon == b"icon_blob"
     assert response.categories == [analyticshub.Listing.Category.CATEGORY_OTHERS]
     assert response.request_access == "request_access_value"
+    assert response.discovery_type == analyticshub.DiscoveryType.DISCOVERY_TYPE_PRIVATE
 
 
 def test_get_listing_empty_call():
@@ -4711,6 +4728,7 @@ async def test_get_listing_empty_call_async():
                 icon=b"icon_blob",
                 categories=[analyticshub.Listing.Category.CATEGORY_OTHERS],
                 request_access="request_access_value",
+                discovery_type=analyticshub.DiscoveryType.DISCOVERY_TYPE_PRIVATE,
             )
         )
         response = await client.get_listing()
@@ -4792,6 +4810,7 @@ async def test_get_listing_async(
                 icon=b"icon_blob",
                 categories=[analyticshub.Listing.Category.CATEGORY_OTHERS],
                 request_access="request_access_value",
+                discovery_type=analyticshub.DiscoveryType.DISCOVERY_TYPE_PRIVATE,
             )
         )
         response = await client.get_listing(request)
@@ -4813,6 +4832,7 @@ async def test_get_listing_async(
     assert response.icon == b"icon_blob"
     assert response.categories == [analyticshub.Listing.Category.CATEGORY_OTHERS]
     assert response.request_access == "request_access_value"
+    assert response.discovery_type == analyticshub.DiscoveryType.DISCOVERY_TYPE_PRIVATE
 
 
 @pytest.mark.asyncio
@@ -4993,6 +5013,7 @@ def test_create_listing(request_type, transport: str = "grpc"):
             icon=b"icon_blob",
             categories=[analyticshub.Listing.Category.CATEGORY_OTHERS],
             request_access="request_access_value",
+            discovery_type=analyticshub.DiscoveryType.DISCOVERY_TYPE_PRIVATE,
         )
         response = client.create_listing(request)
 
@@ -5013,6 +5034,7 @@ def test_create_listing(request_type, transport: str = "grpc"):
     assert response.icon == b"icon_blob"
     assert response.categories == [analyticshub.Listing.Category.CATEGORY_OTHERS]
     assert response.request_access == "request_access_value"
+    assert response.discovery_type == analyticshub.DiscoveryType.DISCOVERY_TYPE_PRIVATE
 
 
 def test_create_listing_empty_call():
@@ -5122,6 +5144,7 @@ async def test_create_listing_empty_call_async():
                 icon=b"icon_blob",
                 categories=[analyticshub.Listing.Category.CATEGORY_OTHERS],
                 request_access="request_access_value",
+                discovery_type=analyticshub.DiscoveryType.DISCOVERY_TYPE_PRIVATE,
             )
         )
         response = await client.create_listing()
@@ -5203,6 +5226,7 @@ async def test_create_listing_async(
                 icon=b"icon_blob",
                 categories=[analyticshub.Listing.Category.CATEGORY_OTHERS],
                 request_access="request_access_value",
+                discovery_type=analyticshub.DiscoveryType.DISCOVERY_TYPE_PRIVATE,
             )
         )
         response = await client.create_listing(request)
@@ -5224,6 +5248,7 @@ async def test_create_listing_async(
     assert response.icon == b"icon_blob"
     assert response.categories == [analyticshub.Listing.Category.CATEGORY_OTHERS]
     assert response.request_access == "request_access_value"
+    assert response.discovery_type == analyticshub.DiscoveryType.DISCOVERY_TYPE_PRIVATE
 
 
 @pytest.mark.asyncio
@@ -5438,6 +5463,7 @@ def test_update_listing(request_type, transport: str = "grpc"):
             icon=b"icon_blob",
             categories=[analyticshub.Listing.Category.CATEGORY_OTHERS],
             request_access="request_access_value",
+            discovery_type=analyticshub.DiscoveryType.DISCOVERY_TYPE_PRIVATE,
         )
         response = client.update_listing(request)
 
@@ -5458,6 +5484,7 @@ def test_update_listing(request_type, transport: str = "grpc"):
     assert response.icon == b"icon_blob"
     assert response.categories == [analyticshub.Listing.Category.CATEGORY_OTHERS]
     assert response.request_access == "request_access_value"
+    assert response.discovery_type == analyticshub.DiscoveryType.DISCOVERY_TYPE_PRIVATE
 
 
 def test_update_listing_empty_call():
@@ -5561,6 +5588,7 @@ async def test_update_listing_empty_call_async():
                 icon=b"icon_blob",
                 categories=[analyticshub.Listing.Category.CATEGORY_OTHERS],
                 request_access="request_access_value",
+                discovery_type=analyticshub.DiscoveryType.DISCOVERY_TYPE_PRIVATE,
             )
         )
         response = await client.update_listing()
@@ -5642,6 +5670,7 @@ async def test_update_listing_async(
                 icon=b"icon_blob",
                 categories=[analyticshub.Listing.Category.CATEGORY_OTHERS],
                 request_access="request_access_value",
+                discovery_type=analyticshub.DiscoveryType.DISCOVERY_TYPE_PRIVATE,
             )
         )
         response = await client.update_listing(request)
@@ -5663,6 +5692,7 @@ async def test_update_listing_async(
     assert response.icon == b"icon_blob"
     assert response.categories == [analyticshub.Listing.Category.CATEGORY_OTHERS]
     assert response.request_access == "request_access_value"
+    assert response.discovery_type == analyticshub.DiscoveryType.DISCOVERY_TYPE_PRIVATE
 
 
 @pytest.mark.asyncio
