@@ -48,6 +48,11 @@ class ChatServiceTransport(abc.ABC):
     """Abstract transport class for ChatService."""
 
     AUTH_SCOPES = (
+        "https://www.googleapis.com/auth/chat.admin.delete",
+        "https://www.googleapis.com/auth/chat.admin.memberships",
+        "https://www.googleapis.com/auth/chat.admin.memberships.readonly",
+        "https://www.googleapis.com/auth/chat.admin.spaces",
+        "https://www.googleapis.com/auth/chat.admin.spaces.readonly",
         "https://www.googleapis.com/auth/chat.bot",
         "https://www.googleapis.com/auth/chat.delete",
         "https://www.googleapis.com/auth/chat.import",

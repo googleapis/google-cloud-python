@@ -604,6 +604,11 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
         Lists spaces visible to the caller or authenticated user. Group
         chats and DMs aren't listed until the first message is sent.
 
+        To list all named spaces by Google Workspace organization, use
+        the
+        ```spaces.search()`` <https://developers.google.com/workspace/chat/api/reference/rest/v1/spaces/search>`__
+        method using Workspace administrator privileges instead.
+
         Returns:
             Callable[[~.ListSpacesRequest],
                     Awaitable[~.ListSpacesResponse]]:

@@ -45,7 +45,7 @@ class Attachment(proto.Message):
     Attributes:
         name (str):
             Resource name of the attachment, in the form
-            ``spaces/*/messages/*/attachments/*``.
+            ``spaces/{space}/messages/{message}/attachments/{attachment}``.
         content_name (str):
             Output only. The original file name for the
             content, not the full path.
@@ -178,7 +178,7 @@ class GetAttachmentRequest(proto.Message):
     Attributes:
         name (str):
             Required. Resource name of the attachment, in the form
-            ``spaces/*/messages/*/attachments/*``.
+            ``spaces/{space}/messages/{message}/attachments/{attachment}``.
     """
 
     name: str = proto.Field(
