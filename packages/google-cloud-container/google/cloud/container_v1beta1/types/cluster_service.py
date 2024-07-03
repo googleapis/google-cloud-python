@@ -9075,8 +9075,8 @@ class GatewayAPIConfig(proto.Message):
             CHANNEL_DISABLED (1):
                 Gateway API support is disabled
             CHANNEL_EXPERIMENTAL (3):
-                Gateway API support is enabled, experimental
-                CRDs are installed
+                Deprecated: use CHANNEL_STANDARD instead. Gateway API
+                support is enabled, experimental CRDs are installed
             CHANNEL_STANDARD (4):
                 Gateway API support is enabled, standard CRDs
                 are installed
