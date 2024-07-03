@@ -78,7 +78,7 @@ class ArrayValue:
         cls,
         original: ArrayValue,
         table: google.cloud.bigquery.Table,
-        ordering: orderings.ExpressionOrdering,
+        ordering: orderings.TotalOrdering,
     ):
         node = nodes.CachedTableNode(
             original_node=original.node,
@@ -147,7 +147,7 @@ class ArrayValue:
     def as_cached(
         self: ArrayValue,
         cache_table: google.cloud.bigquery.Table,
-        ordering: Optional[orderings.ExpressionOrdering],
+        ordering: Optional[orderings.TotalOrdering],
     ) -> ArrayValue:
         """
         Replace the node with an equivalent one that references a tabel where the value has been materialized to.

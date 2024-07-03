@@ -16,8 +16,6 @@
 
 from __future__ import annotations
 
-from typing import Mapping
-
 import ibis
 import ibis.expr.datatypes as ibis_dtypes
 import ibis.expr.types as ibis_types
@@ -84,7 +82,7 @@ def join_by_column_ordered(
     )
 
     # Preserve ordering accross joins.
-    ordering = join_orderings(
+    ordering = orderings.join_orderings(
         left._ordering,
         right._ordering,
         l_mapping,
@@ -173,33 +171,3 @@ def value_to_join_key(value: ibis_types.Value):
     if not value.type().is_string():
         value = value.cast(ibis_dtypes.str)
     return value.fillna(ibis_types.literal("$NULL_SENTINEL$"))
-
-
-def join_orderings(
-    left: orderings.ExpressionOrdering,
-    right: orderings.ExpressionOrdering,
-    left_id_mapping: Mapping[str, str],
-    right_id_mapping: Mapping[str, str],
-    left_order_dominates: bool = True,
-) -> orderings.ExpressionOrdering:
-    left_ordering_refs = [
-        ref.remap_names(left_id_mapping) for ref in left.all_ordering_columns
-    ]
-    right_ordering_refs = [
-        ref.remap_names(right_id_mapping) for ref in right.all_ordering_columns
-    ]
-    if left_order_dominates:
-        joined_refs = [*left_ordering_refs, *right_ordering_refs]
-    else:
-        joined_refs = [*right_ordering_refs, *left_ordering_refs]
-
-    left_total_order_cols = frozenset(
-        [left_id_mapping[id] for id in left.total_ordering_columns]
-    )
-    right_total_order_cols = frozenset(
-        [right_id_mapping[id] for id in right.total_ordering_columns]
-    )
-    return orderings.ExpressionOrdering(
-        ordering_value_columns=tuple(joined_refs),
-        total_ordering_columns=left_total_order_cols | right_total_order_cols,
-    )

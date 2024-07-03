@@ -373,7 +373,7 @@ class CachedTableNode(BigFrameNode):
     table_id: str = field()
     physical_schema: Tuple[bq.SchemaField, ...] = field()
 
-    ordering: typing.Optional[orderings.ExpressionOrdering] = field()
+    ordering: typing.Optional[orderings.TotalOrdering] = field()
 
     def __post_init__(self):
         # enforce invariants

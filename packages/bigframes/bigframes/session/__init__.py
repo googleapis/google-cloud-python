@@ -1910,7 +1910,7 @@ class Session(
         )
         cached_replacement = array_value.as_cached(
             cache_table=self.bqclient.get_table(tmp_table),
-            ordering=order.ExpressionOrdering.from_offset_col(offset_column),
+            ordering=order.TotalOrdering.from_offset_col(offset_column),
         ).node
         self._cached_executions[array_value.node] = cached_replacement
 

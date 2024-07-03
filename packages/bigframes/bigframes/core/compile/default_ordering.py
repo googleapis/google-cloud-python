@@ -82,7 +82,7 @@ def gen_default_ordering(table: ibis.table, use_double_hash: bool = True):
         itertools.chain(original_column_ids, order_values)
     )
 
-    ordering = order.ExpressionOrdering(
+    ordering = order.TotalOrdering(
         ordering_value_columns=tuple(
             order.ascending_over(col.get_name()) for col in order_values
         ),

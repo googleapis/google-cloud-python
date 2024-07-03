@@ -36,9 +36,9 @@ import bigframes.core.guid
 from bigframes.core.ordering import (
     ascending_over,
     encode_order_string,
-    ExpressionOrdering,
     IntegerEncoding,
     OrderingExpression,
+    TotalOrdering,
 )
 import bigframes.core.schema as schemata
 import bigframes.core.sql
@@ -194,7 +194,7 @@ class BaseIbisIR(abc.ABC):
         if by_column_ids:
             result = table.group_by(by_column_ids).aggregate(**stats)
             # Must have deterministic ordering, so order by the unique "by" column
-            ordering = ExpressionOrdering(
+            ordering = TotalOrdering(
                 tuple([ascending_over(column_id) for column_id in by_column_ids]),
                 total_ordering_columns=frozenset(by_column_ids),
             )
@@ -210,7 +210,7 @@ class BaseIbisIR(abc.ABC):
             # Ordering is irrelevant for single-row output, but set ordering id regardless
             # as other ops(join etc.) expect it.
             # TODO: Maybe can make completely empty
-            ordering = ExpressionOrdering(
+            ordering = TotalOrdering(
                 ordering_value_columns=tuple([]),
                 total_ordering_columns=frozenset([]),
             )
@@ -279,7 +279,7 @@ class UnorderedIR(BaseIbisIR):
         return OrderedIR(
             ibis_table,
             (ibis_table["count"],),
-            ordering=ExpressionOrdering(
+            ordering=TotalOrdering(
                 ordering_value_columns=(ascending_over("count"),),
                 total_ordering_columns=frozenset(["count"]),
             ),
@@ -519,7 +519,7 @@ class OrderedIR(BaseIbisIR):
         table: ibis_types.Table,
         columns: Sequence[ibis_types.Value],
         hidden_ordering_columns: Optional[Sequence[ibis_types.Value]] = None,
-        ordering: ExpressionOrdering = ExpressionOrdering(),
+        ordering: TotalOrdering = TotalOrdering(),
         predicates: Optional[Collection[ibis_types.BooleanValue]] = None,
     ):
         super().__init__(table, columns, predicates)
@@ -598,10 +598,7 @@ class OrderedIR(BaseIbisIR):
         return cls(
             keys_memtable,
             columns=[keys_memtable[column].name(column) for column in pd_df.columns],
-            ordering=ExpressionOrdering(
-                ordering_value_columns=tuple([ascending_over(ORDER_ID_COLUMN)]),
-                total_ordering_columns=frozenset([ORDER_ID_COLUMN]),
-            ),
+            ordering=TotalOrdering.from_offset_col(ORDER_ID_COLUMN),
             hidden_ordering_columns=(keys_memtable[ORDER_ID_COLUMN],),
         )
 
@@ -760,7 +757,7 @@ class OrderedIR(BaseIbisIR):
             ],
             table_w_unnest[unnest_offset_id],
         ]
-        ordering = ExpressionOrdering(
+        ordering = TotalOrdering(
             ordering_value_columns=tuple(
                 [
                     *self._ordering.ordering_value_columns,
@@ -1153,7 +1150,7 @@ class OrderedIR(BaseIbisIR):
                         self._ibis_bindings[expr.scalar_expression.id]
                     )
 
-        new_ordering = ExpressionOrdering(
+        new_ordering = TotalOrdering(
             tuple(new_exprs),
             self._ordering.integer_encoding,
             self._ordering.string_encoding,
@@ -1176,7 +1173,7 @@ class OrderedIR(BaseIbisIR):
             ordering_mode="offset_col", order_col_name=ORDER_ID_COLUMN
         )
         columns = [table[column_name] for column_name in self._column_names]
-        ordering = ExpressionOrdering(
+        ordering = TotalOrdering(
             ordering_value_columns=tuple([ascending_over(ORDER_ID_COLUMN)]),
             total_ordering_columns=frozenset([ORDER_ID_COLUMN]),
             integer_encoding=IntegerEncoding(True, is_sequential=True),
@@ -1300,7 +1297,7 @@ class OrderedIR(BaseIbisIR):
         def __init__(
             self,
             table: ibis_types.Table,
-            ordering: ExpressionOrdering,
+            ordering: TotalOrdering,
             columns: Collection[ibis_types.Value] = (),
             hidden_ordering_columns: Collection[ibis_types.Value] = (),
             predicates: Optional[Collection[ibis_types.BooleanValue]] = None,
