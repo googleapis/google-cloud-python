@@ -1794,7 +1794,7 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
                 The request object. Request to get an attachment.
             name (str):
                 Required. Resource name of the attachment, in the form
-                ``spaces/*/messages/*/attachments/*``.
+                ``spaces/{space}/messages/{message}/attachments/{attachment}``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1963,6 +1963,11 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
         Lists spaces visible to the caller or authenticated user. Group
         chats and DMs aren't listed until the first message is sent.
 
+        To list all named spaces by Google Workspace organization, use
+        the
+        ```spaces.search()`` <https://developers.google.com/workspace/chat/api/reference/rest/v1/spaces/search>`__
+        method using Workspace administrator privileges instead.
+
         .. code-block:: python
 
             # This snippet has been automatically generated and should be regarded as a
@@ -2092,7 +2097,7 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
                 The request object. A request to return a single space.
             name (str):
                 Required. Resource name of the space, in the form
-                `spaces/*`.
+                ``spaces/{space}``.
 
                 Format: ``spaces/{space}``
 
@@ -2492,6 +2497,7 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
                    name is optional if the existing space already has
                    the ``SPACE`` type. Trying to update the space type
                    in other ways results in an invalid argument error).
+                   ``space_type`` is not supported with admin access.
 
                 -  ``space_details``
 
@@ -2502,15 +2508,33 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
                    history
                    setting <https://support.google.com/a/answer/7664184>`__.
                    Warning: mutually exclusive with all other field
-                   paths.)
+                   paths.) ``space_history_state`` is not supported with
+                   admin access.
 
-                -  Developer Preview: ``access_settings.audience``
-                   (Supports changing the `access
+                -  ``access_settings.audience`` (Supports changing the
+                   `access
                    setting <https://support.google.com/chat/answer/11971020>`__
-                   of a space. If no audience is specified in the access
-                   setting, the space's access setting is updated to
-                   restricted. Warning: mutually exclusive with all
-                   other field paths.)
+                   of who can discover the space, join the space, and
+                   preview the messages in space. If no audience is
+                   specified in the access setting, the space's access
+                   setting is updated to private. Warning: mutually
+                   exclusive with all other field paths.)
+                   ``access_settings.audience`` is not supported with
+                   admin access.
+
+                -  Developer Preview: Supports changing the `permission
+                   settings <https://support.google.com/chat/answer/13340792>`__
+                   of a space, supported field paths include:
+                   ``permission_settings.manage_members_and_groups``,
+                   ``permission_settings.modify_space_details``,
+                   ``permission_settings.toggle_history``,
+                   ``permission_settings.use_at_mention_all``,
+                   ``permission_settings.manage_apps``,
+                   ``permission_settings.manage_webhooks``,
+                   ``permission_settings.reply_messages`` (Warning:
+                   mutually exclusive with all other non-permission
+                   settings field paths). ``permission_settings`` is not
+                   supported with admin access.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
