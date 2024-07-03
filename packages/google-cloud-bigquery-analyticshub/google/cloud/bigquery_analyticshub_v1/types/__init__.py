@@ -23,6 +23,7 @@ from .analyticshub import (
     DeleteSubscriptionRequest,
     DestinationDataset,
     DestinationDatasetReference,
+    DiscoveryType,
     GetDataExchangeRequest,
     GetListingRequest,
     GetSubscriptionRequest,
@@ -91,4 +92,5 @@ __all__ = (
     "Subscription",
     "UpdateDataExchangeRequest",
     "UpdateListingRequest",
+    "DiscoveryType",
 )
