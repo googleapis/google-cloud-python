@@ -289,10 +289,15 @@ class ListMembershipsRequest(proto.Message):
             ``ROLE_MANAGER``.
 
             To filter by type, set ``member.type`` to ``HUMAN`` or
-            ``BOT``.
+            ``BOT``. Developer Preview: You can also filter for
+            ``member.type`` using the ``!=`` operator.
 
             To filter by both role and type, use the ``AND`` operator.
             To filter by either role or type, use the ``OR`` operator.
+
+            Either ``member.type = "HUMAN"`` or ``member.type != "BOT"``
+            is required when ``use_admin_access`` is set to true. Other
+            member type filters will be rejected.
 
             For example, the following queries are valid:
 
@@ -300,6 +305,8 @@ class ListMembershipsRequest(proto.Message):
 
                role = "ROLE_MANAGER" OR role = "ROLE_MEMBER"
                member.type = "HUMAN" AND role = "ROLE_MANAGER"
+
+               member.type != "BOT"
 
             The following queries are invalid:
 
