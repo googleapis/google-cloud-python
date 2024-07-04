@@ -15,7 +15,7 @@ Python Client for Rapid Migration Assessment API
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-rapidmigrationassessment.svg
    :target: https://pypi.org/project/google-cloud-rapidmigrationassessment/
 .. _Rapid Migration Assessment API: https://cloud.google.com/migration-center/docs
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/rapidmigrationassessment/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/rapidmigrationassessment/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/migration-center/docs
 
 Quick Start

@@ -15,7 +15,7 @@ Python Client for Phishing Protection
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-phishing-protection.svg
    :target: https://pypi.org/project/google-cloud-phishing-protection/
 .. _Phishing Protection: https://cloud.google.com/phishing-protection/docs/
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/phishingprotection/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/phishingprotection/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/phishing-protection/docs/
 
 Quick Start

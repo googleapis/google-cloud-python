@@ -15,7 +15,7 @@ Python Client for Policy Simulator API
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-policysimulator.svg
    :target: https://pypi.org/project/google-cloud-policysimulator/
 .. _Policy Simulator API: https://cloud.google.com/policy-intelligence/docs/iam-simulator-overview
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/policysimulator/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/policysimulator/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/policy-intelligence/docs/iam-simulator-overview
 
 Quick Start

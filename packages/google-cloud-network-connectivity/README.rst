@@ -15,7 +15,7 @@ Python Client for Network Connectivity Center
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-network-connectivity.svg
    :target: https://pypi.org/project/google-cloud-network-connectivity/
 .. _Network Connectivity Center: https://cloud.google.com/network-connectivity/
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/networkconnectivity/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/networkconnectivity/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/network-connectivity/
 
 Quick Start
