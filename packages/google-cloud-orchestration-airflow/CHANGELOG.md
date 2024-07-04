@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.12.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-orchestration-airflow-v1.12.1...google-cloud-orchestration-airflow-v1.12.2) (2024-07-04)
+
+
+### Bug Fixes
+
+* Allow Protobuf 5.x ([#12868](https://github.com/googleapis/google-cloud-python/issues/12868)) ([0e39c1a](https://github.com/googleapis/google-cloud-python/commit/0e39c1a0ab46757bcf80a178d9bd422f6dcb24c6))
+
 ## [1.12.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-orchestration-airflow-v1.12.0...google-cloud-orchestration-airflow-v1.12.1) (2024-03-05)
 
 

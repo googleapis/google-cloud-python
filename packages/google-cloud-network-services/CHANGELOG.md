@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.13](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-services-v0.5.12...google-cloud-network-services-v0.5.13) (2024-07-04)
+
+
+### Bug Fixes
+
+* Allow Protobuf 5.x ([#12868](https://github.com/googleapis/google-cloud-python/issues/12868)) ([0e39c1a](https://github.com/googleapis/google-cloud-python/commit/0e39c1a0ab46757bcf80a178d9bd422f6dcb24c6))
+
 ## [0.5.12](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-services-v0.5.11...google-cloud-network-services-v0.5.12) (2024-06-12)
 
 

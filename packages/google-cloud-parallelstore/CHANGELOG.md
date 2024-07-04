@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.2.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-parallelstore-v0.2.0...google-cloud-parallelstore-v0.2.1) (2024-07-04)
+
+
+### Features
+
+* add [iam.googleapis.com/ServiceAccount](https://www.google.com/url?sa=D&q=http%3A%2F%2Fiam.googleapis.com%2FServiceAccount) resource definition ([e357c4d](https://github.com/googleapis/google-cloud-python/commit/e357c4dc2319f30c8c705440a7e80e16fc128b60))
+* Adding Import/Export BYOSA to the import Data request ([e357c4d](https://github.com/googleapis/google-cloud-python/commit/e357c4dc2319f30c8c705440a7e80e16fc128b60))
+
+
+### Bug Fixes
+
+* Allow Protobuf 5.x ([#12868](https://github.com/googleapis/google-cloud-python/issues/12868)) ([0e39c1a](https://github.com/googleapis/google-cloud-python/commit/0e39c1a0ab46757bcf80a178d9bd422f6dcb24c6))
+
 ## [0.2.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-parallelstore-v0.1.2...google-cloud-parallelstore-v0.2.0) (2024-05-16)
 
 
