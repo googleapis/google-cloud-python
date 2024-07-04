@@ -15,7 +15,7 @@ Python Client for Video Intelligence
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-videointelligence.svg
    :target: https://pypi.org/project/google-cloud-videointelligence/
 .. _Video Intelligence: https://cloud.google.com/video-intelligence/docs/
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/videointelligence/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/videointelligence/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/video-intelligence/docs/
 
 Quick Start

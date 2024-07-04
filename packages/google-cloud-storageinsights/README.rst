@@ -15,7 +15,7 @@ Python Client for Storage Insights API
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-storageinsights.svg
    :target: https://pypi.org/project/google-cloud-storageinsights/
 .. _Storage Insights API: https://cloud.google.com/storage/docs/insights/storage-insights
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/storageinsights/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/storageinsights/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/storage/docs/insights/storage-insights
 
 Quick Start

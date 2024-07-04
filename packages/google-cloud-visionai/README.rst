@@ -15,7 +15,7 @@ Python Client for Vision AI API
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-visionai.svg
    :target: https://pypi.org/project/google-cloud-visionai/
 .. _Vision AI API: https://cloud.google.com/vision-ai/docs
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/google-cloud-visionai/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/google-cloud-visionai/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/vision-ai/docs
 
 Quick Start
