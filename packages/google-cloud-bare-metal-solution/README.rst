@@ -15,7 +15,7 @@ Python Client for Bare Metal Solution
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-bare-metal-solution.svg
    :target: https://pypi.org/project/google-cloud-bare-metal-solution/
 .. _Bare Metal Solution: https://cloud.google.com/bare-metal/docs
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/baremetalsolution/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/baremetalsolution/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/bare-metal/docs
 
 Quick Start

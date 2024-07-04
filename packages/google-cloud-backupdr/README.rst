@@ -15,7 +15,7 @@ Python Client for Backup and DR Service API
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-backupdr.svg
    :target: https://pypi.org/project/google-cloud-backupdr/
 .. _Backup and DR Service API: https://cloud.google.com/backup-disaster-recovery/docs/concepts/backup-dr
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/backupdr/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/backupdr/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/backup-disaster-recovery/docs/concepts/backup-dr
 
 Quick Start

@@ -15,7 +15,7 @@ Python Client for BeyondCorp ClientConnectorServices
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-beyondcorp-clientconnectorservices.svg
    :target: https://pypi.org/project/google-cloud-beyondcorp-clientconnectorservices/
 .. _BeyondCorp ClientConnectorServices: https://cloud.google.com/beyondcorp/
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/beyondcorpclientconnectorservices/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/beyondcorpclientconnectorservices/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/beyondcorp/
 
 Quick Start
