@@ -15,7 +15,7 @@ Python Client for App Engine Admin
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-appengine-admin.svg
    :target: https://pypi.org/project/google-cloud-appengine-admin/
 .. _App Engine Admin: https://cloud.google.com/appengine/docs/admin-api/
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/appengine/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/appengine/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/appengine/docs/admin-api/
 
 Quick Start

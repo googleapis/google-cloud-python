@@ -15,7 +15,7 @@ Python Client for Apigee Registry API
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-apigee-registry.svg
    :target: https://pypi.org/project/google-cloud-apigee-registry/
 .. _Apigee Registry API: https://cloud.google.com/apigee/docs/api-hub/get-started-registry-api
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/apigeeregistry/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/apigeeregistry/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/apigee/docs/api-hub/get-started-registry-api
 
 Quick Start
