@@ -1234,12 +1234,7 @@ async def test_list_intents_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[
             client._client._transport.list_intents
         ] = mock_object
@@ -1805,12 +1800,7 @@ async def test_get_intent_async_use_cached_wrapped_rpc(transport: str = "grpc_as
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[
             client._client._transport.get_intent
         ] = mock_object
@@ -2192,12 +2182,7 @@ async def test_create_intent_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[
             client._client._transport.create_intent
         ] = mock_object
@@ -2587,12 +2572,7 @@ async def test_update_intent_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[
             client._client._transport.update_intent
         ] = mock_object
@@ -2963,12 +2943,7 @@ async def test_delete_intent_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[
             client._client._transport.delete_intent
         ] = mock_object
@@ -3324,12 +3299,7 @@ async def test_import_intents_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[
             client._client._transport.import_intents
         ] = mock_object
@@ -3613,12 +3583,7 @@ async def test_export_intents_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[
             client._client._transport.export_intents
         ] = mock_object

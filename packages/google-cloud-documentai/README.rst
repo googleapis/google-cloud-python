@@ -15,7 +15,7 @@ Python Client for Document AI
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-documentai.svg
    :target: https://pypi.org/project/google-cloud-documentai/
 .. _Document AI: https://cloud.google.com/document-ai/docs
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/documentai/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/documentai/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/document-ai/docs
 
 Quick Start

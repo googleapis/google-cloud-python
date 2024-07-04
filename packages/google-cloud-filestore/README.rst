@@ -15,7 +15,7 @@ Python Client for Filestore
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-filestore.svg
    :target: https://pypi.org/project/google-cloud-filestore/
 .. _Filestore: https://cloud.google.com/filestore/
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/file/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/file/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/filestore/
 
 Quick Start
