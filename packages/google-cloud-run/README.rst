@@ -15,7 +15,7 @@ Python Client for Cloud Run
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-run.svg
    :target: https://pypi.org/project/google-cloud-run/
 .. _Cloud Run: https://cloud.google.com/run/docs
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/run/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/run/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/run/docs
 
 Quick Start

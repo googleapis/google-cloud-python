@@ -32,3 +32,8 @@ For a list of all ``google-cloud-service-directory`` releases:
     :maxdepth: 2
 
     CHANGELOG
+
+.. toctree::
+  :hidden:
+
+  summary_overview.md

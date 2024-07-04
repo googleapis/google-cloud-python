@@ -15,7 +15,7 @@ Python Client for Security Center Management API
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-securitycentermanagement.svg
    :target: https://pypi.org/project/google-cloud-securitycentermanagement/
 .. _Security Center Management API: https://cloud.google.com/securitycentermanagement/docs/overview
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/google-cloud-securitycentermanagement/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/google-cloud-securitycentermanagement/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/securitycentermanagement/docs/overview
 
 Quick Start

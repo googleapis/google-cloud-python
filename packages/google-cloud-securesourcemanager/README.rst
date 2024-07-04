@@ -15,7 +15,7 @@ Python Client for Secure Source Manager API
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-securesourcemanager.svg
    :target: https://pypi.org/project/google-cloud-securesourcemanager/
 .. _Secure Source Manager API: https://cloud.google.com/secure-source-manager/docs/overview
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/securesourcemanager/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/securesourcemanager/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/secure-source-manager/docs/overview
 
 Quick Start

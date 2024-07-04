@@ -15,7 +15,7 @@ Python Client for Service Health API
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-servicehealth.svg
    :target: https://pypi.org/project/google-cloud-servicehealth/
 .. _Service Health API: https://cloud.google.com/service-health/docs/overview
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/google-cloud-servicehealth/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/google-cloud-servicehealth/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/service-health/docs/overview
 
 Quick Start
