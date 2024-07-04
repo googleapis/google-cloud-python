@@ -15,7 +15,7 @@ Python Client for Policy Troubleshooter API
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-policytroubleshooter-iam.svg
    :target: https://pypi.org/project/google-cloud-policytroubleshooter-iam/
 .. _Policy Troubleshooter API: https://cloud.google.com/policy-intelligence/docs/troubleshoot-access
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/policytroubleshooter-iam/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/policytroubleshooter-iam/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/policy-intelligence/docs/troubleshoot-access
 
 Quick Start

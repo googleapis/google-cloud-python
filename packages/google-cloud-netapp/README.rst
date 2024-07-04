@@ -15,7 +15,7 @@ Python Client for NetApp API
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-netapp.svg
    :target: https://pypi.org/project/google-cloud-netapp/
 .. _NetApp API: https://cloud.google.com/netapp/volumes/docs/discover/overview
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/netapp/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/netapp/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/netapp/volumes/docs/discover/overview
 
 Quick Start

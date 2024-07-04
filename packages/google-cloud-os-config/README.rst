@@ -15,7 +15,7 @@ Python Client for OS Config
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-os-config.svg
    :target: https://pypi.org/project/google-cloud-os-config/
 .. _OS Config: https://cloud.google.com/compute/docs/manage-os
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/osconfig/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/osconfig/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/compute/docs/manage-os
 
 Quick Start
