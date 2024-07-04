@@ -15,7 +15,7 @@ Python Client for Telco Automation API
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-telcoautomation.svg
    :target: https://pypi.org/project/google-cloud-telcoautomation/
 .. _Telco Automation API: https://cloud.google.com/telecom-network-automation
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/google-cloud-telcoautomation/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/google-cloud-telcoautomation/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/telecom-network-automation
 
 Quick Start

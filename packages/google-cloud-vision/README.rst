@@ -15,7 +15,7 @@ Python Client for Cloud Vision
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-vision.svg
    :target: https://pypi.org/project/google-cloud-vision/
 .. _Cloud Vision: https://cloud.google.com/vision/docs/
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/vision/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/vision/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/vision/docs/
 
 Quick Start
