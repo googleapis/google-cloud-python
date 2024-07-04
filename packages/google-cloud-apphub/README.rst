@@ -15,7 +15,7 @@ Python Client for App Hub API
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-apphub.svg
    :target: https://pypi.org/project/google-cloud-apphub/
 .. _App Hub API: https://cloud.google.com/app-hub/docs/overview
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/google-cloud-apphub/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/google-cloud-apphub/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/app-hub/docs/overview
 
 Quick Start

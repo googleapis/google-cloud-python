@@ -15,7 +15,7 @@ Python Client for API Keys
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-api-keys.svg
    :target: https://pypi.org/project/google-cloud-api-keys/
 .. _API Keys: https://cloud.google.com/api-keys/docs
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/apikeys/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/apikeys/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/api-keys/docs
 
 Quick Start

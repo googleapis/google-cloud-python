@@ -56,3 +56,8 @@ For a list of all ``google-cloud-asset`` releases:
     :maxdepth: 2
 
     CHANGELOG
+
+.. toctree::
+  :hidden:
+
+  summary_overview.md

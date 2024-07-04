@@ -15,7 +15,7 @@ Python Client for Advisory Notifications
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-advisorynotifications.svg
    :target: https://pypi.org/project/google-cloud-advisorynotifications/
 .. _Advisory Notifications: https://cloud.google.com/advisory-notifications/
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/advisorynotifications/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/advisorynotifications/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/advisory-notifications/
 
 Quick Start
