@@ -1340,12 +1340,7 @@ async def test_check_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[
             client._client._transport.check
         ] = mock_object
@@ -1634,12 +1629,7 @@ async def test_report_async_use_cached_wrapped_rpc(transport: str = "grpc_asynci
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[
             client._client._transport.report
         ] = mock_object
