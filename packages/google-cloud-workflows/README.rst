@@ -15,7 +15,7 @@ Python Client for Cloud Workflows
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-workflows.svg
    :target: https://pypi.org/project/google-cloud-workflows/
 .. _Cloud Workflows: https://cloud.google.com/workflows/
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/workflows/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/workflows/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/workflows/
 
 Quick Start
