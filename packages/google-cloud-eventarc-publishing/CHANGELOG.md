@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.10](https://github.com/googleapis/google-cloud-python/compare/google-cloud-eventarc-publishing-v0.6.9...google-cloud-eventarc-publishing-v0.6.10) (2024-07-04)
+
+
+### Bug Fixes
+
+* Allow Protobuf 5.x ([#12866](https://github.com/googleapis/google-cloud-python/issues/12866)) ([40e1810](https://github.com/googleapis/google-cloud-python/commit/40e18101eaaeefe4baa090c3b4f7a96209ea5735))
+
 ## [0.6.9](https://github.com/googleapis/google-cloud-python/compare/google-cloud-eventarc-publishing-v0.6.8...google-cloud-eventarc-publishing-v0.6.9) (2024-03-05)
 
 
