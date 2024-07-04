@@ -15,7 +15,7 @@ Python Client for Video Stitcher
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-video-stitcher.svg
    :target: https://pypi.org/project/google-cloud-video-stitcher/
 .. _Video Stitcher: https://cloud.google.com/video-stitcher
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/videostitcher/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/videostitcher/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/video-stitcher
 
 Quick Start

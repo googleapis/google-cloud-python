@@ -15,7 +15,7 @@ Python Client for Transcoder
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-video-transcoder.svg
    :target: https://pypi.org/project/google-cloud-video-transcoder/
 .. _Transcoder: https://cloud.google.com/transcoder
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/transcoder/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/transcoder/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/transcoder
 
 Quick Start

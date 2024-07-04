@@ -15,7 +15,7 @@ Python Client for Cloud Tasks
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-tasks.svg
    :target: https://pypi.org/project/google-cloud-tasks/
 .. _Cloud Tasks: https://cloud.google.com/tasks/docs/
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/cloudtasks/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/cloudtasks/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/tasks/docs/
 
 Quick Start

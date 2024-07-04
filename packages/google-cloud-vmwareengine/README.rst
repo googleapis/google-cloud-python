@@ -15,7 +15,7 @@ Python Client for Google Cloud VMware Engine
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-vmwareengine.svg
    :target: https://pypi.org/project/google-cloud-vmwareengine/
 .. _Google Cloud VMware Engine: https://cloud.google.com/vmware-engine/
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/vmwareengine/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/vmwareengine/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/vmware-engine/
 
 Quick Start
