@@ -15,7 +15,7 @@ Python Client for App Engine Logging Protos
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-appengine-logging.svg
    :target: https://pypi.org/project/google-cloud-appengine-logging/
 .. _App Engine Logging Protos: https://cloud.google.com/logging/docs/reference/v2/rpc/google.appengine.logging.v1
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/appenginelogging/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/appenginelogging/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/logging/docs/reference/v2/rpc/google.appengine.logging.v1
 
 Quick Start

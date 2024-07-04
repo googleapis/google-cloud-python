@@ -15,7 +15,7 @@ Python Client for Service Management
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-service-management.svg
    :target: https://pypi.org/project/google-cloud-service-management/
 .. _Service Management: https://cloud.google.com/service-infrastructure/docs/overview/
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/servicemanagement/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/servicemanagement/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/service-infrastructure/docs/overview/
 
 Quick Start
