@@ -15,7 +15,7 @@ Python Client for Cloud Redis
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-redis.svg
    :target: https://pypi.org/project/google-cloud-redis/
 .. _Cloud Redis: https://cloud.google.com/memorystore/docs/redis/
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/redis/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/redis/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/memorystore/docs/redis/
 
 Quick Start

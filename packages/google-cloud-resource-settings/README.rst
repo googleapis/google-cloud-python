@@ -15,7 +15,7 @@ Python Client for Resource Settings
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-resource-settings.svg
    :target: https://pypi.org/project/google-cloud-resource-settings/
 .. _Resource Settings: https://cloud.google.com/resource-manager/docs/reference/resource-settings/rest
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/resourcesettings/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/resourcesettings/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/resource-manager/docs/reference/resource-settings/rest
 
 Quick Start
