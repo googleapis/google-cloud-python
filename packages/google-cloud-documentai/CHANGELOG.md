@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.29.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-v2.29.1...google-cloud-documentai-v2.29.2) (2024-07-04)
+
+
+### Bug Fixes
+
+* Allow Protobuf 5.x ([#12866](https://github.com/googleapis/google-cloud-python/issues/12866)) ([40e1810](https://github.com/googleapis/google-cloud-python/commit/40e18101eaaeefe4baa090c3b4f7a96209ea5735))
+
 ## [2.29.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-v2.29.0...google-cloud-documentai-v2.29.1) (2024-06-24)
 
 

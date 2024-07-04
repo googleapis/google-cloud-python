@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-dlp/#history
 
+## [3.18.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dlp-v3.18.0...google-cloud-dlp-v3.18.1) (2024-07-04)
+
+
+### Bug Fixes
+
+* Allow Protobuf 5.x ([#12866](https://github.com/googleapis/google-cloud-python/issues/12866)) ([40e1810](https://github.com/googleapis/google-cloud-python/commit/40e18101eaaeefe4baa090c3b4f7a96209ea5735))
+
 ## [3.18.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dlp-v3.17.0...google-cloud-dlp-v3.18.0) (2024-05-27)
 
 

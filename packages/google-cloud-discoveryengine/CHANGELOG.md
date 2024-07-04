@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.11.14](https://github.com/googleapis/google-cloud-python/compare/google-cloud-discoveryengine-v0.11.13...google-cloud-discoveryengine-v0.11.14) (2024-07-04)
+
+
+### Features
+
+* [google-cloud-discoveryengine] add Chunk resource in the search response ([8cf8498](https://github.com/googleapis/google-cloud-python/commit/8cf84981691b820bdd7ce67edd294235492c871c))
+* add NO_RELEVANT_CONTENT to Answer API ([8cf8498](https://github.com/googleapis/google-cloud-python/commit/8cf84981691b820bdd7ce67edd294235492c871c))
+* support AlloyDB Connector ([8cf8498](https://github.com/googleapis/google-cloud-python/commit/8cf84981691b820bdd7ce67edd294235492c871c))
+
+
+### Bug Fixes
+
+* Allow Protobuf 5.x ([8cf8498](https://github.com/googleapis/google-cloud-python/commit/8cf84981691b820bdd7ce67edd294235492c871c))
+
+
+### Documentation
+
+* keep the API doc up-to-date with recent changes ([8cf8498](https://github.com/googleapis/google-cloud-python/commit/8cf84981691b820bdd7ce67edd294235492c871c))
+
 ## [0.11.13](https://github.com/googleapis/google-cloud-python/compare/google-cloud-discoveryengine-v0.11.12...google-cloud-discoveryengine-v0.11.13) (2024-05-29)
 
 
