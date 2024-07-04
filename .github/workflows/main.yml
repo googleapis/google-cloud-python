@@ -29,7 +29,7 @@ jobs:
     permissions:
       pull-requests: write # for googleapis/code-suggester
     name: Update API List PR
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     # don't run the workflow on forks of googleapis/google-cloud-python
     if: ${{github.repository == 'googleapis/google-cloud-python'}}
     steps:
