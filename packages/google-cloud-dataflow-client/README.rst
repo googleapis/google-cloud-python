@@ -15,7 +15,7 @@ Python Client for Dataflow
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-dataflow-client.svg
    :target: https://pypi.org/project/google-cloud-dataflow-client/
 .. _Dataflow: https://cloud.google.com/dataflow/
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/dataflow/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/dataflow/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/dataflow/
 
 Quick Start

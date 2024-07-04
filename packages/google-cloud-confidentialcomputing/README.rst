@@ -15,7 +15,7 @@ Python Client for Confidential Computing API
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-confidentialcomputing.svg
    :target: https://pypi.org/project/google-cloud-confidentialcomputing/
 .. _Confidential Computing API: https://cloud.google.com/confidential-computing
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/confidentialcomputing/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/confidentialcomputing/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/confidential-computing
 
 Quick Start

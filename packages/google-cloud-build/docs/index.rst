@@ -32,3 +32,8 @@ For a list of all ``google-cloud-build`` releases:
     :maxdepth: 2
 
     CHANGELOG
+
+.. toctree::
+  :hidden:
+
+  summary_overview.md

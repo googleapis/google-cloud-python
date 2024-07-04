@@ -15,7 +15,7 @@ Python Client for Cloud Dataform
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-dataform.svg
    :target: https://pypi.org/project/google-cloud-dataform/
 .. _Cloud Dataform: https://cloud.google.com
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/dataform/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/dataform/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com
 
 Quick Start

@@ -15,7 +15,7 @@ Python Client for Container Analysis
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-containeranalysis.svg
    :target: https://pypi.org/project/google-cloud-containeranalysis/
 .. _Container Analysis: https://cloud.google.com/container-registry/docs/container-analysis
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/containeranalysis/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/containeranalysis/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/container-registry/docs/container-analysis
 
 Quick Start

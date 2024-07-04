@@ -15,7 +15,7 @@ Python Client for Google Cloud Data Catalog
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-datacatalog.svg
    :target: https://pypi.org/project/google-cloud-datacatalog/
 .. _Google Cloud Data Catalog: https://cloud.google.com/data-catalog
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/datacatalog/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/datacatalog/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/data-catalog
 
 Quick Start
