@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.4.10](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-analyticshub-v0.4.9...google-cloud-bigquery-analyticshub-v0.4.10) (2024-07-04)
+
+
+### Features
+
+* support Direct Table Access Toggle (Egress GA) ([94554f5](https://github.com/googleapis/google-cloud-python/commit/94554f56587f0f389f9253aceb32163de26e6488))
+* support public directory self service for Listings/Exchanges ([94554f5](https://github.com/googleapis/google-cloud-python/commit/94554f56587f0f389f9253aceb32163de26e6488))
+
+
+### Bug Fixes
+
+* Allow Protobuf 5.x ([#12864](https://github.com/googleapis/google-cloud-python/issues/12864)) ([728b307](https://github.com/googleapis/google-cloud-python/commit/728b307ed0cc497685507a219e913f002f097132))
+
+
+### Documentation
+
+* A comment for message `DataExchange` is changed ([94554f5](https://github.com/googleapis/google-cloud-python/commit/94554f56587f0f389f9253aceb32163de26e6488))
+* A comment for message `Listing` is changed ([94554f5](https://github.com/googleapis/google-cloud-python/commit/94554f56587f0f389f9253aceb32163de26e6488))
+
 ## [0.4.9](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-analyticshub-v0.4.8...google-cloud-bigquery-analyticshub-v0.4.9) (2024-03-22)
 
 

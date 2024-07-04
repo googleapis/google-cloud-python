@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.1.8](https://github.com/googleapis/google-cloud-python/compare/google-apps-chat-v0.1.7...google-apps-chat-v0.1.8) (2024-07-04)
+
+
+### Features
+
+* Add doc for Discoverable Space support for GA launch ([09391b2](https://github.com/googleapis/google-cloud-python/commit/09391b22528550c29f33901d6b327fae8a4c058c))
+
+
+### Documentation
+
+* Update resource naming formats ([09391b2](https://github.com/googleapis/google-cloud-python/commit/09391b22528550c29f33901d6b327fae8a4c058c))
+
 ## [0.1.7](https://github.com/googleapis/google-cloud-python/compare/google-apps-chat-v0.1.6...google-apps-chat-v0.1.7) (2024-06-27)
 
 
