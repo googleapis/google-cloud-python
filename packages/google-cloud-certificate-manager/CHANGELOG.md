@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-certificate-manager-v1.7.0...google-cloud-certificate-manager-v1.7.1) (2024-07-04)
+
+
+### Bug Fixes
+
+* Allow Protobuf 5.x ([#12865](https://github.com/googleapis/google-cloud-python/issues/12865)) ([7f9dedb](https://github.com/googleapis/google-cloud-python/commit/7f9dedb3abc7636cbcd97e21ac857844b885b599))
+
 ## [1.7.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-certificate-manager-v1.6.3...google-cloud-certificate-manager-v1.7.0) (2024-03-22)
 
 

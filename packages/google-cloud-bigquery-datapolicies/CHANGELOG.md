@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.7](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-datapolicies-v0.6.6...google-cloud-bigquery-datapolicies-v0.6.7) (2024-07-04)
+
+
+### Bug Fixes
+
+* Allow Protobuf 5.x ([#12864](https://github.com/googleapis/google-cloud-python/issues/12864)) ([728b307](https://github.com/googleapis/google-cloud-python/commit/728b307ed0cc497685507a219e913f002f097132))
+
 ## [0.6.6](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-datapolicies-v0.6.5...google-cloud-bigquery-datapolicies-v0.6.6) (2024-03-05)
 
 
