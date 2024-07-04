@@ -8,5 +8,5 @@ google-api-core==1.34.1
 google-auth==2.14.1
 grafeas==1.4.1
 proto-plus==1.22.3
-protobuf==3.19.5
+protobuf==3.20.2
 grpc-google-iam-v1==0.12.4

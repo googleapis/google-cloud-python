@@ -15,7 +15,7 @@ Python Client for Infrastructure Manager API
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-config.svg
    :target: https://pypi.org/project/google-cloud-config/
 .. _Infrastructure Manager API: https://cloud.google.com/infrastructure-manager/docs/overview
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/config/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/config/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/infrastructure-manager/docs/overview
 
 Quick Start

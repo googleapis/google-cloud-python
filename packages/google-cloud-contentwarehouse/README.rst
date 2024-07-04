@@ -15,7 +15,7 @@ Python Client for Document AI Warehouse
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-contentwarehouse.svg
    :target: https://pypi.org/project/google-cloud-contentwarehouse/
 .. _Document AI Warehouse: https://cloud.google.com/document-warehouse/
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/contentwarehouse/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/contentwarehouse/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/document-warehouse/
 
 Quick Start

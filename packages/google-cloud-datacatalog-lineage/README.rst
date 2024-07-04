@@ -15,7 +15,7 @@ Python Client for Data Lineage API
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-datacatalog-lineage.svg
    :target: https://pypi.org/project/google-cloud-datacatalog-lineage/
 .. _Data Lineage API: https://cloud.google.com/data-catalog/docs/concepts/about-data-lineage
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/lineage/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/lineage/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/data-catalog/docs/concepts/about-data-lineage
 
 Quick Start

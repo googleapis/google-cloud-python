@@ -15,7 +15,7 @@ Python Client for Cloud Data Fusion
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-data-fusion.svg
    :target: https://pypi.org/project/google-cloud-data-fusion/
 .. _Cloud Data Fusion: https://cloud.google.com/data-fusion
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/datafusion/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/datafusion/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/data-fusion
 
 Quick Start

@@ -15,7 +15,7 @@ Python Client for Cloud Commerce Consumer Procurement API
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-commerce-consumer-procurement.svg
    :target: https://pypi.org/project/google-cloud-commerce-consumer-procurement/
 .. _Cloud Commerce Consumer Procurement API: https://cloud.google.com/marketplace/docs/
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/procurement/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/procurement/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/marketplace/docs/
 
 Quick Start
