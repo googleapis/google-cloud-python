@@ -45,7 +45,7 @@ dependencies = [
     "google-auth >= 2.14.1, <3.0.0dev,!=2.24.0,!=2.25.0",
     "google-cloud-org-policy >= 0.1.2, <2.0.0dev",
     "proto-plus >= 1.22.3, <2.0.0dev",
-    "protobuf>=3.19.5,<5.0.0dev,!=3.20.0,!=3.20.1,!=4.21.0,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5",
+    "protobuf>=3.20.2,<6.0.0dev,!=4.21.0,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5",
     "google-cloud-access-context-manager >= 0.1.2, <1.0.0dev",
     "google-cloud-os-config >= 1.0.0, <2.0.0dev",
     "grpc-google-iam-v1 >= 0.12.4, <1.0.0dev",
