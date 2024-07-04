@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.12](https://github.com/googleapis/google-cloud-python/compare/google-maps-addressvalidation-v0.3.11...google-maps-addressvalidation-v0.3.12) (2024-07-04)
+
+
+### Bug Fixes
+
+* Allow Protobuf 5.x ([#12871](https://github.com/googleapis/google-cloud-python/issues/12871)) ([73b35d5](https://github.com/googleapis/google-cloud-python/commit/73b35d56f8626d99ce7c3902a8c223cc09b4ca74))
+
 ## [0.3.11](https://github.com/googleapis/google-cloud-python/compare/google-maps-addressvalidation-v0.3.10...google-maps-addressvalidation-v0.3.11) (2024-03-05)
 
 

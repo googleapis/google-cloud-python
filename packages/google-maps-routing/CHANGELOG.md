@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.9](https://github.com/googleapis/google-cloud-python/compare/google-maps-routing-v0.6.8...google-maps-routing-v0.6.9) (2024-07-04)
+
+
+### Bug Fixes
+
+* Allow Protobuf 5.x ([#12871](https://github.com/googleapis/google-cloud-python/issues/12871)) ([73b35d5](https://github.com/googleapis/google-cloud-python/commit/73b35d56f8626d99ce7c3902a8c223cc09b4ca74))
+
 ## [0.6.8](https://github.com/googleapis/google-cloud-python/compare/google-maps-routing-v0.6.7...google-maps-routing-v0.6.8) (2024-04-15)
 
 
