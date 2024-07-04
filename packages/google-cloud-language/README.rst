@@ -15,7 +15,7 @@ Python Client for Natural Language
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-language.svg
    :target: https://pypi.org/project/google-cloud-language/
 .. _Natural Language: https://cloud.google.com/natural-language/docs/
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/language/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/language/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/natural-language/docs/
 
 Quick Start

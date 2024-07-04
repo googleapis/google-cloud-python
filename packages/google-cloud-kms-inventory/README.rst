@@ -15,7 +15,7 @@ Python Client for KMS Inventory API
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-kms-inventory.svg
    :target: https://pypi.org/project/google-cloud-kms-inventory/
 .. _KMS Inventory API: https://cloud.google.com/kms/docs/
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/inventory/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/inventory/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/kms/docs/
 
 Quick Start

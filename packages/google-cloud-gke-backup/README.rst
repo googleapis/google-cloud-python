@@ -15,7 +15,7 @@ Python Client for Backup for GKE
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-gke-backup.svg
    :target: https://pypi.org/project/google-cloud-gke-backup/
 .. _Backup for GKE: https://cloud.google.com/kubernetes-engine/docs/add-on/backup-for-gke/concepts/backup-for-gke
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/gkebackup/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/gkebackup/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/kubernetes-engine/docs/add-on/backup-for-gke/concepts/backup-for-gke
 
 Quick Start

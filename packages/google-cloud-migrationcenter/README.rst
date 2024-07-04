@@ -15,7 +15,7 @@ Python Client for Migration Center API
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-migrationcenter.svg
    :target: https://pypi.org/project/google-cloud-migrationcenter/
 .. _Migration Center API: https://cloud.google.com/migration-center/docs/migration-center-overview
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/migrationcenter/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/migrationcenter/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/migration-center/docs/migration-center-overview
 
 Quick Start
