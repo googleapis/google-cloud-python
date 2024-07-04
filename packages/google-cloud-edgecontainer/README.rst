@@ -15,7 +15,7 @@ Python Client for Distributed Cloud Edge Container
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-edgecontainer.svg
    :target: https://pypi.org/project/google-cloud-edgecontainer/
 .. _Distributed Cloud Edge Container: https://cloud.google.com/distributed-cloud/edge
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/edgecontainer/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/edgecontainer/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/distributed-cloud/edge
 
 Quick Start

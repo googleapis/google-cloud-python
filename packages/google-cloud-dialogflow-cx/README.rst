@@ -15,7 +15,7 @@ Python Client for Dialogflow CX
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-dialogflow-cx.svg
    :target: https://pypi.org/project/google-cloud-dialogflow-cx/
 .. _Dialogflow CX: https://cloud.google.com/dialogflow/cx/docs
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/dialogflow-cx/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/dialogflow-cx/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/dialogflow/cx/docs
 
 Quick Start

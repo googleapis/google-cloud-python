@@ -15,7 +15,7 @@ Python Client for Eventarc
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-eventarc.svg
    :target: https://pypi.org/project/google-cloud-eventarc/
 .. _Eventarc: https://cloud.google.com/eventarc/
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/eventarc/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/eventarc/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/eventarc/
 
 Quick Start

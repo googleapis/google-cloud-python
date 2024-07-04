@@ -15,7 +15,7 @@ Python Client for Datastream
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-datastream.svg
    :target: https://pypi.org/project/google-cloud-datastream/
 .. _Datastream: https://cloud.google.com/datastream/
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/datastream/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/datastream/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/datastream/
 
 Quick Start

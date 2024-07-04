@@ -15,7 +15,7 @@ Python Client for Dialogflow
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-dialogflow.svg
    :target: https://pypi.org/project/google-cloud-dialogflow/
 .. _Dialogflow: https://www.dialogflow.com/
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/dialogflow/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/dialogflow/latest/summary_overview
 .. _Product Documentation:  https://www.dialogflow.com/
 
 Quick Start

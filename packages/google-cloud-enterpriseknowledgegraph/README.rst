@@ -15,7 +15,7 @@ Python Client for Enterprise Knowledge Graph
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-enterpriseknowledgegraph.svg
    :target: https://pypi.org/project/google-cloud-enterpriseknowledgegraph/
 .. _Enterprise Knowledge Graph: https://cloud.google.com/enterprise-knowledge-graph/
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/enterpriseknowledgegraph/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/enterpriseknowledgegraph/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/enterprise-knowledge-graph/
 
 Quick Start

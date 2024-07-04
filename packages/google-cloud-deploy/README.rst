@@ -15,7 +15,7 @@ Python Client for Google Cloud Deploy
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-deploy.svg
    :target: https://pypi.org/project/google-cloud-deploy/
 .. _Google Cloud Deploy: https://cloud.google.com/deploy/
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/clouddeploy/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/clouddeploy/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/deploy/
 
 Quick Start

@@ -15,7 +15,7 @@ Python Client for Cloud Database Migration Service
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-dms.svg
    :target: https://pypi.org/project/google-cloud-dms/
 .. _Cloud Database Migration Service: https://cloud.google.com/database-migration/
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/datamigration/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/datamigration/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/database-migration/
 
 Quick Start
