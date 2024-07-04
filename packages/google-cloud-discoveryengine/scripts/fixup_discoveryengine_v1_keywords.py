@@ -39,7 +39,7 @@ def partition(
 class discoveryengineCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-        'answer_query': ('serving_config', 'query', 'session', 'safety_spec', 'related_questions_spec', 'answer_generation_spec', 'search_spec', 'query_understanding_spec', 'asynchronous_mode', 'user_pseudo_id', ),
+        'answer_query': ('serving_config', 'query', 'session', 'safety_spec', 'related_questions_spec', 'answer_generation_spec', 'search_spec', 'query_understanding_spec', 'asynchronous_mode', 'user_pseudo_id', 'user_labels', ),
         'batch_create_target_sites': ('parent', 'requests', ),
         'batch_verify_target_sites': ('parent', ),
         'check_grounding': ('grounding_config', 'answer_candidate', 'facts', 'grounding_spec', 'user_labels', ),
@@ -75,7 +75,8 @@ class discoveryengineCallTransformer(cst.CSTTransformer):
         'get_session': ('name', ),
         'get_site_search_engine': ('name', ),
         'get_target_site': ('name', ),
-        'import_documents': ('parent', 'inline_source', 'gcs_source', 'bigquery_source', 'fhir_store_source', 'spanner_source', 'cloud_sql_source', 'firestore_source', 'bigtable_source', 'error_config', 'reconciliation_mode', 'update_mask', 'auto_generate_ids', 'id_field', ),
+        'import_completion_suggestions': ('parent', 'inline_source', 'gcs_source', 'bigquery_source', 'error_config', ),
+        'import_documents': ('parent', 'inline_source', 'gcs_source', 'bigquery_source', 'fhir_store_source', 'spanner_source', 'cloud_sql_source', 'firestore_source', 'alloy_db_source', 'bigtable_source', 'error_config', 'reconciliation_mode', 'update_mask', 'auto_generate_ids', 'id_field', ),
         'import_suggestion_deny_list_entries': ('parent', 'inline_source', 'gcs_source', ),
         'import_user_events': ('parent', 'inline_source', 'gcs_source', 'bigquery_source', 'error_config', ),
         'list_controls': ('parent', 'page_size', 'page_token', 'filter', ),
@@ -87,12 +88,13 @@ class discoveryengineCallTransformer(cst.CSTTransformer):
         'list_sessions': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
         'list_target_sites': ('parent', 'page_size', 'page_token', ),
         'provision_project': ('name', 'accept_data_use_terms', 'data_use_terms_version', ),
+        'purge_completion_suggestions': ('parent', ),
         'purge_documents': ('parent', 'filter', 'force', ),
         'purge_suggestion_deny_list_entries': ('parent', ),
         'rank': ('ranking_config', 'records', 'model', 'top_n', 'query', 'ignore_record_details_in_response', 'user_labels', ),
         'recommend': ('serving_config', 'user_event', 'page_size', 'filter', 'validate_only', 'params', 'user_labels', ),
         'recrawl_uris': ('site_search_engine', 'uris', ),
-        'search': ('serving_config', 'branch', 'query', 'image_query', 'page_size', 'page_token', 'offset', 'data_store_specs', 'filter', 'canonical_filter', 'order_by', 'user_info', 'facet_specs', 'boost_spec', 'params', 'query_expansion_spec', 'spell_correction_spec', 'user_pseudo_id', 'content_search_spec', 'safe_search', 'user_labels', ),
+        'search': ('serving_config', 'branch', 'query', 'image_query', 'page_size', 'page_token', 'offset', 'data_store_specs', 'filter', 'canonical_filter', 'order_by', 'user_info', 'language_code', 'facet_specs', 'boost_spec', 'params', 'query_expansion_spec', 'spell_correction_spec', 'user_pseudo_id', 'content_search_spec', 'safe_search', 'user_labels', 'search_as_you_type_spec', 'session', 'session_spec', ),
         'update_control': ('control', 'update_mask', ),
         'update_conversation': ('conversation', 'update_mask', ),
         'update_data_store': ('data_store', 'update_mask', ),

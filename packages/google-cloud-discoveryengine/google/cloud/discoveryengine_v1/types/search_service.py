@@ -20,6 +20,7 @@ from typing import MutableMapping, MutableSequence
 from google.protobuf import struct_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.cloud.discoveryengine_v1.types import chunk as gcd_chunk
 from google.cloud.discoveryengine_v1.types import common
 from google.cloud.discoveryengine_v1.types import document as gcd_document
 
@@ -148,6 +149,13 @@ class SearchRequest(proto.Message):
             analytics.
             [UserInfo.user_agent][google.cloud.discoveryengine.v1.UserInfo.user_agent]
             is used to deduce ``device_type`` for analytics.
+        language_code (str):
+            The BCP-47 language code, such as "en-US" or "sr-Latn". For
+            more information, see `Standard
+            fields <https://cloud.google.com/apis/design/standard_fields>`__.
+            This field helps to better interpret the query. If a value
+            isn't specified, the query language code is automatically
+            detected, which may not be accurate.
         facet_specs (MutableSequence[google.cloud.discoveryengine_v1.types.SearchRequest.FacetSpec]):
             Facet specifications for faceted search. If empty, no facets
             are returned.
@@ -229,6 +237,47 @@ class SearchRequest(proto.Message):
             See `Google Cloud
             Document <https://cloud.google.com/resource-manager/docs/creating-managing-labels#requirements>`__
             for more details.
+        search_as_you_type_spec (google.cloud.discoveryengine_v1.types.SearchRequest.SearchAsYouTypeSpec):
+            Search as you type configuration. Only supported for the
+            [IndustryVertical.MEDIA][google.cloud.discoveryengine.v1.IndustryVertical.MEDIA]
+            vertical.
+        session (str):
+            The session resource name. Optional.
+
+            Session allows users to do multi-turn /search API calls or
+            coordination between /search API calls and /answer API
+            calls.
+
+            Example #1 (multi-turn /search API calls):
+
+            1. Call /search API with the auto-session mode (see below).
+            2. Call /search API with the session ID generated in the
+               first call. Here, the previous search query gets
+               considered in query standing. I.e., if the first query is
+               "How did Alphabet do in 2022?" and the current query is
+               "How about 2023?", the current query will be interpreted
+               as "How did Alphabet do in 2023?".
+
+            Example #2 (coordination between /search API calls and
+            /answer API calls):
+
+            1. Call /search API with the auto-session mode (see below).
+            2. Call /answer API with the session ID generated in the
+               first call. Here, the answer generation happens in the
+               context of the search results from the first search call.
+
+            Auto-session mode: when ``projects/.../sessions/-`` is used,
+            a new session gets automatically created. Otherwise, users
+            can use the create-session API to create a session manually.
+
+            Multi-turn Search feature is currently at private GA stage.
+            Please use v1alpha or v1beta version instead before we
+            launch this feature to public GA. Or ask for allowlisting
+            through Google Support team.
+        session_spec (google.cloud.discoveryengine_v1.types.SearchRequest.SessionSpec):
+            Session specification.
+
+            Can be used only when ``session`` is set.
     """
 
     class ImageQuery(proto.Message):
@@ -252,9 +301,8 @@ class SearchRequest(proto.Message):
 
     class DataStoreSpec(proto.Message):
         r"""A struct to define data stores to filter on in a search call and
-        configurations for those data stores. A maximum of 1 DataStoreSpec
-        per data_store is allowed. Otherwise, an ``INVALID_ARGUMENT`` error
-        is returned.
+        configurations for those data stores. Otherwise, an
+        ``INVALID_ARGUMENT`` error is returned.
 
         Attributes:
             data_store (str):
@@ -278,7 +326,10 @@ class SearchRequest(proto.Message):
             limit (int):
                 Maximum facet values that are returned for this facet. If
                 unspecified, defaults to 20. The maximum allowed value is
-                300. Values above 300 are coerced to 300.
+                300. Values above 300 are coerced to 300. For aggregation in
+                healthcare search, when the [FacetKey.key] is
+                "healthcare_aggregation_key", the limit will be overridden
+                to 10,000 internally, regardless of the value set here.
 
                 If this field is negative, an ``INVALID_ARGUMENT`` is
                 returned.
@@ -629,7 +680,44 @@ class SearchRequest(proto.Message):
             extractive_content_spec (google.cloud.discoveryengine_v1.types.SearchRequest.ContentSearchSpec.ExtractiveContentSpec):
                 If there is no extractive_content_spec provided, there will
                 be no extractive answer in the search response.
+            search_result_mode (google.cloud.discoveryengine_v1.types.SearchRequest.ContentSearchSpec.SearchResultMode):
+                Specifies the search result mode. If unspecified, the search
+                result mode is based on
+                [DataStore.DocumentProcessingConfig.chunking_config][]:
+
+                -  If [DataStore.DocumentProcessingConfig.chunking_config][]
+                   is specified, it defaults to ``CHUNKS``.
+                -  Otherwise, it defaults to ``DOCUMENTS``.
+            chunk_spec (google.cloud.discoveryengine_v1.types.SearchRequest.ContentSearchSpec.ChunkSpec):
+                Specifies the chunk spec to be returned from the search
+                response. Only available if the
+                [SearchRequest.ContentSearchSpec.search_result_mode][google.cloud.discoveryengine.v1.SearchRequest.ContentSearchSpec.search_result_mode]
+                is set to
+                [CHUNKS][google.cloud.discoveryengine.v1.SearchRequest.ContentSearchSpec.SearchResultMode.CHUNKS]
         """
+
+        class SearchResultMode(proto.Enum):
+            r"""Specifies the search result mode. If unspecified, the search result
+            mode is based on
+            [DataStore.DocumentProcessingConfig.chunking_config][]:
+
+            -  If [DataStore.DocumentProcessingConfig.chunking_config][] is
+               specified, it defaults to ``CHUNKS``.
+            -  Otherwise, it defaults to ``DOCUMENTS``.
+
+            Values:
+                SEARCH_RESULT_MODE_UNSPECIFIED (0):
+                    Default value.
+                DOCUMENTS (1):
+                    Returns documents in the search result.
+                CHUNKS (2):
+                    Returns chunks in the search result. Only available if the
+                    [DataStore.DocumentProcessingConfig.chunking_config][] is
+                    specified.
+            """
+            SEARCH_RESULT_MODE_UNSPECIFIED = 0
+            DOCUMENTS = 1
+            CHUNKS = 2
 
         class SnippetSpec(proto.Message):
             r"""A specification for configuring snippets in a search
@@ -678,9 +766,9 @@ class SearchRequest(proto.Message):
                     At most 10 results for documents mode, or 50 for chunks
                     mode, can be used to generate a summary. The chunks mode is
                     used when
-                    [SearchRequest.ContentSearchSpec.search_result_mode][] is
-                    set to
-                    [CHUNKS][SearchRequest.ContentSearchSpec.SearchResultMode.CHUNKS].
+                    [SearchRequest.ContentSearchSpec.search_result_mode][google.cloud.discoveryengine.v1.SearchRequest.ContentSearchSpec.search_result_mode]
+                    is set to
+                    [CHUNKS][google.cloud.discoveryengine.v1.SearchRequest.ContentSearchSpec.SearchResultMode.CHUNKS].
                 include_citations (bool):
                     Specifies whether to include citations in the summary. The
                     default value is ``false``.
@@ -901,6 +989,35 @@ class SearchRequest(proto.Message):
                 number=5,
             )
 
+        class ChunkSpec(proto.Message):
+            r"""Specifies the chunk spec to be returned from the search response.
+            Only available if the
+            [SearchRequest.ContentSearchSpec.search_result_mode][google.cloud.discoveryengine.v1.SearchRequest.ContentSearchSpec.search_result_mode]
+            is set to
+            [CHUNKS][google.cloud.discoveryengine.v1.SearchRequest.ContentSearchSpec.SearchResultMode.CHUNKS]
+
+            Attributes:
+                num_previous_chunks (int):
+                    The number of previous chunks to be returned
+                    of the current chunk. The maximum allowed value
+                    is 3. If not specified, no previous chunks will
+                    be returned.
+                num_next_chunks (int):
+                    The number of next chunks to be returned of
+                    the current chunk. The maximum allowed value is
+                    3. If not specified, no next chunks will be
+                    returned.
+            """
+
+            num_previous_chunks: int = proto.Field(
+                proto.INT32,
+                number=1,
+            )
+            num_next_chunks: int = proto.Field(
+                proto.INT32,
+                number=2,
+            )
+
         snippet_spec: "SearchRequest.ContentSearchSpec.SnippetSpec" = proto.Field(
             proto.MESSAGE,
             number=1,
@@ -915,6 +1032,110 @@ class SearchRequest(proto.Message):
             proto.MESSAGE,
             number=3,
             message="SearchRequest.ContentSearchSpec.ExtractiveContentSpec",
+        )
+        search_result_mode: "SearchRequest.ContentSearchSpec.SearchResultMode" = (
+            proto.Field(
+                proto.ENUM,
+                number=4,
+                enum="SearchRequest.ContentSearchSpec.SearchResultMode",
+            )
+        )
+        chunk_spec: "SearchRequest.ContentSearchSpec.ChunkSpec" = proto.Field(
+            proto.MESSAGE,
+            number=5,
+            message="SearchRequest.ContentSearchSpec.ChunkSpec",
+        )
+
+    class SearchAsYouTypeSpec(proto.Message):
+        r"""Specification for search as you type in search requests.
+
+        Attributes:
+            condition (google.cloud.discoveryengine_v1.types.SearchRequest.SearchAsYouTypeSpec.Condition):
+                The condition under which search as you type should occur.
+                Default to
+                [Condition.DISABLED][google.cloud.discoveryengine.v1.SearchRequest.SearchAsYouTypeSpec.Condition.DISABLED].
+        """
+
+        class Condition(proto.Enum):
+            r"""Enum describing under which condition search as you type
+            should occur.
+
+            Values:
+                CONDITION_UNSPECIFIED (0):
+                    Server behavior defaults to
+                    [Condition.DISABLED][google.cloud.discoveryengine.v1.SearchRequest.SearchAsYouTypeSpec.Condition.DISABLED].
+                DISABLED (1):
+                    Disables Search As You Type.
+                ENABLED (2):
+                    Enables Search As You Type.
+            """
+            CONDITION_UNSPECIFIED = 0
+            DISABLED = 1
+            ENABLED = 2
+
+        condition: "SearchRequest.SearchAsYouTypeSpec.Condition" = proto.Field(
+            proto.ENUM,
+            number=1,
+            enum="SearchRequest.SearchAsYouTypeSpec.Condition",
+        )
+
+    class SessionSpec(proto.Message):
+        r"""Session specification.
+
+        Multi-turn Search feature is currently at private GA stage.
+        Please use v1alpha or v1beta version instead before we launch
+        this feature to public GA. Or ask for allowlisting through
+        Google Support team.
+
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            query_id (str):
+                If set, the search result gets stored to the "turn"
+                specified by this query ID.
+
+                Example: Let's say the session looks like this: session {
+                name: ".../sessions/xxx" turns { query { text: "What is
+                foo?" query_id: ".../questions/yyy" } answer: "Foo is ..." }
+                turns { query { text: "How about bar then?" query_id:
+                ".../questions/zzz" } } }
+
+                The user can call /search API with a request like this:
+
+                ::
+
+                   session: ".../sessions/xxx"
+                   session_spec { query_id: ".../questions/zzz" }
+
+                Then, the API stores the search result, associated with the
+                last turn. The stored search result can be used by a
+                subsequent /answer API call (with the session ID and the
+                query ID specified). Also, it is possible to call /search
+                and /answer in parallel with the same session ID & query ID.
+            search_result_persistence_count (int):
+                The number of top search results to persist. The persisted
+                search results can be used for the subsequent /answer api
+                call.
+
+                This field is simliar to the ``summary_result_count`` field
+                in
+                [SearchRequest.ContentSearchSpec.SummarySpec.summary_result_count][google.cloud.discoveryengine.v1.SearchRequest.ContentSearchSpec.SummarySpec.summary_result_count].
+
+                At most 10 results for documents mode, or 50 for chunks
+                mode.
+
+                This field is a member of `oneof`_ ``_search_result_persistence_count``.
+        """
+
+        query_id: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        search_result_persistence_count: int = proto.Field(
+            proto.INT32,
+            number=2,
+            optional=True,
         )
 
     serving_config: str = proto.Field(
@@ -968,6 +1189,10 @@ class SearchRequest(proto.Message):
         number=21,
         message=common.UserInfo,
     )
+    language_code: str = proto.Field(
+        proto.STRING,
+        number=35,
+    )
     facet_specs: MutableSequence[FacetSpec] = proto.RepeatedField(
         proto.MESSAGE,
         number=9,
@@ -1011,6 +1236,20 @@ class SearchRequest(proto.Message):
         proto.STRING,
         proto.STRING,
         number=22,
+    )
+    search_as_you_type_spec: SearchAsYouTypeSpec = proto.Field(
+        proto.MESSAGE,
+        number=31,
+        message=SearchAsYouTypeSpec,
+    )
+    session: str = proto.Field(
+        proto.STRING,
+        number=41,
+    )
+    session_spec: SessionSpec = proto.Field(
+        proto.MESSAGE,
+        number=42,
+        message=SessionSpec,
     )
 
 
@@ -1062,6 +1301,12 @@ class SearchResponse(proto.Message):
         query_expansion_info (google.cloud.discoveryengine_v1.types.SearchResponse.QueryExpansionInfo):
             Query expansion information for the returned
             results.
+        session_info (google.cloud.discoveryengine_v1.types.SearchResponse.SessionInfo):
+            Session information.
+
+            Only set if
+            [SearchRequest.session][google.cloud.discoveryengine.v1.SearchRequest.session]
+            is provided. See its description for more details.
     """
 
     class SearchResult(proto.Message):
@@ -1075,6 +1320,11 @@ class SearchResponse(proto.Message):
             document (google.cloud.discoveryengine_v1.types.Document):
                 The document data snippet in the search response. Only
                 fields that are marked as ``retrievable`` are populated.
+            chunk (google.cloud.discoveryengine_v1.types.Chunk):
+                The chunk data in the search response if the
+                [SearchRequest.ContentSearchSpec.search_result_mode][google.cloud.discoveryengine.v1.SearchRequest.ContentSearchSpec.search_result_mode]
+                is set to
+                [CHUNKS][google.cloud.discoveryengine.v1.SearchRequest.ContentSearchSpec.SearchResultMode.CHUNKS].
         """
 
         id: str = proto.Field(
@@ -1085,6 +1335,11 @@ class SearchResponse(proto.Message):
             proto.MESSAGE,
             number=2,
             message=gcd_document.Document,
+        )
+        chunk: gcd_chunk.Chunk = proto.Field(
+            proto.MESSAGE,
+            number=18,
+            message=gcd_chunk.Chunk,
         )
 
     class Facet(proto.Message):
@@ -1443,6 +1698,35 @@ class SearchResponse(proto.Message):
             number=2,
         )
 
+    class SessionInfo(proto.Message):
+        r"""Information about the session.
+
+        Attributes:
+            name (str):
+                Name of the session. If the auto-session mode is used (when
+                [SearchRequest.session][google.cloud.discoveryengine.v1.SearchRequest.session]
+                ends with "-"), this field holds the newly generated session
+                name.
+            query_id (str):
+                Query ID that corresponds to this search API
+                call. One session can have multiple turns, each
+                with a unique query ID.
+
+                By specifying the session name and this query ID
+                in the Answer API call, the answer generation
+                happens in the context of the search results
+                from this search call.
+        """
+
+        name: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        query_id: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+
     @property
     def raw_page(self):
         return self
@@ -1486,6 +1770,11 @@ class SearchResponse(proto.Message):
         proto.MESSAGE,
         number=14,
         message=QueryExpansionInfo,
+    )
+    session_info: SessionInfo = proto.Field(
+        proto.MESSAGE,
+        number=19,
+        message=SessionInfo,
     )
 
 

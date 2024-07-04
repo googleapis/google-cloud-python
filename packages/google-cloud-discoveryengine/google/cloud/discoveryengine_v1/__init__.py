@@ -54,6 +54,7 @@ from .services.user_event_service import (
     UserEventServiceClient,
 )
 from .types.answer import Answer
+from .types.chunk import Chunk
 from .types.common import (
     CustomAttribute,
     IndustryVertical,
@@ -64,7 +65,7 @@ from .types.common import (
     SolutionType,
     UserInfo,
 )
-from .types.completion import SuggestionDenyListEntry
+from .types.completion import CompletionSuggestion, SuggestionDenyListEntry
 from .types.completion_service import CompleteQueryRequest, CompleteQueryResponse
 from .types.control import Condition, Control
 from .types.control_service import (
@@ -140,6 +141,7 @@ from .types.grounded_generation_service import (
 )
 from .types.grounding import FactChunk, GroundingFact
 from .types.import_config import (
+    AlloyDbSource,
     BigQuerySource,
     BigtableOptions,
     BigtableSource,
@@ -147,6 +149,9 @@ from .types.import_config import (
     FhirStoreSource,
     FirestoreSource,
     GcsSource,
+    ImportCompletionSuggestionsMetadata,
+    ImportCompletionSuggestionsRequest,
+    ImportCompletionSuggestionsResponse,
     ImportDocumentsMetadata,
     ImportDocumentsRequest,
     ImportDocumentsResponse,
@@ -162,6 +167,9 @@ from .types.import_config import (
 from .types.project import Project
 from .types.project_service import ProvisionProjectMetadata, ProvisionProjectRequest
 from .types.purge_config import (
+    PurgeCompletionSuggestionsMetadata,
+    PurgeCompletionSuggestionsRequest,
+    PurgeCompletionSuggestionsResponse,
     PurgeDocumentsMetadata,
     PurgeDocumentsRequest,
     PurgeDocumentsResponse,
@@ -242,6 +250,7 @@ __all__ = (
     "SearchServiceAsyncClient",
     "SiteSearchEngineServiceAsyncClient",
     "UserEventServiceAsyncClient",
+    "AlloyDbSource",
     "Answer",
     "AnswerQueryRequest",
     "AnswerQueryResponse",
@@ -257,12 +266,14 @@ __all__ = (
     "CheckGroundingRequest",
     "CheckGroundingResponse",
     "CheckGroundingSpec",
+    "Chunk",
     "CloudSqlSource",
     "CollectUserEventRequest",
     "CompleteQueryRequest",
     "CompleteQueryResponse",
     "CompletionInfo",
     "CompletionServiceClient",
+    "CompletionSuggestion",
     "Condition",
     "Control",
     "ControlServiceClient",
@@ -329,6 +340,9 @@ __all__ = (
     "GetTargetSiteRequest",
     "GroundedGenerationServiceClient",
     "GroundingFact",
+    "ImportCompletionSuggestionsMetadata",
+    "ImportCompletionSuggestionsRequest",
+    "ImportCompletionSuggestionsResponse",
     "ImportDocumentsMetadata",
     "ImportDocumentsRequest",
     "ImportDocumentsResponse",
@@ -364,6 +378,9 @@ __all__ = (
     "ProjectServiceClient",
     "ProvisionProjectMetadata",
     "ProvisionProjectRequest",
+    "PurgeCompletionSuggestionsMetadata",
+    "PurgeCompletionSuggestionsRequest",
+    "PurgeCompletionSuggestionsResponse",
     "PurgeDocumentsMetadata",
     "PurgeDocumentsRequest",
     "PurgeDocumentsResponse",

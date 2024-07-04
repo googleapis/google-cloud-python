@@ -14,6 +14,7 @@
 # limitations under the License.
 #
 from .answer import Answer
+from .chunk import Chunk
 from .common import (
     CustomAttribute,
     IndustryVertical,
@@ -24,7 +25,7 @@ from .common import (
     SolutionType,
     UserInfo,
 )
-from .completion import SuggestionDenyListEntry
+from .completion import CompletionSuggestion, SuggestionDenyListEntry
 from .completion_service import CompleteQueryRequest, CompleteQueryResponse
 from .control import Condition, Control
 from .control_service import (
@@ -100,6 +101,7 @@ from .grounded_generation_service import (
 )
 from .grounding import FactChunk, GroundingFact
 from .import_config import (
+    AlloyDbSource,
     BigQuerySource,
     BigtableOptions,
     BigtableSource,
@@ -107,6 +109,9 @@ from .import_config import (
     FhirStoreSource,
     FirestoreSource,
     GcsSource,
+    ImportCompletionSuggestionsMetadata,
+    ImportCompletionSuggestionsRequest,
+    ImportCompletionSuggestionsResponse,
     ImportDocumentsMetadata,
     ImportDocumentsRequest,
     ImportDocumentsResponse,
@@ -122,6 +127,9 @@ from .import_config import (
 from .project import Project
 from .project_service import ProvisionProjectMetadata, ProvisionProjectRequest
 from .purge_config import (
+    PurgeCompletionSuggestionsMetadata,
+    PurgeCompletionSuggestionsRequest,
+    PurgeCompletionSuggestionsResponse,
     PurgeDocumentsMetadata,
     PurgeDocumentsRequest,
     PurgeDocumentsResponse,
@@ -189,6 +197,7 @@ from .user_event_service import CollectUserEventRequest, WriteUserEventRequest
 
 __all__ = (
     "Answer",
+    "Chunk",
     "CustomAttribute",
     "Interval",
     "UserInfo",
@@ -197,6 +206,7 @@ __all__ = (
     "SearchTier",
     "SearchUseCase",
     "SolutionType",
+    "CompletionSuggestion",
     "SuggestionDenyListEntry",
     "CompleteQueryRequest",
     "CompleteQueryResponse",
@@ -261,6 +271,7 @@ __all__ = (
     "CheckGroundingSpec",
     "FactChunk",
     "GroundingFact",
+    "AlloyDbSource",
     "BigQuerySource",
     "BigtableOptions",
     "BigtableSource",
@@ -268,6 +279,9 @@ __all__ = (
     "FhirStoreSource",
     "FirestoreSource",
     "GcsSource",
+    "ImportCompletionSuggestionsMetadata",
+    "ImportCompletionSuggestionsRequest",
+    "ImportCompletionSuggestionsResponse",
     "ImportDocumentsMetadata",
     "ImportDocumentsRequest",
     "ImportDocumentsResponse",
@@ -282,6 +296,9 @@ __all__ = (
     "Project",
     "ProvisionProjectMetadata",
     "ProvisionProjectRequest",
+    "PurgeCompletionSuggestionsMetadata",
+    "PurgeCompletionSuggestionsRequest",
+    "PurgeCompletionSuggestionsResponse",
     "PurgeDocumentsMetadata",
     "PurgeDocumentsRequest",
     "PurgeDocumentsResponse",

@@ -175,7 +175,8 @@ class CompletionServiceGrpcAsyncIOTransport(CompletionServiceTransport):
 
         if isinstance(channel, aio.Channel):
             # Ignore credentials if a channel was passed.
-            credentials = False
+            credentials = None
+            self._ignore_credentials = True
             # If a channel was explicitly provided, set it.
             self._grpc_channel = channel
             self._ssl_channel_credentials = None
@@ -358,6 +359,70 @@ class CompletionServiceGrpcAsyncIOTransport(CompletionServiceTransport):
             )
         return self._stubs["purge_suggestion_deny_list_entries"]
 
+    @property
+    def import_completion_suggestions(
+        self,
+    ) -> Callable[
+        [import_config.ImportCompletionSuggestionsRequest],
+        Awaitable[operations_pb2.Operation],
+    ]:
+        r"""Return a callable for the import completion suggestions method over gRPC.
+
+        Imports
+        [CompletionSuggestion][google.cloud.discoveryengine.v1.CompletionSuggestion]s
+        for a DataStore.
+
+        Returns:
+            Callable[[~.ImportCompletionSuggestionsRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "import_completion_suggestions" not in self._stubs:
+            self._stubs[
+                "import_completion_suggestions"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.discoveryengine.v1.CompletionService/ImportCompletionSuggestions",
+                request_serializer=import_config.ImportCompletionSuggestionsRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["import_completion_suggestions"]
+
+    @property
+    def purge_completion_suggestions(
+        self,
+    ) -> Callable[
+        [purge_config.PurgeCompletionSuggestionsRequest],
+        Awaitable[operations_pb2.Operation],
+    ]:
+        r"""Return a callable for the purge completion suggestions method over gRPC.
+
+        Permanently deletes all
+        [CompletionSuggestion][google.cloud.discoveryengine.v1.CompletionSuggestion]s
+        for a DataStore.
+
+        Returns:
+            Callable[[~.PurgeCompletionSuggestionsRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "purge_completion_suggestions" not in self._stubs:
+            self._stubs["purge_completion_suggestions"] = self.grpc_channel.unary_unary(
+                "/google.cloud.discoveryengine.v1.CompletionService/PurgeCompletionSuggestions",
+                request_serializer=purge_config.PurgeCompletionSuggestionsRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["purge_completion_suggestions"]
+
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
@@ -373,6 +438,16 @@ class CompletionServiceGrpcAsyncIOTransport(CompletionServiceTransport):
             ),
             self.purge_suggestion_deny_list_entries: gapic_v1.method_async.wrap_method(
                 self.purge_suggestion_deny_list_entries,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.import_completion_suggestions: gapic_v1.method_async.wrap_method(
+                self.import_completion_suggestions,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.purge_completion_suggestions: gapic_v1.method_async.wrap_method(
+                self.purge_completion_suggestions,
                 default_timeout=None,
                 client_info=client_info,
             ),
