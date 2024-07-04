@@ -1,0 +1,2 @@
+recursive-include google/area120/tables *.py
+recursive-include google/area120/tables_v1alpha1 *.py
