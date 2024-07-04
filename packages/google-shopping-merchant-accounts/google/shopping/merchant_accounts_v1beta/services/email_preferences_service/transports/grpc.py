@@ -124,7 +124,8 @@ class EmailPreferencesServiceGrpcTransport(EmailPreferencesServiceTransport):
 
         if isinstance(channel, grpc.Channel):
             # Ignore credentials if a channel was passed.
-            credentials = False
+            credentials = None
+            self._ignore_credentials = True
             # If a channel was explicitly provided, set it.
             self._grpc_channel = channel
             self._ssl_channel_credentials = None
@@ -247,7 +248,7 @@ class EmailPreferencesServiceGrpcTransport(EmailPreferencesServiceTransport):
         Returns the email preferences for a Merchant Center account
         user.
 
-        Use the `name=accounts/*/users/me/emailPreferences` alias to get
+        Use the name=accounts/*/users/me/emailPreferences alias to get
         preferences for the authenticated user.
 
         Returns:
@@ -287,7 +288,7 @@ class EmailPreferencesServiceGrpcTransport(EmailPreferencesServiceTransport):
         It is invalid for updates to specify an UNCONFIRMED opt-in
         status value.
 
-        Use the `name=accounts/*/users/me/emailPreferences` alias to
+        Use the name=accounts/*/users/me/emailPreferences alias to
         update preferences for the authenticated user.
 
         Returns:

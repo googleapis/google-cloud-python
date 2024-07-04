@@ -15,7 +15,7 @@ Python Client for Cloud Workstations
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-workstations.svg
    :target: https://pypi.org/project/google-cloud-workstations/
 .. _Cloud Workstations: https://cloud.google.com/workstations/
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/workstations/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/workstations/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/workstations/
 
 Quick Start
