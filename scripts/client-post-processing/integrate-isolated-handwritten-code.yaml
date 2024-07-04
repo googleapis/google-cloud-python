@@ -79,11 +79,11 @@ replacements:
     ]
     before: |
       proto-plus==1.22.3
-      protobuf==3.19.5
+      protobuf==3.20.2
     after: |
       proto-plus==1.22.3
       google-cloud-core==1.4.4
-      protobuf==3.19.5
+      protobuf==3.20.2
     count: 1
   - paths: [
       "packages/google-cloud-translate/docs/index.rst",
