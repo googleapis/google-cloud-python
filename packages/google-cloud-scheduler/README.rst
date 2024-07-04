@@ -15,7 +15,7 @@ Python Client for Cloud Scheduler
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-scheduler.svg
    :target: https://pypi.org/project/google-cloud-scheduler/
 .. _Cloud Scheduler: https://cloud.google.com/scheduler/docs
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/cloudscheduler/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/cloudscheduler/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/scheduler/docs
 
 Quick Start

@@ -15,7 +15,7 @@ Python Client for Source Context
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-source-context.svg
    :target: https://pypi.org/project/google-cloud-source-context/
 .. _Source Context: https://cloud.google.com
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/source/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/source/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com
 
 Quick Start
