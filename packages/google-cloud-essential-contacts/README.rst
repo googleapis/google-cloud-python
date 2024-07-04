@@ -15,7 +15,7 @@ Python Client for Essential Contacts
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-essential-contacts.svg
    :target: https://pypi.org/project/google-cloud-essential-contacts/
 .. _Essential Contacts: https://cloud.google.com/resource-manager/docs/managing-notification-contacts/
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/essentialcontacts/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/essentialcontacts/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/resource-manager/docs/managing-notification-contacts/
 
 Quick Start

@@ -15,7 +15,7 @@ Python Client for Cloud Data Loss Prevention
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-dlp.svg
    :target: https://pypi.org/project/google-cloud-dlp/
 .. _Cloud Data Loss Prevention: https://cloud.google.com/dlp/docs/
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/dlp/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/dlp/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/dlp/docs/
 
 Quick Start
