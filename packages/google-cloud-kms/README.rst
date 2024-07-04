@@ -15,7 +15,7 @@ Python Client for Google Cloud Key Management Service
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-kms.svg
    :target: https://pypi.org/project/google-cloud-kms/
 .. _Google Cloud Key Management Service: https://cloud.google.com/kms
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/cloudkms/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/cloudkms/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/kms
 
 Quick Start

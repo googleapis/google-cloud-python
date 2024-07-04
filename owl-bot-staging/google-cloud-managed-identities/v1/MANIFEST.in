@@ -1,2 +1,0 @@
-recursive-include google/cloud/managedidentities *.py
-recursive-include google/cloud/managedidentities_v1 *.py

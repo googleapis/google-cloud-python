@@ -15,7 +15,7 @@ Python Client for Cloud Identity and Access Management
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-iam.svg
    :target: https://pypi.org/project/google-cloud-iam/
 .. _Cloud Identity and Access Management: https://cloud.google.com/iam/docs/
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/iam/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/iam/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/iam/docs/
 
 Quick Start

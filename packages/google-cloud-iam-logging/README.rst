@@ -15,7 +15,7 @@ Python Client for IAM Logging Protos
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-iam-logging.svg
    :target: https://pypi.org/project/google-cloud-iam-logging/
 .. _IAM Logging Protos: https://cloud.google.com/iam/docs/audit-logging
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/iamlogging/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/iamlogging/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/iam/docs/audit-logging
 
 Quick Start

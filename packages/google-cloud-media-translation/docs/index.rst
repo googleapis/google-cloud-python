@@ -21,3 +21,8 @@ For a list of all ``google-cloud-media-translation`` releases:
     :maxdepth: 2
 
     CHANGELOG
+
+.. toctree::
+  :hidden:
+
+  summary_overview.md
