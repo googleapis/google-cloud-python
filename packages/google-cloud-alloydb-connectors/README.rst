@@ -15,7 +15,7 @@ Python Client for AlloyDB connectors
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-alloydb-connectors.svg
    :target: https://pypi.org/project/google-cloud-alloydb-connectors/
 .. _AlloyDB connectors: https://cloud.google.com/alloydb/docs
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/connectors/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/connectors/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/alloydb/docs
 
 Quick Start
