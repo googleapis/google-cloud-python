@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.8](https://github.com/googleapis/google-cloud-python/compare/google-cloud-support-v0.1.7...google-cloud-support-v0.1.8) (2024-07-04)
+
+
+### Bug Fixes
+
+* Allow Protobuf 5.x ([#12870](https://github.com/googleapis/google-cloud-python/issues/12870)) ([4d16761](https://github.com/googleapis/google-cloud-python/commit/4d16761640dd8e35410b3219b7d675d7668d2f88))
+
 ## [0.1.7](https://github.com/googleapis/google-cloud-python/compare/google-cloud-support-v0.1.6...google-cloud-support-v0.1.7) (2024-03-05)
 
 

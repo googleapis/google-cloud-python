@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.12.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-service-control-v1.12.1...google-cloud-service-control-v1.12.2) (2024-07-04)
+
+
+### Bug Fixes
+
+* Allow protobuf 5.x ([04ec204](https://github.com/googleapis/google-cloud-python/commit/04ec2046ed11c690273912e1bb6220823c7dd7c0))
+* Allow Protobuf 5.x ([#12869](https://github.com/googleapis/google-cloud-python/issues/12869)) ([e42edbc](https://github.com/googleapis/google-cloud-python/commit/e42edbcf7f4d8ed66b6645c96a01c55fb8cd7666))
+
 ## [1.12.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-service-control-v1.12.0...google-cloud-service-control-v1.12.1) (2024-03-05)
 
 

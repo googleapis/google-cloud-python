@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.11.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storage-transfer-v1.11.3...google-cloud-storage-transfer-v1.11.4) (2024-07-04)
+
+
+### Bug Fixes
+
+* Allow Protobuf 5.x ([#12870](https://github.com/googleapis/google-cloud-python/issues/12870)) ([4d16761](https://github.com/googleapis/google-cloud-python/commit/4d16761640dd8e35410b3219b7d675d7668d2f88))
+
 ## [1.11.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storage-transfer-v1.11.2...google-cloud-storage-transfer-v1.11.3) (2024-03-05)
 
 

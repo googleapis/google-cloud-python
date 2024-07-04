@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-source-context-v1.5.3...google-cloud-source-context-v1.5.4) (2024-07-04)
+
+
+### Bug Fixes
+
+* Allow Protobuf 5.x ([#12869](https://github.com/googleapis/google-cloud-python/issues/12869)) ([e42edbc](https://github.com/googleapis/google-cloud-python/commit/e42edbcf7f4d8ed66b6645c96a01c55fb8cd7666))
+
 ## [1.5.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-source-context-v1.5.2...google-cloud-source-context-v1.5.3) (2024-03-05)
 
 

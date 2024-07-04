@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.13](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securitycentermanagement-v0.1.12...google-cloud-securitycentermanagement-v0.1.13) (2024-07-04)
+
+
+### Bug Fixes
+
+* Allow Protobuf 5.x ([#12869](https://github.com/googleapis/google-cloud-python/issues/12869)) ([e42edbc](https://github.com/googleapis/google-cloud-python/commit/e42edbcf7f4d8ed66b6645c96a01c55fb8cd7666))
+
 ## [0.1.12](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securitycentermanagement-v0.1.11...google-cloud-securitycentermanagement-v0.1.12) (2024-06-24)
 
 
