@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.10.6](https://github.com/googleapis/google-cloud-python/compare/google-cloud-run-v0.10.5...google-cloud-run-v0.10.6) (2024-07-04)
+
+
+### Bug Fixes
+
+* Allow Protobuf 5.x ([#12869](https://github.com/googleapis/google-cloud-python/issues/12869)) ([e42edbc](https://github.com/googleapis/google-cloud-python/commit/e42edbcf7f4d8ed66b6645c96a01c55fb8cd7666))
+
 ## [0.10.5](https://github.com/googleapis/google-cloud-python/compare/google-cloud-run-v0.10.4...google-cloud-run-v0.10.5) (2024-03-05)
 
 
