@@ -15,7 +15,7 @@ Python Client for BigQuery Logging Protos
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-bigquery-logging.svg
    :target: https://pypi.org/project/google-cloud-bigquery-logging/
 .. _BigQuery Logging Protos: https://cloud.google.com/bigquery/docs/reference/auditlogs
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/bigquerylogging/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/bigquerylogging/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/bigquery/docs/reference/auditlogs
 
 Quick Start

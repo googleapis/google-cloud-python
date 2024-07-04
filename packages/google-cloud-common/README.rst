@@ -15,7 +15,7 @@ Python Client for Google Cloud Common
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-common.svg
    :target: https://pypi.org/project/google-cloud-common/
 .. _Google Cloud Common: https://cloud.google.com
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/common/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/common/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com
 
 Quick Start
