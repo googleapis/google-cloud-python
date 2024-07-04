@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.11](https://github.com/googleapis/google-cloud-python/compare/google-cloud-video-stitcher-v0.7.10...google-cloud-video-stitcher-v0.7.11) (2024-07-04)
+
+
+### Bug Fixes
+
+* Allow Protobuf 5.x ([#12870](https://github.com/googleapis/google-cloud-python/issues/12870)) ([4d16761](https://github.com/googleapis/google-cloud-python/commit/4d16761640dd8e35410b3219b7d675d7668d2f88))
+
 ## [0.7.10](https://github.com/googleapis/google-cloud-python/compare/google-cloud-video-stitcher-v0.7.9...google-cloud-video-stitcher-v0.7.10) (2024-05-27)
 
 

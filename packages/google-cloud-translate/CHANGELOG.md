@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-translate/#history
 
+## [3.15.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-translate-v3.15.3...google-cloud-translate-v3.15.4) (2024-07-04)
+
+
+### Bug Fixes
+
+* Allow Protobuf 5.x ([#12870](https://github.com/googleapis/google-cloud-python/issues/12870)) ([4d16761](https://github.com/googleapis/google-cloud-python/commit/4d16761640dd8e35410b3219b7d675d7668d2f88))
+
 ## [3.15.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-translate-v3.15.2...google-cloud-translate-v3.15.3) (2024-03-05)
 
 
