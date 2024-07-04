@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.8](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-reports-v0.1.7...google-shopping-merchant-reports-v0.1.8) (2024-07-04)
+
+
+### Bug Fixes
+
+* Allow protobuf 5.x ([eb36e8a](https://github.com/googleapis/google-cloud-python/commit/eb36e8a5e779717977132f605aa2ebc3cad78517))
+
 ## [0.1.7](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-reports-v0.1.6...google-shopping-merchant-reports-v0.1.7) (2024-05-27)
 
 

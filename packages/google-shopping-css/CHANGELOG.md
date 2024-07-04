@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.6](https://github.com/googleapis/google-cloud-python/compare/google-shopping-css-v0.1.5...google-shopping-css-v0.1.6) (2024-07-04)
+
+
+### Bug Fixes
+
+* Allow Protobuf 5.x ([#12871](https://github.com/googleapis/google-cloud-python/issues/12871)) ([73b35d5](https://github.com/googleapis/google-cloud-python/commit/73b35d56f8626d99ce7c3902a8c223cc09b4ca74))
+
 ## [0.1.5](https://github.com/googleapis/google-cloud-python/compare/google-shopping-css-v0.1.4...google-shopping-css-v0.1.5) (2024-06-19)
 
 

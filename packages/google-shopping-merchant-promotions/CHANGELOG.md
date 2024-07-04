@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.1](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-promotions-v0.1.0...google-shopping-merchant-promotions-v0.1.1) (2024-07-04)
+
+
+### Bug Fixes
+
+* Allow protobuf 5.x ([eb36e8a](https://github.com/googleapis/google-cloud-python/commit/eb36e8a5e779717977132f605aa2ebc3cad78517))
+
 ## 0.1.0 (2024-06-05)
 
 
