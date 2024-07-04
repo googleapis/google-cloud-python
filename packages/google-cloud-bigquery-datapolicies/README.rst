@@ -15,7 +15,7 @@ Python Client for BigQuery Data Policy
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-bigquery-datapolicies.svg
    :target: https://pypi.org/project/google-cloud-bigquery-datapolicies/
 .. _BigQuery Data Policy: https://cloud.google.com/bigquery/docs/reference/bigquerydatapolicy/rest
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/bigquerydatapolicy/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/bigquerydatapolicy/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/bigquery/docs/reference/bigquerydatapolicy/rest
 
 Quick Start

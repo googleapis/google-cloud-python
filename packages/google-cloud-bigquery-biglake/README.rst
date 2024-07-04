@@ -15,7 +15,7 @@ Python Client for BigLake API
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-bigquery-biglake.svg
    :target: https://pypi.org/project/google-cloud-bigquery-biglake/
 .. _BigLake API: https://cloud.google.com/bigquery/docs/iceberg-tables#create-using-biglake-metastore
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/biglake/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/biglake/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/bigquery/docs/iceberg-tables#create-using-biglake-metastore
 
 Quick Start
