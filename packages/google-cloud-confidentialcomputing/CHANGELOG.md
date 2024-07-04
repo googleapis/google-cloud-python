@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.9](https://github.com/googleapis/google-cloud-python/compare/google-cloud-confidentialcomputing-v0.4.8...google-cloud-confidentialcomputing-v0.4.9) (2024-07-04)
+
+
+### Bug Fixes
+
+* Allow Protobuf 5.x ([#12865](https://github.com/googleapis/google-cloud-python/issues/12865)) ([7f9dedb](https://github.com/googleapis/google-cloud-python/commit/7f9dedb3abc7636cbcd97e21ac857844b885b599))
+
 ## [0.4.8](https://github.com/googleapis/google-cloud-python/compare/google-cloud-confidentialcomputing-v0.4.7...google-cloud-confidentialcomputing-v0.4.8) (2024-03-27)
 
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-common-v1.3.3...google-cloud-common-v1.3.4) (2024-07-04)
+
+
+### Bug Fixes
+
+* Allow protobuf 5.x ([04ec204](https://github.com/googleapis/google-cloud-python/commit/04ec2046ed11c690273912e1bb6220823c7dd7c0))
+
 ## [1.3.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-common-v1.3.2...google-cloud-common-v1.3.3) (2024-03-05)
 
 

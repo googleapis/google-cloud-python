@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.10](https://github.com/googleapis/google-cloud-python/compare/google-cloud-config-v0.1.9...google-cloud-config-v0.1.10) (2024-07-04)
+
+
+### Bug Fixes
+
+* Allow Protobuf 5.x ([#12865](https://github.com/googleapis/google-cloud-python/issues/12865)) ([7f9dedb](https://github.com/googleapis/google-cloud-python/commit/7f9dedb3abc7636cbcd97e21ac857844b885b599))
+
 ## [0.1.9](https://github.com/googleapis/google-cloud-python/compare/google-cloud-config-v0.1.8...google-cloud-config-v0.1.9) (2024-04-24)
 
 

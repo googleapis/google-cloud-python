@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.11](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataflow-client-v0.8.10...google-cloud-dataflow-client-v0.8.11) (2024-07-04)
+
+
+### Bug Fixes
+
+* Allow Protobuf 5.x ([#12865](https://github.com/googleapis/google-cloud-python/issues/12865)) ([7f9dedb](https://github.com/googleapis/google-cloud-python/commit/7f9dedb3abc7636cbcd97e21ac857844b885b599))
+
 ## [0.8.10](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataflow-client-v0.8.9...google-cloud-dataflow-client-v0.8.10) (2024-03-05)
 
 
