@@ -103,8 +103,9 @@ case ${TEST_TYPE} in
         esac
 esac
 
-# Clean up `__pycache__` directories to avoid error `No space left on device`
-# seen when running tests in Github Actions
+# Clean up `__pycache__` and `.nox` directories to avoid error
+# `No space left on device` seen when running tests in Github Actions
 find . | grep -E "(__pycache__)" | xargs rm -rf
+rm -rf .nox
 
 exit ${retval}
