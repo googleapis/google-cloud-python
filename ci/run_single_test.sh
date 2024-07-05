@@ -57,7 +57,6 @@ case ${TEST_TYPE} in
         # `[Errno 28] No space left on device`
         # See https://github.com/googleapis/google-cloud-python/issues/12271
         rm -rf docs/_build
-        find . | grep -E "(__pycache__)" | xargs rm -rf
         ;;
     docfx)
         nox -s docfx
@@ -68,7 +67,6 @@ case ${TEST_TYPE} in
         # `[Errno 28] No space left on device`
         # See https://github.com/googleapis/google-cloud-python/issues/12271
         rm -rf docs/_build
-        find . | grep -E "(__pycache__)" | xargs rm -rf
         ;;
     prerelease)
         nox -s prerelease_deps-3.12
@@ -104,5 +102,7 @@ case ${TEST_TYPE} in
             ;;
         esac
 esac
+
+find . | grep -E "(__pycache__)" | xargs rm -rf
 
 exit ${retval}
