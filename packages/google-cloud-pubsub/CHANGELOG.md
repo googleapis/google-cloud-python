@@ -5,6 +5,14 @@
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
 
+## [2.22.0](https://github.com/googleapis/python-pubsub/compare/v2.21.5...v2.22.0) (2024-07-06)
+
+
+### Features
+
+* Add service_account_email for export subscriptions ([ec0cc34](https://github.com/googleapis/python-pubsub/commit/ec0cc349b344b6882979838171b6cae4209a9b02))
+* Add use_topic_schema for Cloud Storage Subscriptions ([ec0cc34](https://github.com/googleapis/python-pubsub/commit/ec0cc349b344b6882979838171b6cae4209a9b02))
+
 ## [2.21.5](https://github.com/googleapis/python-pubsub/compare/v2.21.4...v2.21.5) (2024-06-20)
 
 
