@@ -19,6 +19,7 @@ import os
 import re
 from typing import (
     Dict,
+    Callable,
     Mapping,
     MutableMapping,
     MutableSequence,
@@ -579,7 +580,9 @@ class PublisherClient(metaclass=PublisherClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, PublisherTransport]] = None,
+        transport: Optional[
+            Union[str, PublisherTransport, Callable[..., PublisherTransport]]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -591,9 +594,11 @@ class PublisherClient(metaclass=PublisherClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, PublisherTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,PublisherTransport,Callable[..., PublisherTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the PublisherTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -699,17 +704,24 @@ class PublisherClient(metaclass=PublisherClientMeta):
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
+            transport_init: Union[
+                Type[PublisherTransport], Callable[..., PublisherTransport]
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., PublisherTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
 
             emulator_host = os.environ.get("PUBSUB_EMULATOR_HOST")
             if emulator_host:
-                if issubclass(Transport, type(self)._transport_registry["grpc"]):
+                if issubclass(transport_init, type(self)._transport_registry["grpc"]):
                     channel = grpc.insecure_channel(target=emulator_host)
                 else:
                     channel = grpc.aio.insecure_channel(target=emulator_host)
-                Transport = functools.partial(Transport, channel=channel)
+                transport_init = functools.partial(transport_init, channel=channel)
 
-            self._transport = Transport(
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -788,8 +800,8 @@ class PublisherClient(metaclass=PublisherClientMeta):
                 A topic resource.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -797,10 +809,8 @@ class PublisherClient(metaclass=PublisherClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a pubsub.Topic.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, pubsub.Topic):
             request = pubsub.Topic(request)
             # If we have keyword arguments corresponding to fields on the
@@ -907,8 +917,8 @@ class PublisherClient(metaclass=PublisherClientMeta):
                 A topic resource.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([topic, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -916,10 +926,8 @@ class PublisherClient(metaclass=PublisherClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a pubsub.UpdateTopicRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, pubsub.UpdateTopicRequest):
             request = pubsub.UpdateTopicRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1022,8 +1030,8 @@ class PublisherClient(metaclass=PublisherClientMeta):
                 Response for the Publish method.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([topic, messages])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1031,10 +1039,8 @@ class PublisherClient(metaclass=PublisherClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a pubsub.PublishRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, pubsub.PublishRequest):
             request = pubsub.PublishRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1127,8 +1133,8 @@ class PublisherClient(metaclass=PublisherClientMeta):
                 A topic resource.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([topic])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1136,10 +1142,8 @@ class PublisherClient(metaclass=PublisherClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a pubsub.GetTopicRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, pubsub.GetTopicRequest):
             request = pubsub.GetTopicRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1235,8 +1239,8 @@ class PublisherClient(metaclass=PublisherClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1244,10 +1248,8 @@ class PublisherClient(metaclass=PublisherClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a pubsub.ListTopicsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, pubsub.ListTopicsRequest):
             request = pubsub.ListTopicsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1354,8 +1356,8 @@ class PublisherClient(metaclass=PublisherClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([topic])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1363,10 +1365,8 @@ class PublisherClient(metaclass=PublisherClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a pubsub.ListTopicSubscriptionsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, pubsub.ListTopicSubscriptionsRequest):
             request = pubsub.ListTopicSubscriptionsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1477,8 +1477,8 @@ class PublisherClient(metaclass=PublisherClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([topic])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1486,10 +1486,8 @@ class PublisherClient(metaclass=PublisherClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a pubsub.ListTopicSnapshotsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, pubsub.ListTopicSnapshotsRequest):
             request = pubsub.ListTopicSnapshotsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1587,8 +1585,8 @@ class PublisherClient(metaclass=PublisherClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([topic])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1596,10 +1594,8 @@ class PublisherClient(metaclass=PublisherClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a pubsub.DeleteTopicRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, pubsub.DeleteTopicRequest):
             request = pubsub.DeleteTopicRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1686,10 +1682,8 @@ class PublisherClient(metaclass=PublisherClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a pubsub.DetachSubscriptionRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, pubsub.DetachSubscriptionRequest):
             request = pubsub.DetachSubscriptionRequest(request)
 

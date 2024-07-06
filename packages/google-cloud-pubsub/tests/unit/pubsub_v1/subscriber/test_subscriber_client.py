@@ -299,9 +299,10 @@ async def test_sync_pull_warning_if_return_immediately_async(creds):
     client = SubscriberAsyncClient(credentials=creds)
     subscription_path = "projects/foo/subscriptions/bar"
 
-    patcher = mock.patch(
-        "google.pubsub_v1.services.subscriber.async_client.gapic_v1.method_async.wrap_method",
-        new=mock.AsyncMock,
+    patcher = mock.patch.object(
+        type(client.transport.pull),
+        "__call__",
+        new_callable=mock.AsyncMock,
     )
 
     with patcher, pytest.warns(

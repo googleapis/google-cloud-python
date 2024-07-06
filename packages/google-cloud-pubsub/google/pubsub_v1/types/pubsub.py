@@ -1302,6 +1302,14 @@ class BigQueryConfig(proto.Message):
             Optional. When true, use the BigQuery table's schema as the
             columns to write to in BigQuery. ``use_table_schema`` and
             ``use_topic_schema`` cannot be enabled at the same time.
+        service_account_email (str):
+            Optional. The service account to use to write to BigQuery.
+            The subscription creator or updater that specifies this
+            field must have ``iam.serviceAccounts.actAs`` permission on
+            the service account. If not specified, the Pub/Sub `service
+            agent <https://cloud.google.com/iam/docs/service-agents>`__,
+            service-{project_number}@gcp-sa-pubsub.iam.gserviceaccount.com,
+            is used.
     """
 
     class State(proto.Enum):
@@ -1366,6 +1374,10 @@ class BigQueryConfig(proto.Message):
         proto.BOOL,
         number=6,
     )
+    service_account_email: str = proto.Field(
+        proto.STRING,
+        number=7,
+    )
 
 
 class CloudStorageConfig(proto.Message):
@@ -1424,6 +1436,15 @@ class CloudStorageConfig(proto.Message):
             Output only. An output-only field that
             indicates whether or not the subscription can
             receive messages.
+        service_account_email (str):
+            Optional. The service account to use to write to Cloud
+            Storage. The subscription creator or updater that specifies
+            this field must have ``iam.serviceAccounts.actAs``
+            permission on the service account. If not specified, the
+            Pub/Sub `service
+            agent <https://cloud.google.com/iam/docs/service-agents>`__,
+            service-{project_number}@gcp-sa-pubsub.iam.gserviceaccount.com,
+            is used.
     """
 
     class State(proto.Enum):
@@ -1445,12 +1466,17 @@ class CloudStorageConfig(proto.Message):
                 Cannot write to the destination because enforce_in_transit
                 is set to true and the destination locations are not in the
                 allowed regions.
+            SCHEMA_MISMATCH (5):
+                Cannot write to the Cloud Storage bucket due
+                to an incompatibility between the topic schema
+                and subscription settings.
         """
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         PERMISSION_DENIED = 2
         NOT_FOUND = 3
         IN_TRANSIT_LOCATION_RESTRICTION = 4
+        SCHEMA_MISMATCH = 5
 
     class TextConfig(proto.Message):
         r"""Configuration for writing message data in text format.
@@ -1473,11 +1499,19 @@ class CloudStorageConfig(proto.Message):
                 fields while all other message properties other than data
                 (for example, an ordering_key, if present) are added as
                 entries in the attributes map.
+            use_topic_schema (bool):
+                Optional. When true, the output Cloud Storage
+                file will be serialized using the topic schema,
+                if it exists.
         """
 
         write_metadata: bool = proto.Field(
             proto.BOOL,
             number=1,
+        )
+        use_topic_schema: bool = proto.Field(
+            proto.BOOL,
+            number=2,
         )
 
     bucket: str = proto.Field(
@@ -1521,6 +1555,10 @@ class CloudStorageConfig(proto.Message):
         proto.ENUM,
         number=9,
         enum=State,
+    )
+    service_account_email: str = proto.Field(
+        proto.STRING,
+        number=11,
     )
 
 

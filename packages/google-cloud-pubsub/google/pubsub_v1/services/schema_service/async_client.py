@@ -18,6 +18,7 @@ import functools
 import re
 from typing import (
     Dict,
+    Callable,
     Mapping,
     MutableMapping,
     MutableSequence,
@@ -36,6 +37,7 @@ from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
 
 try:
     OptionalRetry = Union[retries.AsyncRetry, gapic_v1.method._MethodDefault, None]
@@ -197,7 +199,9 @@ class SchemaServiceAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, SchemaServiceTransport] = "grpc_asyncio",
+        transport: Optional[
+            Union[str, SchemaServiceTransport, Callable[..., SchemaServiceTransport]]
+        ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -209,9 +213,11 @@ class SchemaServiceAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.SchemaServiceTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,SchemaServiceTransport,Callable[..., SchemaServiceTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the SchemaServiceTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -340,8 +346,8 @@ class SchemaServiceAsyncClient:
                 A schema resource.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, schema, schema_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -349,7 +355,10 @@ class SchemaServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gp_schema.CreateSchemaRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gp_schema.CreateSchemaRequest):
+            request = gp_schema.CreateSchemaRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -362,20 +371,9 @@ class SchemaServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_schema,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_schema
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -455,8 +453,8 @@ class SchemaServiceAsyncClient:
                 A schema resource.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -464,7 +462,10 @@ class SchemaServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = schema.GetSchemaRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, schema.GetSchemaRequest):
+            request = schema.GetSchemaRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -473,20 +474,9 @@ class SchemaServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_schema,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_schema
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -571,8 +561,8 @@ class SchemaServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -580,7 +570,10 @@ class SchemaServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = schema.ListSchemasRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, schema.ListSchemasRequest):
+            request = schema.ListSchemasRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -589,20 +582,9 @@ class SchemaServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_schemas,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_schemas
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -696,8 +678,8 @@ class SchemaServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -705,7 +687,10 @@ class SchemaServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = schema.ListSchemaRevisionsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, schema.ListSchemaRevisionsRequest):
+            request = schema.ListSchemaRevisionsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -714,20 +699,9 @@ class SchemaServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_schema_revisions,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_schema_revisions
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -828,8 +802,8 @@ class SchemaServiceAsyncClient:
                 A schema resource.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, schema])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -837,7 +811,10 @@ class SchemaServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gp_schema.CommitSchemaRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gp_schema.CommitSchemaRequest):
+            request = gp_schema.CommitSchemaRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -848,20 +825,9 @@ class SchemaServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.commit_schema,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.commit_schema
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -954,8 +920,8 @@ class SchemaServiceAsyncClient:
                 A schema resource.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, revision_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -963,7 +929,10 @@ class SchemaServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = schema.RollbackSchemaRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, schema.RollbackSchemaRequest):
+            request = schema.RollbackSchemaRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -974,20 +943,9 @@ class SchemaServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.rollback_schema,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.rollback_schema
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1078,8 +1036,8 @@ class SchemaServiceAsyncClient:
                 A schema resource.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, revision_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1087,7 +1045,10 @@ class SchemaServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = schema.DeleteSchemaRevisionRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, schema.DeleteSchemaRevisionRequest):
+            request = schema.DeleteSchemaRevisionRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1098,20 +1059,9 @@ class SchemaServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_schema_revision,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_schema_revision
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1184,8 +1134,8 @@ class SchemaServiceAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1193,7 +1143,10 @@ class SchemaServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = schema.DeleteSchemaRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, schema.DeleteSchemaRequest):
+            request = schema.DeleteSchemaRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1202,20 +1155,9 @@ class SchemaServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_schema,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_schema
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1306,8 +1248,8 @@ class SchemaServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, schema])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1315,7 +1257,10 @@ class SchemaServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gp_schema.ValidateSchemaRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gp_schema.ValidateSchemaRequest):
+            request = gp_schema.ValidateSchemaRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1326,20 +1271,9 @@ class SchemaServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.validate_schema,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.validate_schema
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1414,24 +1348,16 @@ class SchemaServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = schema.ValidateMessageRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, schema.ValidateMessageRequest):
+            request = schema.ValidateMessageRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.validate_message,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.validate_message
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.

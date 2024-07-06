@@ -19,6 +19,7 @@ import os
 import re
 from typing import (
     Dict,
+    Callable,
     Mapping,
     MutableMapping,
     MutableSequence,
@@ -528,7 +529,9 @@ class SchemaServiceClient(metaclass=SchemaServiceClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, SchemaServiceTransport]] = None,
+        transport: Optional[
+            Union[str, SchemaServiceTransport, Callable[..., SchemaServiceTransport]]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -540,9 +543,11 @@ class SchemaServiceClient(metaclass=SchemaServiceClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, SchemaServiceTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,SchemaServiceTransport,Callable[..., SchemaServiceTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the SchemaServiceTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -651,17 +656,24 @@ class SchemaServiceClient(metaclass=SchemaServiceClientMeta):
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
+            transport_init: Union[
+                Type[SchemaServiceTransport], Callable[..., SchemaServiceTransport]
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., SchemaServiceTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
 
             emulator_host = os.environ.get("PUBSUB_EMULATOR_HOST")
             if emulator_host:
-                if issubclass(Transport, type(self)._transport_registry["grpc"]):
+                if issubclass(transport_init, type(self)._transport_registry["grpc"]):
                     channel = grpc.insecure_channel(target=emulator_host)
                 else:
                     channel = grpc.aio.insecure_channel(target=emulator_host)
-                Transport = functools.partial(Transport, channel=channel)
+                transport_init = functools.partial(transport_init, channel=channel)
 
-            self._transport = Transport(
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -758,8 +770,8 @@ class SchemaServiceClient(metaclass=SchemaServiceClientMeta):
                 A schema resource.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, schema, schema_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -767,10 +779,8 @@ class SchemaServiceClient(metaclass=SchemaServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gp_schema.CreateSchemaRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gp_schema.CreateSchemaRequest):
             request = gp_schema.CreateSchemaRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -864,8 +874,8 @@ class SchemaServiceClient(metaclass=SchemaServiceClientMeta):
                 A schema resource.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -873,10 +883,8 @@ class SchemaServiceClient(metaclass=SchemaServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a schema.GetSchemaRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, schema.GetSchemaRequest):
             request = schema.GetSchemaRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -971,8 +979,8 @@ class SchemaServiceClient(metaclass=SchemaServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -980,10 +988,8 @@ class SchemaServiceClient(metaclass=SchemaServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a schema.ListSchemasRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, schema.ListSchemasRequest):
             request = schema.ListSchemasRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1087,8 +1093,8 @@ class SchemaServiceClient(metaclass=SchemaServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1096,10 +1102,8 @@ class SchemaServiceClient(metaclass=SchemaServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a schema.ListSchemaRevisionsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, schema.ListSchemaRevisionsRequest):
             request = schema.ListSchemaRevisionsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1210,8 +1214,8 @@ class SchemaServiceClient(metaclass=SchemaServiceClientMeta):
                 A schema resource.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, schema])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1219,10 +1223,8 @@ class SchemaServiceClient(metaclass=SchemaServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gp_schema.CommitSchemaRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gp_schema.CommitSchemaRequest):
             request = gp_schema.CommitSchemaRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1327,8 +1329,8 @@ class SchemaServiceClient(metaclass=SchemaServiceClientMeta):
                 A schema resource.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, revision_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1336,10 +1338,8 @@ class SchemaServiceClient(metaclass=SchemaServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a schema.RollbackSchemaRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, schema.RollbackSchemaRequest):
             request = schema.RollbackSchemaRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1442,8 +1442,8 @@ class SchemaServiceClient(metaclass=SchemaServiceClientMeta):
                 A schema resource.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, revision_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1451,10 +1451,8 @@ class SchemaServiceClient(metaclass=SchemaServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a schema.DeleteSchemaRevisionRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, schema.DeleteSchemaRevisionRequest):
             request = schema.DeleteSchemaRevisionRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1539,8 +1537,8 @@ class SchemaServiceClient(metaclass=SchemaServiceClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1548,10 +1546,8 @@ class SchemaServiceClient(metaclass=SchemaServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a schema.DeleteSchemaRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, schema.DeleteSchemaRequest):
             request = schema.DeleteSchemaRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1652,8 +1648,8 @@ class SchemaServiceClient(metaclass=SchemaServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, schema])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1661,10 +1657,8 @@ class SchemaServiceClient(metaclass=SchemaServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gp_schema.ValidateSchemaRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gp_schema.ValidateSchemaRequest):
             request = gp_schema.ValidateSchemaRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1751,10 +1745,8 @@ class SchemaServiceClient(metaclass=SchemaServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a schema.ValidateMessageRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, schema.ValidateMessageRequest):
             request = schema.ValidateMessageRequest(request)
 
