@@ -42,11 +42,11 @@ class datastoreCallTransformer(cst.CSTTransformer):
         'allocate_ids': ('project_id', 'keys', 'database_id', ),
         'begin_transaction': ('project_id', 'database_id', 'transaction_options', ),
         'commit': ('project_id', 'database_id', 'mode', 'transaction', 'single_use_transaction', 'mutations', ),
-        'lookup': ('project_id', 'keys', 'database_id', 'read_options', ),
+        'lookup': ('project_id', 'keys', 'database_id', 'read_options', 'property_mask', ),
         'reserve_ids': ('project_id', 'keys', 'database_id', ),
         'rollback': ('project_id', 'transaction', 'database_id', ),
         'run_aggregation_query': ('project_id', 'database_id', 'partition_id', 'read_options', 'aggregation_query', 'gql_query', 'explain_options', ),
-        'run_query': ('project_id', 'database_id', 'partition_id', 'read_options', 'query', 'gql_query', 'explain_options', ),
+        'run_query': ('project_id', 'database_id', 'partition_id', 'read_options', 'query', 'gql_query', 'property_mask', 'explain_options', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:

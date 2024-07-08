@@ -18,6 +18,7 @@ import functools
 import re
 from typing import (
     Dict,
+    Callable,
     Mapping,
     MutableMapping,
     MutableSequence,
@@ -36,6 +37,7 @@ from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
 
 try:
     OptionalRetry = Union[retries.AsyncRetry, gapic_v1.method._MethodDefault, None]
@@ -197,7 +199,9 @@ class DatastoreAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, DatastoreTransport] = "grpc_asyncio",
+        transport: Optional[
+            Union[str, DatastoreTransport, Callable[..., DatastoreTransport]]
+        ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -209,9 +213,11 @@ class DatastoreAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.DatastoreTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,DatastoreTransport,Callable[..., DatastoreTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the DatastoreTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -330,8 +336,8 @@ class DatastoreAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project_id, read_options, keys])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -339,7 +345,10 @@ class DatastoreAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = datastore.LookupRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, datastore.LookupRequest):
+            request = datastore.LookupRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -352,21 +361,7 @@ class DatastoreAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.lookup,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[self._client._transport.lookup]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -443,25 +438,16 @@ class DatastoreAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = datastore.RunQueryRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, datastore.RunQueryRequest):
+            request = datastore.RunQueryRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.run_query,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.run_query
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -538,25 +524,16 @@ class DatastoreAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = datastore.RunAggregationQueryRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, datastore.RunAggregationQueryRequest):
+            request = datastore.RunAggregationQueryRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.run_aggregation_query,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.run_aggregation_query
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -641,8 +618,8 @@ class DatastoreAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -650,7 +627,10 @@ class DatastoreAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = datastore.BeginTransactionRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, datastore.BeginTransactionRequest):
+            request = datastore.BeginTransactionRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -659,11 +639,9 @@ class DatastoreAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.begin_transaction,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.begin_transaction
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -788,8 +766,8 @@ class DatastoreAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project_id, mode, transaction, mutations])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -797,7 +775,10 @@ class DatastoreAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = datastore.CommitRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, datastore.CommitRequest):
+            request = datastore.CommitRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -812,11 +793,7 @@ class DatastoreAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.commit,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[self._client._transport.commit]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -912,8 +889,8 @@ class DatastoreAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project_id, transaction])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -921,7 +898,10 @@ class DatastoreAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = datastore.RollbackRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, datastore.RollbackRequest):
+            request = datastore.RollbackRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -932,11 +912,7 @@ class DatastoreAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.rollback,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[self._client._transport.rollback]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1032,8 +1008,8 @@ class DatastoreAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project_id, keys])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1041,7 +1017,10 @@ class DatastoreAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = datastore.AllocateIdsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, datastore.AllocateIdsRequest):
+            request = datastore.AllocateIdsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1052,11 +1031,9 @@ class DatastoreAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.allocate_ids,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.allocate_ids
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1151,8 +1128,8 @@ class DatastoreAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project_id, keys])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1160,7 +1137,10 @@ class DatastoreAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = datastore.ReserveIdsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, datastore.ReserveIdsRequest):
+            request = datastore.ReserveIdsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1171,21 +1151,9 @@ class DatastoreAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.reserve_ids,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.reserve_ids
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.

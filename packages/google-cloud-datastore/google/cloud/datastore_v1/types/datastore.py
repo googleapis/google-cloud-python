@@ -47,6 +47,7 @@ __protobuf__ = proto.module(
         "ReserveIdsResponse",
         "Mutation",
         "MutationResult",
+        "PropertyMask",
         "ReadOptions",
         "TransactionOptions",
     },
@@ -70,6 +71,15 @@ class LookupRequest(proto.Message):
             The options for this lookup request.
         keys (MutableSequence[google.cloud.datastore_v1.types.Key]):
             Required. Keys of entities to look up.
+        property_mask (google.cloud.datastore_v1.types.PropertyMask):
+            The properties to return. Defaults to returning all
+            properties.
+
+            If this field is set and an entity has a property not
+            referenced in the mask, it will be absent from
+            [LookupResponse.found.entity.properties][].
+
+            The entity's key is always returned.
     """
 
     project_id: str = proto.Field(
@@ -89,6 +99,11 @@ class LookupRequest(proto.Message):
         proto.MESSAGE,
         number=3,
         message=entity.Key,
+    )
+    property_mask: "PropertyMask" = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message="PropertyMask",
     )
 
 
@@ -186,6 +201,12 @@ class RunQueryRequest(proto.Message):
             non-aggregation query.
 
             This field is a member of `oneof`_ ``query_type``.
+        property_mask (google.cloud.datastore_v1.types.PropertyMask):
+            The properties to return. This field must not be set for a
+            projection query.
+
+            See
+            [LookupRequest.property_mask][google.datastore.v1.LookupRequest.property_mask].
         explain_options (google.cloud.datastore_v1.types.ExplainOptions):
             Optional. Explain options for the query. If
             set, additional query statistics will be
@@ -222,6 +243,11 @@ class RunQueryRequest(proto.Message):
         number=7,
         oneof="query_type",
         message=gd_query.GqlQuery,
+    )
+    property_mask: "PropertyMask" = proto.Field(
+        proto.MESSAGE,
+        number=10,
+        message="PropertyMask",
     )
     explain_options: query_profile.ExplainOptions = proto.Field(
         proto.MESSAGE,
@@ -770,6 +796,14 @@ class Mutation(proto.Message):
             mutation conflicts.
 
             This field is a member of `oneof`_ ``conflict_detection_strategy``.
+        property_mask (google.cloud.datastore_v1.types.PropertyMask):
+            The properties to write in this mutation. None of the
+            properties in the mask may have a reserved name, except for
+            ``__key__``. This field is ignored for ``delete``.
+
+            If the entity already exists, only properties referenced in
+            the mask are updated, others are left untouched. Properties
+            referenced in the mask but not in the entity are deleted.
     """
 
     insert: entity.Entity = proto.Field(
@@ -806,6 +840,11 @@ class Mutation(proto.Message):
         number=11,
         oneof="conflict_detection_strategy",
         message=timestamp_pb2.Timestamp,
+    )
+    property_mask: "PropertyMask" = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message="PropertyMask",
     )
 
 
@@ -863,6 +902,33 @@ class MutationResult(proto.Message):
     conflict_detected: bool = proto.Field(
         proto.BOOL,
         number=5,
+    )
+
+
+class PropertyMask(proto.Message):
+    r"""The set of arbitrarily nested property paths used to restrict
+    an operation to only a subset of properties in an entity.
+
+    Attributes:
+        paths (MutableSequence[str]):
+            The paths to the properties covered by this mask.
+
+            A path is a list of property names separated by dots
+            (``.``), for example ``foo.bar`` means the property ``bar``
+            inside the entity property ``foo`` inside the entity
+            associated with this path.
+
+            If a property name contains a dot ``.`` or a backslash
+            ``\``, then that name must be escaped.
+
+            A path must not be empty, and may not reference a value
+            inside an [array
+            value][google.datastore.v1.Value.array_value].
+    """
+
+    paths: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=1,
     )
 
 

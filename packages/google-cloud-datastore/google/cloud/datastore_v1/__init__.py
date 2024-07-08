@@ -33,6 +33,7 @@ from .types.datastore import LookupRequest
 from .types.datastore import LookupResponse
 from .types.datastore import Mutation
 from .types.datastore import MutationResult
+from .types.datastore import PropertyMask
 from .types.datastore import ReadOptions
 from .types.datastore import ReserveIdsRequest
 from .types.datastore import ReserveIdsResponse
@@ -98,6 +99,7 @@ __all__ = (
     "PlanSummary",
     "Projection",
     "PropertyFilter",
+    "PropertyMask",
     "PropertyOrder",
     "PropertyReference",
     "Query",
