@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-oslogin/#history
 
+## [2.14.5](https://github.com/googleapis/google-cloud-python/compare/google-cloud-os-login-v2.14.4...google-cloud-os-login-v2.14.5) (2024-07-08)
+
+
+### Bug Fixes
+
+* Allow Protobuf 5.x ([#12868](https://github.com/googleapis/google-cloud-python/issues/12868)) ([0e39c1a](https://github.com/googleapis/google-cloud-python/commit/0e39c1a0ab46757bcf80a178d9bd422f6dcb24c6))
+
 ## [2.14.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-os-login-v2.14.3...google-cloud-os-login-v2.14.4) (2024-06-27)
 
 

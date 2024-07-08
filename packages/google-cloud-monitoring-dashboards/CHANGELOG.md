@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.15.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-monitoring-dashboards-v2.15.1...google-cloud-monitoring-dashboards-v2.15.2) (2024-07-08)
+
+
+### Bug Fixes
+
+* Allow Protobuf 5.x ([#12867](https://github.com/googleapis/google-cloud-python/issues/12867)) ([3362176](https://github.com/googleapis/google-cloud-python/commit/33621762b989106ccf85adb538cf531c513a746c))
+
 ## [2.15.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-monitoring-dashboards-v2.15.0...google-cloud-monitoring-dashboards-v2.15.1) (2024-03-05)
 
 
