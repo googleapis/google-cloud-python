@@ -177,6 +177,9 @@ def place_before(path, text, *before_text, escape=None):
 open_telemetry_test = """
     # XXX Work around Kokoro image's older pip, which borks the OT install.
     session.run("pip", "install", "--upgrade", "pip")
+    constraints_path = str(
+        CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
+    )
     session.install("-e", ".[tracing]", "-c", constraints_path)
     # XXX: Dump installed versions to debug OT issue
     session.run("pip", "list")
@@ -239,33 +242,69 @@ def system\(session\):""",
 def system(session, database_dialect):""",
 )
 
-s.replace("noxfile.py",
-    """system_test_path,
-            \*session.posargs,""",
-    """system_test_path,
-             *session.posargs,
+s.replace(
+    "noxfile.py",
+    """\*session.posargs,
+        \)""",
+    """*session.posargs,
             env={
                 "SPANNER_DATABASE_DIALECT": database_dialect,
                 "SKIP_BACKUP_TESTS": "true",
-            },"""
+            },
+        )""",
 )
 
 s.replace("noxfile.py",
-    """system_test_folder_path,
-            \*session.posargs,""",
-    """system_test_folder_path,
-             *session.posargs,
-            env={
+    """env={
+                "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
+            },""",
+    """env={
+                "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
                 "SPANNER_DATABASE_DIALECT": database_dialect,
                 "SKIP_BACKUP_TESTS": "true",
-            },"""
+            },""",
+)
+
+s.replace("noxfile.py",
+"""session.run\(
+        "py.test",
+        "tests/unit",
+        env={
+            "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
+        },
+    \)""",
+"""session.run(
+        "py.test",
+        "tests/unit",
+        env={
+            "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
+            "SPANNER_DATABASE_DIALECT": database_dialect,
+            "SKIP_BACKUP_TESTS": "true",
+        },
+    )""",
 )
 
 s.replace(
     "noxfile.py",
-    """def prerelease_deps\(session\):""",
-    """@nox.parametrize("database_dialect", ["GOOGLE_STANDARD_SQL", "POSTGRESQL"])
-def prerelease_deps(session, database_dialect):"""
+    """\@nox.session\(python="3.12"\)
+\@nox.parametrize\(
+    "protobuf_implementation",
+    \[ "python", "upb", "cpp" \],
+\)
+def prerelease_deps\(session, protobuf_implementation\):""",
+    """@nox.session(python="3.12")
+@nox.parametrize(
+    "protobuf_implementation,database_dialect",
+    [
+        ("python", "GOOGLE_STANDARD_SQL"),
+        ("python", "POSTGRESQL"),
+        ("upb", "GOOGLE_STANDARD_SQL"),
+        ("upb", "POSTGRESQL"),
+        ("cpp", "GOOGLE_STANDARD_SQL"),
+        ("cpp", "POSTGRESQL"),
+    ],
+)
+def prerelease_deps(session, protobuf_implementation, database_dialect):""",
 )
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)

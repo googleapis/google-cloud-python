@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2023 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -160,32 +160,11 @@ def install_unittest_dependencies(session, *constraints):
     else:
         session.install("-e", ".", *constraints)
 
-
-def default(session):
-    # Install all test dependencies, then install this package in-place.
-
+    # XXX Work around Kokoro image's older pip, which borks the OT install.
+    session.run("pip", "install", "--upgrade", "pip")
     constraints_path = str(
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
     )
-    install_unittest_dependencies(session, "-c", constraints_path)
-
-    # Run py.test against the unit tests.
-    session.run(
-        "py.test",
-        "--quiet",
-        f"--junitxml=unit_{session.python}_sponge_log.xml",
-        "--cov=google",
-        "--cov=tests/unit",
-        "--cov-append",
-        "--cov-config=.coveragerc",
-        "--cov-report=",
-        "--cov-fail-under=0",
-        os.path.join("tests", "unit"),
-        *session.posargs,
-    )
-
-    # XXX Work around Kokoro image's older pip, which borks the OT install.
-    session.run("pip", "install", "--upgrade", "pip")
     session.install("-e", ".[tracing]", "-c", constraints_path)
     # XXX: Dump installed versions to debug OT issue
     session.run("pip", "list")
@@ -207,9 +186,44 @@ def default(session):
 
 
 @nox.session(python=UNIT_TEST_PYTHON_VERSIONS)
-def unit(session):
-    """Run the unit test suite."""
-    default(session)
+@nox.parametrize(
+    "protobuf_implementation",
+    ["python", "upb", "cpp"],
+)
+def unit(session, protobuf_implementation):
+    # Install all test dependencies, then install this package in-place.
+
+    if protobuf_implementation == "cpp" and session.python in ("3.11", "3.12"):
+        session.skip("cpp implementation is not supported in python 3.11+")
+
+    constraints_path = str(
+        CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
+    )
+    install_unittest_dependencies(session, "-c", constraints_path)
+
+    # TODO(https://github.com/googleapis/synthtool/issues/1976):
+    # Remove the 'cpp' implementation once support for Protobuf 3.x is dropped.
+    # The 'cpp' implementation requires Protobuf<4.
+    if protobuf_implementation == "cpp":
+        session.install("protobuf<4")
+
+    # Run py.test against the unit tests.
+    session.run(
+        "py.test",
+        "--quiet",
+        f"--junitxml=unit_{session.python}_sponge_log.xml",
+        "--cov=google",
+        "--cov=tests/unit",
+        "--cov-append",
+        "--cov-config=.coveragerc",
+        "--cov-report=",
+        "--cov-fail-under=0",
+        os.path.join("tests", "unit"),
+        *session.posargs,
+        env={
+            "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
+        },
+    )
 
 
 def install_systemtest_dependencies(session, *constraints):
@@ -399,10 +413,23 @@ def docfx(session):
     )
 
 
-@nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)
-@nox.parametrize("database_dialect", ["GOOGLE_STANDARD_SQL", "POSTGRESQL"])
-def prerelease_deps(session, database_dialect):
+@nox.session(python="3.12")
+@nox.parametrize(
+    "protobuf_implementation,database_dialect",
+    [
+        ("python", "GOOGLE_STANDARD_SQL"),
+        ("python", "POSTGRESQL"),
+        ("upb", "GOOGLE_STANDARD_SQL"),
+        ("upb", "POSTGRESQL"),
+        ("cpp", "GOOGLE_STANDARD_SQL"),
+        ("cpp", "POSTGRESQL"),
+    ],
+)
+def prerelease_deps(session, protobuf_implementation, database_dialect):
     """Run all tests with prerelease versions of dependencies installed."""
+
+    if protobuf_implementation == "cpp" and session.python in ("3.11", "3.12"):
+        session.skip("cpp implementation is not supported in python 3.11+")
 
     # Install all dependencies
     session.install("-e", ".[all, tests, tracing]")
@@ -438,9 +465,9 @@ def prerelease_deps(session, database_dialect):
         "protobuf",
         # dependency of grpc
         "six",
+        "grpc-google-iam-v1",
         "googleapis-common-protos",
-        # Exclude version 1.52.0rc1 which has a known issue. See https://github.com/grpc/grpc/issues/32163
-        "grpcio!=1.52.0rc1",
+        "grpcio",
         "grpcio-status",
         "google-api-core",
         "google-auth",
@@ -466,7 +493,15 @@ def prerelease_deps(session, database_dialect):
     session.run("python", "-c", "import grpc; print(grpc.__version__)")
     session.run("python", "-c", "import google.auth; print(google.auth.__version__)")
 
-    session.run("py.test", "tests/unit")
+    session.run(
+        "py.test",
+        "tests/unit",
+        env={
+            "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
+            "SPANNER_DATABASE_DIALECT": database_dialect,
+            "SKIP_BACKUP_TESTS": "true",
+        },
+    )
 
     system_test_path = os.path.join("tests", "system.py")
     system_test_folder_path = os.path.join("tests", "system")
@@ -480,6 +515,7 @@ def prerelease_deps(session, database_dialect):
             system_test_path,
             *session.posargs,
             env={
+                "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
                 "SPANNER_DATABASE_DIALECT": database_dialect,
                 "SKIP_BACKUP_TESTS": "true",
             },
@@ -492,6 +528,7 @@ def prerelease_deps(session, database_dialect):
             system_test_folder_path,
             *session.posargs,
             env={
+                "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
                 "SPANNER_DATABASE_DIALECT": database_dialect,
                 "SKIP_BACKUP_TESTS": "true",
             },
