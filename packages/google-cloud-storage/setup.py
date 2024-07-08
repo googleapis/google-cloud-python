@@ -36,7 +36,7 @@ dependencies = [
     "google-crc32c >= 1.0, < 2.0dev",
 ]
 extras = {
-    "protobuf": ["protobuf<5.0.0dev"],
+    "protobuf": ["protobuf<6.0.0dev"],
     "tracing": [
         "opentelemetry-api >= 1.1.0",
     ],
