@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.32.0](https://github.com/googleapis/google-auth-library-python/compare/v2.31.0...v2.32.0) (2024-07-08)
+
+
+### Features
+
+* Adds support for X509 workload credential type ([#1541](https://github.com/googleapis/google-auth-library-python/issues/1541)) ([1270217](https://github.com/googleapis/google-auth-library-python/commit/1270217556a0249b6be8824e2b6209371f24e400))
+
 ## [2.31.0](https://github.com/googleapis/google-auth-library-python/compare/v2.30.0...v2.31.0) (2024-06-27)
 
 
