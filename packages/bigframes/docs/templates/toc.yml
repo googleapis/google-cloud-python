@@ -204,4 +204,3 @@
       uid: bigframes.bigquery
     name: bigframes.bigquery
   name: BigQuery DataFrames
-  status: beta
