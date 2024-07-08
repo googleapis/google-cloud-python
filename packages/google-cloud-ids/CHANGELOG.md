@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-ids-v1.7.3...google-cloud-ids-v1.7.4) (2024-07-08)
+
+
+### Bug Fixes
+
+* Allow Protobuf 5.x ([#12867](https://github.com/googleapis/google-cloud-python/issues/12867)) ([3362176](https://github.com/googleapis/google-cloud-python/commit/33621762b989106ccf85adb538cf531c513a746c))
+
 ## [1.7.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-ids-v1.7.2...google-cloud-ids-v1.7.3) (2024-03-05)
 
 
