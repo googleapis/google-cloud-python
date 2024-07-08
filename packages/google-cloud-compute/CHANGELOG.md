@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.19.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-compute-v1.19.0...google-cloud-compute-v1.19.1) (2024-07-08)
+
+
+### Bug Fixes
+
+* Allow protobuf 5.x ([04ec204](https://github.com/googleapis/google-cloud-python/commit/04ec2046ed11c690273912e1bb6220823c7dd7c0))
+
 ## [1.19.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-compute-v1.18.0...google-cloud-compute-v1.19.0) (2024-05-16)
 
 

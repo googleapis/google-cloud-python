@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-container/#history
 
+## [2.47.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-container-v2.47.0...google-cloud-container-v2.47.1) (2024-07-08)
+
+
+### Bug Fixes
+
+* [google-cloud-container] Deprecate "EXPERIMENTAL" option for Gateway API (this value has never been supported) ([#12856](https://github.com/googleapis/google-cloud-python/issues/12856)) ([6bbe99f](https://github.com/googleapis/google-cloud-python/commit/6bbe99f04005b7bd119023941b9a9d6788c04111))
+* Allow Protobuf 5.x ([#12865](https://github.com/googleapis/google-cloud-python/issues/12865)) ([7f9dedb](https://github.com/googleapis/google-cloud-python/commit/7f9dedb3abc7636cbcd97e21ac857844b885b599))
+
 ## [2.47.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-container-v2.46.0...google-cloud-container-v2.47.0) (2024-06-10)
 
 

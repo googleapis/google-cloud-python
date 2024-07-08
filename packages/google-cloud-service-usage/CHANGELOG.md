@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.10.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-service-usage-v1.10.3...google-cloud-service-usage-v1.10.4) (2024-07-08)
+
+
+### Bug Fixes
+
+* Allow Protobuf 5.x ([#12869](https://github.com/googleapis/google-cloud-python/issues/12869)) ([e42edbc](https://github.com/googleapis/google-cloud-python/commit/e42edbcf7f4d8ed66b6645c96a01c55fb8cd7666))
+
 ## [1.10.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-service-usage-v1.10.2...google-cloud-service-usage-v1.10.3) (2024-03-05)
 
 

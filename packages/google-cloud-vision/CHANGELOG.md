@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-vision/#history
 
+## [3.7.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-vision-v3.7.2...google-cloud-vision-v3.7.3) (2024-07-08)
+
+
+### Bug Fixes
+
+* Allow Protobuf 5.x ([#12870](https://github.com/googleapis/google-cloud-python/issues/12870)) ([4d16761](https://github.com/googleapis/google-cloud-python/commit/4d16761640dd8e35410b3219b7d675d7668d2f88))
+
 ## [3.7.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-vision-v3.7.1...google-cloud-vision-v3.7.2) (2024-03-05)
 
 

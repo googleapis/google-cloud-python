@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.16.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-functions-v1.16.3...google-cloud-functions-v1.16.4) (2024-07-08)
+
+
+### Bug Fixes
+
+* Allow Protobuf 5.x ([#12866](https://github.com/googleapis/google-cloud-python/issues/12866)) ([40e1810](https://github.com/googleapis/google-cloud-python/commit/40e18101eaaeefe4baa090c3b4f7a96209ea5735))
+
 ## [1.16.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-functions-v1.16.2...google-cloud-functions-v1.16.3) (2024-03-05)
 
 

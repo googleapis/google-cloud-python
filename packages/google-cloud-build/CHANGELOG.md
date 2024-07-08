@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-build/#history
 
+## [3.24.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-build-v3.24.0...google-cloud-build-v3.24.1) (2024-07-08)
+
+
+### Bug Fixes
+
+* Allow Protobuf 5.x ([#12865](https://github.com/googleapis/google-cloud-python/issues/12865)) ([7f9dedb](https://github.com/googleapis/google-cloud-python/commit/7f9dedb3abc7636cbcd97e21ac857844b885b599))
+
 ## [3.24.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-build-v3.23.3...google-cloud-build-v3.24.0) (2024-03-22)
 
 

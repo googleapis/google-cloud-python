@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.12](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-data-exchange-v0.5.11...google-cloud-bigquery-data-exchange-v0.5.12) (2024-07-08)
+
+
+### Bug Fixes
+
+* Allow Protobuf 5.x ([#12864](https://github.com/googleapis/google-cloud-python/issues/12864)) ([728b307](https://github.com/googleapis/google-cloud-python/commit/728b307ed0cc497685507a219e913f002f097132))
+
 ## [0.5.11](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-data-exchange-v0.5.10...google-cloud-bigquery-data-exchange-v0.5.11) (2024-03-05)
 
 

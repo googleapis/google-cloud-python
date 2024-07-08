@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-trace/#history
 
+## [1.13.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-trace-v1.13.3...google-cloud-trace-v1.13.4) (2024-07-08)
+
+
+### Bug Fixes
+
+* Allow Protobuf 5.x ([#12870](https://github.com/googleapis/google-cloud-python/issues/12870)) ([4d16761](https://github.com/googleapis/google-cloud-python/commit/4d16761640dd8e35410b3219b7d675d7668d2f88))
+
 ## [1.13.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-trace-v1.13.2...google-cloud-trace-v1.13.3) (2024-03-05)
 
 

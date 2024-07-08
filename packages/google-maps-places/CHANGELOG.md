@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.16](https://github.com/googleapis/google-cloud-python/compare/google-maps-places-v0.1.15...google-maps-places-v0.1.16) (2024-07-08)
+
+
+### Bug Fixes
+
+* Allow Protobuf 5.x ([#12871](https://github.com/googleapis/google-cloud-python/issues/12871)) ([73b35d5](https://github.com/googleapis/google-cloud-python/commit/73b35d56f8626d99ce7c3902a8c223cc09b4ca74))
+
 ## [0.1.15](https://github.com/googleapis/google-cloud-python/compare/google-maps-places-v0.1.14...google-maps-places-v0.1.15) (2024-05-27)
 
 

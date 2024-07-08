@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/dialogflow/#history
 
+## [2.30.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dialogflow-v2.30.0...google-cloud-dialogflow-v2.30.1) (2024-07-08)
+
+
+### Bug Fixes
+
+* Allow Protobuf 5.x ([#12866](https://github.com/googleapis/google-cloud-python/issues/12866)) ([40e1810](https://github.com/googleapis/google-cloud-python/commit/40e18101eaaeefe4baa090c3b4f7a96209ea5735))
+
 ## [2.30.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dialogflow-v2.29.0...google-cloud-dialogflow-v2.30.0) (2024-03-22)
 
 
