@@ -18,10 +18,10 @@ import io
 from unittest import mock
 import pytest  # type: ignore
 
-from google.resumable_media import common
-from google.resumable_media import _helpers
-from google.resumable_media.requests import download as download_mod
-from google.resumable_media.requests import _request_helpers
+from google.cloud.storage._media import _helpers
+from google.cloud.storage._media.requests import download as download_mod
+from google.cloud.storage._media.requests import _request_helpers
+from google.cloud.storage.exceptions import DataCorruption
 
 
 URL_PREFIX = "https://www.googleapis.com/download/storage/v1/b/{BUCKET}/o/"
@@ -43,6 +43,25 @@ class TestDownload(object):
 
         assert stream.getvalue() == chunk1 + chunk2
         assert download._bytes_downloaded == len(chunk1 + chunk2)
+
+        # Check mocks.
+        response.__enter__.assert_called_once_with()
+        response.__exit__.assert_called_once_with(None, None, None)
+        response.iter_content.assert_called_once_with(
+            chunk_size=_request_helpers._SINGLE_GET_CHUNK_SIZE, decode_unicode=False
+        )
+
+    def test__write_to_stream_empty_chunks(self):
+        stream = io.BytesIO()
+        download = download_mod.Download(EXAMPLE_URL, stream=stream)
+
+        response = _mock_response(chunks=[], headers={})
+
+        ret_val = download._write_to_stream(response)
+        assert ret_val is None
+
+        assert stream.getvalue() == b""
+        assert download._bytes_downloaded == 0
 
         # Check mocks.
         response.__enter__.assert_called_once_with()
@@ -90,7 +109,7 @@ class TestDownload(object):
         headers = {_helpers._HASH_HEADER: header_value}
         response = _mock_response(chunks=[chunk1, chunk2, chunk3], headers=headers)
 
-        with pytest.raises(common.DataCorruption) as exc_info:
+        with pytest.raises(DataCorruption) as exc_info:
             download._write_to_stream(response)
 
         assert not download.finished
@@ -128,7 +147,7 @@ class TestDownload(object):
 
         # Make sure that the checksum is not validated.
         with mock.patch(
-            "google.resumable_media._helpers.prepare_checksum_digest",
+            "google.cloud.storage._media._helpers.prepare_checksum_digest",
             return_value=None,
         ) as prepare_checksum_digest:
             download._write_to_stream(response)
@@ -268,7 +287,7 @@ class TestDownload(object):
         transport.request.return_value = _mock_response(chunks=chunks, headers=headers)
 
         assert not download.finished
-        with pytest.raises(common.DataCorruption) as exc_info:
+        with pytest.raises(DataCorruption) as exc_info:
             download.consume(transport)
 
         assert stream.getvalue() == b"".join(chunks)
@@ -529,7 +548,7 @@ class TestRawDownload(object):
         headers = {_helpers._HASH_HEADER: header_value}
         response = _mock_raw_response(chunks=[chunk1, chunk2, chunk3], headers=headers)
 
-        with pytest.raises(common.DataCorruption) as exc_info:
+        with pytest.raises(DataCorruption) as exc_info:
             download._write_to_stream(response)
 
         assert not download.finished
@@ -682,7 +701,7 @@ class TestRawDownload(object):
         )
 
         assert not download.finished
-        with pytest.raises(common.DataCorruption) as exc_info:
+        with pytest.raises(DataCorruption) as exc_info:
             download.consume(transport)
 
         assert stream.getvalue() == b"".join(chunks)
@@ -1155,11 +1174,11 @@ class Test_BrotliDecoder(object):
         md5_hash.update.assert_called_once_with(data)
 
 
-def _mock_response(status_code=http.client.OK, chunks=(), headers=None):
+def _mock_response(status_code=http.client.OK, chunks=None, headers=None):
     if headers is None:
         headers = {}
 
-    if chunks:
+    if chunks is not None:
         mock_raw = mock.Mock(headers=headers, spec=["headers"])
         response = mock.MagicMock(
             headers=headers,

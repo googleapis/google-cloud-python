@@ -15,13 +15,14 @@
 from unittest import mock
 import pytest  # type: ignore
 
-from google.resumable_media import common
+from google.cloud.storage._media import common
+from google.cloud.storage.exceptions import InvalidResponse
 
 
 class TestInvalidResponse(object):
     def test_constructor(self):
         response = mock.sentinel.response
-        error = common.InvalidResponse(response, 1, "a", [b"m"], True)
+        error = InvalidResponse(response, 1, "a", [b"m"], True)
 
         assert error.response is response
         assert error.args == (1, "a", [b"m"], True)

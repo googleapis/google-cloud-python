@@ -31,6 +31,13 @@ dependencies = [
     "google-auth >= 2.26.1, < 3.0dev",
     "google-api-core >= 2.15.0, <3.0.0dev",
     "google-cloud-core >= 2.3.0, < 3.0dev",
+    # The dependency "google-resumable-media" is no longer used. However, the
+    # dependency is still included here to accommodate users who may be
+    # importing exception classes from the google-resumable-media without
+    # installing it explicitly. See the python-storage README for details on
+    # exceptions and importing. Users who are not importing
+    # google-resumable-media classes in their application can safely disregard
+    # this dependency.
     "google-resumable-media >= 2.7.2",
     "requests >= 2.18.0, < 3.0.0dev",
     "google-crc32c >= 1.0, < 2.0dev",

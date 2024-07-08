@@ -25,8 +25,8 @@ from urllib.parse import urlsplit
 from urllib.parse import urlunsplit
 from uuid import uuid4
 
-from google import resumable_media
 from google.auth import environment_vars
+from google.cloud.storage import _media
 from google.cloud.storage.constants import _DEFAULT_TIMEOUT
 from google.cloud.storage.retry import DEFAULT_RETRY
 from google.cloud.storage.retry import DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED
@@ -635,7 +635,7 @@ def _bucket_bound_hostname_url(host, scheme=None):
 
 
 def _api_core_retry_to_resumable_media_retry(retry, num_retries=None):
-    """Convert google.api.core.Retry to google.resumable_media.RetryStrategy.
+    """Convert google.api.core.Retry to google.cloud.storage._media.RetryStrategy.
 
     Custom predicates are not translated.
 
@@ -647,7 +647,7 @@ def _api_core_retry_to_resumable_media_retry(retry, num_retries=None):
         supported for backwards compatibility and is mutually exclusive with
         `retry`.
 
-    :rtype: google.resumable_media.RetryStrategy
+    :rtype: google.cloud.storage._media.RetryStrategy
     :returns: A RetryStrategy with all applicable attributes copied from input,
               or a RetryStrategy with max_retries set to 0 if None was input.
     """
@@ -656,16 +656,16 @@ def _api_core_retry_to_resumable_media_retry(retry, num_retries=None):
         raise ValueError("num_retries and retry arguments are mutually exclusive")
 
     elif retry is not None:
-        return resumable_media.RetryStrategy(
+        return _media.RetryStrategy(
             max_sleep=retry._maximum,
             max_cumulative_retry=retry._deadline,
             initial_delay=retry._initial,
             multiplier=retry._multiplier,
         )
     elif num_retries is not None:
-        return resumable_media.RetryStrategy(max_retries=num_retries)
+        return _media.RetryStrategy(max_retries=num_retries)
     else:
-        return resumable_media.RetryStrategy(max_retries=0)
+        return _media.RetryStrategy(max_retries=0)
 
 
 def _get_invocation_id():

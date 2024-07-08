@@ -83,12 +83,17 @@ def default(session, install_extras=True):
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
     )
     # Install all test dependencies, then install this package in-place.
-    session.install("mock", "pytest", "pytest-cov", "-c", constraints_path)
+    session.install("mock", "pytest", "pytest-cov", "brotli", "-c", constraints_path)
 
     if install_extras:
         session.install("opentelemetry-api", "opentelemetry-sdk")
 
     session.install("-e", ".", "-c", constraints_path)
+
+    # This dependency is included in setup.py for backwards compatibility only
+    # and the client library is expected to pass all tests without it. See
+    # setup.py and README for details.
+    session.run("pip", "uninstall", "-y", "google-resumable-media")
 
     # Run py.test against the unit tests.
     session.run(
@@ -103,6 +108,7 @@ def default(session, install_extras=True):
         "--cov-report=",
         "--cov-fail-under=0",
         os.path.join("tests", "unit"),
+        os.path.join("tests", "resumable_media", "unit"),
         *session.posargs,
     )
 
@@ -119,8 +125,6 @@ def system(session):
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
     )
     """Run the system test suite."""
-    system_test_path = os.path.join("tests", "system.py")
-    system_test_folder_path = os.path.join("tests", "system")
     rerun_count = 0
 
     # Check the value of `RUN_SYSTEM_TESTS` env var. It defaults to true.
@@ -141,12 +145,6 @@ def system(session):
     ):
         rerun_count = 3
 
-    system_test_exists = os.path.exists(system_test_path)
-    system_test_folder_exists = os.path.exists(system_test_folder_path)
-    # Environment check: only run tests if found.
-    if not system_test_exists and not system_test_folder_exists:
-        session.skip("System tests were not found")
-
     # Use pre-release gRPC for system tests.
     # TODO: Remove ban of 1.52.0rc1 once grpc/grpc#31885 is resolved.
     session.install("--pre", "grpcio!=1.52.0rc1")
@@ -163,29 +161,21 @@ def system(session):
         "google-cloud-iam",
         "google-cloud-pubsub < 2.0.0",
         "google-cloud-kms < 2.0dev",
+        "brotli",
         "-c",
         constraints_path,
     )
 
     # Run py.test against the system tests.
-    if system_test_exists:
-        session.run(
-            "py.test",
-            "--quiet",
-            f"--junitxml=system_{session.python}_sponge_log.xml",
-            "--reruns={}".format(rerun_count),
-            system_test_path,
-            *session.posargs,
-        )
-    if system_test_folder_exists:
-        session.run(
-            "py.test",
-            "--quiet",
-            f"--junitxml=system_{session.python}_sponge_log.xml",
-            "--reruns={}".format(rerun_count),
-            system_test_folder_path,
-            *session.posargs,
-        )
+    session.run(
+        "py.test",
+        "--quiet",
+        f"--junitxml=system_{session.python}_sponge_log.xml",
+        "--reruns={}".format(rerun_count),
+        os.path.join("tests", "system"),
+        os.path.join("tests", "resumable_media", "system"),
+        *session.posargs,
+    )
 
 
 @nox.session(python=CONFORMANCE_TEST_PYTHON_VERSIONS)

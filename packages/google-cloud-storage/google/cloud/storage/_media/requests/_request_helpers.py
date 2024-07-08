@@ -23,8 +23,9 @@ import urllib3.exceptions  # type: ignore
 
 import time
 
-from google.resumable_media import common
-from google.resumable_media import _helpers
+from google.cloud.storage.exceptions import InvalidResponse
+from google.cloud.storage._media import common
+from google.cloud.storage._media import _helpers
 
 _DEFAULT_RETRY_STRATEGY = common.RetryStrategy()
 _SINGLE_GET_CHUNK_SIZE = 8192
@@ -120,8 +121,8 @@ def wait_and_retry(func, get_status_code, retry_strategy):
     Expects ``func`` to return an HTTP response and uses ``get_status_code``
     to check if the response is retry-able.
 
-    ``func`` is expected to raise a failure status code as a
-    common.InvalidResponse, at which point this method will check the code
+    ``func`` is expected to raise a failure status code as an
+    InvalidResponse, at which point this method will check the code
     against the common.RETRIABLE list of retriable status codes.
 
     Will retry until :meth:`~.RetryStrategy.retry_allowed` (on the current
@@ -134,7 +135,7 @@ def wait_and_retry(func, get_status_code, retry_strategy):
             an HTTP response which will be checked as retry-able.
         get_status_code (Callable[Any, int]): Helper to get a status code
             from a response.
-        retry_strategy (~google.resumable_media.common.RetryStrategy): The
+        retry_strategy (~google.cloud.storage._media.common.RetryStrategy): The
             strategy to use if the request fails and must be retried.
 
     Returns:
@@ -155,7 +156,7 @@ def wait_and_retry(func, get_status_code, retry_strategy):
             response = func()
         except _CONNECTION_ERROR_CLASSES as e:
             error = e  # Fall through to retry, if there are retries left.
-        except common.InvalidResponse as e:
+        except InvalidResponse as e:
             # An InvalidResponse is only retriable if its status code matches.
             # The `process_response()` method on a Download or Upload method
             # will convert the status code into an exception.

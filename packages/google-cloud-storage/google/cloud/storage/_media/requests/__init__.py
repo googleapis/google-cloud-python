@@ -87,7 +87,7 @@ access to the resource:
 
 .. doctest:: basic-download
 
-   >>> from google.resumable_media.requests import Download
+   >>> from google.cloud.storage._media.requests import Download
    >>>
    >>> url_template = (
    ...     'https://www.googleapis.com/download/storage/v1/b/'
@@ -115,7 +115,7 @@ specify ``start`` and ``end`` byte positions (both optional):
    import requests
    import http.client
 
-   from google.resumable_media.requests import Download
+   from google.cloud.storage._media.requests import Download
 
    media_url = 'http://test.invalid'
    start = 4096
@@ -192,7 +192,7 @@ having to fit in memory all at once.
 
 .. doctest:: chunked-download
 
-   >>> from google.resumable_media.requests import ChunkedDownload
+   >>> from google.cloud.storage._media.requests import ChunkedDownload
    >>>
    >>> chunk_size = 50 * 1024 * 1024  # 50MB
    >>> stream = io.BytesIO()
@@ -234,7 +234,7 @@ not be the same size as the other chunks:
    import requests
    import http.client
 
-   from google.resumable_media.requests import ChunkedDownload
+   from google.cloud.storage._media.requests import ChunkedDownload
 
    media_url = 'http://test.invalid'
 
@@ -327,7 +327,7 @@ associated with the resource.
 .. doctest:: simple-upload
    :options: +NORMALIZE_WHITESPACE
 
-   >>> from google.resumable_media.requests import SimpleUpload
+   >>> from google.cloud.storage._media.requests import SimpleUpload
    >>>
    >>> url_template = (
    ...     'https://www.googleapis.com/upload/storage/v1/b/{bucket}/o?'
@@ -367,9 +367,9 @@ will be raised:
    import requests
    import http.client
 
-   from google import resumable_media
-   from google.resumable_media import _helpers
-   from google.resumable_media.requests import SimpleUpload as constructor
+   from google.cloud.storage import _media
+   from google.cloud.storage._media import _helpers
+   from google.cloud.storage._media.requests import SimpleUpload as constructor
 
    upload_url = 'http://test.invalid'
    data = b'Some not too large content.'
@@ -388,7 +388,7 @@ will be raised:
    def SimpleUpload(*args, **kwargs):
        upload = constructor(*args, **kwargs)
        # Mock the cumulative sleep to avoid retries (and `time.sleep()`).
-       upload._retry_strategy = resumable_media.RetryStrategy(
+       upload._retry_strategy = _media.RetryStrategy(
            max_cumulative_retry=-1.0)
        return upload
 
@@ -401,7 +401,7 @@ will be raised:
    >>> error = None
    >>> try:
    ...     upload.transmit(transport, data, content_type)
-   ... except resumable_media.InvalidResponse as caught_exc:
+   ... except _media.InvalidResponse as caught_exc:
    ...     error = caught_exc
    ...
    >>> error
@@ -461,7 +461,7 @@ accepts an extra required argument: ``metadata``.
 
 .. doctest:: multipart-upload
 
-   >>> from google.resumable_media.requests import MultipartUpload
+   >>> from google.cloud.storage._media.requests import MultipartUpload
    >>>
    >>> url_template = (
    ...     'https://www.googleapis.com/upload/storage/v1/b/{bucket}/o?'
@@ -550,7 +550,7 @@ object or any other stream implementing the same interface.
 
 .. doctest:: resumable-initiate
 
-   >>> from google.resumable_media.requests import ResumableUpload
+   >>> from google.cloud.storage._media.requests import ResumableUpload
    >>>
    >>> url_template = (
    ...     'https://www.googleapis.com/upload/storage/v1/b/{bucket}/o?'
@@ -589,8 +589,8 @@ transmitted in chunks until completion:
    import requests
    import http.client
 
-   from google import resumable_media
-   import google.resumable_media.requests.upload as upload_mod
+   from google.cloud.storage. import _media
+   import google.cloud.storage._media.requests.upload as upload_mod
 
    data = b'01234567891'
    stream = io.BytesIO(data)
@@ -662,15 +662,15 @@ transmitted in chunks until completion:
    >>> json_response['name'] == blob_name
    True
 """
-from google.resumable_media.requests.download import ChunkedDownload
-from google.resumable_media.requests.download import Download
-from google.resumable_media.requests.upload import MultipartUpload
-from google.resumable_media.requests.download import RawChunkedDownload
-from google.resumable_media.requests.download import RawDownload
-from google.resumable_media.requests.upload import ResumableUpload
-from google.resumable_media.requests.upload import SimpleUpload
-from google.resumable_media.requests.upload import XMLMPUContainer
-from google.resumable_media.requests.upload import XMLMPUPart
+from google.cloud.storage._media.requests.download import ChunkedDownload
+from google.cloud.storage._media.requests.download import Download
+from google.cloud.storage._media.requests.upload import MultipartUpload
+from google.cloud.storage._media.requests.download import RawChunkedDownload
+from google.cloud.storage._media.requests.download import RawDownload
+from google.cloud.storage._media.requests.upload import ResumableUpload
+from google.cloud.storage._media.requests.upload import SimpleUpload
+from google.cloud.storage._media.requests.upload import XMLMPUContainer
+from google.cloud.storage._media.requests.upload import XMLMPUPart
 
 __all__ = [
     "ChunkedDownload",

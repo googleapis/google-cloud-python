@@ -19,7 +19,7 @@ import pytest  # type: ignore
 import tempfile
 from unittest import mock
 
-import google.resumable_media.requests.upload as upload_mod
+import google.cloud.storage._media.requests.upload as upload_mod
 
 
 URL_PREFIX = "https://www.googleapis.com/upload/storage/v1/b/{BUCKET}/o"
@@ -93,7 +93,9 @@ class TestSimpleUpload(object):
 
 
 class TestMultipartUpload(object):
-    @mock.patch("google.resumable_media._upload.get_boundary", return_value=b"==4==")
+    @mock.patch(
+        "google.cloud.storage._media._upload.get_boundary", return_value=b"==4=="
+    )
     def test_transmit(self, mock_get_boundary):
         data = b"Mock data here and there."
         metadata = {"Hey": "You", "Guys": "90909"}
@@ -129,7 +131,9 @@ class TestMultipartUpload(object):
         assert upload.finished
         mock_get_boundary.assert_called_once_with()
 
-    @mock.patch("google.resumable_media._upload.get_boundary", return_value=b"==4==")
+    @mock.patch(
+        "google.cloud.storage._media._upload.get_boundary", return_value=b"==4=="
+    )
     def test_transmit_w_custom_timeout(self, mock_get_boundary):
         data = b"Mock data here and there."
         metadata = {"Hey": "You", "Guys": "90909"}

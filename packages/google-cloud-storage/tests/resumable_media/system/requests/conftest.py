@@ -17,7 +17,7 @@ import google.auth  # type: ignore
 import google.auth.transport.requests as tr_requests  # type: ignore
 import pytest  # type: ignore
 
-from tests.system import utils
+from .. import utils
 
 
 def ensure_bucket(transport):

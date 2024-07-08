@@ -29,9 +29,11 @@ import re
 import sys
 import urllib.parse
 
-from google import resumable_media
-from google.resumable_media import _helpers
-from google.resumable_media import common
+from google.cloud.storage._media import _helpers
+from google.cloud.storage._media import common
+from google.cloud.storage._media import UPLOAD_CHUNK_SIZE
+from google.cloud.storage.exceptions import InvalidResponse
+from google.cloud.storage.exceptions import DataCorruption
 
 from xml.etree import ElementTree
 
@@ -114,7 +116,7 @@ class UploadBase(object):
             response (object): The HTTP response object.
 
         Raises:
-            ~google.resumable_media.common.InvalidResponse: If the status
+            ~google.cloud.storage.exceptions.InvalidResponse: If the status
                 code is not 200.
 
         .. _sans-I/O: https://sans-io.readthedocs.io/
@@ -356,7 +358,7 @@ class ResumableUpload(UploadBase):
         checksum (Optional([str])): The type of checksum to compute to verify
             the integrity of the object. After the upload is complete, the
             server-computed checksum of the resulting object will be read
-            and google.resumable_media.common.DataCorruption will be raised on
+            and google.cloud.storage.exceptions.DataCorruption will be raised on
             a mismatch. The corrupted file will not be deleted from the remote
             host automatically. Supported values are "md5", "crc32c" and None.
             The default is None.
@@ -371,11 +373,9 @@ class ResumableUpload(UploadBase):
 
     def __init__(self, upload_url, chunk_size, checksum=None, headers=None):
         super(ResumableUpload, self).__init__(upload_url, headers=headers)
-        if chunk_size % resumable_media.UPLOAD_CHUNK_SIZE != 0:
+        if chunk_size % UPLOAD_CHUNK_SIZE != 0:
             raise ValueError(
-                "{} KB must divide chunk size".format(
-                    resumable_media.UPLOAD_CHUNK_SIZE / 1024
-                )
+                "{} KB must divide chunk size".format(UPLOAD_CHUNK_SIZE / 1024)
             )
         self._chunk_size = chunk_size
         self._stream = None
@@ -679,10 +679,10 @@ class ResumableUpload(UploadBase):
                 ``response`` was returned for.
 
         Raises:
-            ~google.resumable_media.common.InvalidResponse: If the status
+            ~google.cloud.storage.exceptions.InvalidResponse: If the status
                 code is 308 and the ``range`` header is not of the form
                 ``bytes 0-{end}``.
-            ~google.resumable_media.common.InvalidResponse: If the status
+            ~google.cloud.storage.exceptions.InvalidResponse: If the status
                 code is not 200 or 308.
 
         .. _sans-I/O: https://sans-io.readthedocs.io/
@@ -717,7 +717,7 @@ class ResumableUpload(UploadBase):
             match = _BYTES_RANGE_RE.match(bytes_range)
             if match is None:
                 self._make_invalid()
-                raise common.InvalidResponse(
+                raise InvalidResponse(
                     response,
                     'Unexpected "range" header',
                     bytes_range,
@@ -732,7 +732,7 @@ class ResumableUpload(UploadBase):
             response (object): The HTTP response object.
 
         Raises:
-            ~google.resumable_media.common.DataCorruption: If the checksum
+            ~google.cloud.storage.exceptions.DataCorruption: If the checksum
             computed locally and the checksum reported by the remote host do
             not match.
         """
@@ -742,7 +742,7 @@ class ResumableUpload(UploadBase):
         metadata = response.json()
         remote_checksum = metadata.get(metadata_key)
         if remote_checksum is None:
-            raise common.InvalidResponse(
+            raise InvalidResponse(
                 response,
                 _UPLOAD_METADATA_NO_APPROPRIATE_CHECKSUM_MESSAGE.format(metadata_key),
                 self._get_headers(response),
@@ -751,7 +751,7 @@ class ResumableUpload(UploadBase):
             self._checksum_object.digest()
         )
         if local_checksum != remote_checksum:
-            raise common.DataCorruption(
+            raise DataCorruption(
                 response,
                 _UPLOAD_CHECKSUM_MISMATCH_MESSAGE.format(
                     self._checksum_type.upper(), local_checksum, remote_checksum
@@ -818,9 +818,9 @@ class ResumableUpload(UploadBase):
             response (object): The HTTP response object.
 
         Raises:
-            ~google.resumable_media.common.InvalidResponse: If the status
+            ~google.cloud.storage.exceptions.InvalidResponse: If the status
                 code is not 308.
-            ~google.resumable_media.common.InvalidResponse: If the status
+            ~google.cloud.storage.exceptions.InvalidResponse: If the status
                 code is 308 and the ``range`` header is not of the form
                 ``bytes 0-{end}``.
 
@@ -834,7 +834,7 @@ class ResumableUpload(UploadBase):
             bytes_range = headers[_helpers.RANGE_HEADER]
             match = _BYTES_RANGE_RE.match(bytes_range)
             if match is None:
-                raise common.InvalidResponse(
+                raise InvalidResponse(
                     response,
                     'Unexpected "range" header',
                     bytes_range,
@@ -980,7 +980,7 @@ class XMLMPUContainer(UploadBase):
             response (object): The HTTP response object.
 
         Raises:
-            ~google.resumable_media.common.InvalidResponse: If the status
+            ~google.cloud.storage.exceptions.InvalidResponse: If the status
                 code is not 200.
 
         .. _sans-I/O: https://sans-io.readthedocs.io/
@@ -1055,7 +1055,7 @@ class XMLMPUContainer(UploadBase):
             response (object): The HTTP response object.
 
         Raises:
-            ~google.resumable_media.common.InvalidResponse: If the status
+            ~google.cloud.storage.exceptions.InvalidResponse: If the status
                 code is not 200.
 
         .. _sans-I/O: https://sans-io.readthedocs.io/
@@ -1119,7 +1119,7 @@ class XMLMPUContainer(UploadBase):
             response (object): The HTTP response object.
 
         Raises:
-            ~google.resumable_media.common.InvalidResponse: If the status
+            ~google.cloud.storage.exceptions.InvalidResponse: If the status
                 code is not 204.
 
         .. _sans-I/O: https://sans-io.readthedocs.io/
@@ -1297,7 +1297,7 @@ class XMLMPUPart(UploadBase):
             response (object): The HTTP response object.
 
         Raises:
-            ~google.resumable_media.common.InvalidResponse: If the status
+            ~google.cloud.storage.exceptions.InvalidResponse: If the status
                 code is not 200 or the response is missing data.
 
         .. _sans-I/O: https://sans-io.readthedocs.io/
@@ -1344,7 +1344,7 @@ class XMLMPUPart(UploadBase):
             response (object): The HTTP response object.
 
         Raises:
-            ~google.resumable_media.common.DataCorruption: If the checksum
+            ~google.cloud.storage.exceptions.DataCorruption: If the checksum
             computed locally and the checksum reported by the remote host do
             not match.
         """
@@ -1357,7 +1357,7 @@ class XMLMPUPart(UploadBase):
 
         if remote_checksum is None:
             metadata_key = _helpers._get_metadata_key(self._checksum_type)
-            raise common.InvalidResponse(
+            raise InvalidResponse(
                 response,
                 _UPLOAD_METADATA_NO_APPROPRIATE_CHECKSUM_MESSAGE.format(metadata_key),
                 self._get_headers(response),
@@ -1366,7 +1366,7 @@ class XMLMPUPart(UploadBase):
             self._checksum_object.digest()
         )
         if local_checksum != remote_checksum:
-            raise common.DataCorruption(
+            raise DataCorruption(
                 response,
                 _UPLOAD_CHECKSUM_MISMATCH_MESSAGE.format(
                     self._checksum_type.upper(), local_checksum, remote_checksum

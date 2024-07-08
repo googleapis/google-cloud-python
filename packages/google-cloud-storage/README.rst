@@ -37,6 +37,41 @@ Google APIs Client Libraries, in `Client Libraries Explained`_.
 .. _Storage Control API: https://cloud.google.com/storage/docs/reference/rpc/google.storage.control.v2
 .. _Client Libraries Explained: https://cloud.google.com/apis/docs/client-libraries-explained
 
+Major Version Release Notes
+---------------------------
+
+Preview Release
+~~~~~~~~~~~~~~~
+
+Python Storage 3.0 is currently in a preview state. If you experience that
+backwards compatibility for your application is broken with this release for any
+reason, please let us know through the Github issues system. Thank you.
+
+Exception Handling
+~~~~~~~~~~~~~~~~~~
+
+In Python Storage 3.0, the dependency `google-resumable-media` was integrated.
+The `google-resumable-media` dependency included exceptions
+`google.resumable_media.common.InvalidResponse` and
+`google.resumable_media.common.DataCorruption`, which were often imported
+directly in user application code. The replacements for these exceptions are
+`google.cloud.storage.exceptions.InvalidResponse` and
+`google.cloud.storage.exceptions.DataCorruption`. Please update application code
+to import and use these exceptions instead.
+
+For backwards compatibility, if `google-resumable-media` is installed, the new
+exceptions will be defined as subclasses of the old exceptions, so applications
+should continue to work without modification. This backwards compatibility
+feature may be removed in a future major version update.
+
+Some users may be using the original exception classes from the
+`google-resumable-media` library without explicitly importing that library. So
+as not to break user applications following this pattern,
+`google-resumable-media` is still in the list of dependencies in this package's
+setup.py file. Applications which do not import directly from
+`google-resumable-media` can safely disregard this dependency. This backwards
+compatibility feature will be removed in a future major version update.
+
 Quick Start
 -----------
 

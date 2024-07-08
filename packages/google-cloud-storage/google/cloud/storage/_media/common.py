@@ -26,31 +26,6 @@ _SLEEP_RETRY_ERROR_MSG = (
 UPLOAD_CHUNK_SIZE = 262144  # 256 * 1024
 """int: Chunks in a resumable upload must come in multiples of 256 KB."""
 
-PERMANENT_REDIRECT = http.client.PERMANENT_REDIRECT  # type: ignore
-"""int: Permanent redirect status code.
-
-.. note::
-   This is a backward-compatibility alias.
-
-It is used by Google services to indicate some (but not all) of
-a resumable upload has been completed.
-
-For more information, see `RFC 7238`_.
-
-.. _RFC 7238: https://tools.ietf.org/html/rfc7238
-"""
-
-TOO_MANY_REQUESTS = http.client.TOO_MANY_REQUESTS
-"""int: Status code indicating rate-limiting.
-
-.. note::
-   This is a backward-compatibility alias.
-
-For more information, see `RFC 6585`_.
-
-.. _RFC 6585: https://tools.ietf.org/html/rfc6585#section-4
-"""
-
 MAX_SLEEP = 64.0
 """float: Maximum amount of time allowed between requests.
 
@@ -78,36 +53,6 @@ RETRYABLE = (
 Connection errors are also retried, but are not listed as they are
 exceptions, not status codes.
 """
-
-
-class InvalidResponse(Exception):
-    """Error class for responses which are not in the correct state.
-
-    Args:
-        response (object): The HTTP response which caused the failure.
-        args (tuple): The positional arguments typically passed to an
-            exception class.
-    """
-
-    def __init__(self, response, *args):
-        super(InvalidResponse, self).__init__(*args)
-        self.response = response
-        """object: The HTTP response object that caused the failure."""
-
-
-class DataCorruption(Exception):
-    """Error class for corrupt media transfers.
-
-    Args:
-        response (object): The HTTP response which caused the failure.
-        args (tuple): The positional arguments typically passed to an
-            exception class.
-    """
-
-    def __init__(self, response, *args):
-        super(DataCorruption, self).__init__(*args)
-        self.response = response
-        """object: The HTTP response object that caused the failure."""
 
 
 class RetryStrategy(object):

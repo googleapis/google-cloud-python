@@ -20,8 +20,9 @@ import pytest  # type: ignore
 import requests.exceptions
 import urllib3.exceptions  # type: ignore
 
-from google.resumable_media import common
-from google.resumable_media.requests import _request_helpers
+from google.cloud.storage._media import common
+from google.cloud.storage._media.requests import _request_helpers
+from google.cloud.storage.exceptions import InvalidResponse
 
 EXPECTED_TIMEOUT = (61, 60)
 
@@ -97,14 +98,14 @@ class Test_wait_and_retry(object):
         responses = [_make_response(status_code) for status_code in status_codes]
 
         def raise_response():
-            raise common.InvalidResponse(responses.pop(0))
+            raise InvalidResponse(responses.pop(0))
 
         func = mock.Mock(side_effect=raise_response)
 
         retry_strategy = common.RetryStrategy()
         try:
             _request_helpers.wait_and_retry(func, _get_status_code, retry_strategy)
-        except common.InvalidResponse as e:
+        except InvalidResponse as e:
             ret_val = e.response
 
         assert ret_val.status_code == status_codes[-1]
@@ -135,14 +136,14 @@ class Test_wait_and_retry(object):
         responses = [_make_response(status_code) for status_code in status_codes]
 
         def raise_response():
-            raise common.InvalidResponse(responses.pop(0))
+            raise InvalidResponse(responses.pop(0))
 
         func = mock.Mock(side_effect=raise_response)
 
         retry_strategy = common.RetryStrategy(initial_delay=3.0, multiplier=4)
         try:
             _request_helpers.wait_and_retry(func, _get_status_code, retry_strategy)
-        except common.InvalidResponse as e:
+        except InvalidResponse as e:
             ret_val = e.response
 
         assert ret_val.status_code == status_codes[-1]
@@ -269,23 +270,23 @@ class Test_wait_and_retry(object):
         status_codes = (
             http.client.SERVICE_UNAVAILABLE,
             http.client.GATEWAY_TIMEOUT,
-            common.TOO_MANY_REQUESTS,
+            http.client.TOO_MANY_REQUESTS,
             http.client.INTERNAL_SERVER_ERROR,
             http.client.SERVICE_UNAVAILABLE,
             http.client.BAD_GATEWAY,
-            common.TOO_MANY_REQUESTS,
+            http.client.TOO_MANY_REQUESTS,
         )
         responses = [_make_response(status_code) for status_code in status_codes]
 
         def raise_response():
-            raise common.InvalidResponse(responses.pop(0))
+            raise InvalidResponse(responses.pop(0))
 
         func = mock.Mock(side_effect=raise_response)
 
         retry_strategy = common.RetryStrategy(max_cumulative_retry=100.0)
         try:
             _request_helpers.wait_and_retry(func, _get_status_code, retry_strategy)
-        except common.InvalidResponse as e:
+        except InvalidResponse as e:
             ret_val = e.response
 
         assert ret_val.status_code == status_codes[-1]
@@ -313,23 +314,23 @@ class Test_wait_and_retry(object):
         status_codes = (
             http.client.SERVICE_UNAVAILABLE,
             http.client.GATEWAY_TIMEOUT,
-            common.TOO_MANY_REQUESTS,
+            http.client.TOO_MANY_REQUESTS,
             http.client.INTERNAL_SERVER_ERROR,
             http.client.SERVICE_UNAVAILABLE,
             http.client.BAD_GATEWAY,
-            common.TOO_MANY_REQUESTS,
+            http.client.TOO_MANY_REQUESTS,
         )
         responses = [_make_response(status_code) for status_code in status_codes]
 
         def raise_response():
-            raise common.InvalidResponse(responses.pop(0))
+            raise InvalidResponse(responses.pop(0))
 
         func = mock.Mock(side_effect=raise_response)
 
         retry_strategy = common.RetryStrategy(max_retries=6)
         try:
             _request_helpers.wait_and_retry(func, _get_status_code, retry_strategy)
-        except common.InvalidResponse as e:
+        except InvalidResponse as e:
             ret_val = e.response
 
         assert ret_val.status_code == status_codes[-1]
@@ -357,19 +358,19 @@ class Test_wait_and_retry(object):
         status_codes = (
             http.client.SERVICE_UNAVAILABLE,
             http.client.GATEWAY_TIMEOUT,
-            common.TOO_MANY_REQUESTS,
+            http.client.TOO_MANY_REQUESTS,
         )
         responses = [_make_response(status_code) for status_code in status_codes]
 
         def raise_response():
-            raise common.InvalidResponse(responses.pop(0))
+            raise InvalidResponse(responses.pop(0))
 
         func = mock.Mock(side_effect=raise_response)
 
         retry_strategy = common.RetryStrategy(max_retries=0)
         try:
             _request_helpers.wait_and_retry(func, _get_status_code, retry_strategy)
-        except common.InvalidResponse as e:
+        except InvalidResponse as e:
             ret_val = e.response
 
         assert func.call_count == 1

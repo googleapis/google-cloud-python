@@ -22,12 +22,13 @@ import urllib.parse
 import pytest  # type: ignore
 from unittest import mock
 
-from google.resumable_media import common
-from google import resumable_media
-import google.resumable_media.requests as resumable_requests
-from google.resumable_media import _helpers
-from tests.system import utils
-from google.resumable_media import _upload
+from google.cloud.storage import _media
+import google.cloud.storage._media.requests as resumable_requests
+from google.cloud.storage._media import _helpers
+from .. import utils
+from google.cloud.storage._media import _upload
+from google.cloud.storage.exceptions import InvalidResponse
+from google.cloud.storage.exceptions import DataCorruption
 
 
 CURR_DIR = os.path.dirname(os.path.realpath(__file__))
@@ -157,7 +158,7 @@ def check_initiate(response, upload, stream, transport, metadata):
 
 
 def check_bad_chunk(upload, transport):
-    with pytest.raises(resumable_media.InvalidResponse) as exc_info:
+    with pytest.raises(InvalidResponse) as exc_info:
         upload.transmit_next_chunk(transport)
     error = exc_info.value
     response = error.response
@@ -283,7 +284,7 @@ def test_multipart_upload_with_bad_checksum(authorized_transport, checksum, buck
     with mock.patch.object(
         _helpers, "prepare_checksum_digest", return_value=fake_prepared_checksum_digest
     ):
-        with pytest.raises(common.InvalidResponse) as exc_info:
+        with pytest.raises(InvalidResponse) as exc_info:
             response = upload.transmit(
                 authorized_transport, actual_contents, metadata, ICO_CONTENT_TYPE
             )
@@ -330,7 +331,7 @@ def _resumable_upload_helper(
     cleanup(blob_name, authorized_transport)
     check_does_not_exist(authorized_transport, blob_name)
     # Create the actual upload object.
-    chunk_size = resumable_media.UPLOAD_CHUNK_SIZE
+    chunk_size = _media.UPLOAD_CHUNK_SIZE
     upload = resumable_requests.ResumableUpload(
         utils.RESUMABLE_UPLOAD, chunk_size, headers=headers, checksum=checksum
     )
@@ -380,7 +381,7 @@ def test_resumable_upload_with_bad_checksum(
     with mock.patch.object(
         _helpers, "prepare_checksum_digest", return_value=fake_prepared_checksum_digest
     ):
-        with pytest.raises(common.DataCorruption) as exc_info:
+        with pytest.raises(DataCorruption) as exc_info:
             _resumable_upload_helper(
                 authorized_transport, img_stream, cleanup, checksum=checksum
             )
@@ -395,12 +396,12 @@ def test_resumable_upload_bad_chunk_size(authorized_transport, img_stream):
     blob_name = os.path.basename(img_stream.name)
     # Create the actual upload object.
     upload = resumable_requests.ResumableUpload(
-        utils.RESUMABLE_UPLOAD, resumable_media.UPLOAD_CHUNK_SIZE
+        utils.RESUMABLE_UPLOAD, _media.UPLOAD_CHUNK_SIZE
     )
     # Modify the ``upload`` **after** construction so we can
     # use a bad chunk size.
     upload._chunk_size = 1024
-    assert upload._chunk_size < resumable_media.UPLOAD_CHUNK_SIZE
+    assert upload._chunk_size < _media.UPLOAD_CHUNK_SIZE
     # Initiate the upload.
     metadata = {"name": blob_name}
     response = upload.initiate(
@@ -412,7 +413,7 @@ def test_resumable_upload_bad_chunk_size(authorized_transport, img_stream):
     check_bad_chunk(upload, authorized_transport)
     # Reset the chunk size (and the stream) and verify the "resumable"
     # URL is unusable.
-    upload._chunk_size = resumable_media.UPLOAD_CHUNK_SIZE
+    upload._chunk_size = _media.UPLOAD_CHUNK_SIZE
     img_stream.seek(0)
     upload._invalid = False
     check_bad_chunk(upload, authorized_transport)
@@ -437,7 +438,7 @@ def _resumable_upload_recover_helper(
     authorized_transport, cleanup, headers=None, checksum=None
 ):
     blob_name = "some-bytes.bin"
-    chunk_size = resumable_media.UPLOAD_CHUNK_SIZE
+    chunk_size = _media.UPLOAD_CHUNK_SIZE
     data = b"123" * chunk_size  # 3 chunks worth.
     # Make sure to clean up the uploaded blob when we are done.
     cleanup(blob_name, authorized_transport)
@@ -519,7 +520,7 @@ class TestResumableUploadUnknownSize(object):
         self, authorized_transport, bucket, cleanup, checksum
     ):
         blob_name = os.path.basename(ICO_FILE)
-        chunk_size = resumable_media.UPLOAD_CHUNK_SIZE
+        chunk_size = _media.UPLOAD_CHUNK_SIZE
         # Make sure to clean up the uploaded blob when we are done.
         cleanup(blob_name, authorized_transport)
         check_does_not_exist(authorized_transport, blob_name)
@@ -558,7 +559,7 @@ class TestResumableUploadUnknownSize(object):
     @pytest.mark.parametrize("checksum", ["md5", "crc32c", None])
     def test_finish_at_chunk(self, authorized_transport, bucket, cleanup, checksum):
         blob_name = "some-clean-stuff.bin"
-        chunk_size = resumable_media.UPLOAD_CHUNK_SIZE
+        chunk_size = _media.UPLOAD_CHUNK_SIZE
         # Make sure to clean up the uploaded blob when we are done.
         cleanup(blob_name, authorized_transport)
         check_does_not_exist(authorized_transport, blob_name)
@@ -613,7 +614,7 @@ class TestResumableUploadUnknownSize(object):
     @pytest.mark.parametrize("checksum", ["md5", "crc32c", None])
     def test_interleave_writes(self, authorized_transport, bucket, cleanup, checksum):
         blob_name = "some-moar-stuff.bin"
-        chunk_size = resumable_media.UPLOAD_CHUNK_SIZE
+        chunk_size = _media.UPLOAD_CHUNK_SIZE
         # Make sure to clean up the uploaded blob when we are done.
         cleanup(blob_name, authorized_transport)
         check_does_not_exist(authorized_transport, blob_name)
@@ -735,7 +736,7 @@ def test_XMLMPU_with_bad_checksum(authorized_transport, bucket, checksum):
             "prepare_checksum_digest",
             return_value=fake_prepared_checksum_digest,
         ):
-            with pytest.raises(common.DataCorruption):
+            with pytest.raises(DataCorruption):
                 part.upload(authorized_transport)
     finally:
         utils.retry_transient_errors(authorized_transport.delete)(
@@ -772,5 +773,5 @@ def test_XMLMPU_cancel(authorized_transport, bucket):
     container.cancel(authorized_transport)
 
     # Validate the cancel worked by expecting a 404 on finalize.
-    with pytest.raises(resumable_media.InvalidResponse):
+    with pytest.raises(InvalidResponse):
         container.finalize(authorized_transport)

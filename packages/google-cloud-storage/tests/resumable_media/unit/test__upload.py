@@ -20,9 +20,11 @@ import tempfile
 from unittest import mock
 import pytest  # type: ignore
 
-from google.resumable_media import _helpers
-from google.resumable_media import _upload
-from google.resumable_media import common
+from google.cloud.storage._media import _helpers
+from google.cloud.storage._media import _upload
+from google.cloud.storage._media import common
+from google.cloud.storage.exceptions import InvalidResponse
+from google.cloud.storage.exceptions import DataCorruption
 
 
 URL_PREFIX = "https://www.googleapis.com/upload/storage/v1/b/{BUCKET}/o"
@@ -92,7 +94,7 @@ class TestUploadBase(object):
         assert not upload.finished
         status_code = http.client.SERVICE_UNAVAILABLE
         response = _make_response(status_code=status_code)
-        with pytest.raises(common.InvalidResponse) as exc_info:
+        with pytest.raises(InvalidResponse) as exc_info:
             upload._process_response(response)
 
         error = exc_info.value
@@ -214,7 +216,9 @@ class TestMultipartUpload(object):
         with pytest.raises(TypeError):
             upload._prepare_request(data, {}, BASIC_CONTENT)
 
-    @mock.patch("google.resumable_media._upload.get_boundary", return_value=b"==3==")
+    @mock.patch(
+        "google.cloud.storage._media._upload.get_boundary", return_value=b"==3=="
+    )
     def _prepare_request_helper(
         self,
         mock_get_boundary,
@@ -536,7 +540,7 @@ class TestResumableUpload(object):
         _fix_up_virtual(upload)
 
         response = _make_response(403)
-        with pytest.raises(common.InvalidResponse) as exc_info:
+        with pytest.raises(InvalidResponse) as exc_info:
             upload._process_initiate_response(response)
 
         error = exc_info.value
@@ -754,7 +758,7 @@ class TestResumableUpload(object):
         # Make sure the upload is valid before the failure.
         assert not upload.invalid
         response = _make_response(status_code=http.client.NOT_FOUND)
-        with pytest.raises(common.InvalidResponse) as exc_info:
+        with pytest.raises(InvalidResponse) as exc_info:
             upload._process_resumable_response(response, None)
 
         error = exc_info.value
@@ -798,7 +802,7 @@ class TestResumableUpload(object):
         response = _make_response(status_code=http.client.PERMANENT_REDIRECT)
         # Make sure the upload is valid before the failure.
         assert not upload.invalid
-        with pytest.raises(common.InvalidResponse) as exc_info:
+        with pytest.raises(InvalidResponse) as exc_info:
             upload._process_resumable_response(response, None)
         # Make sure the upload is invalid after the failure.
         assert upload.invalid
@@ -819,7 +823,7 @@ class TestResumableUpload(object):
         response = _make_response(
             status_code=http.client.PERMANENT_REDIRECT, headers=headers
         )
-        with pytest.raises(common.InvalidResponse) as exc_info:
+        with pytest.raises(InvalidResponse) as exc_info:
             upload._process_resumable_response(response, 81)
 
         # Check the error response.
@@ -912,7 +916,7 @@ class TestResumableUpload(object):
         upload._finished = True
 
         assert upload._checksum_object is not None
-        with pytest.raises(common.InvalidResponse) as exc_info:
+        with pytest.raises(InvalidResponse) as exc_info:
             upload._validate_checksum(response)
 
         error = exc_info.value
@@ -949,7 +953,7 @@ class TestResumableUpload(object):
 
         assert upload._checksum_object is not None
         # Test passes if it does not raise an error (no assert needed)
-        with pytest.raises(common.DataCorruption) as exc_info:
+        with pytest.raises(DataCorruption) as exc_info:
             upload._validate_checksum(response)
 
         error = exc_info.value
@@ -1014,7 +1018,7 @@ class TestResumableUpload(object):
         upload._invalid = True
 
         response = _make_response(status_code=http.client.BAD_REQUEST)
-        with pytest.raises(common.InvalidResponse) as exc_info:
+        with pytest.raises(InvalidResponse) as exc_info:
             upload._process_recover_response(response)
 
         error = exc_info.value
@@ -1054,7 +1058,7 @@ class TestResumableUpload(object):
         response = _make_response(
             status_code=http.client.PERMANENT_REDIRECT, headers=headers
         )
-        with pytest.raises(common.InvalidResponse) as exc_info:
+        with pytest.raises(InvalidResponse) as exc_info:
             upload._process_recover_response(response)
 
         error = exc_info.value
@@ -1103,7 +1107,9 @@ def test_get_boundary(mock_rand):
 
 
 class Test_construct_multipart_request(object):
-    @mock.patch("google.resumable_media._upload.get_boundary", return_value=b"==1==")
+    @mock.patch(
+        "google.cloud.storage._media._upload.get_boundary", return_value=b"==1=="
+    )
     def test_binary(self, mock_get_boundary):
         data = b"By nary day tuh"
         metadata = {"name": "hi-file.bin"}
@@ -1125,7 +1131,9 @@ class Test_construct_multipart_request(object):
         assert payload == expected_payload
         mock_get_boundary.assert_called_once_with()
 
-    @mock.patch("google.resumable_media._upload.get_boundary", return_value=b"==2==")
+    @mock.patch(
+        "google.cloud.storage._media._upload.get_boundary", return_value=b"==2=="
+    )
     def test_unicode(self, mock_get_boundary):
         data_unicode = "\N{snowman}"
         # construct_multipart_request( ASSUMES callers pass bytes.
@@ -1426,7 +1434,7 @@ def test_xml_mpu_part_invalid_response(filename):
     )
     _fix_up_virtual(part)
     response = _make_xml_response(headers={"etag": ETAG})
-    with pytest.raises(common.InvalidResponse):
+    with pytest.raises(InvalidResponse):
         part._process_upload_response(response)
 
 
@@ -1451,7 +1459,7 @@ def test_xml_mpu_part_checksum_failure(filename):
     response = _make_xml_response(
         headers={"etag": ETAG, "x-goog-hash": "md5=Ojk9c3dhfxgoKVVHYwFbHQ=="}
     )  # Example md5 checksum but not the correct one
-    with pytest.raises(common.DataCorruption):
+    with pytest.raises(DataCorruption):
         part._process_upload_response(response)
 
 

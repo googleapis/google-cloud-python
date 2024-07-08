@@ -17,11 +17,10 @@
 import urllib3.response  # type: ignore
 import http
 
-from google.resumable_media import _download
-from google.resumable_media import common
-from google.resumable_media import _helpers
-from google.resumable_media.requests import _request_helpers
-
+from google.cloud.storage._media import _download
+from google.cloud.storage._media import _helpers
+from google.cloud.storage._media.requests import _request_helpers
+from google.cloud.storage.exceptions import DataCorruption
 
 _CHECKSUM_MISMATCH = """\
 Checksum mismatch while downloading:
@@ -90,7 +89,7 @@ class Download(_request_helpers.RequestsMixin, _download.Download):
             response (~requests.Response): The HTTP response object.
 
         Raises:
-            ~google.resumable_media.common.DataCorruption: If the download's
+            ~google.cloud.storage.exceptions.DataCorruption: If the download's
                 checksum doesn't agree with server-computed checksum.
         """
 
@@ -138,7 +137,7 @@ class Download(_request_helpers.RequestsMixin, _download.Download):
                     actual_checksum,
                     checksum_type=self.checksum.upper(),
                 )
-                raise common.DataCorruption(response, msg)
+                raise DataCorruption(response, msg)
 
     def consume(
         self,
@@ -168,7 +167,7 @@ class Download(_request_helpers.RequestsMixin, _download.Download):
             ~requests.Response: The HTTP response returned by ``transport``.
 
         Raises:
-            ~google.resumable_media.common.DataCorruption: If the download's
+            ~google.cloud.storage.exceptions.DataCorruption: If the download's
                 checksum doesn't agree with server-computed checksum.
             ValueError: If the current :class:`Download` has already
                 finished.
@@ -283,7 +282,7 @@ class RawDownload(_request_helpers.RawRequestsMixin, _download.Download):
             response (~requests.Response): The HTTP response object.
 
         Raises:
-            ~google.resumable_media.common.DataCorruption: If the download's
+            ~google.cloud.storage.exceptions.DataCorruption: If the download's
                 checksum doesn't agree with server-computed checksum.
         """
         # Retrieve the expected checksum only once for the download request,
@@ -327,7 +326,7 @@ class RawDownload(_request_helpers.RawRequestsMixin, _download.Download):
                     actual_checksum,
                     checksum_type=self.checksum.upper(),
                 )
-                raise common.DataCorruption(response, msg)
+                raise DataCorruption(response, msg)
 
     def consume(
         self,
@@ -357,7 +356,7 @@ class RawDownload(_request_helpers.RawRequestsMixin, _download.Download):
             ~requests.Response: The HTTP response returned by ``transport``.
 
         Raises:
-            ~google.resumable_media.common.DataCorruption: If the download's
+            ~google.cloud.storage.exceptions.DataCorruption: If the download's
                 checksum doesn't agree with server-computed checksum.
             ValueError: If the current :class:`Download` has already
                 finished.

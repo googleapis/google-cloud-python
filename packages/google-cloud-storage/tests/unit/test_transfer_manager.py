@@ -20,7 +20,7 @@ from google.cloud.storage import transfer_manager
 
 from google.api_core import exceptions
 
-from google.resumable_media.common import DataCorruption
+from google.cloud.storage.exceptions import DataCorruption
 
 import os
 import tempfile

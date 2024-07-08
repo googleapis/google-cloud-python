@@ -23,12 +23,13 @@ import google.auth  # type: ignore
 import google.auth.transport.requests as tr_requests  # type: ignore
 import pytest  # type: ignore
 
-from google.resumable_media import common
-import google.resumable_media.requests as resumable_requests
-from google.resumable_media import _helpers
-from google.resumable_media.requests import _request_helpers
-import google.resumable_media.requests.download as download_mod
-from tests.system import utils
+import google.cloud.storage._media.requests as resumable_requests
+from google.cloud.storage._media import _helpers
+from google.cloud.storage._media.requests import _request_helpers
+import google.cloud.storage._media.requests.download as download_mod
+from google.cloud.storage.exceptions import InvalidResponse
+from google.cloud.storage.exceptions import DataCorruption
+from .. import utils
 
 
 CURR_DIR = os.path.dirname(os.path.realpath(__file__))
@@ -356,7 +357,7 @@ class TestDownload(object):
         check_tombstoned(download, authorized_transport)
         # Attempt to consume the resource **without** the headers.
         download_wo = self._make_one(media_url)
-        with pytest.raises(common.InvalidResponse) as exc_info:
+        with pytest.raises(InvalidResponse) as exc_info:
             download_wo.consume(authorized_transport)
 
         check_error_response(exc_info, http.client.BAD_REQUEST, ENCRYPTED_ERR)
@@ -368,7 +369,7 @@ class TestDownload(object):
         download = self._make_one(media_url)
 
         # Try to consume the resource and fail.
-        with pytest.raises(common.InvalidResponse) as exc_info:
+        with pytest.raises(InvalidResponse) as exc_info:
             download.consume(authorized_transport)
         check_error_response(exc_info, http.client.NOT_FOUND, NOT_FOUND_ERR)
         check_tombstoned(download, authorized_transport)
@@ -384,7 +385,7 @@ class TestDownload(object):
         download = self._make_one(media_url, start=start, end=end)
 
         # Try to consume the resource and fail.
-        with pytest.raises(common.InvalidResponse) as exc_info:
+        with pytest.raises(InvalidResponse) as exc_info:
             download.consume(authorized_transport)
 
         check_error_response(
@@ -445,7 +446,7 @@ class TestRawDownload(TestDownload):
             stream = io.BytesIO()
             download = self._make_one(media_url, stream=stream, checksum=checksum)
             # Consume the resource.
-            with pytest.raises(common.DataCorruption) as exc_info:
+            with pytest.raises(DataCorruption) as exc_info:
                 download.consume(corrupting_transport)
 
             assert download.finished
@@ -592,7 +593,7 @@ class TestChunkedDownload(object):
         download_wo = resumable_requests.ChunkedDownload(
             media_url, chunk_size, stream_wo
         )
-        with pytest.raises(common.InvalidResponse) as exc_info:
+        with pytest.raises(InvalidResponse) as exc_info:
             download_wo.consume_next_chunk(authorized_transport)
 
         assert stream_wo.tell() == 0

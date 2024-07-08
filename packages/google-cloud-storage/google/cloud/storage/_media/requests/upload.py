@@ -19,8 +19,8 @@ uploads that contain both metadata and a small file as payload.
 """
 
 
-from google.resumable_media import _upload
-from google.resumable_media.requests import _request_helpers
+from google.cloud.storage._media import _upload
+from google.cloud.storage._media.requests import _request_helpers
 
 
 class SimpleUpload(_request_helpers.RequestsMixin, _upload.SimpleUpload):
@@ -172,7 +172,7 @@ class ResumableUpload(_request_helpers.RequestsMixin, _upload.ResumableUpload):
 
     .. doctest:: resumable-constructor
 
-       >>> from google.resumable_media.requests import ResumableUpload
+       >>> from google.cloud.storage._media.requests import ResumableUpload
        >>>
        >>> url_template = (
        ...     'https://www.googleapis.com/upload/storage/v1/b/{bucket}/o?'
@@ -195,7 +195,7 @@ class ResumableUpload(_request_helpers.RequestsMixin, _upload.ResumableUpload):
        import requests
        import http.client
 
-       from google.resumable_media.requests import ResumableUpload
+       from google.cloud.storage._media.requests import ResumableUpload
 
        upload_url = 'http://test.invalid'
        chunk_size = 3 * 1024 * 1024  # 3MB
@@ -252,7 +252,7 @@ class ResumableUpload(_request_helpers.RequestsMixin, _upload.ResumableUpload):
        import requests
        import http.client
 
-       from google.resumable_media.requests import ResumableUpload
+       from google.cloud.storage._media.requests import ResumableUpload
 
        upload_url = 'http://test.invalid'
        chunk_size = 3 * 1024 * 1024  # 3MB
@@ -293,7 +293,7 @@ class ResumableUpload(_request_helpers.RequestsMixin, _upload.ResumableUpload):
        import requests
        import http.client
 
-       from google.resumable_media.requests import ResumableUpload
+       from google.cloud.storage._media.requests import ResumableUpload
 
        upload_url = 'http://test.invalid'
        chunk_size = 3 * 1024 * 1024  # 3MB
@@ -332,7 +332,7 @@ class ResumableUpload(_request_helpers.RequestsMixin, _upload.ResumableUpload):
         checksum Optional([str]): The type of checksum to compute to verify
             the integrity of the object. After the upload is complete, the
             server-computed checksum of the resulting object will be checked
-            and google.resumable_media.common.DataCorruption will be raised on
+            and google.cloud.storage.exceptions.DataCorruption will be raised on
             a mismatch. The corrupted file will not be deleted from the remote
             host automatically. Supported values are "md5", "crc32c" and None.
             The default is None.
@@ -447,8 +447,8 @@ class ResumableUpload(_request_helpers.RequestsMixin, _upload.ResumableUpload):
            import requests
            import http.client
 
-           from google import resumable_media
-           import google.resumable_media.requests.upload as upload_mod
+           from google.cloud.storage import _media
+           import google.cloud.storage._media.requests.upload as upload_mod
 
            transport = mock.Mock(spec=['request'])
            fake_response = requests.Response()
@@ -457,7 +457,7 @@ class ResumableUpload(_request_helpers.RequestsMixin, _upload.ResumableUpload):
 
            upload_url = 'http://test.invalid'
            upload = upload_mod.ResumableUpload(
-               upload_url, resumable_media.UPLOAD_CHUNK_SIZE)
+               upload_url, _media.UPLOAD_CHUNK_SIZE)
            # Fake that the upload has been initiate()-d
            data = b'data is here'
            upload._stream = io.BytesIO(data)
@@ -470,7 +470,7 @@ class ResumableUpload(_request_helpers.RequestsMixin, _upload.ResumableUpload):
            >>> error = None
            >>> try:
            ...     upload.transmit_next_chunk(transport)
-           ... except resumable_media.InvalidResponse as caught_exc:
+           ... except _media.InvalidResponse as caught_exc:
            ...     error = caught_exc
            ...
            >>> error
@@ -494,9 +494,9 @@ class ResumableUpload(_request_helpers.RequestsMixin, _upload.ResumableUpload):
             ~requests.Response: The HTTP response returned by ``transport``.
 
         Raises:
-            ~google.resumable_media.common.InvalidResponse: If the status
+            ~google.cloud.storage.exceptions.InvalidResponse: If the status
                 code is not 200 or http.client.PERMANENT_REDIRECT.
-            ~google.resumable_media.common.DataCorruption: If this is the final
+            ~google.cloud.storage.exceptions.DataCorruption: If this is the final
                 chunk, a checksum validation was requested, and the checksum
                 does not match or is not available.
         """

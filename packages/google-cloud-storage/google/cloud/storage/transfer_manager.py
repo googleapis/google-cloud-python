@@ -37,9 +37,9 @@ from google.cloud.storage.retry import DEFAULT_RETRY
 
 import google_crc32c
 
-from google.resumable_media.requests.upload import XMLMPUContainer
-from google.resumable_media.requests.upload import XMLMPUPart
-from google.resumable_media.common import DataCorruption
+from google.cloud.storage._media.requests.upload import XMLMPUContainer
+from google.cloud.storage._media.requests.upload import XMLMPUPart
+from google.cloud.storage.exceptions import DataCorruption
 
 TM_DEFAULT_CHUNK_SIZE = 32 * 1024 * 1024
 DEFAULT_MAX_WORKERS = 8
@@ -866,9 +866,9 @@ def download_chunks_concurrently(
     :raises:
         :exc:`concurrent.futures.TimeoutError`
             if deadline is exceeded.
-        :exc:`google.resumable_media.common.DataCorruption`
+        :exc:`google.cloud.storage._media.common.DataCorruption`
             if the download's checksum doesn't agree with server-computed
-            checksum. The `google.resumable_media` exception is used here for
+            checksum. The `google.cloud.storage._media` exception is used here for
             consistency with other download methods despite the exception
             originating elsewhere.
     """
@@ -936,8 +936,8 @@ def download_chunks_concurrently(
         expected_checksum = blob.crc32c
         if actual_checksum != expected_checksum:
             # For consistency with other download methods we will use
-            # "google.resumable_media.common.DataCorruption" despite the error
-            # not originating inside google.resumable_media.
+            # "google.cloud.storage._media.common.DataCorruption" despite the error
+            # not originating inside google.cloud.storage._media.
             download_url = blob._get_download_url(
                 client,
                 if_generation_match=download_kwargs.get("if_generation_match"),

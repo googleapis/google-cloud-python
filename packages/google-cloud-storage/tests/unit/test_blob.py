@@ -33,6 +33,8 @@ from google.cloud.storage._helpers import _get_default_storage_base_url
 from google.cloud.storage._helpers import _DEFAULT_UNIVERSE_DOMAIN
 from google.cloud.storage._helpers import _NOW
 from google.cloud.storage._helpers import _UTC
+from google.cloud.storage.exceptions import DataCorruption
+from google.cloud.storage.exceptions import InvalidResponse
 from google.cloud.storage.retry import (
     DEFAULT_RETRY,
     DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED,
@@ -1796,8 +1798,6 @@ class Test_Blob(unittest.TestCase):
             self.assertEqual(stream.name, temp.name)
 
     def test_download_to_filename_corrupted(self):
-        from google.resumable_media import DataCorruption
-
         blob_name = "blob-name"
         client = self._make_client()
         bucket = _Bucket(client)
@@ -2494,23 +2494,31 @@ class Test_Blob(unittest.TestCase):
             "POST", upload_url, data=payload, headers=headers, timeout=expected_timeout
         )
 
-    @mock.patch("google.resumable_media._upload.get_boundary", return_value=b"==0==")
+    @mock.patch(
+        "google.cloud.storage._media._upload.get_boundary", return_value=b"==0=="
+    )
     def test__do_multipart_upload_no_size(self, mock_get_boundary):
         self._do_multipart_success(mock_get_boundary, predefined_acl="private")
 
-    @mock.patch("google.resumable_media._upload.get_boundary", return_value=b"==0==")
+    @mock.patch(
+        "google.cloud.storage._media._upload.get_boundary", return_value=b"==0=="
+    )
     def test__do_multipart_upload_no_size_retry(self, mock_get_boundary):
         self._do_multipart_success(
             mock_get_boundary, predefined_acl="private", retry=DEFAULT_RETRY
         )
 
-    @mock.patch("google.resumable_media._upload.get_boundary", return_value=b"==0==")
+    @mock.patch(
+        "google.cloud.storage._media._upload.get_boundary", return_value=b"==0=="
+    )
     def test__do_multipart_upload_no_size_num_retries(self, mock_get_boundary):
         self._do_multipart_success(
             mock_get_boundary, predefined_acl="private", num_retries=2
         )
 
-    @mock.patch("google.resumable_media._upload.get_boundary", return_value=b"==0==")
+    @mock.patch(
+        "google.cloud.storage._media._upload.get_boundary", return_value=b"==0=="
+    )
     def test__do_multipart_upload_no_size_retry_conflict(self, mock_get_boundary):
         with self.assertRaises(ValueError):
             self._do_multipart_success(
@@ -2520,22 +2528,30 @@ class Test_Blob(unittest.TestCase):
                 retry=DEFAULT_RETRY,
             )
 
-    @mock.patch("google.resumable_media._upload.get_boundary", return_value=b"==0==")
+    @mock.patch(
+        "google.cloud.storage._media._upload.get_boundary", return_value=b"==0=="
+    )
     def test__do_multipart_upload_no_size_mtls(self, mock_get_boundary):
         self._do_multipart_success(
             mock_get_boundary, predefined_acl="private", mtls=True
         )
 
-    @mock.patch("google.resumable_media._upload.get_boundary", return_value=b"==0==")
+    @mock.patch(
+        "google.cloud.storage._media._upload.get_boundary", return_value=b"==0=="
+    )
     def test__do_multipart_upload_with_size(self, mock_get_boundary):
         self._do_multipart_success(mock_get_boundary, size=10)
 
-    @mock.patch("google.resumable_media._upload.get_boundary", return_value=b"==0==")
+    @mock.patch(
+        "google.cloud.storage._media._upload.get_boundary", return_value=b"==0=="
+    )
     def test__do_multipart_upload_with_user_project(self, mock_get_boundary):
         user_project = "user-project-123"
         self._do_multipart_success(mock_get_boundary, user_project=user_project)
 
-    @mock.patch("google.resumable_media._upload.get_boundary", return_value=b"==0==")
+    @mock.patch(
+        "google.cloud.storage._media._upload.get_boundary", return_value=b"==0=="
+    )
     def test__do_multipart_upload_with_kms(self, mock_get_boundary):
         kms_resource = (
             "projects/test-project-123/"
@@ -2545,7 +2561,9 @@ class Test_Blob(unittest.TestCase):
         )
         self._do_multipart_success(mock_get_boundary, kms_key_name=kms_resource)
 
-    @mock.patch("google.resumable_media._upload.get_boundary", return_value=b"==0==")
+    @mock.patch(
+        "google.cloud.storage._media._upload.get_boundary", return_value=b"==0=="
+    )
     def test__do_multipart_upload_with_kms_with_version(self, mock_get_boundary):
         kms_resource = (
             "projects/test-project-123/"
@@ -2556,27 +2574,37 @@ class Test_Blob(unittest.TestCase):
         )
         self._do_multipart_success(mock_get_boundary, kms_key_name=kms_resource)
 
-    @mock.patch("google.resumable_media._upload.get_boundary", return_value=b"==0==")
+    @mock.patch(
+        "google.cloud.storage._media._upload.get_boundary", return_value=b"==0=="
+    )
     def test__do_multipart_upload_with_retry(self, mock_get_boundary):
         self._do_multipart_success(mock_get_boundary, retry=DEFAULT_RETRY)
 
-    @mock.patch("google.resumable_media._upload.get_boundary", return_value=b"==0==")
+    @mock.patch(
+        "google.cloud.storage._media._upload.get_boundary", return_value=b"==0=="
+    )
     def test__do_multipart_upload_with_generation_match(self, mock_get_boundary):
         self._do_multipart_success(
             mock_get_boundary, if_generation_match=4, if_metageneration_match=4
         )
 
-    @mock.patch("google.resumable_media._upload.get_boundary", return_value=b"==0==")
+    @mock.patch(
+        "google.cloud.storage._media._upload.get_boundary", return_value=b"==0=="
+    )
     def test__do_multipart_upload_with_custom_timeout(self, mock_get_boundary):
         self._do_multipart_success(mock_get_boundary, timeout=9.58)
 
-    @mock.patch("google.resumable_media._upload.get_boundary", return_value=b"==0==")
+    @mock.patch(
+        "google.cloud.storage._media._upload.get_boundary", return_value=b"==0=="
+    )
     def test__do_multipart_upload_with_generation_not_match(self, mock_get_boundary):
         self._do_multipart_success(
             mock_get_boundary, if_generation_not_match=4, if_metageneration_not_match=4
         )
 
-    @mock.patch("google.resumable_media._upload.get_boundary", return_value=b"==0==")
+    @mock.patch(
+        "google.cloud.storage._media._upload.get_boundary", return_value=b"==0=="
+    )
     def test__do_multipart_upload_with_client(self, mock_get_boundary):
         transport = self._mock_transport(http.client.OK, {})
         client = mock.Mock(_http=transport, _connection=_Connection, spec=["_http"])
@@ -2584,7 +2612,9 @@ class Test_Blob(unittest.TestCase):
         client._extra_headers = {}
         self._do_multipart_success(mock_get_boundary, client=client)
 
-    @mock.patch("google.resumable_media._upload.get_boundary", return_value=b"==0==")
+    @mock.patch(
+        "google.cloud.storage._media._upload.get_boundary", return_value=b"==0=="
+    )
     def test__do_multipart_upload_with_client_custom_headers(self, mock_get_boundary):
         custom_headers = {
             "x-goog-custom-audit-foo": "bar",
@@ -2596,7 +2626,9 @@ class Test_Blob(unittest.TestCase):
         client._extra_headers = custom_headers
         self._do_multipart_success(mock_get_boundary, client=client)
 
-    @mock.patch("google.resumable_media._upload.get_boundary", return_value=b"==0==")
+    @mock.patch(
+        "google.cloud.storage._media._upload.get_boundary", return_value=b"==0=="
+    )
     def test__do_multipart_upload_with_metadata(self, mock_get_boundary):
         self._do_multipart_success(mock_get_boundary, metadata={"test": "test"})
 
@@ -2637,7 +2669,7 @@ class Test_Blob(unittest.TestCase):
         mtls=False,
         retry=None,
     ):
-        from google.resumable_media.requests import ResumableUpload
+        from google.cloud.storage._media.requests import ResumableUpload
         from google.cloud.storage.blob import _DEFAULT_CHUNKSIZE
 
         bucket = _Bucket(name="whammy", user_project=user_project)
@@ -2924,17 +2956,15 @@ class Test_Blob(unittest.TestCase):
     def _make_resumable_transport(
         self, headers1, headers2, headers3, total_bytes, data_corruption=False
     ):
-        from google import resumable_media
-
         fake_transport = mock.Mock(spec=["request"])
 
         fake_response1 = self._mock_requests_response(http.client.OK, headers1)
         fake_response2 = self._mock_requests_response(
-            resumable_media.PERMANENT_REDIRECT, headers2
+            http.client.PERMANENT_REDIRECT, headers2
         )
         json_body = f'{{"size": "{total_bytes:d}"}}'
         if data_corruption:
-            fake_response3 = resumable_media.DataCorruption(None)
+            fake_response3 = DataCorruption(None)
         else:
             fake_response3 = self._mock_requests_response(
                 http.client.OK, headers3, content=json_body.encode("utf-8")
@@ -3198,8 +3228,6 @@ class Test_Blob(unittest.TestCase):
         self._do_resumable_helper(predefined_acl="private")
 
     def test__do_resumable_upload_with_data_corruption(self):
-        from google.resumable_media import DataCorruption
-
         with mock.patch("google.cloud.storage.blob.Blob.delete") as patch:
             try:
                 self._do_resumable_helper(data_corruption=True)
@@ -3444,7 +3472,6 @@ class Test_Blob(unittest.TestCase):
     def test_upload_from_file_failure(self):
         import requests
 
-        from google.resumable_media import InvalidResponse
         from google.cloud import exceptions
 
         message = "Someone is already in this spot."
@@ -3836,7 +3863,6 @@ class Test_Blob(unittest.TestCase):
         )
 
     def test_create_resumable_upload_session_with_failure(self):
-        from google.resumable_media import InvalidResponse
         from google.cloud import exceptions
 
         message = "5-oh-3 woe is me."
@@ -6139,7 +6165,6 @@ class Test__raise_from_invalid_response(unittest.TestCase):
     def _helper(self, message, code=http.client.BAD_REQUEST, reason=None, args=()):
         import requests
 
-        from google.resumable_media import InvalidResponse
         from google.api_core import exceptions
 
         response = requests.Response()

@@ -20,8 +20,9 @@ import http.client
 from unittest import mock
 import pytest  # type: ignore
 
-from google.resumable_media import _helpers
-from google.resumable_media import common
+from google.cloud.storage._media import _helpers
+from google.cloud.storage._media import common
+from google.cloud.storage.exceptions import InvalidResponse
 
 
 def test_do_nothing():
@@ -49,7 +50,7 @@ class Test_header_required(object):
     def _failure_helper(self, **kwargs):
         response = mock.Mock(headers={}, spec=["headers"])
         name = "any-name"
-        with pytest.raises(common.InvalidResponse) as exc_info:
+        with pytest.raises(InvalidResponse) as exc_info:
             _helpers.header_required(response, name, _get_headers, **kwargs)
 
         error = exc_info.value
@@ -99,7 +100,7 @@ class Test_require_status_code(object):
     def test_failure(self):
         status_codes = (http.client.CREATED, http.client.NO_CONTENT)
         response = _make_response(http.client.OK)
-        with pytest.raises(common.InvalidResponse) as exc_info:
+        with pytest.raises(InvalidResponse) as exc_info:
             _helpers.require_status_code(response, status_codes, self._get_status_code)
 
         error = exc_info.value
@@ -112,7 +113,7 @@ class Test_require_status_code(object):
         status_codes = (http.client.OK,)
         response = _make_response(http.client.NOT_FOUND)
         callback = mock.Mock(spec=[])
-        with pytest.raises(common.InvalidResponse) as exc_info:
+        with pytest.raises(InvalidResponse) as exc_info:
             _helpers.require_status_code(
                 response, status_codes, self._get_status_code, callback=callback
             )
@@ -131,7 +132,7 @@ class Test_require_status_code(object):
         ]
         callback = mock.Mock(spec=[])
         for retryable_response in retryable_responses:
-            with pytest.raises(common.InvalidResponse) as exc_info:
+            with pytest.raises(InvalidResponse) as exc_info:
                 _helpers.require_status_code(
                     retryable_response,
                     status_codes,
@@ -291,7 +292,7 @@ def test__DoNothingHash():
 class Test__get_expected_checksum(object):
     @pytest.mark.parametrize("template", ["crc32c={},md5={}", "crc32c={}, md5={}"])
     @pytest.mark.parametrize("checksum", ["md5", "crc32c"])
-    @mock.patch("google.resumable_media._helpers._LOGGER")
+    @mock.patch("google.cloud.storage._media._helpers._LOGGER")
     def test__w_header_present(self, _LOGGER, template, checksum):
         checksums = {"md5": "b2twdXNodGhpc2J1dHRvbg==", "crc32c": "3q2+7w=="}
         header_value = template.format(checksums["crc32c"], checksums["md5"])
@@ -316,7 +317,7 @@ class Test__get_expected_checksum(object):
         _LOGGER.info.assert_not_called()
 
     @pytest.mark.parametrize("checksum", ["md5", "crc32c"])
-    @mock.patch("google.resumable_media._helpers._LOGGER")
+    @mock.patch("google.cloud.storage._media._helpers._LOGGER")
     def test__w_header_missing(self, _LOGGER, checksum):
         headers = {}
         response = _mock_response(headers=headers)
@@ -337,7 +338,6 @@ class Test__get_expected_checksum(object):
 
 
 class Test__parse_checksum_header(object):
-
     CRC32C_CHECKSUM = "3q2+7w=="
     MD5_CHECKSUM = "c2l4dGVlbmJ5dGVzbG9uZw=="
 
@@ -396,7 +396,7 @@ class Test__parse_checksum_header(object):
         header_value = "md5={},md5={}".format(self.MD5_CHECKSUM, another_checksum)
         response = mock.sentinel.response
 
-        with pytest.raises(common.InvalidResponse) as exc_info:
+        with pytest.raises(InvalidResponse) as exc_info:
             _helpers._parse_checksum_header(
                 header_value, response, checksum_label="md5"
             )
@@ -409,7 +409,6 @@ class Test__parse_checksum_header(object):
 
 
 class Test__parse_generation_header(object):
-
     GENERATION_VALUE = 1641590104888641
 
     def test_empty_value(self):
@@ -451,7 +450,6 @@ class Test__is_decompressive_transcoding(object):
 
 
 class Test__get_generation_from_url(object):
-
     GENERATION_VALUE = 1641590104888641
     MEDIA_URL = (
         "https://storage.googleapis.com/storage/v1/b/my-bucket/o/my-object?alt=media"

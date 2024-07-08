@@ -27,7 +27,8 @@ from urllib.parse import urlencode
 from urllib.parse import urlsplit
 from urllib.parse import urlunsplit
 
-from google.resumable_media import common
+from google.cloud.storage._media import common
+from google.cloud.storage.exceptions import InvalidResponse
 
 
 RANGE_HEADER = "range"
@@ -70,15 +71,13 @@ def header_required(response, name, get_headers, callback=do_nothing):
         str: The desired header.
 
     Raises:
-        ~google.resumable_media.common.InvalidResponse: If the header
+        ~google.cloud.storage.exceptions.InvalidResponse: If the header
             is missing.
     """
     headers = get_headers(response)
     if name not in headers:
         callback()
-        raise common.InvalidResponse(
-            response, "Response headers must contain header", name
-        )
+        raise InvalidResponse(response, "Response headers must contain header", name)
 
     return headers[name]
 
@@ -98,14 +97,14 @@ def require_status_code(response, status_codes, get_status_code, callback=do_not
         int: The status code.
 
     Raises:
-        ~google.resumable_media.common.InvalidResponse: If the status code
+        ~google.cloud.storage.exceptions.InvalidResponse: If the status code
             is not one of the values in ``status_codes``.
     """
     status_code = get_status_code(response)
     if status_code not in status_codes:
         if status_code not in common.RETRYABLE:
             callback()
-        raise common.InvalidResponse(
+        raise InvalidResponse(
             response,
             "Request failed with status code",
             status_code,
@@ -298,7 +297,7 @@ def _parse_checksum_header(header_value, response, checksum_label):
         can be detected from the ``X-Goog-Hash`` header; otherwise, None.
 
     Raises:
-        ~google.resumable_media.common.InvalidResponse: If there are
+        ~google.cloud.storage.exceptions.InvalidResponse: If there are
             multiple checksums of the requested type in ``header_value``.
     """
     if header_value is None:
@@ -316,7 +315,7 @@ def _parse_checksum_header(header_value, response, checksum_label):
     elif len(matches) == 1:
         return matches[0]
     else:
-        raise common.InvalidResponse(
+        raise InvalidResponse(
             response,
             "X-Goog-Hash header had multiple ``{}`` values.".format(checksum_label),
             header_value,

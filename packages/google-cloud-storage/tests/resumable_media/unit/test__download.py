@@ -18,8 +18,9 @@ import io
 from unittest import mock
 import pytest  # type: ignore
 
-from google.resumable_media import _download
-from google.resumable_media import common
+from google.cloud.storage._media import _download
+from google.cloud.storage._media import common
+from google.cloud.storage.exceptions import InvalidResponse
 
 
 EXAMPLE_URL = (
@@ -142,7 +143,7 @@ class TestDownload(object):
         response = mock.Mock(
             status_code=int(http.client.NOT_FOUND), spec=["status_code"]
         )
-        with pytest.raises(common.InvalidResponse) as exc_info:
+        with pytest.raises(InvalidResponse) as exc_info:
             download._process_response(response)
 
         error = exc_info.value
@@ -399,7 +400,7 @@ class TestChunkedDownload(object):
         response = self._mock_response(
             0, total_bytes - 1, total_bytes, status_code=int(http.client.NOT_FOUND)
         )
-        with pytest.raises(common.InvalidResponse) as exc_info:
+        with pytest.raises(InvalidResponse) as exc_info:
             download._process_response(response)
 
         error = exc_info.value
@@ -431,7 +432,7 @@ class TestChunkedDownload(object):
             content=b"DEADBEEF",
             spec=["headers", "status_code", "content"],
         )
-        with pytest.raises(common.InvalidResponse) as exc_info:
+        with pytest.raises(InvalidResponse) as exc_info:
             download._process_response(response)
 
         error = exc_info.value
@@ -465,7 +466,7 @@ class TestChunkedDownload(object):
             status_code=int(http.client.PARTIAL_CONTENT),
             spec=["content", "headers", "status_code"],
         )
-        with pytest.raises(common.InvalidResponse) as exc_info:
+        with pytest.raises(InvalidResponse) as exc_info:
             download._process_response(response)
 
         error = exc_info.value
@@ -499,7 +500,7 @@ class TestChunkedDownload(object):
             content=data,
             status_code=int(http.client.PARTIAL_CONTENT),
         )
-        with pytest.raises(common.InvalidResponse) as exc_info:
+        with pytest.raises(InvalidResponse) as exc_info:
             download._process_response(response)
 
         error = exc_info.value
@@ -660,7 +661,7 @@ class Test_get_range_info(object):
     def _failure_helper(self, **kwargs):
         content_range = "nope x-6/y"
         response = self._make_response(content_range)
-        with pytest.raises(common.InvalidResponse) as exc_info:
+        with pytest.raises(InvalidResponse) as exc_info:
             _download.get_range_info(response, _get_headers, **kwargs)
 
         error = exc_info.value
@@ -678,7 +679,7 @@ class Test_get_range_info(object):
 
     def _missing_header_helper(self, **kwargs):
         response = mock.Mock(headers={}, spec=["headers"])
-        with pytest.raises(common.InvalidResponse) as exc_info:
+        with pytest.raises(InvalidResponse) as exc_info:
             _download.get_range_info(response, _get_headers, **kwargs)
 
         error = exc_info.value
