@@ -47,6 +47,11 @@ replacements:
         :maxdepth: 2
 
         CHANGELOG
+
+      .. toctree::
+        :hidden:
+
+        summary_overview.md
     count: 1
   - paths: [
       packages/google-shopping-type/docs/index.rst
