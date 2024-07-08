@@ -438,9 +438,7 @@ class Block:
 
     def _to_dataframe(self, result) -> pd.DataFrame:
         """Convert BigQuery data to pandas DataFrame with specific dtypes."""
-        dtypes = dict(zip(self.index_columns, self.index.dtypes))
-        dtypes.update(zip(self.value_columns, self.dtypes))
-        result_dataframe = self.session._rows_to_dataframe(result, dtypes)
+        result_dataframe = self.session._rows_to_dataframe(result)
         # Runs strict validations to ensure internal type predictions and ibis are completely in sync
         # Do not execute these validations outside of testing suite.
         if "PYTEST_CURRENT_TEST" in os.environ:
@@ -2582,7 +2580,6 @@ class BlockIndexProperties:
             )
         # Project down to only the index column. So the query can be cached to visualize other data.
         index_columns = list(self._block.index_columns)
-        dtypes = dict(zip(index_columns, self.dtypes))
         expr = self._expr.select_columns(index_columns)
         results, _ = self.session._execute(
             expr,
@@ -2590,7 +2587,7 @@ class BlockIndexProperties:
             if (ordered is not None)
             else self.session._strictly_ordered,
         )
-        df = expr.session._rows_to_dataframe(results, dtypes)
+        df = expr.session._rows_to_dataframe(results)
         df = df.set_index(index_columns)
         index = df.index
         index.names = list(self._block._index_labels)  # type:ignore

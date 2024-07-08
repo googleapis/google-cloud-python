@@ -2038,7 +2038,7 @@ class Session(
         return table.num_bytes
 
     def _rows_to_dataframe(
-        self, row_iterator: bigquery.table.RowIterator, dtypes: Dict
+        self, row_iterator: bigquery.table.RowIterator
     ) -> pandas.DataFrame:
         # Can ignore inferred datatype until dtype emulation breaks 1:1 mapping between BQ types and bigframes types
         dtypes_from_bq = bigframes.dtypes.bf_type_from_type_kind(row_iterator.schema)
