@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.3.11](https://github.com/googleapis/google-cloud-python/compare/google-cloud-alloydb-v0.3.10...google-cloud-alloydb-v0.3.11) (2024-07-08)
+
+
+### Bug Fixes
+
+* Allow protobuf 5.x ([04ec204](https://github.com/googleapis/google-cloud-python/commit/04ec2046ed11c690273912e1bb6220823c7dd7c0))
+* Allow Protobuf 5.x ([#12863](https://github.com/googleapis/google-cloud-python/issues/12863)) ([3e6e423](https://github.com/googleapis/google-cloud-python/commit/3e6e423b86cdace8538f610941aa84c7a6217934))
+
 ## [0.3.10](https://github.com/googleapis/google-cloud-python/compare/google-cloud-alloydb-v0.3.9...google-cloud-alloydb-v0.3.10) (2024-03-05)
 
 
