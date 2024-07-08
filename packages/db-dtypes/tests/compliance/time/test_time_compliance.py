@@ -21,12 +21,11 @@ https://github.com/pandas-dev/pandas/blob/main/pandas/tests/extension/test_perio
 """
 
 import pandas
-from pandas.tests.extension import base
 import pandas._testing as tm
+from pandas.tests.extension import base
 import pytest
 
 import db_dtypes
-
 
 # TODO(https://github.com/googleapis/python-db-dtypes-pandas/issues/87): Add
 # compliance tests for arithmetic operations.

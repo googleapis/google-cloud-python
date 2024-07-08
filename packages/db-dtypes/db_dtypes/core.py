@@ -21,7 +21,6 @@ from pandas.api.types import is_dtype_equal, is_list_like, is_scalar, pandas_dty
 
 from db_dtypes import pandas_backports
 
-
 pandas_release = pandas_backports.pandas_release
 
 

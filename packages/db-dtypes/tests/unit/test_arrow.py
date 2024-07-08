@@ -23,7 +23,6 @@ import pytest
 
 import db_dtypes
 
-
 SECOND_NANOS = 1_000_000_000
 MINUTE_NANOS = 60 * SECOND_NANOS
 HOUR_NANOS = 60 * MINUTE_NANOS

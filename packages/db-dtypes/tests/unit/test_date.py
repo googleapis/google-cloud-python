@@ -25,7 +25,6 @@ import pytest
 import db_dtypes
 from db_dtypes import pandas_backports
 
-
 VALUE_PARSING_TEST_CASES = [
     # Min/Max values for pandas.Timestamp.
     ("1677-09-22", datetime.date(1677, 9, 22)),

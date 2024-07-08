@@ -27,10 +27,8 @@ from pandas.errors import OutOfBoundsDatetime
 import pyarrow
 import pyarrow.compute
 
-
-from db_dtypes.version import __version__
 from db_dtypes import core
-
+from db_dtypes.version import __version__
 
 date_dtype_name = "dbdate"
 time_dtype_name = "dbtime"

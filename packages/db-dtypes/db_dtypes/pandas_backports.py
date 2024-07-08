@@ -29,7 +29,6 @@ from pandas.api.types import is_integer
 import pandas.compat.numpy.function
 import pandas.core.nanops
 
-
 pandas_release = packaging.version.parse(pandas.__version__).release
 
 # Create aliases for private methods in case they move in a future version.
