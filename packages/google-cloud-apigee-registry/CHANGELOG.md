@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.10](https://github.com/googleapis/google-cloud-python/compare/google-cloud-apigee-registry-v0.6.9...google-cloud-apigee-registry-v0.6.10) (2024-07-08)
+
+
+### Bug Fixes
+
+* Allow Protobuf 5.x ([#12863](https://github.com/googleapis/google-cloud-python/issues/12863)) ([3e6e423](https://github.com/googleapis/google-cloud-python/commit/3e6e423b86cdace8538f610941aa84c7a6217934))
+
 ## [0.6.9](https://github.com/googleapis/google-cloud-python/compare/google-cloud-apigee-registry-v0.6.8...google-cloud-apigee-registry-v0.6.9) (2024-03-05)
 
 
