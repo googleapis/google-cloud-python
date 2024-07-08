@@ -1,5 +1,5 @@
 alembic==1.13.1
-certifi==2024.6.2
+certifi==2024.7.4
 charset-normalizer==3.3.2
 geoalchemy2==0.15.1
 google-api-core[grpc]==2.19.0
