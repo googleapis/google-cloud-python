@@ -59,7 +59,8 @@ RUN apt-get update \
   && rm -rf /var/lib/apt/lists/* \
   && rm -f /var/cache/apt/archives/*.deb
 
-###################### Install python 3.10.14 for docfx session
+
+###################### Install python 3.10.14 for docs/docfx session
 
 # Download python 3.10.14
 RUN wget https://www.python.org/ftp/python/3.10.14/Python-3.10.14.tgz
@@ -70,8 +71,6 @@ RUN tar -xvf Python-3.10.14.tgz
 # Install python 3.10.14
 RUN ./Python-3.10.14/configure --enable-optimizations
 RUN make altinstall
-
-###################### Use python 3.10 by default
 
 RUN python3.10 -m venv /venv
 ENV PATH /venv/bin:$PATH
