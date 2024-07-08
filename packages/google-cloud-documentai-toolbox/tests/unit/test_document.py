@@ -14,18 +14,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import glob
 import json
 import os
 import shutil
+from unittest import mock
 from xml.etree import ElementTree
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-except ImportError:  # pragma: NO COVER
-    import mock
-
-import glob
 
 from google.cloud.vision import AnnotateFileResponse
 import pytest
