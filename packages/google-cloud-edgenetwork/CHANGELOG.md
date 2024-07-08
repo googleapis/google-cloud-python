@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.9](https://github.com/googleapis/google-cloud-python/compare/google-cloud-edgenetwork-v0.1.8...google-cloud-edgenetwork-v0.1.9) (2024-07-08)
+
+
+### Bug Fixes
+
+* Allow Protobuf 5.x ([#12866](https://github.com/googleapis/google-cloud-python/issues/12866)) ([40e1810](https://github.com/googleapis/google-cloud-python/commit/40e18101eaaeefe4baa090c3b4f7a96209ea5735))
+
 ## [0.1.8](https://github.com/googleapis/google-cloud-python/compare/google-cloud-edgenetwork-v0.1.7...google-cloud-edgenetwork-v0.1.8) (2024-06-27)
 
 

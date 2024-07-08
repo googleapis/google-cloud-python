@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.4.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-connectivity-v2.4.3...google-cloud-network-connectivity-v2.4.4) (2024-07-08)
+
+
+### Bug Fixes
+
+* Allow Protobuf 5.x ([#12868](https://github.com/googleapis/google-cloud-python/issues/12868)) ([0e39c1a](https://github.com/googleapis/google-cloud-python/commit/0e39c1a0ab46757bcf80a178d9bd422f6dcb24c6))
+
 ## [2.4.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-connectivity-v2.4.2...google-cloud-network-connectivity-v2.4.3) (2024-03-05)
 
 

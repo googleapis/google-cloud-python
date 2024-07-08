@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-service-management-v1.8.3...google-cloud-service-management-v1.8.4) (2024-07-08)
+
+
+### Bug Fixes
+
+* Allow protobuf 5.x ([04ec204](https://github.com/googleapis/google-cloud-python/commit/04ec2046ed11c690273912e1bb6220823c7dd7c0))
+
 ## [1.8.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-service-management-v1.8.2...google-cloud-service-management-v1.8.3) (2024-03-05)
 
 

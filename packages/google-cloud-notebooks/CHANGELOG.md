@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.10.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-notebooks-v1.10.3...google-cloud-notebooks-v1.10.4) (2024-07-08)
+
+
+### Bug Fixes
+
+* Allow Protobuf 5.x ([#12868](https://github.com/googleapis/google-cloud-python/issues/12868)) ([0e39c1a](https://github.com/googleapis/google-cloud-python/commit/0e39c1a0ab46757bcf80a178d9bd422f6dcb24c6))
+
 ## [1.10.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-notebooks-v1.10.2...google-cloud-notebooks-v1.10.3) (2024-03-05)
 
 

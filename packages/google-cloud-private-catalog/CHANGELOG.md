@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.9.10](https://github.com/googleapis/google-cloud-python/compare/google-cloud-private-catalog-v0.9.9...google-cloud-private-catalog-v0.9.10) (2024-07-08)
+
+
+### Bug Fixes
+
+* Allow Protobuf 5.x ([#12868](https://github.com/googleapis/google-cloud-python/issues/12868)) ([0e39c1a](https://github.com/googleapis/google-cloud-python/commit/0e39c1a0ab46757bcf80a178d9bd422f6dcb24c6))
+
 ## [0.9.9](https://github.com/googleapis/google-cloud-python/compare/google-cloud-private-catalog-v0.9.8...google-cloud-private-catalog-v0.9.9) (2024-03-05)
 
 
