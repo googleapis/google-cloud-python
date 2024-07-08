@@ -40,7 +40,6 @@ RUN apt-get update \
     libssl-dev \
     libsqlite3-dev \
     portaudio19-dev \
-    python3-distutils \
     redis-server \
     software-properties-common \
     ssh \
@@ -71,6 +70,10 @@ RUN tar -xvf Python-3.9.13.tgz
 # Install python 3.9.13
 RUN ./Python-3.9.13/configure --enable-optimizations
 RUN make altinstall
+
+# Use python 3.9 by default
+RUN python3.9 -m venv /venv
+ENV PATH /venv/bin:$PATH
 
 ###################### Install pip
 RUN wget -O /tmp/get-pip.py 'https://bootstrap.pypa.io/get-pip.py' \
