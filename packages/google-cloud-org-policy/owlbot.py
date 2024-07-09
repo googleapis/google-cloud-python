@@ -69,7 +69,7 @@ templated_files = gcp.CommonTemplates().py_library(
     microgenerator=True,
     versions=gcp.common.detect_versions(path="./google", default_first=True),
 )
-s.move(templated_files, excludes=[".coveragerc", ".github/release-please.yml", "noxfile.py"])
+s.move(templated_files, excludes=[".coveragerc", ".github/release-please.yml", "noxfile.py", ".github/workflows/docs.yml"])
 
 s.replace("setup.py",
     "url = \"https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-org-policy\"",
