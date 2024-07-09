@@ -340,14 +340,6 @@ def prerelease_deps(session):
         "pyarrow",
     )
     session.install(
-        "--extra-index-url",
-        "https://pypi.anaconda.org/scipy-wheels-nightly/simple",
-        "--prefer-binary",
-        "--pre",
-        "--upgrade",
-        "pandas",
-    )
-    session.install(
         "--pre",
         "--upgrade",
         "IPython",
@@ -355,6 +347,7 @@ def prerelease_deps(session):
         "ipywidgets",
         "tqdm",
         "git+https://github.com/pypa/packaging.git",
+        "pandas",
     )
 
     session.install(
