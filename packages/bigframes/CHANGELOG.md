@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/bigframes/#history
 
+## [1.11.1](https://github.com/googleapis/python-bigquery-dataframes/compare/v1.11.0...v1.11.1) (2024-07-08)
+
+
+### Documentation
+
+* Remove session and connection in llm notebook ([#821](https://github.com/googleapis/python-bigquery-dataframes/issues/821)) ([74170da](https://github.com/googleapis/python-bigquery-dataframes/commit/74170dabd323f1b08ad76241e37ff9f2a5b67ab5))
+* Remove the experimental flask icon from the public docs ([#820](https://github.com/googleapis/python-bigquery-dataframes/issues/820)) ([067ff17](https://github.com/googleapis/python-bigquery-dataframes/commit/067ff173f0abfcf5bf06d3fbdb6d12e0fa5283c3))
+
 ## [1.11.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v1.10.0...v1.11.0) (2024-07-01)
 
 
