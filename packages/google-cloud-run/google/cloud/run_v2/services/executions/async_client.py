@@ -387,7 +387,8 @@ class ExecutionsAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListExecutionsAsyncPager:
-        r"""Lists Executions from a Job.
+        r"""Lists Executions from a Job. Results are sorted by
+        creation time, descending.
 
         .. code-block:: python
 

@@ -58,16 +58,18 @@ class Condition(proto.Message):
             How to interpret failures of this condition,
             one of Error, Warning, Info
         reason (google.cloud.run_v2.types.Condition.CommonReason):
-            A common (service-level) reason for this
-            condition.
+            Output only. A common (service-level) reason
+            for this condition.
 
             This field is a member of `oneof`_ ``reasons``.
         revision_reason (google.cloud.run_v2.types.Condition.RevisionReason):
-            A reason for the revision condition.
+            Output only. A reason for the revision
+            condition.
 
             This field is a member of `oneof`_ ``reasons``.
         execution_reason (google.cloud.run_v2.types.Condition.ExecutionReason):
-            A reason for the execution condition.
+            Output only. A reason for the execution
+            condition.
 
             This field is a member of `oneof`_ ``reasons``.
     """

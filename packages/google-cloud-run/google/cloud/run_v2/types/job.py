@@ -114,8 +114,8 @@ class UpdateJobRequest(proto.Message):
             persisting the request or updating any
             resources.
         allow_missing (bool):
-            If set to true, and if the Job does not
-            exist, it will create a new one. Caller must
+            Optional. If set to true, and if the Job does
+            not exist, it will create a new one. Caller must
             have both create and update permissions for this
             call if this is set to true.
     """
@@ -347,6 +347,13 @@ class Job(proto.Message):
     r"""Job represents the configuration of a single job, which
     references a container image that is run to completion.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         name (str):
             The fully qualified name of this Job.
@@ -399,7 +406,8 @@ class Job(proto.Message):
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The last-modified time.
         delete_time (google.protobuf.timestamp_pb2.Timestamp):
-            Output only. The deletion time.
+            Output only. The deletion time. It is only
+            populated as a response to a Delete request.
         expire_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. For a deleted resource, the time
             after which it will be permamently deleted.
@@ -483,6 +491,22 @@ class Job(proto.Message):
             ``terminal_condition`` and ``conditions``.
         satisfies_pzs (bool):
             Output only. Reserved for future use.
+        start_execution_token (str):
+            A unique string used as a suffix creating a
+            new execution. The Job will become ready when
+            the execution is successfully started. The sum
+            of job name and token length must be fewer than
+            63 characters.
+
+            This field is a member of `oneof`_ ``create_execution``.
+        run_execution_token (str):
+            A unique string used as a suffix for creating
+            a new execution. The Job will become ready when
+            the execution is successfully completed. The sum
+            of job name and token length must be fewer than
+            63 characters.
+
+            This field is a member of `oneof`_ ``create_execution``.
         etag (str):
             Output only. A system-generated fingerprint
             for this version of the resource. May be used to
@@ -593,6 +617,16 @@ class Job(proto.Message):
         proto.BOOL,
         number=25,
     )
+    start_execution_token: str = proto.Field(
+        proto.STRING,
+        number=26,
+        oneof="create_execution",
+    )
+    run_execution_token: str = proto.Field(
+        proto.STRING,
+        number=27,
+        oneof="create_execution",
+    )
     etag: str = proto.Field(
         proto.STRING,
         number=99,
@@ -611,7 +645,39 @@ class ExecutionReference(proto.Message):
             Creation timestamp of the execution.
         completion_time (google.protobuf.timestamp_pb2.Timestamp):
             Creation timestamp of the execution.
+        delete_time (google.protobuf.timestamp_pb2.Timestamp):
+            The deletion time of the execution. It is
+            only populated as a response to a Delete
+            request.
+        completion_status (google.cloud.run_v2.types.ExecutionReference.CompletionStatus):
+            Status for the execution completion.
     """
+
+    class CompletionStatus(proto.Enum):
+        r"""Possible execution completion status.
+
+        Values:
+            COMPLETION_STATUS_UNSPECIFIED (0):
+                The default value. This value is used if the
+                state is omitted.
+            EXECUTION_SUCCEEDED (1):
+                Job execution has succeeded.
+            EXECUTION_FAILED (2):
+                Job execution has failed.
+            EXECUTION_RUNNING (3):
+                Job execution is running normally.
+            EXECUTION_PENDING (4):
+                Waiting for backing resources to be
+                provisioned.
+            EXECUTION_CANCELLED (5):
+                Job execution has been cancelled by the user.
+        """
+        COMPLETION_STATUS_UNSPECIFIED = 0
+        EXECUTION_SUCCEEDED = 1
+        EXECUTION_FAILED = 2
+        EXECUTION_RUNNING = 3
+        EXECUTION_PENDING = 4
+        EXECUTION_CANCELLED = 5
 
     name: str = proto.Field(
         proto.STRING,
@@ -626,6 +692,16 @@ class ExecutionReference(proto.Message):
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
+    )
+    delete_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
+    )
+    completion_status: CompletionStatus = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum=CompletionStatus,
     )
 
 

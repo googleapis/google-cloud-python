@@ -50,6 +50,7 @@ from google.cloud.location import locations_pb2  # type: ignore
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.run_v2.services.services import pagers
@@ -550,7 +551,8 @@ class ServicesAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListServicesAsyncPager:
-        r"""Lists Services.
+        r"""Lists Services. Results are sorted by creation time,
+        descending.
 
         .. code-block:: python
 
@@ -670,6 +672,7 @@ class ServicesAsyncClient:
         request: Optional[Union[gcr_service.UpdateServiceRequest, dict]] = None,
         *,
         service: Optional[gcr_service.Service] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
@@ -714,6 +717,13 @@ class ServicesAsyncClient:
                 This corresponds to the ``service`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
+                Optional. The list of fields to be
+                updated.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -736,7 +746,7 @@ class ServicesAsyncClient:
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([service])
+        has_flattened_params = any([service, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -752,6 +762,8 @@ class ServicesAsyncClient:
         # request, apply these.
         if service is not None:
             request.service = service
+        if update_mask is not None:
+            request.update_mask = update_mask
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.

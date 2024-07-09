@@ -102,11 +102,12 @@ class VpcAccess(proto.Message):
             network via a connector, visit
             https://cloud.google.com/run/docs/configuring/vpc-connectors.
         egress (google.cloud.run_v2.types.VpcAccess.VpcEgress):
-            Traffic VPC egress settings. If not provided, it defaults to
-            PRIVATE_RANGES_ONLY.
+            Optional. Traffic VPC egress settings. If not provided, it
+            defaults to PRIVATE_RANGES_ONLY.
         network_interfaces (MutableSequence[google.cloud.run_v2.types.VpcAccess.NetworkInterface]):
-            Direct VPC egress settings. Currently only
-            single network interface is supported.
+            Optional. Direct VPC egress settings.
+            Currently only single network interface is
+            supported.
     """
 
     class VpcEgress(proto.Enum):
@@ -131,16 +132,17 @@ class VpcAccess(proto.Message):
 
         Attributes:
             network (str):
-                The VPC network that the Cloud Run resource
-                will be able to send traffic to. At least one of
-                network or subnetwork must be specified. If both
-                network and subnetwork are specified, the given
-                VPC subnetwork must belong to the given VPC
-                network. If network is not specified, it will be
-                looked up from the subnetwork.
+                Optional. The VPC network that the Cloud Run
+                resource will be able to send traffic to. At
+                least one of network or subnetwork must be
+                specified. If both network and subnetwork are
+                specified, the given VPC subnetwork must belong
+                to the given VPC network. If network is not
+                specified, it will be looked up from the
+                subnetwork.
             subnetwork (str):
-                The VPC subnetwork that the Cloud Run
-                resource will get IPs from. At least one of
+                Optional. The VPC subnetwork that the Cloud
+                Run resource will get IPs from. At least one of
                 network or subnetwork must be specified. If both
                 network and subnetwork are specified, the given
                 VPC subnetwork must belong to the given VPC
@@ -148,8 +150,8 @@ class VpcAccess(proto.Message):
                 subnetwork with the same name with the network
                 will be used.
             tags (MutableSequence[str]):
-                Network tags applied to this Cloud Run
-                resource.
+                Optional. Network tags applied to this Cloud
+                Run resource.
         """
 
         network: str = proto.Field(
@@ -184,17 +186,28 @@ class VpcAccess(proto.Message):
 class BinaryAuthorization(proto.Message):
     r"""Settings for Binary Authorization feature.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         use_default (bool):
-            If True, indicates to use the default
-            project's binary authorization policy. If False,
-            binary authorization will be disabled.
+            Optional. If True, indicates to use the
+            default project's binary authorization policy.
+            If False, binary authorization will be disabled.
+
+            This field is a member of `oneof`_ ``binauthz_method``.
+        policy (str):
+            Optional. The path to a binary authorization
+            policy. Format:
+            projects/{project}/platforms/cloudRun/{policy-name}
 
             This field is a member of `oneof`_ ``binauthz_method``.
         breakglass_justification (str):
-            If present, indicates to use Breakglass using this
+            Optional. If present, indicates to use Breakglass using this
             justification. If use_default is False, then it must be
             empty. For more information on breakglass, see
             https://cloud.google.com/binary-authorization/docs/using-breakglass
@@ -203,6 +216,11 @@ class BinaryAuthorization(proto.Message):
     use_default: bool = proto.Field(
         proto.BOOL,
         number=1,
+        oneof="binauthz_method",
+    )
+    policy: str = proto.Field(
+        proto.STRING,
+        number=3,
         oneof="binauthz_method",
     )
     breakglass_justification: str = proto.Field(
@@ -216,11 +234,11 @@ class RevisionScaling(proto.Message):
 
     Attributes:
         min_instance_count (int):
-            Minimum number of serving instances that this
-            resource should have.
+            Optional. Minimum number of serving instances
+            that this resource should have.
         max_instance_count (int):
-            Maximum number of serving instances that this
-            resource should have.
+            Optional. Maximum number of serving instances
+            that this resource should have.
     """
 
     min_instance_count: int = proto.Field(
@@ -239,10 +257,11 @@ class ServiceScaling(proto.Message):
 
     Attributes:
         min_instance_count (int):
-            total min instances for the service. This
-            number of instances is divided among all
-            revisions with specified traffic based on the
-            percent of traffic they are receiving. (BETA)
+            Optional. total min instances for the
+            service. This number of instances is divided
+            among all revisions with specified traffic based
+            on the percent of traffic they are receiving.
+            (BETA)
     """
 
     min_instance_count: int = proto.Field(

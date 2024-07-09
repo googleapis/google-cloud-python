@@ -316,7 +316,8 @@ class JobsGrpcAsyncIOTransport(JobsTransport):
     ) -> Callable[[job.ListJobsRequest], Awaitable[job.ListJobsResponse]]:
         r"""Return a callable for the list jobs method over gRPC.
 
-        Lists Jobs.
+        Lists Jobs. Results are sorted by creation time,
+        descending.
 
         Returns:
             Callable[[~.ListJobsRequest],

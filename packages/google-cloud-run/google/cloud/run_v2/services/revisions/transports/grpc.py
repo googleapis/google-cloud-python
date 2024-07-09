@@ -284,7 +284,8 @@ class RevisionsGrpcTransport(RevisionsTransport):
         r"""Return a callable for the list revisions method over gRPC.
 
         Lists Revisions from a given Service, or from a given
-        location.
+        location.  Results are sorted by creation time,
+        descending.
 
         Returns:
             Callable[[~.ListRevisionsRequest],

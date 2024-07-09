@@ -396,7 +396,8 @@ class RevisionsAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListRevisionsAsyncPager:
         r"""Lists Revisions from a given Service, or from a given
-        location.
+        location.  Results are sorted by creation time,
+        descending.
 
         .. code-block:: python
 

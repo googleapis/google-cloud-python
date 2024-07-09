@@ -311,7 +311,8 @@ class ServicesGrpcTransport(ServicesTransport):
     ) -> Callable[[service.ListServicesRequest], service.ListServicesResponse]:
         r"""Return a callable for the list services method over gRPC.
 
-        Lists Services.
+        Lists Services. Results are sorted by creation time,
+        descending.
 
         Returns:
             Callable[[~.ListServicesRequest],

@@ -2624,6 +2624,7 @@ def test_update_service_flattened():
         # using the keyword arguments to the method.
         client.update_service(
             service=gcr_service.Service(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
         # Establish that the underlying call was made with the expected
@@ -2632,6 +2633,9 @@ def test_update_service_flattened():
         _, args, _ = call.mock_calls[0]
         arg = args[0].service
         mock_val = gcr_service.Service(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
         assert arg == mock_val
 
 
@@ -2646,6 +2650,7 @@ def test_update_service_flattened_error():
         client.update_service(
             gcr_service.UpdateServiceRequest(),
             service=gcr_service.Service(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
 
@@ -2667,6 +2672,7 @@ async def test_update_service_flattened_async():
         # using the keyword arguments to the method.
         response = await client.update_service(
             service=gcr_service.Service(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
         # Establish that the underlying call was made with the expected
@@ -2675,6 +2681,9 @@ async def test_update_service_flattened_async():
         _, args, _ = call.mock_calls[0]
         arg = args[0].service
         mock_val = gcr_service.Service(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
         assert arg == mock_val
 
 
@@ -2690,6 +2699,7 @@ async def test_update_service_flattened_error_async():
         await client.update_service(
             gcr_service.UpdateServiceRequest(),
             service=gcr_service.Service(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
 
@@ -3983,6 +3993,7 @@ def test_create_service_rest(request_type):
         "launch_stage": 6,
         "binary_authorization": {
             "use_default": True,
+            "policy": "policy_value",
             "breakglass_justification": "breakglass_justification_value",
         },
         "template": {
@@ -5242,6 +5253,7 @@ def test_update_service_rest(request_type):
         "launch_stage": 6,
         "binary_authorization": {
             "use_default": True,
+            "policy": "policy_value",
             "breakglass_justification": "breakglass_justification_value",
         },
         "template": {
@@ -5535,6 +5547,7 @@ def test_update_service_rest_required_fields(
     assert not set(unset_fields) - set(
         (
             "allow_missing",
+            "update_mask",
             "validate_only",
         )
     )
@@ -5591,6 +5604,7 @@ def test_update_service_rest_unset_required_fields():
         set(
             (
                 "allowMissing",
+                "updateMask",
                 "validateOnly",
             )
         )
@@ -5700,6 +5714,7 @@ def test_update_service_rest_flattened():
         # get truthy value for each flattened field
         mock_args = dict(
             service=gcr_service.Service(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
         mock_args.update(sample_request)
 
@@ -5735,6 +5750,7 @@ def test_update_service_rest_flattened_error(transport: str = "rest"):
         client.update_service(
             gcr_service.UpdateServiceRequest(),
             service=gcr_service.Service(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
 

@@ -308,7 +308,8 @@ class JobsGrpcTransport(JobsTransport):
     def list_jobs(self) -> Callable[[job.ListJobsRequest], job.ListJobsResponse]:
         r"""Return a callable for the list jobs method over gRPC.
 
-        Lists Jobs.
+        Lists Jobs. Results are sorted by creation time,
+        descending.
 
         Returns:
             Callable[[~.ListJobsRequest],
