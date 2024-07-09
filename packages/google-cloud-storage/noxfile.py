@@ -36,6 +36,9 @@ _DEFAULT_STORAGE_HOST = "https://storage.googleapis.com"
 
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 
+# Error if a python version is missing
+nox.options.error_on_missing_interpreters = True
+
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def lint(session):
@@ -227,7 +230,7 @@ def cover(session):
     session.run("coverage", "erase")
 
 
-@nox.session(python="3.9")
+@nox.session(python="3.10")
 def docs(session):
     """Build the docs for this library."""
 
