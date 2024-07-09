@@ -15,7 +15,7 @@ Python Client for Retail
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-retail.svg
    :target: https://pypi.org/project/google-cloud-retail/
 .. _Retail: https://cloud.google.com/retail/docs/
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/retail/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/retail/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/retail/docs/
 
 Quick Start

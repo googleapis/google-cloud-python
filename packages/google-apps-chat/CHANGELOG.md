@@ -1,5 +1,31 @@
 # Changelog
 
+## [0.1.8](https://github.com/googleapis/google-cloud-python/compare/google-apps-chat-v0.1.7...google-apps-chat-v0.1.8) (2024-07-08)
+
+
+### Features
+
+* Add doc for Discoverable Space support for GA launch ([09391b2](https://github.com/googleapis/google-cloud-python/commit/09391b22528550c29f33901d6b327fae8a4c058c))
+
+
+### Bug Fixes
+
+* Allow Protobuf 5.x ([#12863](https://github.com/googleapis/google-cloud-python/issues/12863)) ([3e6e423](https://github.com/googleapis/google-cloud-python/commit/3e6e423b86cdace8538f610941aa84c7a6217934))
+
+
+### Documentation
+
+* Update resource naming formats ([09391b2](https://github.com/googleapis/google-cloud-python/commit/09391b22528550c29f33901d6b327fae8a4c058c))
+
+## [0.1.7](https://github.com/googleapis/google-cloud-python/compare/google-apps-chat-v0.1.6...google-apps-chat-v0.1.7) (2024-06-27)
+
+
+### Documentation
+
+* Update doc for `CreateMembership` in service `ChatService` to support group members ([5c8eaae](https://github.com/googleapis/google-cloud-python/commit/5c8eaae2289427f56c730bbf3e7e78b15a35580a))
+* Update doc for field `group_member` in message `google.chat.v1.Membership` ([5c8eaae](https://github.com/googleapis/google-cloud-python/commit/5c8eaae2289427f56c730bbf3e7e78b15a35580a))
+* Update doc for SetUpSpace in service ChatService to support group members ([5c8eaae](https://github.com/googleapis/google-cloud-python/commit/5c8eaae2289427f56c730bbf3e7e78b15a35580a))
+
 ## [0.1.6](https://github.com/googleapis/google-cloud-python/compare/google-apps-chat-v0.1.5...google-apps-chat-v0.1.6) (2024-05-16)
 
 

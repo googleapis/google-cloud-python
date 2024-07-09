@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.3](https://github.com/googleapis/google-cloud-python/compare/google-apps-card-v0.1.2...google-apps-card-v0.1.3) (2024-07-08)
+
+
+### Bug Fixes
+
+* Allow protobuf 5.x ([04ec204](https://github.com/googleapis/google-cloud-python/commit/04ec2046ed11c690273912e1bb6220823c7dd7c0))
+
 ## [0.1.2](https://github.com/googleapis/google-cloud-python/compare/google-apps-card-v0.1.1...google-apps-card-v0.1.2) (2024-04-16)
 
 

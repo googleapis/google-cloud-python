@@ -15,7 +15,7 @@ Python Client for Service Usage
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-service-usage.svg
    :target: https://pypi.org/project/google-cloud-service-usage/
 .. _Service Usage: https://cloud.google.com/service-usage
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/serviceusage/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/serviceusage/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/service-usage
 
 Quick Start

@@ -15,7 +15,7 @@ Python Client for Virtual Private Cloud
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-vpc-access.svg
    :target: https://pypi.org/project/google-cloud-vpc-access/
 .. _Virtual Private Cloud: https://cloud.google.com/vpc/
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/vpcaccess/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/vpcaccess/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/vpc/
 
 Quick Start

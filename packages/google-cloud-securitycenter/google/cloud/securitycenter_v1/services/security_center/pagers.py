@@ -25,13 +25,18 @@ from typing import (
 )
 
 from google.cloud.securitycenter_v1.types import (
+    attack_path,
     bigquery_export,
+    effective_event_threat_detection_custom_module,
     effective_security_health_analytics_custom_module,
+    event_threat_detection_custom_module,
     mute_config,
     notification_config,
+    resource_value_config,
     security_health_analytics_custom_module,
     securitycenter_service,
     source,
+    valued_resource,
 )
 
 
@@ -1544,6 +1549,869 @@ class ListBigQueryExportsAsyncPager:
         async def async_generator():
             async for page in self.pages:
                 for response in page.big_query_exports:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListDescendantEventThreatDetectionCustomModulesPager:
+    """A pager for iterating through ``list_descendant_event_threat_detection_custom_modules`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.securitycenter_v1.types.ListDescendantEventThreatDetectionCustomModulesResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``event_threat_detection_custom_modules`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListDescendantEventThreatDetectionCustomModules`` requests and continue to iterate
+    through the ``event_threat_detection_custom_modules`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.securitycenter_v1.types.ListDescendantEventThreatDetectionCustomModulesResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[
+            ...,
+            securitycenter_service.ListDescendantEventThreatDetectionCustomModulesResponse,
+        ],
+        request: securitycenter_service.ListDescendantEventThreatDetectionCustomModulesRequest,
+        response: securitycenter_service.ListDescendantEventThreatDetectionCustomModulesResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.securitycenter_v1.types.ListDescendantEventThreatDetectionCustomModulesRequest):
+                The initial request object.
+            response (google.cloud.securitycenter_v1.types.ListDescendantEventThreatDetectionCustomModulesResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = securitycenter_service.ListDescendantEventThreatDetectionCustomModulesRequest(
+            request
+        )
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(
+        self,
+    ) -> Iterator[
+        securitycenter_service.ListDescendantEventThreatDetectionCustomModulesResponse
+    ]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __iter__(
+        self,
+    ) -> Iterator[
+        event_threat_detection_custom_module.EventThreatDetectionCustomModule
+    ]:
+        for page in self.pages:
+            yield from page.event_threat_detection_custom_modules
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListDescendantEventThreatDetectionCustomModulesAsyncPager:
+    """A pager for iterating through ``list_descendant_event_threat_detection_custom_modules`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.securitycenter_v1.types.ListDescendantEventThreatDetectionCustomModulesResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``event_threat_detection_custom_modules`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListDescendantEventThreatDetectionCustomModules`` requests and continue to iterate
+    through the ``event_threat_detection_custom_modules`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.securitycenter_v1.types.ListDescendantEventThreatDetectionCustomModulesResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[
+            ...,
+            Awaitable[
+                securitycenter_service.ListDescendantEventThreatDetectionCustomModulesResponse
+            ],
+        ],
+        request: securitycenter_service.ListDescendantEventThreatDetectionCustomModulesRequest,
+        response: securitycenter_service.ListDescendantEventThreatDetectionCustomModulesResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.securitycenter_v1.types.ListDescendantEventThreatDetectionCustomModulesRequest):
+                The initial request object.
+            response (google.cloud.securitycenter_v1.types.ListDescendantEventThreatDetectionCustomModulesResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = securitycenter_service.ListDescendantEventThreatDetectionCustomModulesRequest(
+            request
+        )
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(
+        self,
+    ) -> AsyncIterator[
+        securitycenter_service.ListDescendantEventThreatDetectionCustomModulesResponse
+    ]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __aiter__(
+        self,
+    ) -> AsyncIterator[
+        event_threat_detection_custom_module.EventThreatDetectionCustomModule
+    ]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.event_threat_detection_custom_modules:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListEventThreatDetectionCustomModulesPager:
+    """A pager for iterating through ``list_event_threat_detection_custom_modules`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.securitycenter_v1.types.ListEventThreatDetectionCustomModulesResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``event_threat_detection_custom_modules`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListEventThreatDetectionCustomModules`` requests and continue to iterate
+    through the ``event_threat_detection_custom_modules`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.securitycenter_v1.types.ListEventThreatDetectionCustomModulesResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[
+            ..., securitycenter_service.ListEventThreatDetectionCustomModulesResponse
+        ],
+        request: securitycenter_service.ListEventThreatDetectionCustomModulesRequest,
+        response: securitycenter_service.ListEventThreatDetectionCustomModulesResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.securitycenter_v1.types.ListEventThreatDetectionCustomModulesRequest):
+                The initial request object.
+            response (google.cloud.securitycenter_v1.types.ListEventThreatDetectionCustomModulesResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = (
+            securitycenter_service.ListEventThreatDetectionCustomModulesRequest(request)
+        )
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(
+        self,
+    ) -> Iterator[securitycenter_service.ListEventThreatDetectionCustomModulesResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __iter__(
+        self,
+    ) -> Iterator[
+        event_threat_detection_custom_module.EventThreatDetectionCustomModule
+    ]:
+        for page in self.pages:
+            yield from page.event_threat_detection_custom_modules
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListEventThreatDetectionCustomModulesAsyncPager:
+    """A pager for iterating through ``list_event_threat_detection_custom_modules`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.securitycenter_v1.types.ListEventThreatDetectionCustomModulesResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``event_threat_detection_custom_modules`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListEventThreatDetectionCustomModules`` requests and continue to iterate
+    through the ``event_threat_detection_custom_modules`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.securitycenter_v1.types.ListEventThreatDetectionCustomModulesResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[
+            ...,
+            Awaitable[
+                securitycenter_service.ListEventThreatDetectionCustomModulesResponse
+            ],
+        ],
+        request: securitycenter_service.ListEventThreatDetectionCustomModulesRequest,
+        response: securitycenter_service.ListEventThreatDetectionCustomModulesResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.securitycenter_v1.types.ListEventThreatDetectionCustomModulesRequest):
+                The initial request object.
+            response (google.cloud.securitycenter_v1.types.ListEventThreatDetectionCustomModulesResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = (
+            securitycenter_service.ListEventThreatDetectionCustomModulesRequest(request)
+        )
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(
+        self,
+    ) -> AsyncIterator[
+        securitycenter_service.ListEventThreatDetectionCustomModulesResponse
+    ]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __aiter__(
+        self,
+    ) -> AsyncIterator[
+        event_threat_detection_custom_module.EventThreatDetectionCustomModule
+    ]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.event_threat_detection_custom_modules:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListEffectiveEventThreatDetectionCustomModulesPager:
+    """A pager for iterating through ``list_effective_event_threat_detection_custom_modules`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.securitycenter_v1.types.ListEffectiveEventThreatDetectionCustomModulesResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``effective_event_threat_detection_custom_modules`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListEffectiveEventThreatDetectionCustomModules`` requests and continue to iterate
+    through the ``effective_event_threat_detection_custom_modules`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.securitycenter_v1.types.ListEffectiveEventThreatDetectionCustomModulesResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[
+            ...,
+            securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesResponse,
+        ],
+        request: securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesRequest,
+        response: securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.securitycenter_v1.types.ListEffectiveEventThreatDetectionCustomModulesRequest):
+                The initial request object.
+            response (google.cloud.securitycenter_v1.types.ListEffectiveEventThreatDetectionCustomModulesResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesRequest(
+            request
+        )
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(
+        self,
+    ) -> Iterator[
+        securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesResponse
+    ]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __iter__(
+        self,
+    ) -> Iterator[
+        effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule
+    ]:
+        for page in self.pages:
+            yield from page.effective_event_threat_detection_custom_modules
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListEffectiveEventThreatDetectionCustomModulesAsyncPager:
+    """A pager for iterating through ``list_effective_event_threat_detection_custom_modules`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.securitycenter_v1.types.ListEffectiveEventThreatDetectionCustomModulesResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``effective_event_threat_detection_custom_modules`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListEffectiveEventThreatDetectionCustomModules`` requests and continue to iterate
+    through the ``effective_event_threat_detection_custom_modules`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.securitycenter_v1.types.ListEffectiveEventThreatDetectionCustomModulesResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[
+            ...,
+            Awaitable[
+                securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesResponse
+            ],
+        ],
+        request: securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesRequest,
+        response: securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.securitycenter_v1.types.ListEffectiveEventThreatDetectionCustomModulesRequest):
+                The initial request object.
+            response (google.cloud.securitycenter_v1.types.ListEffectiveEventThreatDetectionCustomModulesResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesRequest(
+            request
+        )
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(
+        self,
+    ) -> AsyncIterator[
+        securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesResponse
+    ]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __aiter__(
+        self,
+    ) -> AsyncIterator[
+        effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule
+    ]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.effective_event_threat_detection_custom_modules:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListResourceValueConfigsPager:
+    """A pager for iterating through ``list_resource_value_configs`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.securitycenter_v1.types.ListResourceValueConfigsResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``resource_value_configs`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListResourceValueConfigs`` requests and continue to iterate
+    through the ``resource_value_configs`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.securitycenter_v1.types.ListResourceValueConfigsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., securitycenter_service.ListResourceValueConfigsResponse],
+        request: securitycenter_service.ListResourceValueConfigsRequest,
+        response: securitycenter_service.ListResourceValueConfigsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.securitycenter_v1.types.ListResourceValueConfigsRequest):
+                The initial request object.
+            response (google.cloud.securitycenter_v1.types.ListResourceValueConfigsResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = securitycenter_service.ListResourceValueConfigsRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(
+        self,
+    ) -> Iterator[securitycenter_service.ListResourceValueConfigsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __iter__(self) -> Iterator[resource_value_config.ResourceValueConfig]:
+        for page in self.pages:
+            yield from page.resource_value_configs
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListResourceValueConfigsAsyncPager:
+    """A pager for iterating through ``list_resource_value_configs`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.securitycenter_v1.types.ListResourceValueConfigsResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``resource_value_configs`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListResourceValueConfigs`` requests and continue to iterate
+    through the ``resource_value_configs`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.securitycenter_v1.types.ListResourceValueConfigsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[
+            ..., Awaitable[securitycenter_service.ListResourceValueConfigsResponse]
+        ],
+        request: securitycenter_service.ListResourceValueConfigsRequest,
+        response: securitycenter_service.ListResourceValueConfigsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.securitycenter_v1.types.ListResourceValueConfigsRequest):
+                The initial request object.
+            response (google.cloud.securitycenter_v1.types.ListResourceValueConfigsResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = securitycenter_service.ListResourceValueConfigsRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(
+        self,
+    ) -> AsyncIterator[securitycenter_service.ListResourceValueConfigsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[resource_value_config.ResourceValueConfig]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.resource_value_configs:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListValuedResourcesPager:
+    """A pager for iterating through ``list_valued_resources`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.securitycenter_v1.types.ListValuedResourcesResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``valued_resources`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListValuedResources`` requests and continue to iterate
+    through the ``valued_resources`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.securitycenter_v1.types.ListValuedResourcesResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., securitycenter_service.ListValuedResourcesResponse],
+        request: securitycenter_service.ListValuedResourcesRequest,
+        response: securitycenter_service.ListValuedResourcesResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.securitycenter_v1.types.ListValuedResourcesRequest):
+                The initial request object.
+            response (google.cloud.securitycenter_v1.types.ListValuedResourcesResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = securitycenter_service.ListValuedResourcesRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[securitycenter_service.ListValuedResourcesResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __iter__(self) -> Iterator[valued_resource.ValuedResource]:
+        for page in self.pages:
+            yield from page.valued_resources
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListValuedResourcesAsyncPager:
+    """A pager for iterating through ``list_valued_resources`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.securitycenter_v1.types.ListValuedResourcesResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``valued_resources`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListValuedResources`` requests and continue to iterate
+    through the ``valued_resources`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.securitycenter_v1.types.ListValuedResourcesResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[
+            ..., Awaitable[securitycenter_service.ListValuedResourcesResponse]
+        ],
+        request: securitycenter_service.ListValuedResourcesRequest,
+        response: securitycenter_service.ListValuedResourcesResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.securitycenter_v1.types.ListValuedResourcesRequest):
+                The initial request object.
+            response (google.cloud.securitycenter_v1.types.ListValuedResourcesResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = securitycenter_service.ListValuedResourcesRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(
+        self,
+    ) -> AsyncIterator[securitycenter_service.ListValuedResourcesResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[valued_resource.ValuedResource]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.valued_resources:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListAttackPathsPager:
+    """A pager for iterating through ``list_attack_paths`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.securitycenter_v1.types.ListAttackPathsResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``attack_paths`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListAttackPaths`` requests and continue to iterate
+    through the ``attack_paths`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.securitycenter_v1.types.ListAttackPathsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., securitycenter_service.ListAttackPathsResponse],
+        request: securitycenter_service.ListAttackPathsRequest,
+        response: securitycenter_service.ListAttackPathsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.securitycenter_v1.types.ListAttackPathsRequest):
+                The initial request object.
+            response (google.cloud.securitycenter_v1.types.ListAttackPathsResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = securitycenter_service.ListAttackPathsRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[securitycenter_service.ListAttackPathsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __iter__(self) -> Iterator[attack_path.AttackPath]:
+        for page in self.pages:
+            yield from page.attack_paths
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListAttackPathsAsyncPager:
+    """A pager for iterating through ``list_attack_paths`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.securitycenter_v1.types.ListAttackPathsResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``attack_paths`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListAttackPaths`` requests and continue to iterate
+    through the ``attack_paths`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.securitycenter_v1.types.ListAttackPathsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[
+            ..., Awaitable[securitycenter_service.ListAttackPathsResponse]
+        ],
+        request: securitycenter_service.ListAttackPathsRequest,
+        response: securitycenter_service.ListAttackPathsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.securitycenter_v1.types.ListAttackPathsRequest):
+                The initial request object.
+            response (google.cloud.securitycenter_v1.types.ListAttackPathsResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = securitycenter_service.ListAttackPathsRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(
+        self,
+    ) -> AsyncIterator[securitycenter_service.ListAttackPathsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[attack_path.AttackPath]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.attack_paths:
                     yield response
 
         return async_generator()

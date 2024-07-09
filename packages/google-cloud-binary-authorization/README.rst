@@ -15,7 +15,7 @@ Python Client for Binary Authorization
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-binary-authorization.svg
    :target: https://pypi.org/project/google-cloud-binary-authorization/
 .. _Binary Authorization: https://cloud.google.com/binary-authorization
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/binaryauthorization/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/binaryauthorization/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/binary-authorization
 
 Quick Start

@@ -1,5 +1,33 @@
 # Changelog
 
+## [0.6.7](https://github.com/googleapis/google-cloud-python/compare/google-ai-generativelanguage-v0.6.6...google-ai-generativelanguage-v0.6.7) (2024-07-08)
+
+
+### Bug Fixes
+
+* Allow Protobuf 5.x ([#12863](https://github.com/googleapis/google-cloud-python/issues/12863)) ([3e6e423](https://github.com/googleapis/google-cloud-python/commit/3e6e423b86cdace8538f610941aa84c7a6217934))
+
+## [0.6.6](https://github.com/googleapis/google-cloud-python/compare/google-ai-generativelanguage-v0.6.5...google-ai-generativelanguage-v0.6.6) (2024-06-26)
+
+
+### Features
+
+* [google-ai-generativelanguage] Add code execution ([#12843](https://github.com/googleapis/google-cloud-python/issues/12843)) ([e4fcb00](https://github.com/googleapis/google-cloud-python/commit/e4fcb0097b4f6debbcf584bd3d35a8281a954cfd))
+
+## [0.6.5](https://github.com/googleapis/google-cloud-python/compare/google-ai-generativelanguage-v0.6.4...google-ai-generativelanguage-v0.6.5) (2024-06-11)
+
+
+### Features
+
+* Add cached_content_token_count to CountTokensResponse ([09c7fae](https://github.com/googleapis/google-cloud-python/commit/09c7fae459bc3eb91bfcb795384245e7fa4bf7ff))
+* Add cached_content_token_count to generative_service's UsageMetadata ([09c7fae](https://github.com/googleapis/google-cloud-python/commit/09c7fae459bc3eb91bfcb795384245e7fa4bf7ff))
+* Add content caching ([09c7fae](https://github.com/googleapis/google-cloud-python/commit/09c7fae459bc3eb91bfcb795384245e7fa4bf7ff))
+
+
+### Documentation
+
+* Small fixes ([09c7fae](https://github.com/googleapis/google-cloud-python/commit/09c7fae459bc3eb91bfcb795384245e7fa4bf7ff))
+
 ## [0.6.4](https://github.com/googleapis/google-cloud-python/compare/google-ai-generativelanguage-v0.6.3...google-ai-generativelanguage-v0.6.4) (2024-05-16)
 
 

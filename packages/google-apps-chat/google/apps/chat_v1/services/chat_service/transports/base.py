@@ -48,6 +48,11 @@ class ChatServiceTransport(abc.ABC):
     """Abstract transport class for ChatService."""
 
     AUTH_SCOPES = (
+        "https://www.googleapis.com/auth/chat.admin.delete",
+        "https://www.googleapis.com/auth/chat.admin.memberships",
+        "https://www.googleapis.com/auth/chat.admin.memberships.readonly",
+        "https://www.googleapis.com/auth/chat.admin.spaces",
+        "https://www.googleapis.com/auth/chat.admin.spaces.readonly",
         "https://www.googleapis.com/auth/chat.bot",
         "https://www.googleapis.com/auth/chat.delete",
         "https://www.googleapis.com/auth/chat.import",
@@ -111,6 +116,8 @@ class ChatServiceTransport(abc.ABC):
 
         # Save the scopes.
         self._scopes = scopes
+        if not hasattr(self, "_ignore_credentials"):
+            self._ignore_credentials: bool = False
 
         # If no credentials are provided, then determine the appropriate
         # defaults.
@@ -123,7 +130,7 @@ class ChatServiceTransport(abc.ABC):
             credentials, _ = google.auth.load_credentials_from_file(
                 credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
             )
-        elif credentials is None:
+        elif credentials is None and not self._ignore_credentials:
             credentials, _ = google.auth.default(
                 **scopes_kwargs, quota_project_id=quota_project_id
             )

@@ -129,7 +129,8 @@ class ProductServiceGrpcTransport(ProductServiceTransport):
 
         if isinstance(channel, grpc.Channel):
             # Ignore credentials if a channel was passed.
-            credentials = False
+            credentials = None
+            self._ignore_credentials = True
             # If a channel was explicitly provided, set it.
             self._grpc_channel = channel
             self._ssl_channel_credentials = None
@@ -552,10 +553,11 @@ class ProductServiceGrpcTransport(ProductServiceTransport):
     ]:
         r"""Return a callable for the add fulfillment places method over gRPC.
 
-        It is recommended to use the
+        We recommend that you use the
         [ProductService.AddLocalInventories][google.cloud.retail.v2alpha.ProductService.AddLocalInventories]
-        method instead of
-        [ProductService.AddFulfillmentPlaces][google.cloud.retail.v2alpha.ProductService.AddFulfillmentPlaces].
+        method instead of the
+        [ProductService.AddFulfillmentPlaces][google.cloud.retail.v2alpha.ProductService.AddFulfillmentPlaces]
+        method.
         [ProductService.AddLocalInventories][google.cloud.retail.v2alpha.ProductService.AddLocalInventories]
         achieves the same results but provides more fine-grained control
         over ingesting local inventory data.
@@ -610,10 +612,11 @@ class ProductServiceGrpcTransport(ProductServiceTransport):
     ]:
         r"""Return a callable for the remove fulfillment places method over gRPC.
 
-        It is recommended to use the
+        We recommend that you use the
         [ProductService.RemoveLocalInventories][google.cloud.retail.v2alpha.ProductService.RemoveLocalInventories]
-        method instead of
-        [ProductService.RemoveFulfillmentPlaces][google.cloud.retail.v2alpha.ProductService.RemoveFulfillmentPlaces].
+        method instead of the
+        [ProductService.RemoveFulfillmentPlaces][google.cloud.retail.v2alpha.ProductService.RemoveFulfillmentPlaces]
+        method.
         [ProductService.RemoveLocalInventories][google.cloud.retail.v2alpha.ProductService.RemoveLocalInventories]
         achieves the same results but provides more fine-grained control
         over ingesting local inventory data.

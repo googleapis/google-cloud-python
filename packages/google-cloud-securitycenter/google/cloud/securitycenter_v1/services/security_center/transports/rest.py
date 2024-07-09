@@ -49,7 +49,13 @@ from google.protobuf import empty_pb2  # type: ignore
 
 from google.cloud.securitycenter_v1.types import (
     bigquery_export,
+    effective_event_threat_detection_custom_module,
     effective_security_health_analytics_custom_module,
+)
+from google.cloud.securitycenter_v1.types import securitycenter_service, simulation
+from google.cloud.securitycenter_v1.types import event_threat_detection_custom_module
+from google.cloud.securitycenter_v1.types import (
+    event_threat_detection_custom_module as gcs_event_threat_detection_custom_module,
 )
 from google.cloud.securitycenter_v1.types import external_system as gcs_external_system
 from google.cloud.securitycenter_v1.types import (
@@ -57,6 +63,9 @@ from google.cloud.securitycenter_v1.types import (
 )
 from google.cloud.securitycenter_v1.types import (
     organization_settings as gcs_organization_settings,
+)
+from google.cloud.securitycenter_v1.types import (
+    resource_value_config as gcs_resource_value_config,
 )
 from google.cloud.securitycenter_v1.types import security_health_analytics_custom_module
 from google.cloud.securitycenter_v1.types import (
@@ -69,9 +78,10 @@ from google.cloud.securitycenter_v1.types import mute_config
 from google.cloud.securitycenter_v1.types import mute_config as gcs_mute_config
 from google.cloud.securitycenter_v1.types import notification_config
 from google.cloud.securitycenter_v1.types import organization_settings
-from google.cloud.securitycenter_v1.types import securitycenter_service
+from google.cloud.securitycenter_v1.types import resource_value_config
 from google.cloud.securitycenter_v1.types import source
 from google.cloud.securitycenter_v1.types import source as gcs_source
+from google.cloud.securitycenter_v1.types import valued_resource
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .base import SecurityCenterTransport
@@ -98,6 +108,14 @@ class SecurityCenterRestInterceptor:
 
     .. code-block:: python
         class MyCustomSecurityCenterInterceptor(SecurityCenterRestInterceptor):
+            def pre_batch_create_resource_value_configs(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_batch_create_resource_value_configs(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_bulk_mute_findings(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -111,6 +129,14 @@ class SecurityCenterRestInterceptor:
                 return request, metadata
 
             def post_create_big_query_export(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_create_event_threat_detection_custom_module(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_event_threat_detection_custom_module(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -158,11 +184,19 @@ class SecurityCenterRestInterceptor:
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
+            def pre_delete_event_threat_detection_custom_module(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
             def pre_delete_mute_config(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
             def pre_delete_notification_config(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def pre_delete_resource_value_config(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
@@ -178,11 +212,27 @@ class SecurityCenterRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_get_effective_event_threat_detection_custom_module(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_effective_event_threat_detection_custom_module(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_get_effective_security_health_analytics_custom_module(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
             def post_get_effective_security_health_analytics_custom_module(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_get_event_threat_detection_custom_module(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_event_threat_detection_custom_module(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -218,6 +268,14 @@ class SecurityCenterRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_get_resource_value_config(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_resource_value_config(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_get_security_health_analytics_custom_module(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -226,11 +284,27 @@ class SecurityCenterRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_get_simulation(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_simulation(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_get_source(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
             def post_get_source(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_get_valued_resource(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_valued_resource(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -258,11 +332,27 @@ class SecurityCenterRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_list_attack_paths(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_attack_paths(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_list_big_query_exports(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
             def post_list_big_query_exports(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_list_descendant_event_threat_detection_custom_modules(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_descendant_event_threat_detection_custom_modules(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -274,11 +364,27 @@ class SecurityCenterRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_list_effective_event_threat_detection_custom_modules(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_effective_event_threat_detection_custom_modules(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_list_effective_security_health_analytics_custom_modules(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
             def post_list_effective_security_health_analytics_custom_modules(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_list_event_threat_detection_custom_modules(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_event_threat_detection_custom_modules(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -306,6 +412,14 @@ class SecurityCenterRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_list_resource_value_configs(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_resource_value_configs(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_list_security_health_analytics_custom_modules(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -319,6 +433,14 @@ class SecurityCenterRestInterceptor:
                 return request, metadata
 
             def post_list_sources(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_list_valued_resources(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_valued_resources(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -378,6 +500,14 @@ class SecurityCenterRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_update_event_threat_detection_custom_module(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_event_threat_detection_custom_module(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_update_external_system(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -418,6 +548,14 @@ class SecurityCenterRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_update_resource_value_config(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_resource_value_config(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_update_security_health_analytics_custom_module(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -442,11 +580,45 @@ class SecurityCenterRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_validate_event_threat_detection_custom_module(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_validate_event_threat_detection_custom_module(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
         transport = SecurityCenterRestTransport(interceptor=MyCustomSecurityCenterInterceptor())
         client = SecurityCenterClient(transport=transport)
 
 
     """
+
+    def pre_batch_create_resource_value_configs(
+        self,
+        request: securitycenter_service.BatchCreateResourceValueConfigsRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        securitycenter_service.BatchCreateResourceValueConfigsRequest,
+        Sequence[Tuple[str, str]],
+    ]:
+        """Pre-rpc interceptor for batch_create_resource_value_configs
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the SecurityCenter server.
+        """
+        return request, metadata
+
+    def post_batch_create_resource_value_configs(
+        self, response: securitycenter_service.BatchCreateResourceValueConfigsResponse
+    ) -> securitycenter_service.BatchCreateResourceValueConfigsResponse:
+        """Post-rpc interceptor for batch_create_resource_value_configs
+
+        Override in a subclass to manipulate the response
+        after it is returned by the SecurityCenter server but before
+        it is returned to user code.
+        """
+        return response
 
     def pre_bulk_mute_findings(
         self,
@@ -491,6 +663,33 @@ class SecurityCenterRestInterceptor:
         self, response: bigquery_export.BigQueryExport
     ) -> bigquery_export.BigQueryExport:
         """Post-rpc interceptor for create_big_query_export
+
+        Override in a subclass to manipulate the response
+        after it is returned by the SecurityCenter server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_create_event_threat_detection_custom_module(
+        self,
+        request: securitycenter_service.CreateEventThreatDetectionCustomModuleRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        securitycenter_service.CreateEventThreatDetectionCustomModuleRequest,
+        Sequence[Tuple[str, str]],
+    ]:
+        """Pre-rpc interceptor for create_event_threat_detection_custom_module
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the SecurityCenter server.
+        """
+        return request, metadata
+
+    def post_create_event_threat_detection_custom_module(
+        self,
+        response: gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule,
+    ) -> gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule:
+        """Post-rpc interceptor for create_event_threat_detection_custom_module
 
         Override in a subclass to manipulate the response
         after it is returned by the SecurityCenter server but before
@@ -634,6 +833,21 @@ class SecurityCenterRestInterceptor:
         """
         return request, metadata
 
+    def pre_delete_event_threat_detection_custom_module(
+        self,
+        request: securitycenter_service.DeleteEventThreatDetectionCustomModuleRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        securitycenter_service.DeleteEventThreatDetectionCustomModuleRequest,
+        Sequence[Tuple[str, str]],
+    ]:
+        """Pre-rpc interceptor for delete_event_threat_detection_custom_module
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the SecurityCenter server.
+        """
+        return request, metadata
+
     def pre_delete_mute_config(
         self,
         request: securitycenter_service.DeleteMuteConfigRequest,
@@ -657,6 +871,21 @@ class SecurityCenterRestInterceptor:
         Sequence[Tuple[str, str]],
     ]:
         """Pre-rpc interceptor for delete_notification_config
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the SecurityCenter server.
+        """
+        return request, metadata
+
+    def pre_delete_resource_value_config(
+        self,
+        request: securitycenter_service.DeleteResourceValueConfigRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        securitycenter_service.DeleteResourceValueConfigRequest,
+        Sequence[Tuple[str, str]],
+    ]:
+        """Pre-rpc interceptor for delete_resource_value_config
 
         Override in a subclass to manipulate the request or metadata
         before they are sent to the SecurityCenter server.
@@ -703,6 +932,35 @@ class SecurityCenterRestInterceptor:
         """
         return response
 
+    def pre_get_effective_event_threat_detection_custom_module(
+        self,
+        request: securitycenter_service.GetEffectiveEventThreatDetectionCustomModuleRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        securitycenter_service.GetEffectiveEventThreatDetectionCustomModuleRequest,
+        Sequence[Tuple[str, str]],
+    ]:
+        """Pre-rpc interceptor for get_effective_event_threat_detection_custom_module
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the SecurityCenter server.
+        """
+        return request, metadata
+
+    def post_get_effective_event_threat_detection_custom_module(
+        self,
+        response: effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule,
+    ) -> (
+        effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule
+    ):
+        """Post-rpc interceptor for get_effective_event_threat_detection_custom_module
+
+        Override in a subclass to manipulate the response
+        after it is returned by the SecurityCenter server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_get_effective_security_health_analytics_custom_module(
         self,
         request: securitycenter_service.GetEffectiveSecurityHealthAnalyticsCustomModuleRequest,
@@ -725,6 +983,33 @@ class SecurityCenterRestInterceptor:
         effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule
     ):
         """Post-rpc interceptor for get_effective_security_health_analytics_custom_module
+
+        Override in a subclass to manipulate the response
+        after it is returned by the SecurityCenter server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get_event_threat_detection_custom_module(
+        self,
+        request: securitycenter_service.GetEventThreatDetectionCustomModuleRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        securitycenter_service.GetEventThreatDetectionCustomModuleRequest,
+        Sequence[Tuple[str, str]],
+    ]:
+        """Pre-rpc interceptor for get_event_threat_detection_custom_module
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the SecurityCenter server.
+        """
+        return request, metadata
+
+    def post_get_event_threat_detection_custom_module(
+        self,
+        response: event_threat_detection_custom_module.EventThreatDetectionCustomModule,
+    ) -> event_threat_detection_custom_module.EventThreatDetectionCustomModule:
+        """Post-rpc interceptor for get_event_threat_detection_custom_module
 
         Override in a subclass to manipulate the response
         after it is returned by the SecurityCenter server but before
@@ -826,6 +1111,31 @@ class SecurityCenterRestInterceptor:
         """
         return response
 
+    def pre_get_resource_value_config(
+        self,
+        request: securitycenter_service.GetResourceValueConfigRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        securitycenter_service.GetResourceValueConfigRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for get_resource_value_config
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the SecurityCenter server.
+        """
+        return request, metadata
+
+    def post_get_resource_value_config(
+        self, response: resource_value_config.ResourceValueConfig
+    ) -> resource_value_config.ResourceValueConfig:
+        """Post-rpc interceptor for get_resource_value_config
+
+        Override in a subclass to manipulate the response
+        after it is returned by the SecurityCenter server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_get_security_health_analytics_custom_module(
         self,
         request: securitycenter_service.GetSecurityHealthAnalyticsCustomModuleRequest,
@@ -853,6 +1163,29 @@ class SecurityCenterRestInterceptor:
         """
         return response
 
+    def pre_get_simulation(
+        self,
+        request: securitycenter_service.GetSimulationRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[securitycenter_service.GetSimulationRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_simulation
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the SecurityCenter server.
+        """
+        return request, metadata
+
+    def post_get_simulation(
+        self, response: simulation.Simulation
+    ) -> simulation.Simulation:
+        """Post-rpc interceptor for get_simulation
+
+        Override in a subclass to manipulate the response
+        after it is returned by the SecurityCenter server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_get_source(
         self,
         request: securitycenter_service.GetSourceRequest,
@@ -867,6 +1200,31 @@ class SecurityCenterRestInterceptor:
 
     def post_get_source(self, response: source.Source) -> source.Source:
         """Post-rpc interceptor for get_source
+
+        Override in a subclass to manipulate the response
+        after it is returned by the SecurityCenter server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get_valued_resource(
+        self,
+        request: securitycenter_service.GetValuedResourceRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        securitycenter_service.GetValuedResourceRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for get_valued_resource
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the SecurityCenter server.
+        """
+        return request, metadata
+
+    def post_get_valued_resource(
+        self, response: valued_resource.ValuedResource
+    ) -> valued_resource.ValuedResource:
+        """Post-rpc interceptor for get_valued_resource
 
         Override in a subclass to manipulate the response
         after it is returned by the SecurityCenter server but before
@@ -943,6 +1301,31 @@ class SecurityCenterRestInterceptor:
         """
         return response
 
+    def pre_list_attack_paths(
+        self,
+        request: securitycenter_service.ListAttackPathsRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        securitycenter_service.ListAttackPathsRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for list_attack_paths
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the SecurityCenter server.
+        """
+        return request, metadata
+
+    def post_list_attack_paths(
+        self, response: securitycenter_service.ListAttackPathsResponse
+    ) -> securitycenter_service.ListAttackPathsResponse:
+        """Post-rpc interceptor for list_attack_paths
+
+        Override in a subclass to manipulate the response
+        after it is returned by the SecurityCenter server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_list_big_query_exports(
         self,
         request: securitycenter_service.ListBigQueryExportsRequest,
@@ -961,6 +1344,33 @@ class SecurityCenterRestInterceptor:
         self, response: securitycenter_service.ListBigQueryExportsResponse
     ) -> securitycenter_service.ListBigQueryExportsResponse:
         """Post-rpc interceptor for list_big_query_exports
+
+        Override in a subclass to manipulate the response
+        after it is returned by the SecurityCenter server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_list_descendant_event_threat_detection_custom_modules(
+        self,
+        request: securitycenter_service.ListDescendantEventThreatDetectionCustomModulesRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        securitycenter_service.ListDescendantEventThreatDetectionCustomModulesRequest,
+        Sequence[Tuple[str, str]],
+    ]:
+        """Pre-rpc interceptor for list_descendant_event_threat_detection_custom_modules
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the SecurityCenter server.
+        """
+        return request, metadata
+
+    def post_list_descendant_event_threat_detection_custom_modules(
+        self,
+        response: securitycenter_service.ListDescendantEventThreatDetectionCustomModulesResponse,
+    ) -> securitycenter_service.ListDescendantEventThreatDetectionCustomModulesResponse:
+        """Post-rpc interceptor for list_descendant_event_threat_detection_custom_modules
 
         Override in a subclass to manipulate the response
         after it is returned by the SecurityCenter server but before
@@ -997,6 +1407,33 @@ class SecurityCenterRestInterceptor:
         """
         return response
 
+    def pre_list_effective_event_threat_detection_custom_modules(
+        self,
+        request: securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesRequest,
+        Sequence[Tuple[str, str]],
+    ]:
+        """Pre-rpc interceptor for list_effective_event_threat_detection_custom_modules
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the SecurityCenter server.
+        """
+        return request, metadata
+
+    def post_list_effective_event_threat_detection_custom_modules(
+        self,
+        response: securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesResponse,
+    ) -> securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesResponse:
+        """Post-rpc interceptor for list_effective_event_threat_detection_custom_modules
+
+        Override in a subclass to manipulate the response
+        after it is returned by the SecurityCenter server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_list_effective_security_health_analytics_custom_modules(
         self,
         request: securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest,
@@ -1019,6 +1456,33 @@ class SecurityCenterRestInterceptor:
         securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse
     ):
         """Post-rpc interceptor for list_effective_security_health_analytics_custom_modules
+
+        Override in a subclass to manipulate the response
+        after it is returned by the SecurityCenter server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_list_event_threat_detection_custom_modules(
+        self,
+        request: securitycenter_service.ListEventThreatDetectionCustomModulesRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        securitycenter_service.ListEventThreatDetectionCustomModulesRequest,
+        Sequence[Tuple[str, str]],
+    ]:
+        """Pre-rpc interceptor for list_event_threat_detection_custom_modules
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the SecurityCenter server.
+        """
+        return request, metadata
+
+    def post_list_event_threat_detection_custom_modules(
+        self,
+        response: securitycenter_service.ListEventThreatDetectionCustomModulesResponse,
+    ) -> securitycenter_service.ListEventThreatDetectionCustomModulesResponse:
+        """Post-rpc interceptor for list_event_threat_detection_custom_modules
 
         Override in a subclass to manipulate the response
         after it is returned by the SecurityCenter server but before
@@ -1099,6 +1563,32 @@ class SecurityCenterRestInterceptor:
         """
         return response
 
+    def pre_list_resource_value_configs(
+        self,
+        request: securitycenter_service.ListResourceValueConfigsRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        securitycenter_service.ListResourceValueConfigsRequest,
+        Sequence[Tuple[str, str]],
+    ]:
+        """Pre-rpc interceptor for list_resource_value_configs
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the SecurityCenter server.
+        """
+        return request, metadata
+
+    def post_list_resource_value_configs(
+        self, response: securitycenter_service.ListResourceValueConfigsResponse
+    ) -> securitycenter_service.ListResourceValueConfigsResponse:
+        """Post-rpc interceptor for list_resource_value_configs
+
+        Override in a subclass to manipulate the response
+        after it is returned by the SecurityCenter server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_list_security_health_analytics_custom_modules(
         self,
         request: securitycenter_service.ListSecurityHealthAnalyticsCustomModulesRequest,
@@ -1142,6 +1632,31 @@ class SecurityCenterRestInterceptor:
         self, response: securitycenter_service.ListSourcesResponse
     ) -> securitycenter_service.ListSourcesResponse:
         """Post-rpc interceptor for list_sources
+
+        Override in a subclass to manipulate the response
+        after it is returned by the SecurityCenter server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_list_valued_resources(
+        self,
+        request: securitycenter_service.ListValuedResourcesRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        securitycenter_service.ListValuedResourcesRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for list_valued_resources
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the SecurityCenter server.
+        """
+        return request, metadata
+
+    def post_list_valued_resources(
+        self, response: securitycenter_service.ListValuedResourcesResponse
+    ) -> securitycenter_service.ListValuedResourcesResponse:
+        """Post-rpc interceptor for list_valued_resources
 
         Override in a subclass to manipulate the response
         after it is returned by the SecurityCenter server but before
@@ -1314,6 +1829,33 @@ class SecurityCenterRestInterceptor:
         """
         return response
 
+    def pre_update_event_threat_detection_custom_module(
+        self,
+        request: securitycenter_service.UpdateEventThreatDetectionCustomModuleRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        securitycenter_service.UpdateEventThreatDetectionCustomModuleRequest,
+        Sequence[Tuple[str, str]],
+    ]:
+        """Pre-rpc interceptor for update_event_threat_detection_custom_module
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the SecurityCenter server.
+        """
+        return request, metadata
+
+    def post_update_event_threat_detection_custom_module(
+        self,
+        response: gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule,
+    ) -> gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule:
+        """Post-rpc interceptor for update_event_threat_detection_custom_module
+
+        Override in a subclass to manipulate the response
+        after it is returned by the SecurityCenter server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_update_external_system(
         self,
         request: securitycenter_service.UpdateExternalSystemRequest,
@@ -1437,6 +1979,32 @@ class SecurityCenterRestInterceptor:
         """
         return response
 
+    def pre_update_resource_value_config(
+        self,
+        request: securitycenter_service.UpdateResourceValueConfigRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        securitycenter_service.UpdateResourceValueConfigRequest,
+        Sequence[Tuple[str, str]],
+    ]:
+        """Pre-rpc interceptor for update_resource_value_config
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the SecurityCenter server.
+        """
+        return request, metadata
+
+    def post_update_resource_value_config(
+        self, response: gcs_resource_value_config.ResourceValueConfig
+    ) -> gcs_resource_value_config.ResourceValueConfig:
+        """Post-rpc interceptor for update_resource_value_config
+
+        Override in a subclass to manipulate the response
+        after it is returned by the SecurityCenter server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_update_security_health_analytics_custom_module(
         self,
         request: securitycenter_service.UpdateSecurityHealthAnalyticsCustomModuleRequest,
@@ -1505,6 +2073,33 @@ class SecurityCenterRestInterceptor:
 
     def post_update_source(self, response: gcs_source.Source) -> gcs_source.Source:
         """Post-rpc interceptor for update_source
+
+        Override in a subclass to manipulate the response
+        after it is returned by the SecurityCenter server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_validate_event_threat_detection_custom_module(
+        self,
+        request: securitycenter_service.ValidateEventThreatDetectionCustomModuleRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        securitycenter_service.ValidateEventThreatDetectionCustomModuleRequest,
+        Sequence[Tuple[str, str]],
+    ]:
+        """Pre-rpc interceptor for validate_event_threat_detection_custom_module
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the SecurityCenter server.
+        """
+        return request, metadata
+
+    def post_validate_event_threat_detection_custom_module(
+        self,
+        response: securitycenter_service.ValidateEventThreatDetectionCustomModuleResponse,
+    ) -> securitycenter_service.ValidateEventThreatDetectionCustomModuleResponse:
+        """Post-rpc interceptor for validate_event_threat_detection_custom_module
 
         Override in a subclass to manipulate the response
         after it is returned by the SecurityCenter server but before
@@ -1750,6 +2345,113 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
         # Return the client from cache.
         return self._operations_client
 
+    class _BatchCreateResourceValueConfigs(SecurityCenterRestStub):
+        def __hash__(self):
+            return hash("BatchCreateResourceValueConfigs")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: securitycenter_service.BatchCreateResourceValueConfigsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> securitycenter_service.BatchCreateResourceValueConfigsResponse:
+            r"""Call the batch create resource
+            value configs method over HTTP.
+
+                Args:
+                    request (~.securitycenter_service.BatchCreateResourceValueConfigsRequest):
+                        The request object. Request message to create multiple
+                    resource value configs
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+
+                Returns:
+                    ~.securitycenter_service.BatchCreateResourceValueConfigsResponse:
+                        Response message for
+                    BatchCreateResourceValueConfigs
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1/{parent=organizations/*}/resourceValueConfigs:batchCreate",
+                    "body": "*",
+                },
+            ]
+            (
+                request,
+                metadata,
+            ) = self._interceptor.pre_batch_create_resource_value_configs(
+                request, metadata
+            )
+            pb_request = (
+                securitycenter_service.BatchCreateResourceValueConfigsRequest.pb(
+                    request
+                )
+            )
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"], use_integers_for_enums=True
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = securitycenter_service.BatchCreateResourceValueConfigsResponse()
+            pb_resp = securitycenter_service.BatchCreateResourceValueConfigsResponse.pb(
+                resp
+            )
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_batch_create_resource_value_configs(resp)
+            return resp
+
     class _BulkMuteFindings(SecurityCenterRestStub):
         def __hash__(self):
             return hash("BulkMuteFindings")
@@ -1973,6 +2675,134 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
             resp = self._interceptor.post_create_big_query_export(resp)
             return resp
 
+    class _CreateEventThreatDetectionCustomModule(SecurityCenterRestStub):
+        def __hash__(self):
+            return hash("CreateEventThreatDetectionCustomModule")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: securitycenter_service.CreateEventThreatDetectionCustomModuleRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule:
+            r"""Call the create event threat
+            detection custom module method over HTTP.
+
+                Args:
+                    request (~.securitycenter_service.CreateEventThreatDetectionCustomModuleRequest):
+                        The request object. Request to create an Event Threat
+                    Detection custom module.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+
+                Returns:
+                    ~.gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule:
+                        Represents an instance of an Event
+                    Threat Detection custom module,
+                    including its full module name, display
+                    name, enablement state, and last updated
+                    time. You can create a custom module at
+                    the organization, folder, or project
+                    level. Custom modules that you create at
+                    the organization or folder level are
+                    inherited by child folders and projects.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1/{parent=organizations/*/eventThreatDetectionSettings}/customModules",
+                    "body": "event_threat_detection_custom_module",
+                },
+                {
+                    "method": "post",
+                    "uri": "/v1/{parent=folders/*/eventThreatDetectionSettings}/customModules",
+                    "body": "event_threat_detection_custom_module",
+                },
+                {
+                    "method": "post",
+                    "uri": "/v1/{parent=projects/*/eventThreatDetectionSettings}/customModules",
+                    "body": "event_threat_detection_custom_module",
+                },
+            ]
+            (
+                request,
+                metadata,
+            ) = self._interceptor.pre_create_event_threat_detection_custom_module(
+                request, metadata
+            )
+            pb_request = (
+                securitycenter_service.CreateEventThreatDetectionCustomModuleRequest.pb(
+                    request
+                )
+            )
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"], use_integers_for_enums=True
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = (
+                gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule()
+            )
+            pb_resp = gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule.pb(
+                resp
+            )
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_create_event_threat_detection_custom_module(
+                resp
+            )
+            return resp
+
     class _CreateFinding(SecurityCenterRestStub):
         def __hash__(self):
             return hash("CreateFinding")
@@ -2130,12 +2960,27 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
                 },
                 {
                     "method": "post",
+                    "uri": "/v1/{parent=organizations/*/locations/*}/muteConfigs",
+                    "body": "mute_config",
+                },
+                {
+                    "method": "post",
                     "uri": "/v1/{parent=folders/*}/muteConfigs",
                     "body": "mute_config",
                 },
                 {
                     "method": "post",
+                    "uri": "/v1/{parent=folders/*/locations/*}/muteConfigs",
+                    "body": "mute_config",
+                },
+                {
+                    "method": "post",
                     "uri": "/v1/{parent=projects/*}/muteConfigs",
+                    "body": "mute_config",
+                },
+                {
+                    "method": "post",
+                    "uri": "/v1/{parent=projects/*/locations/*}/muteConfigs",
                     "body": "mute_config",
                 },
             ]
@@ -2618,6 +3463,98 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+    class _DeleteEventThreatDetectionCustomModule(SecurityCenterRestStub):
+        def __hash__(self):
+            return hash("DeleteEventThreatDetectionCustomModule")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: securitycenter_service.DeleteEventThreatDetectionCustomModuleRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ):
+            r"""Call the delete event threat
+            detection custom module method over HTTP.
+
+                Args:
+                    request (~.securitycenter_service.DeleteEventThreatDetectionCustomModuleRequest):
+                        The request object. Request to delete an Event Threat
+                    Detection custom module.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "delete",
+                    "uri": "/v1/{name=organizations/*/eventThreatDetectionSettings/customModules/*}",
+                },
+                {
+                    "method": "delete",
+                    "uri": "/v1/{name=folders/*/eventThreatDetectionSettings/customModules/*}",
+                },
+                {
+                    "method": "delete",
+                    "uri": "/v1/{name=projects/*/eventThreatDetectionSettings/customModules/*}",
+                },
+            ]
+            (
+                request,
+                metadata,
+            ) = self._interceptor.pre_delete_event_threat_detection_custom_module(
+                request, metadata
+            )
+            pb_request = (
+                securitycenter_service.DeleteEventThreatDetectionCustomModuleRequest.pb(
+                    request
+                )
+            )
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
     class _DeleteMuteConfig(SecurityCenterRestStub):
         def __hash__(self):
             return hash("DeleteMuteConfig")
@@ -2665,6 +3602,18 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
                 {
                     "method": "delete",
                     "uri": "/v1/{name=projects/*/muteConfigs/*}",
+                },
+                {
+                    "method": "delete",
+                    "uri": "/v1/{name=organizations/*/locations/*/muteConfigs/*}",
+                },
+                {
+                    "method": "delete",
+                    "uri": "/v1/{name=folders/*/locations/*/muteConfigs/*}",
+                },
+                {
+                    "method": "delete",
+                    "uri": "/v1/{name=projects/*/locations/*/muteConfigs/*}",
                 },
             ]
             request, metadata = self._interceptor.pre_delete_mute_config(
@@ -2756,6 +3705,85 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
                 request, metadata
             )
             pb_request = securitycenter_service.DeleteNotificationConfigRequest.pb(
+                request
+            )
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+    class _DeleteResourceValueConfig(SecurityCenterRestStub):
+        def __hash__(self):
+            return hash("DeleteResourceValueConfig")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: securitycenter_service.DeleteResourceValueConfigRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ):
+            r"""Call the delete resource value
+            config method over HTTP.
+
+                Args:
+                    request (~.securitycenter_service.DeleteResourceValueConfigRequest):
+                        The request object. Request message to delete resource
+                    value config
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "delete",
+                    "uri": "/v1/{name=organizations/*/resourceValueConfigs/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_delete_resource_value_config(
+                request, metadata
+            )
+            pb_request = securitycenter_service.DeleteResourceValueConfigRequest.pb(
                 request
             )
             transcoded_request = path_template.transcode(http_options, pb_request)
@@ -2977,6 +4005,129 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
             resp = self._interceptor.post_get_big_query_export(resp)
             return resp
 
+    class _GetEffectiveEventThreatDetectionCustomModule(SecurityCenterRestStub):
+        def __hash__(self):
+            return hash("GetEffectiveEventThreatDetectionCustomModule")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: securitycenter_service.GetEffectiveEventThreatDetectionCustomModuleRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> (
+            effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule
+        ):
+            r"""Call the get effective event
+            threat detection custom module method over HTTP.
+
+                Args:
+                    request (~.securitycenter_service.GetEffectiveEventThreatDetectionCustomModuleRequest):
+                        The request object. Request to get an
+                    EffectiveEventThreatDetectionCustomModule.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+
+                Returns:
+                    ~.effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule:
+                        An EffectiveEventThreatDetectionCustomModule is the
+                    representation of an Event Threat Detection custom
+                    module at a specified level of the resource hierarchy:
+                    organization, folder, or project. If a custom module is
+                    inherited from a parent organization or folder, the
+                    value of the ``enablement_state`` property in
+                    EffectiveEventThreatDetectionCustomModule is set to the
+                    value that is effective in the parent, instead of
+                    ``INHERITED``. For example, if the module is enabled in
+                    a parent organization or folder, the effective
+                    ``enablement_state`` for the module in all child folders
+                    or projects is also ``enabled``.
+                    EffectiveEventThreatDetectionCustomModule is read-only.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=organizations/*/eventThreatDetectionSettings/effectiveCustomModules/*}",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=folders/*/eventThreatDetectionSettings/effectiveCustomModules/*}",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=projects/*/eventThreatDetectionSettings/effectiveCustomModules/*}",
+                },
+            ]
+            (
+                request,
+                metadata,
+            ) = self._interceptor.pre_get_effective_event_threat_detection_custom_module(
+                request, metadata
+            )
+            pb_request = securitycenter_service.GetEffectiveEventThreatDetectionCustomModuleRequest.pb(
+                request
+            )
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = (
+                effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule()
+            )
+            pb_resp = effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule.pb(
+                resp
+            )
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_effective_event_threat_detection_custom_module(
+                resp
+            )
+            return resp
+
     class _GetEffectiveSecurityHealthAnalyticsCustomModule(SecurityCenterRestStub):
         def __hash__(self):
             return hash("GetEffectiveSecurityHealthAnalyticsCustomModule")
@@ -3100,6 +4251,123 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
             resp = self._interceptor.post_get_effective_security_health_analytics_custom_module(
                 resp
             )
+            return resp
+
+    class _GetEventThreatDetectionCustomModule(SecurityCenterRestStub):
+        def __hash__(self):
+            return hash("GetEventThreatDetectionCustomModule")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: securitycenter_service.GetEventThreatDetectionCustomModuleRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> event_threat_detection_custom_module.EventThreatDetectionCustomModule:
+            r"""Call the get event threat
+            detection custom module method over HTTP.
+
+                Args:
+                    request (~.securitycenter_service.GetEventThreatDetectionCustomModuleRequest):
+                        The request object. Request to get an Event Threat
+                    Detection custom module.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+
+                Returns:
+                    ~.event_threat_detection_custom_module.EventThreatDetectionCustomModule:
+                        Represents an instance of an Event
+                    Threat Detection custom module,
+                    including its full module name, display
+                    name, enablement state, and last updated
+                    time. You can create a custom module at
+                    the organization, folder, or project
+                    level. Custom modules that you create at
+                    the organization or folder level are
+                    inherited by child folders and projects.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=organizations/*/eventThreatDetectionSettings/customModules/*}",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=folders/*/eventThreatDetectionSettings/customModules/*}",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=projects/*/eventThreatDetectionSettings/customModules/*}",
+                },
+            ]
+            (
+                request,
+                metadata,
+            ) = self._interceptor.pre_get_event_threat_detection_custom_module(
+                request, metadata
+            )
+            pb_request = (
+                securitycenter_service.GetEventThreatDetectionCustomModuleRequest.pb(
+                    request
+                )
+            )
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = (
+                event_threat_detection_custom_module.EventThreatDetectionCustomModule()
+            )
+            pb_resp = event_threat_detection_custom_module.EventThreatDetectionCustomModule.pb(
+                resp
+            )
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_event_threat_detection_custom_module(resp)
             return resp
 
     class _GetIamPolicy(SecurityCenterRestStub):
@@ -3323,6 +4591,18 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
                 {
                     "method": "get",
                     "uri": "/v1/{name=projects/*/muteConfigs/*}",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=organizations/*/locations/*/muteConfigs/*}",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=folders/*/locations/*/muteConfigs/*}",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=projects/*/locations/*/muteConfigs/*}",
                 },
             ]
             request, metadata = self._interceptor.pre_get_mute_config(request, metadata)
@@ -3561,6 +4841,100 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
             resp = self._interceptor.post_get_organization_settings(resp)
             return resp
 
+    class _GetResourceValueConfig(SecurityCenterRestStub):
+        def __hash__(self):
+            return hash("GetResourceValueConfig")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: securitycenter_service.GetResourceValueConfigRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> resource_value_config.ResourceValueConfig:
+            r"""Call the get resource value config method over HTTP.
+
+            Args:
+                request (~.securitycenter_service.GetResourceValueConfigRequest):
+                    The request object. Request message to get resource value
+                config
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.resource_value_config.ResourceValueConfig:
+                    A resource value configuration (RVC)
+                is a mapping configuration of user's
+                resources to resource values. Used in
+                Attack path simulations.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=organizations/*/resourceValueConfigs/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_get_resource_value_config(
+                request, metadata
+            )
+            pb_request = securitycenter_service.GetResourceValueConfigRequest.pb(
+                request
+            )
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = resource_value_config.ResourceValueConfig()
+            pb_resp = resource_value_config.ResourceValueConfig.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_resource_value_config(resp)
+            return resp
+
     class _GetSecurityHealthAnalyticsCustomModule(SecurityCenterRestStub):
         def __hash__(self):
             return hash("GetSecurityHealthAnalyticsCustomModule")
@@ -3683,6 +5057,95 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
             )
             return resp
 
+    class _GetSimulation(SecurityCenterRestStub):
+        def __hash__(self):
+            return hash("GetSimulation")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: securitycenter_service.GetSimulationRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> simulation.Simulation:
+            r"""Call the get simulation method over HTTP.
+
+            Args:
+                request (~.securitycenter_service.GetSimulationRequest):
+                    The request object. Request message for getting
+                simulation. Simulation name can include
+                "latest" to retrieve the latest
+                simulation For example,
+                "organizations/123/simulations/latest".
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.simulation.Simulation:
+                    Attack path simulation
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=organizations/*/simulations/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_get_simulation(request, metadata)
+            pb_request = securitycenter_service.GetSimulationRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = simulation.Simulation()
+            pb_resp = simulation.Simulation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_simulation(resp)
+            return resp
+
     class _GetSource(SecurityCenterRestStub):
         def __hash__(self):
             return hash("GetSource")
@@ -3772,6 +5235,96 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get_source(resp)
+            return resp
+
+    class _GetValuedResource(SecurityCenterRestStub):
+        def __hash__(self):
+            return hash("GetValuedResource")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: securitycenter_service.GetValuedResourceRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> valued_resource.ValuedResource:
+            r"""Call the get valued resource method over HTTP.
+
+            Args:
+                request (~.securitycenter_service.GetValuedResourceRequest):
+                    The request object. Request message for getting a valued
+                resource.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.valued_resource.ValuedResource:
+                    A resource that is determined to have
+                value to a user's system
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=organizations/*/simulations/*/valuedResources/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_get_valued_resource(
+                request, metadata
+            )
+            pb_request = securitycenter_service.GetValuedResourceRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = valued_resource.ValuedResource()
+            pb_resp = valued_resource.ValuedResource.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_valued_resource(resp)
             return resp
 
     class _GroupAssets(SecurityCenterRestStub):
@@ -4077,6 +5630,106 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
             resp = self._interceptor.post_list_assets(resp)
             return resp
 
+    class _ListAttackPaths(SecurityCenterRestStub):
+        def __hash__(self):
+            return hash("ListAttackPaths")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: securitycenter_service.ListAttackPathsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> securitycenter_service.ListAttackPathsResponse:
+            r"""Call the list attack paths method over HTTP.
+
+            Args:
+                request (~.securitycenter_service.ListAttackPathsRequest):
+                    The request object. Request message for listing the
+                attack paths for a given simulation or
+                valued resource.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.securitycenter_service.ListAttackPathsResponse:
+                    Response message for listing the
+                attack paths for a given simulation or
+                valued resource.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{parent=organizations/*/simulations/*}/attackPaths",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1/{parent=organizations/*/simulations/*/valuedResources/*}/attackPaths",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1/{parent=organizations/*/simulations/*/attackExposureResults/*}/attackPaths",
+                },
+            ]
+            request, metadata = self._interceptor.pre_list_attack_paths(
+                request, metadata
+            )
+            pb_request = securitycenter_service.ListAttackPathsRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = securitycenter_service.ListAttackPathsResponse()
+            pb_resp = securitycenter_service.ListAttackPathsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_list_attack_paths(resp)
+            return resp
+
     class _ListBigQueryExports(SecurityCenterRestStub):
         def __hash__(self):
             return hash("ListBigQueryExports")
@@ -4174,6 +5827,120 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_list_big_query_exports(resp)
+            return resp
+
+    class _ListDescendantEventThreatDetectionCustomModules(SecurityCenterRestStub):
+        def __hash__(self):
+            return hash("ListDescendantEventThreatDetectionCustomModules")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: securitycenter_service.ListDescendantEventThreatDetectionCustomModulesRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> (
+            securitycenter_service.ListDescendantEventThreatDetectionCustomModulesResponse
+        ):
+            r"""Call the list descendant event
+            threat detection custom modules method over HTTP.
+
+                Args:
+                    request (~.securitycenter_service.ListDescendantEventThreatDetectionCustomModulesRequest):
+                        The request object. Request to list current and
+                    descendant resident Event Threat
+                    Detection custom modules.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+
+                Returns:
+                    ~.securitycenter_service.ListDescendantEventThreatDetectionCustomModulesResponse:
+                        Response for listing current and
+                    descendant resident Event Threat
+                    Detection custom modules.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{parent=organizations/*/eventThreatDetectionSettings}/customModules:listDescendant",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1/{parent=folders/*/eventThreatDetectionSettings}/customModules:listDescendant",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1/{parent=projects/*/eventThreatDetectionSettings}/customModules:listDescendant",
+                },
+            ]
+            (
+                request,
+                metadata,
+            ) = self._interceptor.pre_list_descendant_event_threat_detection_custom_modules(
+                request, metadata
+            )
+            pb_request = securitycenter_service.ListDescendantEventThreatDetectionCustomModulesRequest.pb(
+                request
+            )
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = (
+                securitycenter_service.ListDescendantEventThreatDetectionCustomModulesResponse()
+            )
+            pb_resp = securitycenter_service.ListDescendantEventThreatDetectionCustomModulesResponse.pb(
+                resp
+            )
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_list_descendant_event_threat_detection_custom_modules(
+                resp
+            )
             return resp
 
     class _ListDescendantSecurityHealthAnalyticsCustomModules(SecurityCenterRestStub):
@@ -4290,6 +6057,118 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
             )
             return resp
 
+    class _ListEffectiveEventThreatDetectionCustomModules(SecurityCenterRestStub):
+        def __hash__(self):
+            return hash("ListEffectiveEventThreatDetectionCustomModules")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> (
+            securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesResponse
+        ):
+            r"""Call the list effective event
+            threat detection custom modules method over HTTP.
+
+                Args:
+                    request (~.securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesRequest):
+                        The request object. Request to list effective Event
+                    Threat Detection custom modules.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+
+                Returns:
+                    ~.securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesResponse:
+                        Response for listing
+                    EffectiveEventThreatDetectionCustomModules.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{parent=organizations/*/eventThreatDetectionSettings}/effectiveCustomModules",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1/{parent=folders/*/eventThreatDetectionSettings}/effectiveCustomModules",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1/{parent=projects/*/eventThreatDetectionSettings}/effectiveCustomModules",
+                },
+            ]
+            (
+                request,
+                metadata,
+            ) = self._interceptor.pre_list_effective_event_threat_detection_custom_modules(
+                request, metadata
+            )
+            pb_request = securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesRequest.pb(
+                request
+            )
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = (
+                securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesResponse()
+            )
+            pb_resp = securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesResponse.pb(
+                resp
+            )
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_list_effective_event_threat_detection_custom_modules(
+                resp
+            )
+            return resp
+
     class _ListEffectiveSecurityHealthAnalyticsCustomModules(SecurityCenterRestStub):
         def __hash__(self):
             return hash("ListEffectiveSecurityHealthAnalyticsCustomModules")
@@ -4400,6 +6279,120 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_list_effective_security_health_analytics_custom_modules(
+                resp
+            )
+            return resp
+
+    class _ListEventThreatDetectionCustomModules(SecurityCenterRestStub):
+        def __hash__(self):
+            return hash("ListEventThreatDetectionCustomModules")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: securitycenter_service.ListEventThreatDetectionCustomModulesRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> securitycenter_service.ListEventThreatDetectionCustomModulesResponse:
+            r"""Call the list event threat
+            detection custom modules method over HTTP.
+
+                Args:
+                    request (~.securitycenter_service.ListEventThreatDetectionCustomModulesRequest):
+                        The request object. Request to list Event Threat
+                    Detection custom modules.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+
+                Returns:
+                    ~.securitycenter_service.ListEventThreatDetectionCustomModulesResponse:
+                        Response for listing Event Threat
+                    Detection custom modules.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{parent=organizations/*/eventThreatDetectionSettings}/customModules",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1/{parent=folders/*/eventThreatDetectionSettings}/customModules",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1/{parent=projects/*/eventThreatDetectionSettings}/customModules",
+                },
+            ]
+            (
+                request,
+                metadata,
+            ) = self._interceptor.pre_list_event_threat_detection_custom_modules(
+                request, metadata
+            )
+            pb_request = (
+                securitycenter_service.ListEventThreatDetectionCustomModulesRequest.pb(
+                    request
+                )
+            )
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = (
+                securitycenter_service.ListEventThreatDetectionCustomModulesResponse()
+            )
+            pb_resp = (
+                securitycenter_service.ListEventThreatDetectionCustomModulesResponse.pb(
+                    resp
+                )
+            )
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_list_event_threat_detection_custom_modules(
                 resp
             )
             return resp
@@ -4554,6 +6547,18 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
                     "method": "get",
                     "uri": "/v1/{parent=projects/*}/muteConfigs",
                 },
+                {
+                    "method": "get",
+                    "uri": "/v1/{parent=organizations/*/locations/*/muteConfigs}",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1/{parent=folders/*/locations/*/muteConfigs}",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1/{parent=projects/*/locations/*/muteConfigs}",
+                },
             ]
             request, metadata = self._interceptor.pre_list_mute_configs(
                 request, metadata
@@ -4696,6 +6701,99 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_list_notification_configs(resp)
+            return resp
+
+    class _ListResourceValueConfigs(SecurityCenterRestStub):
+        def __hash__(self):
+            return hash("ListResourceValueConfigs")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: securitycenter_service.ListResourceValueConfigsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> securitycenter_service.ListResourceValueConfigsResponse:
+            r"""Call the list resource value
+            configs method over HTTP.
+
+                Args:
+                    request (~.securitycenter_service.ListResourceValueConfigsRequest):
+                        The request object. Request message to list resource
+                    value configs of a parent
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+
+                Returns:
+                    ~.securitycenter_service.ListResourceValueConfigsResponse:
+                        Response message to list resource
+                    value configs
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{parent=organizations/*}/resourceValueConfigs",
+                },
+            ]
+            request, metadata = self._interceptor.pre_list_resource_value_configs(
+                request, metadata
+            )
+            pb_request = securitycenter_service.ListResourceValueConfigsRequest.pb(
+                request
+            )
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = securitycenter_service.ListResourceValueConfigsResponse()
+            pb_resp = securitycenter_service.ListResourceValueConfigsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_list_resource_value_configs(resp)
             return resp
 
     class _ListSecurityHealthAnalyticsCustomModules(SecurityCenterRestStub):
@@ -4899,6 +6997,100 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_list_sources(resp)
+            return resp
+
+    class _ListValuedResources(SecurityCenterRestStub):
+        def __hash__(self):
+            return hash("ListValuedResources")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: securitycenter_service.ListValuedResourcesRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> securitycenter_service.ListValuedResourcesResponse:
+            r"""Call the list valued resources method over HTTP.
+
+            Args:
+                request (~.securitycenter_service.ListValuedResourcesRequest):
+                    The request object. Request message for listing the
+                valued resources for a given simulation.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.securitycenter_service.ListValuedResourcesResponse:
+                    Response message for listing the
+                valued resources for a given simulation.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{parent=organizations/*/simulations/*}/valuedResources",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1/{parent=organizations/*/simulations/*/attackExposureResults/*}/valuedResources",
+                },
+            ]
+            request, metadata = self._interceptor.pre_list_valued_resources(
+                request, metadata
+            )
+            pb_request = securitycenter_service.ListValuedResourcesRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = securitycenter_service.ListValuedResourcesResponse()
+            pb_resp = securitycenter_service.ListValuedResourcesResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_list_valued_resources(resp)
             return resp
 
     class _RunAssetDiscovery(SecurityCenterRestStub):
@@ -5717,6 +7909,134 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
             resp = self._interceptor.post_update_big_query_export(resp)
             return resp
 
+    class _UpdateEventThreatDetectionCustomModule(SecurityCenterRestStub):
+        def __hash__(self):
+            return hash("UpdateEventThreatDetectionCustomModule")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: securitycenter_service.UpdateEventThreatDetectionCustomModuleRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule:
+            r"""Call the update event threat
+            detection custom module method over HTTP.
+
+                Args:
+                    request (~.securitycenter_service.UpdateEventThreatDetectionCustomModuleRequest):
+                        The request object. Request to update an Event Threat
+                    Detection custom module.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+
+                Returns:
+                    ~.gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule:
+                        Represents an instance of an Event
+                    Threat Detection custom module,
+                    including its full module name, display
+                    name, enablement state, and last updated
+                    time. You can create a custom module at
+                    the organization, folder, or project
+                    level. Custom modules that you create at
+                    the organization or folder level are
+                    inherited by child folders and projects.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "patch",
+                    "uri": "/v1/{event_threat_detection_custom_module.name=organizations/*/eventThreatDetectionSettings/customModules/*}",
+                    "body": "event_threat_detection_custom_module",
+                },
+                {
+                    "method": "patch",
+                    "uri": "/v1/{event_threat_detection_custom_module.name=folders/*/eventThreatDetectionSettings/customModules/*}",
+                    "body": "event_threat_detection_custom_module",
+                },
+                {
+                    "method": "patch",
+                    "uri": "/v1/{event_threat_detection_custom_module.name=projects/*/eventThreatDetectionSettings/customModules/*}",
+                    "body": "event_threat_detection_custom_module",
+                },
+            ]
+            (
+                request,
+                metadata,
+            ) = self._interceptor.pre_update_event_threat_detection_custom_module(
+                request, metadata
+            )
+            pb_request = (
+                securitycenter_service.UpdateEventThreatDetectionCustomModuleRequest.pb(
+                    request
+                )
+            )
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"], use_integers_for_enums=True
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = (
+                gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule()
+            )
+            pb_resp = gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule.pb(
+                resp
+            )
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_update_event_threat_detection_custom_module(
+                resp
+            )
+            return resp
+
     class _UpdateExternalSystem(SecurityCenterRestStub):
         def __hash__(self):
             return hash("UpdateExternalSystem")
@@ -5995,6 +8315,21 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
                     "uri": "/v1/{mute_config.name=projects/*/muteConfigs/*}",
                     "body": "mute_config",
                 },
+                {
+                    "method": "patch",
+                    "uri": "/v1/{mute_config.name=organizations/*/locations/*/muteConfigs/*}",
+                    "body": "mute_config",
+                },
+                {
+                    "method": "patch",
+                    "uri": "/v1/{mute_config.name=folders/*/locations/*/muteConfigs/*}",
+                    "body": "mute_config",
+                },
+                {
+                    "method": "patch",
+                    "uri": "/v1/{mute_config.name=projects/*/locations/*/muteConfigs/*}",
+                    "body": "mute_config",
+                },
             ]
             request, metadata = self._interceptor.pre_update_mute_config(
                 request, metadata
@@ -6258,6 +8593,108 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_update_organization_settings(resp)
+            return resp
+
+    class _UpdateResourceValueConfig(SecurityCenterRestStub):
+        def __hash__(self):
+            return hash("UpdateResourceValueConfig")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: securitycenter_service.UpdateResourceValueConfigRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> gcs_resource_value_config.ResourceValueConfig:
+            r"""Call the update resource value
+            config method over HTTP.
+
+                Args:
+                    request (~.securitycenter_service.UpdateResourceValueConfigRequest):
+                        The request object. Request message to update resource
+                    value config
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+
+                Returns:
+                    ~.gcs_resource_value_config.ResourceValueConfig:
+                        A resource value configuration (RVC)
+                    is a mapping configuration of user's
+                    resources to resource values. Used in
+                    Attack path simulations.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "patch",
+                    "uri": "/v1/{resource_value_config.name=organizations/*/resourceValueConfigs/*}",
+                    "body": "resource_value_config",
+                },
+            ]
+            request, metadata = self._interceptor.pre_update_resource_value_config(
+                request, metadata
+            )
+            pb_request = securitycenter_service.UpdateResourceValueConfigRequest.pb(
+                request
+            )
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"], use_integers_for_enums=True
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = gcs_resource_value_config.ResourceValueConfig()
+            pb_resp = gcs_resource_value_config.ResourceValueConfig.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_update_resource_value_config(resp)
             return resp
 
     class _UpdateSecurityHealthAnalyticsCustomModule(SecurityCenterRestStub):
@@ -6618,6 +9055,136 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
             resp = self._interceptor.post_update_source(resp)
             return resp
 
+    class _ValidateEventThreatDetectionCustomModule(SecurityCenterRestStub):
+        def __hash__(self):
+            return hash("ValidateEventThreatDetectionCustomModule")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: securitycenter_service.ValidateEventThreatDetectionCustomModuleRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> securitycenter_service.ValidateEventThreatDetectionCustomModuleResponse:
+            r"""Call the validate event threat
+            detection custom module method over HTTP.
+
+                Args:
+                    request (~.securitycenter_service.ValidateEventThreatDetectionCustomModuleRequest):
+                        The request object. Request to validate an Event Threat
+                    Detection custom module.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+
+                Returns:
+                    ~.securitycenter_service.ValidateEventThreatDetectionCustomModuleResponse:
+                        Response to validating an Event
+                    Threat Detection custom module.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1/{parent=organizations/*/eventThreatDetectionSettings}:validateCustomModule",
+                    "body": "*",
+                },
+                {
+                    "method": "post",
+                    "uri": "/v1/{parent=folders/*/eventThreatDetectionSettings}:validateCustomModule",
+                    "body": "*",
+                },
+                {
+                    "method": "post",
+                    "uri": "/v1/{parent=projects/*/eventThreatDetectionSettings}:validateCustomModule",
+                    "body": "*",
+                },
+            ]
+            (
+                request,
+                metadata,
+            ) = self._interceptor.pre_validate_event_threat_detection_custom_module(
+                request, metadata
+            )
+            pb_request = securitycenter_service.ValidateEventThreatDetectionCustomModuleRequest.pb(
+                request
+            )
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"], use_integers_for_enums=True
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = (
+                securitycenter_service.ValidateEventThreatDetectionCustomModuleResponse()
+            )
+            pb_resp = securitycenter_service.ValidateEventThreatDetectionCustomModuleResponse.pb(
+                resp
+            )
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_validate_event_threat_detection_custom_module(
+                resp
+            )
+            return resp
+
+    @property
+    def batch_create_resource_value_configs(
+        self,
+    ) -> Callable[
+        [securitycenter_service.BatchCreateResourceValueConfigsRequest],
+        securitycenter_service.BatchCreateResourceValueConfigsResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._BatchCreateResourceValueConfigs(self._session, self._host, self._interceptor)  # type: ignore
+
     @property
     def bulk_mute_findings(
         self,
@@ -6638,6 +9205,17 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateBigQueryExport(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def create_event_threat_detection_custom_module(
+        self,
+    ) -> Callable[
+        [securitycenter_service.CreateEventThreatDetectionCustomModuleRequest],
+        gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreateEventThreatDetectionCustomModule(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def create_finding(
@@ -6698,6 +9276,17 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
         return self._DeleteBigQueryExport(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def delete_event_threat_detection_custom_module(
+        self,
+    ) -> Callable[
+        [securitycenter_service.DeleteEventThreatDetectionCustomModuleRequest],
+        empty_pb2.Empty,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteEventThreatDetectionCustomModule(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def delete_mute_config(
         self,
     ) -> Callable[[securitycenter_service.DeleteMuteConfigRequest], empty_pb2.Empty]:
@@ -6714,6 +9303,16 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteNotificationConfig(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def delete_resource_value_config(
+        self,
+    ) -> Callable[
+        [securitycenter_service.DeleteResourceValueConfigRequest], empty_pb2.Empty
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteResourceValueConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def delete_security_health_analytics_custom_module(
@@ -6738,6 +9337,17 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
         return self._GetBigQueryExport(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def get_effective_event_threat_detection_custom_module(
+        self,
+    ) -> Callable[
+        [securitycenter_service.GetEffectiveEventThreatDetectionCustomModuleRequest],
+        effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetEffectiveEventThreatDetectionCustomModule(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def get_effective_security_health_analytics_custom_module(
         self,
     ) -> Callable[
@@ -6747,6 +9357,17 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetEffectiveSecurityHealthAnalyticsCustomModule(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_event_threat_detection_custom_module(
+        self,
+    ) -> Callable[
+        [securitycenter_service.GetEventThreatDetectionCustomModuleRequest],
+        event_threat_detection_custom_module.EventThreatDetectionCustomModule,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetEventThreatDetectionCustomModule(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_iam_policy(
@@ -6789,6 +9410,17 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
         return self._GetOrganizationSettings(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def get_resource_value_config(
+        self,
+    ) -> Callable[
+        [securitycenter_service.GetResourceValueConfigRequest],
+        resource_value_config.ResourceValueConfig,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetResourceValueConfig(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def get_security_health_analytics_custom_module(
         self,
     ) -> Callable[
@@ -6800,12 +9432,31 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
         return self._GetSecurityHealthAnalyticsCustomModule(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def get_simulation(
+        self,
+    ) -> Callable[[securitycenter_service.GetSimulationRequest], simulation.Simulation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetSimulation(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def get_source(
         self,
     ) -> Callable[[securitycenter_service.GetSourceRequest], source.Source]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetSource(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_valued_resource(
+        self,
+    ) -> Callable[
+        [securitycenter_service.GetValuedResourceRequest],
+        valued_resource.ValuedResource,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetValuedResource(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def group_assets(
@@ -6841,6 +9492,17 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
         return self._ListAssets(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def list_attack_paths(
+        self,
+    ) -> Callable[
+        [securitycenter_service.ListAttackPathsRequest],
+        securitycenter_service.ListAttackPathsResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListAttackPaths(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def list_big_query_exports(
         self,
     ) -> Callable[
@@ -6850,6 +9512,17 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListBigQueryExports(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_descendant_event_threat_detection_custom_modules(
+        self,
+    ) -> Callable[
+        [securitycenter_service.ListDescendantEventThreatDetectionCustomModulesRequest],
+        securitycenter_service.ListDescendantEventThreatDetectionCustomModulesResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListDescendantEventThreatDetectionCustomModules(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list_descendant_security_health_analytics_custom_modules(
@@ -6865,6 +9538,17 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
         return self._ListDescendantSecurityHealthAnalyticsCustomModules(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def list_effective_event_threat_detection_custom_modules(
+        self,
+    ) -> Callable[
+        [securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesRequest],
+        securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListEffectiveEventThreatDetectionCustomModules(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def list_effective_security_health_analytics_custom_modules(
         self,
     ) -> Callable[
@@ -6876,6 +9560,17 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListEffectiveSecurityHealthAnalyticsCustomModules(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_event_threat_detection_custom_modules(
+        self,
+    ) -> Callable[
+        [securitycenter_service.ListEventThreatDetectionCustomModulesRequest],
+        securitycenter_service.ListEventThreatDetectionCustomModulesResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListEventThreatDetectionCustomModules(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list_findings(
@@ -6911,6 +9606,17 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
         return self._ListNotificationConfigs(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def list_resource_value_configs(
+        self,
+    ) -> Callable[
+        [securitycenter_service.ListResourceValueConfigsRequest],
+        securitycenter_service.ListResourceValueConfigsResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListResourceValueConfigs(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def list_security_health_analytics_custom_modules(
         self,
     ) -> Callable[
@@ -6931,6 +9637,17 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListSources(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_valued_resources(
+        self,
+    ) -> Callable[
+        [securitycenter_service.ListValuedResourcesRequest],
+        securitycenter_service.ListValuedResourcesResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListValuedResources(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def run_asset_discovery(
@@ -7000,6 +9717,17 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
         return self._UpdateBigQueryExport(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def update_event_threat_detection_custom_module(
+        self,
+    ) -> Callable[
+        [securitycenter_service.UpdateEventThreatDetectionCustomModuleRequest],
+        gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdateEventThreatDetectionCustomModule(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def update_external_system(
         self,
     ) -> Callable[
@@ -7051,6 +9779,17 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
         return self._UpdateOrganizationSettings(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def update_resource_value_config(
+        self,
+    ) -> Callable[
+        [securitycenter_service.UpdateResourceValueConfigRequest],
+        gcs_resource_value_config.ResourceValueConfig,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdateResourceValueConfig(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def update_security_health_analytics_custom_module(
         self,
     ) -> Callable[
@@ -7079,6 +9818,17 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateSource(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def validate_event_threat_detection_custom_module(
+        self,
+    ) -> Callable[
+        [securitycenter_service.ValidateEventThreatDetectionCustomModuleRequest],
+        securitycenter_service.ValidateEventThreatDetectionCustomModuleResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ValidateEventThreatDetectionCustomModule(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def cancel_operation(self):

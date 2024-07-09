@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from .branch import Branch, BranchView
+from .branch_service import GetBranchRequest, ListBranchesRequest, ListBranchesResponse
 from .catalog import (
     AttributesConfig,
     Catalog,
@@ -149,6 +151,20 @@ from .product_service import (
     SetInventoryResponse,
     UpdateProductRequest,
 )
+from .project import AlertConfig, LoggingConfig, Project
+from .project_service import (
+    AcceptTermsRequest,
+    EnrollSolutionMetadata,
+    EnrollSolutionRequest,
+    EnrollSolutionResponse,
+    GetAlertConfigRequest,
+    GetLoggingConfigRequest,
+    GetProjectRequest,
+    ListEnrolledSolutionsRequest,
+    ListEnrolledSolutionsResponse,
+    UpdateAlertConfigRequest,
+    UpdateLoggingConfigRequest,
+)
 from .promotion import Promotion
 from .purge_config import (
     PurgeMetadata,
@@ -180,6 +196,11 @@ from .user_event_service import (
 )
 
 __all__ = (
+    "Branch",
+    "BranchView",
+    "GetBranchRequest",
+    "ListBranchesRequest",
+    "ListBranchesResponse",
     "AttributesConfig",
     "Catalog",
     "CatalogAttribute",
@@ -298,6 +319,20 @@ __all__ = (
     "SetInventoryRequest",
     "SetInventoryResponse",
     "UpdateProductRequest",
+    "AlertConfig",
+    "LoggingConfig",
+    "Project",
+    "AcceptTermsRequest",
+    "EnrollSolutionMetadata",
+    "EnrollSolutionRequest",
+    "EnrollSolutionResponse",
+    "GetAlertConfigRequest",
+    "GetLoggingConfigRequest",
+    "GetProjectRequest",
+    "ListEnrolledSolutionsRequest",
+    "ListEnrolledSolutionsResponse",
+    "UpdateAlertConfigRequest",
+    "UpdateLoggingConfigRequest",
     "Promotion",
     "PurgeMetadata",
     "PurgeProductsMetadata",

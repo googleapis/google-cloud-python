@@ -111,7 +111,7 @@ class MitreAttack(proto.Message):
     class Technique(proto.Enum):
         r"""MITRE ATT&CK techniques that can be referenced by SCC
         findings. See: https://attack.mitre.org/techniques/enterprise/
-        Next ID: 59
+        Next ID: 63
 
         Values:
             TECHNIQUE_UNSPECIFIED (0):
@@ -132,6 +132,8 @@ class MitreAttack(proto.Message):
                 T1059
             UNIX_SHELL (7):
                 T1059.004
+            PYTHON (59):
+                T1059.006
             PERMISSION_GROUPS_DISCOVERY (18):
                 T1069
             CLOUD_GROUPS (19):
@@ -230,8 +232,14 @@ class MitreAttack(proto.Message):
                 T1595
             SCANNING_IP_BLOCKS (2):
                 T1595.001
+            CONTAINER_ADMINISTRATION_COMMAND (60):
+                T1613
+            ESCAPE_TO_HOST (61):
+                T1611
             CONTAINER_AND_RESOURCE_DISCOVERY (57):
                 T1613
+            STEAL_OR_FORGE_AUTHENTICATION_CERTIFICATES (62):
+                T1649
         """
         TECHNIQUE_UNSPECIFIED = 0
         MASQUERADING = 49
@@ -242,6 +250,7 @@ class MitreAttack(proto.Message):
         PROCESS_DISCOVERY = 56
         COMMAND_AND_SCRIPTING_INTERPRETER = 6
         UNIX_SHELL = 7
+        PYTHON = 59
         PERMISSION_GROUPS_DISCOVERY = 18
         CLOUD_GROUPS = 19
         APPLICATION_LAYER_PROTOCOL = 45
@@ -291,7 +300,10 @@ class MitreAttack(proto.Message):
         OBTAIN_CAPABILITIES = 43
         ACTIVE_SCANNING = 1
         SCANNING_IP_BLOCKS = 2
+        CONTAINER_ADMINISTRATION_COMMAND = 60
+        ESCAPE_TO_HOST = 61
         CONTAINER_AND_RESOURCE_DISCOVERY = 57
+        STEAL_OR_FORGE_AUTHENTICATION_CERTIFICATES = 62
 
     primary_tactic: Tactic = proto.Field(
         proto.ENUM,

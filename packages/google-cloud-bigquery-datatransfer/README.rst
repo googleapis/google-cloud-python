@@ -15,7 +15,7 @@ Python Client for BigQuery Data Transfer
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-bigquery-datatransfer.svg
    :target: https://pypi.org/project/google-cloud-bigquery-datatransfer/
 .. _BigQuery Data Transfer: https://cloud.google.com/bigquery/transfer/
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/bigquerydatatransfer/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/bigquerydatatransfer/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/bigquery/transfer/
 
 Quick Start

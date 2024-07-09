@@ -1,5 +1,39 @@
 # Changelog
 
+## [2.2.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataplex-v2.2.0...google-cloud-dataplex-v2.2.1) (2024-07-08)
+
+
+### Bug Fixes
+
+* Allow Protobuf 5.x ([#12865](https://github.com/googleapis/google-cloud-python/issues/12865)) ([7f9dedb](https://github.com/googleapis/google-cloud-python/commit/7f9dedb3abc7636cbcd97e21ac857844b885b599))
+
+## [2.2.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataplex-v2.1.0...google-cloud-dataplex-v2.2.0) (2024-06-27)
+
+
+### Features
+
+* [google-cloud-dataplex] expose data scan execution create time to customers ([#12846](https://github.com/googleapis/google-cloud-python/issues/12846)) ([2726a72](https://github.com/googleapis/google-cloud-python/commit/2726a721b0eecd05216fa018cce8d91407853187))
+
+## [2.1.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataplex-v2.0.1...google-cloud-dataplex-v2.1.0) (2024-06-24)
+
+
+### Features
+
+* exposing EntrySource.location field that contains location of a resource in the source system ([9264874](https://github.com/googleapis/google-cloud-python/commit/9264874e8ab6cff0a837a3afbba33848e6100fd8))
+
+
+### Documentation
+
+* Scrub descriptions for GenerateDataQualityRules ([9264874](https://github.com/googleapis/google-cloud-python/commit/9264874e8ab6cff0a837a3afbba33848e6100fd8))
+
+## [2.0.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataplex-v2.0.0...google-cloud-dataplex-v2.0.1) (2024-06-19)
+
+
+### Documentation
+
+* clarify DataQualityRule.sql_assertion descriptions ([74db0f8](https://github.com/googleapis/google-cloud-python/commit/74db0f812620a936fc055f49e0837aa30264fbda))
+* fix links to RuleType proto references ([74db0f8](https://github.com/googleapis/google-cloud-python/commit/74db0f812620a936fc055f49e0837aa30264fbda))
+
 ## [2.0.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataplex-v1.13.0...google-cloud-dataplex-v2.0.0) (2024-05-16)
 
 

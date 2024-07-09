@@ -235,6 +235,10 @@ class ServingConfig(proto.Message):
             [solution_types][google.cloud.retail.v2alpha.ServingConfig.solution_types]
             is
             [SOLUTION_TYPE_RECOMMENDATION][google.cloud.retail.v2main.SolutionType.SOLUTION_TYPE_RECOMMENDATION].
+        ignore_recs_denylist (bool):
+            When the flag is enabled, the products in the
+            denylist will not be filtered out in the
+            recommendation filtering results.
         personalization_spec (google.cloud.retail_v2alpha.types.SearchRequest.PersonalizationSpec):
             The specification for personalization spec.
 
@@ -342,6 +346,10 @@ class ServingConfig(proto.Message):
     enable_category_filter_level: str = proto.Field(
         proto.STRING,
         number=16,
+    )
+    ignore_recs_denylist: bool = proto.Field(
+        proto.BOOL,
+        number=24,
     )
     personalization_spec: search_service.SearchRequest.PersonalizationSpec = (
         proto.Field(

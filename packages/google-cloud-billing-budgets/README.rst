@@ -15,7 +15,7 @@ Python Client for Cloud Billing Budget
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-billing-budgets.svg
    :target: https://pypi.org/project/google-cloud-billing-budgets/
 .. _Cloud Billing Budget: https://cloud.google.com/billing/docs/how-to/budget-api-overview
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/billingbudgets/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/billingbudgets/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/billing/docs/how-to/budget-api-overview
 
 Quick Start

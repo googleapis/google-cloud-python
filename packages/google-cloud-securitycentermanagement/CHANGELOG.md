@@ -1,5 +1,34 @@
 # Changelog
 
+## [0.1.13](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securitycentermanagement-v0.1.12...google-cloud-securitycentermanagement-v0.1.13) (2024-07-08)
+
+
+### Bug Fixes
+
+* Allow Protobuf 5.x ([#12869](https://github.com/googleapis/google-cloud-python/issues/12869)) ([e42edbc](https://github.com/googleapis/google-cloud-python/commit/e42edbcf7f4d8ed66b6645c96a01c55fb8cd7666))
+
+## [0.1.12](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securitycentermanagement-v0.1.11...google-cloud-securitycentermanagement-v0.1.12) (2024-06-24)
+
+
+### Features
+
+* add `show_eligible_modules_only` field to `GetSecurityCenterServiceRequest` message ([2e0f94e](https://github.com/googleapis/google-cloud-python/commit/2e0f94e0f96054a884af7fe8ae80612e04faa91a))
+* add `TOXIC_COMBINATION` to `FindingClass` enum ([2e0f94e](https://github.com/googleapis/google-cloud-python/commit/2e0f94e0f96054a884af7fe8ae80612e04faa91a))
+
+## [0.1.11](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securitycentermanagement-v0.1.10...google-cloud-securitycentermanagement-v0.1.11) (2024-06-19)
+
+
+### Features
+
+* add an INGEST_ONLY EnablementState ([5363fa3](https://github.com/googleapis/google-cloud-python/commit/5363fa34a5c2bb524321d0b09c5f467e784ddb3c))
+
+## [0.1.10](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securitycentermanagement-v0.1.9...google-cloud-securitycentermanagement-v0.1.10) (2024-06-10)
+
+
+### Documentation
+
+* minor docs formatting in `UpdateSecurityCenterServiceRequest.validate_only` ([01e36a7](https://github.com/googleapis/google-cloud-python/commit/01e36a7b4a7e58ff48fcf4dc1098f4447a7e70f6))
+
 ## [0.1.9](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securitycentermanagement-v0.1.8...google-cloud-securitycentermanagement-v0.1.9) (2024-05-27)
 
 

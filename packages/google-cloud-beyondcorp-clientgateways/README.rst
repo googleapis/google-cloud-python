@@ -15,7 +15,7 @@ Python Client for BeyondCorp ClientGateways
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-beyondcorp-clientgateways.svg
    :target: https://pypi.org/project/google-cloud-beyondcorp-clientgateways/
 .. _BeyondCorp ClientGateways: https://cloud.google.com/beyondcorp/
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/beyondcorpclientgateways/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/beyondcorpclientgateways/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/beyondcorp/
 
 Quick Start

@@ -27,8 +27,16 @@ from google.rpc import status_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.securitycenter_v1.types import (
+    attack_path,
     bigquery_export,
+    effective_event_threat_detection_custom_module,
     effective_security_health_analytics_custom_module,
+)
+from google.cloud.securitycenter_v1.types import (
+    event_threat_detection_custom_module as gcs_event_threat_detection_custom_module,
+)
+from google.cloud.securitycenter_v1.types import (
+    event_threat_detection_custom_module_validation_errors,
 )
 from google.cloud.securitycenter_v1.types import external_system as gcs_external_system
 from google.cloud.securitycenter_v1.types import (
@@ -36,6 +44,9 @@ from google.cloud.securitycenter_v1.types import (
 )
 from google.cloud.securitycenter_v1.types import (
     organization_settings as gcs_organization_settings,
+)
+from google.cloud.securitycenter_v1.types import (
+    resource_value_config as gcs_resource_value_config,
 )
 from google.cloud.securitycenter_v1.types import security_health_analytics_custom_config
 from google.cloud.securitycenter_v1.types import (
@@ -46,7 +57,9 @@ from google.cloud.securitycenter_v1.types import asset as gcs_asset
 from google.cloud.securitycenter_v1.types import finding as gcs_finding
 from google.cloud.securitycenter_v1.types import folder
 from google.cloud.securitycenter_v1.types import mute_config as gcs_mute_config
+from google.cloud.securitycenter_v1.types import resource as gcs_resource
 from google.cloud.securitycenter_v1.types import source as gcs_source
+from google.cloud.securitycenter_v1.types import valued_resource
 
 __protobuf__ = proto.module(
     package="google.cloud.securitycenter.v1",
@@ -55,6 +68,14 @@ __protobuf__ = proto.module(
         "BulkMuteFindingsResponse",
         "CreateFindingRequest",
         "CreateMuteConfigRequest",
+        "CreateResourceValueConfigRequest",
+        "BatchCreateResourceValueConfigsRequest",
+        "BatchCreateResourceValueConfigsResponse",
+        "DeleteResourceValueConfigRequest",
+        "GetResourceValueConfigRequest",
+        "ListResourceValueConfigsRequest",
+        "ListResourceValueConfigsResponse",
+        "UpdateResourceValueConfigRequest",
         "CreateNotificationConfigRequest",
         "CreateSecurityHealthAnalyticsCustomModuleRequest",
         "CreateSourceRequest",
@@ -75,6 +96,12 @@ __protobuf__ = proto.module(
         "GroupResult",
         "ListDescendantSecurityHealthAnalyticsCustomModulesRequest",
         "ListDescendantSecurityHealthAnalyticsCustomModulesResponse",
+        "ListValuedResourcesRequest",
+        "ListValuedResourcesResponse",
+        "ListAttackPathsRequest",
+        "ListAttackPathsResponse",
+        "GetSimulationRequest",
+        "GetValuedResourceRequest",
         "ListMuteConfigsRequest",
         "ListMuteConfigsResponse",
         "ListNotificationConfigsRequest",
@@ -107,6 +134,19 @@ __protobuf__ = proto.module(
         "ListBigQueryExportsRequest",
         "ListBigQueryExportsResponse",
         "DeleteBigQueryExportRequest",
+        "CreateEventThreatDetectionCustomModuleRequest",
+        "ValidateEventThreatDetectionCustomModuleRequest",
+        "ValidateEventThreatDetectionCustomModuleResponse",
+        "DeleteEventThreatDetectionCustomModuleRequest",
+        "GetEventThreatDetectionCustomModuleRequest",
+        "ListDescendantEventThreatDetectionCustomModulesRequest",
+        "ListDescendantEventThreatDetectionCustomModulesResponse",
+        "ListEventThreatDetectionCustomModulesRequest",
+        "ListEventThreatDetectionCustomModulesResponse",
+        "UpdateEventThreatDetectionCustomModuleRequest",
+        "GetEffectiveEventThreatDetectionCustomModuleRequest",
+        "ListEffectiveEventThreatDetectionCustomModulesRequest",
+        "ListEffectiveEventThreatDetectionCustomModulesResponse",
     },
 )
 
@@ -123,8 +163,8 @@ class BulkMuteFindingsRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The parent, at which bulk action needs to be
-            applied. Its format is "organizations/[organization_id]",
-            "folders/[folder_id]", "projects/[project_id]".
+            applied. Its format is ``organizations/[organization_id]``,
+            ``folders/[folder_id]``, ``projects/[project_id]``.
         filter (str):
             Expression that identifies findings that should be updated.
             The expression is a list of zero or more restrictions
@@ -182,7 +222,7 @@ class CreateFindingRequest(proto.Message):
         parent (str):
             Required. Resource name of the new finding's parent. Its
             format should be
-            "organizations/[organization_id]/sources/[source_id]".
+            ``organizations/[organization_id]/sources/[source_id]``.
         finding_id (str):
             Required. Unique identifier provided by the
             client within the parent scope. It must be
@@ -216,8 +256,8 @@ class CreateMuteConfigRequest(proto.Message):
     Attributes:
         parent (str):
             Required. Resource name of the new mute configs's parent.
-            Its format is "organizations/[organization_id]",
-            "folders/[folder_id]", or "projects/[project_id]".
+            Its format is ``organizations/[organization_id]``,
+            ``folders/[folder_id]``, or ``projects/[project_id]``.
         mute_config (google.cloud.securitycenter_v1.types.MuteConfig):
             Required. The mute config being created.
         mute_config_id (str):
@@ -244,14 +284,205 @@ class CreateMuteConfigRequest(proto.Message):
     )
 
 
+class CreateResourceValueConfigRequest(proto.Message):
+    r"""Request message to create single resource value config
+
+    Attributes:
+        parent (str):
+            Required. Resource name of the new
+            ResourceValueConfig's parent.
+        resource_value_config (google.cloud.securitycenter_v1.types.ResourceValueConfig):
+            Required. The resource value config being
+            created.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    resource_value_config: gcs_resource_value_config.ResourceValueConfig = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=gcs_resource_value_config.ResourceValueConfig,
+    )
+
+
+class BatchCreateResourceValueConfigsRequest(proto.Message):
+    r"""Request message to create multiple resource value configs
+
+    Attributes:
+        parent (str):
+            Required. Resource name of the new
+            ResourceValueConfig's parent. The parent field
+            in the CreateResourceValueConfigRequest messages
+            must either be empty or match this field.
+        requests (MutableSequence[google.cloud.securitycenter_v1.types.CreateResourceValueConfigRequest]):
+            Required. The resource value configs to be
+            created.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    requests: MutableSequence["CreateResourceValueConfigRequest"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="CreateResourceValueConfigRequest",
+    )
+
+
+class BatchCreateResourceValueConfigsResponse(proto.Message):
+    r"""Response message for BatchCreateResourceValueConfigs
+
+    Attributes:
+        resource_value_configs (MutableSequence[google.cloud.securitycenter_v1.types.ResourceValueConfig]):
+            The resource value configs created
+    """
+
+    resource_value_configs: MutableSequence[
+        gcs_resource_value_config.ResourceValueConfig
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=gcs_resource_value_config.ResourceValueConfig,
+    )
+
+
+class DeleteResourceValueConfigRequest(proto.Message):
+    r"""Request message to delete resource value config
+
+    Attributes:
+        name (str):
+            Required. Name of the ResourceValueConfig to
+            delete
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class GetResourceValueConfigRequest(proto.Message):
+    r"""Request message to get resource value config
+
+    Attributes:
+        name (str):
+            Required. Name of the resource value config to retrieve. Its
+            format is
+            ``organizations/{organization}/resourceValueConfigs/{config_id}``.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class ListResourceValueConfigsRequest(proto.Message):
+    r"""Request message to list resource value configs of a parent
+
+    Attributes:
+        parent (str):
+            Required. The parent, which owns the collection of resource
+            value configs. Its format is
+            ``organizations/[organization_id]``
+        page_size (int):
+            The number of results to return. The service
+            may return fewer than this value.
+            If unspecified, at most 10 configs will be
+            returned. The maximum value is 1000; values
+            above 1000 will be coerced to 1000.
+        page_token (str):
+            A page token, received from a previous
+            ``ListResourceValueConfigs`` call. Provide this to retrieve
+            the subsequent page.
+
+            When paginating, all other parameters provided to
+            ``ListResourceValueConfigs`` must match the call that
+            provided the page token.
+
+            page_size can be specified, and the new page_size will be
+            used.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class ListResourceValueConfigsResponse(proto.Message):
+    r"""Response message to list resource value configs
+
+    Attributes:
+        resource_value_configs (MutableSequence[google.cloud.securitycenter_v1.types.ResourceValueConfig]):
+            The resource value configs from the specified
+            parent.
+        next_page_token (str):
+            A token, which can be sent as ``page_token`` to retrieve the
+            next page. If this field is empty, there are no subsequent
+            pages.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    resource_value_configs: MutableSequence[
+        gcs_resource_value_config.ResourceValueConfig
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=gcs_resource_value_config.ResourceValueConfig,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class UpdateResourceValueConfigRequest(proto.Message):
+    r"""Request message to update resource value config
+
+    Attributes:
+        resource_value_config (google.cloud.securitycenter_v1.types.ResourceValueConfig):
+            Required. The resource value config being
+            updated.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            The list of fields to be updated.
+            If empty all mutable fields will be updated.
+    """
+
+    resource_value_config: gcs_resource_value_config.ResourceValueConfig = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=gcs_resource_value_config.ResourceValueConfig,
+    )
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
+    )
+
+
 class CreateNotificationConfigRequest(proto.Message):
     r"""Request message for creating a notification config.
 
     Attributes:
         parent (str):
             Required. Resource name of the new notification config's
-            parent. Its format is "organizations/[organization_id]",
-            "folders/[folder_id]", or "projects/[project_id]".
+            parent. Its format is ``organizations/[organization_id]``,
+            ``folders/[folder_id]``, or ``projects/[project_id]``.
         config_id (str):
             Required.
             Unique identifier provided by the client within
@@ -286,12 +517,11 @@ class CreateSecurityHealthAnalyticsCustomModuleRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. Resource name of the new custom
-            module's parent. Its format is
-            "organizations/{organization}/securityHealthAnalyticsSettings",
-            "folders/{folder}/securityHealthAnalyticsSettings",
-            or
-            "projects/{project}/securityHealthAnalyticsSettings".
+            Required. Resource name of the new custom module's parent.
+            Its format is
+            ``organizations/{organization}/securityHealthAnalyticsSettings``,
+            ``folders/{folder}/securityHealthAnalyticsSettings``, or
+            ``projects/{project}/securityHealthAnalyticsSettings``
         security_health_analytics_custom_module (google.cloud.securitycenter_v1.types.SecurityHealthAnalyticsCustomModule):
             Required. SecurityHealthAnalytics custom
             module to create. The provided name is ignored
@@ -316,7 +546,7 @@ class CreateSourceRequest(proto.Message):
     Attributes:
         parent (str):
             Required. Resource name of the new source's parent. Its
-            format should be "organizations/[organization_id]".
+            format should be ``organizations/[organization_id]``.
         source (google.cloud.securitycenter_v1.types.Source):
             Required. The Source being created, only the display_name
             and description will be used. All other fields will be
@@ -340,9 +570,13 @@ class DeleteMuteConfigRequest(proto.Message):
     Attributes:
         name (str):
             Required. Name of the mute config to delete. Its format is
-            organizations/{organization}/muteConfigs/{config_id},
-            folders/{folder}/muteConfigs/{config_id}, or
-            projects/{project}/muteConfigs/{config_id}
+            ``organizations/{organization}/muteConfigs/{config_id}``,
+            ``folders/{folder}/muteConfigs/{config_id}``,
+            ``projects/{project}/muteConfigs/{config_id}``,
+            ``organizations/{organization}/locations/global/muteConfigs/{config_id}``,
+            ``folders/{folder}/locations/global/muteConfigs/{config_id}``,
+            or
+            ``projects/{project}/locations/global/muteConfigs/{config_id}``.
     """
 
     name: str = proto.Field(
@@ -358,9 +592,9 @@ class DeleteNotificationConfigRequest(proto.Message):
         name (str):
             Required. Name of the notification config to delete. Its
             format is
-            "organizations/[organization_id]/notificationConfigs/[config_id]",
-            "folders/[folder_id]/notificationConfigs/[config_id]", or
-            "projects/[project_id]/notificationConfigs/[config_id]".
+            ``organizations/[organization_id]/notificationConfigs/[config_id]``,
+            ``folders/[folder_id]/notificationConfigs/[config_id]``, or
+            ``projects/[project_id]/notificationConfigs/[config_id]``.
     """
 
     name: str = proto.Field(
@@ -375,12 +609,11 @@ class DeleteSecurityHealthAnalyticsCustomModuleRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. Name of the custom module to
-            delete. Its format is
-            "organizations/{organization}/securityHealthAnalyticsSettings/customModules/{customModule}",
-            "folders/{folder}/securityHealthAnalyticsSettings/customModules/{customModule}",
+            Required. Name of the custom module to delete. Its format is
+            ``organizations/{organization}/securityHealthAnalyticsSettings/customModules/{customModule}``,
+            ``folders/{folder}/securityHealthAnalyticsSettings/customModules/{customModule}``,
             or
-            "projects/{project}/securityHealthAnalyticsSettings/customModules/{customModule}".
+            ``projects/{project}/securityHealthAnalyticsSettings/customModules/{customModule}``
     """
 
     name: str = proto.Field(
@@ -396,9 +629,9 @@ class GetBigQueryExportRequest(proto.Message):
         name (str):
             Required. Name of the BigQuery export to retrieve. Its
             format is
-            organizations/{organization}/bigQueryExports/{export_id},
-            folders/{folder}/bigQueryExports/{export_id}, or
-            projects/{project}/bigQueryExports/{export_id}
+            ``organizations/{organization}/bigQueryExports/{export_id}``,
+            ``folders/{folder}/bigQueryExports/{export_id}``, or
+            ``projects/{project}/bigQueryExports/{export_id}``
     """
 
     name: str = proto.Field(
@@ -413,9 +646,13 @@ class GetMuteConfigRequest(proto.Message):
     Attributes:
         name (str):
             Required. Name of the mute config to retrieve. Its format is
-            organizations/{organization}/muteConfigs/{config_id},
-            folders/{folder}/muteConfigs/{config_id}, or
-            projects/{project}/muteConfigs/{config_id}
+            ``organizations/{organization}/muteConfigs/{config_id}``,
+            ``folders/{folder}/muteConfigs/{config_id}``,
+            ``projects/{project}/muteConfigs/{config_id}``,
+            ``organizations/{organization}/locations/global/muteConfigs/{config_id}``,
+            ``folders/{folder}/locations/global/muteConfigs/{config_id}``,
+            or
+            ``projects/{project}/locations/global/muteConfigs/{config_id}``.
     """
 
     name: str = proto.Field(
@@ -431,9 +668,9 @@ class GetNotificationConfigRequest(proto.Message):
         name (str):
             Required. Name of the notification config to get. Its format
             is
-            "organizations/[organization_id]/notificationConfigs/[config_id]",
-            "folders/[folder_id]/notificationConfigs/[config_id]", or
-            "projects/[project_id]/notificationConfigs/[config_id]".
+            ``organizations/[organization_id]/notificationConfigs/[config_id]``,
+            ``folders/[folder_id]/notificationConfigs/[config_id]``, or
+            ``projects/[project_id]/notificationConfigs/[config_id]``.
     """
 
     name: str = proto.Field(
@@ -449,7 +686,7 @@ class GetOrganizationSettingsRequest(proto.Message):
         name (str):
             Required. Name of the organization to get organization
             settings for. Its format is
-            "organizations/[organization_id]/organizationSettings".
+            ``organizations/[organization_id]/organizationSettings``.
     """
 
     name: str = proto.Field(
@@ -464,12 +701,12 @@ class GetEffectiveSecurityHealthAnalyticsCustomModuleRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. Name of the effective custom module
-            to get. Its format is
-            "organizations/{organization}/securityHealthAnalyticsSettings/effectiveCustomModules/{customModule}",
-            "folders/{folder}/securityHealthAnalyticsSettings/effectiveCustomModules/{customModule}",
+            Required. Name of the effective custom module to get. Its
+            format is
+            ``organizations/{organization}/securityHealthAnalyticsSettings/effectiveCustomModules/{customModule}``,
+            ``folders/{folder}/securityHealthAnalyticsSettings/effectiveCustomModules/{customModule}``,
             or
-            "projects/{project}/securityHealthAnalyticsSettings/effectiveCustomModules/{customModule}".
+            ``projects/{project}/securityHealthAnalyticsSettings/effectiveCustomModules/{customModule}``
     """
 
     name: str = proto.Field(
@@ -484,12 +721,11 @@ class GetSecurityHealthAnalyticsCustomModuleRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. Name of the custom module to get.
-            Its format is
-            "organizations/{organization}/securityHealthAnalyticsSettings/customModules/{customModule}",
-            "folders/{folder}/securityHealthAnalyticsSettings/customModules/{customModule}",
+            Required. Name of the custom module to get. Its format is
+            ``organizations/{organization}/securityHealthAnalyticsSettings/customModules/{customModule}``,
+            ``folders/{folder}/securityHealthAnalyticsSettings/customModules/{customModule}``,
             or
-            "projects/{project}/securityHealthAnalyticsSettings/customModules/{customModule}".
+            ``projects/{project}/securityHealthAnalyticsSettings/customModules/{customModule}``
     """
 
     name: str = proto.Field(
@@ -504,7 +740,7 @@ class GetSourceRequest(proto.Message):
     Attributes:
         name (str):
             Required. Relative resource name of the source. Its format
-            is "organizations/[organization_id]/source/[source_id]".
+            is ``organizations/[organization_id]/source/[source_id]``.
     """
 
     name: str = proto.Field(
@@ -519,8 +755,8 @@ class GroupAssetsRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The name of the parent to group the assets by. Its
-            format is "organizations/[organization_id]",
-            "folders/[folder_id]", or "projects/[project_id]".
+            format is ``organizations/[organization_id]``,
+            ``folders/[folder_id]``, or ``projects/[project_id]``.
         filter (str):
             Expression that defines the filter to apply across assets.
             The expression is a list of zero or more restrictions
@@ -755,13 +991,13 @@ class GroupFindingsRequest(proto.Message):
     Attributes:
         parent (str):
             Required. Name of the source to groupBy. Its format is
-            "organizations/[organization_id]/sources/[source_id]",
-            folders/[folder_id]/sources/[source_id], or
-            projects/[project_id]/sources/[source_id]. To groupBy across
-            all sources provide a source_id of ``-``. For example:
-            organizations/{organization_id}/sources/-,
-            folders/{folder_id}/sources/-, or
-            projects/{project_id}/sources/-
+            ``organizations/[organization_id]/sources/[source_id]``,
+            ``folders/[folder_id]/sources/[source_id]``, or
+            ``projects/[project_id]/sources/[source_id]``. To groupBy
+            across all sources provide a source_id of ``-``. For
+            example:
+            ``organizations/{organization_id}/sources/-, folders/{folder_id}/sources/-``,
+            or ``projects/{project_id}/sources/-``
         filter (str):
             Expression that defines the filter to apply across findings.
             The expression is a list of one or more restrictions
@@ -843,14 +1079,6 @@ class GroupFindingsRequest(proto.Message):
             for grouping (including ``state_change``). The string value
             should follow SQL syntax: comma separated list of fields.
             For example: "parent,resource_name".
-
-            The following fields are supported:
-
-            -  resource_name
-            -  category
-            -  state
-            -  parent
-            -  severity
 
             The following fields are supported when compare_duration is
             set:
@@ -1017,12 +1245,11 @@ class ListDescendantSecurityHealthAnalyticsCustomModulesRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. Name of parent to list descendant
-            custom modules. Its format is
-            "organizations/{organization}/securityHealthAnalyticsSettings",
-            "folders/{folder}/securityHealthAnalyticsSettings",
-            or
-            "projects/{project}/securityHealthAnalyticsSettings".
+            Required. Name of parent to list descendant custom modules.
+            Its format is
+            ``organizations/{organization}/securityHealthAnalyticsSettings``,
+            ``folders/{folder}/securityHealthAnalyticsSettings``, or
+            ``projects/{project}/securityHealthAnalyticsSettings``
         page_size (int):
             The maximum number of results to return in a
             single response. Default is 10, minimum is 1,
@@ -1076,6 +1303,228 @@ class ListDescendantSecurityHealthAnalyticsCustomModulesResponse(proto.Message):
     )
 
 
+class ListValuedResourcesRequest(proto.Message):
+    r"""Request message for listing the valued resources for a given
+    simulation.
+
+    Attributes:
+        parent (str):
+            Required. Name of parent to list valued resources.
+
+            Valid formats: ``organizations/{organization}``,
+            ``organizations/{organization}/simulations/{simulation}``
+            ``organizations/{organization}/simulations/{simulation}/attackExposureResults/{attack_exposure_result_v2}``
+        filter (str):
+            The filter expression that filters the valued resources in
+            the response. Supported fields:
+
+            -  ``resource_value`` supports =
+            -  ``resource_type`` supports =
+        page_token (str):
+            The value returned by the last
+            ``ListValuedResourcesResponse``; indicates that this is a
+            continuation of a prior ``ListValuedResources`` call, and
+            that the system should return the next page of data.
+        page_size (int):
+            The maximum number of results to return in a
+            single response. Default is 10, minimum is 1,
+            maximum is 1000.
+        order_by (str):
+            Optional. The fields by which to order the valued resources
+            response.
+
+            Supported fields:
+
+            -  ``exposed_score``
+
+            -  ``resource_value``
+
+            -  ``resource_type``
+
+            -  ``resource``
+
+            -  ``display_name``
+
+            Values should be a comma separated list of fields. For
+            example: ``exposed_score,resource_value``.
+
+            The default sorting order is descending. To specify
+            ascending or descending order for a field, append a ``ASC``
+            or a ``DESC`` suffix, respectively; for example:
+            ``exposed_score DESC``.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=4,
+    )
+    order_by: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+
+
+class ListValuedResourcesResponse(proto.Message):
+    r"""Response message for listing the valued resources for a given
+    simulation.
+
+    Attributes:
+        valued_resources (MutableSequence[google.cloud.securitycenter_v1.types.ValuedResource]):
+            The valued resources that the attack path
+            simulation identified.
+        next_page_token (str):
+            Token to retrieve the next page of results,
+            or empty if there are no more results.
+        total_size (int):
+            The estimated total number of results
+            matching the query.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    valued_resources: MutableSequence[
+        valued_resource.ValuedResource
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=valued_resource.ValuedResource,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    total_size: int = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+
+
+class ListAttackPathsRequest(proto.Message):
+    r"""Request message for listing the attack paths for a given
+    simulation or valued resource.
+
+    Attributes:
+        parent (str):
+            Required. Name of parent to list attack paths.
+
+            Valid formats: ``organizations/{organization}``,
+            ``organizations/{organization}/simulations/{simulation}``
+            ``organizations/{organization}/simulations/{simulation}/attackExposureResults/{attack_exposure_result_v2}``
+            ``organizations/{organization}/simulations/{simulation}/valuedResources/{valued_resource}``
+        filter (str):
+            The filter expression that filters the attack path in the
+            response. Supported fields:
+
+            -  ``valued_resources`` supports =
+        page_token (str):
+            The value returned by the last ``ListAttackPathsResponse``;
+            indicates that this is a continuation of a prior
+            ``ListAttackPaths`` call, and that the system should return
+            the next page of data.
+        page_size (int):
+            The maximum number of results to return in a
+            single response. Default is 10, minimum is 1,
+            maximum is 1000.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=4,
+    )
+
+
+class ListAttackPathsResponse(proto.Message):
+    r"""Response message for listing the attack paths for a given
+    simulation or valued resource.
+
+    Attributes:
+        attack_paths (MutableSequence[google.cloud.securitycenter_v1.types.AttackPath]):
+            The attack paths that the attack path
+            simulation identified.
+        next_page_token (str):
+            Token to retrieve the next page of results,
+            or empty if there are no more results.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    attack_paths: MutableSequence[attack_path.AttackPath] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=attack_path.AttackPath,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class GetSimulationRequest(proto.Message):
+    r"""Request message for getting simulation.
+    Simulation name can include "latest" to retrieve the latest
+    simulation For example, "organizations/123/simulations/latest"
+
+    Attributes:
+        name (str):
+            Required. The organization name or simulation name of this
+            simulation
+
+            Valid format:
+            ``organizations/{organization}/simulations/latest``
+            ``organizations/{organization}/simulations/{simulation}``
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class GetValuedResourceRequest(proto.Message):
+    r"""Request message for getting a valued resource.
+
+    Attributes:
+        name (str):
+            Required. The name of this valued resource
+
+            Valid format:
+            ``organizations/{organization}/simulations/{simulation}/valuedResources/{valued_resource}``
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
 class ListMuteConfigsRequest(proto.Message):
     r"""Request message for listing  mute configs at a given scope
     e.g. organization, folder or project.
@@ -1083,8 +1532,8 @@ class ListMuteConfigsRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The parent, which owns the collection of mute
-            configs. Its format is "organizations/[organization_id]",
-            "folders/[folder_id]", "projects/[project_id]".
+            configs. Its format is ``organizations/[organization_id]``,
+            ``folders/[folder_id]``, ``projects/[project_id]``.
         page_size (int):
             The maximum number of configs to return. The
             service may return fewer than this value.
@@ -1210,12 +1659,11 @@ class ListEffectiveSecurityHealthAnalyticsCustomModulesRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. Name of parent to list effective
-            custom modules. Its format is
-            "organizations/{organization}/securityHealthAnalyticsSettings",
-            "folders/{folder}/securityHealthAnalyticsSettings",
-            or
-            "projects/{project}/securityHealthAnalyticsSettings".
+            Required. Name of parent to list effective custom modules.
+            Its format is
+            ``organizations/{organization}/securityHealthAnalyticsSettings``,
+            ``folders/{folder}/securityHealthAnalyticsSettings``, or
+            ``projects/{project}/securityHealthAnalyticsSettings``
         page_size (int):
             The maximum number of results to return in a
             single response. Default is 10, minimum is 1,
@@ -1275,12 +1723,11 @@ class ListSecurityHealthAnalyticsCustomModulesRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. Name of parent to list custom
-            modules. Its format is
-            "organizations/{organization}/securityHealthAnalyticsSettings",
-            "folders/{folder}/securityHealthAnalyticsSettings",
-            or
-            "projects/{project}/securityHealthAnalyticsSettings".
+            Required. Name of parent to list custom modules. Its format
+            is
+            ``organizations/{organization}/securityHealthAnalyticsSettings``,
+            ``folders/{folder}/securityHealthAnalyticsSettings``, or
+            ``projects/{project}/securityHealthAnalyticsSettings``
         page_size (int):
             The maximum number of results to return in a
             single response. Default is 10, minimum is 1,
@@ -1340,8 +1787,8 @@ class ListSourcesRequest(proto.Message):
     Attributes:
         parent (str):
             Required. Resource name of the parent of sources to list.
-            Its format should be "organizations/[organization_id]",
-            "folders/[folder_id]", or "projects/[project_id]".
+            Its format should be ``organizations/[organization_id]``,
+            ``folders/[folder_id]``, or ``projects/[project_id]``.
         page_token (str):
             The value returned by the last ``ListSourcesResponse``;
             indicates that this is a continuation of a prior
@@ -1401,8 +1848,9 @@ class ListAssetsRequest(proto.Message):
             Required. The name of the parent resource that contains the
             assets. The value that you can specify on parent depends on
             the method in which you specify parent. You can specify one
-            of the following values: "organizations/[organization_id]",
-            "folders/[folder_id]", or "projects/[project_id]".
+            of the following values:
+            ``organizations/[organization_id]``,
+            ``folders/[folder_id]``, or ``projects/[project_id]``.
         filter (str):
             Expression that defines the filter to apply across assets.
             The expression is a list of zero or more restrictions
@@ -1686,13 +2134,13 @@ class ListFindingsRequest(proto.Message):
         parent (str):
             Required. Name of the source the findings belong to. Its
             format is
-            "organizations/[organization_id]/sources/[source_id],
-            folders/[folder_id]/sources/[source_id], or
-            projects/[project_id]/sources/[source_id]". To list across
-            all sources provide a source_id of ``-``. For example:
-            organizations/{organization_id}/sources/-,
-            folders/{folder_id}/sources/- or
-            projects/{projects_id}/sources/-
+            ``organizations/[organization_id]/sources/[source_id]``,
+            ``folders/[folder_id]/sources/[source_id]``, or
+            ``projects/[project_id]/sources/[source_id]``. To list
+            across all sources provide a source_id of ``-``. For
+            example: ``organizations/{organization_id}/sources/-``,
+            ``folders/{folder_id}/sources/-`` or
+            ``projects/{projects_id}/sources/-``
         filter (str):
             Expression that defines the filter to apply across findings.
             The expression is a list of one or more restrictions
@@ -1946,6 +2394,13 @@ class ListFindingsResponse(proto.Message):
             r"""Information related to the Google Cloud resource that is
             associated with this finding.
 
+            This message has `oneof`_ fields (mutually exclusive fields).
+            For each oneof, at most one member field can be set at the same time.
+            Setting any member of the oneof automatically clears all other
+            members.
+
+            .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
             Attributes:
                 name (str):
                     The full resource name of the resource. See:
@@ -1968,6 +2423,41 @@ class ListFindingsResponse(proto.Message):
                     the assets ancestry. The first folder is the
                     deepest nested folder, and the last folder is
                     the folder directly under the Organization.
+                cloud_provider (google.cloud.securitycenter_v1.types.CloudProvider):
+                    Indicates which cloud provider the finding is
+                    from.
+                organization (str):
+                    Indicates which organization / tenant the
+                    finding is for.
+                service (str):
+                    The service or resource provider associated
+                    with the resource.
+                location (str):
+                    The region or location of the service (if
+                    applicable).
+                aws_metadata (google.cloud.securitycenter_v1.types.AwsMetadata):
+                    The AWS metadata associated with the finding.
+
+                    This field is a member of `oneof`_ ``cloud_provider_metadata``.
+                azure_metadata (google.cloud.securitycenter_v1.types.AzureMetadata):
+                    The Azure metadata associated with the
+                    finding.
+
+                    This field is a member of `oneof`_ ``cloud_provider_metadata``.
+                resource_path (google.cloud.securitycenter_v1.types.ResourcePath):
+                    Provides the path to the resource within the
+                    resource hierarchy.
+                resource_path_string (str):
+                    A string representation of the resource path. For Google
+                    Cloud, it has the format of
+                    ``org/{organization_id}/folder/{folder_id}/folder/{folder_id}/project/{project_id}``
+                    where there can be any number of folders. For AWS, it has
+                    the format of
+                    ``org/{organization_id}/ou/{organizational_unit_id}/ou/{organizational_unit_id}/account/{account_id}``
+                    where there can be any number of organizational units. For
+                    Azure, it has the format of
+                    ``mg/{management_group_id}/mg/{management_group_id}/subscription/{subscription_id}/rg/{resource_group_name}``
+                    where there can be any number of management groups.
             """
 
             name: str = proto.Field(
@@ -2002,6 +2492,44 @@ class ListFindingsResponse(proto.Message):
                 proto.MESSAGE,
                 number=7,
                 message=folder.Folder,
+            )
+            cloud_provider: gcs_resource.CloudProvider = proto.Field(
+                proto.ENUM,
+                number=9,
+                enum=gcs_resource.CloudProvider,
+            )
+            organization: str = proto.Field(
+                proto.STRING,
+                number=10,
+            )
+            service: str = proto.Field(
+                proto.STRING,
+                number=11,
+            )
+            location: str = proto.Field(
+                proto.STRING,
+                number=12,
+            )
+            aws_metadata: gcs_resource.AwsMetadata = proto.Field(
+                proto.MESSAGE,
+                number=16,
+                oneof="cloud_provider_metadata",
+                message=gcs_resource.AwsMetadata,
+            )
+            azure_metadata: gcs_resource.AzureMetadata = proto.Field(
+                proto.MESSAGE,
+                number=17,
+                oneof="cloud_provider_metadata",
+                message=gcs_resource.AzureMetadata,
+            )
+            resource_path: gcs_resource.ResourcePath = proto.Field(
+                proto.MESSAGE,
+                number=18,
+                message=gcs_resource.ResourcePath,
+            )
+            resource_path_string: str = proto.Field(
+                proto.STRING,
+                number=19,
             )
 
         finding: gcs_finding.Finding = proto.Field(
@@ -2054,9 +2582,9 @@ class SetFindingStateRequest(proto.Message):
             Required. The `relative resource
             name <https://cloud.google.com/apis/design/resource_names#relative_resource_name>`__
             of the finding. Example:
-            "organizations/{organization_id}/sources/{source_id}/findings/{finding_id}",
-            "folders/{folder_id}/sources/{source_id}/findings/{finding_id}",
-            "projects/{project_id}/sources/{source_id}/findings/{finding_id}".
+            ``organizations/{organization_id}/sources/{source_id}/findings/{finding_id}``,
+            ``folders/{folder_id}/sources/{source_id}/findings/{finding_id}``,
+            ``projects/{project_id}/sources/{source_id}/findings/{finding_id}``.
         state (google.cloud.securitycenter_v1.types.Finding.State):
             Required. The desired State of the finding.
         start_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -2088,9 +2616,9 @@ class SetMuteRequest(proto.Message):
             Required. The `relative resource
             name <https://cloud.google.com/apis/design/resource_names#relative_resource_name>`__
             of the finding. Example:
-            "organizations/{organization_id}/sources/{source_id}/findings/{finding_id}",
-            "folders/{folder_id}/sources/{source_id}/findings/{finding_id}",
-            "projects/{project_id}/sources/{source_id}/findings/{finding_id}".
+            ``organizations/{organization_id}/sources/{source_id}/findings/{finding_id}``,
+            ``folders/{folder_id}/sources/{source_id}/findings/{finding_id}``,
+            ``projects/{project_id}/sources/{source_id}/findings/{finding_id}``.
         mute (google.cloud.securitycenter_v1.types.Finding.Mute):
             Required. The desired state of the Mute.
     """
@@ -2113,7 +2641,7 @@ class RunAssetDiscoveryRequest(proto.Message):
     Attributes:
         parent (str):
             Required. Name of the organization to run asset discovery
-            for. Its format is "organizations/[organization_id]".
+            for. Its format is ``organizations/[organization_id]``.
     """
 
     parent: str = proto.Field(
@@ -2393,7 +2921,10 @@ class UpdateSecurityHealthAnalyticsCustomModuleRequest(proto.Message):
             Required. The SecurityHealthAnalytics custom
             module to update.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            The list of fields to update.
+            The list of fields to be updated. The only fields that can
+            be updated are ``enablement_state`` and ``custom_config``.
+            If empty or set to the wildcard value ``*``, both
+            ``enablement_state`` and ``custom_config`` are updated.
     """
 
     security_health_analytics_custom_module: gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule = proto.Field(
@@ -2479,8 +3010,8 @@ class CreateBigQueryExportRequest(proto.Message):
         parent (str):
             Required. The name of the parent resource of the new
             BigQuery export. Its format is
-            "organizations/[organization_id]", "folders/[folder_id]", or
-            "projects/[project_id]".
+            ``organizations/[organization_id]``,
+            ``folders/[folder_id]``, or ``projects/[project_id]``.
         big_query_export (google.cloud.securitycenter_v1.types.BigQueryExport):
             Required. The BigQuery export being created.
         big_query_export_id (str):
@@ -2537,8 +3068,8 @@ class ListBigQueryExportsRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The parent, which owns the collection of BigQuery
-            exports. Its format is "organizations/[organization_id]",
-            "folders/[folder_id]", "projects/[project_id]".
+            exports. Its format is ``organizations/[organization_id]``,
+            ``folders/[folder_id]``, ``projects/[project_id]``.
         page_size (int):
             The maximum number of configs to return. The
             service may return fewer than this value.
@@ -2604,14 +3135,398 @@ class DeleteBigQueryExportRequest(proto.Message):
         name (str):
             Required. The name of the BigQuery export to delete. Its
             format is
-            organizations/{organization}/bigQueryExports/{export_id},
-            folders/{folder}/bigQueryExports/{export_id}, or
-            projects/{project}/bigQueryExports/{export_id}
+            ``organizations/{organization}/bigQueryExports/{export_id}``,
+            ``folders/{folder}/bigQueryExports/{export_id}``, or
+            ``projects/{project}/bigQueryExports/{export_id}``
     """
 
     name: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+
+
+class CreateEventThreatDetectionCustomModuleRequest(proto.Message):
+    r"""Request to create an Event Threat Detection custom module.
+
+    Attributes:
+        parent (str):
+            Required. The new custom module's parent.
+
+            Its format is:
+
+            -  ``organizations/{organization}/eventThreatDetectionSettings``.
+            -  ``folders/{folder}/eventThreatDetectionSettings``.
+            -  ``projects/{project}/eventThreatDetectionSettings``.
+        event_threat_detection_custom_module (google.cloud.securitycenter_v1.types.EventThreatDetectionCustomModule):
+            Required. The module to create. The
+            event_threat_detection_custom_module.name will be ignored
+            and server generated.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    event_threat_detection_custom_module: gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule,
+    )
+
+
+class ValidateEventThreatDetectionCustomModuleRequest(proto.Message):
+    r"""Request to validate an Event Threat Detection custom module.
+
+    Attributes:
+        parent (str):
+            Required. Resource name of the parent to validate the Custom
+            Module under.
+
+            Its format is:
+
+            -  ``organizations/{organization}/eventThreatDetectionSettings``.
+            -  ``folders/{folder}/eventThreatDetectionSettings``.
+            -  ``projects/{project}/eventThreatDetectionSettings``.
+        raw_text (str):
+            Required. The raw text of the module's
+            contents. Used to generate error messages.
+        type_ (str):
+            Required. The type of the module (e.g. CONFIGURABLE_BAD_IP).
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    raw_text: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    type_: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class ValidateEventThreatDetectionCustomModuleResponse(proto.Message):
+    r"""Response to validating an Event Threat Detection custom
+    module.
+
+    Attributes:
+        errors (google.cloud.securitycenter_v1.types.CustomModuleValidationErrors):
+            A list of errors returned by the validator.
+            If the list is empty, there were no errors.
+    """
+
+    errors: event_threat_detection_custom_module_validation_errors.CustomModuleValidationErrors = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=event_threat_detection_custom_module_validation_errors.CustomModuleValidationErrors,
+    )
+
+
+class DeleteEventThreatDetectionCustomModuleRequest(proto.Message):
+    r"""Request to delete an Event Threat Detection custom module.
+
+    Attributes:
+        name (str):
+            Required. Name of the custom module to delete.
+
+            Its format is:
+
+            -  "organizations/{organization}/eventThreatDetectionSettings/customModules/{module}".
+            -  "folders/{folder}/eventThreatDetectionSettings/customModules/{module}".
+            -  "projects/{project}/eventThreatDetectionSettings/customModules/{module}".
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class GetEventThreatDetectionCustomModuleRequest(proto.Message):
+    r"""Request to get an Event Threat Detection custom module.
+
+    Attributes:
+        name (str):
+            Required. Name of the custom module to get.
+
+            Its format is:
+
+            -  ``organizations/{organization}/eventThreatDetectionSettings/customModules/{module}``.
+            -  ``folders/{folder}/eventThreatDetectionSettings/customModules/{module}``.
+            -  ``projects/{project}/eventThreatDetectionSettings/customModules/{module}``.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class ListDescendantEventThreatDetectionCustomModulesRequest(proto.Message):
+    r"""Request to list current and descendant resident Event Threat
+    Detection custom modules.
+
+    Attributes:
+        parent (str):
+            Required. Name of the parent to list custom modules under.
+
+            Its format is:
+
+            -  ``organizations/{organization}/eventThreatDetectionSettings``.
+            -  ``folders/{folder}/eventThreatDetectionSettings``.
+            -  ``projects/{project}/eventThreatDetectionSettings``.
+        page_token (str):
+            A page token, received from a previous
+            ``ListDescendantEventThreatDetectionCustomModules`` call.
+            Provide this to retrieve the subsequent page.
+
+            When paginating, all other parameters provided to
+            ``ListDescendantEventThreatDetectionCustomModules`` must
+            match the call that provided the page token.
+        page_size (int):
+            The maximum number of modules to return. The
+            service may return fewer than this value.
+            If unspecified, at most 10 configs will be
+            returned. The maximum value is 1000; values
+            above 1000 will be coerced to 1000.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+
+
+class ListDescendantEventThreatDetectionCustomModulesResponse(proto.Message):
+    r"""Response for listing current and descendant resident
+    Event Threat Detection custom modules.
+
+    Attributes:
+        event_threat_detection_custom_modules (MutableSequence[google.cloud.securitycenter_v1.types.EventThreatDetectionCustomModule]):
+            Custom modules belonging to the requested
+            parent.
+        next_page_token (str):
+            A token, which can be sent as ``page_token`` to retrieve the
+            next page. If this field is omitted, there are no subsequent
+            pages.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    event_threat_detection_custom_modules: MutableSequence[
+        gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class ListEventThreatDetectionCustomModulesRequest(proto.Message):
+    r"""Request to list Event Threat Detection custom modules.
+
+    Attributes:
+        parent (str):
+            Required. Name of the parent to list custom modules under.
+
+            Its format is:
+
+            -  ``organizations/{organization}/eventThreatDetectionSettings``.
+            -  ``folders/{folder}/eventThreatDetectionSettings``.
+            -  ``projects/{project}/eventThreatDetectionSettings``.
+        page_token (str):
+            A page token, received from a previous
+            ``ListEventThreatDetectionCustomModules`` call. Provide this
+            to retrieve the subsequent page.
+
+            When paginating, all other parameters provided to
+            ``ListEventThreatDetectionCustomModules`` must match the
+            call that provided the page token.
+        page_size (int):
+            The maximum number of modules to return. The
+            service may return fewer than this value.
+            If unspecified, at most 10 configs will be
+            returned. The maximum value is 1000; values
+            above 1000 will be coerced to 1000.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+
+
+class ListEventThreatDetectionCustomModulesResponse(proto.Message):
+    r"""Response for listing Event Threat Detection custom modules.
+
+    Attributes:
+        event_threat_detection_custom_modules (MutableSequence[google.cloud.securitycenter_v1.types.EventThreatDetectionCustomModule]):
+            Custom modules belonging to the requested
+            parent.
+        next_page_token (str):
+            A token, which can be sent as ``page_token`` to retrieve the
+            next page. If this field is omitted, there are no subsequent
+            pages.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    event_threat_detection_custom_modules: MutableSequence[
+        gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class UpdateEventThreatDetectionCustomModuleRequest(proto.Message):
+    r"""Request to update an Event Threat Detection custom module.
+
+    Attributes:
+        event_threat_detection_custom_module (google.cloud.securitycenter_v1.types.EventThreatDetectionCustomModule):
+            Required. The module being updated.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            The list of fields to be updated.
+            If empty all mutable fields will be updated.
+    """
+
+    event_threat_detection_custom_module: gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule,
+    )
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
+    )
+
+
+class GetEffectiveEventThreatDetectionCustomModuleRequest(proto.Message):
+    r"""Request to get an EffectiveEventThreatDetectionCustomModule.
+
+    Attributes:
+        name (str):
+            Required. The resource name of the effective Event Threat
+            Detection custom module.
+
+            Its format is:
+
+            -  ``organizations/{organization}/eventThreatDetectionSettings/effectiveCustomModules/{module}``.
+            -  ``folders/{folder}/eventThreatDetectionSettings/effectiveCustomModules/{module}``.
+            -  ``projects/{project}/eventThreatDetectionSettings/effectiveCustomModules/{module}``.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class ListEffectiveEventThreatDetectionCustomModulesRequest(proto.Message):
+    r"""Request to list effective Event Threat Detection custom
+    modules.
+
+    Attributes:
+        parent (str):
+            Required. Name of the parent to list custom modules for.
+
+            Its format is:
+
+            -  ``organizations/{organization}/eventThreatDetectionSettings``.
+            -  ``folders/{folder}/eventThreatDetectionSettings``.
+            -  ``projects/{project}/eventThreatDetectionSettings``.
+        page_token (str):
+            A page token, received from a previous
+            ``ListEffectiveEventThreatDetectionCustomModules`` call.
+            Provide this to retrieve the subsequent page.
+
+            When paginating, all other parameters provided to
+            ``ListEffectiveEventThreatDetectionCustomModules`` must
+            match the call that provided the page token.
+        page_size (int):
+            The maximum number of modules to return. The
+            service may return fewer than this value.
+            If unspecified, at most 10 configs will be
+            returned. The maximum value is 1000; values
+            above 1000 will be coerced to 1000.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+
+
+class ListEffectiveEventThreatDetectionCustomModulesResponse(proto.Message):
+    r"""Response for listing
+    EffectiveEventThreatDetectionCustomModules.
+
+    Attributes:
+        effective_event_threat_detection_custom_modules (MutableSequence[google.cloud.securitycenter_v1.types.EffectiveEventThreatDetectionCustomModule]):
+            Effective custom modules belonging to the
+            requested parent.
+        next_page_token (str):
+            A token, which can be sent as ``page_token`` to retrieve the
+            next page. If this field is omitted, there are no subsequent
+            pages.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    effective_event_threat_detection_custom_modules: MutableSequence[
+        effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 

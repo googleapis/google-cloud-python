@@ -15,7 +15,7 @@ Python Client for Cloud Recommender
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-recommender.svg
    :target: https://pypi.org/project/google-cloud-recommender/
 .. _Cloud Recommender: https://cloud.google.com/recommender
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/recommender/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/recommender/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/recommender
 
 Quick Start

@@ -410,7 +410,7 @@ class Cluster(proto.Message):
             operation (str):
                 Output only. The operation for running the maintenance
                 event. Specified in the format
-                projects/\ */locations/*/operations/*. If the maintenance
+                `projects/*/locations/*/operations/*`. If the maintenance
                 event is split into multiple operations (e.g. due to
                 maintenance windows), the latest one is recorded.
             type_ (google.cloud.edgecontainer_v1.types.Cluster.MaintenanceEvent.Type):

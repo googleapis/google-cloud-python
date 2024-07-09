@@ -15,7 +15,7 @@ Python Client for Cloud Memorystore for Memcached
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-memcache.svg
    :target: https://pypi.org/project/google-cloud-memcache/
 .. _Cloud Memorystore for Memcached: cloud.google.com/memorystore/docs/memcached/
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/memcache/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/memcache/latest/summary_overview
 .. _Product Documentation:  cloud.google.com/memorystore/docs/memcached/
 
 Quick Start

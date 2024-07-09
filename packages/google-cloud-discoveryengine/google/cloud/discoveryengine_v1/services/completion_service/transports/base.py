@@ -87,6 +87,8 @@ class CompletionServiceTransport(abc.ABC):
 
         # Save the scopes.
         self._scopes = scopes
+        if not hasattr(self, "_ignore_credentials"):
+            self._ignore_credentials: bool = False
 
         # If no credentials are provided, then determine the appropriate
         # defaults.
@@ -99,7 +101,7 @@ class CompletionServiceTransport(abc.ABC):
             credentials, _ = google.auth.load_credentials_from_file(
                 credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
             )
-        elif credentials is None:
+        elif credentials is None and not self._ignore_credentials:
             credentials, _ = google.auth.default(
                 **scopes_kwargs, quota_project_id=quota_project_id
             )
@@ -147,6 +149,16 @@ class CompletionServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.import_completion_suggestions: gapic_v1.method.wrap_method(
+                self.import_completion_suggestions,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.purge_completion_suggestions: gapic_v1.method.wrap_method(
+                self.purge_completion_suggestions,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -189,6 +201,24 @@ class CompletionServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [purge_config.PurgeSuggestionDenyListEntriesRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def import_completion_suggestions(
+        self,
+    ) -> Callable[
+        [import_config.ImportCompletionSuggestionsRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def purge_completion_suggestions(
+        self,
+    ) -> Callable[
+        [purge_config.PurgeCompletionSuggestionsRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()

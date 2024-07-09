@@ -1322,12 +1322,7 @@ async def test_create_batch_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[
             client._client._transport.create_batch
         ] = mock_object
@@ -1725,12 +1720,7 @@ async def test_get_batch_async_use_cached_wrapped_rpc(transport: str = "grpc_asy
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[
             client._client._transport.get_batch
         ] = mock_object
@@ -2106,12 +2096,7 @@ async def test_list_batches_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[
             client._client._transport.list_batches
         ] = mock_object
@@ -2658,12 +2643,7 @@ async def test_delete_batch_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[
             client._client._transport.delete_batch
         ] = mock_object
@@ -2932,6 +2912,8 @@ def test_create_batch_rest(request_type):
             "repository_config": {
                 "pypi_repository_config": {"pypi_repository": "pypi_repository_value"}
             },
+            "autotuning_config": {"scenarios": [2]},
+            "cohort": "cohort_value",
         },
         "environment_config": {
             "execution_config": {

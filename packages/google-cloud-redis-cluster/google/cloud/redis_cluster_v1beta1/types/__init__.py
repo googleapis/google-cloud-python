@@ -15,25 +15,33 @@
 #
 from .cloud_redis_cluster import (
     AuthorizationMode,
+    CertificateAuthority,
     Cluster,
+    ClusterPersistenceConfig,
     CreateClusterRequest,
     DeleteClusterRequest,
     DiscoveryEndpoint,
+    GetClusterCertificateAuthorityRequest,
     GetClusterRequest,
     ListClustersRequest,
     ListClustersResponse,
+    NodeType,
     OperationMetadata,
     PscConfig,
     PscConnection,
     TransitEncryptionMode,
     UpdateClusterRequest,
+    ZoneDistributionConfig,
 )
 
 __all__ = (
+    "CertificateAuthority",
     "Cluster",
+    "ClusterPersistenceConfig",
     "CreateClusterRequest",
     "DeleteClusterRequest",
     "DiscoveryEndpoint",
+    "GetClusterCertificateAuthorityRequest",
     "GetClusterRequest",
     "ListClustersRequest",
     "ListClustersResponse",
@@ -41,6 +49,8 @@ __all__ = (
     "PscConfig",
     "PscConnection",
     "UpdateClusterRequest",
+    "ZoneDistributionConfig",
     "AuthorizationMode",
+    "NodeType",
     "TransitEncryptionMode",
 )

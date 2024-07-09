@@ -1,5 +1,26 @@
 # Changelog
 
+## [1.0.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storage-control-v1.0.1...google-cloud-storage-control-v1.0.2) (2024-07-08)
+
+
+### Bug Fixes
+
+* Allow Protobuf 5.x ([#12870](https://github.com/googleapis/google-cloud-python/issues/12870)) ([4d16761](https://github.com/googleapis/google-cloud-python/commit/4d16761640dd8e35410b3219b7d675d7668d2f88))
+
+## [1.0.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storage-control-v1.0.0...google-cloud-storage-control-v1.0.1) (2024-06-24)
+
+
+### Documentation
+
+* remove allowlist note from Folders RPCs ([41a3afd](https://github.com/googleapis/google-cloud-python/commit/41a3afda46a7c3f02bff3f92f15cd49daf92083e))
+
+## [1.0.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storage-control-v0.2.0...google-cloud-storage-control-v1.0.0) (2024-06-19)
+
+
+### Features
+
+* bump release level to production/stable ([4a15440](https://github.com/googleapis/google-cloud-python/commit/4a154403f07321af6ea051fa81b58ee2651de34f))
+
 ## [0.2.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storage-control-v0.1.3...google-cloud-storage-control-v0.2.0) (2024-05-07)
 
 

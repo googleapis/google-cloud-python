@@ -178,7 +178,8 @@ class DocumentProcessorServiceGrpcAsyncIOTransport(DocumentProcessorServiceTrans
 
         if isinstance(channel, aio.Channel):
             # Ignore credentials if a channel was passed.
-            credentials = False
+            credentials = None
+            self._ignore_credentials = True
             # If a channel was explicitly provided, set it.
             self._grpc_channel = channel
             self._ssl_channel_credentials = None
@@ -657,7 +658,11 @@ class DocumentProcessorServiceGrpcAsyncIOTransport(DocumentProcessorServiceTrans
         Creates a processor from the
         [ProcessorType][google.cloud.documentai.v1.ProcessorType]
         provided. The processor will be at ``ENABLED`` state by default
-        after its creation.
+        after its creation. Note that this method requires the
+        ``documentai.processors.create`` permission on the project,
+        which is highly privileged. A user or service account with this
+        permission can create new processors that can interact with any
+        gcs bucket in your project.
 
         Returns:
             Callable[[~.CreateProcessorRequest],

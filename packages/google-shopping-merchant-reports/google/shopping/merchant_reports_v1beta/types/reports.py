@@ -703,11 +703,13 @@ class ProductView(proto.Message):
 
         Here's an example of how the aggregated status is computed:
 
+        ```
         Free listings \| Shopping ads \| Status
         --------------|--------------|------------------------------
         Approved \| Approved \| ELIGIBLE Approved \| Pending \| ELIGIBLE
         Approved \| Disapproved \| ELIGIBLE_LIMITED Pending \| Pending \|
         PENDING Disapproved \| Disapproved \| NOT_ELIGIBLE_OR_DISAPPROVED
+        ```
 
         Values:
             AGGREGATED_REPORTING_CONTEXT_STATUS_UNSPECIFIED (0):

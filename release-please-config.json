@@ -1203,6 +1203,21 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-developerconnect": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
+            "component": "google-cloud-developerconnect",
+            "extra-files": [
+                "google/cloud/developerconnect/gapic_version.py",
+                "google/cloud/developerconnect_v1/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.developerconnect.v1.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-dialogflow": {
             "bump-minor-pre-major": true,
             "bump-patch-for-minor-pre-major": true,
@@ -1476,6 +1491,21 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-gdchardwaremanagement": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
+            "component": "google-cloud-gdchardwaremanagement",
+            "extra-files": [
+                "google/cloud/gdchardwaremanagement/gapic_version.py",
+                "google/cloud/gdchardwaremanagement_v1alpha/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.gdchardwaremanagement.v1alpha.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-gke-backup": {
             "bump-minor-pre-major": true,
             "bump-patch-for-minor-pre-major": true,
@@ -1716,6 +1746,21 @@
                 {
                     "jsonpath": "$.clientLibrary.version",
                     "path": "samples/generated_samples/snippet_metadata_google.cloud.managedidentities.v1.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
+        "packages/google-cloud-managedkafka": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
+            "component": "google-cloud-managedkafka",
+            "extra-files": [
+                "google/cloud/managedkafka/gapic_version.py",
+                "google/cloud/managedkafka_v1/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.managedkafka.v1.json",
                     "type": "json"
                 }
             ],
@@ -3221,6 +3266,21 @@
             ],
             "release-type": "python"
         },
+        "packages/google-shopping-merchant-accounts": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
+            "component": "google-shopping-merchant-accounts",
+            "extra-files": [
+                "google/shopping/merchant_accounts/gapic_version.py",
+                "google/shopping/merchant_accounts_v1beta/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.shopping.merchant.accounts.v1beta.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-shopping-merchant-conversions": {
             "bump-minor-pre-major": true,
             "bump-patch-for-minor-pre-major": true,
@@ -3231,6 +3291,21 @@
                 {
                     "jsonpath": "$.clientLibrary.version",
                     "path": "samples/generated_samples/snippet_metadata_google.shopping.merchant.conversions.v1beta.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
+        "packages/google-shopping-merchant-datasources": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
+            "component": "google-shopping-merchant-datasources",
+            "extra-files": [
+                "google/shopping/merchant_datasources/gapic_version.py",
+                "google/shopping/merchant_datasources_v1beta/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.shopping.merchant.datasources.v1beta.json",
                     "type": "json"
                 }
             ],
@@ -3276,6 +3351,36 @@
                 {
                     "jsonpath": "$.clientLibrary.version",
                     "path": "samples/generated_samples/snippet_metadata_google.shopping.merchant.notifications.v1beta.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
+        "packages/google-shopping-merchant-products": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
+            "component": "google-shopping-merchant-products",
+            "extra-files": [
+                "google/shopping/merchant_products/gapic_version.py",
+                "google/shopping/merchant_products_v1beta/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.shopping.merchant.products.v1beta.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
+        "packages/google-shopping-merchant-promotions": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
+            "component": "google-shopping-merchant-promotions",
+            "extra-files": [
+                "google/shopping/merchant_promotions/gapic_version.py",
+                "google/shopping/merchant_promotions_v1beta/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.shopping.merchant.promotions.v1beta.json",
                     "type": "json"
                 }
             ],

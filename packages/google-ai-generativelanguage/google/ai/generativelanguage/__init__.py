@@ -18,6 +18,12 @@ from google.ai.generativelanguage import gapic_version as package_version
 __version__ = package_version.__version__
 
 
+from google.ai.generativelanguage_v1beta.services.cache_service.async_client import (
+    CacheServiceAsyncClient,
+)
+from google.ai.generativelanguage_v1beta.services.cache_service.client import (
+    CacheServiceClient,
+)
 from google.ai.generativelanguage_v1beta.services.discuss_service.async_client import (
     DiscussServiceAsyncClient,
 )
@@ -60,13 +66,25 @@ from google.ai.generativelanguage_v1beta.services.text_service.async_client impo
 from google.ai.generativelanguage_v1beta.services.text_service.client import (
     TextServiceClient,
 )
+from google.ai.generativelanguage_v1beta.types.cache_service import (
+    CreateCachedContentRequest,
+    DeleteCachedContentRequest,
+    GetCachedContentRequest,
+    ListCachedContentsRequest,
+    ListCachedContentsResponse,
+    UpdateCachedContentRequest,
+)
+from google.ai.generativelanguage_v1beta.types.cached_content import CachedContent
 from google.ai.generativelanguage_v1beta.types.citation import (
     CitationMetadata,
     CitationSource,
 )
 from google.ai.generativelanguage_v1beta.types.content import (
     Blob,
+    CodeExecution,
+    CodeExecutionResult,
     Content,
+    ExecutableCode,
     FileData,
     FunctionCall,
     FunctionCallingConfig,
@@ -213,6 +231,8 @@ from google.ai.generativelanguage_v1beta.types.tuned_model import (
 )
 
 __all__ = (
+    "CacheServiceClient",
+    "CacheServiceAsyncClient",
     "DiscussServiceClient",
     "DiscussServiceAsyncClient",
     "FileServiceClient",
@@ -227,10 +247,20 @@ __all__ = (
     "RetrieverServiceAsyncClient",
     "TextServiceClient",
     "TextServiceAsyncClient",
+    "CreateCachedContentRequest",
+    "DeleteCachedContentRequest",
+    "GetCachedContentRequest",
+    "ListCachedContentsRequest",
+    "ListCachedContentsResponse",
+    "UpdateCachedContentRequest",
+    "CachedContent",
     "CitationMetadata",
     "CitationSource",
     "Blob",
+    "CodeExecution",
+    "CodeExecutionResult",
     "Content",
+    "ExecutableCode",
     "FileData",
     "FunctionCall",
     "FunctionCallingConfig",

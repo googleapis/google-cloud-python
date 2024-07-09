@@ -1229,6 +1229,7 @@ def test_create_serving_config(request_type, transport: str = "grpc"):
             diversity_level="diversity_level_value",
             diversity_type=gcr_serving_config.ServingConfig.DiversityType.RULE_BASED_DIVERSITY,
             enable_category_filter_level="enable_category_filter_level_value",
+            ignore_recs_denylist=True,
             solution_types=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
         )
         response = client.create_serving_config(request)
@@ -1262,6 +1263,7 @@ def test_create_serving_config(request_type, transport: str = "grpc"):
         == gcr_serving_config.ServingConfig.DiversityType.RULE_BASED_DIVERSITY
     )
     assert response.enable_category_filter_level == "enable_category_filter_level_value"
+    assert response.ignore_recs_denylist is True
     assert response.solution_types == [common.SolutionType.SOLUTION_TYPE_RECOMMENDATION]
 
 
@@ -1390,6 +1392,7 @@ async def test_create_serving_config_empty_call_async():
                 diversity_level="diversity_level_value",
                 diversity_type=gcr_serving_config.ServingConfig.DiversityType.RULE_BASED_DIVERSITY,
                 enable_category_filter_level="enable_category_filter_level_value",
+                ignore_recs_denylist=True,
                 solution_types=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
             )
         )
@@ -1422,12 +1425,7 @@ async def test_create_serving_config_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[
             client._client._transport.create_serving_config
         ] = mock_object
@@ -1482,6 +1480,7 @@ async def test_create_serving_config_async(
                 diversity_level="diversity_level_value",
                 diversity_type=gcr_serving_config.ServingConfig.DiversityType.RULE_BASED_DIVERSITY,
                 enable_category_filter_level="enable_category_filter_level_value",
+                ignore_recs_denylist=True,
                 solution_types=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
             )
         )
@@ -1516,6 +1515,7 @@ async def test_create_serving_config_async(
         == gcr_serving_config.ServingConfig.DiversityType.RULE_BASED_DIVERSITY
     )
     assert response.enable_category_filter_level == "enable_category_filter_level_value"
+    assert response.ignore_recs_denylist is True
     assert response.solution_types == [common.SolutionType.SOLUTION_TYPE_RECOMMENDATION]
 
 
@@ -1865,12 +1865,7 @@ async def test_delete_serving_config_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[
             client._client._transport.delete_serving_config
         ] = mock_object
@@ -2111,6 +2106,7 @@ def test_update_serving_config(request_type, transport: str = "grpc"):
             diversity_level="diversity_level_value",
             diversity_type=gcr_serving_config.ServingConfig.DiversityType.RULE_BASED_DIVERSITY,
             enable_category_filter_level="enable_category_filter_level_value",
+            ignore_recs_denylist=True,
             solution_types=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
         )
         response = client.update_serving_config(request)
@@ -2144,6 +2140,7 @@ def test_update_serving_config(request_type, transport: str = "grpc"):
         == gcr_serving_config.ServingConfig.DiversityType.RULE_BASED_DIVERSITY
     )
     assert response.enable_category_filter_level == "enable_category_filter_level_value"
+    assert response.ignore_recs_denylist is True
     assert response.solution_types == [common.SolutionType.SOLUTION_TYPE_RECOMMENDATION]
 
 
@@ -2266,6 +2263,7 @@ async def test_update_serving_config_empty_call_async():
                 diversity_level="diversity_level_value",
                 diversity_type=gcr_serving_config.ServingConfig.DiversityType.RULE_BASED_DIVERSITY,
                 enable_category_filter_level="enable_category_filter_level_value",
+                ignore_recs_denylist=True,
                 solution_types=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
             )
         )
@@ -2298,12 +2296,7 @@ async def test_update_serving_config_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[
             client._client._transport.update_serving_config
         ] = mock_object
@@ -2358,6 +2351,7 @@ async def test_update_serving_config_async(
                 diversity_level="diversity_level_value",
                 diversity_type=gcr_serving_config.ServingConfig.DiversityType.RULE_BASED_DIVERSITY,
                 enable_category_filter_level="enable_category_filter_level_value",
+                ignore_recs_denylist=True,
                 solution_types=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
             )
         )
@@ -2392,6 +2386,7 @@ async def test_update_serving_config_async(
         == gcr_serving_config.ServingConfig.DiversityType.RULE_BASED_DIVERSITY
     )
     assert response.enable_category_filter_level == "enable_category_filter_level_value"
+    assert response.ignore_recs_denylist is True
     assert response.solution_types == [common.SolutionType.SOLUTION_TYPE_RECOMMENDATION]
 
 
@@ -2600,6 +2595,7 @@ def test_get_serving_config(request_type, transport: str = "grpc"):
             diversity_level="diversity_level_value",
             diversity_type=serving_config.ServingConfig.DiversityType.RULE_BASED_DIVERSITY,
             enable_category_filter_level="enable_category_filter_level_value",
+            ignore_recs_denylist=True,
             solution_types=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
         )
         response = client.get_serving_config(request)
@@ -2633,6 +2629,7 @@ def test_get_serving_config(request_type, transport: str = "grpc"):
         == serving_config.ServingConfig.DiversityType.RULE_BASED_DIVERSITY
     )
     assert response.enable_category_filter_level == "enable_category_filter_level_value"
+    assert response.ignore_recs_denylist is True
     assert response.solution_types == [common.SolutionType.SOLUTION_TYPE_RECOMMENDATION]
 
 
@@ -2758,6 +2755,7 @@ async def test_get_serving_config_empty_call_async():
                 diversity_level="diversity_level_value",
                 diversity_type=serving_config.ServingConfig.DiversityType.RULE_BASED_DIVERSITY,
                 enable_category_filter_level="enable_category_filter_level_value",
+                ignore_recs_denylist=True,
                 solution_types=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
             )
         )
@@ -2790,12 +2788,7 @@ async def test_get_serving_config_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[
             client._client._transport.get_serving_config
         ] = mock_object
@@ -2850,6 +2843,7 @@ async def test_get_serving_config_async(
                 diversity_level="diversity_level_value",
                 diversity_type=serving_config.ServingConfig.DiversityType.RULE_BASED_DIVERSITY,
                 enable_category_filter_level="enable_category_filter_level_value",
+                ignore_recs_denylist=True,
                 solution_types=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
             )
         )
@@ -2884,6 +2878,7 @@ async def test_get_serving_config_async(
         == serving_config.ServingConfig.DiversityType.RULE_BASED_DIVERSITY
     )
     assert response.enable_category_filter_level == "enable_category_filter_level_value"
+    assert response.ignore_recs_denylist is True
     assert response.solution_types == [common.SolutionType.SOLUTION_TYPE_RECOMMENDATION]
 
 
@@ -3221,12 +3216,7 @@ async def test_list_serving_configs_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[
             client._client._transport.list_serving_configs
         ] = mock_object
@@ -3672,6 +3662,7 @@ def test_add_control(request_type, transport: str = "grpc"):
             diversity_level="diversity_level_value",
             diversity_type=gcr_serving_config.ServingConfig.DiversityType.RULE_BASED_DIVERSITY,
             enable_category_filter_level="enable_category_filter_level_value",
+            ignore_recs_denylist=True,
             solution_types=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
         )
         response = client.add_control(request)
@@ -3705,6 +3696,7 @@ def test_add_control(request_type, transport: str = "grpc"):
         == gcr_serving_config.ServingConfig.DiversityType.RULE_BASED_DIVERSITY
     )
     assert response.enable_category_filter_level == "enable_category_filter_level_value"
+    assert response.ignore_recs_denylist is True
     assert response.solution_types == [common.SolutionType.SOLUTION_TYPE_RECOMMENDATION]
 
 
@@ -3822,6 +3814,7 @@ async def test_add_control_empty_call_async():
                 diversity_level="diversity_level_value",
                 diversity_type=gcr_serving_config.ServingConfig.DiversityType.RULE_BASED_DIVERSITY,
                 enable_category_filter_level="enable_category_filter_level_value",
+                ignore_recs_denylist=True,
                 solution_types=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
             )
         )
@@ -3854,12 +3847,7 @@ async def test_add_control_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[
             client._client._transport.add_control
         ] = mock_object
@@ -3912,6 +3900,7 @@ async def test_add_control_async(
                 diversity_level="diversity_level_value",
                 diversity_type=gcr_serving_config.ServingConfig.DiversityType.RULE_BASED_DIVERSITY,
                 enable_category_filter_level="enable_category_filter_level_value",
+                ignore_recs_denylist=True,
                 solution_types=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
             )
         )
@@ -3946,6 +3935,7 @@ async def test_add_control_async(
         == gcr_serving_config.ServingConfig.DiversityType.RULE_BASED_DIVERSITY
     )
     assert response.enable_category_filter_level == "enable_category_filter_level_value"
+    assert response.ignore_recs_denylist is True
     assert response.solution_types == [common.SolutionType.SOLUTION_TYPE_RECOMMENDATION]
 
 
@@ -4134,6 +4124,7 @@ def test_remove_control(request_type, transport: str = "grpc"):
             diversity_level="diversity_level_value",
             diversity_type=gcr_serving_config.ServingConfig.DiversityType.RULE_BASED_DIVERSITY,
             enable_category_filter_level="enable_category_filter_level_value",
+            ignore_recs_denylist=True,
             solution_types=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
         )
         response = client.remove_control(request)
@@ -4167,6 +4158,7 @@ def test_remove_control(request_type, transport: str = "grpc"):
         == gcr_serving_config.ServingConfig.DiversityType.RULE_BASED_DIVERSITY
     )
     assert response.enable_category_filter_level == "enable_category_filter_level_value"
+    assert response.ignore_recs_denylist is True
     assert response.solution_types == [common.SolutionType.SOLUTION_TYPE_RECOMMENDATION]
 
 
@@ -4284,6 +4276,7 @@ async def test_remove_control_empty_call_async():
                 diversity_level="diversity_level_value",
                 diversity_type=gcr_serving_config.ServingConfig.DiversityType.RULE_BASED_DIVERSITY,
                 enable_category_filter_level="enable_category_filter_level_value",
+                ignore_recs_denylist=True,
                 solution_types=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
             )
         )
@@ -4316,12 +4309,7 @@ async def test_remove_control_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[
             client._client._transport.remove_control
         ] = mock_object
@@ -4374,6 +4362,7 @@ async def test_remove_control_async(
                 diversity_level="diversity_level_value",
                 diversity_type=gcr_serving_config.ServingConfig.DiversityType.RULE_BASED_DIVERSITY,
                 enable_category_filter_level="enable_category_filter_level_value",
+                ignore_recs_denylist=True,
                 solution_types=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
             )
         )
@@ -4408,6 +4397,7 @@ async def test_remove_control_async(
         == gcr_serving_config.ServingConfig.DiversityType.RULE_BASED_DIVERSITY
     )
     assert response.enable_category_filter_level == "enable_category_filter_level_value"
+    assert response.ignore_recs_denylist is True
     assert response.solution_types == [common.SolutionType.SOLUTION_TYPE_RECOMMENDATION]
 
 
@@ -4613,6 +4603,7 @@ def test_create_serving_config_rest(request_type):
         "diversity_level": "diversity_level_value",
         "diversity_type": 2,
         "enable_category_filter_level": "enable_category_filter_level_value",
+        "ignore_recs_denylist": True,
         "personalization_spec": {"mode": 1},
         "solution_types": [1],
     }
@@ -4707,6 +4698,7 @@ def test_create_serving_config_rest(request_type):
             diversity_level="diversity_level_value",
             diversity_type=gcr_serving_config.ServingConfig.DiversityType.RULE_BASED_DIVERSITY,
             enable_category_filter_level="enable_category_filter_level_value",
+            ignore_recs_denylist=True,
             solution_types=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
         )
 
@@ -4744,6 +4736,7 @@ def test_create_serving_config_rest(request_type):
         == gcr_serving_config.ServingConfig.DiversityType.RULE_BASED_DIVERSITY
     )
     assert response.enable_category_filter_level == "enable_category_filter_level_value"
+    assert response.ignore_recs_denylist is True
     assert response.solution_types == [common.SolutionType.SOLUTION_TYPE_RECOMMENDATION]
 
 
@@ -5402,6 +5395,7 @@ def test_update_serving_config_rest(request_type):
         "diversity_level": "diversity_level_value",
         "diversity_type": 2,
         "enable_category_filter_level": "enable_category_filter_level_value",
+        "ignore_recs_denylist": True,
         "personalization_spec": {"mode": 1},
         "solution_types": [1],
     }
@@ -5496,6 +5490,7 @@ def test_update_serving_config_rest(request_type):
             diversity_level="diversity_level_value",
             diversity_type=gcr_serving_config.ServingConfig.DiversityType.RULE_BASED_DIVERSITY,
             enable_category_filter_level="enable_category_filter_level_value",
+            ignore_recs_denylist=True,
             solution_types=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
         )
 
@@ -5533,6 +5528,7 @@ def test_update_serving_config_rest(request_type):
         == gcr_serving_config.ServingConfig.DiversityType.RULE_BASED_DIVERSITY
     )
     assert response.enable_category_filter_level == "enable_category_filter_level_value"
+    assert response.ignore_recs_denylist is True
     assert response.solution_types == [common.SolutionType.SOLUTION_TYPE_RECOMMENDATION]
 
 
@@ -5852,6 +5848,7 @@ def test_get_serving_config_rest(request_type):
             diversity_level="diversity_level_value",
             diversity_type=serving_config.ServingConfig.DiversityType.RULE_BASED_DIVERSITY,
             enable_category_filter_level="enable_category_filter_level_value",
+            ignore_recs_denylist=True,
             solution_types=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
         )
 
@@ -5889,6 +5886,7 @@ def test_get_serving_config_rest(request_type):
         == serving_config.ServingConfig.DiversityType.RULE_BASED_DIVERSITY
     )
     assert response.enable_category_filter_level == "enable_category_filter_level_value"
+    assert response.ignore_recs_denylist is True
     assert response.solution_types == [common.SolutionType.SOLUTION_TYPE_RECOMMENDATION]
 
 
@@ -6595,6 +6593,7 @@ def test_add_control_rest(request_type):
             diversity_level="diversity_level_value",
             diversity_type=gcr_serving_config.ServingConfig.DiversityType.RULE_BASED_DIVERSITY,
             enable_category_filter_level="enable_category_filter_level_value",
+            ignore_recs_denylist=True,
             solution_types=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
         )
 
@@ -6632,6 +6631,7 @@ def test_add_control_rest(request_type):
         == gcr_serving_config.ServingConfig.DiversityType.RULE_BASED_DIVERSITY
     )
     assert response.enable_category_filter_level == "enable_category_filter_level_value"
+    assert response.ignore_recs_denylist is True
     assert response.solution_types == [common.SolutionType.SOLUTION_TYPE_RECOMMENDATION]
 
 
@@ -6954,6 +6954,7 @@ def test_remove_control_rest(request_type):
             diversity_level="diversity_level_value",
             diversity_type=gcr_serving_config.ServingConfig.DiversityType.RULE_BASED_DIVERSITY,
             enable_category_filter_level="enable_category_filter_level_value",
+            ignore_recs_denylist=True,
             solution_types=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
         )
 
@@ -6991,6 +6992,7 @@ def test_remove_control_rest(request_type):
         == gcr_serving_config.ServingConfig.DiversityType.RULE_BASED_DIVERSITY
     )
     assert response.enable_category_filter_level == "enable_category_filter_level_value"
+    assert response.ignore_recs_denylist is True
     assert response.solution_types == [common.SolutionType.SOLUTION_TYPE_RECOMMENDATION]
 
 

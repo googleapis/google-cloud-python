@@ -125,7 +125,8 @@ class StorageControlGrpcTransport(StorageControlTransport):
 
         if isinstance(channel, grpc.Channel):
             # Ignore credentials if a channel was passed.
-            credentials = False
+            credentials = None
+            self._ignore_credentials = True
             # If a channel was explicitly provided, set it.
             self._grpc_channel = channel
             self._ssl_channel_credentials = None
@@ -259,7 +260,6 @@ class StorageControlGrpcTransport(StorageControlTransport):
 
         Creates a new folder. This operation is only
         applicable to a hierarchical namespace enabled bucket.
-        Hierarchical namespace buckets are in allowlist preview.
 
         Returns:
             Callable[[~.CreateFolderRequest],
@@ -287,8 +287,7 @@ class StorageControlGrpcTransport(StorageControlTransport):
 
         Permanently deletes an empty folder. This operation
         is only applicable to a hierarchical namespace enabled
-        bucket. Hierarchical namespace buckets are in allowlist
-        preview.
+        bucket.
 
         Returns:
             Callable[[~.DeleteFolderRequest],
@@ -316,8 +315,7 @@ class StorageControlGrpcTransport(StorageControlTransport):
 
         Returns metadata for the specified folder. This
         operation is only applicable to a hierarchical namespace
-        enabled bucket. Hierarchical namespace buckets are in
-        allowlist preview.
+        enabled bucket.
 
         Returns:
             Callable[[~.GetFolderRequest],
@@ -347,7 +345,6 @@ class StorageControlGrpcTransport(StorageControlTransport):
 
         Retrieves a list of folders. This operation is only
         applicable to a hierarchical namespace enabled bucket.
-        Hierarchical namespace buckets are in allowlist preview.
 
         Returns:
             Callable[[~.ListFoldersRequest],
@@ -378,7 +375,6 @@ class StorageControlGrpcTransport(StorageControlTransport):
         enabled bucket. During a rename, the source and
         destination folders are locked until the long running
         operation completes.
-        Hierarchical namespace buckets are in allowlist preview.
 
         Returns:
             Callable[[~.RenameFolderRequest],

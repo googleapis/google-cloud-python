@@ -43,7 +43,7 @@ class ListMerchantCenterAccountLinksRequest(proto.Message):
         parent (str):
             Required. The parent Catalog of the resource. It must match
             this format:
-            projects/{PROJECT_NUMBER}/locations/global/catalogs/{CATALOG_ID}
+            ``projects/{PROJECT_NUMBER}/locations/global/catalogs/{CATALOG_ID}``
     """
 
     parent: str = proto.Field(
@@ -80,7 +80,7 @@ class CreateMerchantCenterAccountLinkRequest(proto.Message):
         parent (str):
             Required. The branch resource where this
             MerchantCenterAccountLink will be created. Format:
-            projects/{PROJECT_NUMBER}/locations/global/catalogs/{CATALOG_ID}}
+            ``projects/{PROJECT_NUMBER}/locations/global/catalogs/{CATALOG_ID}``
         merchant_center_account_link (google.cloud.retail_v2alpha.types.MerchantCenterAccountLink):
             Required. The
             [MerchantCenterAccountLink][google.cloud.retail.v2alpha.MerchantCenterAccountLink]
@@ -111,7 +111,7 @@ class DeleteMerchantCenterAccountLinkRequest(proto.Message):
     Attributes:
         name (str):
             Required. Full resource name. Format:
-            projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/merchantCenterAccountLinks/{merchant_center_account_link_id}
+            ``projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/merchantCenterAccountLinks/{merchant_center_account_link_id}``
     """
 
     name: str = proto.Field(

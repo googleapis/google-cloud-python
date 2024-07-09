@@ -22,6 +22,8 @@ from .services.security_center import SecurityCenterAsyncClient, SecurityCenterC
 from .types.access import Access, Geolocation, ServiceAccountDelegationInfo
 from .types.application import Application
 from .types.asset import Asset
+from .types.attack_exposure import AttackExposure
+from .types.attack_path import AttackPath
 from .types.backup_disaster_recovery import BackupDisasterRecovery
 from .types.bigquery_export import BigQueryExport
 from .types.cloud_armor import (
@@ -38,14 +40,24 @@ from .types.connection import Connection
 from .types.contact_details import Contact, ContactDetails
 from .types.container import Container
 from .types.database import Database
+from .types.effective_event_threat_detection_custom_module import (
+    EffectiveEventThreatDetectionCustomModule,
+)
 from .types.effective_security_health_analytics_custom_module import (
     EffectiveSecurityHealthAnalyticsCustomModule,
+)
+from .types.event_threat_detection_custom_module import EventThreatDetectionCustomModule
+from .types.event_threat_detection_custom_module_validation_errors import (
+    CustomModuleValidationError,
+    CustomModuleValidationErrors,
+    Position,
 )
 from .types.exfiltration import ExfilResource, Exfiltration
 from .types.external_system import ExternalSystem
 from .types.file import File
 from .types.finding import Finding
 from .types.folder import Folder
+from .types.group_membership import GroupMembership
 from .types.iam_binding import IamBinding
 from .types.indicator import Indicator
 from .types.kernel_rootkit import KernelRootkit
@@ -61,7 +73,14 @@ from .types.notification_message import NotificationMessage
 from .types.org_policy import OrgPolicy
 from .types.organization_settings import OrganizationSettings
 from .types.process import EnvironmentVariable, Process
-from .types.resource import Resource
+from .types.resource import (
+    AwsMetadata,
+    AzureMetadata,
+    CloudProvider,
+    Resource,
+    ResourcePath,
+)
+from .types.resource_value_config import ResourceValue, ResourceValueConfig
 from .types.run_asset_discovery_response import RunAssetDiscoveryResponse
 from .types.security_health_analytics_custom_config import CustomConfig
 from .types.security_health_analytics_custom_module import (
@@ -70,25 +89,36 @@ from .types.security_health_analytics_custom_module import (
 from .types.security_marks import SecurityMarks
 from .types.security_posture import SecurityPosture
 from .types.securitycenter_service import (
+    BatchCreateResourceValueConfigsRequest,
+    BatchCreateResourceValueConfigsResponse,
     BulkMuteFindingsRequest,
     BulkMuteFindingsResponse,
     CreateBigQueryExportRequest,
+    CreateEventThreatDetectionCustomModuleRequest,
     CreateFindingRequest,
     CreateMuteConfigRequest,
     CreateNotificationConfigRequest,
+    CreateResourceValueConfigRequest,
     CreateSecurityHealthAnalyticsCustomModuleRequest,
     CreateSourceRequest,
     DeleteBigQueryExportRequest,
+    DeleteEventThreatDetectionCustomModuleRequest,
     DeleteMuteConfigRequest,
     DeleteNotificationConfigRequest,
+    DeleteResourceValueConfigRequest,
     DeleteSecurityHealthAnalyticsCustomModuleRequest,
     GetBigQueryExportRequest,
+    GetEffectiveEventThreatDetectionCustomModuleRequest,
     GetEffectiveSecurityHealthAnalyticsCustomModuleRequest,
+    GetEventThreatDetectionCustomModuleRequest,
     GetMuteConfigRequest,
     GetNotificationConfigRequest,
     GetOrganizationSettingsRequest,
+    GetResourceValueConfigRequest,
     GetSecurityHealthAnalyticsCustomModuleRequest,
+    GetSimulationRequest,
     GetSourceRequest,
+    GetValuedResourceRequest,
     GroupAssetsRequest,
     GroupAssetsResponse,
     GroupFindingsRequest,
@@ -96,38 +126,57 @@ from .types.securitycenter_service import (
     GroupResult,
     ListAssetsRequest,
     ListAssetsResponse,
+    ListAttackPathsRequest,
+    ListAttackPathsResponse,
     ListBigQueryExportsRequest,
     ListBigQueryExportsResponse,
+    ListDescendantEventThreatDetectionCustomModulesRequest,
+    ListDescendantEventThreatDetectionCustomModulesResponse,
     ListDescendantSecurityHealthAnalyticsCustomModulesRequest,
     ListDescendantSecurityHealthAnalyticsCustomModulesResponse,
+    ListEffectiveEventThreatDetectionCustomModulesRequest,
+    ListEffectiveEventThreatDetectionCustomModulesResponse,
     ListEffectiveSecurityHealthAnalyticsCustomModulesRequest,
     ListEffectiveSecurityHealthAnalyticsCustomModulesResponse,
+    ListEventThreatDetectionCustomModulesRequest,
+    ListEventThreatDetectionCustomModulesResponse,
     ListFindingsRequest,
     ListFindingsResponse,
     ListMuteConfigsRequest,
     ListMuteConfigsResponse,
     ListNotificationConfigsRequest,
     ListNotificationConfigsResponse,
+    ListResourceValueConfigsRequest,
+    ListResourceValueConfigsResponse,
     ListSecurityHealthAnalyticsCustomModulesRequest,
     ListSecurityHealthAnalyticsCustomModulesResponse,
     ListSourcesRequest,
     ListSourcesResponse,
+    ListValuedResourcesRequest,
+    ListValuedResourcesResponse,
     RunAssetDiscoveryRequest,
     SetFindingStateRequest,
     SetMuteRequest,
     SimulateSecurityHealthAnalyticsCustomModuleRequest,
     SimulateSecurityHealthAnalyticsCustomModuleResponse,
     UpdateBigQueryExportRequest,
+    UpdateEventThreatDetectionCustomModuleRequest,
     UpdateExternalSystemRequest,
     UpdateFindingRequest,
     UpdateMuteConfigRequest,
     UpdateNotificationConfigRequest,
     UpdateOrganizationSettingsRequest,
+    UpdateResourceValueConfigRequest,
     UpdateSecurityHealthAnalyticsCustomModuleRequest,
     UpdateSecurityMarksRequest,
     UpdateSourceRequest,
+    ValidateEventThreatDetectionCustomModuleRequest,
+    ValidateEventThreatDetectionCustomModuleResponse,
 )
+from .types.simulation import Simulation
 from .types.source import Source
+from .types.toxic_combination import ToxicCombination
+from .types.valued_resource import ResourceValueConfigMetadata, ValuedResource
 from .types.vulnerability import (
     Cve,
     Cvssv3,
@@ -144,7 +193,13 @@ __all__ = (
     "Application",
     "Asset",
     "Attack",
+    "AttackExposure",
+    "AttackPath",
+    "AwsMetadata",
+    "AzureMetadata",
     "BackupDisasterRecovery",
+    "BatchCreateResourceValueConfigsRequest",
+    "BatchCreateResourceValueConfigsResponse",
     "BigQueryExport",
     "BulkMuteFindingsRequest",
     "BulkMuteFindingsResponse",
@@ -152,27 +207,36 @@ __all__ = (
     "CloudDlpDataProfile",
     "CloudDlpInspection",
     "CloudLoggingEntry",
+    "CloudProvider",
     "Compliance",
     "Connection",
     "Contact",
     "ContactDetails",
     "Container",
     "CreateBigQueryExportRequest",
+    "CreateEventThreatDetectionCustomModuleRequest",
     "CreateFindingRequest",
     "CreateMuteConfigRequest",
     "CreateNotificationConfigRequest",
+    "CreateResourceValueConfigRequest",
     "CreateSecurityHealthAnalyticsCustomModuleRequest",
     "CreateSourceRequest",
     "CustomConfig",
+    "CustomModuleValidationError",
+    "CustomModuleValidationErrors",
     "Cve",
     "Cvssv3",
     "Database",
     "DeleteBigQueryExportRequest",
+    "DeleteEventThreatDetectionCustomModuleRequest",
     "DeleteMuteConfigRequest",
     "DeleteNotificationConfigRequest",
+    "DeleteResourceValueConfigRequest",
     "DeleteSecurityHealthAnalyticsCustomModuleRequest",
+    "EffectiveEventThreatDetectionCustomModule",
     "EffectiveSecurityHealthAnalyticsCustomModule",
     "EnvironmentVariable",
+    "EventThreatDetectionCustomModule",
     "ExfilResource",
     "Exfiltration",
     "ExternalSystem",
@@ -181,16 +245,22 @@ __all__ = (
     "Folder",
     "Geolocation",
     "GetBigQueryExportRequest",
+    "GetEffectiveEventThreatDetectionCustomModuleRequest",
     "GetEffectiveSecurityHealthAnalyticsCustomModuleRequest",
+    "GetEventThreatDetectionCustomModuleRequest",
     "GetMuteConfigRequest",
     "GetNotificationConfigRequest",
     "GetOrganizationSettingsRequest",
+    "GetResourceValueConfigRequest",
     "GetSecurityHealthAnalyticsCustomModuleRequest",
+    "GetSimulationRequest",
     "GetSourceRequest",
+    "GetValuedResourceRequest",
     "GroupAssetsRequest",
     "GroupAssetsResponse",
     "GroupFindingsRequest",
     "GroupFindingsResponse",
+    "GroupMembership",
     "GroupResult",
     "IamBinding",
     "Indicator",
@@ -199,22 +269,34 @@ __all__ = (
     "Label",
     "ListAssetsRequest",
     "ListAssetsResponse",
+    "ListAttackPathsRequest",
+    "ListAttackPathsResponse",
     "ListBigQueryExportsRequest",
     "ListBigQueryExportsResponse",
+    "ListDescendantEventThreatDetectionCustomModulesRequest",
+    "ListDescendantEventThreatDetectionCustomModulesResponse",
     "ListDescendantSecurityHealthAnalyticsCustomModulesRequest",
     "ListDescendantSecurityHealthAnalyticsCustomModulesResponse",
+    "ListEffectiveEventThreatDetectionCustomModulesRequest",
+    "ListEffectiveEventThreatDetectionCustomModulesResponse",
     "ListEffectiveSecurityHealthAnalyticsCustomModulesRequest",
     "ListEffectiveSecurityHealthAnalyticsCustomModulesResponse",
+    "ListEventThreatDetectionCustomModulesRequest",
+    "ListEventThreatDetectionCustomModulesResponse",
     "ListFindingsRequest",
     "ListFindingsResponse",
     "ListMuteConfigsRequest",
     "ListMuteConfigsResponse",
     "ListNotificationConfigsRequest",
     "ListNotificationConfigsResponse",
+    "ListResourceValueConfigsRequest",
+    "ListResourceValueConfigsResponse",
     "ListSecurityHealthAnalyticsCustomModulesRequest",
     "ListSecurityHealthAnalyticsCustomModulesResponse",
     "ListSourcesRequest",
     "ListSourcesResponse",
+    "ListValuedResourcesRequest",
+    "ListValuedResourcesResponse",
     "LoadBalancer",
     "LogEntry",
     "MitreAttack",
@@ -225,10 +307,15 @@ __all__ = (
     "OrgPolicy",
     "OrganizationSettings",
     "Package",
+    "Position",
     "Process",
     "Reference",
     "Requests",
     "Resource",
+    "ResourcePath",
+    "ResourceValue",
+    "ResourceValueConfig",
+    "ResourceValueConfigMetadata",
     "RunAssetDiscoveryRequest",
     "RunAssetDiscoveryResponse",
     "SecurityBulletin",
@@ -242,15 +329,22 @@ __all__ = (
     "SetMuteRequest",
     "SimulateSecurityHealthAnalyticsCustomModuleRequest",
     "SimulateSecurityHealthAnalyticsCustomModuleResponse",
+    "Simulation",
     "Source",
+    "ToxicCombination",
     "UpdateBigQueryExportRequest",
+    "UpdateEventThreatDetectionCustomModuleRequest",
     "UpdateExternalSystemRequest",
     "UpdateFindingRequest",
     "UpdateMuteConfigRequest",
     "UpdateNotificationConfigRequest",
     "UpdateOrganizationSettingsRequest",
+    "UpdateResourceValueConfigRequest",
     "UpdateSecurityHealthAnalyticsCustomModuleRequest",
     "UpdateSecurityMarksRequest",
     "UpdateSourceRequest",
+    "ValidateEventThreatDetectionCustomModuleRequest",
+    "ValidateEventThreatDetectionCustomModuleResponse",
+    "ValuedResource",
     "Vulnerability",
 )

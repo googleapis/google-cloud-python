@@ -426,6 +426,28 @@ class AnswerQueryRequest(proto.Message):
             The field must be a UTF-8 encoded string with a length limit
             of 128 characters. Otherwise, an ``INVALID_ARGUMENT`` error
             is returned.
+        user_labels (MutableMapping[str, str]):
+            The user labels applied to a resource must meet the
+            following requirements:
+
+            -  Each resource can have multiple labels, up to a maximum
+               of 64.
+            -  Each label must be a key-value pair.
+            -  Keys have a minimum length of 1 character and a maximum
+               length of 63 characters and cannot be empty. Values can
+               be empty and have a maximum length of 63 characters.
+            -  Keys and values can contain only lowercase letters,
+               numeric characters, underscores, and dashes. All
+               characters must use UTF-8 encoding, and international
+               characters are allowed.
+            -  The key portion of a label must be unique. However, you
+               can use the same key with multiple resources.
+            -  Keys must start with a lowercase letter or international
+               character.
+
+            See `Google Cloud
+            Document <https://cloud.google.com/resource-manager/docs/creating-managing-labels#requirements>`__
+            for more details.
     """
 
     class SafetySpec(proto.Message):
@@ -630,6 +652,16 @@ class AnswerQueryRequest(proto.Message):
 
                     If this field is unrecognizable, an ``INVALID_ARGUMENT`` is
                     returned.
+                search_result_mode (google.cloud.discoveryengine_v1.types.SearchRequest.ContentSearchSpec.SearchResultMode):
+                    Specifies the search result mode. If unspecified, the search
+                    result mode is based on
+                    [DataStore.DocumentProcessingConfig.chunking_config][]:
+
+                    -  If [DataStore.DocumentProcessingConfig.chunking_config][]
+                       is specified, it defaults to ``CHUNKS``.
+                    -  Otherwise, it defaults to ``DOCUMENTS``. See `parse and
+                       chunk
+                       documents <https://cloud.google.com/generative-ai-app-builder/docs/parse-chunk-documents>`__
                 data_store_specs (MutableSequence[google.cloud.discoveryengine_v1.types.SearchRequest.DataStoreSpec]):
                     Specs defining dataStores to filter on in a
                     search call and configurations for those
@@ -655,6 +687,11 @@ class AnswerQueryRequest(proto.Message):
             order_by: str = proto.Field(
                 proto.STRING,
                 number=4,
+            )
+            search_result_mode: search_service.SearchRequest.ContentSearchSpec.SearchResultMode = proto.Field(
+                proto.ENUM,
+                number=5,
+                enum=search_service.SearchRequest.ContentSearchSpec.SearchResultMode,
             )
             data_store_specs: MutableSequence[
                 search_service.SearchRequest.DataStoreSpec
@@ -906,11 +943,20 @@ class AnswerQueryRequest(proto.Message):
             Attributes:
                 disable (bool):
                     Disable query rephraser.
+                max_rephrase_steps (int):
+                    Max rephrase steps.
+                    The max number is 5 steps.
+                    If not set or set to < 1, it will be set to 1 by
+                    default.
             """
 
             disable: bool = proto.Field(
                 proto.BOOL,
                 number=1,
+            )
+            max_rephrase_steps: int = proto.Field(
+                proto.INT32,
+                number=2,
             )
 
         query_classification_spec: "AnswerQueryRequest.QueryUnderstandingSpec.QueryClassificationSpec" = proto.Field(
@@ -969,6 +1015,11 @@ class AnswerQueryRequest(proto.Message):
     user_pseudo_id: str = proto.Field(
         proto.STRING,
         number=12,
+    )
+    user_labels: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=13,
     )
 
 

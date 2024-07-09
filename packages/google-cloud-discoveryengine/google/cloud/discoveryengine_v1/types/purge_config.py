@@ -30,6 +30,9 @@ __protobuf__ = proto.module(
         "PurgeSuggestionDenyListEntriesRequest",
         "PurgeSuggestionDenyListEntriesResponse",
         "PurgeSuggestionDenyListEntriesMetadata",
+        "PurgeCompletionSuggestionsRequest",
+        "PurgeCompletionSuggestionsResponse",
+        "PurgeCompletionSuggestionsMetadata",
     },
 )
 
@@ -186,6 +189,74 @@ class PurgeSuggestionDenyListEntriesMetadata(proto.Message):
     r"""Metadata related to the progress of the
     PurgeSuggestionDenyListEntries operation. This is returned by
     the google.longrunning.Operation.metadata field.
+
+    Attributes:
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Operation create time.
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
+            Operation last update time. If the operation
+            is done, this is also the finish time.
+    """
+
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+
+
+class PurgeCompletionSuggestionsRequest(proto.Message):
+    r"""Request message for
+    [CompletionService.PurgeCompletionSuggestions][google.cloud.discoveryengine.v1.CompletionService.PurgeCompletionSuggestions]
+    method.
+
+    Attributes:
+        parent (str):
+            Required. The parent data store resource name for which to
+            purge completion suggestions. Follows pattern
+            projects/\ */locations/*/collections/*/dataStores/*.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class PurgeCompletionSuggestionsResponse(proto.Message):
+    r"""Response message for
+    [CompletionService.PurgeCompletionSuggestions][google.cloud.discoveryengine.v1.CompletionService.PurgeCompletionSuggestions]
+    method.
+
+    Attributes:
+        purge_succeeded (bool):
+            Whether the completion suggestions were
+            successfully purged.
+        error_samples (MutableSequence[google.rpc.status_pb2.Status]):
+            A sample of errors encountered while
+            processing the request.
+    """
+
+    purge_succeeded: bool = proto.Field(
+        proto.BOOL,
+        number=1,
+    )
+    error_samples: MutableSequence[status_pb2.Status] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message=status_pb2.Status,
+    )
+
+
+class PurgeCompletionSuggestionsMetadata(proto.Message):
+    r"""Metadata related to the progress of the
+    PurgeCompletionSuggestions operation. This is returned by the
+    google.longrunning.Operation.metadata field.
 
     Attributes:
         create_time (google.protobuf.timestamp_pb2.Timestamp):

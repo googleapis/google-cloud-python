@@ -221,6 +221,28 @@ class CloudRedisClusterClient(metaclass=CloudRedisClusterClientMeta):
         return self._transport
 
     @staticmethod
+    def certificate_authority_path(
+        project: str,
+        location: str,
+        cluster: str,
+    ) -> str:
+        """Returns a fully-qualified certificate_authority string."""
+        return "projects/{project}/locations/{location}/clusters/{cluster}/certificateAuthority".format(
+            project=project,
+            location=location,
+            cluster=cluster,
+        )
+
+    @staticmethod
+    def parse_certificate_authority_path(path: str) -> Dict[str, str]:
+        """Parses a certificate_authority path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/clusters/(?P<cluster>.+?)/certificateAuthority$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def cluster_path(
         project: str,
         location: str,
@@ -1370,6 +1392,116 @@ class CloudRedisClusterClient(metaclass=CloudRedisClusterClientMeta):
             self._transport.operations_client,
             cloud_redis_cluster.Cluster,
             metadata_type=any_pb2.Any,
+        )
+
+        # Done; return the response.
+        return response
+
+    def get_cluster_certificate_authority(
+        self,
+        request: Optional[
+            Union[cloud_redis_cluster.GetClusterCertificateAuthorityRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> cloud_redis_cluster.CertificateAuthority:
+        r"""Gets the details of certificate authority information
+        for Redis cluster.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import redis_cluster_v1beta1
+
+            def sample_get_cluster_certificate_authority():
+                # Create a client
+                client = redis_cluster_v1beta1.CloudRedisClusterClient()
+
+                # Initialize request argument(s)
+                request = redis_cluster_v1beta1.GetClusterCertificateAuthorityRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_cluster_certificate_authority(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.redis_cluster_v1beta1.types.GetClusterCertificateAuthorityRequest, dict]):
+                The request object. Request for
+                [GetClusterCertificateAuthorityRequest][CloudRedis.GetClusterCertificateAuthorityRequest].
+            name (str):
+                Required. Redis cluster certificate authority resource
+                name using the form:
+                ``projects/{project_id}/locations/{location_id}/clusters/{cluster_id}/certificateAuthority``
+                where ``location_id`` refers to a GCP region.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.redis_cluster_v1beta1.types.CertificateAuthority:
+                Redis cluster certificate authority
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, cloud_redis_cluster.GetClusterCertificateAuthorityRequest
+        ):
+            request = cloud_redis_cluster.GetClusterCertificateAuthorityRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.get_cluster_certificate_authority
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
         # Done; return the response.

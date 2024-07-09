@@ -15,7 +15,7 @@ Python Client for Anthos Multicloud
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-gke-multicloud.svg
    :target: https://pypi.org/project/google-cloud-gke-multicloud/
 .. _Anthos Multicloud: https://cloud.google.com/anthos/clusters/docs/multi-cloud
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/gkemulticloud/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/gkemulticloud/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/anthos/clusters/docs/multi-cloud
 
 Quick Start

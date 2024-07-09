@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.1.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-backupdr-v0.1.1...google-cloud-backupdr-v0.1.2) (2024-07-08)
+
+
+### Bug Fixes
+
+* Allow Protobuf 5.x ([#12864](https://github.com/googleapis/google-cloud-python/issues/12864)) ([728b307](https://github.com/googleapis/google-cloud-python/commit/728b307ed0cc497685507a219e913f002f097132))
+
+## [0.1.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-backupdr-v0.1.0...google-cloud-backupdr-v0.1.1) (2024-06-24)
+
+
+### Features
+
+* A new field `satisfies_pzi` is added ([9e20534](https://github.com/googleapis/google-cloud-python/commit/9e205344d6b24d6cedced1d9c177be7652f54267))
+* A new field `satisfies_pzs` is added ([9e20534](https://github.com/googleapis/google-cloud-python/commit/9e205344d6b24d6cedced1d9c177be7652f54267))
+* Updated documentation URI ([9e20534](https://github.com/googleapis/google-cloud-python/commit/9e205344d6b24d6cedced1d9c177be7652f54267))
+
 ## 0.1.0 (2024-04-15)
 
 

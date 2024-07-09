@@ -39,6 +39,55 @@
         }
       }
     },
+    "BranchService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "BranchServiceClient",
+          "rpcs": {
+            "GetBranch": {
+              "methods": [
+                "get_branch"
+              ]
+            },
+            "ListBranches": {
+              "methods": [
+                "list_branches"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "BranchServiceAsyncClient",
+          "rpcs": {
+            "GetBranch": {
+              "methods": [
+                "get_branch"
+              ]
+            },
+            "ListBranches": {
+              "methods": [
+                "list_branches"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "BranchServiceClient",
+          "rpcs": {
+            "GetBranch": {
+              "methods": [
+                "get_branch"
+              ]
+            },
+            "ListBranches": {
+              "methods": [
+                "list_branches"
+              ]
+            }
+          }
+        }
+      }
+    },
     "CatalogService": {
       "clients": {
         "grpc": {
@@ -811,6 +860,145 @@
             "UpdateProduct": {
               "methods": [
                 "update_product"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "ProjectService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "ProjectServiceClient",
+          "rpcs": {
+            "AcceptTerms": {
+              "methods": [
+                "accept_terms"
+              ]
+            },
+            "EnrollSolution": {
+              "methods": [
+                "enroll_solution"
+              ]
+            },
+            "GetAlertConfig": {
+              "methods": [
+                "get_alert_config"
+              ]
+            },
+            "GetLoggingConfig": {
+              "methods": [
+                "get_logging_config"
+              ]
+            },
+            "GetProject": {
+              "methods": [
+                "get_project"
+              ]
+            },
+            "ListEnrolledSolutions": {
+              "methods": [
+                "list_enrolled_solutions"
+              ]
+            },
+            "UpdateAlertConfig": {
+              "methods": [
+                "update_alert_config"
+              ]
+            },
+            "UpdateLoggingConfig": {
+              "methods": [
+                "update_logging_config"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "ProjectServiceAsyncClient",
+          "rpcs": {
+            "AcceptTerms": {
+              "methods": [
+                "accept_terms"
+              ]
+            },
+            "EnrollSolution": {
+              "methods": [
+                "enroll_solution"
+              ]
+            },
+            "GetAlertConfig": {
+              "methods": [
+                "get_alert_config"
+              ]
+            },
+            "GetLoggingConfig": {
+              "methods": [
+                "get_logging_config"
+              ]
+            },
+            "GetProject": {
+              "methods": [
+                "get_project"
+              ]
+            },
+            "ListEnrolledSolutions": {
+              "methods": [
+                "list_enrolled_solutions"
+              ]
+            },
+            "UpdateAlertConfig": {
+              "methods": [
+                "update_alert_config"
+              ]
+            },
+            "UpdateLoggingConfig": {
+              "methods": [
+                "update_logging_config"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "ProjectServiceClient",
+          "rpcs": {
+            "AcceptTerms": {
+              "methods": [
+                "accept_terms"
+              ]
+            },
+            "EnrollSolution": {
+              "methods": [
+                "enroll_solution"
+              ]
+            },
+            "GetAlertConfig": {
+              "methods": [
+                "get_alert_config"
+              ]
+            },
+            "GetLoggingConfig": {
+              "methods": [
+                "get_logging_config"
+              ]
+            },
+            "GetProject": {
+              "methods": [
+                "get_project"
+              ]
+            },
+            "ListEnrolledSolutions": {
+              "methods": [
+                "list_enrolled_solutions"
+              ]
+            },
+            "UpdateAlertConfig": {
+              "methods": [
+                "update_alert_config"
+              ]
+            },
+            "UpdateLoggingConfig": {
+              "methods": [
+                "update_logging_config"
               ]
             }
           }

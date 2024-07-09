@@ -15,7 +15,7 @@ Python Client for Metrics Scopes
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-monitoring-metrics-scopes.svg
    :target: https://pypi.org/project/google-cloud-monitoring-metrics-scopes/
 .. _Metrics Scopes: https://cloud.google.com/monitoring/docs
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/google-cloud-monitoring-metrics-scopes/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/google-cloud-monitoring-metrics-scopes/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/monitoring/docs
 
 Quick Start

@@ -25,6 +25,7 @@ __protobuf__ = proto.module(
     package="google.cloud.redis.cluster.v1",
     manifest={
         "AuthorizationMode",
+        "NodeType",
         "TransitEncryptionMode",
         "CreateClusterRequest",
         "ListClustersRequest",
@@ -32,11 +33,15 @@ __protobuf__ = proto.module(
         "UpdateClusterRequest",
         "GetClusterRequest",
         "DeleteClusterRequest",
+        "GetClusterCertificateAuthorityRequest",
         "Cluster",
         "PscConfig",
         "DiscoveryEndpoint",
         "PscConnection",
         "OperationMetadata",
+        "CertificateAuthority",
+        "ClusterPersistenceConfig",
+        "ZoneDistributionConfig",
     },
 )
 
@@ -55,6 +60,28 @@ class AuthorizationMode(proto.Enum):
     AUTH_MODE_UNSPECIFIED = 0
     AUTH_MODE_IAM_AUTH = 1
     AUTH_MODE_DISABLED = 2
+
+
+class NodeType(proto.Enum):
+    r"""NodeType of a redis cluster node,
+
+    Values:
+        NODE_TYPE_UNSPECIFIED (0):
+            No description available.
+        REDIS_SHARED_CORE_NANO (1):
+            Redis shared core nano node_type.
+        REDIS_HIGHMEM_MEDIUM (2):
+            Redis highmem medium node_type.
+        REDIS_HIGHMEM_XLARGE (3):
+            Redis highmem xlarge node_type.
+        REDIS_STANDARD_SMALL (4):
+            Redis standard small node_type.
+    """
+    NODE_TYPE_UNSPECIFIED = 0
+    REDIS_SHARED_CORE_NANO = 1
+    REDIS_HIGHMEM_MEDIUM = 2
+    REDIS_HIGHMEM_XLARGE = 3
+    REDIS_STANDARD_SMALL = 4
 
 
 class TransitEncryptionMode(proto.Enum):
@@ -270,6 +297,24 @@ class DeleteClusterRequest(proto.Message):
     )
 
 
+class GetClusterCertificateAuthorityRequest(proto.Message):
+    r"""Request for
+    [GetClusterCertificateAuthorityRequest][CloudRedis.GetClusterCertificateAuthorityRequest].
+
+    Attributes:
+        name (str):
+            Required. Redis cluster certificate authority resource name
+            using the form:
+            ``projects/{project_id}/locations/{location_id}/clusters/{cluster_id}/certificateAuthority``
+            where ``location_id`` refers to a GCP region.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
 class Cluster(proto.Message):
     r"""A cluster instance.
 
@@ -305,7 +350,7 @@ class Cluster(proto.Message):
             disabled for the cluster.
         size_gb (int):
             Output only. Redis memory size in GB for the
-            entire cluster.
+            entire cluster rounded up to the next integer.
 
             This field is a member of `oneof`_ ``_size_gb``.
         shard_count (int):
@@ -330,6 +375,30 @@ class Cluster(proto.Message):
         state_info (google.cloud.redis_cluster_v1.types.Cluster.StateInfo):
             Output only. Additional information about the
             current state of the cluster.
+        node_type (google.cloud.redis_cluster_v1.types.NodeType):
+            Optional. The type of a redis node in the
+            cluster. NodeType determines the underlying
+            machine-type of a redis node.
+        persistence_config (google.cloud.redis_cluster_v1.types.ClusterPersistenceConfig):
+            Optional. Persistence config (RDB, AOF) for
+            the cluster.
+        redis_configs (MutableMapping[str, str]):
+            Optional. Key/Value pairs of customer
+            overrides for mutable Redis Configs
+        precise_size_gb (float):
+            Output only. Precise value of redis memory
+            size in GB for the entire cluster.
+
+            This field is a member of `oneof`_ ``_precise_size_gb``.
+        zone_distribution_config (google.cloud.redis_cluster_v1.types.ZoneDistributionConfig):
+            Optional. This config will be used to
+            determine how the customer wants us to
+            distribute cluster resources within the region.
+        deletion_protection_enabled (bool):
+            Optional. The delete operation will fail when
+            the value is set to true.
+
+            This field is a member of `oneof`_ ``_deletion_protection_enabled``.
     """
 
     class State(proto.Enum):
@@ -465,6 +534,36 @@ class Cluster(proto.Message):
         proto.MESSAGE,
         number=18,
         message=StateInfo,
+    )
+    node_type: "NodeType" = proto.Field(
+        proto.ENUM,
+        number=19,
+        enum="NodeType",
+    )
+    persistence_config: "ClusterPersistenceConfig" = proto.Field(
+        proto.MESSAGE,
+        number=20,
+        message="ClusterPersistenceConfig",
+    )
+    redis_configs: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=21,
+    )
+    precise_size_gb: float = proto.Field(
+        proto.DOUBLE,
+        number=22,
+        optional=True,
+    )
+    zone_distribution_config: "ZoneDistributionConfig" = proto.Field(
+        proto.MESSAGE,
+        number=23,
+        message="ZoneDistributionConfig",
+    )
+    deletion_protection_enabled: bool = proto.Field(
+        proto.BOOL,
+        number=25,
+        optional=True,
     )
 
 
@@ -622,6 +721,244 @@ class OperationMetadata(proto.Message):
     api_version: str = proto.Field(
         proto.STRING,
         number=7,
+    )
+
+
+class CertificateAuthority(proto.Message):
+    r"""Redis cluster certificate authority
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        managed_server_ca (google.cloud.redis_cluster_v1.types.CertificateAuthority.ManagedCertificateAuthority):
+
+            This field is a member of `oneof`_ ``server_ca``.
+        name (str):
+            Identifier. Unique name of the resource in this scope
+            including project, location and cluster using the form:
+            ``projects/{project}/locations/{location}/clusters/{cluster}/certificateAuthority``
+    """
+
+    class ManagedCertificateAuthority(proto.Message):
+        r"""
+
+        Attributes:
+            ca_certs (MutableSequence[google.cloud.redis_cluster_v1.types.CertificateAuthority.ManagedCertificateAuthority.CertChain]):
+                The PEM encoded CA certificate chains for
+                redis managed server authentication
+        """
+
+        class CertChain(proto.Message):
+            r"""
+
+            Attributes:
+                certificates (MutableSequence[str]):
+                    The certificates that form the CA chain, from
+                    leaf to root order.
+            """
+
+            certificates: MutableSequence[str] = proto.RepeatedField(
+                proto.STRING,
+                number=1,
+            )
+
+        ca_certs: MutableSequence[
+            "CertificateAuthority.ManagedCertificateAuthority.CertChain"
+        ] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="CertificateAuthority.ManagedCertificateAuthority.CertChain",
+        )
+
+    managed_server_ca: ManagedCertificateAuthority = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        oneof="server_ca",
+        message=ManagedCertificateAuthority,
+    )
+    name: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class ClusterPersistenceConfig(proto.Message):
+    r"""Configuration of the persistence functionality.
+
+    Attributes:
+        mode (google.cloud.redis_cluster_v1.types.ClusterPersistenceConfig.PersistenceMode):
+            Optional. The mode of persistence.
+        rdb_config (google.cloud.redis_cluster_v1.types.ClusterPersistenceConfig.RDBConfig):
+            Optional. RDB configuration. This field will
+            be ignored if mode is not RDB.
+        aof_config (google.cloud.redis_cluster_v1.types.ClusterPersistenceConfig.AOFConfig):
+            Optional. AOF configuration. This field will
+            be ignored if mode is not AOF.
+    """
+
+    class PersistenceMode(proto.Enum):
+        r"""Available persistence modes.
+
+        Values:
+            PERSISTENCE_MODE_UNSPECIFIED (0):
+                Not set.
+            DISABLED (1):
+                Persistence is disabled, and any snapshot
+                data is deleted.
+            RDB (2):
+                RDB based persistence is enabled.
+            AOF (3):
+                AOF based persistence is enabled.
+        """
+        PERSISTENCE_MODE_UNSPECIFIED = 0
+        DISABLED = 1
+        RDB = 2
+        AOF = 3
+
+    class RDBConfig(proto.Message):
+        r"""Configuration of the RDB based persistence.
+
+        Attributes:
+            rdb_snapshot_period (google.cloud.redis_cluster_v1.types.ClusterPersistenceConfig.RDBConfig.SnapshotPeriod):
+                Optional. Period between RDB snapshots.
+            rdb_snapshot_start_time (google.protobuf.timestamp_pb2.Timestamp):
+                Optional. The time that the first snapshot
+                was/will be attempted, and to which future
+                snapshots will be aligned. If not provided, the
+                current time will be used.
+        """
+
+        class SnapshotPeriod(proto.Enum):
+            r"""Available snapshot periods.
+
+            Values:
+                SNAPSHOT_PERIOD_UNSPECIFIED (0):
+                    Not set.
+                ONE_HOUR (1):
+                    One hour.
+                SIX_HOURS (2):
+                    Six hours.
+                TWELVE_HOURS (3):
+                    Twelve hours.
+                TWENTY_FOUR_HOURS (4):
+                    Twenty four hours.
+            """
+            SNAPSHOT_PERIOD_UNSPECIFIED = 0
+            ONE_HOUR = 1
+            SIX_HOURS = 2
+            TWELVE_HOURS = 3
+            TWENTY_FOUR_HOURS = 4
+
+        rdb_snapshot_period: "ClusterPersistenceConfig.RDBConfig.SnapshotPeriod" = (
+            proto.Field(
+                proto.ENUM,
+                number=1,
+                enum="ClusterPersistenceConfig.RDBConfig.SnapshotPeriod",
+            )
+        )
+        rdb_snapshot_start_time: timestamp_pb2.Timestamp = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message=timestamp_pb2.Timestamp,
+        )
+
+    class AOFConfig(proto.Message):
+        r"""Configuration of the AOF based persistence.
+
+        Attributes:
+            append_fsync (google.cloud.redis_cluster_v1.types.ClusterPersistenceConfig.AOFConfig.AppendFsync):
+                Optional. fsync configuration.
+        """
+
+        class AppendFsync(proto.Enum):
+            r"""Available fsync modes.
+
+            Values:
+                APPEND_FSYNC_UNSPECIFIED (0):
+                    Not set. Default: EVERYSEC
+                NO (1):
+                    Never fsync. Normally Linux will flush data
+                    every 30 seconds with this configuration, but
+                    it's up to the kernel's exact tuning.
+                EVERYSEC (2):
+                    fsync every second. Fast enough, and you may
+                    lose 1 second of data if there is a disaster
+                ALWAYS (3):
+                    fsync every time new commands are appended to
+                    the AOF. It has the best data loss protection at
+                    the cost of performance
+            """
+            APPEND_FSYNC_UNSPECIFIED = 0
+            NO = 1
+            EVERYSEC = 2
+            ALWAYS = 3
+
+        append_fsync: "ClusterPersistenceConfig.AOFConfig.AppendFsync" = proto.Field(
+            proto.ENUM,
+            number=1,
+            enum="ClusterPersistenceConfig.AOFConfig.AppendFsync",
+        )
+
+    mode: PersistenceMode = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=PersistenceMode,
+    )
+    rdb_config: RDBConfig = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=RDBConfig,
+    )
+    aof_config: AOFConfig = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=AOFConfig,
+    )
+
+
+class ZoneDistributionConfig(proto.Message):
+    r"""Zone distribution config for allocation of cluster resources.
+
+    Attributes:
+        mode (google.cloud.redis_cluster_v1.types.ZoneDistributionConfig.ZoneDistributionMode):
+            Optional. The mode of zone distribution. Defaults to
+            MULTI_ZONE, when not specified.
+        zone (str):
+            Optional. When SINGLE ZONE distribution is selected, zone
+            field would be used to allocate all resources in that zone.
+            This is not applicable to MULTI_ZONE, and would be ignored
+            for MULTI_ZONE clusters.
+    """
+
+    class ZoneDistributionMode(proto.Enum):
+        r"""Defines various modes of zone distribution.
+        Currently supports two modes, can be expanded in future to
+        support more types of distribution modes.
+        design doc: go/same-zone-cluster
+
+        Values:
+            ZONE_DISTRIBUTION_MODE_UNSPECIFIED (0):
+                Not Set. Default: MULTI_ZONE
+            MULTI_ZONE (1):
+                Distribute all resources across 3 zones
+                picked at random, within the region.
+            SINGLE_ZONE (2):
+                Distribute all resources in a single zone.
+                The zone field must be specified, when this mode
+                is selected.
+        """
+        ZONE_DISTRIBUTION_MODE_UNSPECIFIED = 0
+        MULTI_ZONE = 1
+        SINGLE_ZONE = 2
+
+    mode: ZoneDistributionMode = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=ZoneDistributionMode,
+    )
+    zone: str = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 

@@ -51,12 +51,15 @@ from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.securitycenter_v1.services.security_center import pagers
 from google.cloud.securitycenter_v1.types import (
     access,
     application,
+    attack_exposure,
+    attack_path,
     backup_disaster_recovery,
     bigquery_export,
     cloud_armor,
@@ -66,15 +69,19 @@ from google.cloud.securitycenter_v1.types import (
     connection,
     container,
     database,
+    effective_event_threat_detection_custom_module,
     effective_security_health_analytics_custom_module,
+)
+from google.cloud.securitycenter_v1.types import (
+    event_threat_detection_custom_module_validation_errors,
     exfiltration,
 )
 from google.cloud.securitycenter_v1.types import (
-    process,
     run_asset_discovery_response,
     security_health_analytics_custom_config,
 )
 from google.cloud.securitycenter_v1.types import (
+    group_membership,
     iam_binding,
     indicator,
     kernel_rootkit,
@@ -86,6 +93,16 @@ from google.cloud.securitycenter_v1.types import (
 from google.cloud.securitycenter_v1.types import (
     security_posture,
     securitycenter_service,
+    simulation,
+)
+from google.cloud.securitycenter_v1.types import (
+    toxic_combination,
+    valued_resource,
+    vulnerability,
+)
+from google.cloud.securitycenter_v1.types import event_threat_detection_custom_module
+from google.cloud.securitycenter_v1.types import (
+    event_threat_detection_custom_module as gcs_event_threat_detection_custom_module,
 )
 from google.cloud.securitycenter_v1.types import external_system as gcs_external_system
 from google.cloud.securitycenter_v1.types import (
@@ -93,6 +110,9 @@ from google.cloud.securitycenter_v1.types import (
 )
 from google.cloud.securitycenter_v1.types import (
     organization_settings as gcs_organization_settings,
+)
+from google.cloud.securitycenter_v1.types import (
+    resource_value_config as gcs_resource_value_config,
 )
 from google.cloud.securitycenter_v1.types import security_health_analytics_custom_module
 from google.cloud.securitycenter_v1.types import (
@@ -108,10 +128,11 @@ from google.cloud.securitycenter_v1.types import notebook
 from google.cloud.securitycenter_v1.types import notification_config
 from google.cloud.securitycenter_v1.types import org_policy
 from google.cloud.securitycenter_v1.types import organization_settings
+from google.cloud.securitycenter_v1.types import process, resource
+from google.cloud.securitycenter_v1.types import resource_value_config
 from google.cloud.securitycenter_v1.types import security_marks
 from google.cloud.securitycenter_v1.types import source
 from google.cloud.securitycenter_v1.types import source as gcs_source
-from google.cloud.securitycenter_v1.types import vulnerability
 
 from .client import SecurityCenterClient
 from .transports.base import DEFAULT_CLIENT_INFO, SecurityCenterTransport
@@ -132,17 +153,31 @@ class SecurityCenterAsyncClient:
 
     asset_path = staticmethod(SecurityCenterClient.asset_path)
     parse_asset_path = staticmethod(SecurityCenterClient.parse_asset_path)
+    attack_path_path = staticmethod(SecurityCenterClient.attack_path_path)
+    parse_attack_path_path = staticmethod(SecurityCenterClient.parse_attack_path_path)
     big_query_export_path = staticmethod(SecurityCenterClient.big_query_export_path)
     parse_big_query_export_path = staticmethod(
         SecurityCenterClient.parse_big_query_export_path
     )
     dlp_job_path = staticmethod(SecurityCenterClient.dlp_job_path)
     parse_dlp_job_path = staticmethod(SecurityCenterClient.parse_dlp_job_path)
+    effective_event_threat_detection_custom_module_path = staticmethod(
+        SecurityCenterClient.effective_event_threat_detection_custom_module_path
+    )
+    parse_effective_event_threat_detection_custom_module_path = staticmethod(
+        SecurityCenterClient.parse_effective_event_threat_detection_custom_module_path
+    )
     effective_security_health_analytics_custom_module_path = staticmethod(
         SecurityCenterClient.effective_security_health_analytics_custom_module_path
     )
     parse_effective_security_health_analytics_custom_module_path = staticmethod(
         SecurityCenterClient.parse_effective_security_health_analytics_custom_module_path
+    )
+    event_threat_detection_custom_module_path = staticmethod(
+        SecurityCenterClient.event_threat_detection_custom_module_path
+    )
+    parse_event_threat_detection_custom_module_path = staticmethod(
+        SecurityCenterClient.parse_event_threat_detection_custom_module_path
     )
     external_system_path = staticmethod(SecurityCenterClient.external_system_path)
     parse_external_system_path = staticmethod(
@@ -166,6 +201,12 @@ class SecurityCenterAsyncClient:
     )
     policy_path = staticmethod(SecurityCenterClient.policy_path)
     parse_policy_path = staticmethod(SecurityCenterClient.parse_policy_path)
+    resource_value_config_path = staticmethod(
+        SecurityCenterClient.resource_value_config_path
+    )
+    parse_resource_value_config_path = staticmethod(
+        SecurityCenterClient.parse_resource_value_config_path
+    )
     security_health_analytics_custom_module_path = staticmethod(
         SecurityCenterClient.security_health_analytics_custom_module_path
     )
@@ -176,6 +217,8 @@ class SecurityCenterAsyncClient:
     parse_security_marks_path = staticmethod(
         SecurityCenterClient.parse_security_marks_path
     )
+    simulation_path = staticmethod(SecurityCenterClient.simulation_path)
+    parse_simulation_path = staticmethod(SecurityCenterClient.parse_simulation_path)
     source_path = staticmethod(SecurityCenterClient.source_path)
     parse_source_path = staticmethod(SecurityCenterClient.parse_source_path)
     table_data_profile_path = staticmethod(SecurityCenterClient.table_data_profile_path)
@@ -184,6 +227,10 @@ class SecurityCenterAsyncClient:
     )
     topic_path = staticmethod(SecurityCenterClient.topic_path)
     parse_topic_path = staticmethod(SecurityCenterClient.parse_topic_path)
+    valued_resource_path = staticmethod(SecurityCenterClient.valued_resource_path)
+    parse_valued_resource_path = staticmethod(
+        SecurityCenterClient.parse_valued_resource_path
+    )
     common_billing_account_path = staticmethod(
         SecurityCenterClient.common_billing_account_path
     )
@@ -437,8 +484,8 @@ class SecurityCenterAsyncClient:
             parent (:class:`str`):
                 Required. The parent, at which bulk action needs to be
                 applied. Its format is
-                "organizations/[organization_id]",
-                "folders/[folder_id]", "projects/[project_id]".
+                ``organizations/[organization_id]``,
+                ``folders/[folder_id]``, ``projects/[project_id]``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -568,12 +615,11 @@ class SecurityCenterAsyncClient:
                 The request object. Request message for creating Security
                 Health Analytics custom modules.
             parent (:class:`str`):
-                Required. Resource name of the new
-                custom module's parent. Its format is
-                "organizations/{organization}/securityHealthAnalyticsSettings",
-                "folders/{folder}/securityHealthAnalyticsSettings",
-                or
-                "projects/{project}/securityHealthAnalyticsSettings"
+                Required. Resource name of the new custom module's
+                parent. Its format is
+                ``organizations/{organization}/securityHealthAnalyticsSettings``,
+                ``folders/{folder}/securityHealthAnalyticsSettings``, or
+                ``projects/{project}/securityHealthAnalyticsSettings``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -711,7 +757,7 @@ class SecurityCenterAsyncClient:
                 source.
             parent (:class:`str`):
                 Required. Resource name of the new source's parent. Its
-                format should be "organizations/[organization_id]".
+                format should be ``organizations/[organization_id]``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -838,7 +884,7 @@ class SecurityCenterAsyncClient:
             parent (:class:`str`):
                 Required. Resource name of the new finding's parent. Its
                 format should be
-                "organizations/[organization_id]/sources/[source_id]".
+                ``organizations/[organization_id]/sources/[source_id]``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -983,8 +1029,9 @@ class SecurityCenterAsyncClient:
                 config.
             parent (:class:`str`):
                 Required. Resource name of the new mute configs's
-                parent. Its format is "organizations/[organization_id]",
-                "folders/[folder_id]", or "projects/[project_id]".
+                parent. Its format is
+                ``organizations/[organization_id]``,
+                ``folders/[folder_id]``, or ``projects/[project_id]``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1121,8 +1168,9 @@ class SecurityCenterAsyncClient:
                 notification config.
             parent (:class:`str`):
                 Required. Resource name of the new notification config's
-                parent. Its format is "organizations/[organization_id]",
-                "folders/[folder_id]", or "projects/[project_id]".
+                parent. Its format is
+                ``organizations/[organization_id]``,
+                ``folders/[folder_id]``, or ``projects/[project_id]``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1257,9 +1305,14 @@ class SecurityCenterAsyncClient:
                 config.
             name (:class:`str`):
                 Required. Name of the mute config to delete. Its format
-                is organizations/{organization}/muteConfigs/{config_id},
-                folders/{folder}/muteConfigs/{config_id}, or
-                projects/{project}/muteConfigs/{config_id}
+                is
+                ``organizations/{organization}/muteConfigs/{config_id}``,
+                ``folders/{folder}/muteConfigs/{config_id}``,
+                ``projects/{project}/muteConfigs/{config_id}``,
+                ``organizations/{organization}/locations/global/muteConfigs/{config_id}``,
+                ``folders/{folder}/locations/global/muteConfigs/{config_id}``,
+                or
+                ``projects/{project}/locations/global/muteConfigs/{config_id}``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1356,10 +1409,10 @@ class SecurityCenterAsyncClient:
             name (:class:`str`):
                 Required. Name of the notification config to delete. Its
                 format is
-                "organizations/[organization_id]/notificationConfigs/[config_id]",
-                "folders/[folder_id]/notificationConfigs/[config_id]",
+                ``organizations/[organization_id]/notificationConfigs/[config_id]``,
+                ``folders/[folder_id]/notificationConfigs/[config_id]``,
                 or
-                "projects/[project_id]/notificationConfigs/[config_id]".
+                ``projects/[project_id]/notificationConfigs/[config_id]``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1462,12 +1515,12 @@ class SecurityCenterAsyncClient:
                 The request object. Request message for deleting Security
                 Health Analytics custom modules.
             name (:class:`str`):
-                Required. Name of the custom module
-                to delete. Its format is
-                "organizations/{organization}/securityHealthAnalyticsSettings/customModules/{customModule}",
-                "folders/{folder}/securityHealthAnalyticsSettings/customModules/{customModule}",
+                Required. Name of the custom module to delete. Its
+                format is
+                ``organizations/{organization}/securityHealthAnalyticsSettings/customModules/{customModule}``,
+                ``folders/{folder}/securityHealthAnalyticsSettings/customModules/{customModule}``,
                 or
-                "projects/{project}/securityHealthAnalyticsSettings/customModules/{customModule}"
+                ``projects/{project}/securityHealthAnalyticsSettings/customModules/{customModule}``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1528,6 +1581,230 @@ class SecurityCenterAsyncClient:
             metadata=metadata,
         )
 
+    async def get_simulation(
+        self,
+        request: Optional[
+            Union[securitycenter_service.GetSimulationRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> simulation.Simulation:
+        r"""Get the simulation by name or the latest simulation
+        for the given organization.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import securitycenter_v1
+
+            async def sample_get_simulation():
+                # Create a client
+                client = securitycenter_v1.SecurityCenterAsyncClient()
+
+                # Initialize request argument(s)
+                request = securitycenter_v1.GetSimulationRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.get_simulation(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.securitycenter_v1.types.GetSimulationRequest, dict]]):
+                The request object. Request message for getting
+                simulation. Simulation name can include
+                "latest" to retrieve the latest
+                simulation For example,
+                "organizations/123/simulations/latest".
+            name (:class:`str`):
+                Required. The organization name or simulation name of
+                this simulation
+
+                Valid format:
+                ``organizations/{organization}/simulations/latest``
+                ``organizations/{organization}/simulations/{simulation}``
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.securitycenter_v1.types.Simulation:
+                Attack path simulation
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, securitycenter_service.GetSimulationRequest):
+            request = securitycenter_service.GetSimulationRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_simulation
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def get_valued_resource(
+        self,
+        request: Optional[
+            Union[securitycenter_service.GetValuedResourceRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> valued_resource.ValuedResource:
+        r"""Get the valued resource by name
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import securitycenter_v1
+
+            async def sample_get_valued_resource():
+                # Create a client
+                client = securitycenter_v1.SecurityCenterAsyncClient()
+
+                # Initialize request argument(s)
+                request = securitycenter_v1.GetValuedResourceRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.get_valued_resource(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.securitycenter_v1.types.GetValuedResourceRequest, dict]]):
+                The request object. Request message for getting a valued
+                resource.
+            name (:class:`str`):
+                Required. The name of this valued resource
+
+                Valid format:
+                ``organizations/{organization}/simulations/{simulation}/valuedResources/{valued_resource}``
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.securitycenter_v1.types.ValuedResource:
+                A resource that is determined to have
+                value to a user's system
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, securitycenter_service.GetValuedResourceRequest):
+            request = securitycenter_service.GetValuedResourceRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_valued_resource
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
     async def get_big_query_export(
         self,
         request: Optional[
@@ -1574,9 +1851,9 @@ class SecurityCenterAsyncClient:
             name (:class:`str`):
                 Required. Name of the BigQuery export to retrieve. Its
                 format is
-                organizations/{organization}/bigQueryExports/{export_id},
-                folders/{folder}/bigQueryExports/{export_id}, or
-                projects/{project}/bigQueryExports/{export_id}
+                ``organizations/{organization}/bigQueryExports/{export_id}``,
+                ``folders/{folder}/bigQueryExports/{export_id}``, or
+                ``projects/{project}/bigQueryExports/{export_id}``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1819,9 +2096,13 @@ class SecurityCenterAsyncClient:
             name (:class:`str`):
                 Required. Name of the mute config to retrieve. Its
                 format is
-                organizations/{organization}/muteConfigs/{config_id},
-                folders/{folder}/muteConfigs/{config_id}, or
-                projects/{project}/muteConfigs/{config_id}
+                ``organizations/{organization}/muteConfigs/{config_id}``,
+                ``folders/{folder}/muteConfigs/{config_id}``,
+                ``projects/{project}/muteConfigs/{config_id}``,
+                ``organizations/{organization}/locations/global/muteConfigs/{config_id}``,
+                ``folders/{folder}/locations/global/muteConfigs/{config_id}``,
+                or
+                ``projects/{project}/locations/global/muteConfigs/{config_id}``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1931,10 +2212,10 @@ class SecurityCenterAsyncClient:
             name (:class:`str`):
                 Required. Name of the notification config to get. Its
                 format is
-                "organizations/[organization_id]/notificationConfigs/[config_id]",
-                "folders/[folder_id]/notificationConfigs/[config_id]",
+                ``organizations/[organization_id]/notificationConfigs/[config_id]``,
+                ``folders/[folder_id]/notificationConfigs/[config_id]``,
                 or
-                "projects/[project_id]/notificationConfigs/[config_id]".
+                ``projects/[project_id]/notificationConfigs/[config_id]``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2047,7 +2328,7 @@ class SecurityCenterAsyncClient:
             name (:class:`str`):
                 Required. Name of the organization to get organization
                 settings for. Its format is
-                "organizations/[organization_id]/organizationSettings".
+                ``organizations/[organization_id]/organizationSettings``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2162,12 +2443,12 @@ class SecurityCenterAsyncClient:
                 Security Health Analytics custom
                 modules.
             name (:class:`str`):
-                Required. Name of the effective
-                custom module to get. Its format is
-                "organizations/{organization}/securityHealthAnalyticsSettings/effectiveCustomModules/{customModule}",
-                "folders/{folder}/securityHealthAnalyticsSettings/effectiveCustomModules/{customModule}",
+                Required. Name of the effective custom module to get.
+                Its format is
+                ``organizations/{organization}/securityHealthAnalyticsSettings/effectiveCustomModules/{customModule}``,
+                ``folders/{folder}/securityHealthAnalyticsSettings/effectiveCustomModules/{customModule}``,
                 or
-                "projects/{project}/securityHealthAnalyticsSettings/effectiveCustomModules/{customModule}"
+                ``projects/{project}/securityHealthAnalyticsSettings/effectiveCustomModules/{customModule}``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2294,12 +2575,12 @@ class SecurityCenterAsyncClient:
                 The request object. Request message for getting Security
                 Health Analytics custom modules.
             name (:class:`str`):
-                Required. Name of the custom module
-                to get. Its format is
-                "organizations/{organization}/securityHealthAnalyticsSettings/customModules/{customModule}",
-                "folders/{folder}/securityHealthAnalyticsSettings/customModules/{customModule}",
+                Required. Name of the custom module to get. Its format
+                is
+                ``organizations/{organization}/securityHealthAnalyticsSettings/customModules/{customModule}``,
+                ``folders/{folder}/securityHealthAnalyticsSettings/customModules/{customModule}``,
                 or
-                "projects/{project}/securityHealthAnalyticsSettings/customModules/{customModule}"
+                ``projects/{project}/securityHealthAnalyticsSettings/customModules/{customModule}``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2420,7 +2701,7 @@ class SecurityCenterAsyncClient:
             name (:class:`str`):
                 Required. Relative resource name of the source. Its
                 format is
-                "organizations/[organization_id]/source/[source_id]".
+                ``organizations/[organization_id]/source/[source_id]``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2646,13 +2927,13 @@ class SecurityCenterAsyncClient:
                 findings.
             parent (:class:`str`):
                 Required. Name of the source to groupBy. Its format is
-                "organizations/[organization_id]/sources/[source_id]",
-                folders/[folder_id]/sources/[source_id], or
-                projects/[project_id]/sources/[source_id]. To groupBy
-                across all sources provide a source_id of ``-``. For
-                example: organizations/{organization_id}/sources/-,
-                folders/{folder_id}/sources/-, or
-                projects/{project_id}/sources/-
+                ``organizations/[organization_id]/sources/[source_id]``,
+                ``folders/[folder_id]/sources/[source_id]``, or
+                ``projects/[project_id]/sources/[source_id]``. To
+                groupBy across all sources provide a source_id of ``-``.
+                For example:
+                ``organizations/{organization_id}/sources/-, folders/{folder_id}/sources/-``,
+                or ``projects/{project_id}/sources/-``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2662,14 +2943,6 @@ class SecurityCenterAsyncClient:
                 use for grouping (including ``state_change``). The
                 string value should follow SQL syntax: comma separated
                 list of fields. For example: "parent,resource_name".
-
-                The following fields are supported:
-
-                -  resource_name
-                -  category
-                -  state
-                -  parent
-                -  severity
 
                 The following fields are supported when compare_duration
                 is set:
@@ -2902,12 +3175,11 @@ class SecurityCenterAsyncClient:
                 descendant Security Health Analytics
                 custom modules.
             parent (:class:`str`):
-                Required. Name of parent to list
-                descendant custom modules. Its format is
-                "organizations/{organization}/securityHealthAnalyticsSettings",
-                "folders/{folder}/securityHealthAnalyticsSettings",
-                or
-                "projects/{project}/securityHealthAnalyticsSettings"
+                Required. Name of parent to list descendant custom
+                modules. Its format is
+                ``organizations/{organization}/securityHealthAnalyticsSettings``,
+                ``folders/{folder}/securityHealthAnalyticsSettings``, or
+                ``projects/{project}/securityHealthAnalyticsSettings``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3138,8 +3410,8 @@ class SecurityCenterAsyncClient:
             parent (:class:`str`):
                 Required. The parent, which owns the collection of mute
                 configs. Its format is
-                "organizations/[organization_id]",
-                "folders/[folder_id]", "projects/[project_id]".
+                ``organizations/[organization_id]``,
+                ``folders/[folder_id]``, ``projects/[project_id]``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3392,12 +3664,11 @@ class SecurityCenterAsyncClient:
                 Security Health Analytics custom
                 modules.
             parent (:class:`str`):
-                Required. Name of parent to list
-                effective custom modules. Its format is
-                "organizations/{organization}/securityHealthAnalyticsSettings",
-                "folders/{folder}/securityHealthAnalyticsSettings",
-                or
-                "projects/{project}/securityHealthAnalyticsSettings"
+                Required. Name of parent to list effective custom
+                modules. Its format is
+                ``organizations/{organization}/securityHealthAnalyticsSettings``,
+                ``folders/{folder}/securityHealthAnalyticsSettings``, or
+                ``projects/{project}/securityHealthAnalyticsSettings``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3531,12 +3802,11 @@ class SecurityCenterAsyncClient:
                 The request object. Request message for listing Security
                 Health Analytics custom modules.
             parent (:class:`str`):
-                Required. Name of parent to list
-                custom modules. Its format is
-                "organizations/{organization}/securityHealthAnalyticsSettings",
-                "folders/{folder}/securityHealthAnalyticsSettings",
-                or
-                "projects/{project}/securityHealthAnalyticsSettings"
+                Required. Name of parent to list custom modules. Its
+                format is
+                ``organizations/{organization}/securityHealthAnalyticsSettings``,
+                ``folders/{folder}/securityHealthAnalyticsSettings``, or
+                ``projects/{project}/securityHealthAnalyticsSettings``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3664,8 +3934,8 @@ class SecurityCenterAsyncClient:
             parent (:class:`str`):
                 Required. Resource name of the parent of sources to
                 list. Its format should be
-                "organizations/[organization_id]",
-                "folders/[folder_id]", or "projects/[project_id]".
+                ``organizations/[organization_id]``,
+                ``folders/[folder_id]``, or ``projects/[project_id]``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3795,7 +4065,7 @@ class SecurityCenterAsyncClient:
             parent (:class:`str`):
                 Required. Name of the organization to run asset
                 discovery for. Its format is
-                "organizations/[organization_id]".
+                ``organizations/[organization_id]``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3924,9 +4194,9 @@ class SecurityCenterAsyncClient:
                 Required. The `relative resource
                 name <https://cloud.google.com/apis/design/resource_names#relative_resource_name>`__
                 of the finding. Example:
-                "organizations/{organization_id}/sources/{source_id}/findings/{finding_id}",
-                "folders/{folder_id}/sources/{source_id}/findings/{finding_id}",
-                "projects/{project_id}/sources/{source_id}/findings/{finding_id}".
+                ``organizations/{organization_id}/sources/{source_id}/findings/{finding_id}``,
+                ``folders/{folder_id}/sources/{source_id}/findings/{finding_id}``,
+                ``projects/{project_id}/sources/{source_id}/findings/{finding_id}``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -4062,9 +4332,9 @@ class SecurityCenterAsyncClient:
                 Required. The `relative resource
                 name <https://cloud.google.com/apis/design/resource_names#relative_resource_name>`__
                 of the finding. Example:
-                "organizations/{organization_id}/sources/{source_id}/findings/{finding_id}",
-                "folders/{folder_id}/sources/{source_id}/findings/{finding_id}",
-                "projects/{project_id}/sources/{source_id}/findings/{finding_id}".
+                ``organizations/{organization_id}/sources/{source_id}/findings/{finding_id}``,
+                ``folders/{folder_id}/sources/{source_id}/findings/{finding_id}``,
+                ``projects/{project_id}/sources/{source_id}/findings/{finding_id}``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -5218,7 +5488,12 @@ class SecurityCenterAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
-                The list of fields to update.
+                The list of fields to be updated. The only fields that
+                can be updated are ``enablement_state`` and
+                ``custom_config``. If empty or set to the wildcard value
+                ``*``, both ``enablement_state`` and ``custom_config``
+                are updated.
+
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -5585,8 +5860,8 @@ class SecurityCenterAsyncClient:
             parent (:class:`str`):
                 Required. The name of the parent resource of the new
                 BigQuery export. Its format is
-                "organizations/[organization_id]",
-                "folders/[folder_id]", or "projects/[project_id]".
+                ``organizations/[organization_id]``,
+                ``folders/[folder_id]``, or ``projects/[project_id]``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -5715,9 +5990,9 @@ class SecurityCenterAsyncClient:
             name (:class:`str`):
                 Required. The name of the BigQuery export to delete. Its
                 format is
-                organizations/{organization}/bigQueryExports/{export_id},
-                folders/{folder}/bigQueryExports/{export_id}, or
-                projects/{project}/bigQueryExports/{export_id}
+                ``organizations/{organization}/bigQueryExports/{export_id}``,
+                ``folders/{folder}/bigQueryExports/{export_id}``, or
+                ``projects/{project}/bigQueryExports/{export_id}``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -5944,8 +6219,8 @@ class SecurityCenterAsyncClient:
             parent (:class:`str`):
                 Required. The parent, which owns the collection of
                 BigQuery exports. Its format is
-                "organizations/[organization_id]",
-                "folders/[folder_id]", "projects/[project_id]".
+                ``organizations/[organization_id]``,
+                ``folders/[folder_id]``, ``projects/[project_id]``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -6011,6 +6286,2053 @@ class SecurityCenterAsyncClient:
         # This method is paged; wrap the response in a pager, which provides
         # an `__aiter__` convenience method.
         response = pagers.ListBigQueryExportsAsyncPager(
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def create_event_threat_detection_custom_module(
+        self,
+        request: Optional[
+            Union[
+                securitycenter_service.CreateEventThreatDetectionCustomModuleRequest,
+                dict,
+            ]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        event_threat_detection_custom_module: Optional[
+            gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule
+        ] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule:
+        r"""Creates a resident Event Threat Detection custom
+        module at the scope of the given Resource Manager
+        parent, and also creates inherited custom modules for
+        all descendants of the given parent. These modules are
+        enabled by default.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import securitycenter_v1
+
+            async def sample_create_event_threat_detection_custom_module():
+                # Create a client
+                client = securitycenter_v1.SecurityCenterAsyncClient()
+
+                # Initialize request argument(s)
+                request = securitycenter_v1.CreateEventThreatDetectionCustomModuleRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = await client.create_event_threat_detection_custom_module(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.securitycenter_v1.types.CreateEventThreatDetectionCustomModuleRequest, dict]]):
+                The request object. Request to create an Event Threat
+                Detection custom module.
+            parent (:class:`str`):
+                Required. The new custom module's parent.
+
+                Its format is:
+
+                -  ``organizations/{organization}/eventThreatDetectionSettings``.
+                -  ``folders/{folder}/eventThreatDetectionSettings``.
+                -  ``projects/{project}/eventThreatDetectionSettings``.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            event_threat_detection_custom_module (:class:`google.cloud.securitycenter_v1.types.EventThreatDetectionCustomModule`):
+                Required. The module to create. The
+                event_threat_detection_custom_module.name will be
+                ignored and server generated.
+
+                This corresponds to the ``event_threat_detection_custom_module`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.securitycenter_v1.types.EventThreatDetectionCustomModule:
+                Represents an instance of an Event
+                Threat Detection custom module,
+                including its full module name, display
+                name, enablement state, and last updated
+                time. You can create a custom module at
+                the organization, folder, or project
+                level. Custom modules that you create at
+                the organization or folder level are
+                inherited by child folders and projects.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, event_threat_detection_custom_module])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request,
+            securitycenter_service.CreateEventThreatDetectionCustomModuleRequest,
+        ):
+            request = (
+                securitycenter_service.CreateEventThreatDetectionCustomModuleRequest(
+                    request
+                )
+            )
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+        if event_threat_detection_custom_module is not None:
+            request.event_threat_detection_custom_module = (
+                event_threat_detection_custom_module
+            )
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_event_threat_detection_custom_module
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def delete_event_threat_detection_custom_module(
+        self,
+        request: Optional[
+            Union[
+                securitycenter_service.DeleteEventThreatDetectionCustomModuleRequest,
+                dict,
+            ]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> None:
+        r"""Deletes the specified Event Threat Detection custom
+        module and all of its descendants in the Resource
+        Manager hierarchy. This method is only supported for
+        resident custom modules.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import securitycenter_v1
+
+            async def sample_delete_event_threat_detection_custom_module():
+                # Create a client
+                client = securitycenter_v1.SecurityCenterAsyncClient()
+
+                # Initialize request argument(s)
+                request = securitycenter_v1.DeleteEventThreatDetectionCustomModuleRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                await client.delete_event_threat_detection_custom_module(request=request)
+
+        Args:
+            request (Optional[Union[google.cloud.securitycenter_v1.types.DeleteEventThreatDetectionCustomModuleRequest, dict]]):
+                The request object. Request to delete an Event Threat
+                Detection custom module.
+            name (:class:`str`):
+                Required. Name of the custom module to delete.
+
+                Its format is:
+
+                -  "organizations/{organization}/eventThreatDetectionSettings/customModules/{module}".
+                -  "folders/{folder}/eventThreatDetectionSettings/customModules/{module}".
+                -  "projects/{project}/eventThreatDetectionSettings/customModules/{module}".
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request,
+            securitycenter_service.DeleteEventThreatDetectionCustomModuleRequest,
+        ):
+            request = (
+                securitycenter_service.DeleteEventThreatDetectionCustomModuleRequest(
+                    request
+                )
+            )
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_event_threat_detection_custom_module
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+    async def get_event_threat_detection_custom_module(
+        self,
+        request: Optional[
+            Union[
+                securitycenter_service.GetEventThreatDetectionCustomModuleRequest, dict
+            ]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> event_threat_detection_custom_module.EventThreatDetectionCustomModule:
+        r"""Gets an Event Threat Detection custom module.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import securitycenter_v1
+
+            async def sample_get_event_threat_detection_custom_module():
+                # Create a client
+                client = securitycenter_v1.SecurityCenterAsyncClient()
+
+                # Initialize request argument(s)
+                request = securitycenter_v1.GetEventThreatDetectionCustomModuleRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.get_event_threat_detection_custom_module(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.securitycenter_v1.types.GetEventThreatDetectionCustomModuleRequest, dict]]):
+                The request object. Request to get an Event Threat
+                Detection custom module.
+            name (:class:`str`):
+                Required. Name of the custom module to get.
+
+                Its format is:
+
+                -  ``organizations/{organization}/eventThreatDetectionSettings/customModules/{module}``.
+                -  ``folders/{folder}/eventThreatDetectionSettings/customModules/{module}``.
+                -  ``projects/{project}/eventThreatDetectionSettings/customModules/{module}``.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.securitycenter_v1.types.EventThreatDetectionCustomModule:
+                Represents an instance of an Event
+                Threat Detection custom module,
+                including its full module name, display
+                name, enablement state, and last updated
+                time. You can create a custom module at
+                the organization, folder, or project
+                level. Custom modules that you create at
+                the organization or folder level are
+                inherited by child folders and projects.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, securitycenter_service.GetEventThreatDetectionCustomModuleRequest
+        ):
+            request = securitycenter_service.GetEventThreatDetectionCustomModuleRequest(
+                request
+            )
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_event_threat_detection_custom_module
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def list_descendant_event_threat_detection_custom_modules(
+        self,
+        request: Optional[
+            Union[
+                securitycenter_service.ListDescendantEventThreatDetectionCustomModulesRequest,
+                dict,
+            ]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListDescendantEventThreatDetectionCustomModulesAsyncPager:
+        r"""Lists all resident Event Threat Detection custom
+        modules under the given Resource Manager parent and its
+        descendants.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import securitycenter_v1
+
+            async def sample_list_descendant_event_threat_detection_custom_modules():
+                # Create a client
+                client = securitycenter_v1.SecurityCenterAsyncClient()
+
+                # Initialize request argument(s)
+                request = securitycenter_v1.ListDescendantEventThreatDetectionCustomModulesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_descendant_event_threat_detection_custom_modules(request=request)
+
+                # Handle the response
+                async for response in page_result:
+                    print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.securitycenter_v1.types.ListDescendantEventThreatDetectionCustomModulesRequest, dict]]):
+                The request object. Request to list current and
+                descendant resident Event Threat
+                Detection custom modules.
+            parent (:class:`str`):
+                Required. Name of the parent to list custom modules
+                under.
+
+                Its format is:
+
+                -  ``organizations/{organization}/eventThreatDetectionSettings``.
+                -  ``folders/{folder}/eventThreatDetectionSettings``.
+                -  ``projects/{project}/eventThreatDetectionSettings``.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.securitycenter_v1.services.security_center.pagers.ListDescendantEventThreatDetectionCustomModulesAsyncPager:
+                Response for listing current and
+                descendant resident Event Threat
+                Detection custom modules.
+
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request,
+            securitycenter_service.ListDescendantEventThreatDetectionCustomModulesRequest,
+        ):
+            request = securitycenter_service.ListDescendantEventThreatDetectionCustomModulesRequest(
+                request
+            )
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_descendant_event_threat_detection_custom_modules
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.ListDescendantEventThreatDetectionCustomModulesAsyncPager(
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def list_event_threat_detection_custom_modules(
+        self,
+        request: Optional[
+            Union[
+                securitycenter_service.ListEventThreatDetectionCustomModulesRequest,
+                dict,
+            ]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListEventThreatDetectionCustomModulesAsyncPager:
+        r"""Lists all Event Threat Detection custom modules for
+        the given Resource Manager parent. This includes
+        resident modules defined at the scope of the parent
+        along with modules inherited from ancestors.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import securitycenter_v1
+
+            async def sample_list_event_threat_detection_custom_modules():
+                # Create a client
+                client = securitycenter_v1.SecurityCenterAsyncClient()
+
+                # Initialize request argument(s)
+                request = securitycenter_v1.ListEventThreatDetectionCustomModulesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_event_threat_detection_custom_modules(request=request)
+
+                # Handle the response
+                async for response in page_result:
+                    print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.securitycenter_v1.types.ListEventThreatDetectionCustomModulesRequest, dict]]):
+                The request object. Request to list Event Threat
+                Detection custom modules.
+            parent (:class:`str`):
+                Required. Name of the parent to list custom modules
+                under.
+
+                Its format is:
+
+                -  ``organizations/{organization}/eventThreatDetectionSettings``.
+                -  ``folders/{folder}/eventThreatDetectionSettings``.
+                -  ``projects/{project}/eventThreatDetectionSettings``.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.securitycenter_v1.services.security_center.pagers.ListEventThreatDetectionCustomModulesAsyncPager:
+                Response for listing Event Threat
+                Detection custom modules.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, securitycenter_service.ListEventThreatDetectionCustomModulesRequest
+        ):
+            request = (
+                securitycenter_service.ListEventThreatDetectionCustomModulesRequest(
+                    request
+                )
+            )
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_event_threat_detection_custom_modules
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.ListEventThreatDetectionCustomModulesAsyncPager(
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def update_event_threat_detection_custom_module(
+        self,
+        request: Optional[
+            Union[
+                securitycenter_service.UpdateEventThreatDetectionCustomModuleRequest,
+                dict,
+            ]
+        ] = None,
+        *,
+        event_threat_detection_custom_module: Optional[
+            gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule
+        ] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule:
+        r"""Updates the Event Threat Detection custom module with
+        the given name based on the given update mask. Updating
+        the enablement state is supported for both resident and
+        inherited modules (though resident modules cannot have
+        an enablement state of "inherited"). Updating the
+        display name or configuration of a module is supported
+        for resident modules only. The type of a module cannot
+        be changed.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import securitycenter_v1
+
+            async def sample_update_event_threat_detection_custom_module():
+                # Create a client
+                client = securitycenter_v1.SecurityCenterAsyncClient()
+
+                # Initialize request argument(s)
+                request = securitycenter_v1.UpdateEventThreatDetectionCustomModuleRequest(
+                )
+
+                # Make the request
+                response = await client.update_event_threat_detection_custom_module(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.securitycenter_v1.types.UpdateEventThreatDetectionCustomModuleRequest, dict]]):
+                The request object. Request to update an Event Threat
+                Detection custom module.
+            event_threat_detection_custom_module (:class:`google.cloud.securitycenter_v1.types.EventThreatDetectionCustomModule`):
+                Required. The module being updated.
+                This corresponds to the ``event_threat_detection_custom_module`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
+                The list of fields to be updated.
+                If empty all mutable fields will be
+                updated.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.securitycenter_v1.types.EventThreatDetectionCustomModule:
+                Represents an instance of an Event
+                Threat Detection custom module,
+                including its full module name, display
+                name, enablement state, and last updated
+                time. You can create a custom module at
+                the organization, folder, or project
+                level. Custom modules that you create at
+                the organization or folder level are
+                inherited by child folders and projects.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([event_threat_detection_custom_module, update_mask])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request,
+            securitycenter_service.UpdateEventThreatDetectionCustomModuleRequest,
+        ):
+            request = (
+                securitycenter_service.UpdateEventThreatDetectionCustomModuleRequest(
+                    request
+                )
+            )
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if event_threat_detection_custom_module is not None:
+            request.event_threat_detection_custom_module = (
+                event_threat_detection_custom_module
+            )
+        if update_mask is not None:
+            request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_event_threat_detection_custom_module
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    (
+                        "event_threat_detection_custom_module.name",
+                        request.event_threat_detection_custom_module.name,
+                    ),
+                )
+            ),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def validate_event_threat_detection_custom_module(
+        self,
+        request: Optional[
+            Union[
+                securitycenter_service.ValidateEventThreatDetectionCustomModuleRequest,
+                dict,
+            ]
+        ] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> securitycenter_service.ValidateEventThreatDetectionCustomModuleResponse:
+        r"""Validates the given Event Threat Detection custom
+        module.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import securitycenter_v1
+
+            async def sample_validate_event_threat_detection_custom_module():
+                # Create a client
+                client = securitycenter_v1.SecurityCenterAsyncClient()
+
+                # Initialize request argument(s)
+                request = securitycenter_v1.ValidateEventThreatDetectionCustomModuleRequest(
+                    parent="parent_value",
+                    raw_text="raw_text_value",
+                    type_="type__value",
+                )
+
+                # Make the request
+                response = await client.validate_event_threat_detection_custom_module(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.securitycenter_v1.types.ValidateEventThreatDetectionCustomModuleRequest, dict]]):
+                The request object. Request to validate an Event Threat
+                Detection custom module.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.securitycenter_v1.types.ValidateEventThreatDetectionCustomModuleResponse:
+                Response to validating an Event
+                Threat Detection custom module.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request,
+            securitycenter_service.ValidateEventThreatDetectionCustomModuleRequest,
+        ):
+            request = (
+                securitycenter_service.ValidateEventThreatDetectionCustomModuleRequest(
+                    request
+                )
+            )
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.validate_event_threat_detection_custom_module
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def get_effective_event_threat_detection_custom_module(
+        self,
+        request: Optional[
+            Union[
+                securitycenter_service.GetEffectiveEventThreatDetectionCustomModuleRequest,
+                dict,
+            ]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule:
+        r"""Gets an effective Event Threat Detection custom
+        module at the given level.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import securitycenter_v1
+
+            async def sample_get_effective_event_threat_detection_custom_module():
+                # Create a client
+                client = securitycenter_v1.SecurityCenterAsyncClient()
+
+                # Initialize request argument(s)
+                request = securitycenter_v1.GetEffectiveEventThreatDetectionCustomModuleRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.get_effective_event_threat_detection_custom_module(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.securitycenter_v1.types.GetEffectiveEventThreatDetectionCustomModuleRequest, dict]]):
+                The request object. Request to get an
+                EffectiveEventThreatDetectionCustomModule.
+            name (:class:`str`):
+                Required. The resource name of the effective Event
+                Threat Detection custom module.
+
+                Its format is:
+
+                -  ``organizations/{organization}/eventThreatDetectionSettings/effectiveCustomModules/{module}``.
+                -  ``folders/{folder}/eventThreatDetectionSettings/effectiveCustomModules/{module}``.
+                -  ``projects/{project}/eventThreatDetectionSettings/effectiveCustomModules/{module}``.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.securitycenter_v1.types.EffectiveEventThreatDetectionCustomModule:
+                An EffectiveEventThreatDetectionCustomModule is the representation of
+                   an Event Threat Detection custom module at a
+                   specified level of the resource hierarchy:
+                   organization, folder, or project. If a custom module
+                   is inherited from a parent organization or folder,
+                   the value of the enablement_state property in
+                   EffectiveEventThreatDetectionCustomModule is set to
+                   the value that is effective in the parent, instead of
+                   INHERITED. For example, if the module is enabled in a
+                   parent organization or folder, the effective
+                   enablement_state for the module in all child folders
+                   or projects is also enabled.
+                   EffectiveEventThreatDetectionCustomModule is
+                   read-only.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request,
+            securitycenter_service.GetEffectiveEventThreatDetectionCustomModuleRequest,
+        ):
+            request = securitycenter_service.GetEffectiveEventThreatDetectionCustomModuleRequest(
+                request
+            )
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_effective_event_threat_detection_custom_module
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def list_effective_event_threat_detection_custom_modules(
+        self,
+        request: Optional[
+            Union[
+                securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesRequest,
+                dict,
+            ]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListEffectiveEventThreatDetectionCustomModulesAsyncPager:
+        r"""Lists all effective Event Threat Detection custom
+        modules for the given parent. This includes resident
+        modules defined at the scope of the parent along with
+        modules inherited from its ancestors.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import securitycenter_v1
+
+            async def sample_list_effective_event_threat_detection_custom_modules():
+                # Create a client
+                client = securitycenter_v1.SecurityCenterAsyncClient()
+
+                # Initialize request argument(s)
+                request = securitycenter_v1.ListEffectiveEventThreatDetectionCustomModulesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_effective_event_threat_detection_custom_modules(request=request)
+
+                # Handle the response
+                async for response in page_result:
+                    print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.securitycenter_v1.types.ListEffectiveEventThreatDetectionCustomModulesRequest, dict]]):
+                The request object. Request to list effective Event
+                Threat Detection custom modules.
+            parent (:class:`str`):
+                Required. Name of the parent to list custom modules for.
+
+                Its format is:
+
+                -  ``organizations/{organization}/eventThreatDetectionSettings``.
+                -  ``folders/{folder}/eventThreatDetectionSettings``.
+                -  ``projects/{project}/eventThreatDetectionSettings``.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.securitycenter_v1.services.security_center.pagers.ListEffectiveEventThreatDetectionCustomModulesAsyncPager:
+                Response for listing
+                EffectiveEventThreatDetectionCustomModules.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request,
+            securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesRequest,
+        ):
+            request = securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesRequest(
+                request
+            )
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_effective_event_threat_detection_custom_modules
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.ListEffectiveEventThreatDetectionCustomModulesAsyncPager(
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def batch_create_resource_value_configs(
+        self,
+        request: Optional[
+            Union[securitycenter_service.BatchCreateResourceValueConfigsRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        requests: Optional[
+            MutableSequence[securitycenter_service.CreateResourceValueConfigRequest]
+        ] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> securitycenter_service.BatchCreateResourceValueConfigsResponse:
+        r"""Creates a ResourceValueConfig for an organization.
+        Maps user's tags to difference resource values for use
+        by the attack path simulation.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import securitycenter_v1
+
+            async def sample_batch_create_resource_value_configs():
+                # Create a client
+                client = securitycenter_v1.SecurityCenterAsyncClient()
+
+                # Initialize request argument(s)
+                requests = securitycenter_v1.CreateResourceValueConfigRequest()
+                requests.parent = "parent_value"
+                requests.resource_value_config.resource_value = "NONE"
+                requests.resource_value_config.tag_values = ['tag_values_value1', 'tag_values_value2']
+
+                request = securitycenter_v1.BatchCreateResourceValueConfigsRequest(
+                    parent="parent_value",
+                    requests=requests,
+                )
+
+                # Make the request
+                response = await client.batch_create_resource_value_configs(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.securitycenter_v1.types.BatchCreateResourceValueConfigsRequest, dict]]):
+                The request object. Request message to create multiple
+                resource value configs
+            parent (:class:`str`):
+                Required. Resource name of the new
+                ResourceValueConfig's parent. The parent
+                field in the
+                CreateResourceValueConfigRequest
+                messages must either be empty or match
+                this field.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            requests (:class:`MutableSequence[google.cloud.securitycenter_v1.types.CreateResourceValueConfigRequest]`):
+                Required. The resource value configs
+                to be created.
+
+                This corresponds to the ``requests`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.securitycenter_v1.types.BatchCreateResourceValueConfigsResponse:
+                Response message for
+                BatchCreateResourceValueConfigs
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, requests])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, securitycenter_service.BatchCreateResourceValueConfigsRequest
+        ):
+            request = securitycenter_service.BatchCreateResourceValueConfigsRequest(
+                request
+            )
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+        if requests:
+            request.requests.extend(requests)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.batch_create_resource_value_configs
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def delete_resource_value_config(
+        self,
+        request: Optional[
+            Union[securitycenter_service.DeleteResourceValueConfigRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> None:
+        r"""Deletes a ResourceValueConfig.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import securitycenter_v1
+
+            async def sample_delete_resource_value_config():
+                # Create a client
+                client = securitycenter_v1.SecurityCenterAsyncClient()
+
+                # Initialize request argument(s)
+                request = securitycenter_v1.DeleteResourceValueConfigRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                await client.delete_resource_value_config(request=request)
+
+        Args:
+            request (Optional[Union[google.cloud.securitycenter_v1.types.DeleteResourceValueConfigRequest, dict]]):
+                The request object. Request message to delete resource
+                value config
+            name (:class:`str`):
+                Required. Name of the
+                ResourceValueConfig to delete
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, securitycenter_service.DeleteResourceValueConfigRequest
+        ):
+            request = securitycenter_service.DeleteResourceValueConfigRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_resource_value_config
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+    async def get_resource_value_config(
+        self,
+        request: Optional[
+            Union[securitycenter_service.GetResourceValueConfigRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> resource_value_config.ResourceValueConfig:
+        r"""Gets a ResourceValueConfig.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import securitycenter_v1
+
+            async def sample_get_resource_value_config():
+                # Create a client
+                client = securitycenter_v1.SecurityCenterAsyncClient()
+
+                # Initialize request argument(s)
+                request = securitycenter_v1.GetResourceValueConfigRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.get_resource_value_config(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.securitycenter_v1.types.GetResourceValueConfigRequest, dict]]):
+                The request object. Request message to get resource value
+                config
+            name (:class:`str`):
+                Required. Name of the resource value config to retrieve.
+                Its format is
+                ``organizations/{organization}/resourceValueConfigs/{config_id}``.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.securitycenter_v1.types.ResourceValueConfig:
+                A resource value configuration (RVC)
+                is a mapping configuration of user's
+                resources to resource values. Used in
+                Attack path simulations.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, securitycenter_service.GetResourceValueConfigRequest
+        ):
+            request = securitycenter_service.GetResourceValueConfigRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_resource_value_config
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def list_resource_value_configs(
+        self,
+        request: Optional[
+            Union[securitycenter_service.ListResourceValueConfigsRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListResourceValueConfigsAsyncPager:
+        r"""Lists all ResourceValueConfigs.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import securitycenter_v1
+
+            async def sample_list_resource_value_configs():
+                # Create a client
+                client = securitycenter_v1.SecurityCenterAsyncClient()
+
+                # Initialize request argument(s)
+                request = securitycenter_v1.ListResourceValueConfigsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_resource_value_configs(request=request)
+
+                # Handle the response
+                async for response in page_result:
+                    print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.securitycenter_v1.types.ListResourceValueConfigsRequest, dict]]):
+                The request object. Request message to list resource
+                value configs of a parent
+            parent (:class:`str`):
+                Required. The parent, which owns the collection of
+                resource value configs. Its format is
+                ``organizations/[organization_id]``
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.securitycenter_v1.services.security_center.pagers.ListResourceValueConfigsAsyncPager:
+                Response message to list resource
+                value configs
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, securitycenter_service.ListResourceValueConfigsRequest
+        ):
+            request = securitycenter_service.ListResourceValueConfigsRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_resource_value_configs
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.ListResourceValueConfigsAsyncPager(
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def update_resource_value_config(
+        self,
+        request: Optional[
+            Union[securitycenter_service.UpdateResourceValueConfigRequest, dict]
+        ] = None,
+        *,
+        resource_value_config: Optional[
+            gcs_resource_value_config.ResourceValueConfig
+        ] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> gcs_resource_value_config.ResourceValueConfig:
+        r"""Updates an existing ResourceValueConfigs with new
+        rules.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import securitycenter_v1
+
+            async def sample_update_resource_value_config():
+                # Create a client
+                client = securitycenter_v1.SecurityCenterAsyncClient()
+
+                # Initialize request argument(s)
+                resource_value_config = securitycenter_v1.ResourceValueConfig()
+                resource_value_config.resource_value = "NONE"
+                resource_value_config.tag_values = ['tag_values_value1', 'tag_values_value2']
+
+                request = securitycenter_v1.UpdateResourceValueConfigRequest(
+                    resource_value_config=resource_value_config,
+                )
+
+                # Make the request
+                response = await client.update_resource_value_config(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.securitycenter_v1.types.UpdateResourceValueConfigRequest, dict]]):
+                The request object. Request message to update resource
+                value config
+            resource_value_config (:class:`google.cloud.securitycenter_v1.types.ResourceValueConfig`):
+                Required. The resource value config
+                being updated.
+
+                This corresponds to the ``resource_value_config`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
+                The list of fields to be updated.
+                If empty all mutable fields will be
+                updated.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.securitycenter_v1.types.ResourceValueConfig:
+                A resource value configuration (RVC)
+                is a mapping configuration of user's
+                resources to resource values. Used in
+                Attack path simulations.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([resource_value_config, update_mask])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, securitycenter_service.UpdateResourceValueConfigRequest
+        ):
+            request = securitycenter_service.UpdateResourceValueConfigRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if resource_value_config is not None:
+            request.resource_value_config = resource_value_config
+        if update_mask is not None:
+            request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_resource_value_config
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("resource_value_config.name", request.resource_value_config.name),)
+            ),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def list_valued_resources(
+        self,
+        request: Optional[
+            Union[securitycenter_service.ListValuedResourcesRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListValuedResourcesAsyncPager:
+        r"""Lists the valued resources for a set of simulation
+        results and filter.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import securitycenter_v1
+
+            async def sample_list_valued_resources():
+                # Create a client
+                client = securitycenter_v1.SecurityCenterAsyncClient()
+
+                # Initialize request argument(s)
+                request = securitycenter_v1.ListValuedResourcesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_valued_resources(request=request)
+
+                # Handle the response
+                async for response in page_result:
+                    print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.securitycenter_v1.types.ListValuedResourcesRequest, dict]]):
+                The request object. Request message for listing the
+                valued resources for a given simulation.
+            parent (:class:`str`):
+                Required. Name of parent to list valued resources.
+
+                Valid formats: ``organizations/{organization}``,
+                ``organizations/{organization}/simulations/{simulation}``
+                ``organizations/{organization}/simulations/{simulation}/attackExposureResults/{attack_exposure_result_v2}``
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.securitycenter_v1.services.security_center.pagers.ListValuedResourcesAsyncPager:
+                Response message for listing the
+                valued resources for a given simulation.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, securitycenter_service.ListValuedResourcesRequest):
+            request = securitycenter_service.ListValuedResourcesRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_valued_resources
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.ListValuedResourcesAsyncPager(
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def list_attack_paths(
+        self,
+        request: Optional[
+            Union[securitycenter_service.ListAttackPathsRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListAttackPathsAsyncPager:
+        r"""Lists the attack paths for a set of simulation
+        results or valued resources and filter.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import securitycenter_v1
+
+            async def sample_list_attack_paths():
+                # Create a client
+                client = securitycenter_v1.SecurityCenterAsyncClient()
+
+                # Initialize request argument(s)
+                request = securitycenter_v1.ListAttackPathsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_attack_paths(request=request)
+
+                # Handle the response
+                async for response in page_result:
+                    print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.securitycenter_v1.types.ListAttackPathsRequest, dict]]):
+                The request object. Request message for listing the
+                attack paths for a given simulation or
+                valued resource.
+            parent (:class:`str`):
+                Required. Name of parent to list attack paths.
+
+                Valid formats: ``organizations/{organization}``,
+                ``organizations/{organization}/simulations/{simulation}``
+                ``organizations/{organization}/simulations/{simulation}/attackExposureResults/{attack_exposure_result_v2}``
+                ``organizations/{organization}/simulations/{simulation}/valuedResources/{valued_resource}``
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.securitycenter_v1.services.security_center.pagers.ListAttackPathsAsyncPager:
+                Response message for listing the
+                attack paths for a given simulation or
+                valued resource.
+
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, securitycenter_service.ListAttackPathsRequest):
+            request = securitycenter_service.ListAttackPathsRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_attack_paths
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.ListAttackPathsAsyncPager(
             method=rpc,
             request=request,
             response=response,

@@ -45,10 +45,10 @@ class Service(proto.Message):
     Attributes:
         name (str):
             The resource name for the service.
-            Example: "services/DA34-426B-A397".
+            Example: "services/6F81-5844-456A".
         service_id (str):
             The identifier for the service.
-            Example: "DA34-426B-A397".
+            Example: "6F81-5844-456A".
         display_name (str):
             A human readable display name for this
             service.
@@ -77,16 +77,16 @@ class Service(proto.Message):
 
 
 class Sku(proto.Message):
-    r"""Encapsulates a single SKU in Google Cloud Platform
+    r"""Encapsulates a single SKU in Google Cloud
 
     Attributes:
         name (str):
             The resource name for the SKU.
             Example:
-            "services/DA34-426B-A397/skus/AA95-CD31-42FE".
+            "services/6F81-5844-456A/skus/D041-B8A1-6E0B".
         sku_id (str):
             The identifier for the SKU.
-            Example: "AA95-CD31-42FE".
+            Example: "D041-B8A1-6E0B".
         description (str):
             A human readable description of the SKU, has
             a maximum length of 256 characters.
@@ -515,7 +515,7 @@ class ListSkusRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The name of the service.
-            Example: "services/DA34-426B-A397".
+            Example: "services/6F81-5844-456A".
         start_time (google.protobuf.timestamp_pb2.Timestamp):
             Optional inclusive start time of the time range for which
             the pricing versions will be returned. Timestamps in the

@@ -30,7 +30,13 @@ from grpc.experimental import aio  # type: ignore
 
 from google.cloud.securitycenter_v1.types import (
     bigquery_export,
+    effective_event_threat_detection_custom_module,
     effective_security_health_analytics_custom_module,
+)
+from google.cloud.securitycenter_v1.types import securitycenter_service, simulation
+from google.cloud.securitycenter_v1.types import event_threat_detection_custom_module
+from google.cloud.securitycenter_v1.types import (
+    event_threat_detection_custom_module as gcs_event_threat_detection_custom_module,
 )
 from google.cloud.securitycenter_v1.types import external_system as gcs_external_system
 from google.cloud.securitycenter_v1.types import (
@@ -38,6 +44,9 @@ from google.cloud.securitycenter_v1.types import (
 )
 from google.cloud.securitycenter_v1.types import (
     organization_settings as gcs_organization_settings,
+)
+from google.cloud.securitycenter_v1.types import (
+    resource_value_config as gcs_resource_value_config,
 )
 from google.cloud.securitycenter_v1.types import security_health_analytics_custom_module
 from google.cloud.securitycenter_v1.types import (
@@ -50,9 +59,10 @@ from google.cloud.securitycenter_v1.types import mute_config
 from google.cloud.securitycenter_v1.types import mute_config as gcs_mute_config
 from google.cloud.securitycenter_v1.types import notification_config
 from google.cloud.securitycenter_v1.types import organization_settings
-from google.cloud.securitycenter_v1.types import securitycenter_service
+from google.cloud.securitycenter_v1.types import resource_value_config
 from google.cloud.securitycenter_v1.types import source
 from google.cloud.securitycenter_v1.types import source as gcs_source
+from google.cloud.securitycenter_v1.types import valued_resource
 
 from .base import DEFAULT_CLIENT_INFO, SecurityCenterTransport
 from .grpc import SecurityCenterGrpcTransport
@@ -197,7 +207,8 @@ class SecurityCenterGrpcAsyncIOTransport(SecurityCenterTransport):
 
         if isinstance(channel, aio.Channel):
             # Ignore credentials if a channel was passed.
-            credentials = False
+            credentials = None
+            self._ignore_credentials = True
             # If a channel was explicitly provided, set it.
             self._grpc_channel = channel
             self._ssl_channel_credentials = None
@@ -559,6 +570,64 @@ class SecurityCenterGrpcAsyncIOTransport(SecurityCenterTransport):
                 response_deserializer=empty_pb2.Empty.FromString,
             )
         return self._stubs["delete_security_health_analytics_custom_module"]
+
+    @property
+    def get_simulation(
+        self,
+    ) -> Callable[
+        [securitycenter_service.GetSimulationRequest], Awaitable[simulation.Simulation]
+    ]:
+        r"""Return a callable for the get simulation method over gRPC.
+
+        Get the simulation by name or the latest simulation
+        for the given organization.
+
+        Returns:
+            Callable[[~.GetSimulationRequest],
+                    Awaitable[~.Simulation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_simulation" not in self._stubs:
+            self._stubs["get_simulation"] = self.grpc_channel.unary_unary(
+                "/google.cloud.securitycenter.v1.SecurityCenter/GetSimulation",
+                request_serializer=securitycenter_service.GetSimulationRequest.serialize,
+                response_deserializer=simulation.Simulation.deserialize,
+            )
+        return self._stubs["get_simulation"]
+
+    @property
+    def get_valued_resource(
+        self,
+    ) -> Callable[
+        [securitycenter_service.GetValuedResourceRequest],
+        Awaitable[valued_resource.ValuedResource],
+    ]:
+        r"""Return a callable for the get valued resource method over gRPC.
+
+        Get the valued resource by name
+
+        Returns:
+            Callable[[~.GetValuedResourceRequest],
+                    Awaitable[~.ValuedResource]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_valued_resource" not in self._stubs:
+            self._stubs["get_valued_resource"] = self.grpc_channel.unary_unary(
+                "/google.cloud.securitycenter.v1.SecurityCenter/GetValuedResource",
+                request_serializer=securitycenter_service.GetValuedResourceRequest.serialize,
+                response_deserializer=valued_resource.ValuedResource.deserialize,
+            )
+        return self._stubs["get_valued_resource"]
 
     @property
     def get_big_query_export(
@@ -1672,6 +1741,543 @@ class SecurityCenterGrpcAsyncIOTransport(SecurityCenterTransport):
             )
         return self._stubs["list_big_query_exports"]
 
+    @property
+    def create_event_threat_detection_custom_module(
+        self,
+    ) -> Callable[
+        [securitycenter_service.CreateEventThreatDetectionCustomModuleRequest],
+        Awaitable[
+            gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule
+        ],
+    ]:
+        r"""Return a callable for the create event threat detection
+        custom module method over gRPC.
+
+        Creates a resident Event Threat Detection custom
+        module at the scope of the given Resource Manager
+        parent, and also creates inherited custom modules for
+        all descendants of the given parent. These modules are
+        enabled by default.
+
+        Returns:
+            Callable[[~.CreateEventThreatDetectionCustomModuleRequest],
+                    Awaitable[~.EventThreatDetectionCustomModule]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_event_threat_detection_custom_module" not in self._stubs:
+            self._stubs[
+                "create_event_threat_detection_custom_module"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.securitycenter.v1.SecurityCenter/CreateEventThreatDetectionCustomModule",
+                request_serializer=securitycenter_service.CreateEventThreatDetectionCustomModuleRequest.serialize,
+                response_deserializer=gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule.deserialize,
+            )
+        return self._stubs["create_event_threat_detection_custom_module"]
+
+    @property
+    def delete_event_threat_detection_custom_module(
+        self,
+    ) -> Callable[
+        [securitycenter_service.DeleteEventThreatDetectionCustomModuleRequest],
+        Awaitable[empty_pb2.Empty],
+    ]:
+        r"""Return a callable for the delete event threat detection
+        custom module method over gRPC.
+
+        Deletes the specified Event Threat Detection custom
+        module and all of its descendants in the Resource
+        Manager hierarchy. This method is only supported for
+        resident custom modules.
+
+        Returns:
+            Callable[[~.DeleteEventThreatDetectionCustomModuleRequest],
+                    Awaitable[~.Empty]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_event_threat_detection_custom_module" not in self._stubs:
+            self._stubs[
+                "delete_event_threat_detection_custom_module"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.securitycenter.v1.SecurityCenter/DeleteEventThreatDetectionCustomModule",
+                request_serializer=securitycenter_service.DeleteEventThreatDetectionCustomModuleRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
+            )
+        return self._stubs["delete_event_threat_detection_custom_module"]
+
+    @property
+    def get_event_threat_detection_custom_module(
+        self,
+    ) -> Callable[
+        [securitycenter_service.GetEventThreatDetectionCustomModuleRequest],
+        Awaitable[
+            event_threat_detection_custom_module.EventThreatDetectionCustomModule
+        ],
+    ]:
+        r"""Return a callable for the get event threat detection
+        custom module method over gRPC.
+
+        Gets an Event Threat Detection custom module.
+
+        Returns:
+            Callable[[~.GetEventThreatDetectionCustomModuleRequest],
+                    Awaitable[~.EventThreatDetectionCustomModule]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_event_threat_detection_custom_module" not in self._stubs:
+            self._stubs[
+                "get_event_threat_detection_custom_module"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.securitycenter.v1.SecurityCenter/GetEventThreatDetectionCustomModule",
+                request_serializer=securitycenter_service.GetEventThreatDetectionCustomModuleRequest.serialize,
+                response_deserializer=event_threat_detection_custom_module.EventThreatDetectionCustomModule.deserialize,
+            )
+        return self._stubs["get_event_threat_detection_custom_module"]
+
+    @property
+    def list_descendant_event_threat_detection_custom_modules(
+        self,
+    ) -> Callable[
+        [securitycenter_service.ListDescendantEventThreatDetectionCustomModulesRequest],
+        Awaitable[
+            securitycenter_service.ListDescendantEventThreatDetectionCustomModulesResponse
+        ],
+    ]:
+        r"""Return a callable for the list descendant event threat
+        detection custom modules method over gRPC.
+
+        Lists all resident Event Threat Detection custom
+        modules under the given Resource Manager parent and its
+        descendants.
+
+        Returns:
+            Callable[[~.ListDescendantEventThreatDetectionCustomModulesRequest],
+                    Awaitable[~.ListDescendantEventThreatDetectionCustomModulesResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_descendant_event_threat_detection_custom_modules" not in self._stubs:
+            self._stubs[
+                "list_descendant_event_threat_detection_custom_modules"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.securitycenter.v1.SecurityCenter/ListDescendantEventThreatDetectionCustomModules",
+                request_serializer=securitycenter_service.ListDescendantEventThreatDetectionCustomModulesRequest.serialize,
+                response_deserializer=securitycenter_service.ListDescendantEventThreatDetectionCustomModulesResponse.deserialize,
+            )
+        return self._stubs["list_descendant_event_threat_detection_custom_modules"]
+
+    @property
+    def list_event_threat_detection_custom_modules(
+        self,
+    ) -> Callable[
+        [securitycenter_service.ListEventThreatDetectionCustomModulesRequest],
+        Awaitable[securitycenter_service.ListEventThreatDetectionCustomModulesResponse],
+    ]:
+        r"""Return a callable for the list event threat detection
+        custom modules method over gRPC.
+
+        Lists all Event Threat Detection custom modules for
+        the given Resource Manager parent. This includes
+        resident modules defined at the scope of the parent
+        along with modules inherited from ancestors.
+
+        Returns:
+            Callable[[~.ListEventThreatDetectionCustomModulesRequest],
+                    Awaitable[~.ListEventThreatDetectionCustomModulesResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_event_threat_detection_custom_modules" not in self._stubs:
+            self._stubs[
+                "list_event_threat_detection_custom_modules"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.securitycenter.v1.SecurityCenter/ListEventThreatDetectionCustomModules",
+                request_serializer=securitycenter_service.ListEventThreatDetectionCustomModulesRequest.serialize,
+                response_deserializer=securitycenter_service.ListEventThreatDetectionCustomModulesResponse.deserialize,
+            )
+        return self._stubs["list_event_threat_detection_custom_modules"]
+
+    @property
+    def update_event_threat_detection_custom_module(
+        self,
+    ) -> Callable[
+        [securitycenter_service.UpdateEventThreatDetectionCustomModuleRequest],
+        Awaitable[
+            gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule
+        ],
+    ]:
+        r"""Return a callable for the update event threat detection
+        custom module method over gRPC.
+
+        Updates the Event Threat Detection custom module with
+        the given name based on the given update mask. Updating
+        the enablement state is supported for both resident and
+        inherited modules (though resident modules cannot have
+        an enablement state of "inherited"). Updating the
+        display name or configuration of a module is supported
+        for resident modules only. The type of a module cannot
+        be changed.
+
+        Returns:
+            Callable[[~.UpdateEventThreatDetectionCustomModuleRequest],
+                    Awaitable[~.EventThreatDetectionCustomModule]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_event_threat_detection_custom_module" not in self._stubs:
+            self._stubs[
+                "update_event_threat_detection_custom_module"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.securitycenter.v1.SecurityCenter/UpdateEventThreatDetectionCustomModule",
+                request_serializer=securitycenter_service.UpdateEventThreatDetectionCustomModuleRequest.serialize,
+                response_deserializer=gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule.deserialize,
+            )
+        return self._stubs["update_event_threat_detection_custom_module"]
+
+    @property
+    def validate_event_threat_detection_custom_module(
+        self,
+    ) -> Callable[
+        [securitycenter_service.ValidateEventThreatDetectionCustomModuleRequest],
+        Awaitable[
+            securitycenter_service.ValidateEventThreatDetectionCustomModuleResponse
+        ],
+    ]:
+        r"""Return a callable for the validate event threat
+        detection custom module method over gRPC.
+
+        Validates the given Event Threat Detection custom
+        module.
+
+        Returns:
+            Callable[[~.ValidateEventThreatDetectionCustomModuleRequest],
+                    Awaitable[~.ValidateEventThreatDetectionCustomModuleResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "validate_event_threat_detection_custom_module" not in self._stubs:
+            self._stubs[
+                "validate_event_threat_detection_custom_module"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.securitycenter.v1.SecurityCenter/ValidateEventThreatDetectionCustomModule",
+                request_serializer=securitycenter_service.ValidateEventThreatDetectionCustomModuleRequest.serialize,
+                response_deserializer=securitycenter_service.ValidateEventThreatDetectionCustomModuleResponse.deserialize,
+            )
+        return self._stubs["validate_event_threat_detection_custom_module"]
+
+    @property
+    def get_effective_event_threat_detection_custom_module(
+        self,
+    ) -> Callable[
+        [securitycenter_service.GetEffectiveEventThreatDetectionCustomModuleRequest],
+        Awaitable[
+            effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule
+        ],
+    ]:
+        r"""Return a callable for the get effective event threat
+        detection custom module method over gRPC.
+
+        Gets an effective Event Threat Detection custom
+        module at the given level.
+
+        Returns:
+            Callable[[~.GetEffectiveEventThreatDetectionCustomModuleRequest],
+                    Awaitable[~.EffectiveEventThreatDetectionCustomModule]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_effective_event_threat_detection_custom_module" not in self._stubs:
+            self._stubs[
+                "get_effective_event_threat_detection_custom_module"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.securitycenter.v1.SecurityCenter/GetEffectiveEventThreatDetectionCustomModule",
+                request_serializer=securitycenter_service.GetEffectiveEventThreatDetectionCustomModuleRequest.serialize,
+                response_deserializer=effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule.deserialize,
+            )
+        return self._stubs["get_effective_event_threat_detection_custom_module"]
+
+    @property
+    def list_effective_event_threat_detection_custom_modules(
+        self,
+    ) -> Callable[
+        [securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesRequest],
+        Awaitable[
+            securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesResponse
+        ],
+    ]:
+        r"""Return a callable for the list effective event threat
+        detection custom modules method over gRPC.
+
+        Lists all effective Event Threat Detection custom
+        modules for the given parent. This includes resident
+        modules defined at the scope of the parent along with
+        modules inherited from its ancestors.
+
+        Returns:
+            Callable[[~.ListEffectiveEventThreatDetectionCustomModulesRequest],
+                    Awaitable[~.ListEffectiveEventThreatDetectionCustomModulesResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_effective_event_threat_detection_custom_modules" not in self._stubs:
+            self._stubs[
+                "list_effective_event_threat_detection_custom_modules"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.securitycenter.v1.SecurityCenter/ListEffectiveEventThreatDetectionCustomModules",
+                request_serializer=securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesRequest.serialize,
+                response_deserializer=securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesResponse.deserialize,
+            )
+        return self._stubs["list_effective_event_threat_detection_custom_modules"]
+
+    @property
+    def batch_create_resource_value_configs(
+        self,
+    ) -> Callable[
+        [securitycenter_service.BatchCreateResourceValueConfigsRequest],
+        Awaitable[securitycenter_service.BatchCreateResourceValueConfigsResponse],
+    ]:
+        r"""Return a callable for the batch create resource value
+        configs method over gRPC.
+
+        Creates a ResourceValueConfig for an organization.
+        Maps user's tags to difference resource values for use
+        by the attack path simulation.
+
+        Returns:
+            Callable[[~.BatchCreateResourceValueConfigsRequest],
+                    Awaitable[~.BatchCreateResourceValueConfigsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "batch_create_resource_value_configs" not in self._stubs:
+            self._stubs[
+                "batch_create_resource_value_configs"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.securitycenter.v1.SecurityCenter/BatchCreateResourceValueConfigs",
+                request_serializer=securitycenter_service.BatchCreateResourceValueConfigsRequest.serialize,
+                response_deserializer=securitycenter_service.BatchCreateResourceValueConfigsResponse.deserialize,
+            )
+        return self._stubs["batch_create_resource_value_configs"]
+
+    @property
+    def delete_resource_value_config(
+        self,
+    ) -> Callable[
+        [securitycenter_service.DeleteResourceValueConfigRequest],
+        Awaitable[empty_pb2.Empty],
+    ]:
+        r"""Return a callable for the delete resource value config method over gRPC.
+
+        Deletes a ResourceValueConfig.
+
+        Returns:
+            Callable[[~.DeleteResourceValueConfigRequest],
+                    Awaitable[~.Empty]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_resource_value_config" not in self._stubs:
+            self._stubs["delete_resource_value_config"] = self.grpc_channel.unary_unary(
+                "/google.cloud.securitycenter.v1.SecurityCenter/DeleteResourceValueConfig",
+                request_serializer=securitycenter_service.DeleteResourceValueConfigRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
+            )
+        return self._stubs["delete_resource_value_config"]
+
+    @property
+    def get_resource_value_config(
+        self,
+    ) -> Callable[
+        [securitycenter_service.GetResourceValueConfigRequest],
+        Awaitable[resource_value_config.ResourceValueConfig],
+    ]:
+        r"""Return a callable for the get resource value config method over gRPC.
+
+        Gets a ResourceValueConfig.
+
+        Returns:
+            Callable[[~.GetResourceValueConfigRequest],
+                    Awaitable[~.ResourceValueConfig]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_resource_value_config" not in self._stubs:
+            self._stubs["get_resource_value_config"] = self.grpc_channel.unary_unary(
+                "/google.cloud.securitycenter.v1.SecurityCenter/GetResourceValueConfig",
+                request_serializer=securitycenter_service.GetResourceValueConfigRequest.serialize,
+                response_deserializer=resource_value_config.ResourceValueConfig.deserialize,
+            )
+        return self._stubs["get_resource_value_config"]
+
+    @property
+    def list_resource_value_configs(
+        self,
+    ) -> Callable[
+        [securitycenter_service.ListResourceValueConfigsRequest],
+        Awaitable[securitycenter_service.ListResourceValueConfigsResponse],
+    ]:
+        r"""Return a callable for the list resource value configs method over gRPC.
+
+        Lists all ResourceValueConfigs.
+
+        Returns:
+            Callable[[~.ListResourceValueConfigsRequest],
+                    Awaitable[~.ListResourceValueConfigsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_resource_value_configs" not in self._stubs:
+            self._stubs["list_resource_value_configs"] = self.grpc_channel.unary_unary(
+                "/google.cloud.securitycenter.v1.SecurityCenter/ListResourceValueConfigs",
+                request_serializer=securitycenter_service.ListResourceValueConfigsRequest.serialize,
+                response_deserializer=securitycenter_service.ListResourceValueConfigsResponse.deserialize,
+            )
+        return self._stubs["list_resource_value_configs"]
+
+    @property
+    def update_resource_value_config(
+        self,
+    ) -> Callable[
+        [securitycenter_service.UpdateResourceValueConfigRequest],
+        Awaitable[gcs_resource_value_config.ResourceValueConfig],
+    ]:
+        r"""Return a callable for the update resource value config method over gRPC.
+
+        Updates an existing ResourceValueConfigs with new
+        rules.
+
+        Returns:
+            Callable[[~.UpdateResourceValueConfigRequest],
+                    Awaitable[~.ResourceValueConfig]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_resource_value_config" not in self._stubs:
+            self._stubs["update_resource_value_config"] = self.grpc_channel.unary_unary(
+                "/google.cloud.securitycenter.v1.SecurityCenter/UpdateResourceValueConfig",
+                request_serializer=securitycenter_service.UpdateResourceValueConfigRequest.serialize,
+                response_deserializer=gcs_resource_value_config.ResourceValueConfig.deserialize,
+            )
+        return self._stubs["update_resource_value_config"]
+
+    @property
+    def list_valued_resources(
+        self,
+    ) -> Callable[
+        [securitycenter_service.ListValuedResourcesRequest],
+        Awaitable[securitycenter_service.ListValuedResourcesResponse],
+    ]:
+        r"""Return a callable for the list valued resources method over gRPC.
+
+        Lists the valued resources for a set of simulation
+        results and filter.
+
+        Returns:
+            Callable[[~.ListValuedResourcesRequest],
+                    Awaitable[~.ListValuedResourcesResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_valued_resources" not in self._stubs:
+            self._stubs["list_valued_resources"] = self.grpc_channel.unary_unary(
+                "/google.cloud.securitycenter.v1.SecurityCenter/ListValuedResources",
+                request_serializer=securitycenter_service.ListValuedResourcesRequest.serialize,
+                response_deserializer=securitycenter_service.ListValuedResourcesResponse.deserialize,
+            )
+        return self._stubs["list_valued_resources"]
+
+    @property
+    def list_attack_paths(
+        self,
+    ) -> Callable[
+        [securitycenter_service.ListAttackPathsRequest],
+        Awaitable[securitycenter_service.ListAttackPathsResponse],
+    ]:
+        r"""Return a callable for the list attack paths method over gRPC.
+
+        Lists the attack paths for a set of simulation
+        results or valued resources and filter.
+
+        Returns:
+            Callable[[~.ListAttackPathsRequest],
+                    Awaitable[~.ListAttackPathsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_attack_paths" not in self._stubs:
+            self._stubs["list_attack_paths"] = self.grpc_channel.unary_unary(
+                "/google.cloud.securitycenter.v1.SecurityCenter/ListAttackPaths",
+                request_serializer=securitycenter_service.ListAttackPathsRequest.serialize,
+                response_deserializer=securitycenter_service.ListAttackPathsResponse.deserialize,
+            )
+        return self._stubs["list_attack_paths"]
+
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
@@ -1718,6 +2324,16 @@ class SecurityCenterGrpcAsyncIOTransport(SecurityCenterTransport):
             self.delete_security_health_analytics_custom_module: gapic_v1.method_async.wrap_method(
                 self.delete_security_health_analytics_custom_module,
                 default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.get_simulation: gapic_v1.method_async.wrap_method(
+                self.get_simulation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_valued_resource: gapic_v1.method_async.wrap_method(
+                self.get_valued_resource,
+                default_timeout=None,
                 client_info=client_info,
             ),
             self.get_big_query_export: gapic_v1.method_async.wrap_method(
@@ -2057,6 +2673,86 @@ class SecurityCenterGrpcAsyncIOTransport(SecurityCenterTransport):
             ),
             self.list_big_query_exports: gapic_v1.method_async.wrap_method(
                 self.list_big_query_exports,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_event_threat_detection_custom_module: gapic_v1.method_async.wrap_method(
+                self.create_event_threat_detection_custom_module,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_event_threat_detection_custom_module: gapic_v1.method_async.wrap_method(
+                self.delete_event_threat_detection_custom_module,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_event_threat_detection_custom_module: gapic_v1.method_async.wrap_method(
+                self.get_event_threat_detection_custom_module,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_descendant_event_threat_detection_custom_modules: gapic_v1.method_async.wrap_method(
+                self.list_descendant_event_threat_detection_custom_modules,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_event_threat_detection_custom_modules: gapic_v1.method_async.wrap_method(
+                self.list_event_threat_detection_custom_modules,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_event_threat_detection_custom_module: gapic_v1.method_async.wrap_method(
+                self.update_event_threat_detection_custom_module,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.validate_event_threat_detection_custom_module: gapic_v1.method_async.wrap_method(
+                self.validate_event_threat_detection_custom_module,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_effective_event_threat_detection_custom_module: gapic_v1.method_async.wrap_method(
+                self.get_effective_event_threat_detection_custom_module,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_effective_event_threat_detection_custom_modules: gapic_v1.method_async.wrap_method(
+                self.list_effective_event_threat_detection_custom_modules,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.batch_create_resource_value_configs: gapic_v1.method_async.wrap_method(
+                self.batch_create_resource_value_configs,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_resource_value_config: gapic_v1.method_async.wrap_method(
+                self.delete_resource_value_config,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_resource_value_config: gapic_v1.method_async.wrap_method(
+                self.get_resource_value_config,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_resource_value_configs: gapic_v1.method_async.wrap_method(
+                self.list_resource_value_configs,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_resource_value_config: gapic_v1.method_async.wrap_method(
+                self.update_resource_value_config,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_valued_resources: gapic_v1.method_async.wrap_method(
+                self.list_valued_resources,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_attack_paths: gapic_v1.method_async.wrap_method(
+                self.list_attack_paths,
                 default_timeout=None,
                 client_info=client_info,
             ),

@@ -28,7 +28,7 @@ import grpc  # type: ignore
 from google.cloud.retail_v2beta.types import import_config
 from google.cloud.retail_v2beta.types import product
 from google.cloud.retail_v2beta.types import product as gcr_product
-from google.cloud.retail_v2beta.types import product_service
+from google.cloud.retail_v2beta.types import product_service, purge_config
 
 from .base import DEFAULT_CLIENT_INFO, ProductServiceTransport
 
@@ -129,7 +129,8 @@ class ProductServiceGrpcTransport(ProductServiceTransport):
 
         if isinstance(channel, grpc.Channel):
             # Ignore credentials if a channel was passed.
-            credentials = False
+            credentials = None
+            self._ignore_credentials = True
             # If a channel was explicitly provided, set it.
             self._grpc_channel = channel
             self._ssl_channel_credentials = None
@@ -388,6 +389,51 @@ class ProductServiceGrpcTransport(ProductServiceTransport):
         return self._stubs["delete_product"]
 
     @property
+    def purge_products(
+        self,
+    ) -> Callable[[purge_config.PurgeProductsRequest], operations_pb2.Operation]:
+        r"""Return a callable for the purge products method over gRPC.
+
+        Permanently deletes all selected
+        [Product][google.cloud.retail.v2beta.Product]s under a branch.
+
+        This process is asynchronous. If the request is valid, the
+        removal will be enqueued and processed offline. Depending on the
+        number of [Product][google.cloud.retail.v2beta.Product]s, this
+        operation could take hours to complete. Before the operation
+        completes, some [Product][google.cloud.retail.v2beta.Product]s
+        may still be returned by
+        [ProductService.GetProduct][google.cloud.retail.v2beta.ProductService.GetProduct]
+        or
+        [ProductService.ListProducts][google.cloud.retail.v2beta.ProductService.ListProducts].
+
+        Depending on the number of
+        [Product][google.cloud.retail.v2beta.Product]s, this operation
+        could take hours to complete. To get a sample of
+        [Product][google.cloud.retail.v2beta.Product]s that would be
+        deleted, set
+        [PurgeProductsRequest.force][google.cloud.retail.v2beta.PurgeProductsRequest.force]
+        to false.
+
+        Returns:
+            Callable[[~.PurgeProductsRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "purge_products" not in self._stubs:
+            self._stubs["purge_products"] = self.grpc_channel.unary_unary(
+                "/google.cloud.retail.v2beta.ProductService/PurgeProducts",
+                request_serializer=purge_config.PurgeProductsRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["purge_products"]
+
+    @property
     def import_products(
         self,
     ) -> Callable[[import_config.ImportProductsRequest], operations_pb2.Operation]:
@@ -507,10 +553,11 @@ class ProductServiceGrpcTransport(ProductServiceTransport):
     ]:
         r"""Return a callable for the add fulfillment places method over gRPC.
 
-        It is recommended to use the
+        We recommend that you use the
         [ProductService.AddLocalInventories][google.cloud.retail.v2beta.ProductService.AddLocalInventories]
-        method instead of
-        [ProductService.AddFulfillmentPlaces][google.cloud.retail.v2beta.ProductService.AddFulfillmentPlaces].
+        method instead of the
+        [ProductService.AddFulfillmentPlaces][google.cloud.retail.v2beta.ProductService.AddFulfillmentPlaces]
+        method.
         [ProductService.AddLocalInventories][google.cloud.retail.v2beta.ProductService.AddLocalInventories]
         achieves the same results but provides more fine-grained control
         over ingesting local inventory data.
@@ -565,10 +612,11 @@ class ProductServiceGrpcTransport(ProductServiceTransport):
     ]:
         r"""Return a callable for the remove fulfillment places method over gRPC.
 
-        It is recommended to use the
+        We recommend that you use the
         [ProductService.RemoveLocalInventories][google.cloud.retail.v2beta.ProductService.RemoveLocalInventories]
-        method instead of
-        [ProductService.RemoveFulfillmentPlaces][google.cloud.retail.v2beta.ProductService.RemoveFulfillmentPlaces].
+        method instead of the
+        [ProductService.RemoveFulfillmentPlaces][google.cloud.retail.v2beta.ProductService.RemoveFulfillmentPlaces]
+        method.
         [ProductService.RemoveLocalInventories][google.cloud.retail.v2beta.ProductService.RemoveLocalInventories]
         achieves the same results but provides more fine-grained control
         over ingesting local inventory data.

@@ -15,7 +15,7 @@ Python Client for Kubernetes Engine
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-container.svg
    :target: https://pypi.org/project/google-cloud-container/
 .. _Kubernetes Engine: https://cloud.google.com/kubernetes-engine/
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/container/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/container/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/kubernetes-engine/
 
 Quick Start

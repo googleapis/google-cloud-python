@@ -15,7 +15,7 @@ Python Client for Stackdriver Monitoring
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-monitoring.svg
    :target: https://pypi.org/project/google-cloud-monitoring/
 .. _Stackdriver Monitoring: https://cloud.google.com/monitoring/docs
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/monitoring/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/monitoring/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/monitoring/docs
 
 Quick Start

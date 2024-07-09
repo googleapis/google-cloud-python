@@ -1,5 +1,26 @@
 # Changelog
 
+## [2.29.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-v2.29.1...google-cloud-documentai-v2.29.2) (2024-07-08)
+
+
+### Bug Fixes
+
+* Allow Protobuf 5.x ([#12866](https://github.com/googleapis/google-cloud-python/issues/12866)) ([40e1810](https://github.com/googleapis/google-cloud-python/commit/40e18101eaaeefe4baa090c3b4f7a96209ea5735))
+
+## [2.29.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-v2.29.0...google-cloud-documentai-v2.29.1) (2024-06-24)
+
+
+### Documentation
+
+* Update the comment to add a note about `documentai.processors.create` permission ([9318d94](https://github.com/googleapis/google-cloud-python/commit/9318d94ce12bd7a2e242f1ac9cbe491307c84ea6))
+
+## [2.29.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-v2.28.0...google-cloud-documentai-v2.29.0) (2024-06-05)
+
+
+### Features
+
+* [google-cloud-documentai] Make Layout Parser generally available in V1 ([#12762](https://github.com/googleapis/google-cloud-python/issues/12762)) ([9fd16ad](https://github.com/googleapis/google-cloud-python/commit/9fd16ad8837e31c3b06475b195c70c45f6979f6c))
+
 ## [2.28.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-v2.27.1...google-cloud-documentai-v2.28.0) (2024-05-29)
 
 

@@ -1794,7 +1794,7 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
                 The request object. Request to get an attachment.
             name (str):
                 Required. Resource name of the attachment, in the form
-                ``spaces/*/messages/*/attachments/*``.
+                ``spaces/{space}/messages/{message}/attachments/{attachment}``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1963,6 +1963,11 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
         Lists spaces visible to the caller or authenticated user. Group
         chats and DMs aren't listed until the first message is sent.
 
+        To list all named spaces by Google Workspace organization, use
+        the
+        ```spaces.search()`` <https://developers.google.com/workspace/chat/api/reference/rest/v1/spaces/search>`__
+        method using Workspace administrator privileges instead.
+
         .. code-block:: python
 
             # This snippet has been automatically generated and should be regarded as a
@@ -2092,7 +2097,7 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
                 The request object. A request to return a single space.
             name (str):
                 Required. Resource name of the space, in the form
-                "spaces/*".
+                ``spaces/{space}``.
 
                 Format: ``spaces/{space}``
 
@@ -2297,6 +2302,18 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
         the space by setting the ``membership.member.name`` to
         ``users/user@example.com`` or ``users/123456789``.
 
+        To specify the Google groups to add, add memberships with the
+        appropriate ``membership.group_member.name``. To add or invite a
+        Google group, use ``groups/{group}``, where ``{group}`` is the
+        ``id`` for the group from the Cloud Identity Groups API. For
+        example, you can use `Cloud Identity Groups lookup
+        API <https://cloud.google.com/identity/docs/reference/rest/v1/groups/lookup>`__
+        to retrieve the ID ``123456789`` for group email
+        ``group@example.com``, then you can add the group to the space
+        by setting the ``membership.group_member.name`` to
+        ``groups/123456789``. Group email is not supported, and Google
+        groups can only be added as members in named spaces.
+
         For a named space or group chat, if the caller blocks, or is
         blocked by some members, or doesn't have permission to add some
         members, then those members aren't added to the created space.
@@ -2480,6 +2497,7 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
                    name is optional if the existing space already has
                    the ``SPACE`` type. Trying to update the space type
                    in other ways results in an invalid argument error).
+                   ``space_type`` is not supported with admin access.
 
                 -  ``space_details``
 
@@ -2490,15 +2508,33 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
                    history
                    setting <https://support.google.com/a/answer/7664184>`__.
                    Warning: mutually exclusive with all other field
-                   paths.)
+                   paths.) ``space_history_state`` is not supported with
+                   admin access.
 
-                -  Developer Preview: ``access_settings.audience``
-                   (Supports changing the `access
+                -  ``access_settings.audience`` (Supports changing the
+                   `access
                    setting <https://support.google.com/chat/answer/11971020>`__
-                   of a space. If no audience is specified in the access
-                   setting, the space's access setting is updated to
-                   restricted. Warning: mutually exclusive with all
-                   other field paths.)
+                   of who can discover the space, join the space, and
+                   preview the messages in space. If no audience is
+                   specified in the access setting, the space's access
+                   setting is updated to private. Warning: mutually
+                   exclusive with all other field paths.)
+                   ``access_settings.audience`` is not supported with
+                   admin access.
+
+                -  Developer Preview: Supports changing the `permission
+                   settings <https://support.google.com/chat/answer/13340792>`__
+                   of a space, supported field paths include:
+                   ``permission_settings.manage_members_and_groups``,
+                   ``permission_settings.modify_space_details``,
+                   ``permission_settings.toggle_history``,
+                   ``permission_settings.use_at_mention_all``,
+                   ``permission_settings.manage_apps``,
+                   ``permission_settings.manage_webhooks``,
+                   ``permission_settings.reply_messages`` (Warning:
+                   mutually exclusive with all other non-permission
+                   settings field paths). ``permission_settings`` is not
+                   supported with admin access.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2867,7 +2903,8 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
         authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__.
 
         To specify the member to add, set the ``membership.member.name``
-        for the human or app member.
+        for the human or app member, or set the
+        ``membership.group_member.name`` for the group member.
 
         -  To add the calling app to a space or a direct message between
            two human users, use ``users/app``. Unable to add other apps
@@ -2882,6 +2919,18 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
            add the user to the space by setting the
            ``membership.member.name`` to ``users/user@example.com`` or
            ``users/123456789``.
+
+        -  To add or invite a Google group in a named space, use
+           ``groups/{group}``, where ``{group}`` is the ``id`` for the
+           group from the Cloud Identity Groups API. For example, you
+           can use `Cloud Identity Groups lookup
+           API <https://cloud.google.com/identity/docs/reference/rest/v1/groups/lookup>`__
+           to retrieve the ID ``123456789`` for group email
+           ``group@example.com``, then you can add or invite the group
+           to a named space by setting the
+           ``membership.group_member.name`` to ``groups/123456789``.
+           Group email is not supported, and Google groups can only be
+           added as members in named spaces.
 
         .. code-block:: python
 

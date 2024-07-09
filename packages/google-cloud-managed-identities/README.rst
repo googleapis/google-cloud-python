@@ -15,7 +15,7 @@ Python Client for Managed Service for Microsoft Active Directory
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-managed-identities.svg
    :target: https://pypi.org/project/google-cloud-managed-identities/
 .. _Managed Service for Microsoft Active Directory: https://cloud.google.com/managed-microsoft-ad/
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/managedidentities/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/managedidentities/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/managed-microsoft-ad/
 
 Quick Start

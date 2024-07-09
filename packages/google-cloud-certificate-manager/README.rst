@@ -15,7 +15,7 @@ Python Client for Certificate Manager
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-certificate-manager.svg
    :target: https://pypi.org/project/google-cloud-certificate-manager/
 .. _Certificate Manager: https://cloud.google.com/python/docs/reference/certificatemanager/latest
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/certificatemanager/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/certificatemanager/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/python/docs/reference/certificatemanager/latest
 
 Quick Start

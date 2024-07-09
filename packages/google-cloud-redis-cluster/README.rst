@@ -15,7 +15,7 @@ Python Client for Google Cloud Memorystore for Redis API
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-redis-cluster.svg
    :target: https://pypi.org/project/google-cloud-redis-cluster/
 .. _Google Cloud Memorystore for Redis API: https://cloud.google.com/redis/docs
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/google-cloud-redis-cluster/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/google-cloud-redis-cluster/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/redis/docs
 
 Quick Start

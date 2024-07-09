@@ -38,8 +38,7 @@ class Violation(proto.Message):
     Attributes:
         name (str):
             Identifier. Format:
-
-            organizations/{organization}/locations/{location}/customers/{customer}/workloads/{workload}/violations/{violation}
+            ``organizations/{organization}/locations/{location}/customers/{customer}/workloads/{workload}/violations/{violation}``
         description (str):
             Output only. Description for the Violation.
             e.g. OrgPolicy gcp.resourceLocations has non
@@ -64,9 +63,9 @@ class Violation(proto.Message):
             Output only. Immutable. Name of the OrgPolicy which was
             modified with non-compliant change and resulted this
             violation. Format:
-            projects/{project_number}/policies/{constraint_name}
-            folders/{folder_id}/policies/{constraint_name}
-            organizations/{organization_id}/policies/{constraint_name}
+            ``projects/{project_number}/policies/{constraint_name}``
+            ``folders/{folder_id}/policies/{constraint_name}``
+            ``organizations/{organization_id}/policies/{constraint_name}``
         folder_id (int):
             The folder_id of the violation
         remediation (google.cloud.cloudcontrolspartner_v1beta.types.Violation.Remediation):
@@ -288,9 +287,8 @@ class ListViolationsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. Parent resource
-            Format
-            organizations/{organization}/locations/{location}/customers/{customer}/workloads/{workload}
+            Required. Parent resource Format
+            ``organizations/{organization}/locations/{location}/customers/{customer}/workloads/{workload}``
         page_size (int):
             Optional. The maximum number of customers row
             to return. The service may return fewer than
@@ -378,8 +376,7 @@ class GetViolationRequest(proto.Message):
     Attributes:
         name (str):
             Required. Format:
-
-            organizations/{organization}/locations/{location}/customers/{customer}/workloads/{workload}/violations/{violation}
+            ``organizations/{organization}/locations/{location}/customers/{customer}/workloads/{workload}/violations/{violation}``
     """
 
     name: str = proto.Field(

@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.13.5](https://github.com/googleapis/google-cloud-python/compare/google-cloud-billing-v1.13.4...google-cloud-billing-v1.13.5) (2024-07-08)
+
+
+### Bug Fixes
+
+* Allow Protobuf 5.x ([#12864](https://github.com/googleapis/google-cloud-python/issues/12864)) ([728b307](https://github.com/googleapis/google-cloud-python/commit/728b307ed0cc497685507a219e913f002f097132))
+
+## [1.13.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-billing-v1.13.3...google-cloud-billing-v1.13.4) (2024-06-24)
+
+
+### Documentation
+
+* Genereal documentation improvements ([73dd30d](https://github.com/googleapis/google-cloud-python/commit/73dd30dd4eac8721b5db7e664df1c885f5b3d65c))
+
 ## [1.13.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-billing-v1.13.2...google-cloud-billing-v1.13.3) (2024-03-05)
 
 

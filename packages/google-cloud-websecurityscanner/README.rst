@@ -15,7 +15,7 @@ Python Client for Cloud Security Scanner
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-websecurityscanner.svg
    :target: https://pypi.org/project/google-cloud-websecurityscanner/
 .. _Cloud Security Scanner: https://cloud.google.com/security-scanner/docs/
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/websecurityscanner/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/websecurityscanner/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/security-scanner/docs/
 
 Quick Start

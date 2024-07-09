@@ -17,6 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.retail_v2alpha.types import common, import_config
@@ -168,7 +169,10 @@ class CatalogAttribute(proto.Message):
             faceted, or boosted in
             [SearchService.Search][google.cloud.retail.v2alpha.SearchService.Search].
 
-            Must be specified, otherwise throws INVALID_FORMAT error.
+            Must be specified when
+            [AttributesConfig.attribute_config_level][google.cloud.retail.v2alpha.AttributesConfig.attribute_config_level]
+            is CATALOG_LEVEL_ATTRIBUTE_CONFIG, otherwise throws
+            INVALID_FORMAT error.
         dynamic_facetable_option (google.cloud.retail_v2alpha.types.CatalogAttribute.DynamicFacetableOption):
             If DYNAMIC_FACETABLE_ENABLED, attribute values are available
             for dynamic facet. Could only be DYNAMIC_FACETABLE_DISABLED
@@ -191,7 +195,10 @@ class CatalogAttribute(proto.Message):
             as there are no text values associated to numerical
             attributes.
 
-            Must be specified, otherwise throws INVALID_FORMAT error.
+            Must be specified, when
+            [AttributesConfig.attribute_config_level][google.cloud.retail.v2alpha.AttributesConfig.attribute_config_level]
+            is CATALOG_LEVEL_ATTRIBUTE_CONFIG, otherwise throws
+            INVALID_FORMAT error.
         recommendations_filtering_option (google.cloud.retail_v2alpha.types.RecommendationsFilteringOption):
             When
             [AttributesConfig.attribute_config_level][google.cloud.retail.v2alpha.AttributesConfig.attribute_config_level]
@@ -211,6 +218,8 @@ class CatalogAttribute(proto.Message):
             the search results. If unset, the server behavior defaults
             to
             [RETRIEVABLE_DISABLED][google.cloud.retail.v2alpha.CatalogAttribute.RetrievableOption.RETRIEVABLE_DISABLED].
+        facet_config (google.cloud.retail_v2alpha.types.CatalogAttribute.FacetConfig):
+            Contains facet options.
     """
 
     class AttributeType(proto.Enum):
@@ -312,6 +321,214 @@ class CatalogAttribute(proto.Message):
         RETRIEVABLE_ENABLED = 1
         RETRIEVABLE_DISABLED = 2
 
+    class FacetConfig(proto.Message):
+        r"""Possible options for the facet that corresponds to the
+        current attribute config.
+
+        Attributes:
+            facet_intervals (MutableSequence[google.cloud.retail_v2alpha.types.Interval]):
+                If you don't set the facet
+                [SearchRequest.FacetSpec.FacetKey.intervals][google.cloud.retail.v2alpha.SearchRequest.FacetSpec.FacetKey.intervals]
+                in the request to a numerical attribute, then we use the
+                computed intervals with rounded bounds obtained from all its
+                product numerical attribute values. The computed intervals
+                might not be ideal for some attributes. Therefore, we give
+                you the option to overwrite them with the facet_intervals
+                field. The maximum of facet intervals per
+                [CatalogAttribute][google.cloud.retail.v2alpha.CatalogAttribute]
+                is 40. Each interval must have a lower bound or an upper
+                bound. If both bounds are provided, then the lower bound
+                must be smaller or equal than the upper bound.
+            ignored_facet_values (MutableSequence[google.cloud.retail_v2alpha.types.CatalogAttribute.FacetConfig.IgnoredFacetValues]):
+                Each instance represents a list of attribute values to
+                ignore as facet values for a specific time range. The
+                maximum number of instances per
+                [CatalogAttribute][google.cloud.retail.v2alpha.CatalogAttribute]
+                is 25.
+            merged_facet_values (MutableSequence[google.cloud.retail_v2alpha.types.CatalogAttribute.FacetConfig.MergedFacetValue]):
+                Each instance replaces a list of facet values by a merged
+                facet value. If a facet value is not in any list, then it
+                will stay the same. To avoid conflicts, only paths of length
+                1 are accepted. In other words, if "dark_blue" merged into
+                "BLUE", then the latter can't merge into "blues" because
+                this would create a path of length 2. The maximum number of
+                instances of MergedFacetValue per
+                [CatalogAttribute][google.cloud.retail.v2alpha.CatalogAttribute]
+                is 100. This feature is available only for textual custom
+                attributes.
+            merged_facet (google.cloud.retail_v2alpha.types.CatalogAttribute.FacetConfig.MergedFacet):
+                Use this field only if you want to merge a
+                facet key into another facet key.
+            rerank_config (google.cloud.retail_v2alpha.types.CatalogAttribute.FacetConfig.RerankConfig):
+                Set this field only if you want to rerank
+                based on facet values engaged by the user for
+                the current key. This option is only possible
+                for custom facetable textual keys.
+        """
+
+        class IgnoredFacetValues(proto.Message):
+            r"""[Facet
+            values][google.cloud.retail.v2alpha.SearchResponse.Facet.values] to
+            ignore on [facets][google.cloud.retail.v2alpha.SearchResponse.Facet]
+            during the specified time range for the given
+            [SearchResponse.Facet.key][google.cloud.retail.v2alpha.SearchResponse.Facet.key]
+            attribute.
+
+            Attributes:
+                values (MutableSequence[str]):
+                    List of facet values to ignore for the
+                    following time range. The facet values are the
+                    same as the attribute values. There is a limit
+                    of 10 values per instance of IgnoredFacetValues.
+                    Each value can have at most 128 characters.
+                start_time (google.protobuf.timestamp_pb2.Timestamp):
+                    Time range for the current list of facet
+                    values to ignore. If multiple time ranges are
+                    specified for an facet value for the current
+                    attribute, consider all of them. If both are
+                    empty, ignore always. If start time and end time
+                    are set, then start time must be before end
+                    time.
+                    If start time is not empty and end time is
+                    empty, then will ignore these facet values after
+                    the start time.
+                end_time (google.protobuf.timestamp_pb2.Timestamp):
+                    If start time is empty and end time is not
+                    empty, then ignore these facet values before end
+                    time.
+            """
+
+            values: MutableSequence[str] = proto.RepeatedField(
+                proto.STRING,
+                number=1,
+            )
+            start_time: timestamp_pb2.Timestamp = proto.Field(
+                proto.MESSAGE,
+                number=2,
+                message=timestamp_pb2.Timestamp,
+            )
+            end_time: timestamp_pb2.Timestamp = proto.Field(
+                proto.MESSAGE,
+                number=3,
+                message=timestamp_pb2.Timestamp,
+            )
+
+        class MergedFacetValue(proto.Message):
+            r"""Replaces a set of textual facet values by the same (possibly
+            different) merged facet value. Each facet value should appear at
+            most once as a value per
+            [CatalogAttribute][google.cloud.retail.v2alpha.CatalogAttribute].
+            This feature is available only for textual custom attributes.
+
+            Attributes:
+                values (MutableSequence[str]):
+                    All the facet values that are replaces by the same
+                    [merged_value][google.cloud.retail.v2alpha.CatalogAttribute.FacetConfig.MergedFacetValue.merged_value]
+                    that follows. The maximum number of values per
+                    MergedFacetValue is 25. Each value can have up to 128
+                    characters.
+                merged_value (str):
+                    All the previous values are replaced by this merged facet
+                    value. This merged_value must be non-empty and can have up
+                    to 128 characters.
+            """
+
+            values: MutableSequence[str] = proto.RepeatedField(
+                proto.STRING,
+                number=1,
+            )
+            merged_value: str = proto.Field(
+                proto.STRING,
+                number=2,
+            )
+
+        class MergedFacet(proto.Message):
+            r"""The current facet key (i.e. attribute config) maps into the
+            [merged_facet_key][google.cloud.retail.v2alpha.CatalogAttribute.FacetConfig.MergedFacet.merged_facet_key].
+            A facet key can have at most one child. The current facet key and
+            the merged facet key need both to be textual custom attributes or
+            both numerical custom attributes (same type).
+
+            Attributes:
+                merged_facet_key (str):
+                    The merged facet key should be a valid facet
+                    key that is different than the facet key of the
+                    current catalog attribute. We refer this is
+                    merged facet key as the child of the current
+                    catalog attribute. This merged facet key can't
+                    be a parent of another facet key (i.e. no
+                    directed path of length 2). This merged facet
+                    key needs to be either a textual custom
+                    attribute or a numerical custom attribute.
+            """
+
+            merged_facet_key: str = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+
+        class RerankConfig(proto.Message):
+            r"""Options to rerank based on facet values engaged by the user for the
+            current key. That key needs to be a custom textual key and
+            facetable. To use this control, you also need to pass all the facet
+            keys engaged by the user in the request using the field
+            [SearchRequest.FacetSpec]. In particular, if you don't pass the
+            facet keys engaged that you want to rerank on, this control won't be
+            effective. Moreover, to obtain better results, the facet values that
+            you want to rerank on should be close to English (ideally made of
+            words, underscores, and spaces).
+
+            Attributes:
+                rerank_facet (bool):
+                    If set to true, then we also rerank the
+                    dynamic facets based on the facet values engaged
+                    by the user for the current attribute key during
+                    serving.
+                facet_values (MutableSequence[str]):
+                    If empty, rerank on all facet values for the
+                    current key. Otherwise, will rerank on the facet
+                    values from this list only.
+            """
+
+            rerank_facet: bool = proto.Field(
+                proto.BOOL,
+                number=1,
+            )
+            facet_values: MutableSequence[str] = proto.RepeatedField(
+                proto.STRING,
+                number=2,
+            )
+
+        facet_intervals: MutableSequence[common.Interval] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=common.Interval,
+        )
+        ignored_facet_values: MutableSequence[
+            "CatalogAttribute.FacetConfig.IgnoredFacetValues"
+        ] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message="CatalogAttribute.FacetConfig.IgnoredFacetValues",
+        )
+        merged_facet_values: MutableSequence[
+            "CatalogAttribute.FacetConfig.MergedFacetValue"
+        ] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=3,
+            message="CatalogAttribute.FacetConfig.MergedFacetValue",
+        )
+        merged_facet: "CatalogAttribute.FacetConfig.MergedFacet" = proto.Field(
+            proto.MESSAGE,
+            number=4,
+            message="CatalogAttribute.FacetConfig.MergedFacet",
+        )
+        rerank_config: "CatalogAttribute.FacetConfig.RerankConfig" = proto.Field(
+            proto.MESSAGE,
+            number=5,
+            message="CatalogAttribute.FacetConfig.RerankConfig",
+        )
+
     key: str = proto.Field(
         proto.STRING,
         number=1,
@@ -356,6 +573,11 @@ class CatalogAttribute(proto.Message):
         proto.ENUM,
         number=12,
         enum=RetrievableOption,
+    )
+    facet_config: FacetConfig = proto.Field(
+        proto.MESSAGE,
+        number=13,
+        message=FacetConfig,
     )
 
 
@@ -449,7 +671,7 @@ class CompletionConfig(proto.Message):
 
             Can use
             [GetOperation][google.longrunning.Operations.GetOperation]
-            API to retrieve the latest state of the Long Running
+            API method to retrieve the latest state of the Long Running
             Operation.
         denylist_input_config (google.cloud.retail_v2alpha.types.CompletionDataInputConfig):
             Output only. The source data for the latest
@@ -526,12 +748,12 @@ class CompletionConfig(proto.Message):
 
 class MerchantCenterLink(proto.Message):
     r"""Represents a link between a Merchant Center account and a
-    branch. Once a link is established, products from the linked
-    merchant center account will be streamed to the linked branch.
+    branch. After a link is established, products from the linked
+    Merchant Center account are streamed to the linked branch.
 
     Attributes:
         merchant_center_account_id (int):
-            Required. The linked `Merchant center account
+            Required. The linked `Merchant Center account
             ID <https://developers.google.com/shopping-content/guides/accountstatuses>`__.
             The account must be a standalone account or a sub-account of
             a MCA.
@@ -542,7 +764,7 @@ class MerchantCenterLink(proto.Message):
             configured default branch. However, changing the default
             branch later on won't change the linked branch here.
 
-            A single branch ID can only have one linked merchant center
+            A single branch ID can only have one linked Merchant Center
             account ID.
         destinations (MutableSequence[str]):
             String representing the destination to import for, all if
@@ -661,10 +883,10 @@ class Catalog(proto.Message):
             Required. The product level configuration.
         merchant_center_linking_config (google.cloud.retail_v2alpha.types.MerchantCenterLinkingConfig):
             The Merchant Center linking configuration.
-            Once a link is added, the data stream from
+            After a link is added, the data stream from
             Merchant Center to Cloud Retail will be enabled
             automatically. The requester must have access to
-            the merchant center account in order to make
+            the Merchant Center account in order to make
             changes to this field.
     """
 

@@ -1299,12 +1299,7 @@ async def test_list_instances_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[
             client._client._transport.list_instances
         ] = mock_object
@@ -1884,12 +1879,7 @@ async def test_get_instance_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[
             client._client._transport.get_instance
         ] = mock_object
@@ -2272,12 +2262,7 @@ async def test_create_instance_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[
             client._client._transport.create_instance
         ] = mock_object
@@ -2661,12 +2646,7 @@ async def test_update_instance_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[
             client._client._transport.update_instance
         ] = mock_object
@@ -3042,12 +3022,7 @@ async def test_delete_instance_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[
             client._client._transport.delete_instance
         ] = mock_object
@@ -3313,6 +3288,7 @@ def test_import_data_non_empty_request_with_auto_populated_field():
     # if they meet the requirements of AIP 4235.
     request = parallelstore.ImportDataRequest(
         name="name_value",
+        service_account="service_account_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3325,6 +3301,7 @@ def test_import_data_non_empty_request_with_auto_populated_field():
         _, args, _ = call.mock_calls[0]
         assert args[0] == parallelstore.ImportDataRequest(
             name="name_value",
+            service_account="service_account_value",
         )
 
 
@@ -3411,12 +3388,7 @@ async def test_import_data_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[
             client._client._transport.import_data
         ] = mock_object
@@ -3600,6 +3572,7 @@ def test_export_data_non_empty_request_with_auto_populated_field():
     # if they meet the requirements of AIP 4235.
     request = parallelstore.ExportDataRequest(
         name="name_value",
+        service_account="service_account_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3612,6 +3585,7 @@ def test_export_data_non_empty_request_with_auto_populated_field():
         _, args, _ = call.mock_calls[0]
         assert args[0] == parallelstore.ExportDataRequest(
             name="name_value",
+            service_account="service_account_value",
         )
 
 
@@ -3698,12 +3672,7 @@ async def test_export_data_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[
             client._client._transport.export_data
         ] = mock_object
@@ -6824,8 +6793,31 @@ def test_parse_network_path():
     assert expected == actual
 
 
+def test_service_account_path():
+    project = "oyster"
+    service_account = "nudibranch"
+    expected = "projects/{project}/serviceAccounts/{service_account}".format(
+        project=project,
+        service_account=service_account,
+    )
+    actual = ParallelstoreClient.service_account_path(project, service_account)
+    assert expected == actual
+
+
+def test_parse_service_account_path():
+    expected = {
+        "project": "cuttlefish",
+        "service_account": "mussel",
+    }
+    path = ParallelstoreClient.service_account_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ParallelstoreClient.parse_service_account_path(path)
+    assert expected == actual
+
+
 def test_common_billing_account_path():
-    billing_account = "oyster"
+    billing_account = "winkle"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -6835,7 +6827,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "nudibranch",
+        "billing_account": "nautilus",
     }
     path = ParallelstoreClient.common_billing_account_path(**expected)
 
@@ -6845,7 +6837,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "cuttlefish"
+    folder = "scallop"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -6855,7 +6847,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "mussel",
+        "folder": "abalone",
     }
     path = ParallelstoreClient.common_folder_path(**expected)
 
@@ -6865,7 +6857,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "winkle"
+    organization = "squid"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -6875,7 +6867,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "nautilus",
+        "organization": "clam",
     }
     path = ParallelstoreClient.common_organization_path(**expected)
 
@@ -6885,7 +6877,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "scallop"
+    project = "whelk"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -6895,7 +6887,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "abalone",
+        "project": "octopus",
     }
     path = ParallelstoreClient.common_project_path(**expected)
 
@@ -6905,8 +6897,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "squid"
-    location = "clam"
+    project = "oyster"
+    location = "nudibranch"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -6917,8 +6909,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "whelk",
-        "location": "octopus",
+        "project": "cuttlefish",
+        "location": "mussel",
     }
     path = ParallelstoreClient.common_location_path(**expected)
 

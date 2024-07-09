@@ -31,7 +31,7 @@ from google.cloud.retail_v2beta import gapic_version as package_version
 from google.cloud.retail_v2beta.types import import_config
 from google.cloud.retail_v2beta.types import product
 from google.cloud.retail_v2beta.types import product as gcr_product
-from google.cloud.retail_v2beta.types import product_service
+from google.cloud.retail_v2beta.types import product_service, purge_config
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
@@ -87,6 +87,8 @@ class ProductServiceTransport(abc.ABC):
 
         # Save the scopes.
         self._scopes = scopes
+        if not hasattr(self, "_ignore_credentials"):
+            self._ignore_credentials: bool = False
 
         # If no credentials are provided, then determine the appropriate
         # defaults.
@@ -99,7 +101,7 @@ class ProductServiceTransport(abc.ABC):
             credentials, _ = google.auth.load_credentials_from_file(
                 credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
             )
-        elif credentials is None:
+        elif credentials is None and not self._ignore_credentials:
             credentials, _ = google.auth.default(
                 **scopes_kwargs, quota_project_id=quota_project_id
             )
@@ -154,6 +156,11 @@ class ProductServiceTransport(abc.ABC):
             ),
             self.delete_product: gapic_v1.method.wrap_method(
                 self.delete_product,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.purge_products: gapic_v1.method.wrap_method(
+                self.purge_products,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -258,6 +265,15 @@ class ProductServiceTransport(abc.ABC):
     ) -> Callable[
         [product_service.DeleteProductRequest],
         Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def purge_products(
+        self,
+    ) -> Callable[
+        [purge_config.PurgeProductsRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 

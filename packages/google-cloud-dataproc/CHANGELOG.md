@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-cloud-dataproc/#history
 
+## [5.10.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataproc-v5.10.0...google-cloud-dataproc-v5.10.1) (2024-07-08)
+
+
+### Bug Fixes
+
+* Allow Protobuf 5.x ([#12866](https://github.com/googleapis/google-cloud-python/issues/12866)) ([40e1810](https://github.com/googleapis/google-cloud-python/commit/40e18101eaaeefe4baa090c3b4f7a96209ea5735))
+
+## [5.10.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataproc-v5.9.3...google-cloud-dataproc-v5.10.0) (2024-06-27)
+
+
+### Features
+
+* [google-cloud-dataproc] add the cohort and auto tuning configuration to the batch's RuntimeConfig ([#12823](https://github.com/googleapis/google-cloud-python/issues/12823)) ([bbd627b](https://github.com/googleapis/google-cloud-python/commit/bbd627b8354801ab3b897cb2681636bffafd2a9c))
+
 ## [5.9.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataproc-v5.9.2...google-cloud-dataproc-v5.9.3) (2024-03-05)
 
 

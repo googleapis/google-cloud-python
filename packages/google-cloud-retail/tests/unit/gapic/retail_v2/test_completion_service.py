@@ -1339,12 +1339,7 @@ async def test_complete_query_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[
             client._client._transport.complete_query
         ] = mock_object
@@ -1641,12 +1636,7 @@ async def test_import_completion_data_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[
             client._client._transport.import_completion_data
         ] = mock_object
@@ -1885,6 +1875,7 @@ def test_complete_query_rest_required_fields(
         (
             "dataset",
             "device_type",
+            "enable_attribute_suggestions",
             "entity",
             "language_codes",
             "max_suggestions",
@@ -1958,6 +1949,7 @@ def test_complete_query_rest_unset_required_fields():
             (
                 "dataset",
                 "deviceType",
+                "enableAttributeSuggestions",
                 "entity",
                 "languageCodes",
                 "maxSuggestions",

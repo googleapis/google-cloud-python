@@ -13,10 +13,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from .cache_service import (
+    CreateCachedContentRequest,
+    DeleteCachedContentRequest,
+    GetCachedContentRequest,
+    ListCachedContentsRequest,
+    ListCachedContentsResponse,
+    UpdateCachedContentRequest,
+)
+from .cached_content import CachedContent
 from .citation import CitationMetadata, CitationSource
 from .content import (
     Blob,
+    CodeExecution,
+    CodeExecutionResult,
     Content,
+    ExecutableCode,
     FileData,
     FunctionCall,
     FunctionCallingConfig,
@@ -163,10 +175,20 @@ from .tuned_model import (
 )
 
 __all__ = (
+    "CreateCachedContentRequest",
+    "DeleteCachedContentRequest",
+    "GetCachedContentRequest",
+    "ListCachedContentsRequest",
+    "ListCachedContentsResponse",
+    "UpdateCachedContentRequest",
+    "CachedContent",
     "CitationMetadata",
     "CitationSource",
     "Blob",
+    "CodeExecution",
+    "CodeExecutionResult",
     "Content",
+    "ExecutableCode",
     "FileData",
     "FunctionCall",
     "FunctionCallingConfig",

@@ -70,6 +70,8 @@ from google.cloud.securitycenter_v1.services.security_center import (
 from google.cloud.securitycenter_v1.types import (
     access,
     application,
+    attack_exposure,
+    attack_path,
     backup_disaster_recovery,
     bigquery_export,
     cloud_armor,
@@ -80,15 +82,19 @@ from google.cloud.securitycenter_v1.types import (
     contact_details,
     container,
     database,
+    effective_event_threat_detection_custom_module,
     effective_security_health_analytics_custom_module,
+)
+from google.cloud.securitycenter_v1.types import (
+    event_threat_detection_custom_module_validation_errors,
     exfiltration,
 )
 from google.cloud.securitycenter_v1.types import (
-    process,
     run_asset_discovery_response,
     security_health_analytics_custom_config,
 )
 from google.cloud.securitycenter_v1.types import (
+    group_membership,
     iam_binding,
     indicator,
     kernel_rootkit,
@@ -101,6 +107,16 @@ from google.cloud.securitycenter_v1.types import (
 from google.cloud.securitycenter_v1.types import (
     security_posture,
     securitycenter_service,
+    simulation,
+)
+from google.cloud.securitycenter_v1.types import (
+    toxic_combination,
+    valued_resource,
+    vulnerability,
+)
+from google.cloud.securitycenter_v1.types import event_threat_detection_custom_module
+from google.cloud.securitycenter_v1.types import (
+    event_threat_detection_custom_module as gcs_event_threat_detection_custom_module,
 )
 from google.cloud.securitycenter_v1.types import external_system as gcs_external_system
 from google.cloud.securitycenter_v1.types import (
@@ -108,6 +124,9 @@ from google.cloud.securitycenter_v1.types import (
 )
 from google.cloud.securitycenter_v1.types import (
     organization_settings as gcs_organization_settings,
+)
+from google.cloud.securitycenter_v1.types import (
+    resource_value_config as gcs_resource_value_config,
 )
 from google.cloud.securitycenter_v1.types import security_health_analytics_custom_module
 from google.cloud.securitycenter_v1.types import (
@@ -124,10 +143,11 @@ from google.cloud.securitycenter_v1.types import notebook
 from google.cloud.securitycenter_v1.types import notification_config
 from google.cloud.securitycenter_v1.types import org_policy
 from google.cloud.securitycenter_v1.types import organization_settings
+from google.cloud.securitycenter_v1.types import process, resource
+from google.cloud.securitycenter_v1.types import resource_value_config
 from google.cloud.securitycenter_v1.types import security_marks
 from google.cloud.securitycenter_v1.types import source
 from google.cloud.securitycenter_v1.types import source as gcs_source
-from google.cloud.securitycenter_v1.types import vulnerability
 
 
 def client_cert_source_callback():
@@ -1374,12 +1394,7 @@ async def test_bulk_mute_findings_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[
             client._client._transport.bulk_mute_findings
         ] = mock_object
@@ -1802,12 +1817,7 @@ async def test_create_security_health_analytics_custom_module_async_use_cached_w
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[
             client._client._transport.create_security_health_analytics_custom_module
         ] = mock_object
@@ -2240,12 +2250,7 @@ async def test_create_source_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[
             client._client._transport.create_source
         ] = mock_object
@@ -2666,12 +2671,7 @@ async def test_create_finding_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[
             client._client._transport.create_finding
         ] = mock_object
@@ -3106,12 +3106,7 @@ async def test_create_mute_config_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[
             client._client._transport.create_mute_config
         ] = mock_object
@@ -3538,12 +3533,7 @@ async def test_create_notification_config_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[
             client._client._transport.create_notification_config
         ] = mock_object
@@ -3957,12 +3947,7 @@ async def test_delete_mute_config_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[
             client._client._transport.delete_mute_config
         ] = mock_object
@@ -4334,12 +4319,7 @@ async def test_delete_notification_config_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[
             client._client._transport.delete_notification_config
         ] = mock_object
@@ -4727,12 +4707,7 @@ async def test_delete_security_health_analytics_custom_module_async_use_cached_w
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[
             client._client._transport.delete_security_health_analytics_custom_module
         ] = mock_object
@@ -4944,6 +4919,794 @@ async def test_delete_security_health_analytics_custom_module_flattened_error_as
 @pytest.mark.parametrize(
     "request_type",
     [
+        securitycenter_service.GetSimulationRequest,
+        dict,
+    ],
+)
+def test_get_simulation(request_type, transport: str = "grpc"):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_simulation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = simulation.Simulation(
+            name="name_value",
+            cloud_provider=resource.CloudProvider.GOOGLE_CLOUD_PLATFORM,
+        )
+        response = client.get_simulation(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = securitycenter_service.GetSimulationRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, simulation.Simulation)
+    assert response.name == "name_value"
+    assert response.cloud_provider == resource.CloudProvider.GOOGLE_CLOUD_PLATFORM
+
+
+def test_get_simulation_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_simulation), "__call__") as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.get_simulation()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == securitycenter_service.GetSimulationRequest()
+
+
+def test_get_simulation_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = securitycenter_service.GetSimulationRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_simulation), "__call__") as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.get_simulation(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == securitycenter_service.GetSimulationRequest(
+            name="name_value",
+        )
+
+
+def test_get_simulation_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = SecurityCenterClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.get_simulation in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.get_simulation] = mock_rpc
+        request = {}
+        client.get_simulation(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_simulation(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_get_simulation_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_simulation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            simulation.Simulation(
+                name="name_value",
+                cloud_provider=resource.CloudProvider.GOOGLE_CLOUD_PLATFORM,
+            )
+        )
+        response = await client.get_simulation()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == securitycenter_service.GetSimulationRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_simulation_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = SecurityCenterAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.get_simulation
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_object = mock.AsyncMock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.get_simulation
+        ] = mock_object
+
+        request = {}
+        await client.get_simulation(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_object.call_count == 1
+
+        await client.get_simulation(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_object.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_get_simulation_async(
+    transport: str = "grpc_asyncio",
+    request_type=securitycenter_service.GetSimulationRequest,
+):
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_simulation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            simulation.Simulation(
+                name="name_value",
+                cloud_provider=resource.CloudProvider.GOOGLE_CLOUD_PLATFORM,
+            )
+        )
+        response = await client.get_simulation(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = securitycenter_service.GetSimulationRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, simulation.Simulation)
+    assert response.name == "name_value"
+    assert response.cloud_provider == resource.CloudProvider.GOOGLE_CLOUD_PLATFORM
+
+
+@pytest.mark.asyncio
+async def test_get_simulation_async_from_dict():
+    await test_get_simulation_async(request_type=dict)
+
+
+def test_get_simulation_field_headers():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = securitycenter_service.GetSimulationRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_simulation), "__call__") as call:
+        call.return_value = simulation.Simulation()
+        client.get_simulation(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_simulation_field_headers_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = securitycenter_service.GetSimulationRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_simulation), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            simulation.Simulation()
+        )
+        await client.get_simulation(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_get_simulation_flattened():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_simulation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = simulation.Simulation()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_simulation(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_simulation_flattened_error():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_simulation(
+            securitycenter_service.GetSimulationRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_simulation_flattened_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_simulation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = simulation.Simulation()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            simulation.Simulation()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_simulation(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_simulation_flattened_error_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_simulation(
+            securitycenter_service.GetSimulationRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        securitycenter_service.GetValuedResourceRequest,
+        dict,
+    ],
+)
+def test_get_valued_resource(request_type, transport: str = "grpc"):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_valued_resource), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = valued_resource.ValuedResource(
+            name="name_value",
+            resource="resource_value",
+            resource_type="resource_type_value",
+            display_name="display_name_value",
+            resource_value=valued_resource.ValuedResource.ResourceValue.RESOURCE_VALUE_LOW,
+            exposed_score=0.1395,
+        )
+        response = client.get_valued_resource(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = securitycenter_service.GetValuedResourceRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, valued_resource.ValuedResource)
+    assert response.name == "name_value"
+    assert response.resource == "resource_value"
+    assert response.resource_type == "resource_type_value"
+    assert response.display_name == "display_name_value"
+    assert (
+        response.resource_value
+        == valued_resource.ValuedResource.ResourceValue.RESOURCE_VALUE_LOW
+    )
+    assert math.isclose(response.exposed_score, 0.1395, rel_tol=1e-6)
+
+
+def test_get_valued_resource_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_valued_resource), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.get_valued_resource()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == securitycenter_service.GetValuedResourceRequest()
+
+
+def test_get_valued_resource_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = securitycenter_service.GetValuedResourceRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_valued_resource), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.get_valued_resource(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == securitycenter_service.GetValuedResourceRequest(
+            name="name_value",
+        )
+
+
+def test_get_valued_resource_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = SecurityCenterClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.get_valued_resource in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.get_valued_resource
+        ] = mock_rpc
+        request = {}
+        client.get_valued_resource(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_valued_resource(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_get_valued_resource_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_valued_resource), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            valued_resource.ValuedResource(
+                name="name_value",
+                resource="resource_value",
+                resource_type="resource_type_value",
+                display_name="display_name_value",
+                resource_value=valued_resource.ValuedResource.ResourceValue.RESOURCE_VALUE_LOW,
+                exposed_score=0.1395,
+            )
+        )
+        response = await client.get_valued_resource()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == securitycenter_service.GetValuedResourceRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_valued_resource_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = SecurityCenterAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.get_valued_resource
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_object = mock.AsyncMock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.get_valued_resource
+        ] = mock_object
+
+        request = {}
+        await client.get_valued_resource(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_object.call_count == 1
+
+        await client.get_valued_resource(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_object.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_get_valued_resource_async(
+    transport: str = "grpc_asyncio",
+    request_type=securitycenter_service.GetValuedResourceRequest,
+):
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_valued_resource), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            valued_resource.ValuedResource(
+                name="name_value",
+                resource="resource_value",
+                resource_type="resource_type_value",
+                display_name="display_name_value",
+                resource_value=valued_resource.ValuedResource.ResourceValue.RESOURCE_VALUE_LOW,
+                exposed_score=0.1395,
+            )
+        )
+        response = await client.get_valued_resource(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = securitycenter_service.GetValuedResourceRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, valued_resource.ValuedResource)
+    assert response.name == "name_value"
+    assert response.resource == "resource_value"
+    assert response.resource_type == "resource_type_value"
+    assert response.display_name == "display_name_value"
+    assert (
+        response.resource_value
+        == valued_resource.ValuedResource.ResourceValue.RESOURCE_VALUE_LOW
+    )
+    assert math.isclose(response.exposed_score, 0.1395, rel_tol=1e-6)
+
+
+@pytest.mark.asyncio
+async def test_get_valued_resource_async_from_dict():
+    await test_get_valued_resource_async(request_type=dict)
+
+
+def test_get_valued_resource_field_headers():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = securitycenter_service.GetValuedResourceRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_valued_resource), "__call__"
+    ) as call:
+        call.return_value = valued_resource.ValuedResource()
+        client.get_valued_resource(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_valued_resource_field_headers_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = securitycenter_service.GetValuedResourceRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_valued_resource), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            valued_resource.ValuedResource()
+        )
+        await client.get_valued_resource(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_get_valued_resource_flattened():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_valued_resource), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = valued_resource.ValuedResource()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_valued_resource(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_valued_resource_flattened_error():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_valued_resource(
+            securitycenter_service.GetValuedResourceRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_valued_resource_flattened_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_valued_resource), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = valued_resource.ValuedResource()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            valued_resource.ValuedResource()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_valued_resource(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_valued_resource_flattened_error_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_valued_resource(
+            securitycenter_service.GetValuedResourceRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         securitycenter_service.GetBigQueryExportRequest,
         dict,
     ],
@@ -5132,12 +5895,7 @@ async def test_get_big_query_export_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[
             client._client._transport.get_big_query_export
         ] = mock_object
@@ -5525,12 +6283,7 @@ async def test_get_iam_policy_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[
             client._client._transport.get_iam_policy
         ] = mock_object
@@ -5921,12 +6674,7 @@ async def test_get_mute_config_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[
             client._client._transport.get_mute_config
         ] = mock_object
@@ -6321,12 +7069,7 @@ async def test_get_notification_config_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[
             client._client._transport.get_notification_config
         ] = mock_object
@@ -6723,12 +7466,7 @@ async def test_get_organization_settings_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[
             client._client._transport.get_organization_settings
         ] = mock_object
@@ -7148,12 +7886,7 @@ async def test_get_effective_security_health_analytics_custom_module_async_use_c
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[
             client._client._transport.get_effective_security_health_analytics_custom_module
         ] = mock_object
@@ -7600,12 +8333,7 @@ async def test_get_security_health_analytics_custom_module_async_use_cached_wrap
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[
             client._client._transport.get_security_health_analytics_custom_module
         ] = mock_object
@@ -8007,12 +8735,7 @@ async def test_get_source_async_use_cached_wrapped_rpc(transport: str = "grpc_as
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[
             client._client._transport.get_source
         ] = mock_object
@@ -8388,12 +9111,7 @@ async def test_group_assets_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[
             client._client._transport.group_assets
         ] = mock_object
@@ -8877,12 +9595,7 @@ async def test_group_findings_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[
             client._client._transport.group_findings
         ] = mock_object
@@ -9458,12 +10171,7 @@ async def test_list_assets_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[
             client._client._transport.list_assets
         ] = mock_object
@@ -9981,12 +10689,7 @@ async def test_list_descendant_security_health_analytics_custom_modules_async_us
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[
             client._client._transport.list_descendant_security_health_analytics_custom_modules
         ] = mock_object
@@ -10623,12 +11326,7 @@ async def test_list_findings_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[
             client._client._transport.list_findings
         ] = mock_object
@@ -11125,12 +11823,7 @@ async def test_list_mute_configs_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[
             client._client._transport.list_mute_configs
         ] = mock_object
@@ -11718,12 +12411,7 @@ async def test_list_notification_configs_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[
             client._client._transport.list_notification_configs
         ] = mock_object
@@ -12339,12 +13027,7 @@ async def test_list_effective_security_health_analytics_custom_modules_async_use
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[
             client._client._transport.list_effective_security_health_analytics_custom_modules
         ] = mock_object
@@ -12997,12 +13680,7 @@ async def test_list_security_health_analytics_custom_modules_async_use_cached_wr
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[
             client._client._transport.list_security_health_analytics_custom_modules
         ] = mock_object
@@ -13605,12 +14283,7 @@ async def test_list_sources_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[
             client._client._transport.list_sources
         ] = mock_object
@@ -14176,12 +14849,7 @@ async def test_run_asset_discovery_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[
             client._client._transport.run_asset_discovery
         ] = mock_object
@@ -14609,12 +15277,7 @@ async def test_set_finding_state_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[
             client._client._transport.set_finding_state
         ] = mock_object
@@ -15073,12 +15736,7 @@ async def test_set_mute_async_use_cached_wrapped_rpc(transport: str = "grpc_asyn
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[
             client._client._transport.set_mute
         ] = mock_object
@@ -15479,12 +16137,7 @@ async def test_set_iam_policy_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[
             client._client._transport.set_iam_policy
         ] = mock_object
@@ -15876,12 +16529,7 @@ async def test_test_iam_permissions_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[
             client._client._transport.test_iam_permissions
         ] = mock_object
@@ -16314,12 +16962,7 @@ async def test_simulate_security_health_analytics_custom_module_async_use_cached
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[
             client._client._transport.simulate_security_health_analytics_custom_module
         ] = mock_object
@@ -16781,12 +17424,7 @@ async def test_update_external_system_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[
             client._client._transport.update_external_system
         ] = mock_object
@@ -17219,12 +17857,7 @@ async def test_update_finding_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[
             client._client._transport.update_finding
         ] = mock_object
@@ -17633,12 +18266,7 @@ async def test_update_mute_config_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[
             client._client._transport.update_mute_config
         ] = mock_object
@@ -18049,12 +18677,7 @@ async def test_update_notification_config_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[
             client._client._transport.update_notification_config
         ] = mock_object
@@ -18465,12 +19088,7 @@ async def test_update_organization_settings_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[
             client._client._transport.update_organization_settings
         ] = mock_object
@@ -18899,12 +19517,7 @@ async def test_update_security_health_analytics_custom_module_async_use_cached_w
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[
             client._client._transport.update_security_health_analytics_custom_module
         ] = mock_object
@@ -19333,12 +19946,7 @@ async def test_update_source_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[
             client._client._transport.update_source
         ] = mock_object
@@ -19717,12 +20325,7 @@ async def test_update_security_marks_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[
             client._client._transport.update_security_marks
         ] = mock_object
@@ -20129,12 +20732,7 @@ async def test_create_big_query_export_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[
             client._client._transport.create_big_query_export
         ] = mock_object
@@ -20545,12 +21143,7 @@ async def test_delete_big_query_export_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[
             client._client._transport.delete_big_query_export
         ] = mock_object
@@ -20940,12 +21533,7 @@ async def test_update_big_query_export_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[
             client._client._transport.update_big_query_export
         ] = mock_object
@@ -21355,12 +21943,7 @@ async def test_list_big_query_exports_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[
             client._client._transport.list_big_query_exports
         ] = mock_object
@@ -21763,6 +22346,7910 @@ async def test_list_big_query_exports_async_pages():
         # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
         async for page_ in (  # pragma: no branch
             await client.list_big_query_exports(request={})
+        ).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        securitycenter_service.CreateEventThreatDetectionCustomModuleRequest,
+        dict,
+    ],
+)
+def test_create_event_threat_detection_custom_module(
+    request_type, transport: str = "grpc"
+):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_event_threat_detection_custom_module), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule(
+            name="name_value",
+            ancestor_module="ancestor_module_value",
+            enablement_state=gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule.EnablementState.ENABLED,
+            type_="type__value",
+            display_name="display_name_value",
+            description="description_value",
+            last_editor="last_editor_value",
+        )
+        response = client.create_event_threat_detection_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = securitycenter_service.CreateEventThreatDetectionCustomModuleRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(
+        response,
+        gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule,
+    )
+    assert response.name == "name_value"
+    assert response.ancestor_module == "ancestor_module_value"
+    assert (
+        response.enablement_state
+        == gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule.EnablementState.ENABLED
+    )
+    assert response.type_ == "type__value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+    assert response.last_editor == "last_editor_value"
+
+
+def test_create_event_threat_detection_custom_module_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_event_threat_detection_custom_module), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.create_event_threat_detection_custom_module()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0]
+            == securitycenter_service.CreateEventThreatDetectionCustomModuleRequest()
+        )
+
+
+def test_create_event_threat_detection_custom_module_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = securitycenter_service.CreateEventThreatDetectionCustomModuleRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_event_threat_detection_custom_module), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.create_event_threat_detection_custom_module(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[
+            0
+        ] == securitycenter_service.CreateEventThreatDetectionCustomModuleRequest(
+            parent="parent_value",
+        )
+
+
+def test_create_event_threat_detection_custom_module_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = SecurityCenterClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.create_event_threat_detection_custom_module
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.create_event_threat_detection_custom_module
+        ] = mock_rpc
+        request = {}
+        client.create_event_threat_detection_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.create_event_threat_detection_custom_module(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_create_event_threat_detection_custom_module_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_event_threat_detection_custom_module), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule(
+                name="name_value",
+                ancestor_module="ancestor_module_value",
+                enablement_state=gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule.EnablementState.ENABLED,
+                type_="type__value",
+                display_name="display_name_value",
+                description="description_value",
+                last_editor="last_editor_value",
+            )
+        )
+        response = await client.create_event_threat_detection_custom_module()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0]
+            == securitycenter_service.CreateEventThreatDetectionCustomModuleRequest()
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_event_threat_detection_custom_module_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = SecurityCenterAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.create_event_threat_detection_custom_module
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_object = mock.AsyncMock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.create_event_threat_detection_custom_module
+        ] = mock_object
+
+        request = {}
+        await client.create_event_threat_detection_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_object.call_count == 1
+
+        await client.create_event_threat_detection_custom_module(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_object.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_create_event_threat_detection_custom_module_async(
+    transport: str = "grpc_asyncio",
+    request_type=securitycenter_service.CreateEventThreatDetectionCustomModuleRequest,
+):
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_event_threat_detection_custom_module), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule(
+                name="name_value",
+                ancestor_module="ancestor_module_value",
+                enablement_state=gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule.EnablementState.ENABLED,
+                type_="type__value",
+                display_name="display_name_value",
+                description="description_value",
+                last_editor="last_editor_value",
+            )
+        )
+        response = await client.create_event_threat_detection_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = securitycenter_service.CreateEventThreatDetectionCustomModuleRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(
+        response,
+        gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule,
+    )
+    assert response.name == "name_value"
+    assert response.ancestor_module == "ancestor_module_value"
+    assert (
+        response.enablement_state
+        == gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule.EnablementState.ENABLED
+    )
+    assert response.type_ == "type__value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+    assert response.last_editor == "last_editor_value"
+
+
+@pytest.mark.asyncio
+async def test_create_event_threat_detection_custom_module_async_from_dict():
+    await test_create_event_threat_detection_custom_module_async(request_type=dict)
+
+
+def test_create_event_threat_detection_custom_module_field_headers():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = securitycenter_service.CreateEventThreatDetectionCustomModuleRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_event_threat_detection_custom_module), "__call__"
+    ) as call:
+        call.return_value = (
+            gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule()
+        )
+        client.create_event_threat_detection_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_create_event_threat_detection_custom_module_field_headers_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = securitycenter_service.CreateEventThreatDetectionCustomModuleRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_event_threat_detection_custom_module), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule()
+        )
+        await client.create_event_threat_detection_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_create_event_threat_detection_custom_module_flattened():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_event_threat_detection_custom_module), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = (
+            gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.create_event_threat_detection_custom_module(
+            parent="parent_value",
+            event_threat_detection_custom_module=gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule(
+                name="name_value"
+            ),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].event_threat_detection_custom_module
+        mock_val = (
+            gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule(
+                name="name_value"
+            )
+        )
+        assert arg == mock_val
+
+
+def test_create_event_threat_detection_custom_module_flattened_error():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_event_threat_detection_custom_module(
+            securitycenter_service.CreateEventThreatDetectionCustomModuleRequest(),
+            parent="parent_value",
+            event_threat_detection_custom_module=gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule(
+                name="name_value"
+            ),
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_event_threat_detection_custom_module_flattened_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_event_threat_detection_custom_module), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = (
+            gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule()
+        )
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.create_event_threat_detection_custom_module(
+            parent="parent_value",
+            event_threat_detection_custom_module=gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule(
+                name="name_value"
+            ),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].event_threat_detection_custom_module
+        mock_val = (
+            gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule(
+                name="name_value"
+            )
+        )
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_create_event_threat_detection_custom_module_flattened_error_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.create_event_threat_detection_custom_module(
+            securitycenter_service.CreateEventThreatDetectionCustomModuleRequest(),
+            parent="parent_value",
+            event_threat_detection_custom_module=gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule(
+                name="name_value"
+            ),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        securitycenter_service.DeleteEventThreatDetectionCustomModuleRequest,
+        dict,
+    ],
+)
+def test_delete_event_threat_detection_custom_module(
+    request_type, transport: str = "grpc"
+):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_event_threat_detection_custom_module), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+        response = client.delete_event_threat_detection_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = securitycenter_service.DeleteEventThreatDetectionCustomModuleRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_event_threat_detection_custom_module_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_event_threat_detection_custom_module), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.delete_event_threat_detection_custom_module()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0]
+            == securitycenter_service.DeleteEventThreatDetectionCustomModuleRequest()
+        )
+
+
+def test_delete_event_threat_detection_custom_module_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = securitycenter_service.DeleteEventThreatDetectionCustomModuleRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_event_threat_detection_custom_module), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.delete_event_threat_detection_custom_module(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[
+            0
+        ] == securitycenter_service.DeleteEventThreatDetectionCustomModuleRequest(
+            name="name_value",
+        )
+
+
+def test_delete_event_threat_detection_custom_module_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = SecurityCenterClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.delete_event_threat_detection_custom_module
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.delete_event_threat_detection_custom_module
+        ] = mock_rpc
+        request = {}
+        client.delete_event_threat_detection_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.delete_event_threat_detection_custom_module(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_delete_event_threat_detection_custom_module_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_event_threat_detection_custom_module), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_event_threat_detection_custom_module()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0]
+            == securitycenter_service.DeleteEventThreatDetectionCustomModuleRequest()
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_event_threat_detection_custom_module_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = SecurityCenterAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.delete_event_threat_detection_custom_module
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_object = mock.AsyncMock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.delete_event_threat_detection_custom_module
+        ] = mock_object
+
+        request = {}
+        await client.delete_event_threat_detection_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_object.call_count == 1
+
+        await client.delete_event_threat_detection_custom_module(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_object.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_delete_event_threat_detection_custom_module_async(
+    transport: str = "grpc_asyncio",
+    request_type=securitycenter_service.DeleteEventThreatDetectionCustomModuleRequest,
+):
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_event_threat_detection_custom_module), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_event_threat_detection_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = securitycenter_service.DeleteEventThreatDetectionCustomModuleRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.asyncio
+async def test_delete_event_threat_detection_custom_module_async_from_dict():
+    await test_delete_event_threat_detection_custom_module_async(request_type=dict)
+
+
+def test_delete_event_threat_detection_custom_module_field_headers():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = securitycenter_service.DeleteEventThreatDetectionCustomModuleRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_event_threat_detection_custom_module), "__call__"
+    ) as call:
+        call.return_value = None
+        client.delete_event_threat_detection_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_delete_event_threat_detection_custom_module_field_headers_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = securitycenter_service.DeleteEventThreatDetectionCustomModuleRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_event_threat_detection_custom_module), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_event_threat_detection_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_delete_event_threat_detection_custom_module_flattened():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_event_threat_detection_custom_module), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.delete_event_threat_detection_custom_module(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_delete_event_threat_detection_custom_module_flattened_error():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_event_threat_detection_custom_module(
+            securitycenter_service.DeleteEventThreatDetectionCustomModuleRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_event_threat_detection_custom_module_flattened_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_event_threat_detection_custom_module), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.delete_event_threat_detection_custom_module(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_delete_event_threat_detection_custom_module_flattened_error_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.delete_event_threat_detection_custom_module(
+            securitycenter_service.DeleteEventThreatDetectionCustomModuleRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        securitycenter_service.GetEventThreatDetectionCustomModuleRequest,
+        dict,
+    ],
+)
+def test_get_event_threat_detection_custom_module(
+    request_type, transport: str = "grpc"
+):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_event_threat_detection_custom_module), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = event_threat_detection_custom_module.EventThreatDetectionCustomModule(
+            name="name_value",
+            ancestor_module="ancestor_module_value",
+            enablement_state=event_threat_detection_custom_module.EventThreatDetectionCustomModule.EnablementState.ENABLED,
+            type_="type__value",
+            display_name="display_name_value",
+            description="description_value",
+            last_editor="last_editor_value",
+        )
+        response = client.get_event_threat_detection_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = securitycenter_service.GetEventThreatDetectionCustomModuleRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(
+        response, event_threat_detection_custom_module.EventThreatDetectionCustomModule
+    )
+    assert response.name == "name_value"
+    assert response.ancestor_module == "ancestor_module_value"
+    assert (
+        response.enablement_state
+        == event_threat_detection_custom_module.EventThreatDetectionCustomModule.EnablementState.ENABLED
+    )
+    assert response.type_ == "type__value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+    assert response.last_editor == "last_editor_value"
+
+
+def test_get_event_threat_detection_custom_module_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_event_threat_detection_custom_module), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.get_event_threat_detection_custom_module()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0]
+            == securitycenter_service.GetEventThreatDetectionCustomModuleRequest()
+        )
+
+
+def test_get_event_threat_detection_custom_module_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = securitycenter_service.GetEventThreatDetectionCustomModuleRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_event_threat_detection_custom_module), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.get_event_threat_detection_custom_module(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[
+            0
+        ] == securitycenter_service.GetEventThreatDetectionCustomModuleRequest(
+            name="name_value",
+        )
+
+
+def test_get_event_threat_detection_custom_module_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = SecurityCenterClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.get_event_threat_detection_custom_module
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.get_event_threat_detection_custom_module
+        ] = mock_rpc
+        request = {}
+        client.get_event_threat_detection_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_event_threat_detection_custom_module(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_get_event_threat_detection_custom_module_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_event_threat_detection_custom_module), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            event_threat_detection_custom_module.EventThreatDetectionCustomModule(
+                name="name_value",
+                ancestor_module="ancestor_module_value",
+                enablement_state=event_threat_detection_custom_module.EventThreatDetectionCustomModule.EnablementState.ENABLED,
+                type_="type__value",
+                display_name="display_name_value",
+                description="description_value",
+                last_editor="last_editor_value",
+            )
+        )
+        response = await client.get_event_threat_detection_custom_module()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0]
+            == securitycenter_service.GetEventThreatDetectionCustomModuleRequest()
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_event_threat_detection_custom_module_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = SecurityCenterAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.get_event_threat_detection_custom_module
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_object = mock.AsyncMock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.get_event_threat_detection_custom_module
+        ] = mock_object
+
+        request = {}
+        await client.get_event_threat_detection_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_object.call_count == 1
+
+        await client.get_event_threat_detection_custom_module(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_object.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_get_event_threat_detection_custom_module_async(
+    transport: str = "grpc_asyncio",
+    request_type=securitycenter_service.GetEventThreatDetectionCustomModuleRequest,
+):
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_event_threat_detection_custom_module), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            event_threat_detection_custom_module.EventThreatDetectionCustomModule(
+                name="name_value",
+                ancestor_module="ancestor_module_value",
+                enablement_state=event_threat_detection_custom_module.EventThreatDetectionCustomModule.EnablementState.ENABLED,
+                type_="type__value",
+                display_name="display_name_value",
+                description="description_value",
+                last_editor="last_editor_value",
+            )
+        )
+        response = await client.get_event_threat_detection_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = securitycenter_service.GetEventThreatDetectionCustomModuleRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(
+        response, event_threat_detection_custom_module.EventThreatDetectionCustomModule
+    )
+    assert response.name == "name_value"
+    assert response.ancestor_module == "ancestor_module_value"
+    assert (
+        response.enablement_state
+        == event_threat_detection_custom_module.EventThreatDetectionCustomModule.EnablementState.ENABLED
+    )
+    assert response.type_ == "type__value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+    assert response.last_editor == "last_editor_value"
+
+
+@pytest.mark.asyncio
+async def test_get_event_threat_detection_custom_module_async_from_dict():
+    await test_get_event_threat_detection_custom_module_async(request_type=dict)
+
+
+def test_get_event_threat_detection_custom_module_field_headers():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = securitycenter_service.GetEventThreatDetectionCustomModuleRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_event_threat_detection_custom_module), "__call__"
+    ) as call:
+        call.return_value = (
+            event_threat_detection_custom_module.EventThreatDetectionCustomModule()
+        )
+        client.get_event_threat_detection_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_event_threat_detection_custom_module_field_headers_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = securitycenter_service.GetEventThreatDetectionCustomModuleRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_event_threat_detection_custom_module), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            event_threat_detection_custom_module.EventThreatDetectionCustomModule()
+        )
+        await client.get_event_threat_detection_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_get_event_threat_detection_custom_module_flattened():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_event_threat_detection_custom_module), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = (
+            event_threat_detection_custom_module.EventThreatDetectionCustomModule()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_event_threat_detection_custom_module(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_event_threat_detection_custom_module_flattened_error():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_event_threat_detection_custom_module(
+            securitycenter_service.GetEventThreatDetectionCustomModuleRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_event_threat_detection_custom_module_flattened_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_event_threat_detection_custom_module), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = (
+            event_threat_detection_custom_module.EventThreatDetectionCustomModule()
+        )
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            event_threat_detection_custom_module.EventThreatDetectionCustomModule()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_event_threat_detection_custom_module(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_event_threat_detection_custom_module_flattened_error_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_event_threat_detection_custom_module(
+            securitycenter_service.GetEventThreatDetectionCustomModuleRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        securitycenter_service.ListDescendantEventThreatDetectionCustomModulesRequest,
+        dict,
+    ],
+)
+def test_list_descendant_event_threat_detection_custom_modules(
+    request_type, transport: str = "grpc"
+):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_descendant_event_threat_detection_custom_modules),
+        "__call__",
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = securitycenter_service.ListDescendantEventThreatDetectionCustomModulesResponse(
+            next_page_token="next_page_token_value",
+        )
+        response = client.list_descendant_event_threat_detection_custom_modules(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = (
+            securitycenter_service.ListDescendantEventThreatDetectionCustomModulesRequest()
+        )
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(
+        response, pagers.ListDescendantEventThreatDetectionCustomModulesPager
+    )
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_descendant_event_threat_detection_custom_modules_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_descendant_event_threat_detection_custom_modules),
+        "__call__",
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.list_descendant_event_threat_detection_custom_modules()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0]
+            == securitycenter_service.ListDescendantEventThreatDetectionCustomModulesRequest()
+        )
+
+
+def test_list_descendant_event_threat_detection_custom_modules_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = (
+        securitycenter_service.ListDescendantEventThreatDetectionCustomModulesRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_descendant_event_threat_detection_custom_modules),
+        "__call__",
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.list_descendant_event_threat_detection_custom_modules(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[
+            0
+        ] == securitycenter_service.ListDescendantEventThreatDetectionCustomModulesRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+def test_list_descendant_event_threat_detection_custom_modules_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = SecurityCenterClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.list_descendant_event_threat_detection_custom_modules
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.list_descendant_event_threat_detection_custom_modules
+        ] = mock_rpc
+        request = {}
+        client.list_descendant_event_threat_detection_custom_modules(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.list_descendant_event_threat_detection_custom_modules(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_list_descendant_event_threat_detection_custom_modules_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_descendant_event_threat_detection_custom_modules),
+        "__call__",
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            securitycenter_service.ListDescendantEventThreatDetectionCustomModulesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_descendant_event_threat_detection_custom_modules()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0]
+            == securitycenter_service.ListDescendantEventThreatDetectionCustomModulesRequest()
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_descendant_event_threat_detection_custom_modules_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = SecurityCenterAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.list_descendant_event_threat_detection_custom_modules
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_object = mock.AsyncMock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.list_descendant_event_threat_detection_custom_modules
+        ] = mock_object
+
+        request = {}
+        await client.list_descendant_event_threat_detection_custom_modules(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_object.call_count == 1
+
+        await client.list_descendant_event_threat_detection_custom_modules(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_object.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_list_descendant_event_threat_detection_custom_modules_async(
+    transport: str = "grpc_asyncio",
+    request_type=securitycenter_service.ListDescendantEventThreatDetectionCustomModulesRequest,
+):
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_descendant_event_threat_detection_custom_modules),
+        "__call__",
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            securitycenter_service.ListDescendantEventThreatDetectionCustomModulesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_descendant_event_threat_detection_custom_modules(
+            request
+        )
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = (
+            securitycenter_service.ListDescendantEventThreatDetectionCustomModulesRequest()
+        )
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(
+        response, pagers.ListDescendantEventThreatDetectionCustomModulesAsyncPager
+    )
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.asyncio
+async def test_list_descendant_event_threat_detection_custom_modules_async_from_dict():
+    await test_list_descendant_event_threat_detection_custom_modules_async(
+        request_type=dict
+    )
+
+
+def test_list_descendant_event_threat_detection_custom_modules_field_headers():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = (
+        securitycenter_service.ListDescendantEventThreatDetectionCustomModulesRequest()
+    )
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_descendant_event_threat_detection_custom_modules),
+        "__call__",
+    ) as call:
+        call.return_value = (
+            securitycenter_service.ListDescendantEventThreatDetectionCustomModulesResponse()
+        )
+        client.list_descendant_event_threat_detection_custom_modules(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_descendant_event_threat_detection_custom_modules_field_headers_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = (
+        securitycenter_service.ListDescendantEventThreatDetectionCustomModulesRequest()
+    )
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_descendant_event_threat_detection_custom_modules),
+        "__call__",
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            securitycenter_service.ListDescendantEventThreatDetectionCustomModulesResponse()
+        )
+        await client.list_descendant_event_threat_detection_custom_modules(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_list_descendant_event_threat_detection_custom_modules_flattened():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_descendant_event_threat_detection_custom_modules),
+        "__call__",
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = (
+            securitycenter_service.ListDescendantEventThreatDetectionCustomModulesResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_descendant_event_threat_detection_custom_modules(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+def test_list_descendant_event_threat_detection_custom_modules_flattened_error():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_descendant_event_threat_detection_custom_modules(
+            securitycenter_service.ListDescendantEventThreatDetectionCustomModulesRequest(),
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_descendant_event_threat_detection_custom_modules_flattened_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_descendant_event_threat_detection_custom_modules),
+        "__call__",
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = (
+            securitycenter_service.ListDescendantEventThreatDetectionCustomModulesResponse()
+        )
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            securitycenter_service.ListDescendantEventThreatDetectionCustomModulesResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_descendant_event_threat_detection_custom_modules(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_list_descendant_event_threat_detection_custom_modules_flattened_error_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_descendant_event_threat_detection_custom_modules(
+            securitycenter_service.ListDescendantEventThreatDetectionCustomModulesRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_descendant_event_threat_detection_custom_modules_pager(
+    transport_name: str = "grpc",
+):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_descendant_event_threat_detection_custom_modules),
+        "__call__",
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            securitycenter_service.ListDescendantEventThreatDetectionCustomModulesResponse(
+                event_threat_detection_custom_modules=[
+                    event_threat_detection_custom_module.EventThreatDetectionCustomModule(),
+                    event_threat_detection_custom_module.EventThreatDetectionCustomModule(),
+                    event_threat_detection_custom_module.EventThreatDetectionCustomModule(),
+                ],
+                next_page_token="abc",
+            ),
+            securitycenter_service.ListDescendantEventThreatDetectionCustomModulesResponse(
+                event_threat_detection_custom_modules=[],
+                next_page_token="def",
+            ),
+            securitycenter_service.ListDescendantEventThreatDetectionCustomModulesResponse(
+                event_threat_detection_custom_modules=[
+                    event_threat_detection_custom_module.EventThreatDetectionCustomModule(),
+                ],
+                next_page_token="ghi",
+            ),
+            securitycenter_service.ListDescendantEventThreatDetectionCustomModulesResponse(
+                event_threat_detection_custom_modules=[
+                    event_threat_detection_custom_module.EventThreatDetectionCustomModule(),
+                    event_threat_detection_custom_module.EventThreatDetectionCustomModule(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        expected_metadata = ()
+        expected_metadata = tuple(expected_metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
+        )
+        pager = client.list_descendant_event_threat_detection_custom_modules(request={})
+
+        assert pager._metadata == expected_metadata
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(
+            isinstance(
+                i, event_threat_detection_custom_module.EventThreatDetectionCustomModule
+            )
+            for i in results
+        )
+
+
+def test_list_descendant_event_threat_detection_custom_modules_pages(
+    transport_name: str = "grpc",
+):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_descendant_event_threat_detection_custom_modules),
+        "__call__",
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            securitycenter_service.ListDescendantEventThreatDetectionCustomModulesResponse(
+                event_threat_detection_custom_modules=[
+                    event_threat_detection_custom_module.EventThreatDetectionCustomModule(),
+                    event_threat_detection_custom_module.EventThreatDetectionCustomModule(),
+                    event_threat_detection_custom_module.EventThreatDetectionCustomModule(),
+                ],
+                next_page_token="abc",
+            ),
+            securitycenter_service.ListDescendantEventThreatDetectionCustomModulesResponse(
+                event_threat_detection_custom_modules=[],
+                next_page_token="def",
+            ),
+            securitycenter_service.ListDescendantEventThreatDetectionCustomModulesResponse(
+                event_threat_detection_custom_modules=[
+                    event_threat_detection_custom_module.EventThreatDetectionCustomModule(),
+                ],
+                next_page_token="ghi",
+            ),
+            securitycenter_service.ListDescendantEventThreatDetectionCustomModulesResponse(
+                event_threat_detection_custom_modules=[
+                    event_threat_detection_custom_module.EventThreatDetectionCustomModule(),
+                    event_threat_detection_custom_module.EventThreatDetectionCustomModule(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(
+            client.list_descendant_event_threat_detection_custom_modules(
+                request={}
+            ).pages
+        )
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_descendant_event_threat_detection_custom_modules_async_pager():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_descendant_event_threat_detection_custom_modules),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            securitycenter_service.ListDescendantEventThreatDetectionCustomModulesResponse(
+                event_threat_detection_custom_modules=[
+                    event_threat_detection_custom_module.EventThreatDetectionCustomModule(),
+                    event_threat_detection_custom_module.EventThreatDetectionCustomModule(),
+                    event_threat_detection_custom_module.EventThreatDetectionCustomModule(),
+                ],
+                next_page_token="abc",
+            ),
+            securitycenter_service.ListDescendantEventThreatDetectionCustomModulesResponse(
+                event_threat_detection_custom_modules=[],
+                next_page_token="def",
+            ),
+            securitycenter_service.ListDescendantEventThreatDetectionCustomModulesResponse(
+                event_threat_detection_custom_modules=[
+                    event_threat_detection_custom_module.EventThreatDetectionCustomModule(),
+                ],
+                next_page_token="ghi",
+            ),
+            securitycenter_service.ListDescendantEventThreatDetectionCustomModulesResponse(
+                event_threat_detection_custom_modules=[
+                    event_threat_detection_custom_module.EventThreatDetectionCustomModule(),
+                    event_threat_detection_custom_module.EventThreatDetectionCustomModule(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = (
+            await client.list_descendant_event_threat_detection_custom_modules(
+                request={},
+            )
+        )
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(
+            isinstance(
+                i, event_threat_detection_custom_module.EventThreatDetectionCustomModule
+            )
+            for i in responses
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_descendant_event_threat_detection_custom_modules_async_pages():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_descendant_event_threat_detection_custom_modules),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            securitycenter_service.ListDescendantEventThreatDetectionCustomModulesResponse(
+                event_threat_detection_custom_modules=[
+                    event_threat_detection_custom_module.EventThreatDetectionCustomModule(),
+                    event_threat_detection_custom_module.EventThreatDetectionCustomModule(),
+                    event_threat_detection_custom_module.EventThreatDetectionCustomModule(),
+                ],
+                next_page_token="abc",
+            ),
+            securitycenter_service.ListDescendantEventThreatDetectionCustomModulesResponse(
+                event_threat_detection_custom_modules=[],
+                next_page_token="def",
+            ),
+            securitycenter_service.ListDescendantEventThreatDetectionCustomModulesResponse(
+                event_threat_detection_custom_modules=[
+                    event_threat_detection_custom_module.EventThreatDetectionCustomModule(),
+                ],
+                next_page_token="ghi",
+            ),
+            securitycenter_service.ListDescendantEventThreatDetectionCustomModulesResponse(
+                event_threat_detection_custom_modules=[
+                    event_threat_detection_custom_module.EventThreatDetectionCustomModule(),
+                    event_threat_detection_custom_module.EventThreatDetectionCustomModule(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
+            await client.list_descendant_event_threat_detection_custom_modules(
+                request={}
+            )
+        ).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        securitycenter_service.ListEventThreatDetectionCustomModulesRequest,
+        dict,
+    ],
+)
+def test_list_event_threat_detection_custom_modules(
+    request_type, transport: str = "grpc"
+):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_event_threat_detection_custom_modules), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = (
+            securitycenter_service.ListEventThreatDetectionCustomModulesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = client.list_event_threat_detection_custom_modules(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = securitycenter_service.ListEventThreatDetectionCustomModulesRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListEventThreatDetectionCustomModulesPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_event_threat_detection_custom_modules_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_event_threat_detection_custom_modules), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.list_event_threat_detection_custom_modules()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0]
+            == securitycenter_service.ListEventThreatDetectionCustomModulesRequest()
+        )
+
+
+def test_list_event_threat_detection_custom_modules_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = securitycenter_service.ListEventThreatDetectionCustomModulesRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_event_threat_detection_custom_modules), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.list_event_threat_detection_custom_modules(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[
+            0
+        ] == securitycenter_service.ListEventThreatDetectionCustomModulesRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+def test_list_event_threat_detection_custom_modules_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = SecurityCenterClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.list_event_threat_detection_custom_modules
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.list_event_threat_detection_custom_modules
+        ] = mock_rpc
+        request = {}
+        client.list_event_threat_detection_custom_modules(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.list_event_threat_detection_custom_modules(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_list_event_threat_detection_custom_modules_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_event_threat_detection_custom_modules), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            securitycenter_service.ListEventThreatDetectionCustomModulesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_event_threat_detection_custom_modules()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0]
+            == securitycenter_service.ListEventThreatDetectionCustomModulesRequest()
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_event_threat_detection_custom_modules_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = SecurityCenterAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.list_event_threat_detection_custom_modules
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_object = mock.AsyncMock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.list_event_threat_detection_custom_modules
+        ] = mock_object
+
+        request = {}
+        await client.list_event_threat_detection_custom_modules(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_object.call_count == 1
+
+        await client.list_event_threat_detection_custom_modules(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_object.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_list_event_threat_detection_custom_modules_async(
+    transport: str = "grpc_asyncio",
+    request_type=securitycenter_service.ListEventThreatDetectionCustomModulesRequest,
+):
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_event_threat_detection_custom_modules), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            securitycenter_service.ListEventThreatDetectionCustomModulesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_event_threat_detection_custom_modules(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = securitycenter_service.ListEventThreatDetectionCustomModulesRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListEventThreatDetectionCustomModulesAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.asyncio
+async def test_list_event_threat_detection_custom_modules_async_from_dict():
+    await test_list_event_threat_detection_custom_modules_async(request_type=dict)
+
+
+def test_list_event_threat_detection_custom_modules_field_headers():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = securitycenter_service.ListEventThreatDetectionCustomModulesRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_event_threat_detection_custom_modules), "__call__"
+    ) as call:
+        call.return_value = (
+            securitycenter_service.ListEventThreatDetectionCustomModulesResponse()
+        )
+        client.list_event_threat_detection_custom_modules(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_event_threat_detection_custom_modules_field_headers_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = securitycenter_service.ListEventThreatDetectionCustomModulesRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_event_threat_detection_custom_modules), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            securitycenter_service.ListEventThreatDetectionCustomModulesResponse()
+        )
+        await client.list_event_threat_detection_custom_modules(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_list_event_threat_detection_custom_modules_flattened():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_event_threat_detection_custom_modules), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = (
+            securitycenter_service.ListEventThreatDetectionCustomModulesResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_event_threat_detection_custom_modules(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+def test_list_event_threat_detection_custom_modules_flattened_error():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_event_threat_detection_custom_modules(
+            securitycenter_service.ListEventThreatDetectionCustomModulesRequest(),
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_event_threat_detection_custom_modules_flattened_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_event_threat_detection_custom_modules), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = (
+            securitycenter_service.ListEventThreatDetectionCustomModulesResponse()
+        )
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            securitycenter_service.ListEventThreatDetectionCustomModulesResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_event_threat_detection_custom_modules(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_list_event_threat_detection_custom_modules_flattened_error_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_event_threat_detection_custom_modules(
+            securitycenter_service.ListEventThreatDetectionCustomModulesRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_event_threat_detection_custom_modules_pager(transport_name: str = "grpc"):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_event_threat_detection_custom_modules), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            securitycenter_service.ListEventThreatDetectionCustomModulesResponse(
+                event_threat_detection_custom_modules=[
+                    event_threat_detection_custom_module.EventThreatDetectionCustomModule(),
+                    event_threat_detection_custom_module.EventThreatDetectionCustomModule(),
+                    event_threat_detection_custom_module.EventThreatDetectionCustomModule(),
+                ],
+                next_page_token="abc",
+            ),
+            securitycenter_service.ListEventThreatDetectionCustomModulesResponse(
+                event_threat_detection_custom_modules=[],
+                next_page_token="def",
+            ),
+            securitycenter_service.ListEventThreatDetectionCustomModulesResponse(
+                event_threat_detection_custom_modules=[
+                    event_threat_detection_custom_module.EventThreatDetectionCustomModule(),
+                ],
+                next_page_token="ghi",
+            ),
+            securitycenter_service.ListEventThreatDetectionCustomModulesResponse(
+                event_threat_detection_custom_modules=[
+                    event_threat_detection_custom_module.EventThreatDetectionCustomModule(),
+                    event_threat_detection_custom_module.EventThreatDetectionCustomModule(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        expected_metadata = ()
+        expected_metadata = tuple(expected_metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
+        )
+        pager = client.list_event_threat_detection_custom_modules(request={})
+
+        assert pager._metadata == expected_metadata
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(
+            isinstance(
+                i, event_threat_detection_custom_module.EventThreatDetectionCustomModule
+            )
+            for i in results
+        )
+
+
+def test_list_event_threat_detection_custom_modules_pages(transport_name: str = "grpc"):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_event_threat_detection_custom_modules), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            securitycenter_service.ListEventThreatDetectionCustomModulesResponse(
+                event_threat_detection_custom_modules=[
+                    event_threat_detection_custom_module.EventThreatDetectionCustomModule(),
+                    event_threat_detection_custom_module.EventThreatDetectionCustomModule(),
+                    event_threat_detection_custom_module.EventThreatDetectionCustomModule(),
+                ],
+                next_page_token="abc",
+            ),
+            securitycenter_service.ListEventThreatDetectionCustomModulesResponse(
+                event_threat_detection_custom_modules=[],
+                next_page_token="def",
+            ),
+            securitycenter_service.ListEventThreatDetectionCustomModulesResponse(
+                event_threat_detection_custom_modules=[
+                    event_threat_detection_custom_module.EventThreatDetectionCustomModule(),
+                ],
+                next_page_token="ghi",
+            ),
+            securitycenter_service.ListEventThreatDetectionCustomModulesResponse(
+                event_threat_detection_custom_modules=[
+                    event_threat_detection_custom_module.EventThreatDetectionCustomModule(),
+                    event_threat_detection_custom_module.EventThreatDetectionCustomModule(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(
+            client.list_event_threat_detection_custom_modules(request={}).pages
+        )
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_event_threat_detection_custom_modules_async_pager():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_event_threat_detection_custom_modules),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            securitycenter_service.ListEventThreatDetectionCustomModulesResponse(
+                event_threat_detection_custom_modules=[
+                    event_threat_detection_custom_module.EventThreatDetectionCustomModule(),
+                    event_threat_detection_custom_module.EventThreatDetectionCustomModule(),
+                    event_threat_detection_custom_module.EventThreatDetectionCustomModule(),
+                ],
+                next_page_token="abc",
+            ),
+            securitycenter_service.ListEventThreatDetectionCustomModulesResponse(
+                event_threat_detection_custom_modules=[],
+                next_page_token="def",
+            ),
+            securitycenter_service.ListEventThreatDetectionCustomModulesResponse(
+                event_threat_detection_custom_modules=[
+                    event_threat_detection_custom_module.EventThreatDetectionCustomModule(),
+                ],
+                next_page_token="ghi",
+            ),
+            securitycenter_service.ListEventThreatDetectionCustomModulesResponse(
+                event_threat_detection_custom_modules=[
+                    event_threat_detection_custom_module.EventThreatDetectionCustomModule(),
+                    event_threat_detection_custom_module.EventThreatDetectionCustomModule(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_event_threat_detection_custom_modules(
+            request={},
+        )
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(
+            isinstance(
+                i, event_threat_detection_custom_module.EventThreatDetectionCustomModule
+            )
+            for i in responses
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_event_threat_detection_custom_modules_async_pages():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_event_threat_detection_custom_modules),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            securitycenter_service.ListEventThreatDetectionCustomModulesResponse(
+                event_threat_detection_custom_modules=[
+                    event_threat_detection_custom_module.EventThreatDetectionCustomModule(),
+                    event_threat_detection_custom_module.EventThreatDetectionCustomModule(),
+                    event_threat_detection_custom_module.EventThreatDetectionCustomModule(),
+                ],
+                next_page_token="abc",
+            ),
+            securitycenter_service.ListEventThreatDetectionCustomModulesResponse(
+                event_threat_detection_custom_modules=[],
+                next_page_token="def",
+            ),
+            securitycenter_service.ListEventThreatDetectionCustomModulesResponse(
+                event_threat_detection_custom_modules=[
+                    event_threat_detection_custom_module.EventThreatDetectionCustomModule(),
+                ],
+                next_page_token="ghi",
+            ),
+            securitycenter_service.ListEventThreatDetectionCustomModulesResponse(
+                event_threat_detection_custom_modules=[
+                    event_threat_detection_custom_module.EventThreatDetectionCustomModule(),
+                    event_threat_detection_custom_module.EventThreatDetectionCustomModule(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
+            await client.list_event_threat_detection_custom_modules(request={})
+        ).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        securitycenter_service.UpdateEventThreatDetectionCustomModuleRequest,
+        dict,
+    ],
+)
+def test_update_event_threat_detection_custom_module(
+    request_type, transport: str = "grpc"
+):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_event_threat_detection_custom_module), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule(
+            name="name_value",
+            ancestor_module="ancestor_module_value",
+            enablement_state=gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule.EnablementState.ENABLED,
+            type_="type__value",
+            display_name="display_name_value",
+            description="description_value",
+            last_editor="last_editor_value",
+        )
+        response = client.update_event_threat_detection_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = securitycenter_service.UpdateEventThreatDetectionCustomModuleRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(
+        response,
+        gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule,
+    )
+    assert response.name == "name_value"
+    assert response.ancestor_module == "ancestor_module_value"
+    assert (
+        response.enablement_state
+        == gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule.EnablementState.ENABLED
+    )
+    assert response.type_ == "type__value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+    assert response.last_editor == "last_editor_value"
+
+
+def test_update_event_threat_detection_custom_module_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_event_threat_detection_custom_module), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.update_event_threat_detection_custom_module()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0]
+            == securitycenter_service.UpdateEventThreatDetectionCustomModuleRequest()
+        )
+
+
+def test_update_event_threat_detection_custom_module_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = securitycenter_service.UpdateEventThreatDetectionCustomModuleRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_event_threat_detection_custom_module), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.update_event_threat_detection_custom_module(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0]
+            == securitycenter_service.UpdateEventThreatDetectionCustomModuleRequest()
+        )
+
+
+def test_update_event_threat_detection_custom_module_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = SecurityCenterClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.update_event_threat_detection_custom_module
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.update_event_threat_detection_custom_module
+        ] = mock_rpc
+        request = {}
+        client.update_event_threat_detection_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.update_event_threat_detection_custom_module(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_update_event_threat_detection_custom_module_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_event_threat_detection_custom_module), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule(
+                name="name_value",
+                ancestor_module="ancestor_module_value",
+                enablement_state=gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule.EnablementState.ENABLED,
+                type_="type__value",
+                display_name="display_name_value",
+                description="description_value",
+                last_editor="last_editor_value",
+            )
+        )
+        response = await client.update_event_threat_detection_custom_module()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0]
+            == securitycenter_service.UpdateEventThreatDetectionCustomModuleRequest()
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_event_threat_detection_custom_module_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = SecurityCenterAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.update_event_threat_detection_custom_module
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_object = mock.AsyncMock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.update_event_threat_detection_custom_module
+        ] = mock_object
+
+        request = {}
+        await client.update_event_threat_detection_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_object.call_count == 1
+
+        await client.update_event_threat_detection_custom_module(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_object.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_update_event_threat_detection_custom_module_async(
+    transport: str = "grpc_asyncio",
+    request_type=securitycenter_service.UpdateEventThreatDetectionCustomModuleRequest,
+):
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_event_threat_detection_custom_module), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule(
+                name="name_value",
+                ancestor_module="ancestor_module_value",
+                enablement_state=gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule.EnablementState.ENABLED,
+                type_="type__value",
+                display_name="display_name_value",
+                description="description_value",
+                last_editor="last_editor_value",
+            )
+        )
+        response = await client.update_event_threat_detection_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = securitycenter_service.UpdateEventThreatDetectionCustomModuleRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(
+        response,
+        gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule,
+    )
+    assert response.name == "name_value"
+    assert response.ancestor_module == "ancestor_module_value"
+    assert (
+        response.enablement_state
+        == gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule.EnablementState.ENABLED
+    )
+    assert response.type_ == "type__value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+    assert response.last_editor == "last_editor_value"
+
+
+@pytest.mark.asyncio
+async def test_update_event_threat_detection_custom_module_async_from_dict():
+    await test_update_event_threat_detection_custom_module_async(request_type=dict)
+
+
+def test_update_event_threat_detection_custom_module_field_headers():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = securitycenter_service.UpdateEventThreatDetectionCustomModuleRequest()
+
+    request.event_threat_detection_custom_module.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_event_threat_detection_custom_module), "__call__"
+    ) as call:
+        call.return_value = (
+            gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule()
+        )
+        client.update_event_threat_detection_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "event_threat_detection_custom_module.name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_update_event_threat_detection_custom_module_field_headers_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = securitycenter_service.UpdateEventThreatDetectionCustomModuleRequest()
+
+    request.event_threat_detection_custom_module.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_event_threat_detection_custom_module), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule()
+        )
+        await client.update_event_threat_detection_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "event_threat_detection_custom_module.name=name_value",
+    ) in kw["metadata"]
+
+
+def test_update_event_threat_detection_custom_module_flattened():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_event_threat_detection_custom_module), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = (
+            gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.update_event_threat_detection_custom_module(
+            event_threat_detection_custom_module=gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule(
+                name="name_value"
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].event_threat_detection_custom_module
+        mock_val = (
+            gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule(
+                name="name_value"
+            )
+        )
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+def test_update_event_threat_detection_custom_module_flattened_error():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_event_threat_detection_custom_module(
+            securitycenter_service.UpdateEventThreatDetectionCustomModuleRequest(),
+            event_threat_detection_custom_module=gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule(
+                name="name_value"
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_event_threat_detection_custom_module_flattened_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_event_threat_detection_custom_module), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = (
+            gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule()
+        )
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.update_event_threat_detection_custom_module(
+            event_threat_detection_custom_module=gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule(
+                name="name_value"
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].event_threat_detection_custom_module
+        mock_val = (
+            gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule(
+                name="name_value"
+            )
+        )
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_update_event_threat_detection_custom_module_flattened_error_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.update_event_threat_detection_custom_module(
+            securitycenter_service.UpdateEventThreatDetectionCustomModuleRequest(),
+            event_threat_detection_custom_module=gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule(
+                name="name_value"
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        securitycenter_service.ValidateEventThreatDetectionCustomModuleRequest,
+        dict,
+    ],
+)
+def test_validate_event_threat_detection_custom_module(
+    request_type, transport: str = "grpc"
+):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.validate_event_threat_detection_custom_module), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = (
+            securitycenter_service.ValidateEventThreatDetectionCustomModuleResponse()
+        )
+        response = client.validate_event_threat_detection_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = (
+            securitycenter_service.ValidateEventThreatDetectionCustomModuleRequest()
+        )
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(
+        response,
+        securitycenter_service.ValidateEventThreatDetectionCustomModuleResponse,
+    )
+
+
+def test_validate_event_threat_detection_custom_module_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.validate_event_threat_detection_custom_module), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.validate_event_threat_detection_custom_module()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0]
+            == securitycenter_service.ValidateEventThreatDetectionCustomModuleRequest()
+        )
+
+
+def test_validate_event_threat_detection_custom_module_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = securitycenter_service.ValidateEventThreatDetectionCustomModuleRequest(
+        parent="parent_value",
+        raw_text="raw_text_value",
+        type_="type__value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.validate_event_threat_detection_custom_module), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.validate_event_threat_detection_custom_module(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[
+            0
+        ] == securitycenter_service.ValidateEventThreatDetectionCustomModuleRequest(
+            parent="parent_value",
+            raw_text="raw_text_value",
+            type_="type__value",
+        )
+
+
+def test_validate_event_threat_detection_custom_module_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = SecurityCenterClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.validate_event_threat_detection_custom_module
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.validate_event_threat_detection_custom_module
+        ] = mock_rpc
+        request = {}
+        client.validate_event_threat_detection_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.validate_event_threat_detection_custom_module(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_validate_event_threat_detection_custom_module_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.validate_event_threat_detection_custom_module), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            securitycenter_service.ValidateEventThreatDetectionCustomModuleResponse()
+        )
+        response = await client.validate_event_threat_detection_custom_module()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0]
+            == securitycenter_service.ValidateEventThreatDetectionCustomModuleRequest()
+        )
+
+
+@pytest.mark.asyncio
+async def test_validate_event_threat_detection_custom_module_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = SecurityCenterAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.validate_event_threat_detection_custom_module
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_object = mock.AsyncMock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.validate_event_threat_detection_custom_module
+        ] = mock_object
+
+        request = {}
+        await client.validate_event_threat_detection_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_object.call_count == 1
+
+        await client.validate_event_threat_detection_custom_module(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_object.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_validate_event_threat_detection_custom_module_async(
+    transport: str = "grpc_asyncio",
+    request_type=securitycenter_service.ValidateEventThreatDetectionCustomModuleRequest,
+):
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.validate_event_threat_detection_custom_module), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            securitycenter_service.ValidateEventThreatDetectionCustomModuleResponse()
+        )
+        response = await client.validate_event_threat_detection_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = (
+            securitycenter_service.ValidateEventThreatDetectionCustomModuleRequest()
+        )
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(
+        response,
+        securitycenter_service.ValidateEventThreatDetectionCustomModuleResponse,
+    )
+
+
+@pytest.mark.asyncio
+async def test_validate_event_threat_detection_custom_module_async_from_dict():
+    await test_validate_event_threat_detection_custom_module_async(request_type=dict)
+
+
+def test_validate_event_threat_detection_custom_module_field_headers():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = securitycenter_service.ValidateEventThreatDetectionCustomModuleRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.validate_event_threat_detection_custom_module), "__call__"
+    ) as call:
+        call.return_value = (
+            securitycenter_service.ValidateEventThreatDetectionCustomModuleResponse()
+        )
+        client.validate_event_threat_detection_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_validate_event_threat_detection_custom_module_field_headers_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = securitycenter_service.ValidateEventThreatDetectionCustomModuleRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.validate_event_threat_detection_custom_module), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            securitycenter_service.ValidateEventThreatDetectionCustomModuleResponse()
+        )
+        await client.validate_event_threat_detection_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        securitycenter_service.GetEffectiveEventThreatDetectionCustomModuleRequest,
+        dict,
+    ],
+)
+def test_get_effective_event_threat_detection_custom_module(
+    request_type, transport: str = "grpc"
+):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_effective_event_threat_detection_custom_module),
+        "__call__",
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule(
+            name="name_value",
+            enablement_state=effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule.EnablementState.ENABLED,
+            type_="type__value",
+            display_name="display_name_value",
+            description="description_value",
+        )
+        response = client.get_effective_event_threat_detection_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = (
+            securitycenter_service.GetEffectiveEventThreatDetectionCustomModuleRequest()
+        )
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(
+        response,
+        effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule,
+    )
+    assert response.name == "name_value"
+    assert (
+        response.enablement_state
+        == effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule.EnablementState.ENABLED
+    )
+    assert response.type_ == "type__value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+
+
+def test_get_effective_event_threat_detection_custom_module_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_effective_event_threat_detection_custom_module),
+        "__call__",
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.get_effective_event_threat_detection_custom_module()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0]
+            == securitycenter_service.GetEffectiveEventThreatDetectionCustomModuleRequest()
+        )
+
+
+def test_get_effective_event_threat_detection_custom_module_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = (
+        securitycenter_service.GetEffectiveEventThreatDetectionCustomModuleRequest(
+            name="name_value",
+        )
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_effective_event_threat_detection_custom_module),
+        "__call__",
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.get_effective_event_threat_detection_custom_module(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[
+            0
+        ] == securitycenter_service.GetEffectiveEventThreatDetectionCustomModuleRequest(
+            name="name_value",
+        )
+
+
+def test_get_effective_event_threat_detection_custom_module_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = SecurityCenterClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.get_effective_event_threat_detection_custom_module
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.get_effective_event_threat_detection_custom_module
+        ] = mock_rpc
+        request = {}
+        client.get_effective_event_threat_detection_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_effective_event_threat_detection_custom_module(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_get_effective_event_threat_detection_custom_module_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_effective_event_threat_detection_custom_module),
+        "__call__",
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule(
+                name="name_value",
+                enablement_state=effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule.EnablementState.ENABLED,
+                type_="type__value",
+                display_name="display_name_value",
+                description="description_value",
+            )
+        )
+        response = await client.get_effective_event_threat_detection_custom_module()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0]
+            == securitycenter_service.GetEffectiveEventThreatDetectionCustomModuleRequest()
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_effective_event_threat_detection_custom_module_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = SecurityCenterAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.get_effective_event_threat_detection_custom_module
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_object = mock.AsyncMock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.get_effective_event_threat_detection_custom_module
+        ] = mock_object
+
+        request = {}
+        await client.get_effective_event_threat_detection_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_object.call_count == 1
+
+        await client.get_effective_event_threat_detection_custom_module(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_object.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_get_effective_event_threat_detection_custom_module_async(
+    transport: str = "grpc_asyncio",
+    request_type=securitycenter_service.GetEffectiveEventThreatDetectionCustomModuleRequest,
+):
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_effective_event_threat_detection_custom_module),
+        "__call__",
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule(
+                name="name_value",
+                enablement_state=effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule.EnablementState.ENABLED,
+                type_="type__value",
+                display_name="display_name_value",
+                description="description_value",
+            )
+        )
+        response = await client.get_effective_event_threat_detection_custom_module(
+            request
+        )
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = (
+            securitycenter_service.GetEffectiveEventThreatDetectionCustomModuleRequest()
+        )
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(
+        response,
+        effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule,
+    )
+    assert response.name == "name_value"
+    assert (
+        response.enablement_state
+        == effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule.EnablementState.ENABLED
+    )
+    assert response.type_ == "type__value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+
+
+@pytest.mark.asyncio
+async def test_get_effective_event_threat_detection_custom_module_async_from_dict():
+    await test_get_effective_event_threat_detection_custom_module_async(
+        request_type=dict
+    )
+
+
+def test_get_effective_event_threat_detection_custom_module_field_headers():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = (
+        securitycenter_service.GetEffectiveEventThreatDetectionCustomModuleRequest()
+    )
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_effective_event_threat_detection_custom_module),
+        "__call__",
+    ) as call:
+        call.return_value = (
+            effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule()
+        )
+        client.get_effective_event_threat_detection_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_effective_event_threat_detection_custom_module_field_headers_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = (
+        securitycenter_service.GetEffectiveEventThreatDetectionCustomModuleRequest()
+    )
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_effective_event_threat_detection_custom_module),
+        "__call__",
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule()
+        )
+        await client.get_effective_event_threat_detection_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_get_effective_event_threat_detection_custom_module_flattened():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_effective_event_threat_detection_custom_module),
+        "__call__",
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = (
+            effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_effective_event_threat_detection_custom_module(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_effective_event_threat_detection_custom_module_flattened_error():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_effective_event_threat_detection_custom_module(
+            securitycenter_service.GetEffectiveEventThreatDetectionCustomModuleRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_effective_event_threat_detection_custom_module_flattened_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_effective_event_threat_detection_custom_module),
+        "__call__",
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = (
+            effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule()
+        )
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_effective_event_threat_detection_custom_module(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_effective_event_threat_detection_custom_module_flattened_error_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_effective_event_threat_detection_custom_module(
+            securitycenter_service.GetEffectiveEventThreatDetectionCustomModuleRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesRequest,
+        dict,
+    ],
+)
+def test_list_effective_event_threat_detection_custom_modules(
+    request_type, transport: str = "grpc"
+):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_effective_event_threat_detection_custom_modules),
+        "__call__",
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesResponse(
+            next_page_token="next_page_token_value",
+        )
+        response = client.list_effective_event_threat_detection_custom_modules(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = (
+            securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesRequest()
+        )
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(
+        response, pagers.ListEffectiveEventThreatDetectionCustomModulesPager
+    )
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_effective_event_threat_detection_custom_modules_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_effective_event_threat_detection_custom_modules),
+        "__call__",
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.list_effective_event_threat_detection_custom_modules()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0]
+            == securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesRequest()
+        )
+
+
+def test_list_effective_event_threat_detection_custom_modules_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = (
+        securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_effective_event_threat_detection_custom_modules),
+        "__call__",
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.list_effective_event_threat_detection_custom_modules(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[
+            0
+        ] == securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+def test_list_effective_event_threat_detection_custom_modules_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = SecurityCenterClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.list_effective_event_threat_detection_custom_modules
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.list_effective_event_threat_detection_custom_modules
+        ] = mock_rpc
+        request = {}
+        client.list_effective_event_threat_detection_custom_modules(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.list_effective_event_threat_detection_custom_modules(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_list_effective_event_threat_detection_custom_modules_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_effective_event_threat_detection_custom_modules),
+        "__call__",
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_effective_event_threat_detection_custom_modules()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0]
+            == securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesRequest()
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_effective_event_threat_detection_custom_modules_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = SecurityCenterAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.list_effective_event_threat_detection_custom_modules
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_object = mock.AsyncMock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.list_effective_event_threat_detection_custom_modules
+        ] = mock_object
+
+        request = {}
+        await client.list_effective_event_threat_detection_custom_modules(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_object.call_count == 1
+
+        await client.list_effective_event_threat_detection_custom_modules(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_object.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_list_effective_event_threat_detection_custom_modules_async(
+    transport: str = "grpc_asyncio",
+    request_type=securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesRequest,
+):
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_effective_event_threat_detection_custom_modules),
+        "__call__",
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_effective_event_threat_detection_custom_modules(
+            request
+        )
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = (
+            securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesRequest()
+        )
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(
+        response, pagers.ListEffectiveEventThreatDetectionCustomModulesAsyncPager
+    )
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.asyncio
+async def test_list_effective_event_threat_detection_custom_modules_async_from_dict():
+    await test_list_effective_event_threat_detection_custom_modules_async(
+        request_type=dict
+    )
+
+
+def test_list_effective_event_threat_detection_custom_modules_field_headers():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = (
+        securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesRequest()
+    )
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_effective_event_threat_detection_custom_modules),
+        "__call__",
+    ) as call:
+        call.return_value = (
+            securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesResponse()
+        )
+        client.list_effective_event_threat_detection_custom_modules(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_effective_event_threat_detection_custom_modules_field_headers_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = (
+        securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesRequest()
+    )
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_effective_event_threat_detection_custom_modules),
+        "__call__",
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesResponse()
+        )
+        await client.list_effective_event_threat_detection_custom_modules(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_list_effective_event_threat_detection_custom_modules_flattened():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_effective_event_threat_detection_custom_modules),
+        "__call__",
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = (
+            securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_effective_event_threat_detection_custom_modules(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+def test_list_effective_event_threat_detection_custom_modules_flattened_error():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_effective_event_threat_detection_custom_modules(
+            securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesRequest(),
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_effective_event_threat_detection_custom_modules_flattened_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_effective_event_threat_detection_custom_modules),
+        "__call__",
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = (
+            securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesResponse()
+        )
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_effective_event_threat_detection_custom_modules(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_list_effective_event_threat_detection_custom_modules_flattened_error_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_effective_event_threat_detection_custom_modules(
+            securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_effective_event_threat_detection_custom_modules_pager(
+    transport_name: str = "grpc",
+):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_effective_event_threat_detection_custom_modules),
+        "__call__",
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesResponse(
+                effective_event_threat_detection_custom_modules=[
+                    effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule(),
+                    effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule(),
+                    effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule(),
+                ],
+                next_page_token="abc",
+            ),
+            securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesResponse(
+                effective_event_threat_detection_custom_modules=[],
+                next_page_token="def",
+            ),
+            securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesResponse(
+                effective_event_threat_detection_custom_modules=[
+                    effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule(),
+                ],
+                next_page_token="ghi",
+            ),
+            securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesResponse(
+                effective_event_threat_detection_custom_modules=[
+                    effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule(),
+                    effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        expected_metadata = ()
+        expected_metadata = tuple(expected_metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
+        )
+        pager = client.list_effective_event_threat_detection_custom_modules(request={})
+
+        assert pager._metadata == expected_metadata
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(
+            isinstance(
+                i,
+                effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule,
+            )
+            for i in results
+        )
+
+
+def test_list_effective_event_threat_detection_custom_modules_pages(
+    transport_name: str = "grpc",
+):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_effective_event_threat_detection_custom_modules),
+        "__call__",
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesResponse(
+                effective_event_threat_detection_custom_modules=[
+                    effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule(),
+                    effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule(),
+                    effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule(),
+                ],
+                next_page_token="abc",
+            ),
+            securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesResponse(
+                effective_event_threat_detection_custom_modules=[],
+                next_page_token="def",
+            ),
+            securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesResponse(
+                effective_event_threat_detection_custom_modules=[
+                    effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule(),
+                ],
+                next_page_token="ghi",
+            ),
+            securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesResponse(
+                effective_event_threat_detection_custom_modules=[
+                    effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule(),
+                    effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(
+            client.list_effective_event_threat_detection_custom_modules(
+                request={}
+            ).pages
+        )
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_effective_event_threat_detection_custom_modules_async_pager():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_effective_event_threat_detection_custom_modules),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesResponse(
+                effective_event_threat_detection_custom_modules=[
+                    effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule(),
+                    effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule(),
+                    effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule(),
+                ],
+                next_page_token="abc",
+            ),
+            securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesResponse(
+                effective_event_threat_detection_custom_modules=[],
+                next_page_token="def",
+            ),
+            securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesResponse(
+                effective_event_threat_detection_custom_modules=[
+                    effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule(),
+                ],
+                next_page_token="ghi",
+            ),
+            securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesResponse(
+                effective_event_threat_detection_custom_modules=[
+                    effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule(),
+                    effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_effective_event_threat_detection_custom_modules(
+            request={},
+        )
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(
+            isinstance(
+                i,
+                effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule,
+            )
+            for i in responses
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_effective_event_threat_detection_custom_modules_async_pages():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_effective_event_threat_detection_custom_modules),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesResponse(
+                effective_event_threat_detection_custom_modules=[
+                    effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule(),
+                    effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule(),
+                    effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule(),
+                ],
+                next_page_token="abc",
+            ),
+            securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesResponse(
+                effective_event_threat_detection_custom_modules=[],
+                next_page_token="def",
+            ),
+            securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesResponse(
+                effective_event_threat_detection_custom_modules=[
+                    effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule(),
+                ],
+                next_page_token="ghi",
+            ),
+            securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesResponse(
+                effective_event_threat_detection_custom_modules=[
+                    effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule(),
+                    effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
+            await client.list_effective_event_threat_detection_custom_modules(
+                request={}
+            )
+        ).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        securitycenter_service.BatchCreateResourceValueConfigsRequest,
+        dict,
+    ],
+)
+def test_batch_create_resource_value_configs(request_type, transport: str = "grpc"):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_create_resource_value_configs), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = (
+            securitycenter_service.BatchCreateResourceValueConfigsResponse()
+        )
+        response = client.batch_create_resource_value_configs(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = securitycenter_service.BatchCreateResourceValueConfigsRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(
+        response, securitycenter_service.BatchCreateResourceValueConfigsResponse
+    )
+
+
+def test_batch_create_resource_value_configs_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_create_resource_value_configs), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.batch_create_resource_value_configs()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0] == securitycenter_service.BatchCreateResourceValueConfigsRequest()
+        )
+
+
+def test_batch_create_resource_value_configs_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = securitycenter_service.BatchCreateResourceValueConfigsRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_create_resource_value_configs), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.batch_create_resource_value_configs(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == securitycenter_service.BatchCreateResourceValueConfigsRequest(
+            parent="parent_value",
+        )
+
+
+def test_batch_create_resource_value_configs_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = SecurityCenterClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.batch_create_resource_value_configs
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.batch_create_resource_value_configs
+        ] = mock_rpc
+        request = {}
+        client.batch_create_resource_value_configs(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.batch_create_resource_value_configs(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_batch_create_resource_value_configs_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_create_resource_value_configs), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            securitycenter_service.BatchCreateResourceValueConfigsResponse()
+        )
+        response = await client.batch_create_resource_value_configs()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0] == securitycenter_service.BatchCreateResourceValueConfigsRequest()
+        )
+
+
+@pytest.mark.asyncio
+async def test_batch_create_resource_value_configs_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = SecurityCenterAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.batch_create_resource_value_configs
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_object = mock.AsyncMock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.batch_create_resource_value_configs
+        ] = mock_object
+
+        request = {}
+        await client.batch_create_resource_value_configs(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_object.call_count == 1
+
+        await client.batch_create_resource_value_configs(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_object.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_batch_create_resource_value_configs_async(
+    transport: str = "grpc_asyncio",
+    request_type=securitycenter_service.BatchCreateResourceValueConfigsRequest,
+):
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_create_resource_value_configs), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            securitycenter_service.BatchCreateResourceValueConfigsResponse()
+        )
+        response = await client.batch_create_resource_value_configs(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = securitycenter_service.BatchCreateResourceValueConfigsRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(
+        response, securitycenter_service.BatchCreateResourceValueConfigsResponse
+    )
+
+
+@pytest.mark.asyncio
+async def test_batch_create_resource_value_configs_async_from_dict():
+    await test_batch_create_resource_value_configs_async(request_type=dict)
+
+
+def test_batch_create_resource_value_configs_field_headers():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = securitycenter_service.BatchCreateResourceValueConfigsRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_create_resource_value_configs), "__call__"
+    ) as call:
+        call.return_value = (
+            securitycenter_service.BatchCreateResourceValueConfigsResponse()
+        )
+        client.batch_create_resource_value_configs(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_batch_create_resource_value_configs_field_headers_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = securitycenter_service.BatchCreateResourceValueConfigsRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_create_resource_value_configs), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            securitycenter_service.BatchCreateResourceValueConfigsResponse()
+        )
+        await client.batch_create_resource_value_configs(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_batch_create_resource_value_configs_flattened():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_create_resource_value_configs), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = (
+            securitycenter_service.BatchCreateResourceValueConfigsResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.batch_create_resource_value_configs(
+            parent="parent_value",
+            requests=[
+                securitycenter_service.CreateResourceValueConfigRequest(
+                    parent="parent_value"
+                )
+            ],
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].requests
+        mock_val = [
+            securitycenter_service.CreateResourceValueConfigRequest(
+                parent="parent_value"
+            )
+        ]
+        assert arg == mock_val
+
+
+def test_batch_create_resource_value_configs_flattened_error():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.batch_create_resource_value_configs(
+            securitycenter_service.BatchCreateResourceValueConfigsRequest(),
+            parent="parent_value",
+            requests=[
+                securitycenter_service.CreateResourceValueConfigRequest(
+                    parent="parent_value"
+                )
+            ],
+        )
+
+
+@pytest.mark.asyncio
+async def test_batch_create_resource_value_configs_flattened_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_create_resource_value_configs), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = (
+            securitycenter_service.BatchCreateResourceValueConfigsResponse()
+        )
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            securitycenter_service.BatchCreateResourceValueConfigsResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.batch_create_resource_value_configs(
+            parent="parent_value",
+            requests=[
+                securitycenter_service.CreateResourceValueConfigRequest(
+                    parent="parent_value"
+                )
+            ],
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].requests
+        mock_val = [
+            securitycenter_service.CreateResourceValueConfigRequest(
+                parent="parent_value"
+            )
+        ]
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_batch_create_resource_value_configs_flattened_error_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.batch_create_resource_value_configs(
+            securitycenter_service.BatchCreateResourceValueConfigsRequest(),
+            parent="parent_value",
+            requests=[
+                securitycenter_service.CreateResourceValueConfigRequest(
+                    parent="parent_value"
+                )
+            ],
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        securitycenter_service.DeleteResourceValueConfigRequest,
+        dict,
+    ],
+)
+def test_delete_resource_value_config(request_type, transport: str = "grpc"):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_resource_value_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+        response = client.delete_resource_value_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = securitycenter_service.DeleteResourceValueConfigRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_resource_value_config_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_resource_value_config), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.delete_resource_value_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == securitycenter_service.DeleteResourceValueConfigRequest()
+
+
+def test_delete_resource_value_config_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = securitycenter_service.DeleteResourceValueConfigRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_resource_value_config), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.delete_resource_value_config(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == securitycenter_service.DeleteResourceValueConfigRequest(
+            name="name_value",
+        )
+
+
+def test_delete_resource_value_config_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = SecurityCenterClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.delete_resource_value_config
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.delete_resource_value_config
+        ] = mock_rpc
+        request = {}
+        client.delete_resource_value_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.delete_resource_value_config(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_delete_resource_value_config_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_resource_value_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_resource_value_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == securitycenter_service.DeleteResourceValueConfigRequest()
+
+
+@pytest.mark.asyncio
+async def test_delete_resource_value_config_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = SecurityCenterAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.delete_resource_value_config
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_object = mock.AsyncMock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.delete_resource_value_config
+        ] = mock_object
+
+        request = {}
+        await client.delete_resource_value_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_object.call_count == 1
+
+        await client.delete_resource_value_config(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_object.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_delete_resource_value_config_async(
+    transport: str = "grpc_asyncio",
+    request_type=securitycenter_service.DeleteResourceValueConfigRequest,
+):
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_resource_value_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_resource_value_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = securitycenter_service.DeleteResourceValueConfigRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.asyncio
+async def test_delete_resource_value_config_async_from_dict():
+    await test_delete_resource_value_config_async(request_type=dict)
+
+
+def test_delete_resource_value_config_field_headers():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = securitycenter_service.DeleteResourceValueConfigRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_resource_value_config), "__call__"
+    ) as call:
+        call.return_value = None
+        client.delete_resource_value_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_delete_resource_value_config_field_headers_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = securitycenter_service.DeleteResourceValueConfigRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_resource_value_config), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_resource_value_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_delete_resource_value_config_flattened():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_resource_value_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.delete_resource_value_config(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_delete_resource_value_config_flattened_error():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_resource_value_config(
+            securitycenter_service.DeleteResourceValueConfigRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_resource_value_config_flattened_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_resource_value_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.delete_resource_value_config(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_delete_resource_value_config_flattened_error_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.delete_resource_value_config(
+            securitycenter_service.DeleteResourceValueConfigRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        securitycenter_service.GetResourceValueConfigRequest,
+        dict,
+    ],
+)
+def test_get_resource_value_config(request_type, transport: str = "grpc"):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_resource_value_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resource_value_config.ResourceValueConfig(
+            name="name_value",
+            resource_value=resource_value_config.ResourceValue.HIGH,
+            tag_values=["tag_values_value"],
+            resource_type="resource_type_value",
+            scope="scope_value",
+            description="description_value",
+            cloud_provider=resource.CloudProvider.GOOGLE_CLOUD_PLATFORM,
+        )
+        response = client.get_resource_value_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = securitycenter_service.GetResourceValueConfigRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resource_value_config.ResourceValueConfig)
+    assert response.name == "name_value"
+    assert response.resource_value == resource_value_config.ResourceValue.HIGH
+    assert response.tag_values == ["tag_values_value"]
+    assert response.resource_type == "resource_type_value"
+    assert response.scope == "scope_value"
+    assert response.description == "description_value"
+    assert response.cloud_provider == resource.CloudProvider.GOOGLE_CLOUD_PLATFORM
+
+
+def test_get_resource_value_config_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_resource_value_config), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.get_resource_value_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == securitycenter_service.GetResourceValueConfigRequest()
+
+
+def test_get_resource_value_config_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = securitycenter_service.GetResourceValueConfigRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_resource_value_config), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.get_resource_value_config(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == securitycenter_service.GetResourceValueConfigRequest(
+            name="name_value",
+        )
+
+
+def test_get_resource_value_config_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = SecurityCenterClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.get_resource_value_config
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.get_resource_value_config
+        ] = mock_rpc
+        request = {}
+        client.get_resource_value_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_resource_value_config(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_get_resource_value_config_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_resource_value_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resource_value_config.ResourceValueConfig(
+                name="name_value",
+                resource_value=resource_value_config.ResourceValue.HIGH,
+                tag_values=["tag_values_value"],
+                resource_type="resource_type_value",
+                scope="scope_value",
+                description="description_value",
+                cloud_provider=resource.CloudProvider.GOOGLE_CLOUD_PLATFORM,
+            )
+        )
+        response = await client.get_resource_value_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == securitycenter_service.GetResourceValueConfigRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_resource_value_config_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = SecurityCenterAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.get_resource_value_config
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_object = mock.AsyncMock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.get_resource_value_config
+        ] = mock_object
+
+        request = {}
+        await client.get_resource_value_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_object.call_count == 1
+
+        await client.get_resource_value_config(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_object.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_get_resource_value_config_async(
+    transport: str = "grpc_asyncio",
+    request_type=securitycenter_service.GetResourceValueConfigRequest,
+):
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_resource_value_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resource_value_config.ResourceValueConfig(
+                name="name_value",
+                resource_value=resource_value_config.ResourceValue.HIGH,
+                tag_values=["tag_values_value"],
+                resource_type="resource_type_value",
+                scope="scope_value",
+                description="description_value",
+                cloud_provider=resource.CloudProvider.GOOGLE_CLOUD_PLATFORM,
+            )
+        )
+        response = await client.get_resource_value_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = securitycenter_service.GetResourceValueConfigRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resource_value_config.ResourceValueConfig)
+    assert response.name == "name_value"
+    assert response.resource_value == resource_value_config.ResourceValue.HIGH
+    assert response.tag_values == ["tag_values_value"]
+    assert response.resource_type == "resource_type_value"
+    assert response.scope == "scope_value"
+    assert response.description == "description_value"
+    assert response.cloud_provider == resource.CloudProvider.GOOGLE_CLOUD_PLATFORM
+
+
+@pytest.mark.asyncio
+async def test_get_resource_value_config_async_from_dict():
+    await test_get_resource_value_config_async(request_type=dict)
+
+
+def test_get_resource_value_config_field_headers():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = securitycenter_service.GetResourceValueConfigRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_resource_value_config), "__call__"
+    ) as call:
+        call.return_value = resource_value_config.ResourceValueConfig()
+        client.get_resource_value_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_resource_value_config_field_headers_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = securitycenter_service.GetResourceValueConfigRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_resource_value_config), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resource_value_config.ResourceValueConfig()
+        )
+        await client.get_resource_value_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_get_resource_value_config_flattened():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_resource_value_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resource_value_config.ResourceValueConfig()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_resource_value_config(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_resource_value_config_flattened_error():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_resource_value_config(
+            securitycenter_service.GetResourceValueConfigRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_resource_value_config_flattened_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_resource_value_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resource_value_config.ResourceValueConfig()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resource_value_config.ResourceValueConfig()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_resource_value_config(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_resource_value_config_flattened_error_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_resource_value_config(
+            securitycenter_service.GetResourceValueConfigRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        securitycenter_service.ListResourceValueConfigsRequest,
+        dict,
+    ],
+)
+def test_list_resource_value_configs(request_type, transport: str = "grpc"):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_resource_value_configs), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = securitycenter_service.ListResourceValueConfigsResponse(
+            next_page_token="next_page_token_value",
+        )
+        response = client.list_resource_value_configs(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = securitycenter_service.ListResourceValueConfigsRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListResourceValueConfigsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_resource_value_configs_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_resource_value_configs), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.list_resource_value_configs()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == securitycenter_service.ListResourceValueConfigsRequest()
+
+
+def test_list_resource_value_configs_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = securitycenter_service.ListResourceValueConfigsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_resource_value_configs), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.list_resource_value_configs(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == securitycenter_service.ListResourceValueConfigsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+def test_list_resource_value_configs_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = SecurityCenterClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.list_resource_value_configs
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.list_resource_value_configs
+        ] = mock_rpc
+        request = {}
+        client.list_resource_value_configs(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.list_resource_value_configs(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_list_resource_value_configs_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_resource_value_configs), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            securitycenter_service.ListResourceValueConfigsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_resource_value_configs()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == securitycenter_service.ListResourceValueConfigsRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_resource_value_configs_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = SecurityCenterAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.list_resource_value_configs
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_object = mock.AsyncMock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.list_resource_value_configs
+        ] = mock_object
+
+        request = {}
+        await client.list_resource_value_configs(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_object.call_count == 1
+
+        await client.list_resource_value_configs(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_object.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_list_resource_value_configs_async(
+    transport: str = "grpc_asyncio",
+    request_type=securitycenter_service.ListResourceValueConfigsRequest,
+):
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_resource_value_configs), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            securitycenter_service.ListResourceValueConfigsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_resource_value_configs(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = securitycenter_service.ListResourceValueConfigsRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListResourceValueConfigsAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.asyncio
+async def test_list_resource_value_configs_async_from_dict():
+    await test_list_resource_value_configs_async(request_type=dict)
+
+
+def test_list_resource_value_configs_field_headers():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = securitycenter_service.ListResourceValueConfigsRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_resource_value_configs), "__call__"
+    ) as call:
+        call.return_value = securitycenter_service.ListResourceValueConfigsResponse()
+        client.list_resource_value_configs(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_resource_value_configs_field_headers_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = securitycenter_service.ListResourceValueConfigsRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_resource_value_configs), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            securitycenter_service.ListResourceValueConfigsResponse()
+        )
+        await client.list_resource_value_configs(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_list_resource_value_configs_flattened():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_resource_value_configs), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = securitycenter_service.ListResourceValueConfigsResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_resource_value_configs(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+def test_list_resource_value_configs_flattened_error():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_resource_value_configs(
+            securitycenter_service.ListResourceValueConfigsRequest(),
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_resource_value_configs_flattened_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_resource_value_configs), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = securitycenter_service.ListResourceValueConfigsResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            securitycenter_service.ListResourceValueConfigsResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_resource_value_configs(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_list_resource_value_configs_flattened_error_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_resource_value_configs(
+            securitycenter_service.ListResourceValueConfigsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_resource_value_configs_pager(transport_name: str = "grpc"):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_resource_value_configs), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            securitycenter_service.ListResourceValueConfigsResponse(
+                resource_value_configs=[
+                    resource_value_config.ResourceValueConfig(),
+                    resource_value_config.ResourceValueConfig(),
+                    resource_value_config.ResourceValueConfig(),
+                ],
+                next_page_token="abc",
+            ),
+            securitycenter_service.ListResourceValueConfigsResponse(
+                resource_value_configs=[],
+                next_page_token="def",
+            ),
+            securitycenter_service.ListResourceValueConfigsResponse(
+                resource_value_configs=[
+                    resource_value_config.ResourceValueConfig(),
+                ],
+                next_page_token="ghi",
+            ),
+            securitycenter_service.ListResourceValueConfigsResponse(
+                resource_value_configs=[
+                    resource_value_config.ResourceValueConfig(),
+                    resource_value_config.ResourceValueConfig(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        expected_metadata = ()
+        expected_metadata = tuple(expected_metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
+        )
+        pager = client.list_resource_value_configs(request={})
+
+        assert pager._metadata == expected_metadata
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(
+            isinstance(i, resource_value_config.ResourceValueConfig) for i in results
+        )
+
+
+def test_list_resource_value_configs_pages(transport_name: str = "grpc"):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_resource_value_configs), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            securitycenter_service.ListResourceValueConfigsResponse(
+                resource_value_configs=[
+                    resource_value_config.ResourceValueConfig(),
+                    resource_value_config.ResourceValueConfig(),
+                    resource_value_config.ResourceValueConfig(),
+                ],
+                next_page_token="abc",
+            ),
+            securitycenter_service.ListResourceValueConfigsResponse(
+                resource_value_configs=[],
+                next_page_token="def",
+            ),
+            securitycenter_service.ListResourceValueConfigsResponse(
+                resource_value_configs=[
+                    resource_value_config.ResourceValueConfig(),
+                ],
+                next_page_token="ghi",
+            ),
+            securitycenter_service.ListResourceValueConfigsResponse(
+                resource_value_configs=[
+                    resource_value_config.ResourceValueConfig(),
+                    resource_value_config.ResourceValueConfig(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.list_resource_value_configs(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_resource_value_configs_async_pager():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_resource_value_configs),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            securitycenter_service.ListResourceValueConfigsResponse(
+                resource_value_configs=[
+                    resource_value_config.ResourceValueConfig(),
+                    resource_value_config.ResourceValueConfig(),
+                    resource_value_config.ResourceValueConfig(),
+                ],
+                next_page_token="abc",
+            ),
+            securitycenter_service.ListResourceValueConfigsResponse(
+                resource_value_configs=[],
+                next_page_token="def",
+            ),
+            securitycenter_service.ListResourceValueConfigsResponse(
+                resource_value_configs=[
+                    resource_value_config.ResourceValueConfig(),
+                ],
+                next_page_token="ghi",
+            ),
+            securitycenter_service.ListResourceValueConfigsResponse(
+                resource_value_configs=[
+                    resource_value_config.ResourceValueConfig(),
+                    resource_value_config.ResourceValueConfig(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_resource_value_configs(
+            request={},
+        )
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(
+            isinstance(i, resource_value_config.ResourceValueConfig) for i in responses
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_resource_value_configs_async_pages():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_resource_value_configs),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            securitycenter_service.ListResourceValueConfigsResponse(
+                resource_value_configs=[
+                    resource_value_config.ResourceValueConfig(),
+                    resource_value_config.ResourceValueConfig(),
+                    resource_value_config.ResourceValueConfig(),
+                ],
+                next_page_token="abc",
+            ),
+            securitycenter_service.ListResourceValueConfigsResponse(
+                resource_value_configs=[],
+                next_page_token="def",
+            ),
+            securitycenter_service.ListResourceValueConfigsResponse(
+                resource_value_configs=[
+                    resource_value_config.ResourceValueConfig(),
+                ],
+                next_page_token="ghi",
+            ),
+            securitycenter_service.ListResourceValueConfigsResponse(
+                resource_value_configs=[
+                    resource_value_config.ResourceValueConfig(),
+                    resource_value_config.ResourceValueConfig(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
+            await client.list_resource_value_configs(request={})
+        ).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        securitycenter_service.UpdateResourceValueConfigRequest,
+        dict,
+    ],
+)
+def test_update_resource_value_config(request_type, transport: str = "grpc"):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_resource_value_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = gcs_resource_value_config.ResourceValueConfig(
+            name="name_value",
+            resource_value=gcs_resource_value_config.ResourceValue.HIGH,
+            tag_values=["tag_values_value"],
+            resource_type="resource_type_value",
+            scope="scope_value",
+            description="description_value",
+            cloud_provider=resource.CloudProvider.GOOGLE_CLOUD_PLATFORM,
+        )
+        response = client.update_resource_value_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = securitycenter_service.UpdateResourceValueConfigRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gcs_resource_value_config.ResourceValueConfig)
+    assert response.name == "name_value"
+    assert response.resource_value == gcs_resource_value_config.ResourceValue.HIGH
+    assert response.tag_values == ["tag_values_value"]
+    assert response.resource_type == "resource_type_value"
+    assert response.scope == "scope_value"
+    assert response.description == "description_value"
+    assert response.cloud_provider == resource.CloudProvider.GOOGLE_CLOUD_PLATFORM
+
+
+def test_update_resource_value_config_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_resource_value_config), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.update_resource_value_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == securitycenter_service.UpdateResourceValueConfigRequest()
+
+
+def test_update_resource_value_config_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = securitycenter_service.UpdateResourceValueConfigRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_resource_value_config), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.update_resource_value_config(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == securitycenter_service.UpdateResourceValueConfigRequest()
+
+
+def test_update_resource_value_config_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = SecurityCenterClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.update_resource_value_config
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.update_resource_value_config
+        ] = mock_rpc
+        request = {}
+        client.update_resource_value_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.update_resource_value_config(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_update_resource_value_config_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_resource_value_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcs_resource_value_config.ResourceValueConfig(
+                name="name_value",
+                resource_value=gcs_resource_value_config.ResourceValue.HIGH,
+                tag_values=["tag_values_value"],
+                resource_type="resource_type_value",
+                scope="scope_value",
+                description="description_value",
+                cloud_provider=resource.CloudProvider.GOOGLE_CLOUD_PLATFORM,
+            )
+        )
+        response = await client.update_resource_value_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == securitycenter_service.UpdateResourceValueConfigRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_resource_value_config_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = SecurityCenterAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.update_resource_value_config
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_object = mock.AsyncMock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.update_resource_value_config
+        ] = mock_object
+
+        request = {}
+        await client.update_resource_value_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_object.call_count == 1
+
+        await client.update_resource_value_config(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_object.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_update_resource_value_config_async(
+    transport: str = "grpc_asyncio",
+    request_type=securitycenter_service.UpdateResourceValueConfigRequest,
+):
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_resource_value_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcs_resource_value_config.ResourceValueConfig(
+                name="name_value",
+                resource_value=gcs_resource_value_config.ResourceValue.HIGH,
+                tag_values=["tag_values_value"],
+                resource_type="resource_type_value",
+                scope="scope_value",
+                description="description_value",
+                cloud_provider=resource.CloudProvider.GOOGLE_CLOUD_PLATFORM,
+            )
+        )
+        response = await client.update_resource_value_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = securitycenter_service.UpdateResourceValueConfigRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gcs_resource_value_config.ResourceValueConfig)
+    assert response.name == "name_value"
+    assert response.resource_value == gcs_resource_value_config.ResourceValue.HIGH
+    assert response.tag_values == ["tag_values_value"]
+    assert response.resource_type == "resource_type_value"
+    assert response.scope == "scope_value"
+    assert response.description == "description_value"
+    assert response.cloud_provider == resource.CloudProvider.GOOGLE_CLOUD_PLATFORM
+
+
+@pytest.mark.asyncio
+async def test_update_resource_value_config_async_from_dict():
+    await test_update_resource_value_config_async(request_type=dict)
+
+
+def test_update_resource_value_config_field_headers():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = securitycenter_service.UpdateResourceValueConfigRequest()
+
+    request.resource_value_config.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_resource_value_config), "__call__"
+    ) as call:
+        call.return_value = gcs_resource_value_config.ResourceValueConfig()
+        client.update_resource_value_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "resource_value_config.name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_update_resource_value_config_field_headers_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = securitycenter_service.UpdateResourceValueConfigRequest()
+
+    request.resource_value_config.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_resource_value_config), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcs_resource_value_config.ResourceValueConfig()
+        )
+        await client.update_resource_value_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "resource_value_config.name=name_value",
+    ) in kw["metadata"]
+
+
+def test_update_resource_value_config_flattened():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_resource_value_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = gcs_resource_value_config.ResourceValueConfig()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.update_resource_value_config(
+            resource_value_config=gcs_resource_value_config.ResourceValueConfig(
+                name="name_value"
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].resource_value_config
+        mock_val = gcs_resource_value_config.ResourceValueConfig(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+def test_update_resource_value_config_flattened_error():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_resource_value_config(
+            securitycenter_service.UpdateResourceValueConfigRequest(),
+            resource_value_config=gcs_resource_value_config.ResourceValueConfig(
+                name="name_value"
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_resource_value_config_flattened_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_resource_value_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = gcs_resource_value_config.ResourceValueConfig()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcs_resource_value_config.ResourceValueConfig()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.update_resource_value_config(
+            resource_value_config=gcs_resource_value_config.ResourceValueConfig(
+                name="name_value"
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].resource_value_config
+        mock_val = gcs_resource_value_config.ResourceValueConfig(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_update_resource_value_config_flattened_error_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.update_resource_value_config(
+            securitycenter_service.UpdateResourceValueConfigRequest(),
+            resource_value_config=gcs_resource_value_config.ResourceValueConfig(
+                name="name_value"
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        securitycenter_service.ListValuedResourcesRequest,
+        dict,
+    ],
+)
+def test_list_valued_resources(request_type, transport: str = "grpc"):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_valued_resources), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = securitycenter_service.ListValuedResourcesResponse(
+            next_page_token="next_page_token_value",
+            total_size=1086,
+        )
+        response = client.list_valued_resources(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = securitycenter_service.ListValuedResourcesRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListValuedResourcesPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.total_size == 1086
+
+
+def test_list_valued_resources_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_valued_resources), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.list_valued_resources()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == securitycenter_service.ListValuedResourcesRequest()
+
+
+def test_list_valued_resources_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = securitycenter_service.ListValuedResourcesRequest(
+        parent="parent_value",
+        filter="filter_value",
+        page_token="page_token_value",
+        order_by="order_by_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_valued_resources), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.list_valued_resources(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == securitycenter_service.ListValuedResourcesRequest(
+            parent="parent_value",
+            filter="filter_value",
+            page_token="page_token_value",
+            order_by="order_by_value",
+        )
+
+
+def test_list_valued_resources_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = SecurityCenterClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.list_valued_resources
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.list_valued_resources
+        ] = mock_rpc
+        request = {}
+        client.list_valued_resources(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.list_valued_resources(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_list_valued_resources_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_valued_resources), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            securitycenter_service.ListValuedResourcesResponse(
+                next_page_token="next_page_token_value",
+                total_size=1086,
+            )
+        )
+        response = await client.list_valued_resources()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == securitycenter_service.ListValuedResourcesRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_valued_resources_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = SecurityCenterAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.list_valued_resources
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_object = mock.AsyncMock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.list_valued_resources
+        ] = mock_object
+
+        request = {}
+        await client.list_valued_resources(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_object.call_count == 1
+
+        await client.list_valued_resources(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_object.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_list_valued_resources_async(
+    transport: str = "grpc_asyncio",
+    request_type=securitycenter_service.ListValuedResourcesRequest,
+):
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_valued_resources), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            securitycenter_service.ListValuedResourcesResponse(
+                next_page_token="next_page_token_value",
+                total_size=1086,
+            )
+        )
+        response = await client.list_valued_resources(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = securitycenter_service.ListValuedResourcesRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListValuedResourcesAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.total_size == 1086
+
+
+@pytest.mark.asyncio
+async def test_list_valued_resources_async_from_dict():
+    await test_list_valued_resources_async(request_type=dict)
+
+
+def test_list_valued_resources_field_headers():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = securitycenter_service.ListValuedResourcesRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_valued_resources), "__call__"
+    ) as call:
+        call.return_value = securitycenter_service.ListValuedResourcesResponse()
+        client.list_valued_resources(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_valued_resources_field_headers_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = securitycenter_service.ListValuedResourcesRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_valued_resources), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            securitycenter_service.ListValuedResourcesResponse()
+        )
+        await client.list_valued_resources(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_list_valued_resources_flattened():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_valued_resources), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = securitycenter_service.ListValuedResourcesResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_valued_resources(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+def test_list_valued_resources_flattened_error():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_valued_resources(
+            securitycenter_service.ListValuedResourcesRequest(),
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_valued_resources_flattened_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_valued_resources), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = securitycenter_service.ListValuedResourcesResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            securitycenter_service.ListValuedResourcesResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_valued_resources(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_list_valued_resources_flattened_error_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_valued_resources(
+            securitycenter_service.ListValuedResourcesRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_valued_resources_pager(transport_name: str = "grpc"):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_valued_resources), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            securitycenter_service.ListValuedResourcesResponse(
+                valued_resources=[
+                    valued_resource.ValuedResource(),
+                    valued_resource.ValuedResource(),
+                    valued_resource.ValuedResource(),
+                ],
+                next_page_token="abc",
+            ),
+            securitycenter_service.ListValuedResourcesResponse(
+                valued_resources=[],
+                next_page_token="def",
+            ),
+            securitycenter_service.ListValuedResourcesResponse(
+                valued_resources=[
+                    valued_resource.ValuedResource(),
+                ],
+                next_page_token="ghi",
+            ),
+            securitycenter_service.ListValuedResourcesResponse(
+                valued_resources=[
+                    valued_resource.ValuedResource(),
+                    valued_resource.ValuedResource(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        expected_metadata = ()
+        expected_metadata = tuple(expected_metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
+        )
+        pager = client.list_valued_resources(request={})
+
+        assert pager._metadata == expected_metadata
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, valued_resource.ValuedResource) for i in results)
+
+
+def test_list_valued_resources_pages(transport_name: str = "grpc"):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_valued_resources), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            securitycenter_service.ListValuedResourcesResponse(
+                valued_resources=[
+                    valued_resource.ValuedResource(),
+                    valued_resource.ValuedResource(),
+                    valued_resource.ValuedResource(),
+                ],
+                next_page_token="abc",
+            ),
+            securitycenter_service.ListValuedResourcesResponse(
+                valued_resources=[],
+                next_page_token="def",
+            ),
+            securitycenter_service.ListValuedResourcesResponse(
+                valued_resources=[
+                    valued_resource.ValuedResource(),
+                ],
+                next_page_token="ghi",
+            ),
+            securitycenter_service.ListValuedResourcesResponse(
+                valued_resources=[
+                    valued_resource.ValuedResource(),
+                    valued_resource.ValuedResource(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.list_valued_resources(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_valued_resources_async_pager():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_valued_resources),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            securitycenter_service.ListValuedResourcesResponse(
+                valued_resources=[
+                    valued_resource.ValuedResource(),
+                    valued_resource.ValuedResource(),
+                    valued_resource.ValuedResource(),
+                ],
+                next_page_token="abc",
+            ),
+            securitycenter_service.ListValuedResourcesResponse(
+                valued_resources=[],
+                next_page_token="def",
+            ),
+            securitycenter_service.ListValuedResourcesResponse(
+                valued_resources=[
+                    valued_resource.ValuedResource(),
+                ],
+                next_page_token="ghi",
+            ),
+            securitycenter_service.ListValuedResourcesResponse(
+                valued_resources=[
+                    valued_resource.ValuedResource(),
+                    valued_resource.ValuedResource(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_valued_resources(
+            request={},
+        )
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(isinstance(i, valued_resource.ValuedResource) for i in responses)
+
+
+@pytest.mark.asyncio
+async def test_list_valued_resources_async_pages():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_valued_resources),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            securitycenter_service.ListValuedResourcesResponse(
+                valued_resources=[
+                    valued_resource.ValuedResource(),
+                    valued_resource.ValuedResource(),
+                    valued_resource.ValuedResource(),
+                ],
+                next_page_token="abc",
+            ),
+            securitycenter_service.ListValuedResourcesResponse(
+                valued_resources=[],
+                next_page_token="def",
+            ),
+            securitycenter_service.ListValuedResourcesResponse(
+                valued_resources=[
+                    valued_resource.ValuedResource(),
+                ],
+                next_page_token="ghi",
+            ),
+            securitycenter_service.ListValuedResourcesResponse(
+                valued_resources=[
+                    valued_resource.ValuedResource(),
+                    valued_resource.ValuedResource(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
+            await client.list_valued_resources(request={})
+        ).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        securitycenter_service.ListAttackPathsRequest,
+        dict,
+    ],
+)
+def test_list_attack_paths(request_type, transport: str = "grpc"):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_attack_paths), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = securitycenter_service.ListAttackPathsResponse(
+            next_page_token="next_page_token_value",
+        )
+        response = client.list_attack_paths(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = securitycenter_service.ListAttackPathsRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListAttackPathsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_attack_paths_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_attack_paths), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.list_attack_paths()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == securitycenter_service.ListAttackPathsRequest()
+
+
+def test_list_attack_paths_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = securitycenter_service.ListAttackPathsRequest(
+        parent="parent_value",
+        filter="filter_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_attack_paths), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.list_attack_paths(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == securitycenter_service.ListAttackPathsRequest(
+            parent="parent_value",
+            filter="filter_value",
+            page_token="page_token_value",
+        )
+
+
+def test_list_attack_paths_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = SecurityCenterClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.list_attack_paths in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.list_attack_paths
+        ] = mock_rpc
+        request = {}
+        client.list_attack_paths(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.list_attack_paths(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_list_attack_paths_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_attack_paths), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            securitycenter_service.ListAttackPathsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_attack_paths()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == securitycenter_service.ListAttackPathsRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_attack_paths_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = SecurityCenterAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.list_attack_paths
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_object = mock.AsyncMock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.list_attack_paths
+        ] = mock_object
+
+        request = {}
+        await client.list_attack_paths(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_object.call_count == 1
+
+        await client.list_attack_paths(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_object.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_list_attack_paths_async(
+    transport: str = "grpc_asyncio",
+    request_type=securitycenter_service.ListAttackPathsRequest,
+):
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_attack_paths), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            securitycenter_service.ListAttackPathsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_attack_paths(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = securitycenter_service.ListAttackPathsRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListAttackPathsAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.asyncio
+async def test_list_attack_paths_async_from_dict():
+    await test_list_attack_paths_async(request_type=dict)
+
+
+def test_list_attack_paths_field_headers():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = securitycenter_service.ListAttackPathsRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_attack_paths), "__call__"
+    ) as call:
+        call.return_value = securitycenter_service.ListAttackPathsResponse()
+        client.list_attack_paths(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_attack_paths_field_headers_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = securitycenter_service.ListAttackPathsRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_attack_paths), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            securitycenter_service.ListAttackPathsResponse()
+        )
+        await client.list_attack_paths(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_list_attack_paths_flattened():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_attack_paths), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = securitycenter_service.ListAttackPathsResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_attack_paths(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+def test_list_attack_paths_flattened_error():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_attack_paths(
+            securitycenter_service.ListAttackPathsRequest(),
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_attack_paths_flattened_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_attack_paths), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = securitycenter_service.ListAttackPathsResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            securitycenter_service.ListAttackPathsResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_attack_paths(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_list_attack_paths_flattened_error_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_attack_paths(
+            securitycenter_service.ListAttackPathsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_attack_paths_pager(transport_name: str = "grpc"):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_attack_paths), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            securitycenter_service.ListAttackPathsResponse(
+                attack_paths=[
+                    attack_path.AttackPath(),
+                    attack_path.AttackPath(),
+                    attack_path.AttackPath(),
+                ],
+                next_page_token="abc",
+            ),
+            securitycenter_service.ListAttackPathsResponse(
+                attack_paths=[],
+                next_page_token="def",
+            ),
+            securitycenter_service.ListAttackPathsResponse(
+                attack_paths=[
+                    attack_path.AttackPath(),
+                ],
+                next_page_token="ghi",
+            ),
+            securitycenter_service.ListAttackPathsResponse(
+                attack_paths=[
+                    attack_path.AttackPath(),
+                    attack_path.AttackPath(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        expected_metadata = ()
+        expected_metadata = tuple(expected_metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
+        )
+        pager = client.list_attack_paths(request={})
+
+        assert pager._metadata == expected_metadata
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, attack_path.AttackPath) for i in results)
+
+
+def test_list_attack_paths_pages(transport_name: str = "grpc"):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_attack_paths), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            securitycenter_service.ListAttackPathsResponse(
+                attack_paths=[
+                    attack_path.AttackPath(),
+                    attack_path.AttackPath(),
+                    attack_path.AttackPath(),
+                ],
+                next_page_token="abc",
+            ),
+            securitycenter_service.ListAttackPathsResponse(
+                attack_paths=[],
+                next_page_token="def",
+            ),
+            securitycenter_service.ListAttackPathsResponse(
+                attack_paths=[
+                    attack_path.AttackPath(),
+                ],
+                next_page_token="ghi",
+            ),
+            securitycenter_service.ListAttackPathsResponse(
+                attack_paths=[
+                    attack_path.AttackPath(),
+                    attack_path.AttackPath(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.list_attack_paths(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_attack_paths_async_pager():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_attack_paths),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            securitycenter_service.ListAttackPathsResponse(
+                attack_paths=[
+                    attack_path.AttackPath(),
+                    attack_path.AttackPath(),
+                    attack_path.AttackPath(),
+                ],
+                next_page_token="abc",
+            ),
+            securitycenter_service.ListAttackPathsResponse(
+                attack_paths=[],
+                next_page_token="def",
+            ),
+            securitycenter_service.ListAttackPathsResponse(
+                attack_paths=[
+                    attack_path.AttackPath(),
+                ],
+                next_page_token="ghi",
+            ),
+            securitycenter_service.ListAttackPathsResponse(
+                attack_paths=[
+                    attack_path.AttackPath(),
+                    attack_path.AttackPath(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_attack_paths(
+            request={},
+        )
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(isinstance(i, attack_path.AttackPath) for i in responses)
+
+
+@pytest.mark.asyncio
+async def test_list_attack_paths_async_pages():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_attack_paths),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            securitycenter_service.ListAttackPathsResponse(
+                attack_paths=[
+                    attack_path.AttackPath(),
+                    attack_path.AttackPath(),
+                    attack_path.AttackPath(),
+                ],
+                next_page_token="abc",
+            ),
+            securitycenter_service.ListAttackPathsResponse(
+                attack_paths=[],
+                next_page_token="def",
+            ),
+            securitycenter_service.ListAttackPathsResponse(
+                attack_paths=[
+                    attack_path.AttackPath(),
+                ],
+                next_page_token="ghi",
+            ),
+            securitycenter_service.ListAttackPathsResponse(
+                attack_paths=[
+                    attack_path.AttackPath(),
+                    attack_path.AttackPath(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
+            await client.list_attack_paths(request={})
         ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
@@ -23153,6 +31640,15 @@ def test_create_finding_rest(request_type):
             "grantees": ["grantees_value1", "grantees_value2"],
             "version": "version_value",
         },
+        "attack_exposure": {
+            "score": 0.54,
+            "latest_calculation_time": {},
+            "attack_exposure_result": "attack_exposure_result_value",
+            "state": 1,
+            "exposed_high_value_resources_count": 3637,
+            "exposed_medium_value_resources_count": 3862,
+            "exposed_low_value_resources_count": 3559,
+        },
         "files": {},
         "cloud_dlp_inspection": {
             "inspect_job": "inspect_job_value",
@@ -23243,6 +31739,11 @@ def test_create_finding_rest(request_type):
             "last_author": "last_author_value",
             "notebook_update_time": {},
         },
+        "toxic_combination": {
+            "attack_exposure_score": 0.2253,
+            "related_findings": ["related_findings_value1", "related_findings_value2"],
+        },
+        "group_memberships": [{"group_type": 1, "group_id": "group_id_value"}],
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -25383,6 +33884,637 @@ def test_delete_security_health_analytics_custom_module_rest_flattened_error(
 
 
 def test_delete_security_health_analytics_custom_module_rest_error():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        securitycenter_service.GetSimulationRequest,
+        dict,
+    ],
+)
+def test_get_simulation_rest(request_type):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "organizations/sample1/simulations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = simulation.Simulation(
+            name="name_value",
+            cloud_provider=resource.CloudProvider.GOOGLE_CLOUD_PLATFORM,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = simulation.Simulation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_simulation(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, simulation.Simulation)
+    assert response.name == "name_value"
+    assert response.cloud_provider == resource.CloudProvider.GOOGLE_CLOUD_PLATFORM
+
+
+def test_get_simulation_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = SecurityCenterClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.get_simulation in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.get_simulation] = mock_rpc
+
+        request = {}
+        client.get_simulation(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_simulation(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_get_simulation_rest_required_fields(
+    request_type=securitycenter_service.GetSimulationRequest,
+):
+    transport_class = transports.SecurityCenterRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_simulation._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_simulation._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = simulation.Simulation()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = simulation.Simulation.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_simulation(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_simulation_rest_unset_required_fields():
+    transport = transports.SecurityCenterRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_simulation._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_simulation_rest_interceptors(null_interceptor):
+    transport = transports.SecurityCenterRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.SecurityCenterRestInterceptor(),
+    )
+    client = SecurityCenterClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SecurityCenterRestInterceptor, "post_get_simulation"
+    ) as post, mock.patch.object(
+        transports.SecurityCenterRestInterceptor, "pre_get_simulation"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = securitycenter_service.GetSimulationRequest.pb(
+            securitycenter_service.GetSimulationRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = simulation.Simulation.to_json(
+            simulation.Simulation()
+        )
+
+        request = securitycenter_service.GetSimulationRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = simulation.Simulation()
+
+        client.get_simulation(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_simulation_rest_bad_request(
+    transport: str = "rest", request_type=securitycenter_service.GetSimulationRequest
+):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "organizations/sample1/simulations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_simulation(request)
+
+
+def test_get_simulation_rest_flattened():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = simulation.Simulation()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "organizations/sample1/simulations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = simulation.Simulation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_simulation(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=organizations/*/simulations/*}" % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_simulation_rest_flattened_error(transport: str = "rest"):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_simulation(
+            securitycenter_service.GetSimulationRequest(),
+            name="name_value",
+        )
+
+
+def test_get_simulation_rest_error():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        securitycenter_service.GetValuedResourceRequest,
+        dict,
+    ],
+)
+def test_get_valued_resource_rest(request_type):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "organizations/sample1/simulations/sample2/valuedResources/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = valued_resource.ValuedResource(
+            name="name_value",
+            resource="resource_value",
+            resource_type="resource_type_value",
+            display_name="display_name_value",
+            resource_value=valued_resource.ValuedResource.ResourceValue.RESOURCE_VALUE_LOW,
+            exposed_score=0.1395,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = valued_resource.ValuedResource.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_valued_resource(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, valued_resource.ValuedResource)
+    assert response.name == "name_value"
+    assert response.resource == "resource_value"
+    assert response.resource_type == "resource_type_value"
+    assert response.display_name == "display_name_value"
+    assert (
+        response.resource_value
+        == valued_resource.ValuedResource.ResourceValue.RESOURCE_VALUE_LOW
+    )
+    assert math.isclose(response.exposed_score, 0.1395, rel_tol=1e-6)
+
+
+def test_get_valued_resource_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = SecurityCenterClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.get_valued_resource in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.get_valued_resource
+        ] = mock_rpc
+
+        request = {}
+        client.get_valued_resource(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_valued_resource(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_get_valued_resource_rest_required_fields(
+    request_type=securitycenter_service.GetValuedResourceRequest,
+):
+    transport_class = transports.SecurityCenterRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_valued_resource._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_valued_resource._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = valued_resource.ValuedResource()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = valued_resource.ValuedResource.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_valued_resource(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_valued_resource_rest_unset_required_fields():
+    transport = transports.SecurityCenterRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_valued_resource._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_valued_resource_rest_interceptors(null_interceptor):
+    transport = transports.SecurityCenterRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.SecurityCenterRestInterceptor(),
+    )
+    client = SecurityCenterClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SecurityCenterRestInterceptor, "post_get_valued_resource"
+    ) as post, mock.patch.object(
+        transports.SecurityCenterRestInterceptor, "pre_get_valued_resource"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = securitycenter_service.GetValuedResourceRequest.pb(
+            securitycenter_service.GetValuedResourceRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = valued_resource.ValuedResource.to_json(
+            valued_resource.ValuedResource()
+        )
+
+        request = securitycenter_service.GetValuedResourceRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = valued_resource.ValuedResource()
+
+        client.get_valued_resource(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_valued_resource_rest_bad_request(
+    transport: str = "rest",
+    request_type=securitycenter_service.GetValuedResourceRequest,
+):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "organizations/sample1/simulations/sample2/valuedResources/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_valued_resource(request)
+
+
+def test_get_valued_resource_rest_flattened():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = valued_resource.ValuedResource()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "organizations/sample1/simulations/sample2/valuedResources/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = valued_resource.ValuedResource.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_valued_resource(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=organizations/*/simulations/*/valuedResources/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_valued_resource_rest_flattened_error(transport: str = "rest"):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_valued_resource(
+            securitycenter_service.GetValuedResourceRequest(),
+            name="name_value",
+        )
+
+
+def test_get_valued_resource_rest_error():
     client = SecurityCenterClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
@@ -34382,6 +43514,15 @@ def test_update_finding_rest(request_type):
             "grantees": ["grantees_value1", "grantees_value2"],
             "version": "version_value",
         },
+        "attack_exposure": {
+            "score": 0.54,
+            "latest_calculation_time": {},
+            "attack_exposure_result": "attack_exposure_result_value",
+            "state": 1,
+            "exposed_high_value_resources_count": 3637,
+            "exposed_medium_value_resources_count": 3862,
+            "exposed_low_value_resources_count": 3559,
+        },
         "files": {},
         "cloud_dlp_inspection": {
             "inspect_job": "inspect_job_value",
@@ -34472,6 +43613,11 @@ def test_update_finding_rest(request_type):
             "last_author": "last_author_value",
             "notebook_update_time": {},
         },
+        "toxic_combination": {
+            "attack_exposure_score": 0.2253,
+            "related_findings": ["related_findings_value1", "related_findings_value2"],
+        },
+        "group_memberships": [{"group_type": 1, "group_id": "group_id_value"}],
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -38831,6 +47977,6104 @@ def test_list_big_query_exports_rest_pager(transport: str = "rest"):
             assert page_.raw_page.next_page_token == token
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        securitycenter_service.CreateEventThreatDetectionCustomModuleRequest,
+        dict,
+    ],
+)
+def test_create_event_threat_detection_custom_module_rest(request_type):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "organizations/sample1/eventThreatDetectionSettings"}
+    request_init["event_threat_detection_custom_module"] = {
+        "name": "name_value",
+        "config": {"fields": {}},
+        "ancestor_module": "ancestor_module_value",
+        "enablement_state": 1,
+        "type_": "type__value",
+        "display_name": "display_name_value",
+        "description": "description_value",
+        "update_time": {"seconds": 751, "nanos": 543},
+        "last_editor": "last_editor_value",
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = securitycenter_service.CreateEventThreatDetectionCustomModuleRequest.meta.fields[
+        "event_threat_detection_custom_module"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init[
+        "event_threat_detection_custom_module"
+    ].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(
+                    0, len(request_init["event_threat_detection_custom_module"][field])
+                ):
+                    del request_init["event_threat_detection_custom_module"][field][i][
+                        subfield
+                    ]
+            else:
+                del request_init["event_threat_detection_custom_module"][field][
+                    subfield
+                ]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule(
+            name="name_value",
+            ancestor_module="ancestor_module_value",
+            enablement_state=gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule.EnablementState.ENABLED,
+            type_="type__value",
+            display_name="display_name_value",
+            description="description_value",
+            last_editor="last_editor_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_event_threat_detection_custom_module(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(
+        response,
+        gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule,
+    )
+    assert response.name == "name_value"
+    assert response.ancestor_module == "ancestor_module_value"
+    assert (
+        response.enablement_state
+        == gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule.EnablementState.ENABLED
+    )
+    assert response.type_ == "type__value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+    assert response.last_editor == "last_editor_value"
+
+
+def test_create_event_threat_detection_custom_module_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = SecurityCenterClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.create_event_threat_detection_custom_module
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.create_event_threat_detection_custom_module
+        ] = mock_rpc
+
+        request = {}
+        client.create_event_threat_detection_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.create_event_threat_detection_custom_module(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_create_event_threat_detection_custom_module_rest_required_fields(
+    request_type=securitycenter_service.CreateEventThreatDetectionCustomModuleRequest,
+):
+    transport_class = transports.SecurityCenterRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_event_threat_detection_custom_module._get_unset_required_fields(
+        jsonified_request
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_event_threat_detection_custom_module._get_unset_required_fields(
+        jsonified_request
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = (
+        gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule()
+    )
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_event_threat_detection_custom_module(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_event_threat_detection_custom_module_rest_unset_required_fields():
+    transport = transports.SecurityCenterRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_event_threat_detection_custom_module._get_unset_required_fields(
+        {}
+    )
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "parent",
+                "eventThreatDetectionCustomModule",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_event_threat_detection_custom_module_rest_interceptors(
+    null_interceptor,
+):
+    transport = transports.SecurityCenterRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.SecurityCenterRestInterceptor(),
+    )
+    client = SecurityCenterClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SecurityCenterRestInterceptor,
+        "post_create_event_threat_detection_custom_module",
+    ) as post, mock.patch.object(
+        transports.SecurityCenterRestInterceptor,
+        "pre_create_event_threat_detection_custom_module",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = (
+            securitycenter_service.CreateEventThreatDetectionCustomModuleRequest.pb(
+                securitycenter_service.CreateEventThreatDetectionCustomModuleRequest()
+            )
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule.to_json(
+            gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule()
+        )
+
+        request = securitycenter_service.CreateEventThreatDetectionCustomModuleRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = (
+            gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule()
+        )
+
+        client.create_event_threat_detection_custom_module(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_event_threat_detection_custom_module_rest_bad_request(
+    transport: str = "rest",
+    request_type=securitycenter_service.CreateEventThreatDetectionCustomModuleRequest,
+):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "organizations/sample1/eventThreatDetectionSettings"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_event_threat_detection_custom_module(request)
+
+
+def test_create_event_threat_detection_custom_module_rest_flattened():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = (
+            gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule()
+        )
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "organizations/sample1/eventThreatDetectionSettings"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            event_threat_detection_custom_module=gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule(
+                name="name_value"
+            ),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_event_threat_detection_custom_module(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=organizations/*/eventThreatDetectionSettings}/customModules"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_event_threat_detection_custom_module_rest_flattened_error(
+    transport: str = "rest",
+):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_event_threat_detection_custom_module(
+            securitycenter_service.CreateEventThreatDetectionCustomModuleRequest(),
+            parent="parent_value",
+            event_threat_detection_custom_module=gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule(
+                name="name_value"
+            ),
+        )
+
+
+def test_create_event_threat_detection_custom_module_rest_error():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        securitycenter_service.DeleteEventThreatDetectionCustomModuleRequest,
+        dict,
+    ],
+)
+def test_delete_event_threat_detection_custom_module_rest(request_type):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "organizations/sample1/eventThreatDetectionSettings/customModules/sample2"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_event_threat_detection_custom_module(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_event_threat_detection_custom_module_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = SecurityCenterClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.delete_event_threat_detection_custom_module
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.delete_event_threat_detection_custom_module
+        ] = mock_rpc
+
+        request = {}
+        client.delete_event_threat_detection_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.delete_event_threat_detection_custom_module(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_delete_event_threat_detection_custom_module_rest_required_fields(
+    request_type=securitycenter_service.DeleteEventThreatDetectionCustomModuleRequest,
+):
+    transport_class = transports.SecurityCenterRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_event_threat_detection_custom_module._get_unset_required_fields(
+        jsonified_request
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_event_threat_detection_custom_module._get_unset_required_fields(
+        jsonified_request
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = None
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = ""
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_event_threat_detection_custom_module(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_event_threat_detection_custom_module_rest_unset_required_fields():
+    transport = transports.SecurityCenterRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_event_threat_detection_custom_module._get_unset_required_fields(
+        {}
+    )
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_event_threat_detection_custom_module_rest_interceptors(
+    null_interceptor,
+):
+    transport = transports.SecurityCenterRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.SecurityCenterRestInterceptor(),
+    )
+    client = SecurityCenterClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SecurityCenterRestInterceptor,
+        "pre_delete_event_threat_detection_custom_module",
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = (
+            securitycenter_service.DeleteEventThreatDetectionCustomModuleRequest.pb(
+                securitycenter_service.DeleteEventThreatDetectionCustomModuleRequest()
+            )
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+
+        request = securitycenter_service.DeleteEventThreatDetectionCustomModuleRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_event_threat_detection_custom_module(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_delete_event_threat_detection_custom_module_rest_bad_request(
+    transport: str = "rest",
+    request_type=securitycenter_service.DeleteEventThreatDetectionCustomModuleRequest,
+):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "organizations/sample1/eventThreatDetectionSettings/customModules/sample2"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_event_threat_detection_custom_module(request)
+
+
+def test_delete_event_threat_detection_custom_module_rest_flattened():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "organizations/sample1/eventThreatDetectionSettings/customModules/sample2"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_event_threat_detection_custom_module(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=organizations/*/eventThreatDetectionSettings/customModules/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_event_threat_detection_custom_module_rest_flattened_error(
+    transport: str = "rest",
+):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_event_threat_detection_custom_module(
+            securitycenter_service.DeleteEventThreatDetectionCustomModuleRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_event_threat_detection_custom_module_rest_error():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        securitycenter_service.GetEventThreatDetectionCustomModuleRequest,
+        dict,
+    ],
+)
+def test_get_event_threat_detection_custom_module_rest(request_type):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "organizations/sample1/eventThreatDetectionSettings/customModules/sample2"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = event_threat_detection_custom_module.EventThreatDetectionCustomModule(
+            name="name_value",
+            ancestor_module="ancestor_module_value",
+            enablement_state=event_threat_detection_custom_module.EventThreatDetectionCustomModule.EnablementState.ENABLED,
+            type_="type__value",
+            display_name="display_name_value",
+            description="description_value",
+            last_editor="last_editor_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = (
+            event_threat_detection_custom_module.EventThreatDetectionCustomModule.pb(
+                return_value
+            )
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_event_threat_detection_custom_module(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(
+        response, event_threat_detection_custom_module.EventThreatDetectionCustomModule
+    )
+    assert response.name == "name_value"
+    assert response.ancestor_module == "ancestor_module_value"
+    assert (
+        response.enablement_state
+        == event_threat_detection_custom_module.EventThreatDetectionCustomModule.EnablementState.ENABLED
+    )
+    assert response.type_ == "type__value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+    assert response.last_editor == "last_editor_value"
+
+
+def test_get_event_threat_detection_custom_module_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = SecurityCenterClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.get_event_threat_detection_custom_module
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.get_event_threat_detection_custom_module
+        ] = mock_rpc
+
+        request = {}
+        client.get_event_threat_detection_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_event_threat_detection_custom_module(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_get_event_threat_detection_custom_module_rest_required_fields(
+    request_type=securitycenter_service.GetEventThreatDetectionCustomModuleRequest,
+):
+    transport_class = transports.SecurityCenterRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_event_threat_detection_custom_module._get_unset_required_fields(
+        jsonified_request
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_event_threat_detection_custom_module._get_unset_required_fields(
+        jsonified_request
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = (
+        event_threat_detection_custom_module.EventThreatDetectionCustomModule()
+    )
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = event_threat_detection_custom_module.EventThreatDetectionCustomModule.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_event_threat_detection_custom_module(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_event_threat_detection_custom_module_rest_unset_required_fields():
+    transport = transports.SecurityCenterRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = (
+        transport.get_event_threat_detection_custom_module._get_unset_required_fields(
+            {}
+        )
+    )
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_event_threat_detection_custom_module_rest_interceptors(null_interceptor):
+    transport = transports.SecurityCenterRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.SecurityCenterRestInterceptor(),
+    )
+    client = SecurityCenterClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SecurityCenterRestInterceptor,
+        "post_get_event_threat_detection_custom_module",
+    ) as post, mock.patch.object(
+        transports.SecurityCenterRestInterceptor,
+        "pre_get_event_threat_detection_custom_module",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = (
+            securitycenter_service.GetEventThreatDetectionCustomModuleRequest.pb(
+                securitycenter_service.GetEventThreatDetectionCustomModuleRequest()
+            )
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = event_threat_detection_custom_module.EventThreatDetectionCustomModule.to_json(
+            event_threat_detection_custom_module.EventThreatDetectionCustomModule()
+        )
+
+        request = securitycenter_service.GetEventThreatDetectionCustomModuleRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = (
+            event_threat_detection_custom_module.EventThreatDetectionCustomModule()
+        )
+
+        client.get_event_threat_detection_custom_module(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_event_threat_detection_custom_module_rest_bad_request(
+    transport: str = "rest",
+    request_type=securitycenter_service.GetEventThreatDetectionCustomModuleRequest,
+):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "organizations/sample1/eventThreatDetectionSettings/customModules/sample2"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_event_threat_detection_custom_module(request)
+
+
+def test_get_event_threat_detection_custom_module_rest_flattened():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = (
+            event_threat_detection_custom_module.EventThreatDetectionCustomModule()
+        )
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "organizations/sample1/eventThreatDetectionSettings/customModules/sample2"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = (
+            event_threat_detection_custom_module.EventThreatDetectionCustomModule.pb(
+                return_value
+            )
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_event_threat_detection_custom_module(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=organizations/*/eventThreatDetectionSettings/customModules/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_event_threat_detection_custom_module_rest_flattened_error(
+    transport: str = "rest",
+):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_event_threat_detection_custom_module(
+            securitycenter_service.GetEventThreatDetectionCustomModuleRequest(),
+            name="name_value",
+        )
+
+
+def test_get_event_threat_detection_custom_module_rest_error():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        securitycenter_service.ListDescendantEventThreatDetectionCustomModulesRequest,
+        dict,
+    ],
+)
+def test_list_descendant_event_threat_detection_custom_modules_rest(request_type):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "organizations/sample1/eventThreatDetectionSettings"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = securitycenter_service.ListDescendantEventThreatDetectionCustomModulesResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = securitycenter_service.ListDescendantEventThreatDetectionCustomModulesResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_descendant_event_threat_detection_custom_modules(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(
+        response, pagers.ListDescendantEventThreatDetectionCustomModulesPager
+    )
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_descendant_event_threat_detection_custom_modules_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = SecurityCenterClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.list_descendant_event_threat_detection_custom_modules
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.list_descendant_event_threat_detection_custom_modules
+        ] = mock_rpc
+
+        request = {}
+        client.list_descendant_event_threat_detection_custom_modules(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.list_descendant_event_threat_detection_custom_modules(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_list_descendant_event_threat_detection_custom_modules_rest_required_fields(
+    request_type=securitycenter_service.ListDescendantEventThreatDetectionCustomModulesRequest,
+):
+    transport_class = transports.SecurityCenterRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_descendant_event_threat_detection_custom_modules._get_unset_required_fields(
+        jsonified_request
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_descendant_event_threat_detection_custom_modules._get_unset_required_fields(
+        jsonified_request
+    )
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = (
+        securitycenter_service.ListDescendantEventThreatDetectionCustomModulesResponse()
+    )
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = securitycenter_service.ListDescendantEventThreatDetectionCustomModulesResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_descendant_event_threat_detection_custom_modules(
+                request
+            )
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_descendant_event_threat_detection_custom_modules_rest_unset_required_fields():
+    transport = transports.SecurityCenterRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_descendant_event_threat_detection_custom_modules._get_unset_required_fields(
+        {}
+    )
+    assert set(unset_fields) == (
+        set(
+            (
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_descendant_event_threat_detection_custom_modules_rest_interceptors(
+    null_interceptor,
+):
+    transport = transports.SecurityCenterRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.SecurityCenterRestInterceptor(),
+    )
+    client = SecurityCenterClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SecurityCenterRestInterceptor,
+        "post_list_descendant_event_threat_detection_custom_modules",
+    ) as post, mock.patch.object(
+        transports.SecurityCenterRestInterceptor,
+        "pre_list_descendant_event_threat_detection_custom_modules",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = securitycenter_service.ListDescendantEventThreatDetectionCustomModulesRequest.pb(
+            securitycenter_service.ListDescendantEventThreatDetectionCustomModulesRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = securitycenter_service.ListDescendantEventThreatDetectionCustomModulesResponse.to_json(
+            securitycenter_service.ListDescendantEventThreatDetectionCustomModulesResponse()
+        )
+
+        request = (
+            securitycenter_service.ListDescendantEventThreatDetectionCustomModulesRequest()
+        )
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = (
+            securitycenter_service.ListDescendantEventThreatDetectionCustomModulesResponse()
+        )
+
+        client.list_descendant_event_threat_detection_custom_modules(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_descendant_event_threat_detection_custom_modules_rest_bad_request(
+    transport: str = "rest",
+    request_type=securitycenter_service.ListDescendantEventThreatDetectionCustomModulesRequest,
+):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "organizations/sample1/eventThreatDetectionSettings"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_descendant_event_threat_detection_custom_modules(request)
+
+
+def test_list_descendant_event_threat_detection_custom_modules_rest_flattened():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = (
+            securitycenter_service.ListDescendantEventThreatDetectionCustomModulesResponse()
+        )
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "organizations/sample1/eventThreatDetectionSettings"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = securitycenter_service.ListDescendantEventThreatDetectionCustomModulesResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_descendant_event_threat_detection_custom_modules(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=organizations/*/eventThreatDetectionSettings}/customModules:listDescendant"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_descendant_event_threat_detection_custom_modules_rest_flattened_error(
+    transport: str = "rest",
+):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_descendant_event_threat_detection_custom_modules(
+            securitycenter_service.ListDescendantEventThreatDetectionCustomModulesRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_descendant_event_threat_detection_custom_modules_rest_pager(
+    transport: str = "rest",
+):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            securitycenter_service.ListDescendantEventThreatDetectionCustomModulesResponse(
+                event_threat_detection_custom_modules=[
+                    event_threat_detection_custom_module.EventThreatDetectionCustomModule(),
+                    event_threat_detection_custom_module.EventThreatDetectionCustomModule(),
+                    event_threat_detection_custom_module.EventThreatDetectionCustomModule(),
+                ],
+                next_page_token="abc",
+            ),
+            securitycenter_service.ListDescendantEventThreatDetectionCustomModulesResponse(
+                event_threat_detection_custom_modules=[],
+                next_page_token="def",
+            ),
+            securitycenter_service.ListDescendantEventThreatDetectionCustomModulesResponse(
+                event_threat_detection_custom_modules=[
+                    event_threat_detection_custom_module.EventThreatDetectionCustomModule(),
+                ],
+                next_page_token="ghi",
+            ),
+            securitycenter_service.ListDescendantEventThreatDetectionCustomModulesResponse(
+                event_threat_detection_custom_modules=[
+                    event_threat_detection_custom_module.EventThreatDetectionCustomModule(),
+                    event_threat_detection_custom_module.EventThreatDetectionCustomModule(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            securitycenter_service.ListDescendantEventThreatDetectionCustomModulesResponse.to_json(
+                x
+            )
+            for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {
+            "parent": "organizations/sample1/eventThreatDetectionSettings"
+        }
+
+        pager = client.list_descendant_event_threat_detection_custom_modules(
+            request=sample_request
+        )
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(
+            isinstance(
+                i, event_threat_detection_custom_module.EventThreatDetectionCustomModule
+            )
+            for i in results
+        )
+
+        pages = list(
+            client.list_descendant_event_threat_detection_custom_modules(
+                request=sample_request
+            ).pages
+        )
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        securitycenter_service.ListEventThreatDetectionCustomModulesRequest,
+        dict,
+    ],
+)
+def test_list_event_threat_detection_custom_modules_rest(request_type):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "organizations/sample1/eventThreatDetectionSettings"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = (
+            securitycenter_service.ListEventThreatDetectionCustomModulesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = (
+            securitycenter_service.ListEventThreatDetectionCustomModulesResponse.pb(
+                return_value
+            )
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_event_threat_detection_custom_modules(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListEventThreatDetectionCustomModulesPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_event_threat_detection_custom_modules_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = SecurityCenterClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.list_event_threat_detection_custom_modules
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.list_event_threat_detection_custom_modules
+        ] = mock_rpc
+
+        request = {}
+        client.list_event_threat_detection_custom_modules(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.list_event_threat_detection_custom_modules(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_list_event_threat_detection_custom_modules_rest_required_fields(
+    request_type=securitycenter_service.ListEventThreatDetectionCustomModulesRequest,
+):
+    transport_class = transports.SecurityCenterRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_event_threat_detection_custom_modules._get_unset_required_fields(
+        jsonified_request
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_event_threat_detection_custom_modules._get_unset_required_fields(
+        jsonified_request
+    )
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = (
+        securitycenter_service.ListEventThreatDetectionCustomModulesResponse()
+    )
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = (
+                securitycenter_service.ListEventThreatDetectionCustomModulesResponse.pb(
+                    return_value
+                )
+            )
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_event_threat_detection_custom_modules(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_event_threat_detection_custom_modules_rest_unset_required_fields():
+    transport = transports.SecurityCenterRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = (
+        transport.list_event_threat_detection_custom_modules._get_unset_required_fields(
+            {}
+        )
+    )
+    assert set(unset_fields) == (
+        set(
+            (
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_event_threat_detection_custom_modules_rest_interceptors(null_interceptor):
+    transport = transports.SecurityCenterRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.SecurityCenterRestInterceptor(),
+    )
+    client = SecurityCenterClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SecurityCenterRestInterceptor,
+        "post_list_event_threat_detection_custom_modules",
+    ) as post, mock.patch.object(
+        transports.SecurityCenterRestInterceptor,
+        "pre_list_event_threat_detection_custom_modules",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = (
+            securitycenter_service.ListEventThreatDetectionCustomModulesRequest.pb(
+                securitycenter_service.ListEventThreatDetectionCustomModulesRequest()
+            )
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = securitycenter_service.ListEventThreatDetectionCustomModulesResponse.to_json(
+            securitycenter_service.ListEventThreatDetectionCustomModulesResponse()
+        )
+
+        request = securitycenter_service.ListEventThreatDetectionCustomModulesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = (
+            securitycenter_service.ListEventThreatDetectionCustomModulesResponse()
+        )
+
+        client.list_event_threat_detection_custom_modules(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_event_threat_detection_custom_modules_rest_bad_request(
+    transport: str = "rest",
+    request_type=securitycenter_service.ListEventThreatDetectionCustomModulesRequest,
+):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "organizations/sample1/eventThreatDetectionSettings"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_event_threat_detection_custom_modules(request)
+
+
+def test_list_event_threat_detection_custom_modules_rest_flattened():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = (
+            securitycenter_service.ListEventThreatDetectionCustomModulesResponse()
+        )
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "organizations/sample1/eventThreatDetectionSettings"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = (
+            securitycenter_service.ListEventThreatDetectionCustomModulesResponse.pb(
+                return_value
+            )
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_event_threat_detection_custom_modules(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=organizations/*/eventThreatDetectionSettings}/customModules"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_event_threat_detection_custom_modules_rest_flattened_error(
+    transport: str = "rest",
+):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_event_threat_detection_custom_modules(
+            securitycenter_service.ListEventThreatDetectionCustomModulesRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_event_threat_detection_custom_modules_rest_pager(transport: str = "rest"):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            securitycenter_service.ListEventThreatDetectionCustomModulesResponse(
+                event_threat_detection_custom_modules=[
+                    event_threat_detection_custom_module.EventThreatDetectionCustomModule(),
+                    event_threat_detection_custom_module.EventThreatDetectionCustomModule(),
+                    event_threat_detection_custom_module.EventThreatDetectionCustomModule(),
+                ],
+                next_page_token="abc",
+            ),
+            securitycenter_service.ListEventThreatDetectionCustomModulesResponse(
+                event_threat_detection_custom_modules=[],
+                next_page_token="def",
+            ),
+            securitycenter_service.ListEventThreatDetectionCustomModulesResponse(
+                event_threat_detection_custom_modules=[
+                    event_threat_detection_custom_module.EventThreatDetectionCustomModule(),
+                ],
+                next_page_token="ghi",
+            ),
+            securitycenter_service.ListEventThreatDetectionCustomModulesResponse(
+                event_threat_detection_custom_modules=[
+                    event_threat_detection_custom_module.EventThreatDetectionCustomModule(),
+                    event_threat_detection_custom_module.EventThreatDetectionCustomModule(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            securitycenter_service.ListEventThreatDetectionCustomModulesResponse.to_json(
+                x
+            )
+            for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {
+            "parent": "organizations/sample1/eventThreatDetectionSettings"
+        }
+
+        pager = client.list_event_threat_detection_custom_modules(
+            request=sample_request
+        )
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(
+            isinstance(
+                i, event_threat_detection_custom_module.EventThreatDetectionCustomModule
+            )
+            for i in results
+        )
+
+        pages = list(
+            client.list_event_threat_detection_custom_modules(
+                request=sample_request
+            ).pages
+        )
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        securitycenter_service.UpdateEventThreatDetectionCustomModuleRequest,
+        dict,
+    ],
+)
+def test_update_event_threat_detection_custom_module_rest(request_type):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "event_threat_detection_custom_module": {
+            "name": "organizations/sample1/eventThreatDetectionSettings/customModules/sample2"
+        }
+    }
+    request_init["event_threat_detection_custom_module"] = {
+        "name": "organizations/sample1/eventThreatDetectionSettings/customModules/sample2",
+        "config": {"fields": {}},
+        "ancestor_module": "ancestor_module_value",
+        "enablement_state": 1,
+        "type_": "type__value",
+        "display_name": "display_name_value",
+        "description": "description_value",
+        "update_time": {"seconds": 751, "nanos": 543},
+        "last_editor": "last_editor_value",
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = securitycenter_service.UpdateEventThreatDetectionCustomModuleRequest.meta.fields[
+        "event_threat_detection_custom_module"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init[
+        "event_threat_detection_custom_module"
+    ].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(
+                    0, len(request_init["event_threat_detection_custom_module"][field])
+                ):
+                    del request_init["event_threat_detection_custom_module"][field][i][
+                        subfield
+                    ]
+            else:
+                del request_init["event_threat_detection_custom_module"][field][
+                    subfield
+                ]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule(
+            name="name_value",
+            ancestor_module="ancestor_module_value",
+            enablement_state=gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule.EnablementState.ENABLED,
+            type_="type__value",
+            display_name="display_name_value",
+            description="description_value",
+            last_editor="last_editor_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_event_threat_detection_custom_module(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(
+        response,
+        gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule,
+    )
+    assert response.name == "name_value"
+    assert response.ancestor_module == "ancestor_module_value"
+    assert (
+        response.enablement_state
+        == gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule.EnablementState.ENABLED
+    )
+    assert response.type_ == "type__value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+    assert response.last_editor == "last_editor_value"
+
+
+def test_update_event_threat_detection_custom_module_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = SecurityCenterClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.update_event_threat_detection_custom_module
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.update_event_threat_detection_custom_module
+        ] = mock_rpc
+
+        request = {}
+        client.update_event_threat_detection_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.update_event_threat_detection_custom_module(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_update_event_threat_detection_custom_module_rest_required_fields(
+    request_type=securitycenter_service.UpdateEventThreatDetectionCustomModuleRequest,
+):
+    transport_class = transports.SecurityCenterRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_event_threat_detection_custom_module._get_unset_required_fields(
+        jsonified_request
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_event_threat_detection_custom_module._get_unset_required_fields(
+        jsonified_request
+    )
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("update_mask",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = (
+        gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule()
+    )
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_event_threat_detection_custom_module(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_event_threat_detection_custom_module_rest_unset_required_fields():
+    transport = transports.SecurityCenterRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_event_threat_detection_custom_module._get_unset_required_fields(
+        {}
+    )
+    assert set(unset_fields) == (
+        set(("updateMask",)) & set(("eventThreatDetectionCustomModule",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_event_threat_detection_custom_module_rest_interceptors(
+    null_interceptor,
+):
+    transport = transports.SecurityCenterRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.SecurityCenterRestInterceptor(),
+    )
+    client = SecurityCenterClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SecurityCenterRestInterceptor,
+        "post_update_event_threat_detection_custom_module",
+    ) as post, mock.patch.object(
+        transports.SecurityCenterRestInterceptor,
+        "pre_update_event_threat_detection_custom_module",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = (
+            securitycenter_service.UpdateEventThreatDetectionCustomModuleRequest.pb(
+                securitycenter_service.UpdateEventThreatDetectionCustomModuleRequest()
+            )
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule.to_json(
+            gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule()
+        )
+
+        request = securitycenter_service.UpdateEventThreatDetectionCustomModuleRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = (
+            gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule()
+        )
+
+        client.update_event_threat_detection_custom_module(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_event_threat_detection_custom_module_rest_bad_request(
+    transport: str = "rest",
+    request_type=securitycenter_service.UpdateEventThreatDetectionCustomModuleRequest,
+):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "event_threat_detection_custom_module": {
+            "name": "organizations/sample1/eventThreatDetectionSettings/customModules/sample2"
+        }
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_event_threat_detection_custom_module(request)
+
+
+def test_update_event_threat_detection_custom_module_rest_flattened():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = (
+            gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule()
+        )
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "event_threat_detection_custom_module": {
+                "name": "organizations/sample1/eventThreatDetectionSettings/customModules/sample2"
+            }
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            event_threat_detection_custom_module=gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule(
+                name="name_value"
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_event_threat_detection_custom_module(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{event_threat_detection_custom_module.name=organizations/*/eventThreatDetectionSettings/customModules/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_event_threat_detection_custom_module_rest_flattened_error(
+    transport: str = "rest",
+):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_event_threat_detection_custom_module(
+            securitycenter_service.UpdateEventThreatDetectionCustomModuleRequest(),
+            event_threat_detection_custom_module=gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule(
+                name="name_value"
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_event_threat_detection_custom_module_rest_error():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        securitycenter_service.ValidateEventThreatDetectionCustomModuleRequest,
+        dict,
+    ],
+)
+def test_validate_event_threat_detection_custom_module_rest(request_type):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "organizations/sample1/eventThreatDetectionSettings"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = (
+            securitycenter_service.ValidateEventThreatDetectionCustomModuleResponse()
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = (
+            securitycenter_service.ValidateEventThreatDetectionCustomModuleResponse.pb(
+                return_value
+            )
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.validate_event_threat_detection_custom_module(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(
+        response,
+        securitycenter_service.ValidateEventThreatDetectionCustomModuleResponse,
+    )
+
+
+def test_validate_event_threat_detection_custom_module_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = SecurityCenterClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.validate_event_threat_detection_custom_module
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.validate_event_threat_detection_custom_module
+        ] = mock_rpc
+
+        request = {}
+        client.validate_event_threat_detection_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.validate_event_threat_detection_custom_module(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_validate_event_threat_detection_custom_module_rest_required_fields(
+    request_type=securitycenter_service.ValidateEventThreatDetectionCustomModuleRequest,
+):
+    transport_class = transports.SecurityCenterRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["raw_text"] = ""
+    request_init["type_"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).validate_event_threat_detection_custom_module._get_unset_required_fields(
+        jsonified_request
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["rawText"] = "raw_text_value"
+    jsonified_request["type"] = "type__value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).validate_event_threat_detection_custom_module._get_unset_required_fields(
+        jsonified_request
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "rawText" in jsonified_request
+    assert jsonified_request["rawText"] == "raw_text_value"
+    assert "type" in jsonified_request
+    assert jsonified_request["type"] == "type__value"
+
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = (
+        securitycenter_service.ValidateEventThreatDetectionCustomModuleResponse()
+    )
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = securitycenter_service.ValidateEventThreatDetectionCustomModuleResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.validate_event_threat_detection_custom_module(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_validate_event_threat_detection_custom_module_rest_unset_required_fields():
+    transport = transports.SecurityCenterRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.validate_event_threat_detection_custom_module._get_unset_required_fields(
+        {}
+    )
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "parent",
+                "rawText",
+                "type",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_validate_event_threat_detection_custom_module_rest_interceptors(
+    null_interceptor,
+):
+    transport = transports.SecurityCenterRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.SecurityCenterRestInterceptor(),
+    )
+    client = SecurityCenterClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SecurityCenterRestInterceptor,
+        "post_validate_event_threat_detection_custom_module",
+    ) as post, mock.patch.object(
+        transports.SecurityCenterRestInterceptor,
+        "pre_validate_event_threat_detection_custom_module",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = (
+            securitycenter_service.ValidateEventThreatDetectionCustomModuleRequest.pb(
+                securitycenter_service.ValidateEventThreatDetectionCustomModuleRequest()
+            )
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = securitycenter_service.ValidateEventThreatDetectionCustomModuleResponse.to_json(
+            securitycenter_service.ValidateEventThreatDetectionCustomModuleResponse()
+        )
+
+        request = (
+            securitycenter_service.ValidateEventThreatDetectionCustomModuleRequest()
+        )
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = (
+            securitycenter_service.ValidateEventThreatDetectionCustomModuleResponse()
+        )
+
+        client.validate_event_threat_detection_custom_module(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_validate_event_threat_detection_custom_module_rest_bad_request(
+    transport: str = "rest",
+    request_type=securitycenter_service.ValidateEventThreatDetectionCustomModuleRequest,
+):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "organizations/sample1/eventThreatDetectionSettings"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.validate_event_threat_detection_custom_module(request)
+
+
+def test_validate_event_threat_detection_custom_module_rest_error():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        securitycenter_service.GetEffectiveEventThreatDetectionCustomModuleRequest,
+        dict,
+    ],
+)
+def test_get_effective_event_threat_detection_custom_module_rest(request_type):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "organizations/sample1/eventThreatDetectionSettings/effectiveCustomModules/sample2"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule(
+            name="name_value",
+            enablement_state=effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule.EnablementState.ENABLED,
+            type_="type__value",
+            display_name="display_name_value",
+            description="description_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_effective_event_threat_detection_custom_module(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(
+        response,
+        effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule,
+    )
+    assert response.name == "name_value"
+    assert (
+        response.enablement_state
+        == effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule.EnablementState.ENABLED
+    )
+    assert response.type_ == "type__value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+
+
+def test_get_effective_event_threat_detection_custom_module_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = SecurityCenterClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.get_effective_event_threat_detection_custom_module
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.get_effective_event_threat_detection_custom_module
+        ] = mock_rpc
+
+        request = {}
+        client.get_effective_event_threat_detection_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_effective_event_threat_detection_custom_module(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_get_effective_event_threat_detection_custom_module_rest_required_fields(
+    request_type=securitycenter_service.GetEffectiveEventThreatDetectionCustomModuleRequest,
+):
+    transport_class = transports.SecurityCenterRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_effective_event_threat_detection_custom_module._get_unset_required_fields(
+        jsonified_request
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_effective_event_threat_detection_custom_module._get_unset_required_fields(
+        jsonified_request
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = (
+        effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule()
+    )
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_effective_event_threat_detection_custom_module(
+                request
+            )
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_effective_event_threat_detection_custom_module_rest_unset_required_fields():
+    transport = transports.SecurityCenterRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_effective_event_threat_detection_custom_module._get_unset_required_fields(
+        {}
+    )
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_effective_event_threat_detection_custom_module_rest_interceptors(
+    null_interceptor,
+):
+    transport = transports.SecurityCenterRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.SecurityCenterRestInterceptor(),
+    )
+    client = SecurityCenterClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SecurityCenterRestInterceptor,
+        "post_get_effective_event_threat_detection_custom_module",
+    ) as post, mock.patch.object(
+        transports.SecurityCenterRestInterceptor,
+        "pre_get_effective_event_threat_detection_custom_module",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = securitycenter_service.GetEffectiveEventThreatDetectionCustomModuleRequest.pb(
+            securitycenter_service.GetEffectiveEventThreatDetectionCustomModuleRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule.to_json(
+            effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule()
+        )
+
+        request = (
+            securitycenter_service.GetEffectiveEventThreatDetectionCustomModuleRequest()
+        )
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = (
+            effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule()
+        )
+
+        client.get_effective_event_threat_detection_custom_module(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_effective_event_threat_detection_custom_module_rest_bad_request(
+    transport: str = "rest",
+    request_type=securitycenter_service.GetEffectiveEventThreatDetectionCustomModuleRequest,
+):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "organizations/sample1/eventThreatDetectionSettings/effectiveCustomModules/sample2"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_effective_event_threat_detection_custom_module(request)
+
+
+def test_get_effective_event_threat_detection_custom_module_rest_flattened():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = (
+            effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule()
+        )
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "organizations/sample1/eventThreatDetectionSettings/effectiveCustomModules/sample2"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_effective_event_threat_detection_custom_module(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=organizations/*/eventThreatDetectionSettings/effectiveCustomModules/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_effective_event_threat_detection_custom_module_rest_flattened_error(
+    transport: str = "rest",
+):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_effective_event_threat_detection_custom_module(
+            securitycenter_service.GetEffectiveEventThreatDetectionCustomModuleRequest(),
+            name="name_value",
+        )
+
+
+def test_get_effective_event_threat_detection_custom_module_rest_error():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesRequest,
+        dict,
+    ],
+)
+def test_list_effective_event_threat_detection_custom_modules_rest(request_type):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "organizations/sample1/eventThreatDetectionSettings"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_effective_event_threat_detection_custom_modules(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(
+        response, pagers.ListEffectiveEventThreatDetectionCustomModulesPager
+    )
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_effective_event_threat_detection_custom_modules_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = SecurityCenterClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.list_effective_event_threat_detection_custom_modules
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.list_effective_event_threat_detection_custom_modules
+        ] = mock_rpc
+
+        request = {}
+        client.list_effective_event_threat_detection_custom_modules(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.list_effective_event_threat_detection_custom_modules(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_list_effective_event_threat_detection_custom_modules_rest_required_fields(
+    request_type=securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesRequest,
+):
+    transport_class = transports.SecurityCenterRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_effective_event_threat_detection_custom_modules._get_unset_required_fields(
+        jsonified_request
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_effective_event_threat_detection_custom_modules._get_unset_required_fields(
+        jsonified_request
+    )
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = (
+        securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesResponse()
+    )
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_effective_event_threat_detection_custom_modules(
+                request
+            )
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_effective_event_threat_detection_custom_modules_rest_unset_required_fields():
+    transport = transports.SecurityCenterRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_effective_event_threat_detection_custom_modules._get_unset_required_fields(
+        {}
+    )
+    assert set(unset_fields) == (
+        set(
+            (
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_effective_event_threat_detection_custom_modules_rest_interceptors(
+    null_interceptor,
+):
+    transport = transports.SecurityCenterRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.SecurityCenterRestInterceptor(),
+    )
+    client = SecurityCenterClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SecurityCenterRestInterceptor,
+        "post_list_effective_event_threat_detection_custom_modules",
+    ) as post, mock.patch.object(
+        transports.SecurityCenterRestInterceptor,
+        "pre_list_effective_event_threat_detection_custom_modules",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesRequest.pb(
+            securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesResponse.to_json(
+            securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesResponse()
+        )
+
+        request = (
+            securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesRequest()
+        )
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = (
+            securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesResponse()
+        )
+
+        client.list_effective_event_threat_detection_custom_modules(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_effective_event_threat_detection_custom_modules_rest_bad_request(
+    transport: str = "rest",
+    request_type=securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesRequest,
+):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "organizations/sample1/eventThreatDetectionSettings"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_effective_event_threat_detection_custom_modules(request)
+
+
+def test_list_effective_event_threat_detection_custom_modules_rest_flattened():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = (
+            securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesResponse()
+        )
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "organizations/sample1/eventThreatDetectionSettings"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_effective_event_threat_detection_custom_modules(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=organizations/*/eventThreatDetectionSettings}/effectiveCustomModules"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_effective_event_threat_detection_custom_modules_rest_flattened_error(
+    transport: str = "rest",
+):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_effective_event_threat_detection_custom_modules(
+            securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_effective_event_threat_detection_custom_modules_rest_pager(
+    transport: str = "rest",
+):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesResponse(
+                effective_event_threat_detection_custom_modules=[
+                    effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule(),
+                    effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule(),
+                    effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule(),
+                ],
+                next_page_token="abc",
+            ),
+            securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesResponse(
+                effective_event_threat_detection_custom_modules=[],
+                next_page_token="def",
+            ),
+            securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesResponse(
+                effective_event_threat_detection_custom_modules=[
+                    effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule(),
+                ],
+                next_page_token="ghi",
+            ),
+            securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesResponse(
+                effective_event_threat_detection_custom_modules=[
+                    effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule(),
+                    effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesResponse.to_json(
+                x
+            )
+            for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {
+            "parent": "organizations/sample1/eventThreatDetectionSettings"
+        }
+
+        pager = client.list_effective_event_threat_detection_custom_modules(
+            request=sample_request
+        )
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(
+            isinstance(
+                i,
+                effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule,
+            )
+            for i in results
+        )
+
+        pages = list(
+            client.list_effective_event_threat_detection_custom_modules(
+                request=sample_request
+            ).pages
+        )
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        securitycenter_service.BatchCreateResourceValueConfigsRequest,
+        dict,
+    ],
+)
+def test_batch_create_resource_value_configs_rest(request_type):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "organizations/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = securitycenter_service.BatchCreateResourceValueConfigsResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = (
+            securitycenter_service.BatchCreateResourceValueConfigsResponse.pb(
+                return_value
+            )
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.batch_create_resource_value_configs(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(
+        response, securitycenter_service.BatchCreateResourceValueConfigsResponse
+    )
+
+
+def test_batch_create_resource_value_configs_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = SecurityCenterClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.batch_create_resource_value_configs
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.batch_create_resource_value_configs
+        ] = mock_rpc
+
+        request = {}
+        client.batch_create_resource_value_configs(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.batch_create_resource_value_configs(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_batch_create_resource_value_configs_rest_required_fields(
+    request_type=securitycenter_service.BatchCreateResourceValueConfigsRequest,
+):
+    transport_class = transports.SecurityCenterRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).batch_create_resource_value_configs._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).batch_create_resource_value_configs._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = securitycenter_service.BatchCreateResourceValueConfigsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = (
+                securitycenter_service.BatchCreateResourceValueConfigsResponse.pb(
+                    return_value
+                )
+            )
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.batch_create_resource_value_configs(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_batch_create_resource_value_configs_rest_unset_required_fields():
+    transport = transports.SecurityCenterRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = (
+        transport.batch_create_resource_value_configs._get_unset_required_fields({})
+    )
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "parent",
+                "requests",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_batch_create_resource_value_configs_rest_interceptors(null_interceptor):
+    transport = transports.SecurityCenterRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.SecurityCenterRestInterceptor(),
+    )
+    client = SecurityCenterClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SecurityCenterRestInterceptor,
+        "post_batch_create_resource_value_configs",
+    ) as post, mock.patch.object(
+        transports.SecurityCenterRestInterceptor,
+        "pre_batch_create_resource_value_configs",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = securitycenter_service.BatchCreateResourceValueConfigsRequest.pb(
+            securitycenter_service.BatchCreateResourceValueConfigsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = (
+            securitycenter_service.BatchCreateResourceValueConfigsResponse.to_json(
+                securitycenter_service.BatchCreateResourceValueConfigsResponse()
+            )
+        )
+
+        request = securitycenter_service.BatchCreateResourceValueConfigsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = (
+            securitycenter_service.BatchCreateResourceValueConfigsResponse()
+        )
+
+        client.batch_create_resource_value_configs(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_batch_create_resource_value_configs_rest_bad_request(
+    transport: str = "rest",
+    request_type=securitycenter_service.BatchCreateResourceValueConfigsRequest,
+):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "organizations/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.batch_create_resource_value_configs(request)
+
+
+def test_batch_create_resource_value_configs_rest_flattened():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = securitycenter_service.BatchCreateResourceValueConfigsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "organizations/sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            requests=[
+                securitycenter_service.CreateResourceValueConfigRequest(
+                    parent="parent_value"
+                )
+            ],
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = (
+            securitycenter_service.BatchCreateResourceValueConfigsResponse.pb(
+                return_value
+            )
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.batch_create_resource_value_configs(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=organizations/*}/resourceValueConfigs:batchCreate"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_batch_create_resource_value_configs_rest_flattened_error(
+    transport: str = "rest",
+):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.batch_create_resource_value_configs(
+            securitycenter_service.BatchCreateResourceValueConfigsRequest(),
+            parent="parent_value",
+            requests=[
+                securitycenter_service.CreateResourceValueConfigRequest(
+                    parent="parent_value"
+                )
+            ],
+        )
+
+
+def test_batch_create_resource_value_configs_rest_error():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        securitycenter_service.DeleteResourceValueConfigRequest,
+        dict,
+    ],
+)
+def test_delete_resource_value_config_rest(request_type):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "organizations/sample1/resourceValueConfigs/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_resource_value_config(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_resource_value_config_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = SecurityCenterClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.delete_resource_value_config
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.delete_resource_value_config
+        ] = mock_rpc
+
+        request = {}
+        client.delete_resource_value_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.delete_resource_value_config(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_delete_resource_value_config_rest_required_fields(
+    request_type=securitycenter_service.DeleteResourceValueConfigRequest,
+):
+    transport_class = transports.SecurityCenterRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_resource_value_config._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_resource_value_config._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = None
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = ""
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_resource_value_config(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_resource_value_config_rest_unset_required_fields():
+    transport = transports.SecurityCenterRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_resource_value_config._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_resource_value_config_rest_interceptors(null_interceptor):
+    transport = transports.SecurityCenterRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.SecurityCenterRestInterceptor(),
+    )
+    client = SecurityCenterClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SecurityCenterRestInterceptor, "pre_delete_resource_value_config"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = securitycenter_service.DeleteResourceValueConfigRequest.pb(
+            securitycenter_service.DeleteResourceValueConfigRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+
+        request = securitycenter_service.DeleteResourceValueConfigRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_resource_value_config(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_delete_resource_value_config_rest_bad_request(
+    transport: str = "rest",
+    request_type=securitycenter_service.DeleteResourceValueConfigRequest,
+):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "organizations/sample1/resourceValueConfigs/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_resource_value_config(request)
+
+
+def test_delete_resource_value_config_rest_flattened():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "organizations/sample1/resourceValueConfigs/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_resource_value_config(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=organizations/*/resourceValueConfigs/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_resource_value_config_rest_flattened_error(transport: str = "rest"):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_resource_value_config(
+            securitycenter_service.DeleteResourceValueConfigRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_resource_value_config_rest_error():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        securitycenter_service.GetResourceValueConfigRequest,
+        dict,
+    ],
+)
+def test_get_resource_value_config_rest(request_type):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "organizations/sample1/resourceValueConfigs/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resource_value_config.ResourceValueConfig(
+            name="name_value",
+            resource_value=resource_value_config.ResourceValue.HIGH,
+            tag_values=["tag_values_value"],
+            resource_type="resource_type_value",
+            scope="scope_value",
+            description="description_value",
+            cloud_provider=resource.CloudProvider.GOOGLE_CLOUD_PLATFORM,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = resource_value_config.ResourceValueConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_resource_value_config(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resource_value_config.ResourceValueConfig)
+    assert response.name == "name_value"
+    assert response.resource_value == resource_value_config.ResourceValue.HIGH
+    assert response.tag_values == ["tag_values_value"]
+    assert response.resource_type == "resource_type_value"
+    assert response.scope == "scope_value"
+    assert response.description == "description_value"
+    assert response.cloud_provider == resource.CloudProvider.GOOGLE_CLOUD_PLATFORM
+
+
+def test_get_resource_value_config_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = SecurityCenterClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.get_resource_value_config
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.get_resource_value_config
+        ] = mock_rpc
+
+        request = {}
+        client.get_resource_value_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_resource_value_config(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_get_resource_value_config_rest_required_fields(
+    request_type=securitycenter_service.GetResourceValueConfigRequest,
+):
+    transport_class = transports.SecurityCenterRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_resource_value_config._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_resource_value_config._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = resource_value_config.ResourceValueConfig()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = resource_value_config.ResourceValueConfig.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_resource_value_config(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_resource_value_config_rest_unset_required_fields():
+    transport = transports.SecurityCenterRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_resource_value_config._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_resource_value_config_rest_interceptors(null_interceptor):
+    transport = transports.SecurityCenterRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.SecurityCenterRestInterceptor(),
+    )
+    client = SecurityCenterClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SecurityCenterRestInterceptor, "post_get_resource_value_config"
+    ) as post, mock.patch.object(
+        transports.SecurityCenterRestInterceptor, "pre_get_resource_value_config"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = securitycenter_service.GetResourceValueConfigRequest.pb(
+            securitycenter_service.GetResourceValueConfigRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = resource_value_config.ResourceValueConfig.to_json(
+            resource_value_config.ResourceValueConfig()
+        )
+
+        request = securitycenter_service.GetResourceValueConfigRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resource_value_config.ResourceValueConfig()
+
+        client.get_resource_value_config(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_resource_value_config_rest_bad_request(
+    transport: str = "rest",
+    request_type=securitycenter_service.GetResourceValueConfigRequest,
+):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "organizations/sample1/resourceValueConfigs/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_resource_value_config(request)
+
+
+def test_get_resource_value_config_rest_flattened():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resource_value_config.ResourceValueConfig()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "organizations/sample1/resourceValueConfigs/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = resource_value_config.ResourceValueConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_resource_value_config(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=organizations/*/resourceValueConfigs/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_resource_value_config_rest_flattened_error(transport: str = "rest"):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_resource_value_config(
+            securitycenter_service.GetResourceValueConfigRequest(),
+            name="name_value",
+        )
+
+
+def test_get_resource_value_config_rest_error():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        securitycenter_service.ListResourceValueConfigsRequest,
+        dict,
+    ],
+)
+def test_list_resource_value_configs_rest(request_type):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "organizations/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = securitycenter_service.ListResourceValueConfigsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = securitycenter_service.ListResourceValueConfigsResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_resource_value_configs(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListResourceValueConfigsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_resource_value_configs_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = SecurityCenterClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.list_resource_value_configs
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.list_resource_value_configs
+        ] = mock_rpc
+
+        request = {}
+        client.list_resource_value_configs(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.list_resource_value_configs(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_list_resource_value_configs_rest_required_fields(
+    request_type=securitycenter_service.ListResourceValueConfigsRequest,
+):
+    transport_class = transports.SecurityCenterRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_resource_value_configs._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_resource_value_configs._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = securitycenter_service.ListResourceValueConfigsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = securitycenter_service.ListResourceValueConfigsResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_resource_value_configs(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_resource_value_configs_rest_unset_required_fields():
+    transport = transports.SecurityCenterRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_resource_value_configs._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_resource_value_configs_rest_interceptors(null_interceptor):
+    transport = transports.SecurityCenterRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.SecurityCenterRestInterceptor(),
+    )
+    client = SecurityCenterClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SecurityCenterRestInterceptor, "post_list_resource_value_configs"
+    ) as post, mock.patch.object(
+        transports.SecurityCenterRestInterceptor, "pre_list_resource_value_configs"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = securitycenter_service.ListResourceValueConfigsRequest.pb(
+            securitycenter_service.ListResourceValueConfigsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = (
+            securitycenter_service.ListResourceValueConfigsResponse.to_json(
+                securitycenter_service.ListResourceValueConfigsResponse()
+            )
+        )
+
+        request = securitycenter_service.ListResourceValueConfigsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = securitycenter_service.ListResourceValueConfigsResponse()
+
+        client.list_resource_value_configs(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_resource_value_configs_rest_bad_request(
+    transport: str = "rest",
+    request_type=securitycenter_service.ListResourceValueConfigsRequest,
+):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "organizations/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_resource_value_configs(request)
+
+
+def test_list_resource_value_configs_rest_flattened():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = securitycenter_service.ListResourceValueConfigsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "organizations/sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = securitycenter_service.ListResourceValueConfigsResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_resource_value_configs(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=organizations/*}/resourceValueConfigs"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_resource_value_configs_rest_flattened_error(transport: str = "rest"):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_resource_value_configs(
+            securitycenter_service.ListResourceValueConfigsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_resource_value_configs_rest_pager(transport: str = "rest"):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            securitycenter_service.ListResourceValueConfigsResponse(
+                resource_value_configs=[
+                    resource_value_config.ResourceValueConfig(),
+                    resource_value_config.ResourceValueConfig(),
+                    resource_value_config.ResourceValueConfig(),
+                ],
+                next_page_token="abc",
+            ),
+            securitycenter_service.ListResourceValueConfigsResponse(
+                resource_value_configs=[],
+                next_page_token="def",
+            ),
+            securitycenter_service.ListResourceValueConfigsResponse(
+                resource_value_configs=[
+                    resource_value_config.ResourceValueConfig(),
+                ],
+                next_page_token="ghi",
+            ),
+            securitycenter_service.ListResourceValueConfigsResponse(
+                resource_value_configs=[
+                    resource_value_config.ResourceValueConfig(),
+                    resource_value_config.ResourceValueConfig(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            securitycenter_service.ListResourceValueConfigsResponse.to_json(x)
+            for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "organizations/sample1"}
+
+        pager = client.list_resource_value_configs(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(
+            isinstance(i, resource_value_config.ResourceValueConfig) for i in results
+        )
+
+        pages = list(client.list_resource_value_configs(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        securitycenter_service.UpdateResourceValueConfigRequest,
+        dict,
+    ],
+)
+def test_update_resource_value_config_rest(request_type):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "resource_value_config": {
+            "name": "organizations/sample1/resourceValueConfigs/sample2"
+        }
+    }
+    request_init["resource_value_config"] = {
+        "name": "organizations/sample1/resourceValueConfigs/sample2",
+        "resource_value": 1,
+        "tag_values": ["tag_values_value1", "tag_values_value2"],
+        "resource_type": "resource_type_value",
+        "scope": "scope_value",
+        "resource_labels_selector": {},
+        "description": "description_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "cloud_provider": 1,
+        "sensitive_data_protection_mapping": {
+            "high_sensitivity_mapping": 1,
+            "medium_sensitivity_mapping": 1,
+        },
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = securitycenter_service.UpdateResourceValueConfigRequest.meta.fields[
+        "resource_value_config"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init[
+        "resource_value_config"
+    ].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["resource_value_config"][field])):
+                    del request_init["resource_value_config"][field][i][subfield]
+            else:
+                del request_init["resource_value_config"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gcs_resource_value_config.ResourceValueConfig(
+            name="name_value",
+            resource_value=gcs_resource_value_config.ResourceValue.HIGH,
+            tag_values=["tag_values_value"],
+            resource_type="resource_type_value",
+            scope="scope_value",
+            description="description_value",
+            cloud_provider=resource.CloudProvider.GOOGLE_CLOUD_PLATFORM,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = gcs_resource_value_config.ResourceValueConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_resource_value_config(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gcs_resource_value_config.ResourceValueConfig)
+    assert response.name == "name_value"
+    assert response.resource_value == gcs_resource_value_config.ResourceValue.HIGH
+    assert response.tag_values == ["tag_values_value"]
+    assert response.resource_type == "resource_type_value"
+    assert response.scope == "scope_value"
+    assert response.description == "description_value"
+    assert response.cloud_provider == resource.CloudProvider.GOOGLE_CLOUD_PLATFORM
+
+
+def test_update_resource_value_config_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = SecurityCenterClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.update_resource_value_config
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.update_resource_value_config
+        ] = mock_rpc
+
+        request = {}
+        client.update_resource_value_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.update_resource_value_config(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_update_resource_value_config_rest_required_fields(
+    request_type=securitycenter_service.UpdateResourceValueConfigRequest,
+):
+    transport_class = transports.SecurityCenterRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_resource_value_config._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_resource_value_config._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("update_mask",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = gcs_resource_value_config.ResourceValueConfig()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = gcs_resource_value_config.ResourceValueConfig.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_resource_value_config(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_resource_value_config_rest_unset_required_fields():
+    transport = transports.SecurityCenterRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_resource_value_config._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("updateMask",)) & set(("resourceValueConfig",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_resource_value_config_rest_interceptors(null_interceptor):
+    transport = transports.SecurityCenterRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.SecurityCenterRestInterceptor(),
+    )
+    client = SecurityCenterClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SecurityCenterRestInterceptor, "post_update_resource_value_config"
+    ) as post, mock.patch.object(
+        transports.SecurityCenterRestInterceptor, "pre_update_resource_value_config"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = securitycenter_service.UpdateResourceValueConfigRequest.pb(
+            securitycenter_service.UpdateResourceValueConfigRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = (
+            gcs_resource_value_config.ResourceValueConfig.to_json(
+                gcs_resource_value_config.ResourceValueConfig()
+            )
+        )
+
+        request = securitycenter_service.UpdateResourceValueConfigRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = gcs_resource_value_config.ResourceValueConfig()
+
+        client.update_resource_value_config(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_resource_value_config_rest_bad_request(
+    transport: str = "rest",
+    request_type=securitycenter_service.UpdateResourceValueConfigRequest,
+):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "resource_value_config": {
+            "name": "organizations/sample1/resourceValueConfigs/sample2"
+        }
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_resource_value_config(request)
+
+
+def test_update_resource_value_config_rest_flattened():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gcs_resource_value_config.ResourceValueConfig()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "resource_value_config": {
+                "name": "organizations/sample1/resourceValueConfigs/sample2"
+            }
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            resource_value_config=gcs_resource_value_config.ResourceValueConfig(
+                name="name_value"
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = gcs_resource_value_config.ResourceValueConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_resource_value_config(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{resource_value_config.name=organizations/*/resourceValueConfigs/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_resource_value_config_rest_flattened_error(transport: str = "rest"):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_resource_value_config(
+            securitycenter_service.UpdateResourceValueConfigRequest(),
+            resource_value_config=gcs_resource_value_config.ResourceValueConfig(
+                name="name_value"
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_resource_value_config_rest_error():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        securitycenter_service.ListValuedResourcesRequest,
+        dict,
+    ],
+)
+def test_list_valued_resources_rest(request_type):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "organizations/sample1/simulations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = securitycenter_service.ListValuedResourcesResponse(
+            next_page_token="next_page_token_value",
+            total_size=1086,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = securitycenter_service.ListValuedResourcesResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_valued_resources(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListValuedResourcesPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.total_size == 1086
+
+
+def test_list_valued_resources_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = SecurityCenterClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.list_valued_resources
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.list_valued_resources
+        ] = mock_rpc
+
+        request = {}
+        client.list_valued_resources(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.list_valued_resources(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_list_valued_resources_rest_required_fields(
+    request_type=securitycenter_service.ListValuedResourcesRequest,
+):
+    transport_class = transports.SecurityCenterRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_valued_resources._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_valued_resources._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "order_by",
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = securitycenter_service.ListValuedResourcesResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = securitycenter_service.ListValuedResourcesResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_valued_resources(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_valued_resources_rest_unset_required_fields():
+    transport = transports.SecurityCenterRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_valued_resources._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "orderBy",
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_valued_resources_rest_interceptors(null_interceptor):
+    transport = transports.SecurityCenterRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.SecurityCenterRestInterceptor(),
+    )
+    client = SecurityCenterClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SecurityCenterRestInterceptor, "post_list_valued_resources"
+    ) as post, mock.patch.object(
+        transports.SecurityCenterRestInterceptor, "pre_list_valued_resources"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = securitycenter_service.ListValuedResourcesRequest.pb(
+            securitycenter_service.ListValuedResourcesRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = (
+            securitycenter_service.ListValuedResourcesResponse.to_json(
+                securitycenter_service.ListValuedResourcesResponse()
+            )
+        )
+
+        request = securitycenter_service.ListValuedResourcesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = securitycenter_service.ListValuedResourcesResponse()
+
+        client.list_valued_resources(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_valued_resources_rest_bad_request(
+    transport: str = "rest",
+    request_type=securitycenter_service.ListValuedResourcesRequest,
+):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "organizations/sample1/simulations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_valued_resources(request)
+
+
+def test_list_valued_resources_rest_flattened():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = securitycenter_service.ListValuedResourcesResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "organizations/sample1/simulations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = securitycenter_service.ListValuedResourcesResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_valued_resources(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=organizations/*/simulations/*}/valuedResources"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_valued_resources_rest_flattened_error(transport: str = "rest"):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_valued_resources(
+            securitycenter_service.ListValuedResourcesRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_valued_resources_rest_pager(transport: str = "rest"):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            securitycenter_service.ListValuedResourcesResponse(
+                valued_resources=[
+                    valued_resource.ValuedResource(),
+                    valued_resource.ValuedResource(),
+                    valued_resource.ValuedResource(),
+                ],
+                next_page_token="abc",
+            ),
+            securitycenter_service.ListValuedResourcesResponse(
+                valued_resources=[],
+                next_page_token="def",
+            ),
+            securitycenter_service.ListValuedResourcesResponse(
+                valued_resources=[
+                    valued_resource.ValuedResource(),
+                ],
+                next_page_token="ghi",
+            ),
+            securitycenter_service.ListValuedResourcesResponse(
+                valued_resources=[
+                    valued_resource.ValuedResource(),
+                    valued_resource.ValuedResource(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            securitycenter_service.ListValuedResourcesResponse.to_json(x)
+            for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "organizations/sample1/simulations/sample2"}
+
+        pager = client.list_valued_resources(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, valued_resource.ValuedResource) for i in results)
+
+        pages = list(client.list_valued_resources(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        securitycenter_service.ListAttackPathsRequest,
+        dict,
+    ],
+)
+def test_list_attack_paths_rest(request_type):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "organizations/sample1/simulations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = securitycenter_service.ListAttackPathsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = securitycenter_service.ListAttackPathsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_attack_paths(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListAttackPathsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_attack_paths_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = SecurityCenterClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.list_attack_paths in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.list_attack_paths
+        ] = mock_rpc
+
+        request = {}
+        client.list_attack_paths(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.list_attack_paths(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_list_attack_paths_rest_required_fields(
+    request_type=securitycenter_service.ListAttackPathsRequest,
+):
+    transport_class = transports.SecurityCenterRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_attack_paths._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_attack_paths._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = securitycenter_service.ListAttackPathsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = securitycenter_service.ListAttackPathsResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_attack_paths(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_attack_paths_rest_unset_required_fields():
+    transport = transports.SecurityCenterRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_attack_paths._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_attack_paths_rest_interceptors(null_interceptor):
+    transport = transports.SecurityCenterRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.SecurityCenterRestInterceptor(),
+    )
+    client = SecurityCenterClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SecurityCenterRestInterceptor, "post_list_attack_paths"
+    ) as post, mock.patch.object(
+        transports.SecurityCenterRestInterceptor, "pre_list_attack_paths"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = securitycenter_service.ListAttackPathsRequest.pb(
+            securitycenter_service.ListAttackPathsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = (
+            securitycenter_service.ListAttackPathsResponse.to_json(
+                securitycenter_service.ListAttackPathsResponse()
+            )
+        )
+
+        request = securitycenter_service.ListAttackPathsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = securitycenter_service.ListAttackPathsResponse()
+
+        client.list_attack_paths(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_attack_paths_rest_bad_request(
+    transport: str = "rest", request_type=securitycenter_service.ListAttackPathsRequest
+):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "organizations/sample1/simulations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_attack_paths(request)
+
+
+def test_list_attack_paths_rest_flattened():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = securitycenter_service.ListAttackPathsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "organizations/sample1/simulations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = securitycenter_service.ListAttackPathsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_attack_paths(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=organizations/*/simulations/*}/attackPaths"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_attack_paths_rest_flattened_error(transport: str = "rest"):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_attack_paths(
+            securitycenter_service.ListAttackPathsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_attack_paths_rest_pager(transport: str = "rest"):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            securitycenter_service.ListAttackPathsResponse(
+                attack_paths=[
+                    attack_path.AttackPath(),
+                    attack_path.AttackPath(),
+                    attack_path.AttackPath(),
+                ],
+                next_page_token="abc",
+            ),
+            securitycenter_service.ListAttackPathsResponse(
+                attack_paths=[],
+                next_page_token="def",
+            ),
+            securitycenter_service.ListAttackPathsResponse(
+                attack_paths=[
+                    attack_path.AttackPath(),
+                ],
+                next_page_token="ghi",
+            ),
+            securitycenter_service.ListAttackPathsResponse(
+                attack_paths=[
+                    attack_path.AttackPath(),
+                    attack_path.AttackPath(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            securitycenter_service.ListAttackPathsResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "organizations/sample1/simulations/sample2"}
+
+        pager = client.list_attack_paths(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, attack_path.AttackPath) for i in results)
+
+        pages = list(client.list_attack_paths(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.SecurityCenterGrpcTransport(
@@ -38979,6 +54223,8 @@ def test_security_center_base_transport():
         "delete_mute_config",
         "delete_notification_config",
         "delete_security_health_analytics_custom_module",
+        "get_simulation",
+        "get_valued_resource",
         "get_big_query_export",
         "get_iam_policy",
         "get_mute_config",
@@ -39015,6 +54261,22 @@ def test_security_center_base_transport():
         "delete_big_query_export",
         "update_big_query_export",
         "list_big_query_exports",
+        "create_event_threat_detection_custom_module",
+        "delete_event_threat_detection_custom_module",
+        "get_event_threat_detection_custom_module",
+        "list_descendant_event_threat_detection_custom_modules",
+        "list_event_threat_detection_custom_modules",
+        "update_event_threat_detection_custom_module",
+        "validate_event_threat_detection_custom_module",
+        "get_effective_event_threat_detection_custom_module",
+        "list_effective_event_threat_detection_custom_modules",
+        "batch_create_resource_value_configs",
+        "delete_resource_value_config",
+        "get_resource_value_config",
+        "list_resource_value_configs",
+        "update_resource_value_config",
+        "list_valued_resources",
+        "list_attack_paths",
         "get_operation",
         "cancel_operation",
         "delete_operation",
@@ -39326,6 +54588,12 @@ def test_security_center_client_transport_session_collision(transport_name):
     session1 = client1.transport.delete_security_health_analytics_custom_module._session
     session2 = client2.transport.delete_security_health_analytics_custom_module._session
     assert session1 != session2
+    session1 = client1.transport.get_simulation._session
+    session2 = client2.transport.get_simulation._session
+    assert session1 != session2
+    session1 = client1.transport.get_valued_resource._session
+    session2 = client2.transport.get_valued_resource._session
+    assert session1 != session2
     session1 = client1.transport.get_big_query_export._session
     session2 = client2.transport.get_big_query_export._session
     assert session1 != session2
@@ -39449,6 +54717,66 @@ def test_security_center_client_transport_session_collision(transport_name):
     assert session1 != session2
     session1 = client1.transport.list_big_query_exports._session
     session2 = client2.transport.list_big_query_exports._session
+    assert session1 != session2
+    session1 = client1.transport.create_event_threat_detection_custom_module._session
+    session2 = client2.transport.create_event_threat_detection_custom_module._session
+    assert session1 != session2
+    session1 = client1.transport.delete_event_threat_detection_custom_module._session
+    session2 = client2.transport.delete_event_threat_detection_custom_module._session
+    assert session1 != session2
+    session1 = client1.transport.get_event_threat_detection_custom_module._session
+    session2 = client2.transport.get_event_threat_detection_custom_module._session
+    assert session1 != session2
+    session1 = (
+        client1.transport.list_descendant_event_threat_detection_custom_modules._session
+    )
+    session2 = (
+        client2.transport.list_descendant_event_threat_detection_custom_modules._session
+    )
+    assert session1 != session2
+    session1 = client1.transport.list_event_threat_detection_custom_modules._session
+    session2 = client2.transport.list_event_threat_detection_custom_modules._session
+    assert session1 != session2
+    session1 = client1.transport.update_event_threat_detection_custom_module._session
+    session2 = client2.transport.update_event_threat_detection_custom_module._session
+    assert session1 != session2
+    session1 = client1.transport.validate_event_threat_detection_custom_module._session
+    session2 = client2.transport.validate_event_threat_detection_custom_module._session
+    assert session1 != session2
+    session1 = (
+        client1.transport.get_effective_event_threat_detection_custom_module._session
+    )
+    session2 = (
+        client2.transport.get_effective_event_threat_detection_custom_module._session
+    )
+    assert session1 != session2
+    session1 = (
+        client1.transport.list_effective_event_threat_detection_custom_modules._session
+    )
+    session2 = (
+        client2.transport.list_effective_event_threat_detection_custom_modules._session
+    )
+    assert session1 != session2
+    session1 = client1.transport.batch_create_resource_value_configs._session
+    session2 = client2.transport.batch_create_resource_value_configs._session
+    assert session1 != session2
+    session1 = client1.transport.delete_resource_value_config._session
+    session2 = client2.transport.delete_resource_value_config._session
+    assert session1 != session2
+    session1 = client1.transport.get_resource_value_config._session
+    session2 = client2.transport.get_resource_value_config._session
+    assert session1 != session2
+    session1 = client1.transport.list_resource_value_configs._session
+    session2 = client2.transport.list_resource_value_configs._session
+    assert session1 != session2
+    session1 = client1.transport.update_resource_value_config._session
+    session2 = client2.transport.update_resource_value_config._session
+    assert session1 != session2
+    session1 = client1.transport.list_valued_resources._session
+    session2 = client2.transport.list_valued_resources._session
+    assert session1 != session2
+    session1 = client1.transport.list_attack_paths._session
+    session2 = client2.transport.list_attack_paths._session
     assert session1 != session2
 
 
@@ -39635,9 +54963,40 @@ def test_parse_asset_path():
     assert expected == actual
 
 
-def test_big_query_export_path():
+def test_attack_path_path():
     organization = "oyster"
-    export = "nudibranch"
+    simulation = "nudibranch"
+    valued_resource = "cuttlefish"
+    attack_path = "mussel"
+    expected = "organizations/{organization}/simulations/{simulation}/valuedResources/{valued_resource}/attackPaths/{attack_path}".format(
+        organization=organization,
+        simulation=simulation,
+        valued_resource=valued_resource,
+        attack_path=attack_path,
+    )
+    actual = SecurityCenterClient.attack_path_path(
+        organization, simulation, valued_resource, attack_path
+    )
+    assert expected == actual
+
+
+def test_parse_attack_path_path():
+    expected = {
+        "organization": "winkle",
+        "simulation": "nautilus",
+        "valued_resource": "scallop",
+        "attack_path": "abalone",
+    }
+    path = SecurityCenterClient.attack_path_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = SecurityCenterClient.parse_attack_path_path(path)
+    assert expected == actual
+
+
+def test_big_query_export_path():
+    organization = "squid"
+    export = "clam"
     expected = "organizations/{organization}/bigQueryExports/{export}".format(
         organization=organization,
         export=export,
@@ -39648,8 +55007,8 @@ def test_big_query_export_path():
 
 def test_parse_big_query_export_path():
     expected = {
-        "organization": "cuttlefish",
-        "export": "mussel",
+        "organization": "whelk",
+        "export": "octopus",
     }
     path = SecurityCenterClient.big_query_export_path(**expected)
 
@@ -39659,8 +55018,8 @@ def test_parse_big_query_export_path():
 
 
 def test_dlp_job_path():
-    project = "winkle"
-    dlp_job = "nautilus"
+    project = "oyster"
+    dlp_job = "nudibranch"
     expected = "projects/{project}/dlpJobs/{dlp_job}".format(
         project=project,
         dlp_job=dlp_job,
@@ -39671,13 +55030,44 @@ def test_dlp_job_path():
 
 def test_parse_dlp_job_path():
     expected = {
-        "project": "scallop",
-        "dlp_job": "abalone",
+        "project": "cuttlefish",
+        "dlp_job": "mussel",
     }
     path = SecurityCenterClient.dlp_job_path(**expected)
 
     # Check that the path construction is reversible.
     actual = SecurityCenterClient.parse_dlp_job_path(path)
+    assert expected == actual
+
+
+def test_effective_event_threat_detection_custom_module_path():
+    organization = "winkle"
+    module = "nautilus"
+    expected = "organizations/{organization}/eventThreatDetectionSettings/effectiveCustomModules/{module}".format(
+        organization=organization,
+        module=module,
+    )
+    actual = SecurityCenterClient.effective_event_threat_detection_custom_module_path(
+        organization, module
+    )
+    assert expected == actual
+
+
+def test_parse_effective_event_threat_detection_custom_module_path():
+    expected = {
+        "organization": "scallop",
+        "module": "abalone",
+    }
+    path = SecurityCenterClient.effective_event_threat_detection_custom_module_path(
+        **expected
+    )
+
+    # Check that the path construction is reversible.
+    actual = (
+        SecurityCenterClient.parse_effective_event_threat_detection_custom_module_path(
+            path
+        )
+    )
     assert expected == actual
 
 
@@ -39712,11 +55102,36 @@ def test_parse_effective_security_health_analytics_custom_module_path():
     assert expected == actual
 
 
-def test_external_system_path():
+def test_event_threat_detection_custom_module_path():
     organization = "oyster"
-    source = "nudibranch"
-    finding = "cuttlefish"
-    externalsystem = "mussel"
+    module = "nudibranch"
+    expected = "organizations/{organization}/eventThreatDetectionSettings/customModules/{module}".format(
+        organization=organization,
+        module=module,
+    )
+    actual = SecurityCenterClient.event_threat_detection_custom_module_path(
+        organization, module
+    )
+    assert expected == actual
+
+
+def test_parse_event_threat_detection_custom_module_path():
+    expected = {
+        "organization": "cuttlefish",
+        "module": "mussel",
+    }
+    path = SecurityCenterClient.event_threat_detection_custom_module_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = SecurityCenterClient.parse_event_threat_detection_custom_module_path(path)
+    assert expected == actual
+
+
+def test_external_system_path():
+    organization = "winkle"
+    source = "nautilus"
+    finding = "scallop"
+    externalsystem = "abalone"
     expected = "organizations/{organization}/sources/{source}/findings/{finding}/externalSystems/{externalsystem}".format(
         organization=organization,
         source=source,
@@ -39731,10 +55146,10 @@ def test_external_system_path():
 
 def test_parse_external_system_path():
     expected = {
-        "organization": "winkle",
-        "source": "nautilus",
-        "finding": "scallop",
-        "externalsystem": "abalone",
+        "organization": "squid",
+        "source": "clam",
+        "finding": "whelk",
+        "externalsystem": "octopus",
     }
     path = SecurityCenterClient.external_system_path(**expected)
 
@@ -39744,9 +55159,9 @@ def test_parse_external_system_path():
 
 
 def test_finding_path():
-    organization = "squid"
-    source = "clam"
-    finding = "whelk"
+    organization = "oyster"
+    source = "nudibranch"
+    finding = "cuttlefish"
     expected = (
         "organizations/{organization}/sources/{source}/findings/{finding}".format(
             organization=organization,
@@ -39760,9 +55175,9 @@ def test_finding_path():
 
 def test_parse_finding_path():
     expected = {
-        "organization": "octopus",
-        "source": "oyster",
-        "finding": "nudibranch",
+        "organization": "mussel",
+        "source": "winkle",
+        "finding": "nautilus",
     }
     path = SecurityCenterClient.finding_path(**expected)
 
@@ -39772,8 +55187,8 @@ def test_parse_finding_path():
 
 
 def test_mute_config_path():
-    organization = "cuttlefish"
-    mute_config = "mussel"
+    organization = "scallop"
+    mute_config = "abalone"
     expected = "organizations/{organization}/muteConfigs/{mute_config}".format(
         organization=organization,
         mute_config=mute_config,
@@ -39784,8 +55199,8 @@ def test_mute_config_path():
 
 def test_parse_mute_config_path():
     expected = {
-        "organization": "winkle",
-        "mute_config": "nautilus",
+        "organization": "squid",
+        "mute_config": "clam",
     }
     path = SecurityCenterClient.mute_config_path(**expected)
 
@@ -39795,8 +55210,8 @@ def test_parse_mute_config_path():
 
 
 def test_notification_config_path():
-    organization = "scallop"
-    notification_config = "abalone"
+    organization = "whelk"
+    notification_config = "octopus"
     expected = (
         "organizations/{organization}/notificationConfigs/{notification_config}".format(
             organization=organization,
@@ -39811,8 +55226,8 @@ def test_notification_config_path():
 
 def test_parse_notification_config_path():
     expected = {
-        "organization": "squid",
-        "notification_config": "clam",
+        "organization": "oyster",
+        "notification_config": "nudibranch",
     }
     path = SecurityCenterClient.notification_config_path(**expected)
 
@@ -39822,7 +55237,7 @@ def test_parse_notification_config_path():
 
 
 def test_organization_settings_path():
-    organization = "whelk"
+    organization = "cuttlefish"
     expected = "organizations/{organization}/organizationSettings".format(
         organization=organization,
     )
@@ -39832,7 +55247,7 @@ def test_organization_settings_path():
 
 def test_parse_organization_settings_path():
     expected = {
-        "organization": "octopus",
+        "organization": "mussel",
     }
     path = SecurityCenterClient.organization_settings_path(**expected)
 
@@ -39842,8 +55257,8 @@ def test_parse_organization_settings_path():
 
 
 def test_policy_path():
-    organization = "oyster"
-    constraint_name = "nudibranch"
+    organization = "winkle"
+    constraint_name = "nautilus"
     expected = "organizations/{organization}/policies/{constraint_name}".format(
         organization=organization,
         constraint_name=constraint_name,
@@ -39854,8 +55269,8 @@ def test_policy_path():
 
 def test_parse_policy_path():
     expected = {
-        "organization": "cuttlefish",
-        "constraint_name": "mussel",
+        "organization": "scallop",
+        "constraint_name": "abalone",
     }
     path = SecurityCenterClient.policy_path(**expected)
 
@@ -39864,9 +55279,34 @@ def test_parse_policy_path():
     assert expected == actual
 
 
+def test_resource_value_config_path():
+    organization = "squid"
+    resource_value_config = "clam"
+    expected = "organizations/{organization}/resourceValueConfigs/{resource_value_config}".format(
+        organization=organization,
+        resource_value_config=resource_value_config,
+    )
+    actual = SecurityCenterClient.resource_value_config_path(
+        organization, resource_value_config
+    )
+    assert expected == actual
+
+
+def test_parse_resource_value_config_path():
+    expected = {
+        "organization": "whelk",
+        "resource_value_config": "octopus",
+    }
+    path = SecurityCenterClient.resource_value_config_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = SecurityCenterClient.parse_resource_value_config_path(path)
+    assert expected == actual
+
+
 def test_security_health_analytics_custom_module_path():
-    organization = "winkle"
-    custom_module = "nautilus"
+    organization = "oyster"
+    custom_module = "nudibranch"
     expected = "organizations/{organization}/securityHealthAnalyticsSettings/customModules/{custom_module}".format(
         organization=organization,
         custom_module=custom_module,
@@ -39879,8 +55319,8 @@ def test_security_health_analytics_custom_module_path():
 
 def test_parse_security_health_analytics_custom_module_path():
     expected = {
-        "organization": "scallop",
-        "custom_module": "abalone",
+        "organization": "cuttlefish",
+        "custom_module": "mussel",
     }
     path = SecurityCenterClient.security_health_analytics_custom_module_path(**expected)
 
@@ -39892,8 +55332,8 @@ def test_parse_security_health_analytics_custom_module_path():
 
 
 def test_security_marks_path():
-    organization = "squid"
-    asset = "clam"
+    organization = "winkle"
+    asset = "nautilus"
     expected = "organizations/{organization}/assets/{asset}/securityMarks".format(
         organization=organization,
         asset=asset,
@@ -39904,13 +55344,36 @@ def test_security_marks_path():
 
 def test_parse_security_marks_path():
     expected = {
-        "organization": "whelk",
-        "asset": "octopus",
+        "organization": "scallop",
+        "asset": "abalone",
     }
     path = SecurityCenterClient.security_marks_path(**expected)
 
     # Check that the path construction is reversible.
     actual = SecurityCenterClient.parse_security_marks_path(path)
+    assert expected == actual
+
+
+def test_simulation_path():
+    organization = "squid"
+    simulation = "clam"
+    expected = "organizations/{organization}/simulations/{simulation}".format(
+        organization=organization,
+        simulation=simulation,
+    )
+    actual = SecurityCenterClient.simulation_path(organization, simulation)
+    assert expected == actual
+
+
+def test_parse_simulation_path():
+    expected = {
+        "organization": "whelk",
+        "simulation": "octopus",
+    }
+    path = SecurityCenterClient.simulation_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = SecurityCenterClient.parse_simulation_path(path)
     assert expected == actual
 
 
@@ -39983,8 +55446,36 @@ def test_parse_topic_path():
     assert expected == actual
 
 
+def test_valued_resource_path():
+    organization = "oyster"
+    simulation = "nudibranch"
+    valued_resource = "cuttlefish"
+    expected = "organizations/{organization}/simulations/{simulation}/valuedResources/{valued_resource}".format(
+        organization=organization,
+        simulation=simulation,
+        valued_resource=valued_resource,
+    )
+    actual = SecurityCenterClient.valued_resource_path(
+        organization, simulation, valued_resource
+    )
+    assert expected == actual
+
+
+def test_parse_valued_resource_path():
+    expected = {
+        "organization": "mussel",
+        "simulation": "winkle",
+        "valued_resource": "nautilus",
+    }
+    path = SecurityCenterClient.valued_resource_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = SecurityCenterClient.parse_valued_resource_path(path)
+    assert expected == actual
+
+
 def test_common_billing_account_path():
-    billing_account = "oyster"
+    billing_account = "scallop"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -39994,7 +55485,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "nudibranch",
+        "billing_account": "abalone",
     }
     path = SecurityCenterClient.common_billing_account_path(**expected)
 
@@ -40004,7 +55495,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "cuttlefish"
+    folder = "squid"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -40014,7 +55505,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "mussel",
+        "folder": "clam",
     }
     path = SecurityCenterClient.common_folder_path(**expected)
 
@@ -40024,7 +55515,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "winkle"
+    organization = "whelk"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -40034,7 +55525,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "nautilus",
+        "organization": "octopus",
     }
     path = SecurityCenterClient.common_organization_path(**expected)
 
@@ -40044,7 +55535,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "scallop"
+    project = "oyster"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -40054,7 +55545,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "abalone",
+        "project": "nudibranch",
     }
     path = SecurityCenterClient.common_project_path(**expected)
 
@@ -40064,8 +55555,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "squid"
-    location = "clam"
+    project = "cuttlefish"
+    location = "mussel"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -40076,8 +55567,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "whelk",
-        "location": "octopus",
+        "project": "winkle",
+        "location": "nautilus",
     }
     path = SecurityCenterClient.common_location_path(**expected)
 

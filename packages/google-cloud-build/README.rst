@@ -15,7 +15,7 @@ Python Client for Cloud Build
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-build.svg
    :target: https://pypi.org/project/google-cloud-build/
 .. _Cloud Build: https://cloud.google.com/cloud-build/docs/
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/cloudbuild/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/cloudbuild/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/cloud-build/docs/
 
 Quick Start

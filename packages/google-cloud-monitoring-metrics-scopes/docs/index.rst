@@ -21,3 +21,8 @@ For a list of all ``google-cloud-monitoring-metrics-scopes`` releases:
     :maxdepth: 2
 
     CHANGELOG
+
+.. toctree::
+  :hidden:
+
+  summary_overview.md

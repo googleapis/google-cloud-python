@@ -15,7 +15,7 @@ Python Client for Public Certificate Authority
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-public-ca.svg
    :target: https://pypi.org/project/google-cloud-public-ca/
 .. _Public Certificate Authority: https://cloud.google.com/certificate-manager/docs/public-ca
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/publicca/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/publicca/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/certificate-manager/docs/public-ca
 
 Quick Start

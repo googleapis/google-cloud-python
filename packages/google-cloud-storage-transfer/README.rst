@@ -15,7 +15,7 @@ Python Client for Storage Transfer Service
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-storage-transfer.svg
    :target: https://pypi.org/project/google-cloud-storage-transfer/
 .. _Storage Transfer Service: https://cloud.google.com/storage-transfer/
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/storagetransfer/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/storagetransfer/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/storage-transfer/
 
 Quick Start

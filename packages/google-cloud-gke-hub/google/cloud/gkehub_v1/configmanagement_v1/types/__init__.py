@@ -16,6 +16,7 @@
 from .configmanagement import (
     ConfigSync,
     ConfigSyncDeploymentState,
+    ConfigSyncError,
     ConfigSyncState,
     ConfigSyncVersion,
     DeploymentState,
@@ -30,6 +31,7 @@ from .configmanagement import (
     InstallError,
     MembershipSpec,
     MembershipState,
+    OciConfig,
     OperatorState,
     PolicyController,
     PolicyControllerState,
@@ -41,6 +43,7 @@ from .configmanagement import (
 __all__ = (
     "ConfigSync",
     "ConfigSyncDeploymentState",
+    "ConfigSyncError",
     "ConfigSyncState",
     "ConfigSyncVersion",
     "ErrorResource",
@@ -54,6 +57,7 @@ __all__ = (
     "InstallError",
     "MembershipSpec",
     "MembershipState",
+    "OciConfig",
     "OperatorState",
     "PolicyController",
     "PolicyControllerState",

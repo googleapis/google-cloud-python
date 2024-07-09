@@ -129,6 +129,14 @@ class Space(proto.Message):
 
             To support admin install, your Chat app must
             feature direct messaging.
+        access_settings (google.apps.chat_v1.types.Space.AccessSettings):
+            Optional. Specifies the `access
+            setting <https://support.google.com/chat/answer/11971020>`__
+            of the space. Only populated when the ``space_type`` is
+            ``SPACE``.
+        space_uri (str):
+            Output only. The URI for a user to access the
+            space.
     """
 
     class Type(proto.Enum):
@@ -220,6 +228,58 @@ class Space(proto.Message):
             number=2,
         )
 
+    class AccessSettings(proto.Message):
+        r"""Represents the `access
+        setting <https://support.google.com/chat/answer/11971020>`__ of the
+        space.
+
+        Attributes:
+            access_state (google.apps.chat_v1.types.Space.AccessSettings.AccessState):
+                Output only. Indicates the access state of
+                the space.
+            audience (str):
+                Optional. The resource name of the `target
+                audience <https://support.google.com/a/answer/9934697>`__
+                who can discover the space, join the space, and preview the
+                messages in the space. For details, see `Make a space
+                discoverable to a target
+                audience <https://developers.google.com/workspace/chat/space-target-audience>`__.
+
+                Format: ``audiences/{audience}``
+
+                To use the default target audience for the Google Workspace
+                organization, set to ``audiences/default``.
+        """
+
+        class AccessState(proto.Enum):
+            r"""Represents the access state of the space.
+
+            Values:
+                ACCESS_STATE_UNSPECIFIED (0):
+                    Access state is unknown or not supported in
+                    this API.
+                PRIVATE (1):
+                    Space is discoverable by added or invited
+                    members or groups.
+                DISCOVERABLE (2):
+                    Space is discoverable by the selected `target
+                    audience <https://support.google.com/a/answer/9934697>`__,
+                    as well as added or invited members or groups.
+            """
+            ACCESS_STATE_UNSPECIFIED = 0
+            PRIVATE = 1
+            DISCOVERABLE = 2
+
+        access_state: "Space.AccessSettings.AccessState" = proto.Field(
+            proto.ENUM,
+            number=1,
+            enum="Space.AccessSettings.AccessState",
+        )
+        audience: str = proto.Field(
+            proto.STRING,
+            number=3,
+        )
+
     name: str = proto.Field(
         proto.STRING,
         number=1,
@@ -277,6 +337,15 @@ class Space(proto.Message):
     admin_installed: bool = proto.Field(
         proto.BOOL,
         number=19,
+    )
+    access_settings: AccessSettings = proto.Field(
+        proto.MESSAGE,
+        number=23,
+        message=AccessSettings,
+    )
+    space_uri: str = proto.Field(
+        proto.STRING,
+        number=25,
     )
 
 
@@ -408,7 +477,7 @@ class GetSpaceRequest(proto.Message):
     Attributes:
         name (str):
             Required. Resource name of the space, in the form
-            "spaces/*".
+            ``spaces/{space}``.
 
             Format: ``spaces/{space}``
     """
@@ -484,7 +553,8 @@ class UpdateSpaceRequest(proto.Message):
                specified space when updating the display name is
                optional if the existing space already has the ``SPACE``
                type. Trying to update the space type in other ways
-               results in an invalid argument error).
+               results in an invalid argument error). ``space_type`` is
+               not supported with admin access.
 
             -  ``space_details``
 
@@ -494,14 +564,33 @@ class UpdateSpaceRequest(proto.Message):
                if `the organization allows users to change their history
                setting <https://support.google.com/a/answer/7664184>`__.
                Warning: mutually exclusive with all other field paths.)
+               ``space_history_state`` is not supported with admin
+               access.
 
-            -  Developer Preview: ``access_settings.audience`` (Supports
-               changing the `access
+            -  ``access_settings.audience`` (Supports changing the
+               `access
                setting <https://support.google.com/chat/answer/11971020>`__
-               of a space. If no audience is specified in the access
-               setting, the space's access setting is updated to
-               restricted. Warning: mutually exclusive with all other
-               field paths.)
+               of who can discover the space, join the space, and
+               preview the messages in space. If no audience is
+               specified in the access setting, the space's access
+               setting is updated to private. Warning: mutually
+               exclusive with all other field paths.)
+               ``access_settings.audience`` is not supported with admin
+               access.
+
+            -  Developer Preview: Supports changing the `permission
+               settings <https://support.google.com/chat/answer/13340792>`__
+               of a space, supported field paths include:
+               ``permission_settings.manage_members_and_groups``,
+               ``permission_settings.modify_space_details``,
+               ``permission_settings.toggle_history``,
+               ``permission_settings.use_at_mention_all``,
+               ``permission_settings.manage_apps``,
+               ``permission_settings.manage_webhooks``,
+               ``permission_settings.reply_messages`` (Warning: mutually
+               exclusive with all other non-permission settings field
+               paths). ``permission_settings`` is not supported with
+               admin access.
     """
 
     space: "Space" = proto.Field(

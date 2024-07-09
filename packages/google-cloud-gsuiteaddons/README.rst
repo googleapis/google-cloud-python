@@ -15,7 +15,7 @@ Python Client for Google Workspace Add-ons API
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-gsuiteaddons.svg
    :target: https://pypi.org/project/google-cloud-gsuiteaddons/
 .. _Google Workspace Add-ons API: https://developers.google.com/workspace/add-ons/overview
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/gsuiteaddons/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/gsuiteaddons/latest/summary_overview
 .. _Product Documentation:  https://developers.google.com/workspace/add-ons/overview
 
 Quick Start

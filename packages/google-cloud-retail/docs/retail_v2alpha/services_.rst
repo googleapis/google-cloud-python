@@ -4,6 +4,7 @@ Services for Google Cloud Retail v2alpha API
     :maxdepth: 2
 
     analytics_service
+    branch_service
     catalog_service
     completion_service
     control_service
@@ -11,6 +12,7 @@ Services for Google Cloud Retail v2alpha API
     model_service
     prediction_service
     product_service
+    project_service
     search_service
     serving_config_service
     user_event_service

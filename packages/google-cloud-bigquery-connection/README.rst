@@ -15,7 +15,7 @@ Python Client for BigQuery Connection
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-bigquery-connection.svg
    :target: https://pypi.org/project/google-cloud-bigquery-connection/
 .. _BigQuery Connection: https://cloud.google.com/bigquery/docs/reference/bigqueryconnection
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/bigqueryconnection/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/bigqueryconnection/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/bigquery/docs/reference/bigqueryconnection
 
 Quick Start

@@ -50,6 +50,7 @@ from google.oauth2 import service_account
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import json_format
 from google.protobuf import timestamp_pb2  # type: ignore
+from google.protobuf import wrappers_pb2  # type: ignore
 import grpc
 from grpc.experimental import aio
 from proto.marshal.rules import wrappers
@@ -1262,12 +1263,7 @@ async def test_list_management_servers_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[
             client._client._transport.list_management_servers
         ] = mock_object
@@ -1707,6 +1703,7 @@ def test_get_management_server(request_type, transport: str = "grpc"):
             etag="etag_value",
             oauth2_client_id="oauth2_client_id_value",
             ba_proxy_uri=["ba_proxy_uri_value"],
+            satisfies_pzi=True,
         )
         response = client.get_management_server(request)
 
@@ -1725,6 +1722,7 @@ def test_get_management_server(request_type, transport: str = "grpc"):
     assert response.etag == "etag_value"
     assert response.oauth2_client_id == "oauth2_client_id_value"
     assert response.ba_proxy_uri == ["ba_proxy_uri_value"]
+    assert response.satisfies_pzi is True
 
 
 def test_get_management_server_empty_call():
@@ -1841,6 +1839,7 @@ async def test_get_management_server_empty_call_async():
                 etag="etag_value",
                 oauth2_client_id="oauth2_client_id_value",
                 ba_proxy_uri=["ba_proxy_uri_value"],
+                satisfies_pzi=True,
             )
         )
         response = await client.get_management_server()
@@ -1872,12 +1871,7 @@ async def test_get_management_server_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[
             client._client._transport.get_management_server
         ] = mock_object
@@ -1922,6 +1916,7 @@ async def test_get_management_server_async(
                 etag="etag_value",
                 oauth2_client_id="oauth2_client_id_value",
                 ba_proxy_uri=["ba_proxy_uri_value"],
+                satisfies_pzi=True,
             )
         )
         response = await client.get_management_server(request)
@@ -1941,6 +1936,7 @@ async def test_get_management_server_async(
     assert response.etag == "etag_value"
     assert response.oauth2_client_id == "oauth2_client_id_value"
     assert response.ba_proxy_uri == ["ba_proxy_uri_value"]
+    assert response.satisfies_pzi is True
 
 
 @pytest.mark.asyncio
@@ -2279,12 +2275,7 @@ async def test_create_management_server_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[
             client._client._transport.create_management_server
         ] = mock_object
@@ -2693,12 +2684,7 @@ async def test_delete_management_server_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[
             client._client._transport.delete_management_server
         ] = mock_object
@@ -3323,6 +3309,7 @@ def test_get_management_server_rest(request_type):
             etag="etag_value",
             oauth2_client_id="oauth2_client_id_value",
             ba_proxy_uri=["ba_proxy_uri_value"],
+            satisfies_pzi=True,
         )
 
         # Wrap the value into a proper Response obj
@@ -3345,6 +3332,7 @@ def test_get_management_server_rest(request_type):
     assert response.etag == "etag_value"
     assert response.oauth2_client_id == "oauth2_client_id_value"
     assert response.ba_proxy_uri == ["ba_proxy_uri_value"]
+    assert response.satisfies_pzi is True
 
 
 def test_get_management_server_rest_use_cached_wrapped_rpc():
@@ -3653,6 +3641,8 @@ def test_create_management_server_rest(request_type):
             "third_party_oauth2_client_id": "third_party_oauth2_client_id_value",
         },
         "ba_proxy_uri": ["ba_proxy_uri_value1", "ba_proxy_uri_value2"],
+        "satisfies_pzs": {"value": True},
+        "satisfies_pzi": True,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency

@@ -15,7 +15,7 @@ Python Client for Channel Services
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-channel.svg
    :target: https://pypi.org/project/google-cloud-channel/
 .. _Channel Services: https://cloud.google.com/channel/
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/cloudchannel/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/cloudchannel/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/channel/
 
 Quick Start

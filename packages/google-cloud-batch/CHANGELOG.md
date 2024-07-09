@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.17.22](https://github.com/googleapis/google-cloud-python/compare/google-cloud-batch-v0.17.21...google-cloud-batch-v0.17.22) (2024-07-08)
+
+
+### Bug Fixes
+
+* Allow Protobuf 5.x ([#12864](https://github.com/googleapis/google-cloud-python/issues/12864)) ([728b307](https://github.com/googleapis/google-cloud-python/commit/728b307ed0cc497685507a219e913f002f097132))
+
+## [0.17.21](https://github.com/googleapis/google-cloud-python/compare/google-cloud-batch-v0.17.20...google-cloud-batch-v0.17.21) (2024-06-05)
+
+
+### Documentation
+
+* Documentation improvements ([7e19b0e](https://github.com/googleapis/google-cloud-python/commit/7e19b0e6a16ce47b588613fa806ee6cb7f2fcb86))
+
 ## [0.17.20](https://github.com/googleapis/google-cloud-python/compare/google-cloud-batch-v0.17.19...google-cloud-batch-v0.17.20) (2024-05-16)
 
 

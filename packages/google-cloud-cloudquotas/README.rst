@@ -15,7 +15,7 @@ Python Client for Cloud Quotas API
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-cloudquotas.svg
    :target: https://pypi.org/project/google-cloud-cloudquotas/
 .. _Cloud Quotas API: https://cloud.google.com/docs/quota/api-overview
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/google-cloud-cloudquotas/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/google-cloud-cloudquotas/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/docs/quota/api-overview
 
 Quick Start

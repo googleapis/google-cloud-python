@@ -82,7 +82,7 @@ from .transports.grpc_asyncio import NetworkServicesGrpcAsyncIOTransport
 
 
 class NetworkServicesAsyncClient:
-    """"""
+    """Service describing handlers for resources."""
 
     _client: NetworkServicesClient
 

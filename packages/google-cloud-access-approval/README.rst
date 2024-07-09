@@ -15,7 +15,7 @@ Python Client for Access Approval
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-access-approval.svg
    :target: https://pypi.org/project/google-cloud-access-approval/
 .. _Access Approval: https://cloud.google.com/access-approval
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/accessapproval/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/accessapproval/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/access-approval
 
 Quick Start

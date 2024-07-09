@@ -1392,12 +1392,7 @@ async def test_create_session_template_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[
             client._client._transport.create_session_template
         ] = mock_object
@@ -1806,12 +1801,7 @@ async def test_update_session_template_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[
             client._client._transport.update_session_template
         ] = mock_object
@@ -2213,12 +2203,7 @@ async def test_get_session_template_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[
             client._client._transport.get_session_template
         ] = mock_object
@@ -2616,12 +2601,7 @@ async def test_list_session_templates_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[
             client._client._transport.list_session_templates
         ] = mock_object
@@ -3200,12 +3180,7 @@ async def test_delete_session_template_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[
             client._client._transport.delete_session_template
         ] = mock_object
@@ -3436,6 +3411,8 @@ def test_create_session_template_rest(request_type):
             "repository_config": {
                 "pypi_repository_config": {"pypi_repository": "pypi_repository_value"}
             },
+            "autotuning_config": {"scenarios": [2]},
+            "cohort": "cohort_value",
         },
         "environment_config": {
             "execution_config": {
@@ -3872,6 +3849,8 @@ def test_update_session_template_rest(request_type):
             "repository_config": {
                 "pypi_repository_config": {"pypi_repository": "pypi_repository_value"}
             },
+            "autotuning_config": {"scenarios": [2]},
+            "cohort": "cohort_value",
         },
         "environment_config": {
             "execution_config": {

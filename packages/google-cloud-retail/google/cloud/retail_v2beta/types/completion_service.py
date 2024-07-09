@@ -106,12 +106,16 @@ class CompleteQueryRequest(proto.Message):
 
             The maximum allowed max suggestions is 20. If it is set
             higher, it will be capped by 20.
+        enable_attribute_suggestions (bool):
+            If true, attribute suggestions are enabled
+            and provided in response.
+            This field is only available for "cloud-retail"
+            dataset.
         entity (str):
-            The entity for customers that may run multiple different
-            entities, domains, sites or regions, for example,
-            ``Google US``, ``Google Ads``, ``Waymo``, ``google.com``,
-            ``youtube.com``, etc. If this is set, it should be exactly
-            matched with
+            The entity for customers who run multiple entities, domains,
+            sites, or regions, for example, ``Google US``,
+            ``Google Ads``, ``Waymo``, ``google.com``, ``youtube.com``,
+            etc. If this is set, it must be an exact match with
             [UserEvent.entity][google.cloud.retail.v2beta.UserEvent.entity]
             to get per-entity autocomplete results.
     """
@@ -144,6 +148,10 @@ class CompleteQueryRequest(proto.Message):
         proto.INT32,
         number=5,
     )
+    enable_attribute_suggestions: bool = proto.Field(
+        proto.BOOL,
+        number=9,
+    )
     entity: str = proto.Field(
         proto.STRING,
         number=10,
@@ -164,10 +172,10 @@ class CompleteQueryResponse(proto.Message):
             for search events resulting from this completion, which
             enables accurate attribution of complete model performance.
         recent_search_results (MutableSequence[google.cloud.retail_v2beta.types.CompleteQueryResponse.RecentSearchResult]):
-            Matched recent searches of this user. The maximum number of
-            recent searches is 10. This field is a restricted feature.
-            Contact Retail Search support team if you are interested in
-            enabling it.
+            Deprecated. Matched recent searches of this user. The
+            maximum number of recent searches is 10. This field is a
+            restricted feature. If you want to enable it, contact Retail
+            Search support.
 
             This feature is only available when
             [CompleteQueryRequest.visitor_id][google.cloud.retail.v2beta.CompleteQueryRequest.visitor_id]
@@ -219,7 +227,7 @@ class CompleteQueryResponse(proto.Message):
         )
 
     class RecentSearchResult(proto.Message):
-        r"""Recent search of this user.
+        r"""Deprecated: Recent search of this user.
 
         Attributes:
             recent_search (str):

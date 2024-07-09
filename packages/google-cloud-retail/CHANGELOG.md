@@ -1,5 +1,29 @@
 # Changelog
 
+## [1.21.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-retail-v1.21.0...google-cloud-retail-v1.21.1) (2024-07-08)
+
+
+### Bug Fixes
+
+* Allow Protobuf 5.x ([#12869](https://github.com/googleapis/google-cloud-python/issues/12869)) ([e42edbc](https://github.com/googleapis/google-cloud-python/commit/e42edbcf7f4d8ed66b6645c96a01c55fb8cd7666))
+
+## [1.21.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-retail-v1.20.1...google-cloud-retail-v1.21.0) (2024-06-10)
+
+
+### Features
+
+* add page_categories to control condition ([ca7628f](https://github.com/googleapis/google-cloud-python/commit/ca7628f136ef27511ab5426f706e82b7f3999785))
+* add product purge API ([ca7628f](https://github.com/googleapis/google-cloud-python/commit/ca7628f136ef27511ab5426f706e82b7f3999785))
+* allow to skip denylist postfiltering in recommendations ([ca7628f](https://github.com/googleapis/google-cloud-python/commit/ca7628f136ef27511ab5426f706e82b7f3999785))
+* support attribute suggestion in autocomplete ([ca7628f](https://github.com/googleapis/google-cloud-python/commit/ca7628f136ef27511ab5426f706e82b7f3999785))
+* support frequent bought together model config ([ca7628f](https://github.com/googleapis/google-cloud-python/commit/ca7628f136ef27511ab5426f706e82b7f3999785))
+* support merged facets ([ca7628f](https://github.com/googleapis/google-cloud-python/commit/ca7628f136ef27511ab5426f706e82b7f3999785))
+
+
+### Documentation
+
+* keep the API doc up-to-date with recent changes ([ca7628f](https://github.com/googleapis/google-cloud-python/commit/ca7628f136ef27511ab5426f706e82b7f3999785))
+
 ## [1.20.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-retail-v1.20.0...google-cloud-retail-v1.20.1) (2024-03-05)
 
 

@@ -129,7 +129,8 @@ class DataScanServiceGrpcTransport(DataScanServiceTransport):
 
         if isinstance(channel, grpc.Channel):
             # Ignore credentials if a channel was passed.
-            credentials = False
+            credentials = None
+            self._ignore_credentials = True
             # If a channel was explicitly provided, set it.
             self._grpc_channel = channel
             self._ssl_channel_credentials = None
@@ -474,8 +475,11 @@ class DataScanServiceGrpcTransport(DataScanServiceTransport):
     ]:
         r"""Return a callable for the generate data quality rules method over gRPC.
 
-        Generates recommended DataQualityRule from a data
-        profiling DataScan.
+        Generates recommended data quality rules based on the
+        results of a data profiling scan.
+
+        Use the recommendations to build rules for a data
+        quality scan.
 
         Returns:
             Callable[[~.GenerateDataQualityRulesRequest],

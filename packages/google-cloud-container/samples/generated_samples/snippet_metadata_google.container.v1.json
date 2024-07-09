@@ -8,7 +8,7 @@
     ],
     "language": "PYTHON",
     "name": "google-cloud-container",
-    "version": "0.1.0"
+    "version": "2.47.1"
   },
   "snippets": [
     {
@@ -2717,6 +2717,10 @@
             "type": "str"
           },
           {
+            "name": "parent",
+            "type": "str"
+          },
+          {
             "name": "retry",
             "type": "google.api_core.retry.Retry"
           },
@@ -2798,6 +2802,10 @@
           },
           {
             "name": "zone",
+            "type": "str"
+          },
+          {
+            "name": "parent",
             "type": "str"
           },
           {

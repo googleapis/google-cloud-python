@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.22.8](https://github.com/googleapis/google-cloud-python/compare/google-analytics-admin-v0.22.7...google-analytics-admin-v0.22.8) (2024-07-08)
+
+
+### Bug Fixes
+
+* Allow Protobuf 5.x ([#12863](https://github.com/googleapis/google-cloud-python/issues/12863)) ([3e6e423](https://github.com/googleapis/google-cloud-python/commit/3e6e423b86cdace8538f610941aa84c7a6217934))
+
 ## [0.22.7](https://github.com/googleapis/google-cloud-python/compare/google-analytics-admin-v0.22.6...google-analytics-admin-v0.22.7) (2024-03-05)
 
 

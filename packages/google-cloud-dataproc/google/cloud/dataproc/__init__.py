@@ -191,6 +191,7 @@ from google.cloud.dataproc_v1.types.sessions import (
     TerminateSessionRequest,
 )
 from google.cloud.dataproc_v1.types.shared import (
+    AutotuningConfig,
     Component,
     EnvironmentConfig,
     ExecutionConfig,
@@ -360,6 +361,7 @@ __all__ = (
     "ListSessionsResponse",
     "Session",
     "TerminateSessionRequest",
+    "AutotuningConfig",
     "EnvironmentConfig",
     "ExecutionConfig",
     "GkeClusterConfig",

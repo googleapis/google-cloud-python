@@ -15,7 +15,7 @@ Python Client for Secret Manager
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-secret-manager.svg
    :target: https://pypi.org/project/google-cloud-secret-manager/
 .. _Secret Manager: https://cloud.google.com/secret-manager/
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/secretmanager/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/secretmanager/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/secret-manager/
 
 Quick Start

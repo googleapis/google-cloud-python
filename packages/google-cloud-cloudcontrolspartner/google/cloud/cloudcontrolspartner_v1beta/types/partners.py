@@ -36,9 +36,8 @@ class Partner(proto.Message):
 
     Attributes:
         name (str):
-            Identifier. The resource name of the partner.
-            Format:
-            organizations/{organization}/locations/{location}/partner
+            Identifier. The resource name of the partner. Format:
+            ``organizations/{organization}/locations/{location}/partner``
             Example:
             "organizations/123456/locations/us-central1/partner".
         skus (MutableSequence[google.cloud.cloudcontrolspartner_v1beta.types.Sku]):
@@ -103,7 +102,7 @@ class GetPartnerRequest(proto.Message):
     Attributes:
         name (str):
             Required. Format:
-            organizations/{organization}/locations/{location}/partner
+            ``organizations/{organization}/locations/{location}/partner``
     """
 
     name: str = proto.Field(

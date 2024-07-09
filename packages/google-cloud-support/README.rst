@@ -15,7 +15,7 @@ Python Client for Google Cloud Support API
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-support.svg
    :target: https://pypi.org/project/google-cloud-support/
 .. _Google Cloud Support API: https://cloud.google.com/support/docs/reference/support-api
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/support/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/support/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/support/docs/reference/support-api
 
 Quick Start

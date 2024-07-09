@@ -15,7 +15,7 @@ Python Client for Talent Solution
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-talent.svg
    :target: https://pypi.org/project/google-cloud-talent/
 .. _Talent Solution: https://cloud.google.com/solutions/talent-solution/
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/talent/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/talent/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/solutions/talent-solution/
 
 Quick Start

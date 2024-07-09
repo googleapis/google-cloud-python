@@ -190,6 +190,21 @@ class GenerativeServiceClient(metaclass=GenerativeServiceClientMeta):
         return self._transport
 
     @staticmethod
+    def cached_content_path(
+        id: str,
+    ) -> str:
+        """Returns a fully-qualified cached_content string."""
+        return "cachedContents/{id}".format(
+            id=id,
+        )
+
+    @staticmethod
+    def parse_cached_content_path(path: str) -> Dict[str, str]:
+        """Parses a cached_content path into its component segments."""
+        m = re.match(r"^cachedContents/(?P<id>.+?)$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def model_path(
         model: str,
     ) -> str:

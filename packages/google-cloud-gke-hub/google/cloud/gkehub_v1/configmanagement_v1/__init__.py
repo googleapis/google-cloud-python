@@ -21,6 +21,7 @@ __version__ = package_version.__version__
 from .types.configmanagement import (
     ConfigSync,
     ConfigSyncDeploymentState,
+    ConfigSyncError,
     ConfigSyncState,
     ConfigSyncVersion,
     DeploymentState,
@@ -35,6 +36,7 @@ from .types.configmanagement import (
     InstallError,
     MembershipSpec,
     MembershipState,
+    OciConfig,
     OperatorState,
     PolicyController,
     PolicyControllerState,
@@ -46,6 +48,7 @@ from .types.configmanagement import (
 __all__ = (
     "ConfigSync",
     "ConfigSyncDeploymentState",
+    "ConfigSyncError",
     "ConfigSyncState",
     "ConfigSyncVersion",
     "DeploymentState",
@@ -60,6 +63,7 @@ __all__ = (
     "InstallError",
     "MembershipSpec",
     "MembershipState",
+    "OciConfig",
     "OperatorState",
     "PolicyController",
     "PolicyControllerState",

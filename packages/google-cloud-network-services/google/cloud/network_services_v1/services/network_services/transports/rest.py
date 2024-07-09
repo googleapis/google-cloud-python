@@ -1496,6 +1496,8 @@ class NetworkServicesRestStub:
 class NetworkServicesRestTransport(NetworkServicesTransport):
     """REST backend transport for NetworkServices.
 
+    Service describing handlers for resources.
+
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
     and call it.

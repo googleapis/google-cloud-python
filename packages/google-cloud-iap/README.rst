@@ -15,7 +15,7 @@ Python Client for Identity-Aware Proxy
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-iap.svg
    :target: https://pypi.org/project/google-cloud-iap/
 .. _Identity-Aware Proxy: https://cloud.google.com/iap
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/iap/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/iap/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/iap
 
 Quick Start

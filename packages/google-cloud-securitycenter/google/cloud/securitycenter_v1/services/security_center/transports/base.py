@@ -31,7 +31,13 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.cloud.securitycenter_v1 import gapic_version as package_version
 from google.cloud.securitycenter_v1.types import (
     bigquery_export,
+    effective_event_threat_detection_custom_module,
     effective_security_health_analytics_custom_module,
+)
+from google.cloud.securitycenter_v1.types import securitycenter_service, simulation
+from google.cloud.securitycenter_v1.types import event_threat_detection_custom_module
+from google.cloud.securitycenter_v1.types import (
+    event_threat_detection_custom_module as gcs_event_threat_detection_custom_module,
 )
 from google.cloud.securitycenter_v1.types import external_system as gcs_external_system
 from google.cloud.securitycenter_v1.types import (
@@ -39,6 +45,9 @@ from google.cloud.securitycenter_v1.types import (
 )
 from google.cloud.securitycenter_v1.types import (
     organization_settings as gcs_organization_settings,
+)
+from google.cloud.securitycenter_v1.types import (
+    resource_value_config as gcs_resource_value_config,
 )
 from google.cloud.securitycenter_v1.types import security_health_analytics_custom_module
 from google.cloud.securitycenter_v1.types import (
@@ -51,9 +60,10 @@ from google.cloud.securitycenter_v1.types import mute_config
 from google.cloud.securitycenter_v1.types import mute_config as gcs_mute_config
 from google.cloud.securitycenter_v1.types import notification_config
 from google.cloud.securitycenter_v1.types import organization_settings
-from google.cloud.securitycenter_v1.types import securitycenter_service
+from google.cloud.securitycenter_v1.types import resource_value_config
 from google.cloud.securitycenter_v1.types import source
 from google.cloud.securitycenter_v1.types import source as gcs_source
+from google.cloud.securitycenter_v1.types import valued_resource
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
@@ -109,6 +119,8 @@ class SecurityCenterTransport(abc.ABC):
 
         # Save the scopes.
         self._scopes = scopes
+        if not hasattr(self, "_ignore_credentials"):
+            self._ignore_credentials: bool = False
 
         # If no credentials are provided, then determine the appropriate
         # defaults.
@@ -121,7 +133,7 @@ class SecurityCenterTransport(abc.ABC):
             credentials, _ = google.auth.load_credentials_from_file(
                 credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
             )
-        elif credentials is None:
+        elif credentials is None and not self._ignore_credentials:
             credentials, _ = google.auth.default(
                 **scopes_kwargs, quota_project_id=quota_project_id
             )
@@ -197,6 +209,16 @@ class SecurityCenterTransport(abc.ABC):
             self.delete_security_health_analytics_custom_module: gapic_v1.method.wrap_method(
                 self.delete_security_health_analytics_custom_module,
                 default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.get_simulation: gapic_v1.method.wrap_method(
+                self.get_simulation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_valued_resource: gapic_v1.method.wrap_method(
+                self.get_valued_resource,
+                default_timeout=None,
                 client_info=client_info,
             ),
             self.get_big_query_export: gapic_v1.method.wrap_method(
@@ -539,6 +561,86 @@ class SecurityCenterTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.create_event_threat_detection_custom_module: gapic_v1.method.wrap_method(
+                self.create_event_threat_detection_custom_module,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_event_threat_detection_custom_module: gapic_v1.method.wrap_method(
+                self.delete_event_threat_detection_custom_module,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_event_threat_detection_custom_module: gapic_v1.method.wrap_method(
+                self.get_event_threat_detection_custom_module,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_descendant_event_threat_detection_custom_modules: gapic_v1.method.wrap_method(
+                self.list_descendant_event_threat_detection_custom_modules,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_event_threat_detection_custom_modules: gapic_v1.method.wrap_method(
+                self.list_event_threat_detection_custom_modules,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_event_threat_detection_custom_module: gapic_v1.method.wrap_method(
+                self.update_event_threat_detection_custom_module,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.validate_event_threat_detection_custom_module: gapic_v1.method.wrap_method(
+                self.validate_event_threat_detection_custom_module,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_effective_event_threat_detection_custom_module: gapic_v1.method.wrap_method(
+                self.get_effective_event_threat_detection_custom_module,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_effective_event_threat_detection_custom_modules: gapic_v1.method.wrap_method(
+                self.list_effective_event_threat_detection_custom_modules,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.batch_create_resource_value_configs: gapic_v1.method.wrap_method(
+                self.batch_create_resource_value_configs,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_resource_value_config: gapic_v1.method.wrap_method(
+                self.delete_resource_value_config,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_resource_value_config: gapic_v1.method.wrap_method(
+                self.get_resource_value_config,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_resource_value_configs: gapic_v1.method.wrap_method(
+                self.list_resource_value_configs,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_resource_value_config: gapic_v1.method.wrap_method(
+                self.update_resource_value_config,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_valued_resources: gapic_v1.method.wrap_method(
+                self.list_valued_resources,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_attack_paths: gapic_v1.method.wrap_method(
+                self.list_attack_paths,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -641,6 +743,26 @@ class SecurityCenterTransport(abc.ABC):
     ) -> Callable[
         [securitycenter_service.DeleteSecurityHealthAnalyticsCustomModuleRequest],
         Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_simulation(
+        self,
+    ) -> Callable[
+        [securitycenter_service.GetSimulationRequest],
+        Union[simulation.Simulation, Awaitable[simulation.Simulation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_valued_resource(
+        self,
+    ) -> Callable[
+        [securitycenter_service.GetValuedResourceRequest],
+        Union[
+            valued_resource.ValuedResource, Awaitable[valued_resource.ValuedResource]
+        ],
     ]:
         raise NotImplementedError()
 
@@ -1054,6 +1176,208 @@ class SecurityCenterTransport(abc.ABC):
         Union[
             securitycenter_service.ListBigQueryExportsResponse,
             Awaitable[securitycenter_service.ListBigQueryExportsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_event_threat_detection_custom_module(
+        self,
+    ) -> Callable[
+        [securitycenter_service.CreateEventThreatDetectionCustomModuleRequest],
+        Union[
+            gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule,
+            Awaitable[
+                gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule
+            ],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_event_threat_detection_custom_module(
+        self,
+    ) -> Callable[
+        [securitycenter_service.DeleteEventThreatDetectionCustomModuleRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_event_threat_detection_custom_module(
+        self,
+    ) -> Callable[
+        [securitycenter_service.GetEventThreatDetectionCustomModuleRequest],
+        Union[
+            event_threat_detection_custom_module.EventThreatDetectionCustomModule,
+            Awaitable[
+                event_threat_detection_custom_module.EventThreatDetectionCustomModule
+            ],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_descendant_event_threat_detection_custom_modules(
+        self,
+    ) -> Callable[
+        [securitycenter_service.ListDescendantEventThreatDetectionCustomModulesRequest],
+        Union[
+            securitycenter_service.ListDescendantEventThreatDetectionCustomModulesResponse,
+            Awaitable[
+                securitycenter_service.ListDescendantEventThreatDetectionCustomModulesResponse
+            ],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_event_threat_detection_custom_modules(
+        self,
+    ) -> Callable[
+        [securitycenter_service.ListEventThreatDetectionCustomModulesRequest],
+        Union[
+            securitycenter_service.ListEventThreatDetectionCustomModulesResponse,
+            Awaitable[
+                securitycenter_service.ListEventThreatDetectionCustomModulesResponse
+            ],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_event_threat_detection_custom_module(
+        self,
+    ) -> Callable[
+        [securitycenter_service.UpdateEventThreatDetectionCustomModuleRequest],
+        Union[
+            gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule,
+            Awaitable[
+                gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule
+            ],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def validate_event_threat_detection_custom_module(
+        self,
+    ) -> Callable[
+        [securitycenter_service.ValidateEventThreatDetectionCustomModuleRequest],
+        Union[
+            securitycenter_service.ValidateEventThreatDetectionCustomModuleResponse,
+            Awaitable[
+                securitycenter_service.ValidateEventThreatDetectionCustomModuleResponse
+            ],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_effective_event_threat_detection_custom_module(
+        self,
+    ) -> Callable[
+        [securitycenter_service.GetEffectiveEventThreatDetectionCustomModuleRequest],
+        Union[
+            effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule,
+            Awaitable[
+                effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule
+            ],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_effective_event_threat_detection_custom_modules(
+        self,
+    ) -> Callable[
+        [securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesRequest],
+        Union[
+            securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesResponse,
+            Awaitable[
+                securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesResponse
+            ],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def batch_create_resource_value_configs(
+        self,
+    ) -> Callable[
+        [securitycenter_service.BatchCreateResourceValueConfigsRequest],
+        Union[
+            securitycenter_service.BatchCreateResourceValueConfigsResponse,
+            Awaitable[securitycenter_service.BatchCreateResourceValueConfigsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_resource_value_config(
+        self,
+    ) -> Callable[
+        [securitycenter_service.DeleteResourceValueConfigRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_resource_value_config(
+        self,
+    ) -> Callable[
+        [securitycenter_service.GetResourceValueConfigRequest],
+        Union[
+            resource_value_config.ResourceValueConfig,
+            Awaitable[resource_value_config.ResourceValueConfig],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_resource_value_configs(
+        self,
+    ) -> Callable[
+        [securitycenter_service.ListResourceValueConfigsRequest],
+        Union[
+            securitycenter_service.ListResourceValueConfigsResponse,
+            Awaitable[securitycenter_service.ListResourceValueConfigsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_resource_value_config(
+        self,
+    ) -> Callable[
+        [securitycenter_service.UpdateResourceValueConfigRequest],
+        Union[
+            gcs_resource_value_config.ResourceValueConfig,
+            Awaitable[gcs_resource_value_config.ResourceValueConfig],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_valued_resources(
+        self,
+    ) -> Callable[
+        [securitycenter_service.ListValuedResourcesRequest],
+        Union[
+            securitycenter_service.ListValuedResourcesResponse,
+            Awaitable[securitycenter_service.ListValuedResourcesResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_attack_paths(
+        self,
+    ) -> Callable[
+        [securitycenter_service.ListAttackPathsRequest],
+        Union[
+            securitycenter_service.ListAttackPathsResponse,
+            Awaitable[securitycenter_service.ListAttackPathsResponse],
         ],
     ]:
         raise NotImplementedError()

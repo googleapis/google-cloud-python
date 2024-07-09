@@ -43,8 +43,7 @@ class Customer(proto.Message):
     Attributes:
         name (str):
             Identifier. Format:
-
-            organizations/{organization}/locations/{location}/customers/{customer}
+            ``organizations/{organization}/locations/{location}/customers/{customer}``
         display_name (str):
             The customer organization's display name.
             E.g. "google.com".
@@ -79,9 +78,8 @@ class ListCustomersRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. Parent resource
-            Format:
-            organizations/{organization}/locations/{location}
+            Required. Parent resource Format:
+            ``organizations/{organization}/locations/{location}``
         page_size (int):
             The maximum number of Customers to return.
             The service may return fewer than this value. If
@@ -157,8 +155,7 @@ class GetCustomerRequest(proto.Message):
     Attributes:
         name (str):
             Required. Format:
-
-            organizations/{organization}/locations/{location}/customers/{customer}
+            ``organizations/{organization}/locations/{location}/customers/{customer}``
     """
 
     name: str = proto.Field(

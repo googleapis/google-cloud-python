@@ -15,7 +15,7 @@ Python Client for Cloud AutoML
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-automl.svg
    :target: https://pypi.org/project/google-cloud-automl/
 .. _Cloud AutoML: https://cloud.google.com/automl/docs/
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/automl/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/automl/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/automl/docs/
 
 Quick Start

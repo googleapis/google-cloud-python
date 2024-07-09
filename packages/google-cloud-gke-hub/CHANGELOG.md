@@ -1,5 +1,34 @@
 # Changelog
 
+## [1.14.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-gke-hub-v1.14.0...google-cloud-gke-hub-v1.14.1) (2024-07-08)
+
+
+### Bug Fixes
+
+* Allow Protobuf 5.x ([#12867](https://github.com/googleapis/google-cloud-python/issues/12867)) ([3362176](https://github.com/googleapis/google-cloud-python/commit/33621762b989106ccf85adb538cf531c513a746c))
+
+## [1.14.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-gke-hub-v1.13.1...google-cloud-gke-hub-v1.14.0) (2024-06-19)
+
+
+### Features
+
+* add a new field `cluster` under `MembershipSpec` to support Config Sync cluster name selector ([319d012](https://github.com/googleapis/google-cloud-python/commit/319d01203396b85b8e725e614425c61bb7db943d))
+* add a new field `enabled` under `ConfigSync` to support Config Sync installation ([319d012](https://github.com/googleapis/google-cloud-python/commit/319d01203396b85b8e725e614425c61bb7db943d))
+* add a new field `gcp_service_account_email` under `ConfigSync` to exporting metrics ([319d012](https://github.com/googleapis/google-cloud-python/commit/319d01203396b85b8e725e614425c61bb7db943d))
+* add a new field `management` under `MembershipSpec` to support auto upgrade ([319d012](https://github.com/googleapis/google-cloud-python/commit/319d01203396b85b8e725e614425c61bb7db943d))
+* add a new field `oci` to support OCI repo configuration ([319d012](https://github.com/googleapis/google-cloud-python/commit/319d01203396b85b8e725e614425c61bb7db943d))
+* add a new field `PENDING` under `DeploymentState` enum ([319d012](https://github.com/googleapis/google-cloud-python/commit/319d01203396b85b8e725e614425c61bb7db943d))
+* add a new field `prevent_drift` under `ConfigSync` to support Config Sync admission webhook drift prevention ([319d012](https://github.com/googleapis/google-cloud-python/commit/319d01203396b85b8e725e614425c61bb7db943d))
+
+
+### Documentation
+
+* update comment for field `cluster_name` ([319d012](https://github.com/googleapis/google-cloud-python/commit/319d01203396b85b8e725e614425c61bb7db943d))
+* update comment for field `gcp_service_account_email` ([319d012](https://github.com/googleapis/google-cloud-python/commit/319d01203396b85b8e725e614425c61bb7db943d))
+* update comment for field `secret_type` ([319d012](https://github.com/googleapis/google-cloud-python/commit/319d01203396b85b8e725e614425c61bb7db943d))
+* update comment for field `secret_type` ([319d012](https://github.com/googleapis/google-cloud-python/commit/319d01203396b85b8e725e614425c61bb7db943d))
+* update comment for field `sync_state` ([319d012](https://github.com/googleapis/google-cloud-python/commit/319d01203396b85b8e725e614425c61bb7db943d))
+
 ## [1.13.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-gke-hub-v1.13.0...google-cloud-gke-hub-v1.13.1) (2024-03-05)
 
 

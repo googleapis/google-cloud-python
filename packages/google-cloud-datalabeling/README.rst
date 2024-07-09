@@ -15,7 +15,7 @@ Python Client for Google Cloud Data Labeling
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-datalabeling.svg
    :target: https://pypi.org/project/google-cloud-datalabeling/
 .. _Google Cloud Data Labeling: https://cloud.google.com/data-labeling/docs/
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/datalabeling/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/datalabeling/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/data-labeling/docs/
 
 Quick Start

@@ -143,6 +143,14 @@ class GenerateContentRequest(proto.Message):
             generation and outputs.
 
             This field is a member of `oneof`_ ``_generation_config``.
+        cached_content (str):
+            Optional. The name of the cached content used as context to
+            serve the prediction. Note: only used in explicit caching,
+            where users can have control over caching (e.g. what content
+            to cache) and enjoy guaranteed cost savings. Format:
+            ``cachedContents/{cachedContent}``
+
+            This field is a member of `oneof`_ ``_cached_content``.
     """
 
     model: str = proto.Field(
@@ -180,6 +188,11 @@ class GenerateContentRequest(proto.Message):
         number=4,
         optional=True,
         message="GenerationConfig",
+    )
+    cached_content: str = proto.Field(
+        proto.STRING,
+        number=9,
+        optional=True,
     )
 
 
@@ -418,7 +431,7 @@ class GenerateContentResponse(proto.Message):
                     ``safety_ratings`` to understand which safety category
                     blocked it.
                 OTHER (2):
-                    Prompt was blocked due to unknown reaasons.
+                    Prompt was blocked due to unknown reasons.
             """
             BLOCK_REASON_UNSPECIFIED = 0
             SAFETY = 1
@@ -442,7 +455,12 @@ class GenerateContentResponse(proto.Message):
 
         Attributes:
             prompt_token_count (int):
-                Number of tokens in the prompt.
+                Number of tokens in the prompt. When cached_content is set,
+                this is still the total effective prompt size. I.e. this
+                includes the number of tokens in the cached content.
+            cached_content_token_count (int):
+                Number of tokens in the cached part of the
+                prompt, i.e. in the cached content.
             candidates_token_count (int):
                 Total number of tokens across the generated
                 candidates.
@@ -454,6 +472,10 @@ class GenerateContentResponse(proto.Message):
         prompt_token_count: int = proto.Field(
             proto.INT32,
             number=1,
+        )
+        cached_content_token_count: int = proto.Field(
+            proto.INT32,
+            number=4,
         )
         candidates_token_count: int = proto.Field(
             proto.INT32,
@@ -1128,12 +1150,21 @@ class CountTokensResponse(proto.Message):
             The number of tokens that the ``model`` tokenizes the
             ``prompt`` into.
 
-            Always non-negative.
+            Always non-negative. When cached_content is set, this is
+            still the total effective prompt size. I.e. this includes
+            the number of tokens in the cached content.
+        cached_content_token_count (int):
+            Number of tokens in the cached part of the
+            prompt, i.e. in the cached content.
     """
 
     total_tokens: int = proto.Field(
         proto.INT32,
         number=1,
+    )
+    cached_content_token_count: int = proto.Field(
+        proto.INT32,
+        number=5,
     )
 
 

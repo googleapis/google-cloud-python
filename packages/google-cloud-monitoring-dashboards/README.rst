@@ -15,7 +15,7 @@ Python Client for Monitoring Dashboards
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-monitoring-dashboards.svg
    :target: https://pypi.org/project/google-cloud-monitoring-dashboards/
 .. _Monitoring Dashboards: https://cloud.google.com/monitoring/dashboards/
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/monitoring-dashboards/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/monitoring-dashboards/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/monitoring/dashboards/
 
 Quick Start

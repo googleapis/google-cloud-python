@@ -1226,6 +1226,7 @@ def test_generate_content_non_empty_request_with_auto_populated_field():
     # if they meet the requirements of AIP 4235.
     request = generative_service.GenerateContentRequest(
         model="model_value",
+        cached_content="cached_content_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1238,6 +1239,7 @@ def test_generate_content_non_empty_request_with_auto_populated_field():
         _, args, _ = call.mock_calls[0]
         assert args[0] == generative_service.GenerateContentRequest(
             model="model_value",
+            cached_content="cached_content_value",
         )
 
 
@@ -1322,12 +1324,7 @@ async def test_generate_content_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[
             client._client._transport.generate_content
         ] = mock_object
@@ -1699,12 +1696,7 @@ async def test_generate_answer_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[
             client._client._transport.generate_answer
         ] = mock_object
@@ -2025,6 +2017,7 @@ def test_stream_generate_content_non_empty_request_with_auto_populated_field():
     # if they meet the requirements of AIP 4235.
     request = generative_service.GenerateContentRequest(
         model="model_value",
+        cached_content="cached_content_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2039,6 +2032,7 @@ def test_stream_generate_content_non_empty_request_with_auto_populated_field():
         _, args, _ = call.mock_calls[0]
         assert args[0] == generative_service.GenerateContentRequest(
             model="model_value",
+            cached_content="cached_content_value",
         )
 
 
@@ -2129,12 +2123,7 @@ async def test_stream_generate_content_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[
             client._client._transport.stream_generate_content
         ] = mock_object
@@ -2514,12 +2503,7 @@ async def test_embed_content_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[
             client._client._transport.embed_content
         ] = mock_object
@@ -2897,12 +2881,7 @@ async def test_batch_embed_contents_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[
             client._client._transport.batch_embed_contents
         ] = mock_object
@@ -3142,6 +3121,7 @@ def test_count_tokens(request_type, transport: str = "grpc"):
         # Designate an appropriate return value for the call.
         call.return_value = generative_service.CountTokensResponse(
             total_tokens=1303,
+            cached_content_token_count=2746,
         )
         response = client.count_tokens(request)
 
@@ -3154,6 +3134,7 @@ def test_count_tokens(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, generative_service.CountTokensResponse)
     assert response.total_tokens == 1303
+    assert response.cached_content_token_count == 2746
 
 
 def test_count_tokens_empty_call():
@@ -3253,6 +3234,7 @@ async def test_count_tokens_empty_call_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             generative_service.CountTokensResponse(
                 total_tokens=1303,
+                cached_content_token_count=2746,
             )
         )
         response = await client.count_tokens()
@@ -3284,12 +3266,7 @@ async def test_count_tokens_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[
             client._client._transport.count_tokens
         ] = mock_object
@@ -3326,6 +3303,7 @@ async def test_count_tokens_async(
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             generative_service.CountTokensResponse(
                 total_tokens=1303,
+                cached_content_token_count=2746,
             )
         )
         response = await client.count_tokens(request)
@@ -3339,6 +3317,7 @@ async def test_count_tokens_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, generative_service.CountTokensResponse)
     assert response.total_tokens == 1303
+    assert response.cached_content_token_count == 2746
 
 
 @pytest.mark.asyncio
@@ -5115,6 +5094,7 @@ def test_count_tokens_rest(request_type):
         # Designate an appropriate value for the returned response.
         return_value = generative_service.CountTokensResponse(
             total_tokens=1303,
+            cached_content_token_count=2746,
         )
 
         # Wrap the value into a proper Response obj
@@ -5131,6 +5111,7 @@ def test_count_tokens_rest(request_type):
     # Establish that the response is the type that we expect.
     assert isinstance(response, generative_service.CountTokensResponse)
     assert response.total_tokens == 1303
+    assert response.cached_content_token_count == 2746
 
 
 def test_count_tokens_rest_use_cached_wrapped_rpc():
@@ -5946,8 +5927,28 @@ def test_generative_service_transport_channel_mtls_with_adc(transport_class):
             assert transport.grpc_channel == mock_grpc_channel
 
 
+def test_cached_content_path():
+    id = "squid"
+    expected = "cachedContents/{id}".format(
+        id=id,
+    )
+    actual = GenerativeServiceClient.cached_content_path(id)
+    assert expected == actual
+
+
+def test_parse_cached_content_path():
+    expected = {
+        "id": "clam",
+    }
+    path = GenerativeServiceClient.cached_content_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = GenerativeServiceClient.parse_cached_content_path(path)
+    assert expected == actual
+
+
 def test_model_path():
-    model = "squid"
+    model = "whelk"
     expected = "models/{model}".format(
         model=model,
     )
@@ -5957,7 +5958,7 @@ def test_model_path():
 
 def test_parse_model_path():
     expected = {
-        "model": "clam",
+        "model": "octopus",
     }
     path = GenerativeServiceClient.model_path(**expected)
 
@@ -5967,7 +5968,7 @@ def test_parse_model_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "whelk"
+    billing_account = "oyster"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -5977,7 +5978,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "octopus",
+        "billing_account": "nudibranch",
     }
     path = GenerativeServiceClient.common_billing_account_path(**expected)
 
@@ -5987,7 +5988,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "oyster"
+    folder = "cuttlefish"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -5997,7 +5998,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "nudibranch",
+        "folder": "mussel",
     }
     path = GenerativeServiceClient.common_folder_path(**expected)
 
@@ -6007,7 +6008,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "cuttlefish"
+    organization = "winkle"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -6017,7 +6018,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "mussel",
+        "organization": "nautilus",
     }
     path = GenerativeServiceClient.common_organization_path(**expected)
 
@@ -6027,7 +6028,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "winkle"
+    project = "scallop"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -6037,7 +6038,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "nautilus",
+        "project": "abalone",
     }
     path = GenerativeServiceClient.common_project_path(**expected)
 
@@ -6047,8 +6048,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "scallop"
-    location = "abalone"
+    project = "squid"
+    location = "clam"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -6059,8 +6060,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "squid",
-        "location": "clam",
+        "project": "whelk",
+        "location": "octopus",
     }
     path = GenerativeServiceClient.common_location_path(**expected)
 

@@ -15,7 +15,7 @@ Python Client for Network Services
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-network-services.svg
    :target: https://pypi.org/project/google-cloud-network-services/
 .. _Network Services: https://cloud.google.com
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/networkservices/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/networkservices/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com
 
 Quick Start

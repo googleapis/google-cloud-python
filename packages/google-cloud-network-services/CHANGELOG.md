@@ -1,5 +1,32 @@
 # Changelog
 
+## [0.5.13](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-services-v0.5.12...google-cloud-network-services-v0.5.13) (2024-07-08)
+
+
+### Bug Fixes
+
+* Allow Protobuf 5.x ([#12868](https://github.com/googleapis/google-cloud-python/issues/12868)) ([0e39c1a](https://github.com/googleapis/google-cloud-python/commit/0e39c1a0ab46757bcf80a178d9bd422f6dcb24c6))
+
+## [0.5.12](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-services-v0.5.11...google-cloud-network-services-v0.5.12) (2024-06-12)
+
+
+### Documentation
+
+* [google-cloud-network-services] Add a comment for the NetworkServices service ([#12794](https://github.com/googleapis/google-cloud-python/issues/12794)) ([4a672dc](https://github.com/googleapis/google-cloud-python/commit/4a672dc077d173d170d6cb4888cd7f4643ce04c6))
+
+## [0.5.11](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-services-v0.5.10...google-cloud-network-services-v0.5.11) (2024-06-05)
+
+
+### Features
+
+* A new field `metadata` is added to message `.google.cloud.networkservices.v1.LbRouteExtension` ([d219016](https://github.com/googleapis/google-cloud-python/commit/d219016564091c27dc38c75ab1a29da658c98533))
+* A new field `metadata` is added to message `.google.cloud.networkservices.v1.LbTrafficExtension` ([d219016](https://github.com/googleapis/google-cloud-python/commit/d219016564091c27dc38c75ab1a29da658c98533))
+
+
+### Documentation
+
+* update the comments for dep resources ([d219016](https://github.com/googleapis/google-cloud-python/commit/d219016564091c27dc38c75ab1a29da658c98533))
+
 ## [0.5.10](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-services-v0.5.9...google-cloud-network-services-v0.5.10) (2024-03-25)
 
 

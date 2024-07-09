@@ -1197,7 +1197,9 @@ def test_search_non_empty_request_with_auto_populated_field():
         filter="filter_value",
         canonical_filter="canonical_filter_value",
         order_by="order_by_value",
+        language_code="language_code_value",
         user_pseudo_id="user_pseudo_id_value",
+        session="session_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1216,7 +1218,9 @@ def test_search_non_empty_request_with_auto_populated_field():
             filter="filter_value",
             canonical_filter="canonical_filter_value",
             order_by="order_by_value",
+            language_code="language_code_value",
             user_pseudo_id="user_pseudo_id_value",
+            session="session_value",
         )
 
 
@@ -1303,12 +1307,7 @@ async def test_search_async_use_cached_wrapped_rpc(transport: str = "grpc_asynci
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[
             client._client._transport.search
         ] = mock_object
@@ -2499,6 +2498,43 @@ def test_parse_branch_path():
     assert expected == actual
 
 
+def test_chunk_path():
+    project = "winkle"
+    location = "nautilus"
+    data_store = "scallop"
+    branch = "abalone"
+    document = "squid"
+    chunk = "clam"
+    expected = "projects/{project}/locations/{location}/dataStores/{data_store}/branches/{branch}/documents/{document}/chunks/{chunk}".format(
+        project=project,
+        location=location,
+        data_store=data_store,
+        branch=branch,
+        document=document,
+        chunk=chunk,
+    )
+    actual = SearchServiceClient.chunk_path(
+        project, location, data_store, branch, document, chunk
+    )
+    assert expected == actual
+
+
+def test_parse_chunk_path():
+    expected = {
+        "project": "whelk",
+        "location": "octopus",
+        "data_store": "oyster",
+        "branch": "nudibranch",
+        "document": "cuttlefish",
+        "chunk": "mussel",
+    }
+    path = SearchServiceClient.chunk_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = SearchServiceClient.parse_chunk_path(path)
+    assert expected == actual
+
+
 def test_data_store_path():
     project = "winkle"
     location = "nautilus"
@@ -2590,8 +2626,37 @@ def test_parse_serving_config_path():
     assert expected == actual
 
 
+def test_session_path():
+    project = "winkle"
+    location = "nautilus"
+    data_store = "scallop"
+    session = "abalone"
+    expected = "projects/{project}/locations/{location}/dataStores/{data_store}/sessions/{session}".format(
+        project=project,
+        location=location,
+        data_store=data_store,
+        session=session,
+    )
+    actual = SearchServiceClient.session_path(project, location, data_store, session)
+    assert expected == actual
+
+
+def test_parse_session_path():
+    expected = {
+        "project": "squid",
+        "location": "clam",
+        "data_store": "whelk",
+        "session": "octopus",
+    }
+    path = SearchServiceClient.session_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = SearchServiceClient.parse_session_path(path)
+    assert expected == actual
+
+
 def test_common_billing_account_path():
-    billing_account = "winkle"
+    billing_account = "oyster"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -2601,7 +2666,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "nautilus",
+        "billing_account": "nudibranch",
     }
     path = SearchServiceClient.common_billing_account_path(**expected)
 
@@ -2611,7 +2676,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "scallop"
+    folder = "cuttlefish"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -2621,7 +2686,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "abalone",
+        "folder": "mussel",
     }
     path = SearchServiceClient.common_folder_path(**expected)
 
@@ -2631,7 +2696,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "squid"
+    organization = "winkle"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -2641,7 +2706,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "clam",
+        "organization": "nautilus",
     }
     path = SearchServiceClient.common_organization_path(**expected)
 
@@ -2651,7 +2716,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "whelk"
+    project = "scallop"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -2661,7 +2726,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "octopus",
+        "project": "abalone",
     }
     path = SearchServiceClient.common_project_path(**expected)
 
@@ -2671,8 +2736,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "oyster"
-    location = "nudibranch"
+    project = "squid"
+    location = "clam"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -2683,8 +2748,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "cuttlefish",
-        "location": "mussel",
+        "project": "whelk",
+        "location": "octopus",
     }
     path = SearchServiceClient.common_location_path(**expected)
 

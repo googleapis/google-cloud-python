@@ -15,7 +15,7 @@ Python Client for Cloud Translation
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-translate.svg
    :target: https://pypi.org/project/google-cloud-translate/
 .. _Cloud Translation: https://cloud.google.com/translate/docs/
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/translate/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/translate/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/translate/docs/
 
 Quick Start

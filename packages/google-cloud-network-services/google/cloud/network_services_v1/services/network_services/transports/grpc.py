@@ -53,6 +53,8 @@ from .base import DEFAULT_CLIENT_INFO, NetworkServicesTransport
 class NetworkServicesGrpcTransport(NetworkServicesTransport):
     """gRPC backend transport for NetworkServices.
 
+    Service describing handlers for resources.
+
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
     and call it.
@@ -143,7 +145,8 @@ class NetworkServicesGrpcTransport(NetworkServicesTransport):
 
         if isinstance(channel, grpc.Channel):
             # Ignore credentials if a channel was passed.
-            credentials = False
+            credentials = None
+            self._ignore_credentials = True
             # If a channel was explicitly provided, set it.
             self._grpc_channel = channel
             self._ssl_channel_credentials = None

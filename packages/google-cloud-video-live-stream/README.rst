@@ -15,7 +15,7 @@ Python Client for Live Stream
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-video-live-stream.svg
    :target: https://pypi.org/project/google-cloud-video-live-stream/
 .. _Live Stream: https://cloud.google.com/livestream/docs
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/livestream/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/livestream/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/livestream/docs
 
 Quick Start

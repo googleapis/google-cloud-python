@@ -15,7 +15,7 @@ Python Client for Cloud Optimization
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-optimization.svg
    :target: https://pypi.org/project/google-cloud-optimization/
 .. _Cloud Optimization: https://cloud.google.com/optimization/docs
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/optimization/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/optimization/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/optimization/docs
 
 Quick Start
