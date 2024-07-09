@@ -125,6 +125,7 @@
     "packages/google-cloud-policytroubleshooter-iam": "0.1.6",
     "packages/google-cloud-private-ca": "1.12.1",
     "packages/google-cloud-private-catalog": "0.9.10",
+    "packages/google-cloud-privilegedaccessmanager": "0.0.0",
     "packages/google-cloud-public-ca": "0.3.11",
     "packages/google-cloud-rapidmigrationassessment": "0.1.8",
     "packages/google-cloud-recaptcha-enterprise": "1.21.1",

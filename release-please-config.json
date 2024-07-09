@@ -2160,6 +2160,21 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-privilegedaccessmanager": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
+            "component": "google-cloud-privilegedaccessmanager",
+            "extra-files": [
+                "google/cloud/privilegedaccessmanager/gapic_version.py",
+                "google/cloud/privilegedaccessmanager_v1/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.privilegedaccessmanager.v1.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-public-ca": {
             "bump-minor-pre-major": true,
             "bump-patch-for-minor-pre-major": true,
