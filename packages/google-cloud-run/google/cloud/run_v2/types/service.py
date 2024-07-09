@@ -18,6 +18,7 @@ from __future__ import annotations
 from typing import MutableMapping, MutableSequence
 
 from google.api import launch_stage_pb2  # type: ignore
+from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -89,6 +90,8 @@ class UpdateServiceRequest(proto.Message):
     r"""Request message for updating a service.
 
     Attributes:
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Optional. The list of fields to be updated.
         service (google.cloud.run_v2.types.Service):
             Required. The Service to be updated.
         validate_only (bool):
@@ -97,12 +100,18 @@ class UpdateServiceRequest(proto.Message):
             persisting the request or updating any
             resources.
         allow_missing (bool):
-            If set to true, and if the Service does not
-            exist, it will create a new one. The caller must
-            have 'run.services.create' permissions if this
-            is set to true and the Service does not exist.
+            Optional. If set to true, and if the Service
+            does not exist, it will create a new one. The
+            caller must have 'run.services.create'
+            permissions if this is set to true and the
+            Service does not exist.
     """
 
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
+    )
     service: "Service" = proto.Field(
         proto.MESSAGE,
         number=1,
@@ -300,7 +309,8 @@ class Service(proto.Message):
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The last-modified time.
         delete_time (google.protobuf.timestamp_pb2.Timestamp):
-            Output only. The deletion time.
+            Output only. The deletion time. It is only
+            populated as a response to a Delete request.
         expire_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. For a deleted resource, the time
             after which it will be permamently deleted.
@@ -316,11 +326,12 @@ class Service(proto.Message):
             Arbitrary version identifier for the API
             client.
         ingress (google.cloud.run_v2.types.IngressTraffic):
-            Provides the ingress settings for this Service. On output,
-            returns the currently observed ingress settings, or
+            Optional. Provides the ingress settings for this Service. On
+            output, returns the currently observed ingress settings, or
             INGRESS_TRAFFIC_UNSPECIFIED if no revision is active.
         launch_stage (google.api.launch_stage_pb2.LaunchStage):
-            The launch stage as defined by `Google Cloud Platform Launch
+            Optional. The launch stage as defined by `Google Cloud
+            Platform Launch
             Stages <https://cloud.google.com/terms/launch-stages>`__.
             Cloud Run supports ``ALPHA``, ``BETA``, and ``GA``. If no
             value is specified, GA is assumed. Set the launch stage to a
@@ -334,16 +345,16 @@ class Service(proto.Message):
                 For example, if ALPHA is provided as input, but only BETA and GA-level
                 features are used, this field will be BETA on output.
         binary_authorization (google.cloud.run_v2.types.BinaryAuthorization):
-            Settings for the Binary Authorization
-            feature.
+            Optional. Settings for the Binary
+            Authorization feature.
         template (google.cloud.run_v2.types.RevisionTemplate):
             Required. The template used to create
             revisions for this Service.
         traffic (MutableSequence[google.cloud.run_v2.types.TrafficTarget]):
-            Specifies how to distribute traffic over a collection of
-            Revisions belonging to the Service. If traffic is empty or
-            not provided, defaults to 100% traffic to the latest
-            ``Ready`` Revision.
+            Optional. Specifies how to distribute traffic over a
+            collection of Revisions belonging to the Service. If traffic
+            is empty or not provided, defaults to 100% traffic to the
+            latest ``Ready`` Revision.
         scaling (google.cloud.run_v2.types.ServiceScaling):
             Optional. Specifies service-level scaling
             settings

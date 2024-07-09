@@ -283,7 +283,8 @@ class ExecutionsGrpcTransport(ExecutionsTransport):
     ) -> Callable[[execution.ListExecutionsRequest], execution.ListExecutionsResponse]:
         r"""Return a callable for the list executions method over gRPC.
 
-        Lists Executions from a Job.
+        Lists Executions from a Job. Results are sorted by
+        creation time, descending.
 
         Returns:
             Callable[[~.ListExecutionsRequest],

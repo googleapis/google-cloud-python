@@ -61,7 +61,7 @@ class runCallTransformer(cst.CSTTransformer):
         'set_iam_policy': ('resource', 'policy', 'update_mask', ),
         'test_iam_permissions': ('resource', 'permissions', ),
         'update_job': ('job', 'validate_only', 'allow_missing', ),
-        'update_service': ('service', 'validate_only', 'allow_missing', ),
+        'update_service': ('service', 'update_mask', 'validate_only', 'allow_missing', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:

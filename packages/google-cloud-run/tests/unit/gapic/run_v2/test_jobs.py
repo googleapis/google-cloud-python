@@ -1434,6 +1434,7 @@ def test_get_job(request_type, transport: str = "grpc"):
             reconciling=True,
             satisfies_pzs=True,
             etag="etag_value",
+            start_execution_token="start_execution_token_value",
         )
         response = client.get_job(request)
 
@@ -4237,6 +4238,7 @@ def test_create_job_rest(request_type):
         "launch_stage": 6,
         "binary_authorization": {
             "use_default": True,
+            "policy": "policy_value",
             "breakglass_justification": "breakglass_justification_value",
         },
         "template": {
@@ -4353,9 +4355,13 @@ def test_create_job_rest(request_type):
             "name": "name_value",
             "create_time": {},
             "completion_time": {},
+            "delete_time": {},
+            "completion_status": 1,
         },
         "reconciling": True,
         "satisfies_pzs": True,
+        "start_execution_token": "start_execution_token_value",
+        "run_execution_token": "run_execution_token_value",
         "etag": "etag_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
@@ -4775,6 +4781,7 @@ def test_get_job_rest(request_type):
             reconciling=True,
             satisfies_pzs=True,
             etag="etag_value",
+            start_execution_token="start_execution_token_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -5457,6 +5464,7 @@ def test_update_job_rest(request_type):
         "launch_stage": 6,
         "binary_authorization": {
             "use_default": True,
+            "policy": "policy_value",
             "breakglass_justification": "breakglass_justification_value",
         },
         "template": {
@@ -5573,9 +5581,13 @@ def test_update_job_rest(request_type):
             "name": "name_value",
             "create_time": {},
             "completion_time": {},
+            "delete_time": {},
+            "completion_status": 1,
         },
         "reconciling": True,
         "satisfies_pzs": True,
+        "start_execution_token": "start_execution_token_value",
+        "run_execution_token": "run_execution_token_value",
         "etag": "etag_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.

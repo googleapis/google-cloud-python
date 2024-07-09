@@ -821,6 +821,7 @@ class JobsClient(metaclass=JobsClientMeta):
 
                 # Initialize request argument(s)
                 job = run_v2.Job()
+                job.start_execution_token = "start_execution_token_value"
                 job.template.template.max_retries = 1187
 
                 request = run_v2.CreateJobRequest(
@@ -1066,7 +1067,8 @@ class JobsClient(metaclass=JobsClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListJobsPager:
-        r"""Lists Jobs.
+        r"""Lists Jobs. Results are sorted by creation time,
+        descending.
 
         .. code-block:: python
 
@@ -1212,6 +1214,7 @@ class JobsClient(metaclass=JobsClientMeta):
 
                 # Initialize request argument(s)
                 job = run_v2.Job()
+                job.start_execution_token = "start_execution_token_value"
                 job.template.template.max_retries = 1187
 
                 request = run_v2.UpdateJobRequest(

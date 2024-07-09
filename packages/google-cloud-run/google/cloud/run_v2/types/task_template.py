@@ -42,38 +42,38 @@ class TaskTemplate(proto.Message):
             Holds the single container that defines the
             unit of execution for this task.
         volumes (MutableSequence[google.cloud.run_v2.types.Volume]):
-            A list of Volumes to make available to
-            containers.
+            Optional. A list of Volumes to make available
+            to containers.
         max_retries (int):
             Number of retries allowed per Task, before
             marking this Task failed. Defaults to 3.
 
             This field is a member of `oneof`_ ``retries``.
         timeout (google.protobuf.duration_pb2.Duration):
-            Max allowed time duration the Task may be
-            active before the system will actively try to
-            mark it failed and kill associated containers.
-            This applies per attempt of a task, meaning each
-            retry can run for the full timeout. Defaults to
-            600 seconds.
+            Optional. Max allowed time duration the Task
+            may be active before the system will actively
+            try to mark it failed and kill associated
+            containers. This applies per attempt of a task,
+            meaning each retry can run for the full timeout.
+            Defaults to 600 seconds.
         service_account (str):
-            Email address of the IAM service account
-            associated with the Task of a Job. The service
-            account represents the identity of the running
-            task, and determines what permissions the task
-            has. If not provided, the task will use the
-            project's default service account.
+            Optional. Email address of the IAM service
+            account associated with the Task of a Job. The
+            service account represents the identity of the
+            running task, and determines what permissions
+            the task has. If not provided, the task will use
+            the project's default service account.
         execution_environment (google.cloud.run_v2.types.ExecutionEnvironment):
-            The execution environment being used to host
-            this Task.
+            Optional. The execution environment being
+            used to host this Task.
         encryption_key (str):
             A reference to a customer managed encryption
             key (CMEK) to use to encrypt this container
             image. For more information, go to
             https://cloud.google.com/run/docs/securing/using-cmek
         vpc_access (google.cloud.run_v2.types.VpcAccess):
-            VPC Access configuration to use for this
-            Task. For more information, visit
+            Optional. VPC Access configuration to use for
+            this Task. For more information, visit
             https://cloud.google.com/run/docs/configuring/connecting-vpc.
     """
 

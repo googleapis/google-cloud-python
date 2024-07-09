@@ -36,15 +36,16 @@ class RevisionTemplate(proto.Message):
 
     Attributes:
         revision (str):
-            The unique name for the revision. If this
-            field is omitted, it will be automatically
-            generated based on the Service name.
+            Optional. The unique name for the revision.
+            If this field is omitted, it will be
+            automatically generated based on the Service
+            name.
         labels (MutableMapping[str, str]):
-            Unstructured key value map that can be used to organize and
-            categorize objects. User-provided labels are shared with
-            Google's billing system, so they can be used to filter, or
-            break down billing charges by team, component, environment,
-            state, etc. For more information, visit
+            Optional. Unstructured key value map that can be used to
+            organize and categorize objects. User-provided labels are
+            shared with Google's billing system, so they can be used to
+            filter, or break down billing charges by team, component,
+            environment, state, etc. For more information, visit
             https://cloud.google.com/resource-manager/docs/creating-managing-labels
             or https://cloud.google.com/run/docs/configuring/labels.
 
@@ -55,9 +56,9 @@ class RevisionTemplate(proto.Message):
                 namespaces, and they will be rejected. All system labels in v1 now have a
                 corresponding field in v2 RevisionTemplate.
         annotations (MutableMapping[str, str]):
-            Unstructured key value map that may be set by external tools
-            to store and arbitrary metadata. They are not queryable and
-            should be preserved when modifying objects.
+            Optional. Unstructured key value map that may be set by
+            external tools to store and arbitrary metadata. They are not
+            queryable and should be preserved when modifying objects.
 
             .. raw:: html
 
@@ -71,39 +72,39 @@ class RevisionTemplate(proto.Message):
                 <p>This field follows Kubernetes annotations' namespacing, limits, and
                 rules.
         scaling (google.cloud.run_v2.types.RevisionScaling):
-            Scaling settings for this Revision.
+            Optional. Scaling settings for this Revision.
         vpc_access (google.cloud.run_v2.types.VpcAccess):
-            VPC Access configuration to use for this
-            Revision. For more information, visit
+            Optional. VPC Access configuration to use for
+            this Revision. For more information, visit
             https://cloud.google.com/run/docs/configuring/connecting-vpc.
         timeout (google.protobuf.duration_pb2.Duration):
-            Max allowed time for an instance to respond
-            to a request.
+            Optional. Max allowed time for an instance to
+            respond to a request.
         service_account (str):
-            Email address of the IAM service account
-            associated with the revision of the service. The
-            service account represents the identity of the
-            running revision, and determines what
-            permissions the revision has. If not provided,
-            the revision will use the project's default
-            service account.
+            Optional. Email address of the IAM service
+            account associated with the revision of the
+            service. The service account represents the
+            identity of the running revision, and determines
+            what permissions the revision has. If not
+            provided, the revision will use the project's
+            default service account.
         containers (MutableSequence[google.cloud.run_v2.types.Container]):
             Holds the single container that defines the
             unit of execution for this Revision.
         volumes (MutableSequence[google.cloud.run_v2.types.Volume]):
-            A list of Volumes to make available to
-            containers.
+            Optional. A list of Volumes to make available
+            to containers.
         execution_environment (google.cloud.run_v2.types.ExecutionEnvironment):
-            The sandbox environment to host this
-            Revision.
+            Optional. The sandbox environment to host
+            this Revision.
         encryption_key (str):
             A reference to a customer managed encryption
             key (CMEK) to use to encrypt this container
             image. For more information, go to
             https://cloud.google.com/run/docs/securing/using-cmek
         max_instance_request_concurrency (int):
-            Sets the maximum number of requests that each
-            serving instance can receive.
+            Optional. Sets the maximum number of requests
+            that each serving instance can receive.
         session_affinity (bool):
             Optional. Enable session affinity.
         health_check_disabled (bool):

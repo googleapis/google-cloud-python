@@ -624,7 +624,8 @@ class NFSVolumeSource(proto.Message):
         path (str):
             Path that is exported by the NFS server.
         read_only (bool):
-            If true, mount the NFS volume as read only
+            If true, the volume will be mounted as read
+            only for all mounts.
     """
 
     server: str = proto.Field(
@@ -642,13 +643,15 @@ class NFSVolumeSource(proto.Message):
 
 
 class GCSVolumeSource(proto.Message):
-    r"""Represents a GCS Bucket mounted as a volume.
+    r"""Represents a volume backed by a Cloud Storage bucket using
+    Cloud Storage FUSE.
 
     Attributes:
         bucket (str):
-            GCS Bucket name
+            Cloud Storage Bucket name.
         read_only (bool):
-            If true, mount the GCS bucket as read-only
+            If true, the volume will be mounted as read
+            only for all mounts.
     """
 
     bucket: str = proto.Field(
@@ -675,40 +678,40 @@ class Probe(proto.Message):
 
     Attributes:
         initial_delay_seconds (int):
-            Number of seconds after the container has
-            started before the probe is initiated.
-            Defaults to 0 seconds. Minimum value is 0.
-            Maximum value for liveness probe is 3600.
+            Optional. Number of seconds after the
+            container has started before the probe is
+            initiated. Defaults to 0 seconds. Minimum value
+            is 0. Maximum value for liveness probe is 3600.
             Maximum value for startup probe is 240.
         timeout_seconds (int):
-            Number of seconds after which the probe times out. Defaults
-            to 1 second. Minimum value is 1. Maximum value is 3600. Must
-            be smaller than period_seconds.
+            Optional. Number of seconds after which the probe times out.
+            Defaults to 1 second. Minimum value is 1. Maximum value is
+            3600. Must be smaller than period_seconds.
         period_seconds (int):
-            How often (in seconds) to perform the probe. Default to 10
-            seconds. Minimum value is 1. Maximum value for liveness
-            probe is 3600. Maximum value for startup probe is 240. Must
-            be greater or equal than timeout_seconds.
+            Optional. How often (in seconds) to perform the probe.
+            Default to 10 seconds. Minimum value is 1. Maximum value for
+            liveness probe is 3600. Maximum value for startup probe is
+            240. Must be greater or equal than timeout_seconds.
         failure_threshold (int):
-            Minimum consecutive failures for the probe to
-            be considered failed after having succeeded.
-            Defaults to 3. Minimum value is 1.
+            Optional. Minimum consecutive failures for
+            the probe to be considered failed after having
+            succeeded. Defaults to 3. Minimum value is 1.
         http_get (google.cloud.run_v2.types.HTTPGetAction):
-            HTTPGet specifies the http request to
-            perform. Exactly one of httpGet, tcpSocket, or
-            grpc must be specified.
+            Optional. HTTPGet specifies the http request
+            to perform. Exactly one of httpGet, tcpSocket,
+            or grpc must be specified.
 
             This field is a member of `oneof`_ ``probe_type``.
         tcp_socket (google.cloud.run_v2.types.TCPSocketAction):
-            TCPSocket specifies an action involving a TCP
-            port. Exactly one of httpGet, tcpSocket, or grpc
-            must be specified.
+            Optional. TCPSocket specifies an action
+            involving a TCP port. Exactly one of httpGet,
+            tcpSocket, or grpc must be specified.
 
             This field is a member of `oneof`_ ``probe_type``.
         grpc (google.cloud.run_v2.types.GRPCAction):
-            GRPC specifies an action involving a gRPC
-            port. Exactly one of httpGet, tcpSocket, or grpc
-            must be specified.
+            Optional. GRPC specifies an action involving
+            a gRPC port. Exactly one of httpGet, tcpSocket,
+            or grpc must be specified.
 
             This field is a member of `oneof`_ ``probe_type``.
     """
@@ -754,15 +757,15 @@ class HTTPGetAction(proto.Message):
 
     Attributes:
         path (str):
-            Path to access on the HTTP server. Defaults
-            to '/'.
+            Optional. Path to access on the HTTP server.
+            Defaults to '/'.
         http_headers (MutableSequence[google.cloud.run_v2.types.HTTPHeader]):
-            Custom headers to set in the request. HTTP
-            allows repeated headers.
+            Optional. Custom headers to set in the
+            request. HTTP allows repeated headers.
         port (int):
-            Port number to access on the container. Must be in the range
-            1 to 65535. If not specified, defaults to the exposed port
-            of the container, which is the value of
+            Optional. Port number to access on the container. Must be in
+            the range 1 to 65535. If not specified, defaults to the
+            exposed port of the container, which is the value of
             container.ports[0].containerPort.
     """
 
@@ -789,7 +792,7 @@ class HTTPHeader(proto.Message):
         name (str):
             Required. The header field name
         value (str):
-            The header field value
+            Optional. The header field value
     """
 
     name: str = proto.Field(
@@ -807,9 +810,9 @@ class TCPSocketAction(proto.Message):
 
     Attributes:
         port (int):
-            Port number to access on the container. Must be in the range
-            1 to 65535. If not specified, defaults to the exposed port
-            of the container, which is the value of
+            Optional. Port number to access on the container. Must be in
+            the range 1 to 65535. If not specified, defaults to the
+            exposed port of the container, which is the value of
             container.ports[0].containerPort.
     """
 
@@ -824,13 +827,13 @@ class GRPCAction(proto.Message):
 
     Attributes:
         port (int):
-            Port number of the gRPC service. Number must be in the range
-            1 to 65535. If not specified, defaults to the exposed port
-            of the container, which is the value of
+            Optional. Port number of the gRPC service. Number must be in
+            the range 1 to 65535. If not specified, defaults to the
+            exposed port of the container, which is the value of
             container.ports[0].containerPort.
         service (str):
-            Service is the name of the service to place
-            in the gRPC HealthCheckRequest (see
+            Optional. Service is the name of the service
+            to place in the gRPC HealthCheckRequest (see
             https://github.com/grpc/grpc/blob/master/doc/health-checking.md
             ). If this is not specified, the default
             behavior is defined by gRPC.

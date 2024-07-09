@@ -40,6 +40,7 @@ async def sample_update_job():
 
     # Initialize request argument(s)
     job = run_v2.Job()
+    job.start_execution_token = "start_execution_token_value"
     job.template.template.max_retries = 1187
 
     request = run_v2.UpdateJobRequest(
