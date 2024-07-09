@@ -25,6 +25,9 @@ BLACK_PATHS = ["docs", "google", "tests", "noxfile.py", "setup.py"]
 DEFAULT_PYTHON_VERSION = "3.8"
 CURRENT_DIRECTORY = os.path.abspath(os.path.dirname(__file__))
 
+# Error if a python version is missing
+nox.options.error_on_missing_interpreters = True
+
 
 @nox.session(python="3.10")
 def lint(session):
@@ -119,7 +122,7 @@ def cover(session):
     session.run("coverage", "erase")
 
 
-@nox.session(python="3.9")
+@nox.session(python="3.10")
 def docs(session):
     """Build the docs for this library."""
 
