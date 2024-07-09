@@ -145,30 +145,8 @@ Install in Development Mode
 It's helpful to install pandas-gbq in development mode so that you can
 use the library without reinstalling the package after every change.
 
-Conda
-~~~~~
-
-Create a new conda environment and install the necessary dependencies
-
-.. code-block:: shell
-
-   $ conda create -n my-env --channel conda-forge  \
-         db-dtypes \
-         pandas \
-         pydata-google-auth \
-         google-cloud-bigquery
-   $ source activate my-env
-
-Install pandas-gbq in development mode
-
-.. code-block:: shell
-
-    $ python setup.py develop
-
 Pip & virtualenv
 ~~~~~~~~~~~~~~~~
-
-*Skip this section if you already followed the conda instructions.*
 
 Create a new `virtual
 environment <https://virtualenv.pypa.io/en/stable/userguide/>`__.

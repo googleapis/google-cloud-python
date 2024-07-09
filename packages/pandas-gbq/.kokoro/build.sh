@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright 2023 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -23,27 +23,15 @@ cd "${PROJECT_ROOT}"
 
 # Disable buffering, so that the logs stream through.
 export PYTHONUNBUFFERED=1
-export CONDA_EXE=/root/conda/bin/conda
-export CONDA_PREFIX=/root/conda
-export CONDA_PROMPT_MODIFIER=(base) 
-export _CE_CONDA=
-export CONDA_SHLVL=1
-export CONDA_PYTHON_EXE=/root/conda/bin/python
-export CONDA_DEFAULT_ENV=base
-export PATH=/root/conda/bin:/root/conda/condabin:${PATH}
-
 
 # Debug: show build environment
-env
+env | grep KOKORO
 
 # Setup service account credentials.
 export GOOGLE_APPLICATION_CREDENTIALS=${KOKORO_GFILE_DIR}/service-account.json
 
 # Setup project id.
 export PROJECT_ID=$(cat "${KOKORO_GFILE_DIR}/project-id.json")
-
-# Install nox
-python3 -m pip install --upgrade --quiet nox
 
 # If this is a continuous build, send the test log to the FlakyBot.
 # See https://github.com/googleapis/repo-automation-bots/tree/main/packages/flakybot.

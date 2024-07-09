@@ -33,13 +33,6 @@
 
         twine upload dist/*
 
-*   Create the [release on GitHub](https://github.com/pydata/pandas-gbq/releases/new) using the tag created earlier.
+*   Create the [release on GitHub](https://github.com/googleapis/python-bigquery-pandas/releases/new) using the tag created earlier.
 
     *   Upload wheel and source zip from `dist/` directory.
-
-*   Do a pull-request to the feedstock on `pandas-gbq-feedstock <https://github.com/conda-forge/pandas-gbq-feedstock/>`__
-    (Or review PR from @regro-cf-autotick-bot which updates the feedstock).
-
-    *   update the version
-    *   update the SHA256 (retrieve from PyPI)
-    *   update the dependencies (if they changed)

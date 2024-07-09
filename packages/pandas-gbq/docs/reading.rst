@@ -103,11 +103,6 @@ quickly (but at an `increased cost
 
       pip install --upgrade google-cloud-bigquery-storage pyarrow
 
-   With conda:
-
-   .. code-block:: sh
-
-      conda install -c conda-forge google-cloud-bigquery-storage
 #. Set ``use_bqstorage_api`` to ``True`` when calling the
    :func:`~pandas_gbq.read_gbq` function. As of the ``google-cloud-bigquery``
    package, version 1.11.1 or later,the function will fallback to the

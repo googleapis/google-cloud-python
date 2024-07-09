@@ -1,16 +1,8 @@
 Installation
 ============
 
-You can install pandas-gbq with ``conda``, ``pip``, or by installing from source.
+You can install pandas-gbq with ``pip`` or by installing from source.
 
-Conda
------
-
-.. code-block:: shell
-
-   $ conda install pandas-gbq --channel conda-forge
-
-This installs pandas-gbq and all common dependencies, including ``pandas``.
 
 Pip
 ---

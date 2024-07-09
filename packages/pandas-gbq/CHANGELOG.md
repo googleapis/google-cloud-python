@@ -6,7 +6,6 @@
 ### Bug Fixes
 
 * Handle None when converting numerics to parquet ([#768](https://github.com/googleapis/python-bigquery-pandas/issues/768)) ([53a4683](https://github.com/googleapis/python-bigquery-pandas/commit/53a46833a320963d5c15427f6eb631e0199fb332))
-* Set minimum allowable version of sqlite when performing a conda install ([#780](https://github.com/googleapis/python-bigquery-pandas/issues/780)) ([8a03d44](https://github.com/googleapis/python-bigquery-pandas/commit/8a03d44fbe125ae1202f43b7c6e54c98eca94d4d))
 
 
 ### Documentation
@@ -369,8 +368,6 @@ df = gbq.read_gbq(
     ([#281](https://github.com/googleapis/python-bigquery-pandas/issues/281))
 -   Fix `pytest.raises` usage for latest pytest. Fix warnings in tests.
     ([#282](https://github.com/googleapis/python-bigquery-pandas/issues/282))
--   Update CI to install nightly packages in the conda tests.
-    ([#254](https://github.com/googleapis/python-bigquery-pandas/issues/254))
 
 ## 0.10.0 / 2019-04-05
 

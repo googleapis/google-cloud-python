@@ -1,7 +1,7 @@
 pandas-gbq
 ==========
 
-|preview| |pypi| |versions| 
+|preview| |pypi| |versions|
 
 **pandas-gbq** is a package providing an interface to the Google BigQuery API from pandas.
 
@@ -19,14 +19,6 @@ pandas-gbq
 
 Installation
 ------------
-
-
-Install latest release version via conda
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-.. code-block:: shell
-
-   $ conda install pandas-gbq --channel conda-forge
 
 Install latest release version via pip
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -52,7 +44,7 @@ Perform a query
 .. code:: python
 
     import pandas_gbq
-    
+
     result_dataframe = pandas_gbq.read_gbq("SELECT column FROM dataset.table WHERE value = 'something'")
 
 Upload a dataframe
@@ -61,7 +53,7 @@ Upload a dataframe
 .. code:: python
 
     import pandas_gbq
-    
+
     pandas_gbq.to_gbq(dataframe, "dataset.table")
 
 More samples
