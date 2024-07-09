@@ -1,0 +1,17 @@
+{
+    "name": "google-cloud-privilegedaccessmanager",
+    "name_pretty": "Privileged Access Manager API",
+    "api_description": "Privileged Access Manager (PAM) helps you on your journey towards least privilege and helps mitigate risks tied to privileged access misuse or abuse. PAM allows you to shift from always-on standing privileges towards on-demand access with just-in-time, time-bound, and approval-based access elevations. PAM allows IAM administrators to create entitlements that can grant just-in-time, temporary access to any resource scope. Requesters can explore eligible entitlements and request the access needed for their task. Approvers are notified when approvals await their decision. Streamlined workflows facilitated by using PAM can support various use cases, including emergency access for incident responders, time-boxed access for developers for critical deployment or maintenance, temporary access for operators for data ingestion and audits, JIT access to service accounts for automated tasks, and more.",
+    "product_documentation": "https://cloud.google.com/iam/docs/pam-overview",
+    "client_documentation": "https://cloud.google.com/python/docs/reference/google-cloud-privilegedaccessmanager/latest",
+    "issue_tracker": "https://github.com/googleapis/google-cloud-python/issues",
+    "release_level": "preview",
+    "language": "python",
+    "library_type": "GAPIC_AUTO",
+    "repo": "googleapis/google-cloud-python",
+    "distribution_name": "google-cloud-privilegedaccessmanager",
+    "api_id": "privilegedaccessmanager.googleapis.com",
+    "default_version": "v1",
+    "codeowner_team": "",
+    "api_shortname": "privilegedaccessmanager"
+}
