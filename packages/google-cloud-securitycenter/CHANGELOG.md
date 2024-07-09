@@ -4,6 +4,23 @@
 
 [1]: https://pypi.org/project/google-cloud-securitycenter/#history
 
+## [1.33.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securitycenter-v1.32.1...google-cloud-securitycenter-v1.33.0) (2024-07-09)
+
+
+### Features
+
+* added attack path API methods ([242b713](https://github.com/googleapis/google-cloud-python/commit/242b713d3a991fdf125eca5ff23f1c18e656cd26))
+* added cloud provider field to list findings response ([242b713](https://github.com/googleapis/google-cloud-python/commit/242b713d3a991fdf125eca5ff23f1c18e656cd26))
+* added etd custom module protos and API methods ([242b713](https://github.com/googleapis/google-cloud-python/commit/242b713d3a991fdf125eca5ff23f1c18e656cd26))
+* added ResourceValueConfig protos and API methods ([242b713](https://github.com/googleapis/google-cloud-python/commit/242b713d3a991fdf125eca5ff23f1c18e656cd26))
+* added toxic combination field to finding ([242b713](https://github.com/googleapis/google-cloud-python/commit/242b713d3a991fdf125eca5ff23f1c18e656cd26))
+
+
+### Documentation
+
+* update examples in comments to use backticks ([242b713](https://github.com/googleapis/google-cloud-python/commit/242b713d3a991fdf125eca5ff23f1c18e656cd26))
+* update toxic combinations comments ([242b713](https://github.com/googleapis/google-cloud-python/commit/242b713d3a991fdf125eca5ff23f1c18e656cd26))
+
 ## [1.32.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securitycenter-v1.32.0...google-cloud-securitycenter-v1.32.1) (2024-07-08)
 
 

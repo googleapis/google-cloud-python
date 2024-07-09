@@ -139,7 +139,7 @@
     "packages/google-cloud-scheduler": "2.13.4",
     "packages/google-cloud-secret-manager": "2.20.1",
     "packages/google-cloud-securesourcemanager": "0.1.6",
-    "packages/google-cloud-securitycenter": "1.32.1",
+    "packages/google-cloud-securitycenter": "1.33.0",
     "packages/google-cloud-securitycentermanagement": "0.1.13",
     "packages/google-cloud-service-control": "1.12.2",
     "packages/google-cloud-service-directory": "1.11.5",
