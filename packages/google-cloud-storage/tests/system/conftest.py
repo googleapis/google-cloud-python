@@ -20,6 +20,7 @@ import pytest
 from google.api_core import exceptions
 from google.cloud import kms
 from google.cloud.storage._helpers import _base64_md5hash
+from google.cloud.storage.retry import DEFAULT_RETRY
 from . import _helpers
 
 
@@ -104,7 +105,11 @@ def shared_bucket_name():
 def shared_bucket(storage_client, shared_bucket_name):
     bucket = storage_client.bucket(shared_bucket_name)
     bucket.versioning_enabled = True
-    _helpers.retry_429_503(bucket.create)()
+    # Create the bucket only if it doesn't yet exist.
+    try:
+        storage_client.get_bucket(bucket)
+    except exceptions.NotFound:
+        _helpers.retry_429_503(bucket.create)()
 
     yield bucket
 
@@ -119,11 +124,15 @@ def listable_bucket_name():
 @pytest.fixture(scope="session")
 def listable_bucket(storage_client, listable_bucket_name, file_data):
     bucket = storage_client.bucket(listable_bucket_name)
-    _helpers.retry_429_503(bucket.create)()
+    # Create the bucket only if it doesn't yet exist.
+    try:
+        storage_client.get_bucket(bucket)
+    except exceptions.NotFound:
+        _helpers.retry_429_503(bucket.create)()
 
     info = file_data["logo"]
     source_blob = bucket.blob(_listable_filenames[0])
-    source_blob.upload_from_filename(info["path"])
+    source_blob.upload_from_filename(info["path"], retry=DEFAULT_RETRY)
 
     for filename in _listable_filenames[1:]:
         _helpers.retry_bad_copy(bucket.copy_blob)(
@@ -159,7 +168,7 @@ def hierarchy_bucket(storage_client, hierarchy_bucket_name, file_data):
     simple_path = _file_data["simple"]["path"]
     for filename in _hierarchy_filenames:
         blob = bucket.blob(filename)
-        blob.upload_from_filename(simple_path)
+        blob.upload_from_filename(simple_path, retry=DEFAULT_RETRY)
 
     yield bucket
 
@@ -179,7 +188,12 @@ def signing_bucket_name():
 @pytest.fixture(scope="session")
 def signing_bucket(storage_client, signing_bucket_name):
     bucket = storage_client.bucket(signing_bucket_name)
-    _helpers.retry_429_503(bucket.create)()
+    # Create the bucket only if it doesn't yet exist.
+    try:
+        storage_client.get_bucket(bucket)
+    except exceptions.NotFound:
+        _helpers.retry_429_503(bucket.create)()
+
     blob = bucket.blob("README.txt")
     blob.upload_from_string(_helpers.signing_blob_content)
 
@@ -205,7 +219,11 @@ def default_ebh_bucket_name():
 def default_ebh_bucket(storage_client, default_ebh_bucket_name):
     bucket = storage_client.bucket(default_ebh_bucket_name)
     bucket.default_event_based_hold = True
-    _helpers.retry_429_503(bucket.create)()
+    # Create the bucket only if it doesn't yet exist.
+    try:
+        storage_client.get_bucket(bucket)
+    except exceptions.NotFound:
+        _helpers.retry_429_503(bucket.create)()
 
     yield bucket
 
