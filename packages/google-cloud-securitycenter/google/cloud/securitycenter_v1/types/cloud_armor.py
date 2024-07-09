@@ -53,8 +53,8 @@ class CloudArmor(proto.Message):
             classification.
         threat_vector (str):
             Distinguish between volumetric & protocol DDoS attack and
-            application layer attacks. For example, “L3_4” for Layer 3
-            and Layer 4 DDoS attacks, or “L_7” for Layer 7 DDoS attacks.
+            application layer attacks. For example, "L3_4" for Layer 3
+            and Layer 4 DDoS attacks, or "L_7" for Layer 7 DDoS attacks.
         duration (google.protobuf.duration_pb2.Duration):
             Duration of attack from the start until the
             current moment (updated every 5 minutes).
@@ -102,9 +102,9 @@ class SecurityPolicy(proto.Message):
             policy, for example, "my-security-policy".
         type_ (str):
             The type of Google Cloud Armor security
-            policy for example, ‘backend security policy’,
-            ‘edge security policy’, ‘network edge security
-            policy’, or ‘always-on DDoS protection’.
+            policy for example, 'backend security policy',
+            'edge security policy', 'network edge security
+            policy', or 'always-on DDoS protection'.
         preview (bool):
             Whether or not the associated rule or policy
             is in preview mode.
@@ -194,8 +194,8 @@ class Attack(proto.Message):
             Total BPS (bytes per second) volume of
             attack.
         classification (str):
-            Type of attack, for example, ‘SYN-flood’,
-            ‘NTP-udp’, or ‘CHARGEN-udp’.
+            Type of attack, for example, 'SYN-flood',
+            'NTP-udp', or 'CHARGEN-udp'.
     """
 
     volume_pps: int = proto.Field(
