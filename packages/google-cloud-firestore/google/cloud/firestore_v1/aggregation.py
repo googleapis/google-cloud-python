@@ -30,8 +30,14 @@ from google.cloud.firestore_v1.base_aggregation import (
     BaseAggregationQuery,
     _query_response_to_result,
 )
+from google.cloud.firestore_v1.base_document import DocumentSnapshot
+from google.cloud.firestore_v1.stream_generator import StreamGenerator
 
-from typing import Generator, Union, List, Any
+from typing import Any, Generator, List, Optional, TYPE_CHECKING, Union
+
+# Types needed only for Type Hints
+if TYPE_CHECKING:
+    from google.cloud.firestore_v1 import transaction  # pragma: NO COVER
 
 
 class AggregationQuery(BaseAggregationQuery):
@@ -99,36 +105,34 @@ class AggregationQuery(BaseAggregationQuery):
 
         return False
 
-    def stream(
+    def _make_stream(
         self,
-        transaction=None,
-        retry: Union[
-            retries.Retry, None, gapic_v1.method._MethodDefault
-        ] = gapic_v1.method.DEFAULT,
-        timeout: float | None = None,
+        transaction: Optional[transaction.Transaction] = None,
+        retry: Optional[retries.Retry] = gapic_v1.method.DEFAULT,
+        timeout: Optional[float] = None,
     ) -> Union[Generator[List[AggregationResult], Any, None]]:
-        """Runs the aggregation query.
+        """Internal method for stream(). Runs the aggregation query.
 
-        This sends a ``RunAggregationQuery`` RPC and then returns an iterator which
-        consumes each document returned in the stream of ``RunAggregationQueryResponse``
-        messages.
+        This sends a ``RunAggregationQuery`` RPC and then returns a generator
+        which consumes each document returned in the stream of
+        ``RunAggregationQueryResponse`` messages.
 
-        If a ``transaction`` is used and it already has write operations
-        added, this method cannot be used (i.e. read-after-write is not
-        allowed).
+        If a ``transaction`` is used and it already has write operations added,
+        this method cannot be used (i.e. read-after-write is not allowed).
 
         Args:
             transaction
                 (Optional[:class:`~google.cloud.firestore_v1.transaction.Transaction`]):
                 An existing transaction that this query will run in.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.  Defaults to a system-specified policy.
-            timeout (float): The timeout for this request.  Defaults to a
-                system-specified value.
+            retry (Optional[google.api_core.retry.Retry]): Designation of what
+                errors, if any, should be retried.  Defaults to a
+                system-specified policy.
+            timeout (Optional[float]): The timeout for this request.  Defaults
+                to a system-specified value.
 
         Yields:
             :class:`~google.cloud.firestore_v1.base_aggregation.AggregationResult`:
-            The result of aggregations of this query
+            The result of aggregations of this query.
         """
 
         response_iterator = self._get_stream_iterator(
@@ -154,3 +158,38 @@ class AggregationQuery(BaseAggregationQuery):
                 break
             result = _query_response_to_result(response)
             yield result
+
+    def stream(
+        self,
+        transaction: Optional["transaction.Transaction"] = None,
+        retry: Optional[retries.Retry] = gapic_v1.method.DEFAULT,
+        timeout: Optional[float] = None,
+    ) -> "StreamGenerator[DocumentSnapshot]":
+        """Runs the aggregation query.
+
+        This sends a ``RunAggregationQuery`` RPC and then returns a generator
+        which consumes each document returned in the stream of
+        ``RunAggregationQueryResponse`` messages.
+
+        If a ``transaction`` is used and it already has write operations added,
+        this method cannot be used (i.e. read-after-write is not allowed).
+
+        Args:
+            transaction
+                (Optional[:class:`~google.cloud.firestore_v1.transaction.Transaction`]):
+                An existing transaction that this query will run in.
+            retry (Optional[google.api_core.retry.Retry]): Designation of what
+                errors, if any, should be retried.  Defaults to a
+                system-specified policy.
+            timeout (Optinal[float]): The timeout for this request.  Defaults
+            to a system-specified value.
+
+        Returns:
+            `StreamGenerator[DocumentSnapshot]`: A generator of the query results.
+        """
+        inner_generator = self._make_stream(
+            transaction=transaction,
+            retry=retry,
+            timeout=timeout,
+        )
+        return StreamGenerator(inner_generator)

@@ -27,7 +27,17 @@ import abc
 
 from abc import ABC
 
-from typing import List, Coroutine, Union, Tuple, Generator, Any, AsyncGenerator
+from typing import (
+    List,
+    Coroutine,
+    Union,
+    Tuple,
+    Generator,
+    Any,
+    AsyncGenerator,
+    Optional,
+    TYPE_CHECKING,
+)
 
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
@@ -37,6 +47,10 @@ from google.cloud.firestore_v1.field_path import FieldPath
 from google.cloud.firestore_v1.types import RunAggregationQueryResponse
 from google.cloud.firestore_v1.types import StructuredAggregationQuery
 from google.cloud.firestore_v1 import _helpers
+
+# Types needed only for Type Hints
+if TYPE_CHECKING:
+    from google.cloud.firestore_v1 import transaction  # pragma: NO COVER
 
 
 class AggregationResult(object):
@@ -243,32 +257,27 @@ class BaseAggregationQuery(ABC):
     @abc.abstractmethod
     def stream(
         self,
-        transaction=None,
-        retry: Union[
-            retries.Retry, None, gapic_v1.method._MethodDefault
-        ] = gapic_v1.method.DEFAULT,
-        timeout: float | None = None,
+        transaction: Optional[transaction.Transaction] = None,
+        retry: Optional[retries.Retry] = gapic_v1.method.DEFAULT,
+        timeout: Optional[float] = None,
     ) -> (
         Generator[List[AggregationResult], Any, None]
         | AsyncGenerator[List[AggregationResult], None]
     ):
         """Runs the aggregation query.
 
-        This sends a``RunAggregationQuery`` RPC and returns an iterator in the stream of ``RunAggregationQueryResponse`` messages.
+        This sends a``RunAggregationQuery`` RPC and returns a generator in the stream of ``RunAggregationQueryResponse`` messages.
 
         Args:
             transaction
                 (Optional[:class:`~google.cloud.firestore_v1.transaction.Transaction`]):
                 An existing transaction that this query will run in.
-                If a ``transaction`` is used and it already has write operations
-                added, this method cannot be used (i.e. read-after-write is not
-                allowed).
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.  Defaults to a system-specified policy.
-            timeout (float): The timeout for this request.  Defaults to a
-                system-specified value.
+            retry (Optional[google.api_core.retry.Retry]): Designation of what
+                errors, if any, should be retried.  Defaults to a
+                system-specified policy.
+            timeout (Optinal[float]): The timeout for this request.  Defaults
+            to a system-specified value.
 
         Returns:
-            list: The aggregation query results
-
+            A generator of the query results.
         """

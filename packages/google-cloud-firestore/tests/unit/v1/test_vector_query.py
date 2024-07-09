@@ -14,7 +14,6 @@
 
 import mock
 import pytest
-import types
 
 from google.cloud.firestore_v1.types.query import StructuredQuery
 from google.cloud.firestore_v1.vector import Vector
@@ -326,6 +325,8 @@ def test_vector_query_collection_group(distance_measure, expected_distance):
 
 
 def test_query_stream_multiple_empty_response_in_stream():
+    from google.cloud.firestore_v1 import stream_generator
+
     # Create a minimal fake GAPIC with a dummy response.
     firestore_api = mock.Mock(spec=["run_query"])
     empty_response1 = _make_query_response()
@@ -347,7 +348,7 @@ def test_query_stream_multiple_empty_response_in_stream():
     )
 
     get_response = vector_query.stream()
-    assert isinstance(get_response, types.GeneratorType)
+    assert isinstance(get_response, stream_generator.StreamGenerator)
     assert list(get_response) == []
 
     # Verify the mock call.

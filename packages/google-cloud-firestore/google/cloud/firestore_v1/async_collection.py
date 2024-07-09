@@ -21,15 +21,20 @@ from google.cloud.firestore_v1.base_collection import (
     BaseCollectionReference,
     _item_to_document_ref,
 )
-from google.cloud.firestore_v1 import async_query, async_document, async_aggregation
+from google.cloud.firestore_v1 import (
+    async_aggregation,
+    async_document,
+    async_query,
+    transaction,
+)
 
 from google.cloud.firestore_v1.document import DocumentReference
 
-from typing import AsyncIterator
-from typing import Any, AsyncGenerator, Tuple
+from typing import Any, AsyncGenerator, Optional, Tuple, TYPE_CHECKING
 
-# Types needed only for Type Hints
-from google.cloud.firestore_v1.transaction import Transaction
+if TYPE_CHECKING:  # pragma: NO COVER
+    from google.cloud.firestore_v1.async_stream_generator import AsyncStreamGenerator
+    from google.cloud.firestore_v1.base_document import DocumentSnapshot
 
 
 class AsyncCollectionReference(BaseCollectionReference[async_query.AsyncQuery]):
@@ -176,9 +181,9 @@ class AsyncCollectionReference(BaseCollectionReference[async_query.AsyncQuery]):
 
     async def get(
         self,
-        transaction: Transaction = None,
-        retry: retries.AsyncRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        transaction: Optional[transaction.Transaction] = None,
+        retry: Optional[retries.AsyncRetry] = gapic_v1.method.DEFAULT,
+        timeout: Optional[float] = None,
     ) -> list:
         """Read the documents in this collection.
 
@@ -189,14 +194,14 @@ class AsyncCollectionReference(BaseCollectionReference[async_query.AsyncQuery]):
             transaction
                 (Optional[:class:`~google.cloud.firestore_v1.transaction.Transaction`]):
                 An existing transaction that this query will run in.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.  Defaults to a system-specified policy.
-            timeout (float): The timeout for this request.  Defaults to a
-                system-specified value.
+            retry (Optional[google.api_core.retry.Retry]): Designation of what
+                errors, if any, should be retried.  Defaults to a
+                system-specified policy.
+            timeout (Otional[float]): The timeout for this request.  Defaults
+                to a system-specified value.
 
-        If a ``transaction`` is used and it already has write operations
-        added, this method cannot be used (i.e. read-after-write is not
-        allowed).
+        If a ``transaction`` is used and it already has write operations added,
+        this method cannot be used (i.e. read-after-write is not allowed).
 
         Returns:
             list: The documents in this collection that match the query.
@@ -205,15 +210,15 @@ class AsyncCollectionReference(BaseCollectionReference[async_query.AsyncQuery]):
 
         return await query.get(transaction=transaction, **kwargs)
 
-    async def stream(
+    def stream(
         self,
-        transaction: Transaction = None,
-        retry: retries.AsyncRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-    ) -> AsyncIterator[async_document.DocumentSnapshot]:
+        transaction: Optional[transaction.Transaction] = None,
+        retry: Optional[retries.AsyncRetry] = gapic_v1.method.DEFAULT,
+        timeout: Optional[float] = None,
+    ) -> "AsyncStreamGenerator[DocumentSnapshot]":
         """Read the documents in this collection.
 
-        This sends a ``RunQuery`` RPC and then returns an iterator which
+        This sends a ``RunQuery`` RPC and then returns a generator which
         consumes each document returned in the stream of ``RunQueryResponse``
         messages.
 
@@ -232,16 +237,16 @@ class AsyncCollectionReference(BaseCollectionReference[async_query.AsyncQuery]):
             transaction (Optional[:class:`~google.cloud.firestore_v1.transaction.\
                 Transaction`]):
                 An existing transaction that the query will run in.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.  Defaults to a system-specified policy.
-            timeout (float): The timeout for this request.  Defaults to a
-                system-specified value.
+            retry (Optional[google.api_core.retry.Retry]): Designation of what
+                errors, if any, should be retried.  Defaults to a
+                system-specified policy.
+            timeout (Optional[float]): The timeout for this request. Defaults
+                to a system-specified value.
 
-        Yields:
-            :class:`~google.cloud.firestore_v1.document.DocumentSnapshot`:
-            The next document that fulfills the query.
+        Returns:
+            `AsyncStreamGenerator[DocumentSnapshot]`: A generator of the query
+            results.
         """
         query, kwargs = self._prep_get_or_stream(retry, timeout)
 
-        async for d in query.stream(transaction=transaction, **kwargs):
-            yield d  # pytype: disable=name-error
+        return query.stream(transaction=transaction, **kwargs)

@@ -306,6 +306,7 @@ def test_query_chunkify_w_chunksize_gt_limit(database, expected):
 
 def _query_stream_helper(retry=None, timeout=None, database=None):
     from google.cloud.firestore_v1 import _helpers
+    from google.cloud.firestore_v1.stream_generator import StreamGenerator
 
     # Create a minimal fake GAPIC.
     firestore_api = mock.Mock(spec=["run_query"])
@@ -330,7 +331,7 @@ def _query_stream_helper(retry=None, timeout=None, database=None):
 
     get_response = query.stream(**kwargs)
 
-    assert isinstance(get_response, types.GeneratorType)
+    assert isinstance(get_response, StreamGenerator)
     returned = list(get_response)
     assert len(returned) == 1
     snapshot = returned[0]
@@ -380,6 +381,8 @@ def test_query_stream_with_limit_to_last(database):
 
 @pytest.mark.parametrize("database", [None, "somedb"])
 def test_query_stream_with_transaction(database):
+    from google.cloud.firestore_v1.stream_generator import StreamGenerator
+
     # Create a minimal fake GAPIC.
     firestore_api = mock.Mock(spec=["run_query"])
 
@@ -405,7 +408,7 @@ def test_query_stream_with_transaction(database):
     # Execute the query and check the response.
     query = make_query(parent)
     get_response = query.stream(transaction=transaction)
-    assert isinstance(get_response, types.GeneratorType)
+    assert isinstance(get_response, StreamGenerator)
     returned = list(get_response)
     assert len(returned) == 1
     snapshot = returned[0]
@@ -425,6 +428,8 @@ def test_query_stream_with_transaction(database):
 
 @pytest.mark.parametrize("database", [None, "somedb"])
 def test_query_stream_no_results(database):
+    from google.cloud.firestore_v1.stream_generator import StreamGenerator
+
     # Create a minimal fake GAPIC with a dummy response.
     firestore_api = mock.Mock(spec=["run_query"])
     empty_response = _make_query_response()
@@ -440,7 +445,7 @@ def test_query_stream_no_results(database):
     query = make_query(parent)
 
     get_response = query.stream()
-    assert isinstance(get_response, types.GeneratorType)
+    assert isinstance(get_response, StreamGenerator)
     assert list(get_response) == []
 
     # Verify the mock call.
@@ -458,6 +463,8 @@ def test_query_stream_no_results(database):
 
 @pytest.mark.parametrize("database", [None, "somedb"])
 def test_query_stream_second_response_in_empty_stream(database):
+    from google.cloud.firestore_v1.stream_generator import StreamGenerator
+
     # Create a minimal fake GAPIC with a dummy response.
     firestore_api = mock.Mock(spec=["run_query"])
     empty_response1 = _make_query_response()
@@ -474,7 +481,7 @@ def test_query_stream_second_response_in_empty_stream(database):
     query = make_query(parent)
 
     get_response = query.stream()
-    assert isinstance(get_response, types.GeneratorType)
+    assert isinstance(get_response, StreamGenerator)
     assert list(get_response) == []
 
     # Verify the mock call.
@@ -491,6 +498,8 @@ def test_query_stream_second_response_in_empty_stream(database):
 
 @pytest.mark.parametrize("database", [None, "somedb"])
 def test_query_stream_with_skipped_results(database):
+    from google.cloud.firestore_v1.stream_generator import StreamGenerator
+
     # Create a minimal fake GAPIC.
     firestore_api = mock.Mock(spec=["run_query"])
 
@@ -512,7 +521,7 @@ def test_query_stream_with_skipped_results(database):
     # Execute the query and check the response.
     query = make_query(parent)
     get_response = query.stream()
-    assert isinstance(get_response, types.GeneratorType)
+    assert isinstance(get_response, StreamGenerator)
     returned = list(get_response)
     assert len(returned) == 1
     snapshot = returned[0]
@@ -533,6 +542,8 @@ def test_query_stream_with_skipped_results(database):
 
 @pytest.mark.parametrize("database", [None, "somedb"])
 def test_query_stream_empty_after_first_response(database):
+    from google.cloud.firestore_v1.stream_generator import StreamGenerator
+
     # Create a minimal fake GAPIC.
     firestore_api = mock.Mock(spec=["run_query"])
 
@@ -554,7 +565,7 @@ def test_query_stream_empty_after_first_response(database):
     # Execute the query and check the response.
     query = make_query(parent)
     get_response = query.stream()
-    assert isinstance(get_response, types.GeneratorType)
+    assert isinstance(get_response, StreamGenerator)
     returned = list(get_response)
     assert len(returned) == 1
     snapshot = returned[0]
@@ -575,6 +586,8 @@ def test_query_stream_empty_after_first_response(database):
 
 @pytest.mark.parametrize("database", [None, "somedb"])
 def test_query_stream_w_collection_group(database):
+    from google.cloud.firestore_v1.stream_generator import StreamGenerator
+
     # Create a minimal fake GAPIC.
     firestore_api = mock.Mock(spec=["run_query"])
 
@@ -598,7 +611,7 @@ def test_query_stream_w_collection_group(database):
     query = make_query(parent)
     query._all_descendants = True
     get_response = query.stream()
-    assert isinstance(get_response, types.GeneratorType)
+    assert isinstance(get_response, StreamGenerator)
     returned = list(get_response)
     assert len(returned) == 1
     snapshot = returned[0]
@@ -628,6 +641,7 @@ def _query_stream_w_retriable_exc_helper(
     from google.api_core import exceptions
     from google.api_core import gapic_v1
     from google.cloud.firestore_v1 import _helpers
+    from google.cloud.firestore_v1.stream_generator import StreamGenerator
 
     if retry is _not_passed:
         retry = gapic_v1.method.DEFAULT
@@ -668,7 +682,7 @@ def _query_stream_w_retriable_exc_helper(
 
     get_response = query.stream(transaction=transaction, **kwargs)
 
-    assert isinstance(get_response, types.GeneratorType)
+    assert isinstance(get_response, StreamGenerator)
     if expect_retry:
         returned = list(get_response)
     else:
