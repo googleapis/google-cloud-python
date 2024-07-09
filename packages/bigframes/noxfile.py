@@ -552,8 +552,6 @@ def prerelease(session: nox.sessions.Session, tests_path):
     already_installed.add("pyarrow")
 
     session.install(
-        "--extra-index-url",
-        "https://pypi.anaconda.org/scipy-wheels-nightly/simple",
         "--prefer-binary",
         "--pre",
         "--upgrade",
