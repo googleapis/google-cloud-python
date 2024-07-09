@@ -78,6 +78,9 @@ SYSTEM_TEST_EXTRAS_BY_PYTHON = {}
 
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 
+# Error if a python version is missing
+nox.options.error_on_missing_interpreters = True
+
 
 def _calculate_duration(func):
     """This decorator prints the execution time for the decorated function."""
@@ -420,7 +423,7 @@ def cover(session):
     session.run("coverage", "erase")
 
 
-@nox.session(python="3.9")
+@nox.session(python="3.10")
 @_calculate_duration
 def docs(session):
     """Build the docs for this library."""
