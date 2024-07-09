@@ -204,8 +204,6 @@ def prerelease(session, tests_path):
     # prerelease comes out, this constraint can be removed. See
     # https://github.com/googleapis/python-db-dtypes-pandas/issues/234
     session.install(
-        "--extra-index-url",
-        "https://pypi.anaconda.org/scipy-wheels-nightly/simple",
         "--prefer-binary",
         "--pre",
         "--upgrade",
