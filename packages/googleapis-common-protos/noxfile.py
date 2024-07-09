@@ -28,6 +28,9 @@ GRPCIO_TOOLS_VERSION = "grpcio-tools==1.59.0"
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 UNIT_TEST_PYTHON_VERSIONS = ["3.7", "3.8", "3.9", "3.10", "3.11", "3.12"]
 
+# Error if a python version is missing
+nox.options.error_on_missing_interpreters = True
+
 
 @nox.session(python="3.8")
 def blacken(session):
