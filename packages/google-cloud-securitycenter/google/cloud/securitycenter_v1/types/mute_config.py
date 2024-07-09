@@ -36,9 +36,12 @@ class MuteConfig(proto.Message):
         name (str):
             This field will be ignored if provided on config creation.
             Format
-            "organizations/{organization}/muteConfigs/{mute_config}"
-            "folders/{folder}/muteConfigs/{mute_config}"
-            "projects/{project}/muteConfigs/{mute_config}".
+            ``organizations/{organization}/muteConfigs/{mute_config}``
+            ``folders/{folder}/muteConfigs/{mute_config}``
+            ``projects/{project}/muteConfigs/{mute_config}``
+            ``organizations/{organization}/locations/global/muteConfigs/{mute_config}``
+            ``folders/{folder}/locations/global/muteConfigs/{mute_config}``
+            ``projects/{project}/locations/global/muteConfigs/{mute_config}``
         display_name (str):
             The human readable name to be displayed for
             the mute config.

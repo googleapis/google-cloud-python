@@ -33,6 +33,7 @@ from google.cloud.securitycenter_v1.types import (
     group_membership,
     iam_binding,
 )
+from google.cloud.securitycenter_v1.types import attack_exposure as gcs_attack_exposure
 from google.cloud.securitycenter_v1.types import (
     backup_disaster_recovery as gcs_backup_disaster_recovery,
 )
@@ -245,6 +246,9 @@ class Finding(proto.Message):
             finding.
         database (google.cloud.securitycenter_v1.types.Database):
             Database associated with the finding.
+        attack_exposure (google.cloud.securitycenter_v1.types.AttackExposure):
+            The results of an attack path simulation
+            relevant to this finding.
         files (MutableSequence[google.cloud.securitycenter_v1.types.File]):
             File associated with the finding.
         cloud_dlp_inspection (google.cloud.securitycenter_v1.types.CloudDlpInspection):
@@ -620,6 +624,11 @@ class Finding(proto.Message):
         proto.MESSAGE,
         number=44,
         message=gcs_database.Database,
+    )
+    attack_exposure: gcs_attack_exposure.AttackExposure = proto.Field(
+        proto.MESSAGE,
+        number=45,
+        message=gcs_attack_exposure.AttackExposure,
     )
     files: MutableSequence[file.File] = proto.RepeatedField(
         proto.MESSAGE,
