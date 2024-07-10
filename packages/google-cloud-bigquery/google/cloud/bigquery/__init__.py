@@ -27,6 +27,7 @@ The main concepts with this API are:
 - :class:`~google.cloud.bigquery.table.Table` represents a single "relation".
 """
 
+import warnings
 
 from google.cloud.bigquery import version as bigquery_version
 
@@ -113,6 +114,11 @@ from google.cloud.bigquery.table import TableReference
 from google.cloud.bigquery.table import TimePartitioningType
 from google.cloud.bigquery.table import TimePartitioning
 from google.cloud.bigquery.encryption_configuration import EncryptionConfiguration
+
+try:
+    import bigquery_magics  # type: ignore
+except ImportError:
+    bigquery_magics = None
 
 __all__ = [
     "__version__",
@@ -214,8 +220,16 @@ __all__ = [
 
 def load_ipython_extension(ipython):
     """Called by IPython when this module is loaded as an IPython extension."""
-    from google.cloud.bigquery.magics.magics import _cell_magic
-
-    ipython.register_magic_function(
-        _cell_magic, magic_kind="cell", magic_name="bigquery"
+    warnings.warn(
+        "%load_ext google.cloud.bigquery is deprecated. Install bigquery-magics package and use `%load_ext bigquery_magics`, instead.",
+        category=FutureWarning,
     )
+
+    if bigquery_magics is not None:
+        bigquery_magics.load_ipython_extension(ipython)
+    else:
+        from google.cloud.bigquery.magics.magics import _cell_magic
+
+        ipython.register_magic_function(
+            _cell_magic, magic_kind="cell", magic_name="bigquery"
+        )

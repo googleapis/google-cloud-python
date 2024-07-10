@@ -50,7 +50,10 @@ def test_bigquery_magic(ipython_interactive):
     current_process = psutil.Process()
     conn_count_start = len(current_process.connections())
 
-    ip.extension_manager.load_extension("google.cloud.bigquery")
+    # Deprecated, but should still work in google-cloud-bigquery 3.x.
+    with pytest.warns(FutureWarning, match="bigquery_magics"):
+        ip.extension_manager.load_extension("google.cloud.bigquery")
+
     sql = """
         SELECT
             CONCAT(

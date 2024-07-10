@@ -14,70 +14,11 @@
 
 """IPython Magics
 
-.. function:: %%bigquery
+Install ``bigquery-magics`` and call ``%load_ext bigquery_magics`` to use the
+``%%bigquery`` cell magic.
 
-    IPython cell magic to run a query and display the result as a DataFrame
-
-    .. code-block:: python
-
-        %%bigquery [<destination_var>] [--project <project>] [--use_legacy_sql]
-                   [--verbose] [--params <params>]
-        <query>
-
-    Parameters:
-
-    * ``<destination_var>`` (Optional[line argument]):
-        variable to store the query results. The results are not displayed if
-        this parameter is used. If an error occurs during the query execution,
-        the corresponding ``QueryJob`` instance (if available) is stored in
-        the variable instead.
-    * ``--destination_table`` (Optional[line argument]):
-        A dataset and table to store the query results. If table does not exists,
-        it will be created. If table already exists, its data will be overwritten.
-        Variable should be in a format <dataset_id>.<table_id>.
-    * ``--no_query_cache`` (Optional[line argument]):
-        Do not use cached query results.
-    * ``--project <project>`` (Optional[line argument]):
-        Project to use for running the query. Defaults to the context
-        :attr:`~google.cloud.bigquery.magics.Context.project`.
-    * ``--use_bqstorage_api`` (Optional[line argument]):
-        [Deprecated] Not used anymore, as BigQuery Storage API is used by default.
-    * ``--use_rest_api`` (Optional[line argument]):
-        Use the BigQuery REST API instead of the Storage API.
-    * ``--use_legacy_sql`` (Optional[line argument]):
-        Runs the query using Legacy SQL syntax. Defaults to Standard SQL if
-        this argument not used.
-    * ``--verbose`` (Optional[line argument]):
-        If this flag is used, information including the query job ID and the
-        amount of time for the query to complete will not be cleared after the
-        query is finished. By default, this information will be displayed but
-        will be cleared after the query is finished.
-    * ``--params <params>`` (Optional[line argument]):
-        If present, the argument following the ``--params`` flag must be
-        either:
-
-        * :class:`str` - A JSON string representation of a dictionary in the
-          format ``{"param_name": "param_value"}`` (ex. ``{"num": 17}``). Use
-          of the parameter in the query should be indicated with
-          ``@param_name``. See ``In[5]`` in the Examples section below.
-
-        * :class:`dict` reference - A reference to a ``dict`` in the format
-          ``{"param_name": "param_value"}``, where the value types must be JSON
-          serializable. The variable reference is indicated by a ``$`` before
-          the variable name (ex. ``$my_dict_var``). See ``In[6]`` and ``In[7]``
-          in the Examples section below.
-
-    * ``<query>`` (required, cell argument):
-        SQL query to run. If the query does not contain any whitespace (aside
-        from leading and trailing whitespace), it is assumed to represent a
-        fully-qualified table ID, and the latter's data will be fetched.
-
-    Returns:
-        A :class:`pandas.DataFrame` with the query results.
-
-    .. note::
-        All queries run using this magic will run using the context
-        :attr:`~google.cloud.bigquery.magics.Context.credentials`.
+See the `BigQuery Magics reference documentation
+<https://googleapis.dev/python/bigquery-magics/latest/>`_.
 """
 
 from __future__ import print_function
@@ -108,6 +49,11 @@ from google.cloud.bigquery import _versions_helpers
 from google.cloud.bigquery import exceptions
 from google.cloud.bigquery.dbapi import _helpers
 from google.cloud.bigquery.magics import line_arg_parser as lap
+
+try:
+    import bigquery_magics  # type: ignore
+except ImportError:
+    bigquery_magics = None
 
 
 IPYTHON_USER_AGENT = "ipython-{}".format(IPython.__version__)
@@ -280,7 +226,14 @@ class Context(object):
         self._progress_bar_type = value
 
 
-context = Context()
+# If bigquery_magics is available, we load that extension rather than this one.
+# Ensure google.cloud.bigquery.magics.context setters are on the correct magics
+# implementation in case the user has installed the package but hasn't updated
+# their code.
+if bigquery_magics is not None:
+    context = bigquery_magics.context
+else:
+    context = Context()
 
 
 def _handle_error(error, destination_var=None):

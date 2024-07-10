@@ -5,6 +5,7 @@
 #
 # e.g., if setup.py has "foo >= 1.14.0, < 2.0.0dev",
 # Then this file should have foo==1.14.0
+bigquery-magics==0.1.0
 db-dtypes==0.3.0
 geopandas==0.9.0
 google-api-core==2.11.1
