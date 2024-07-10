@@ -581,6 +581,9 @@ class BigQueryCompiler(_struct.SQLCompiler, vendored_postgresql.PGCompiler):
     def visit_not_regexp_match_op_binary(self, binary, operator, **kw):
         return "NOT %s" % self.visit_regexp_match_op_binary(binary, operator, **kw)
 
+    def visit_mod_binary(self, binary, operator, **kw):
+        return f"MOD({self.process(binary.left, **kw)}, {self.process(binary.right, **kw)})"
+
 
 class BigQueryTypeCompiler(GenericTypeCompiler):
     def visit_INTEGER(self, type_, **kw):

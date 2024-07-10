@@ -406,3 +406,16 @@ def test_visit_not_regexp_match_op_binary(faux_conn):
     expected = "NOT REGEXP_CONTAINS(`table`.`foo`, %(foo_1:STRING)s)"
 
     assert result == expected
+
+
+def test_visit_mod_binary(faux_conn):
+    table = setup_table(
+        faux_conn,
+        "table",
+        sqlalchemy.Column("foo", sqlalchemy.Integer),
+    )
+    sql_statement = table.c.foo % 2
+    result = sql_statement.compile(faux_conn).string
+    expected = "MOD(`table`.`foo`, %(foo_1:INT64)s)"
+
+    assert result == expected
