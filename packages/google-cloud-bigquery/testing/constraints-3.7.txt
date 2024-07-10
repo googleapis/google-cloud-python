@@ -7,13 +7,13 @@
 # Then this file should have foo==1.14.0
 db-dtypes==0.3.0
 geopandas==0.9.0
-google-api-core==2.17.1
-google-auth==2.28.1
+google-api-core==2.11.1
+google-auth==2.14.1
 google-cloud-bigquery-storage==2.24.0
 google-cloud-core==2.4.1
 google-cloud-testutils==1.4.0
 google-crc32c==1.5.0
-google-resumable-media==2.7.0
+google-resumable-media==2.0.0
 googleapis-common-protos==1.62.0
 grpcio==1.47.0
 grpcio-status==1.47.0
