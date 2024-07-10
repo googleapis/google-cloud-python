@@ -23,6 +23,7 @@ __version__ = package_version.__version__
 from .services.environments import EnvironmentsAsyncClient, EnvironmentsClient
 from .services.image_versions import ImageVersionsAsyncClient, ImageVersionsClient
 from .types.environments import (
+    AirflowMetadataRetentionPolicyConfig,
     CheckUpgradeRequest,
     CheckUpgradeResponse,
     CloudDataLineageIntegration,
@@ -94,6 +95,7 @@ from .types.operations import OperationMetadata
 __all__ = (
     "EnvironmentsAsyncClient",
     "ImageVersionsAsyncClient",
+    "AirflowMetadataRetentionPolicyConfig",
     "CheckUpgradeRequest",
     "CheckUpgradeResponse",
     "CloudDataLineageIntegration",
