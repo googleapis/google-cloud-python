@@ -18,7 +18,7 @@ https://scikit-learn.org/stable/modules/classes.html#module-sklearn.model_select
 
 
 import typing
-from typing import List, Union
+from typing import cast, List, Union
 
 from bigframes.ml import utils
 import bigframes.pandas as bpd
@@ -29,6 +29,7 @@ def train_test_split(
     test_size: Union[float, None] = None,
     train_size: Union[float, None] = None,
     random_state: Union[int, None] = None,
+    stratify: Union[bpd.Series, None] = None,
 ) -> List[Union[bpd.DataFrame, bpd.Series]]:
     """Splits dataframes or series into random train and test subsets.
 
@@ -46,6 +47,10 @@ def train_test_split(
         random_state (default None):
             A seed to use for randomly choosing the rows of the split. If not
             set, a random split will be generated each time.
+        stratify: (bigframes.series.Series or None, default None):
+            If not None, data is split in a stratified fashion, using this as the class labels. Each split has the same distribution of the class labels with the original dataset.
+            Default to None.
+            Note: By setting the stratify parameter, the memory consumption and generated SQL will be linear to the unique values in the Series. May return errors if the unique values size is too large.
 
     Returns:
         List[Union[bigframes.dataframe.DataFrame, bigframes.series.Series]]: A list of BigQuery DataFrames or Series.
@@ -76,7 +81,38 @@ def train_test_split(
 
     dfs = list(utils.convert_to_dataframe(*arrays))
 
-    split_dfs = dfs[0]._split(fracs=(train_size, test_size), random_state=random_state)
+    def _stratify_split(df: bpd.DataFrame, stratify: bpd.Series) -> List[bpd.DataFrame]:
+        """Split a single DF accoding to the stratify Series."""
+        stratify = stratify.rename("bigframes_stratify_col")  # avoid name conflicts
+        merged_df = df.join(stratify.to_frame(), how="outer")
+
+        train_dfs, test_dfs = [], []
+        uniq = stratify.unique()
+        for value in uniq:
+            cur = merged_df[merged_df["bigframes_stratify_col"] == value]
+            train, test = train_test_split(
+                cur,
+                test_size=test_size,
+                train_size=train_size,
+                random_state=random_state,
+            )
+            train_dfs.append(train)
+            test_dfs.append(test)
+
+        train_df = cast(
+            bpd.DataFrame, bpd.concat(train_dfs).drop(columns="bigframes_stratify_col")
+        )
+        test_df = cast(
+            bpd.DataFrame, bpd.concat(test_dfs).drop(columns="bigframes_stratify_col")
+        )
+        return [train_df, test_df]
+
+    if stratify is None:
+        split_dfs = dfs[0]._split(
+            fracs=(train_size, test_size), random_state=random_state
+        )
+    else:
+        split_dfs = _stratify_split(dfs[0], stratify)
     train_index = split_dfs[0].index
     test_index = split_dfs[1].index
 
