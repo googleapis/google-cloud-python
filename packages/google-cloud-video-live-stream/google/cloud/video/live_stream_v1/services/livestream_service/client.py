@@ -243,6 +243,30 @@ class LivestreamServiceClient(metaclass=LivestreamServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
+    def clip_path(
+        project: str,
+        location: str,
+        channel: str,
+        clip: str,
+    ) -> str:
+        """Returns a fully-qualified clip string."""
+        return "projects/{project}/locations/{location}/channels/{channel}/clips/{clip}".format(
+            project=project,
+            location=location,
+            channel=channel,
+            clip=clip,
+        )
+
+    @staticmethod
+    def parse_clip_path(path: str) -> Dict[str, str]:
+        """Parses a clip path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/channels/(?P<channel>.+?)/clips/(?P<clip>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def event_path(
         project: str,
         location: str,
@@ -2794,6 +2818,503 @@ class LivestreamServiceClient(metaclass=LivestreamServiceClientMeta):
             timeout=timeout,
             metadata=metadata,
         )
+
+    def list_clips(
+        self,
+        request: Optional[Union[service.ListClipsRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListClipsPager:
+        r"""Returns a list of all clips in the specified channel.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud.video import live_stream_v1
+
+            def sample_list_clips():
+                # Create a client
+                client = live_stream_v1.LivestreamServiceClient()
+
+                # Initialize request argument(s)
+                request = live_stream_v1.ListClipsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_clips(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
+        Args:
+            request (Union[google.cloud.video.live_stream_v1.types.ListClipsRequest, dict]):
+                The request object. Request message for
+                "LivestreamService.ListClips".
+            parent (str):
+                Required. Parent value for
+                ListClipsRequest
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.video.live_stream_v1.services.livestream_service.pagers.ListClipsPager:
+                Response message for
+                "LivestreamService.ListClips".
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.ListClipsRequest):
+            request = service.ListClipsRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.list_clips]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListClipsPager(
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def get_clip(
+        self,
+        request: Optional[Union[service.GetClipRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> resources.Clip:
+        r"""Returns the specified clip.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud.video import live_stream_v1
+
+            def sample_get_clip():
+                # Create a client
+                client = live_stream_v1.LivestreamServiceClient()
+
+                # Initialize request argument(s)
+                request = live_stream_v1.GetClipRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_clip(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.video.live_stream_v1.types.GetClipRequest, dict]):
+                The request object. Request message for
+                "LivestreamService.GetClip".
+            name (str):
+                Required. Name of the resource, in the following form:
+                ``projects/{project}/locations/{location}/channels/{channel}/clips/{clip}``.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.video.live_stream_v1.types.Clip:
+                Clip is a sub-resource under channel.
+                Each clip represents a clipping
+                operation that generates a VOD playlist
+                from its channel given a set of
+                timestamp ranges.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.GetClipRequest):
+            request = service.GetClipRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.get_clip]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def create_clip(
+        self,
+        request: Optional[Union[service.CreateClipRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        clip: Optional[resources.Clip] = None,
+        clip_id: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation.Operation:
+        r"""Creates a clip with the provided clip ID in the
+        specified channel.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud.video import live_stream_v1
+
+            def sample_create_clip():
+                # Create a client
+                client = live_stream_v1.LivestreamServiceClient()
+
+                # Initialize request argument(s)
+                clip = live_stream_v1.Clip()
+                clip.clip_manifests.manifest_key = "manifest_key_value"
+
+                request = live_stream_v1.CreateClipRequest(
+                    parent="parent_value",
+                    clip_id="clip_id_value",
+                    clip=clip,
+                )
+
+                # Make the request
+                operation = client.create_clip(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.video.live_stream_v1.types.CreateClipRequest, dict]):
+                The request object. Request message for
+                "LivestreamService.CreateClip".
+            parent (str):
+                Required. The parent resource name, in the following
+                form:
+                ``projects/{project}/locations/{location}/channels/{channel}``.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            clip (google.cloud.video.live_stream_v1.types.Clip):
+                Required. The resource being created
+                This corresponds to the ``clip`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            clip_id (str):
+                Required. Id of the requesting object
+                in the following form:
+
+                1. 1 character minimum, 63 characters
+                    maximum
+                2. Only contains letters, digits,
+                    underscores, and hyphens
+
+                This corresponds to the ``clip_id`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.video.live_stream_v1.types.Clip` Clip is a sub-resource under channel. Each clip represents a clipping
+                   operation that generates a VOD playlist from its
+                   channel given a set of timestamp ranges.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, clip, clip_id])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.CreateClipRequest):
+            request = service.CreateClipRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+            if clip is not None:
+                request.clip = clip
+            if clip_id is not None:
+                request.clip_id = clip_id
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.create_clip]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            resources.Clip,
+            metadata_type=service.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def delete_clip(
+        self,
+        request: Optional[Union[service.DeleteClipRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation.Operation:
+        r"""Deletes the specified clip job resource. This method
+        only deletes the clip job and does not delete the VOD
+        clip stored in the GCS.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud.video import live_stream_v1
+
+            def sample_delete_clip():
+                # Create a client
+                client = live_stream_v1.LivestreamServiceClient()
+
+                # Initialize request argument(s)
+                request = live_stream_v1.DeleteClipRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_clip(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.video.live_stream_v1.types.DeleteClipRequest, dict]):
+                The request object. Request message for
+                "LivestreamService.DeleteClip".
+            name (str):
+                Required. The name of the clip resource, in the form of:
+                ``projects/{project}/locations/{location}/channels/{channelId}/clips/{clipId}``.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
+                   empty messages in your APIs. A typical example is to
+                   use it as the request or the response type of an API
+                   method. For instance:
+
+                      service Foo {
+                         rpc Bar(google.protobuf.Empty) returns
+                         (google.protobuf.Empty);
+
+                      }
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.DeleteClipRequest):
+            request = service.DeleteClipRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.delete_clip]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            empty_pb2.Empty,
+            metadata_type=service.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
 
     def create_asset(
         self,

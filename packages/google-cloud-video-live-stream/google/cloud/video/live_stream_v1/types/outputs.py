@@ -52,7 +52,11 @@ class ElementaryStream(proto.Message):
 
     Attributes:
         key (str):
-            A unique key for this elementary stream.
+            A unique key for this elementary stream. The
+            key must be 1-63 characters in length. The key
+            must begin and end with a letter (regardless of
+            case) or a number, but can contain dashes or
+            underscores in between.
         video_stream (google.cloud.video.live_stream_v1.types.VideoStream):
             Encoding of a video stream.
 
@@ -97,7 +101,11 @@ class MuxStream(proto.Message):
 
     Attributes:
         key (str):
-            A unique key for this multiplexed stream.
+            A unique key for this multiplexed stream. The
+            key must be 1-63 characters in length. The key
+            must begin and end with a letter (regardless of
+            case) or a number, but can contain dashes or
+            underscores in between.
         container (str):
             The container format. The default is ``fmp4``.
 
@@ -180,6 +188,12 @@ class Manifest(proto.Message):
             manifest that the player has, but were already deleted from
             the output Google Cloud Storage bucket. Default value is
             ``60s``.
+
+            If both segment_keep_duration and
+            [RetentionConfig.retention_window_duration][google.cloud.video.livestream.v1.RetentionConfig.retention_window_duration]
+            are set,
+            [RetentionConfig.retention_window_duration][google.cloud.video.livestream.v1.RetentionConfig.retention_window_duration]
+            is used and segment_keep_duration is ignored.
         use_timecode_as_timeline (bool):
             Whether to use the timecode, as specified in timecode
             config, when setting:
@@ -190,6 +204,8 @@ class Manifest(proto.Message):
             If false, ignore the input timecode and use the time from
             system clock when the manifest is first generated. This is
             the default behavior.
+        key (str):
+            Optional. A unique key for this manifest.
     """
 
     class ManifestType(proto.Enum):
@@ -234,6 +250,10 @@ class Manifest(proto.Message):
     use_timecode_as_timeline: bool = proto.Field(
         proto.BOOL,
         number=6,
+    )
+    key: str = proto.Field(
+        proto.STRING,
+        number=7,
     )
 
 
