@@ -106,9 +106,7 @@ class Pipeline(
     ) -> Pipeline:
         (X,) = utils.convert_to_dataframe(X)
 
-        compiled_transforms = self._transform._compile_to_sql(X.columns.tolist(), X=X)
-        transform_sqls = [transform_sql for transform_sql, _ in compiled_transforms]
-
+        transform_sqls = self._transform._compile_to_sql(X)
         if y is not None:
             # If labels columns are present, they should pass through un-transformed
             (y,) = utils.convert_to_dataframe(y)

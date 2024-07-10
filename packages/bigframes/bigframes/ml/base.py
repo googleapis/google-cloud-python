@@ -188,6 +188,24 @@ class BaseTransformer(BaseEstimator):
     def _keys(self):
         pass
 
+    def _extract_output_names(self):
+        """Extract transform output column names. Save the results to self._output_names."""
+        assert self._bqml_model is not None
+
+        output_names = []
+        for transform_col in self._bqml_model._model._properties["transformColumns"]:
+            transform_col_dict = cast(dict, transform_col)
+            # pass the columns that are not transformed
+            if "transformSql" not in transform_col_dict:
+                continue
+            transform_sql: str = transform_col_dict["transformSql"]
+            if not transform_sql.startswith("ML."):
+                continue
+
+            output_names.append(transform_col_dict["name"])
+
+        self._output_names = output_names
+
     def __eq__(self, other) -> bool:
         return type(self) is type(other) and self._keys() == other._keys()
 

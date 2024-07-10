@@ -18,7 +18,7 @@ scikit-learn's preprocessing module: https://scikit-learn.org/stable/modules/pre
 from __future__ import annotations
 
 import typing
-from typing import cast, Iterable, List, Literal, Optional, Tuple, Union
+from typing import cast, Iterable, List, Literal, Optional, Union
 
 import bigframes_vendored.sklearn.preprocessing._data
 import bigframes_vendored.sklearn.preprocessing._discretization
@@ -46,23 +46,22 @@ class StandardScaler(
     def _keys(self):
         return (self._bqml_model,)
 
-    def _compile_to_sql(self, columns: Iterable[str], X=None) -> List[Tuple[str, str]]:
+    def _compile_to_sql(
+        self, X: bpd.DataFrame, columns: Optional[Iterable[str]] = None
+    ) -> List[str]:
         """Compile this transformer to a list of SQL expressions that can be included in
         a BQML TRANSFORM clause
 
         Args:
-            columns:
-                a list of column names to transform.
-            X (default None):
-                Ignored.
+            X: DataFrame to transform.
+            columns: transform columns. If None, transform all columns in X.
 
-        Returns: a list of tuples of (sql_expression, output_name)"""
+        Returns: a list of tuples sql_expr."""
+        if columns is None:
+            columns = X.columns
         return [
-            (
-                self._base_sql_generator.ml_standard_scaler(
-                    column, f"standard_scaled_{column}"
-                ),
-                f"standard_scaled_{column}",
+            self._base_sql_generator.ml_standard_scaler(
+                column, f"standard_scaled_{column}"
             )
             for column in columns
         ]
@@ -86,17 +85,14 @@ class StandardScaler(
     ) -> StandardScaler:
         (X,) = utils.convert_to_dataframe(X)
 
-        compiled_transforms = self._compile_to_sql(X.columns.tolist())
-        transform_sqls = [transform_sql for transform_sql, _ in compiled_transforms]
-
+        transform_sqls = self._compile_to_sql(X)
         self._bqml_model = self._bqml_model_factory.create_model(
             X,
             options={"model_type": "transform_only"},
             transforms=transform_sqls,
         )
 
-        # The schema of TRANSFORM output is not available in the model API, so save it during fitting
-        self._output_names = [name for _, name in compiled_transforms]
+        self._extract_output_names()
         return self
 
     def transform(self, X: Union[bpd.DataFrame, bpd.Series]) -> bpd.DataFrame:
@@ -127,23 +123,22 @@ class MaxAbsScaler(
     def _keys(self):
         return (self._bqml_model,)
 
-    def _compile_to_sql(self, columns: Iterable[str], X=None) -> List[Tuple[str, str]]:
+    def _compile_to_sql(
+        self, X: bpd.DataFrame, columns: Optional[Iterable[str]] = None
+    ) -> List[str]:
         """Compile this transformer to a list of SQL expressions that can be included in
         a BQML TRANSFORM clause
 
         Args:
-            columns:
-                a list of column names to transform.
-            X (default None):
-                Ignored.
+            X: DataFrame to transform.
+            columns: transform columns. If None, transform all columns in X.
 
-        Returns: a list of tuples of (sql_expression, output_name)"""
+        Returns: a list of tuples sql_expr."""
+        if columns is None:
+            columns = X.columns
         return [
-            (
-                self._base_sql_generator.ml_max_abs_scaler(
-                    column, f"max_abs_scaled_{column}"
-                ),
-                f"max_abs_scaled_{column}",
+            self._base_sql_generator.ml_max_abs_scaler(
+                column, f"max_abs_scaled_{column}"
             )
             for column in columns
         ]
@@ -167,17 +162,14 @@ class MaxAbsScaler(
     ) -> MaxAbsScaler:
         (X,) = utils.convert_to_dataframe(X)
 
-        compiled_transforms = self._compile_to_sql(X.columns.tolist())
-        transform_sqls = [transform_sql for transform_sql, _ in compiled_transforms]
-
+        transform_sqls = self._compile_to_sql(X)
         self._bqml_model = self._bqml_model_factory.create_model(
             X,
             options={"model_type": "transform_only"},
             transforms=transform_sqls,
         )
 
-        # The schema of TRANSFORM output is not available in the model API, so save it during fitting
-        self._output_names = [name for _, name in compiled_transforms]
+        self._extract_output_names()
         return self
 
     def transform(self, X: Union[bpd.DataFrame, bpd.Series]) -> bpd.DataFrame:
@@ -208,23 +200,22 @@ class MinMaxScaler(
     def _keys(self):
         return (self._bqml_model,)
 
-    def _compile_to_sql(self, columns: Iterable[str], X=None) -> List[Tuple[str, str]]:
+    def _compile_to_sql(
+        self, X: bpd.DataFrame, columns: Optional[Iterable[str]] = None
+    ) -> List[str]:
         """Compile this transformer to a list of SQL expressions that can be included in
         a BQML TRANSFORM clause
 
         Args:
-            columns:
-                a list of column names to transform.
-            X (default None):
-                Ignored.
+            X: DataFrame to transform.
+            columns: transform columns. If None, transform all columns in X.
 
-        Returns: a list of tuples of (sql_expression, output_name)"""
+        Returns: a list of tuples sql_expr."""
+        if columns is None:
+            columns = X.columns
         return [
-            (
-                self._base_sql_generator.ml_min_max_scaler(
-                    column, f"min_max_scaled_{column}"
-                ),
-                f"min_max_scaled_{column}",
+            self._base_sql_generator.ml_min_max_scaler(
+                column, f"min_max_scaled_{column}"
             )
             for column in columns
         ]
@@ -248,17 +239,14 @@ class MinMaxScaler(
     ) -> MinMaxScaler:
         (X,) = utils.convert_to_dataframe(X)
 
-        compiled_transforms = self._compile_to_sql(X.columns.tolist())
-        transform_sqls = [transform_sql for transform_sql, _ in compiled_transforms]
-
+        transform_sqls = self._compile_to_sql(X)
         self._bqml_model = self._bqml_model_factory.create_model(
             X,
             options={"model_type": "transform_only"},
             transforms=transform_sqls,
         )
 
-        # The schema of TRANSFORM output is not available in the model API, so save it during fitting
-        self._output_names = [name for _, name in compiled_transforms]
+        self._extract_output_names()
         return self
 
     def transform(self, X: Union[bpd.DataFrame, bpd.Series]) -> bpd.DataFrame:
@@ -302,20 +290,18 @@ class KBinsDiscretizer(
         return (self._bqml_model, self.n_bins, self.strategy)
 
     def _compile_to_sql(
-        self,
-        columns: Iterable[str],
-        X: bpd.DataFrame,
-    ) -> List[Tuple[str, str]]:
+        self, X: bpd.DataFrame, columns: Optional[Iterable[str]] = None
+    ) -> List[str]:
         """Compile this transformer to a list of SQL expressions that can be included in
         a BQML TRANSFORM clause
 
         Args:
-            columns:
-                a list of column names to transform
-            X:
-                The Dataframe with training data.
+            X: DataFrame to transform.
+            columns: transform columns. If None, transform all columns in X.
 
-        Returns: a list of tuples of (sql_expression, output_name)"""
+        Returns: a list of tuples sql_expr."""
+        if columns is None:
+            columns = X.columns
         array_split_points = {}
         if self.strategy == "uniform":
             for column in columns:
@@ -327,11 +313,8 @@ class KBinsDiscretizer(
                 ]
 
             return [
-                (
-                    self._base_sql_generator.ml_bucketize(
-                        column, array_split_points[column], f"kbinsdiscretizer_{column}"
-                    ),
-                    f"kbinsdiscretizer_{column}",
+                self._base_sql_generator.ml_bucketize(
+                    column, array_split_points[column], f"kbinsdiscretizer_{column}"
                 )
                 for column in columns
             ]
@@ -339,11 +322,8 @@ class KBinsDiscretizer(
         elif self.strategy == "quantile":
 
             return [
-                (
-                    self._base_sql_generator.ml_quantile_bucketize(
-                        column, self.n_bins, f"kbinsdiscretizer_{column}"
-                    ),
-                    f"kbinsdiscretizer_{column}",
+                self._base_sql_generator.ml_quantile_bucketize(
+                    column, self.n_bins, f"kbinsdiscretizer_{column}"
                 )
                 for column in columns
             ]
@@ -381,17 +361,14 @@ class KBinsDiscretizer(
     ) -> KBinsDiscretizer:
         (X,) = utils.convert_to_dataframe(X)
 
-        compiled_transforms = self._compile_to_sql(X.columns.tolist(), X)
-        transform_sqls = [transform_sql for transform_sql, _ in compiled_transforms]
-
+        transform_sqls = self._compile_to_sql(X)
         self._bqml_model = self._bqml_model_factory.create_model(
             X,
             options={"model_type": "transform_only"},
             transforms=transform_sqls,
         )
 
-        # The schema of TRANSFORM output is not available in the model API, so save it during fitting
-        self._output_names = [name for _, name in compiled_transforms]
+        self._extract_output_names()
         return self
 
     def transform(self, X: Union[bpd.DataFrame, bpd.Series]) -> bpd.DataFrame:
@@ -440,18 +417,19 @@ class OneHotEncoder(
     def _keys(self):
         return (self._bqml_model, self.drop, self.min_frequency, self.max_categories)
 
-    def _compile_to_sql(self, columns: Iterable[str], X=None) -> List[Tuple[str, str]]:
+    def _compile_to_sql(
+        self, X: bpd.DataFrame, columns: Optional[Iterable[str]] = None
+    ) -> List[str]:
         """Compile this transformer to a list of SQL expressions that can be included in
         a BQML TRANSFORM clause
 
         Args:
-            columns:
-                a list of column names to transform.
-            X (default None):
-                Ignored.
+            X: DataFrame to transform.
+            columns: transform columns. If None, transform all columns in X.
 
-        Returns: a list of tuples of (sql_expression, output_name)"""
-
+        Returns: a list of tuples sql_expr."""
+        if columns is None:
+            columns = X.columns
         drop = self.drop if self.drop is not None else "none"
         # minus one here since BQML's inplimentation always includes index 0, and top_k is on top of that.
         top_k = (
@@ -465,11 +443,8 @@ class OneHotEncoder(
             else OneHotEncoder.FREQUENCY_THRESHOLD_DEFAULT
         )
         return [
-            (
-                self._base_sql_generator.ml_one_hot_encoder(
-                    column, drop, top_k, frequency_threshold, f"onehotencoded_{column}"
-                ),
-                f"onehotencoded_{column}",
+            self._base_sql_generator.ml_one_hot_encoder(
+                column, drop, top_k, frequency_threshold, f"onehotencoded_{column}"
             )
             for column in columns
         ]
@@ -502,17 +477,14 @@ class OneHotEncoder(
     ) -> OneHotEncoder:
         (X,) = utils.convert_to_dataframe(X)
 
-        compiled_transforms = self._compile_to_sql(X.columns.tolist())
-        transform_sqls = [transform_sql for transform_sql, _ in compiled_transforms]
-
+        transform_sqls = self._compile_to_sql(X)
         self._bqml_model = self._bqml_model_factory.create_model(
             X,
             options={"model_type": "transform_only"},
             transforms=transform_sqls,
         )
 
-        # The schema of TRANSFORM output is not available in the model API, so save it during fitting
-        self._output_names = [name for _, name in compiled_transforms]
+        self._extract_output_names()
         return self
 
     def transform(self, X: Union[bpd.DataFrame, bpd.Series]) -> bpd.DataFrame:
@@ -559,17 +531,19 @@ class LabelEncoder(
     def _keys(self):
         return (self._bqml_model, self.min_frequency, self.max_categories)
 
-    def _compile_to_sql(self, columns: Iterable[str], X=None) -> List[Tuple[str, str]]:
+    def _compile_to_sql(
+        self, X: bpd.DataFrame, columns: Optional[Iterable[str]] = None
+    ) -> List[str]:
         """Compile this transformer to a list of SQL expressions that can be included in
         a BQML TRANSFORM clause
 
         Args:
-            columns:
-                a list of column names to transform.
-            X (default None):
-                Ignored.
+            X: DataFrame to transform.
+            columns: transform columns. If None, transform all columns in X.
 
-        Returns: a list of tuples of (sql_expression, output_name)"""
+        Returns: a list of tuples sql_expr."""
+        if columns is None:
+            columns = X.columns
 
         # minus one here since BQML's inplimentation always includes index 0, and top_k is on top of that.
         top_k = (
@@ -583,11 +557,8 @@ class LabelEncoder(
             else LabelEncoder.FREQUENCY_THRESHOLD_DEFAULT
         )
         return [
-            (
-                self._base_sql_generator.ml_label_encoder(
-                    column, top_k, frequency_threshold, f"labelencoded_{column}"
-                ),
-                f"labelencoded_{column}",
+            self._base_sql_generator.ml_label_encoder(
+                column, top_k, frequency_threshold, f"labelencoded_{column}"
             )
             for column in columns
         ]
@@ -614,17 +585,14 @@ class LabelEncoder(
     ) -> LabelEncoder:
         (y,) = utils.convert_to_dataframe(y)
 
-        compiled_transforms = self._compile_to_sql(y.columns.tolist())
-        transform_sqls = [transform_sql for transform_sql, _ in compiled_transforms]
-
+        transform_sqls = self._compile_to_sql(y)
         self._bqml_model = self._bqml_model_factory.create_model(
             y,
             options={"model_type": "transform_only"},
             transforms=transform_sqls,
         )
 
-        # The schema of TRANSFORM output is not available in the model API, so save it during fitting
-        self._output_names = [name for _, name in compiled_transforms]
+        self._extract_output_names()
         return self
 
     def transform(self, y: Union[bpd.DataFrame, bpd.Series]) -> bpd.DataFrame:
@@ -660,24 +628,23 @@ class PolynomialFeatures(
     def _keys(self):
         return (self._bqml_model, self.degree)
 
-    def _compile_to_sql(self, columns: Iterable[str], X=None) -> List[Tuple[str, str]]:
+    def _compile_to_sql(
+        self, X: bpd.DataFrame, columns: Optional[Iterable[str]] = None
+    ) -> List[str]:
         """Compile this transformer to a list of SQL expressions that can be included in
         a BQML TRANSFORM clause
 
         Args:
-            columns:
-                a list of column names to transform.
-            X (default None):
-                Ignored.
+            X: DataFrame to transform.
+            columns: transform columns. If None, transform all columns in X.
 
-        Returns: a list of tuples of (sql_expression, output_name)"""
+        Returns: a list of tuples sql_expr."""
+        if columns is None:
+            columns = X.columns
         output_name = "poly_feat"
         return [
-            (
-                self._base_sql_generator.ml_polynomial_expand(
-                    columns, self.degree, output_name
-                ),
-                output_name,
+            self._base_sql_generator.ml_polynomial_expand(
+                columns, self.degree, output_name
             )
         ]
 
@@ -702,29 +669,14 @@ class PolynomialFeatures(
     ) -> PolynomialFeatures:
         (X,) = utils.convert_to_dataframe(X)
 
-        compiled_transforms = self._compile_to_sql(X.columns.tolist())
-        transform_sqls = [transform_sql for transform_sql, _ in compiled_transforms]
-
+        transform_sqls = self._compile_to_sql(X)
         self._bqml_model = self._bqml_model_factory.create_model(
             X,
             options={"model_type": "transform_only"},
             transforms=transform_sqls,
         )
 
-        # TODO(garrettwu): generalize the approach to other transformers
-        output_names = []
-        for transform_col in self._bqml_model._model._properties["transformColumns"]:
-            transform_col_dict = cast(dict, transform_col)
-            # pass the columns that are not transformed
-            if "transformSql" not in transform_col_dict:
-                continue
-            transform_sql: str = transform_col_dict["transformSql"]
-            if not transform_sql.startswith("ML."):
-                continue
-
-            output_names.append(transform_col_dict["name"])
-
-        self._output_names = output_names
+        self._extract_output_names()
 
         return self
 
