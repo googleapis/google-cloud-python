@@ -29,6 +29,8 @@ __protobuf__ = proto.module(
         "Challenge",
         "CreateChallengeRequest",
         "VerifyAttestationRequest",
+        "TdxCcelAttestation",
+        "SevSnpAttestation",
         "VerifyAttestationResponse",
         "GcpCredentials",
         "TokenOptions",
@@ -159,7 +161,23 @@ class VerifyAttestationRequest(proto.Message):
     information needed for this service to verify the plaform state
     of the requestor.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
+        td_ccel (google.cloud.confidentialcomputing_v1.types.TdxCcelAttestation):
+            Optional. A TDX with CCEL and RTMR
+            Attestation Quote.
+
+            This field is a member of `oneof`_ ``tee_attestation``.
+        sev_snp_attestation (google.cloud.confidentialcomputing_v1.types.SevSnpAttestation):
+            Optional. An SEV-SNP Attestation Report.
+
+            This field is a member of `oneof`_ ``tee_attestation``.
         challenge (str):
             Required. The name of the Challenge whose nonce was used to
             generate the attestation, in the format
@@ -181,6 +199,18 @@ class VerifyAttestationRequest(proto.Message):
             output.
     """
 
+    td_ccel: "TdxCcelAttestation" = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        oneof="tee_attestation",
+        message="TdxCcelAttestation",
+    )
+    sev_snp_attestation: "SevSnpAttestation" = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        oneof="tee_attestation",
+        message="SevSnpAttestation",
+    )
     challenge: str = proto.Field(
         proto.STRING,
         number=1,
@@ -204,6 +234,72 @@ class VerifyAttestationRequest(proto.Message):
         proto.MESSAGE,
         number=5,
         message="TokenOptions",
+    )
+
+
+class TdxCcelAttestation(proto.Message):
+    r"""A TDX Attestation quote.
+
+    Attributes:
+        ccel_acpi_table (bytes):
+            Optional. The Confidential Computing Event
+            Log (CCEL) ACPI table. Formatted as described in
+            the ACPI Specification 6.5.
+        ccel_data (bytes):
+            Optional. The CCEL event log. Formatted as
+            described in the UEFI 2.10.
+        canonical_event_log (bytes):
+            Optional. An Event Log containing additional
+            events measured into the RTMR that are not
+            already present in the CCEL.
+        td_quote (bytes):
+            Optional. The TDX attestation quote from the
+            guest. It contains the RTMR values.
+    """
+
+    ccel_acpi_table: bytes = proto.Field(
+        proto.BYTES,
+        number=1,
+    )
+    ccel_data: bytes = proto.Field(
+        proto.BYTES,
+        number=2,
+    )
+    canonical_event_log: bytes = proto.Field(
+        proto.BYTES,
+        number=3,
+    )
+    td_quote: bytes = proto.Field(
+        proto.BYTES,
+        number=4,
+    )
+
+
+class SevSnpAttestation(proto.Message):
+    r"""An SEV-SNP Attestation Report.
+    Contains the attestation report and the certificate bundle that
+    the client collects.
+
+    Attributes:
+        report (bytes):
+            Optional. The SEV-SNP Attestation Report Format is in
+            revision 1.55, §7.3 Attestation, Table 22.
+            ATTESTATION_REPORT Structure in this document:
+            https://www.amd.com/content/dam/amd/en/documents/epyc-technical-docs/specifications/56860.pdf
+        aux_blob (bytes):
+            Optional. Certificate bundle defined in the GHCB protocol
+            definition Format is documented in GHCB revision 2.03,
+            section 4.1.8.1 struct cert_table in this document:
+            https://www.amd.com/content/dam/amd/en/documents/epyc-technical-docs/specifications/56421.pdf
+    """
+
+    report: bytes = proto.Field(
+        proto.BYTES,
+        number=1,
+    )
+    aux_blob: bytes = proto.Field(
+        proto.BYTES,
+        number=2,
     )
 
 

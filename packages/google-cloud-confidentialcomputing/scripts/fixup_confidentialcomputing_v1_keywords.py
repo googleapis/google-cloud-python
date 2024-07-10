@@ -40,7 +40,7 @@ class confidentialcomputingCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
         'create_challenge': ('parent', 'challenge', ),
-        'verify_attestation': ('challenge', 'tpm_attestation', 'gcp_credentials', 'confidential_space_info', 'token_options', ),
+        'verify_attestation': ('challenge', 'tpm_attestation', 'td_ccel', 'sev_snp_attestation', 'gcp_credentials', 'confidential_space_info', 'token_options', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
