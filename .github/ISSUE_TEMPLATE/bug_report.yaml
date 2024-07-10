@@ -9,7 +9,7 @@ body:
 - type: checkboxes
   attributes:
     label: Determine this is the right repository
-    description: Please follow the steps in [the SUPPORT guide](https://github.com/googleapis/google-cloud-python/blob/issue-templates/SUPPORT.md) and determine that this is likely a client library issue and this is the correct repository in which to report it.
+    description: Please follow the steps in [the SUPPORT guide](https://github.com/googleapis/google-cloud-python/blob/main/SUPPORT.md) and determine that this is likely a client library issue and this is the correct repository in which to report it.
     options:
       - label: I determined this is the correct repository in which to report this bug.
         required: true
