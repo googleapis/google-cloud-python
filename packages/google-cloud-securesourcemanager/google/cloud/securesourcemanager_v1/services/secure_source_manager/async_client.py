@@ -97,6 +97,8 @@ class SecureSourceManagerAsyncClient:
     _DEFAULT_ENDPOINT_TEMPLATE = SecureSourceManagerClient._DEFAULT_ENDPOINT_TEMPLATE
     _DEFAULT_UNIVERSE = SecureSourceManagerClient._DEFAULT_UNIVERSE
 
+    ca_pool_path = staticmethod(SecureSourceManagerClient.ca_pool_path)
+    parse_ca_pool_path = staticmethod(SecureSourceManagerClient.parse_ca_pool_path)
     crypto_key_path = staticmethod(SecureSourceManagerClient.crypto_key_path)
     parse_crypto_key_path = staticmethod(
         SecureSourceManagerClient.parse_crypto_key_path
@@ -106,6 +108,12 @@ class SecureSourceManagerAsyncClient:
     repository_path = staticmethod(SecureSourceManagerClient.repository_path)
     parse_repository_path = staticmethod(
         SecureSourceManagerClient.parse_repository_path
+    )
+    service_attachment_path = staticmethod(
+        SecureSourceManagerClient.service_attachment_path
+    )
+    parse_service_attachment_path = staticmethod(
+        SecureSourceManagerClient.parse_service_attachment_path
     )
     common_billing_account_path = staticmethod(
         SecureSourceManagerClient.common_billing_account_path

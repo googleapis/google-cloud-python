@@ -218,6 +218,28 @@ class SecureSourceManagerClient(metaclass=SecureSourceManagerClientMeta):
         return self._transport
 
     @staticmethod
+    def ca_pool_path(
+        project: str,
+        location: str,
+        ca_pool: str,
+    ) -> str:
+        """Returns a fully-qualified ca_pool string."""
+        return "projects/{project}/locations/{location}/caPools/{ca_pool}".format(
+            project=project,
+            location=location,
+            ca_pool=ca_pool,
+        )
+
+    @staticmethod
+    def parse_ca_pool_path(path: str) -> Dict[str, str]:
+        """Parses a ca_pool path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/caPools/(?P<ca_pool>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def crypto_key_path(
         project: str,
         location: str,
@@ -283,6 +305,28 @@ class SecureSourceManagerClient(metaclass=SecureSourceManagerClientMeta):
         """Parses a repository path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/repositories/(?P<repository>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def service_attachment_path(
+        project: str,
+        region: str,
+        service_attachment: str,
+    ) -> str:
+        """Returns a fully-qualified service_attachment string."""
+        return "projects/{project}/regions/{region}/serviceAttachments/{service_attachment}".format(
+            project=project,
+            region=region,
+            service_attachment=service_attachment,
+        )
+
+    @staticmethod
+    def parse_service_attachment_path(path: str) -> Dict[str, str]:
+        """Parses a service_attachment path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/regions/(?P<region>.+?)/serviceAttachments/(?P<service_attachment>.+?)$",
             path,
         )
         return m.groupdict() if m else {}

@@ -6607,6 +6607,12 @@ def test_create_instance_rest(request_type):
         "create_time": {"seconds": 751, "nanos": 543},
         "update_time": {},
         "labels": {},
+        "private_config": {
+            "is_private": True,
+            "ca_pool": "ca_pool_value",
+            "http_service_attachment": "http_service_attachment_value",
+            "ssh_service_attachment": "ssh_service_attachment_value",
+        },
         "state": 1,
         "state_note": 1,
         "kms_key": "kms_key_value",
@@ -10302,11 +10308,37 @@ def test_secure_source_manager_grpc_lro_async_client():
     assert transport.operations_client is transport.operations_client
 
 
-def test_crypto_key_path():
+def test_ca_pool_path():
     project = "squid"
     location = "clam"
-    key_ring = "whelk"
-    crypto_key = "octopus"
+    ca_pool = "whelk"
+    expected = "projects/{project}/locations/{location}/caPools/{ca_pool}".format(
+        project=project,
+        location=location,
+        ca_pool=ca_pool,
+    )
+    actual = SecureSourceManagerClient.ca_pool_path(project, location, ca_pool)
+    assert expected == actual
+
+
+def test_parse_ca_pool_path():
+    expected = {
+        "project": "octopus",
+        "location": "oyster",
+        "ca_pool": "nudibranch",
+    }
+    path = SecureSourceManagerClient.ca_pool_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = SecureSourceManagerClient.parse_ca_pool_path(path)
+    assert expected == actual
+
+
+def test_crypto_key_path():
+    project = "cuttlefish"
+    location = "mussel"
+    key_ring = "winkle"
+    crypto_key = "nautilus"
     expected = "projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}".format(
         project=project,
         location=location,
@@ -10321,10 +10353,10 @@ def test_crypto_key_path():
 
 def test_parse_crypto_key_path():
     expected = {
-        "project": "oyster",
-        "location": "nudibranch",
-        "key_ring": "cuttlefish",
-        "crypto_key": "mussel",
+        "project": "scallop",
+        "location": "abalone",
+        "key_ring": "squid",
+        "crypto_key": "clam",
     }
     path = SecureSourceManagerClient.crypto_key_path(**expected)
 
@@ -10334,9 +10366,9 @@ def test_parse_crypto_key_path():
 
 
 def test_instance_path():
-    project = "winkle"
-    location = "nautilus"
-    instance = "scallop"
+    project = "whelk"
+    location = "octopus"
+    instance = "oyster"
     expected = "projects/{project}/locations/{location}/instances/{instance}".format(
         project=project,
         location=location,
@@ -10348,9 +10380,9 @@ def test_instance_path():
 
 def test_parse_instance_path():
     expected = {
-        "project": "abalone",
-        "location": "squid",
-        "instance": "clam",
+        "project": "nudibranch",
+        "location": "cuttlefish",
+        "instance": "mussel",
     }
     path = SecureSourceManagerClient.instance_path(**expected)
 
@@ -10360,9 +10392,9 @@ def test_parse_instance_path():
 
 
 def test_repository_path():
-    project = "whelk"
-    location = "octopus"
-    repository = "oyster"
+    project = "winkle"
+    location = "nautilus"
+    repository = "scallop"
     expected = (
         "projects/{project}/locations/{location}/repositories/{repository}".format(
             project=project,
@@ -10376,14 +10408,42 @@ def test_repository_path():
 
 def test_parse_repository_path():
     expected = {
-        "project": "nudibranch",
-        "location": "cuttlefish",
-        "repository": "mussel",
+        "project": "abalone",
+        "location": "squid",
+        "repository": "clam",
     }
     path = SecureSourceManagerClient.repository_path(**expected)
 
     # Check that the path construction is reversible.
     actual = SecureSourceManagerClient.parse_repository_path(path)
+    assert expected == actual
+
+
+def test_service_attachment_path():
+    project = "whelk"
+    region = "octopus"
+    service_attachment = "oyster"
+    expected = "projects/{project}/regions/{region}/serviceAttachments/{service_attachment}".format(
+        project=project,
+        region=region,
+        service_attachment=service_attachment,
+    )
+    actual = SecureSourceManagerClient.service_attachment_path(
+        project, region, service_attachment
+    )
+    assert expected == actual
+
+
+def test_parse_service_attachment_path():
+    expected = {
+        "project": "nudibranch",
+        "region": "cuttlefish",
+        "service_attachment": "mussel",
+    }
+    path = SecureSourceManagerClient.service_attachment_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = SecureSourceManagerClient.parse_service_attachment_path(path)
     assert expected == actual
 
 
