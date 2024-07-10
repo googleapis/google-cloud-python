@@ -7981,8 +7981,8 @@ class GatewayAPIConfig(proto.Message):
             CHANNEL_DISABLED (1):
                 Gateway API support is disabled
             CHANNEL_EXPERIMENTAL (3):
-                Gateway API support is enabled, experimental
-                CRDs are installed
+                Deprecated: use CHANNEL_STANDARD instead. Gateway API
+                support is enabled, experimental CRDs are installed
             CHANNEL_STANDARD (4):
                 Gateway API support is enabled, standard CRDs
                 are installed
@@ -9544,6 +9544,8 @@ class MonitoringComponentConfig(proto.Message):
                 CADVISOR
             KUBELET (14):
                 KUBELET
+            DCGM (15):
+                NVIDIA Data Center GPU Manager (DCGM)
         """
         COMPONENT_UNSPECIFIED = 0
         SYSTEM_COMPONENTS = 1
@@ -9558,6 +9560,7 @@ class MonitoringComponentConfig(proto.Message):
         STATEFULSET = 12
         CADVISOR = 13
         KUBELET = 14
+        DCGM = 15
 
     enable_components: MutableSequence[Component] = proto.RepeatedField(
         proto.ENUM,
