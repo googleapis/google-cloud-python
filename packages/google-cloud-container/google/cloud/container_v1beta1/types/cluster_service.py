@@ -10779,6 +10779,8 @@ class MonitoringComponentConfig(proto.Message):
                 CADVISOR
             KUBELET (14):
                 KUBELET
+            DCGM (15):
+                NVIDIA Data Center GPU Manager (DCGM)
         """
         COMPONENT_UNSPECIFIED = 0
         SYSTEM_COMPONENTS = 1
@@ -10794,6 +10796,7 @@ class MonitoringComponentConfig(proto.Message):
         STATEFULSET = 12
         CADVISOR = 13
         KUBELET = 14
+        DCGM = 15
 
     enable_components: MutableSequence[Component] = proto.RepeatedField(
         proto.ENUM,
