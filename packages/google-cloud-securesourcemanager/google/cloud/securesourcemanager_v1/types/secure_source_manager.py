@@ -64,6 +64,9 @@ class Instance(proto.Message):
             Output only. Update timestamp.
         labels (MutableMapping[str, str]):
             Optional. Labels as key value pairs.
+        private_config (google.cloud.securesourcemanager_v1.types.Instance.PrivateConfig):
+            Optional. Private settings for private
+            instance.
         state (google.cloud.securesourcemanager_v1.types.Instance.State):
             Output only. Current state of the instance.
         state_note (google.cloud.securesourcemanager_v1.types.Instance.StateNote):
@@ -93,12 +96,16 @@ class Instance(proto.Message):
                 Instance is being deleted.
             PAUSED (4):
                 Instance is paused.
+            UNKNOWN (6):
+                Instance is unknown, we are not sure if it's
+                functioning.
         """
         STATE_UNSPECIFIED = 0
         CREATING = 1
         ACTIVE = 2
         DELETING = 3
         PAUSED = 4
+        UNKNOWN = 6
 
     class StateNote(proto.Enum):
         r"""Provides information about the current instance state.
@@ -148,6 +155,44 @@ class Instance(proto.Message):
             number=4,
         )
 
+    class PrivateConfig(proto.Message):
+        r"""PrivateConfig includes settings for private instance.
+
+        Attributes:
+            is_private (bool):
+                Required. Immutable. Indicate if it's private
+                instance.
+            ca_pool (str):
+                Required. Immutable. CA pool resource, resource must in the
+                format of
+                ``projects/{project}/locations/{location}/caPools/{ca_pool}``.
+            http_service_attachment (str):
+                Output only. Service Attachment for HTTP, resource is in the
+                format of
+                ``projects/{project}/regions/{region}/serviceAttachments/{service_attachment}``.
+            ssh_service_attachment (str):
+                Output only. Service Attachment for SSH, resource is in the
+                format of
+                ``projects/{project}/regions/{region}/serviceAttachments/{service_attachment}``.
+        """
+
+        is_private: bool = proto.Field(
+            proto.BOOL,
+            number=1,
+        )
+        ca_pool: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        http_service_attachment: str = proto.Field(
+            proto.STRING,
+            number=3,
+        )
+        ssh_service_attachment: str = proto.Field(
+            proto.STRING,
+            number=4,
+        )
+
     name: str = proto.Field(
         proto.STRING,
         number=1,
@@ -166,6 +211,11 @@ class Instance(proto.Message):
         proto.STRING,
         proto.STRING,
         number=4,
+    )
+    private_config: PrivateConfig = proto.Field(
+        proto.MESSAGE,
+        number=13,
+        message=PrivateConfig,
     )
     state: State = proto.Field(
         proto.ENUM,
@@ -200,9 +250,12 @@ class Repository(proto.Message):
             Optional. Description of the repository,
             which cannot exceed 500 characters.
         instance (str):
-            Output only. The name of the instance in which the
-            repository is hosted, formatted as
+            Optional. The name of the instance in which the repository
+            is hosted, formatted as
             ``projects/{project_number}/locations/{location_id}/instances/{instance_id}``
+            For data plane CreateRepository requests, this field is
+            output only. For control plane CreateRepository requests,
+            this field is used as input.
         uid (str):
             Output only. Unique identifier of the
             repository.
