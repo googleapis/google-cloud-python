@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.13.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-orchestration-airflow-v1.12.2...google-cloud-orchestration-airflow-v1.13.0) (2024-07-10)
+
+
+### Features
+
+* add `airflow_database_retention_days` and `airflow_metadata_retention_config` to message `DataRetentionConfig` ([547a8d8](https://github.com/googleapis/google-cloud-python/commit/547a8d81c9fa7c0c6b63c6312fe4cd993d08d507))
+* add `AirflowMetadataRetentionPolicyConfig` message ([547a8d8](https://github.com/googleapis/google-cloud-python/commit/547a8d81c9fa7c0c6b63c6312fe4cd993d08d507))
+
+
+### Documentation
+
+* various documentation clarifications ([547a8d8](https://github.com/googleapis/google-cloud-python/commit/547a8d81c9fa7c0c6b63c6312fe4cd993d08d507))
+
 ## [1.12.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-orchestration-airflow-v1.12.1...google-cloud-orchestration-airflow-v1.12.2) (2024-07-08)
 
 

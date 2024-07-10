@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-container/#history
 
+## [2.48.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-container-v2.47.1...google-cloud-container-v2.48.0) (2024-07-10)
+
+
+### Features
+
+* [google-cloud-container] add DCGM enum in monitoring config ([#12892](https://github.com/googleapis/google-cloud-python/issues/12892)) ([ea0a4c9](https://github.com/googleapis/google-cloud-python/commit/ea0a4c983772a493995964805607c7dbed96b9a9))
+
 ## [2.47.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-container-v2.47.0...google-cloud-container-v2.47.1) (2024-07-08)
 
 

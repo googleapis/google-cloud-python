@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.10.7](https://github.com/googleapis/google-cloud-python/compare/google-cloud-run-v0.10.6...google-cloud-run-v0.10.7) (2024-07-10)
+
+
+### Features
+
+* add Job ExecutionReference.completion_status to show status of the most recent execution ([0829cc1](https://github.com/googleapis/google-cloud-python/commit/0829cc12b7521b9ecb4ef302d86e0863f9159d7e))
+* add Job start_execution_token and run_execution_token to execute jobs immediately on creation ([0829cc1](https://github.com/googleapis/google-cloud-python/commit/0829cc12b7521b9ecb4ef302d86e0863f9159d7e))
+* support update_mask in Cloud Run UpdateService  ([0829cc1](https://github.com/googleapis/google-cloud-python/commit/0829cc12b7521b9ecb4ef302d86e0863f9159d7e))
+
+
+### Documentation
+
+* clarify optional fields in Cloud Run requests ([0829cc1](https://github.com/googleapis/google-cloud-python/commit/0829cc12b7521b9ecb4ef302d86e0863f9159d7e))
+
 ## [0.10.6](https://github.com/googleapis/google-cloud-python/compare/google-cloud-run-v0.10.5...google-cloud-run-v0.10.6) (2024-07-08)
 
 

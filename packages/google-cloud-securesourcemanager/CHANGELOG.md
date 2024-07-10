@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.1.7](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securesourcemanager-v0.1.6...google-cloud-securesourcemanager-v0.1.7) (2024-07-10)
+
+
+### Features
+
+* add constant `UNKNOWN` to field `State` in message `.google.cloud.securesourcemanager.v1.Instance` ([c3da089](https://github.com/googleapis/google-cloud-python/commit/c3da0899d77a77b9cb50e1c43e36bc191fe16687))
+* add field `private_config` to message `.google.cloud.securesourcemanager.v1.Instance` ([c3da089](https://github.com/googleapis/google-cloud-python/commit/c3da0899d77a77b9cb50e1c43e36bc191fe16687))
+
+
+### Documentation
+
+* A comment for field `instance` in message `.google.cloud.securesourcemanager.v1.Repository` is updated to include data plane vs control plane behavior. ([c3da089](https://github.com/googleapis/google-cloud-python/commit/c3da0899d77a77b9cb50e1c43e36bc191fe16687))
+
 ## [0.1.6](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securesourcemanager-v0.1.5...google-cloud-securesourcemanager-v0.1.6) (2024-07-08)
 
 
