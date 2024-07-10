@@ -10931,7 +10931,12 @@ def test_create_environment_rest(request_type):
                 }
             },
             "data_retention_config": {
-                "task_logs_retention_config": {"storage_mode": 1}
+                "airflow_database_retention_days": 3279,
+                "task_logs_retention_config": {"storage_mode": 1},
+                "airflow_metadata_retention_config": {
+                    "retention_mode": 1,
+                    "retention_days": 1512,
+                },
             },
             "resilience_mode": 1,
         },
@@ -11856,7 +11861,12 @@ def test_update_environment_rest(request_type):
                 }
             },
             "data_retention_config": {
-                "task_logs_retention_config": {"storage_mode": 1}
+                "airflow_database_retention_days": 3279,
+                "task_logs_retention_config": {"storage_mode": 1},
+                "airflow_metadata_retention_config": {
+                    "retention_mode": 1,
+                    "retention_days": 1512,
+                },
             },
             "resilience_mode": 1,
         },

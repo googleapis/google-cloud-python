@@ -76,6 +76,7 @@ __protobuf__ = proto.module(
         "WorkloadsConfig",
         "DataRetentionConfig",
         "TaskLogsRetentionConfig",
+        "AirflowMetadataRetentionPolicyConfig",
         "StorageConfig",
         "RecoveryConfig",
         "ScheduledSnapshotsConfig",
@@ -1443,9 +1444,11 @@ class EnvironmentConfig(proto.Message):
             multiple chunks, each with a size of at least 4
             hours.
 
-            If this value is omitted, Cloud Composer
-            components may be subject to maintenance at any
-            time.
+            If this value is omitted, the default value for
+            maintenance window is applied. By default,
+            maintenance windows are from 00:00:00 to
+            04:00:00 (GMT) on Friday, Saturday, and Sunday
+            every week.
         workloads_config (google.cloud.orchestration.airflow.service_v1beta1.types.WorkloadsConfig):
             Optional. The workloads configuration settings for the GKE
             cluster associated with the Cloud Composer environment. The
@@ -2608,6 +2611,9 @@ class WorkloadsConfig(proto.Message):
     class DagProcessorResource(proto.Message):
         r"""Configuration for resources used by Airflow DAG processors.
 
+        This field is supported for Cloud Composer environments in versions
+        composer-3.\ *.*-airflow-*.*.\* and newer.
+
         Attributes:
             cpu (float):
                 Optional. CPU request and limit for a single
@@ -2673,15 +2679,35 @@ class DataRetentionConfig(proto.Message):
     mechanism.
 
     Attributes:
+        airflow_database_retention_days (int):
+            Optional. The number of days describing for
+            how long to store event-based records in airflow
+            database. If the retention mechanism is enabled
+            this value must be a positive integer otherwise,
+            value should be set to 0.
         task_logs_retention_config (google.cloud.orchestration.airflow.service_v1beta1.types.TaskLogsRetentionConfig):
             Optional. The configuration settings for task
             logs retention
+        airflow_metadata_retention_config (google.cloud.orchestration.airflow.service_v1beta1.types.AirflowMetadataRetentionPolicyConfig):
+            Optional. The retention policy for airflow
+            metadata database.
     """
 
+    airflow_database_retention_days: int = proto.Field(
+        proto.INT32,
+        number=1,
+    )
     task_logs_retention_config: "TaskLogsRetentionConfig" = proto.Field(
         proto.MESSAGE,
         number=4,
         message="TaskLogsRetentionConfig",
+    )
+    airflow_metadata_retention_config: "AirflowMetadataRetentionPolicyConfig" = (
+        proto.Field(
+            proto.MESSAGE,
+            number=5,
+            message="AirflowMetadataRetentionPolicyConfig",
+        )
     )
 
 
@@ -2691,8 +2717,7 @@ class TaskLogsRetentionConfig(proto.Message):
     Attributes:
         storage_mode (google.cloud.orchestration.airflow.service_v1beta1.types.TaskLogsRetentionConfig.TaskLogsStorageMode):
             Optional. The mode of storage for Airflow
-            workers task logs. For details, see
-            go/composer-store-task-logs-in-cloud-logging-only-design-doc
+            workers task logs.
     """
 
     class TaskLogsStorageMode(proto.Enum):
@@ -2716,6 +2741,45 @@ class TaskLogsRetentionConfig(proto.Message):
         proto.ENUM,
         number=2,
         enum=TaskLogsStorageMode,
+    )
+
+
+class AirflowMetadataRetentionPolicyConfig(proto.Message):
+    r"""The policy for airflow metadata database retention.
+
+    Attributes:
+        retention_mode (google.cloud.orchestration.airflow.service_v1beta1.types.AirflowMetadataRetentionPolicyConfig.RetentionMode):
+            Optional. Retention can be either enabled or
+            disabled.
+        retention_days (int):
+            Optional. How many days data should be
+            retained for.
+    """
+
+    class RetentionMode(proto.Enum):
+        r"""Describes retention policy.
+
+        Values:
+            RETENTION_MODE_UNSPECIFIED (0):
+                Default mode doesn't change environment
+                parameters.
+            RETENTION_MODE_ENABLED (1):
+                Retention policy is enabled.
+            RETENTION_MODE_DISABLED (2):
+                Retention policy is disabled.
+        """
+        RETENTION_MODE_UNSPECIFIED = 0
+        RETENTION_MODE_ENABLED = 1
+        RETENTION_MODE_DISABLED = 2
+
+    retention_mode: RetentionMode = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=RetentionMode,
+    )
+    retention_days: int = proto.Field(
+        proto.INT32,
+        number=2,
     )
 
 
