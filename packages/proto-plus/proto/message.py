@@ -537,7 +537,7 @@ class MessageMeta(type):
         parse it into a message.
 
         Args:
-            paylod: A json string representing a message.
+            payload: A json string representing a message.
             ignore_unknown_fields (Optional(bool)): If True, do not raise errors
                 for unknown fields.
 
