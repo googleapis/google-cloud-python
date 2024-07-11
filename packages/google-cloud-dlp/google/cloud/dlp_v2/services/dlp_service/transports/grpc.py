@@ -1450,6 +1450,92 @@ class DlpServiceGrpcTransport(DlpServiceTransport):
         return self._stubs["get_project_data_profile"]
 
     @property
+    def list_file_store_data_profiles(
+        self,
+    ) -> Callable[
+        [dlp.ListFileStoreDataProfilesRequest], dlp.ListFileStoreDataProfilesResponse
+    ]:
+        r"""Return a callable for the list file store data profiles method over gRPC.
+
+        Lists file store data profiles for an organization.
+
+        Returns:
+            Callable[[~.ListFileStoreDataProfilesRequest],
+                    ~.ListFileStoreDataProfilesResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_file_store_data_profiles" not in self._stubs:
+            self._stubs[
+                "list_file_store_data_profiles"
+            ] = self.grpc_channel.unary_unary(
+                "/google.privacy.dlp.v2.DlpService/ListFileStoreDataProfiles",
+                request_serializer=dlp.ListFileStoreDataProfilesRequest.serialize,
+                response_deserializer=dlp.ListFileStoreDataProfilesResponse.deserialize,
+            )
+        return self._stubs["list_file_store_data_profiles"]
+
+    @property
+    def get_file_store_data_profile(
+        self,
+    ) -> Callable[[dlp.GetFileStoreDataProfileRequest], dlp.FileStoreDataProfile]:
+        r"""Return a callable for the get file store data profile method over gRPC.
+
+        Gets a file store data profile.
+
+        Returns:
+            Callable[[~.GetFileStoreDataProfileRequest],
+                    ~.FileStoreDataProfile]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_file_store_data_profile" not in self._stubs:
+            self._stubs["get_file_store_data_profile"] = self.grpc_channel.unary_unary(
+                "/google.privacy.dlp.v2.DlpService/GetFileStoreDataProfile",
+                request_serializer=dlp.GetFileStoreDataProfileRequest.serialize,
+                response_deserializer=dlp.FileStoreDataProfile.deserialize,
+            )
+        return self._stubs["get_file_store_data_profile"]
+
+    @property
+    def delete_file_store_data_profile(
+        self,
+    ) -> Callable[[dlp.DeleteFileStoreDataProfileRequest], empty_pb2.Empty]:
+        r"""Return a callable for the delete file store data profile method over gRPC.
+
+        Delete a FileStoreDataProfile. Will not prevent the
+        profile from being regenerated if the resource is still
+        included in a discovery configuration.
+
+        Returns:
+            Callable[[~.DeleteFileStoreDataProfileRequest],
+                    ~.Empty]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_file_store_data_profile" not in self._stubs:
+            self._stubs[
+                "delete_file_store_data_profile"
+            ] = self.grpc_channel.unary_unary(
+                "/google.privacy.dlp.v2.DlpService/DeleteFileStoreDataProfile",
+                request_serializer=dlp.DeleteFileStoreDataProfileRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
+            )
+        return self._stubs["delete_file_store_data_profile"]
+
+    @property
     def get_table_data_profile(
         self,
     ) -> Callable[[dlp.GetTableDataProfileRequest], dlp.TableDataProfile]:

@@ -184,6 +184,7 @@ __protobuf__ = proto.module(
         "DiscoveryGenerationCadence",
         "DiscoveryTableModifiedCadence",
         "DiscoverySchemaModifiedCadence",
+        "DiscoveryInspectTemplateModifiedCadence",
         "CloudSqlDiscoveryTarget",
         "DiscoveryCloudSqlFilter",
         "DatabaseResourceCollection",
@@ -194,7 +195,18 @@ __protobuf__ = proto.module(
         "DiscoveryCloudSqlConditions",
         "DiscoveryCloudSqlGenerationCadence",
         "SecretsDiscoveryTarget",
+        "CloudStorageDiscoveryTarget",
+        "DiscoveryCloudStorageFilter",
+        "FileStoreCollection",
+        "FileStoreRegexes",
+        "FileStoreRegex",
+        "CloudStorageRegex",
+        "CloudStorageResourceReference",
+        "DiscoveryCloudStorageGenerationCadence",
+        "DiscoveryCloudStorageConditions",
+        "DiscoveryFileStoreConditions",
         "DiscoveryStartingLocation",
+        "AllOtherResources",
         "DlpJob",
         "GetDlpJobRequest",
         "ListDlpJobsRequest",
@@ -239,7 +251,15 @@ __protobuf__ = proto.module(
         "InfoTypeSummary",
         "OtherInfoTypeSummary",
         "ColumnDataProfile",
+        "FileStoreDataProfile",
+        "FileStoreInfoTypeSummary",
+        "FileExtensionInfo",
+        "FileClusterSummary",
         "GetProjectDataProfileRequest",
+        "GetFileStoreDataProfileRequest",
+        "ListFileStoreDataProfilesRequest",
+        "ListFileStoreDataProfilesResponse",
+        "DeleteFileStoreDataProfileRequest",
         "GetTableDataProfileRequest",
         "GetColumnDataProfileRequest",
         "DataProfilePubSubCondition",
@@ -258,6 +278,7 @@ __protobuf__ = proto.module(
         "CloudSqlProperties",
         "DeleteTableDataProfileRequest",
         "DataSourceType",
+        "FileClusterType",
     },
 )
 
@@ -649,7 +670,8 @@ class ResourceVisibility(proto.Enum):
             May contain public items.
             For example, if a Cloud Storage bucket has
             uniform bucket level access disabled, some
-            objects inside it may be public.
+            objects inside it may be public, but none are
+            known yet.
         RESOURCE_VISIBILITY_RESTRICTED (20):
             Visible only to specific users.
     """
@@ -1219,6 +1241,13 @@ class ByteContentItem(proto.Message):
                 csv
             TSV (13):
                 tsv
+            AUDIO (15):
+                Audio file types. Only used for profiling.
+            VIDEO (16):
+                Video file types. Only used for profiling.
+            EXECUTABLE (17):
+                Executable file types. Only used for
+                profiling.
         """
         BYTES_TYPE_UNSPECIFIED = 0
         IMAGE = 6
@@ -1234,6 +1263,9 @@ class ByteContentItem(proto.Message):
         AVRO = 11
         CSV = 12
         TSV = 13
+        AUDIO = 15
+        VIDEO = 16
+        EXECUTABLE = 17
 
     type_: BytesType = proto.Field(
         proto.ENUM,
@@ -2577,6 +2609,10 @@ class DataProfileBigQueryRowSchema(proto.Message):
             Column data profile column
 
             This field is a member of `oneof`_ ``data_profile``.
+        file_store_profile (google.cloud.dlp_v2.types.FileStoreDataProfile):
+            File store data profile column.
+
+            This field is a member of `oneof`_ ``data_profile``.
     """
 
     table_profile: "TableDataProfile" = proto.Field(
@@ -2590,6 +2626,12 @@ class DataProfileBigQueryRowSchema(proto.Message):
         number=2,
         oneof="data_profile",
         message="ColumnDataProfile",
+    )
+    file_store_profile: "FileStoreDataProfile" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        oneof="data_profile",
+        message="FileStoreDataProfile",
     )
 
 
@@ -2833,10 +2875,14 @@ class InfoTypeCategory(proto.Message):
                 specific region, but is used almost everywhere.
             ARGENTINA (2):
                 The infoType is typically used in Argentina.
+            ARMENIA (51):
+                The infoType is typically used in Armenia.
             AUSTRALIA (3):
                 The infoType is typically used in Australia.
             AZERBAIJAN (48):
                 The infoType is typically used in Azerbaijan.
+            BELARUS (50):
+                The infoType is typically used in Belarus.
             BELGIUM (4):
                 The infoType is typically used in Belgium.
             BRAZIL (5):
@@ -2936,8 +2982,10 @@ class InfoTypeCategory(proto.Message):
         LOCATION_UNSPECIFIED = 0
         GLOBAL = 1
         ARGENTINA = 2
+        ARMENIA = 51
         AUSTRALIA = 3
         AZERBAIJAN = 48
+        BELARUS = 50
         BELGIUM = 4
         BRAZIL = 5
         CANADA = 6
@@ -5200,12 +5248,15 @@ class FixedSizeBucketingConfig(proto.Message):
 class BucketingConfig(proto.Message):
     r"""Generalization function that buckets values based on ranges. The
     ranges and replacement values are dynamically provided by the user
-    for custom behavior, such as 1-30 -> LOW 31-65 -> MEDIUM 66-100 ->
-    HIGH This can be used on data of type: number, long, string,
-    timestamp. If the bound ``Value`` type differs from the type of data
-    being transformed, we will first attempt converting the type of the
-    data to be transformed to match the type of the bound before
-    comparing. See
+    for custom behavior, such as 1-30 -> LOW, 31-65 -> MEDIUM, 66-100 ->
+    HIGH.
+
+    This can be used on data of type: number, long, string, timestamp.
+
+    If the bound ``Value`` type differs from the type of data being
+    transformed, we will first attempt converting the type of the data
+    to be transformed to match the type of the bound before comparing.
+    See
     https://cloud.google.com/sensitive-data-protection/docs/concepts-bucketing
     to learn more.
 
@@ -6404,7 +6455,25 @@ class Error(proto.Message):
         timestamps (MutableSequence[google.protobuf.timestamp_pb2.Timestamp]):
             The times the error occurred. List includes
             the oldest timestamp and the last 9 timestamps.
+        extra_info (google.cloud.dlp_v2.types.Error.ErrorExtraInfo):
+            Additional information about the error.
     """
+
+    class ErrorExtraInfo(proto.Enum):
+        r"""Additional information about the error.
+
+        Values:
+            ERROR_INFO_UNSPECIFIED (0):
+                Unused.
+            IMAGE_SCAN_UNAVAILABLE_IN_REGION (1):
+                Image scan is not available in the region.
+            FILE_STORE_CLUSTER_UNSUPPORTED (2):
+                File store cluster is not supported for
+                profile generation.
+        """
+        ERROR_INFO_UNSPECIFIED = 0
+        IMAGE_SCAN_UNAVAILABLE_IN_REGION = 1
+        FILE_STORE_CLUSTER_UNSUPPORTED = 2
 
     details: status_pb2.Status = proto.Field(
         proto.MESSAGE,
@@ -6415,6 +6484,11 @@ class Error(proto.Message):
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
+    )
+    extra_info: ErrorExtraInfo = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum=ErrorExtraInfo,
     )
 
 
@@ -6737,7 +6811,7 @@ class Action(proto.Message):
             cloud_storage_output (str):
                 Required. User settable Cloud Storage bucket
                 and folders to store de-identified files. This
-                field must be set for cloud storage
+                field must be set for Cloud Storage
                 deidentification. The output Cloud Storage
                 bucket must be different from the input bucket.
                 De-identified files will overwrite files in the
@@ -6748,13 +6822,13 @@ class Action(proto.Message):
                 This field is a member of `oneof`_ ``output``.
             file_types_to_transform (MutableSequence[google.cloud.dlp_v2.types.FileType]):
                 List of user-specified file type groups to transform. If
-                specified, only the files with these filetypes will be
+                specified, only the files with these file types will be
                 transformed. If empty, all supported files will be
                 transformed. Supported types may be automatically added over
                 time. If a file type is set in this field that isn't
                 supported by the Deidentify action then the job will fail
                 and will not be successfully created/started. Currently the
-                only filetypes supported are: IMAGES, TEXT_FILES, CSV, TSV.
+                only file types supported are: IMAGES, TEXT_FILES, CSV, TSV.
         """
 
         transformation_config: "TransformationConfig" = proto.Field(
@@ -7032,7 +7106,7 @@ class ListInspectTemplatesRequest(proto.Message):
             by the server. If zero server returns a page of
             max size 100.
         order_by (str):
-            Comma separated list of fields to order by, followed by
+            Comma-separated list of fields to order by, followed by
             ``asc`` or ``desc`` postfix. This list is case insensitive.
             The default sorting order is ascending. Redundant space
             characters are insignificant.
@@ -7241,8 +7315,13 @@ class CreateDiscoveryConfigRequest(proto.Message):
         parent (str):
             Required. Parent resource name.
 
-            The format of this value is as follows:
-            ``projects/``\ PROJECT_ID\ ``/locations/``\ LOCATION_ID
+            The format of this value varies depending on the scope of
+            the request (project or organization):
+
+            -  Projects scope:
+               ``projects/``\ PROJECT_ID\ ``/locations/``\ LOCATION_ID
+            -  Organizations scope:
+               ``organizations/``\ ORG_ID\ ``/locations/``\ LOCATION_ID
 
             The following example ``parent`` string specifies a parent
             project with the identifier ``example-project``, and
@@ -7347,7 +7426,7 @@ class ListDiscoveryConfigsRequest(proto.Message):
             Size of the page. This value can be limited
             by a server.
         order_by (str):
-            Comma separated list of config fields to order by, followed
+            Comma-separated list of config fields to order by, followed
             by ``asc`` or ``desc`` postfix. This list is case
             insensitive. The default sorting order is ascending.
             Redundant space characters are insignificant.
@@ -7534,7 +7613,7 @@ class ListJobTriggersRequest(proto.Message):
             Size of the page. This value can be limited
             by a server.
         order_by (str):
-            Comma separated list of triggeredJob fields to order by,
+            Comma-separated list of triggeredJob fields to order by,
             followed by ``asc`` or ``desc`` postfix. This list is case
             insensitive. The default sorting order is ascending.
             Redundant space characters are insignificant.
@@ -7814,10 +7893,13 @@ class DataProfileAction(proto.Message):
                     The full table data profile.
                 RESOURCE_NAME (2):
                     The name of the profiled resource.
+                FILE_STORE_PROFILE (3):
+                    The full file store data profile.
             """
             DETAIL_LEVEL_UNSPECIFIED = 0
             TABLE_PROFILE = 1
             RESOURCE_NAME = 2
+            FILE_STORE_PROFILE = 3
 
         topic: str = proto.Field(
             proto.STRING,
@@ -8000,7 +8082,7 @@ class DataProfileLocation(proto.Message):
 
             This field is a member of `oneof`_ ``location``.
         folder_id (int):
-            The ID of the Folder within an organization
+            The ID of the folder within an organization
             to scan.
 
             This field is a member of `oneof`_ ``location``.
@@ -8203,6 +8285,11 @@ class DiscoveryTarget(proto.Message):
             allowed.
 
             This field is a member of `oneof`_ ``target``.
+        cloud_storage_target (google.cloud.dlp_v2.types.CloudStorageDiscoveryTarget):
+            Cloud Storage target for Discovery. The first
+            target to match a table will be the one applied.
+
+            This field is a member of `oneof`_ ``target``.
     """
 
     big_query_target: "BigQueryDiscoveryTarget" = proto.Field(
@@ -8222,6 +8309,12 @@ class DiscoveryTarget(proto.Message):
         number=3,
         oneof="target",
         message="SecretsDiscoveryTarget",
+    )
+    cloud_storage_target: "CloudStorageDiscoveryTarget" = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        oneof="target",
+        message="CloudStorageDiscoveryTarget",
     )
 
 
@@ -8468,6 +8561,11 @@ class DiscoveryGenerationCadence(proto.Message):
         table_modified_cadence (google.cloud.dlp_v2.types.DiscoveryTableModifiedCadence):
             Governs when to update data profiles when a
             table is modified.
+        inspect_template_modified_cadence (google.cloud.dlp_v2.types.DiscoveryInspectTemplateModifiedCadence):
+            Governs when to update data profiles when the inspection
+            rules defined by the ``InspectTemplate`` change. If not set,
+            changing the template will not cause a data profile to
+            update.
     """
 
     schema_modified_cadence: "DiscoverySchemaModifiedCadence" = proto.Field(
@@ -8479,6 +8577,13 @@ class DiscoveryGenerationCadence(proto.Message):
         proto.MESSAGE,
         number=2,
         message="DiscoveryTableModifiedCadence",
+    )
+    inspect_template_modified_cadence: "DiscoveryInspectTemplateModifiedCadence" = (
+        proto.Field(
+            proto.MESSAGE,
+            number=3,
+            message="DiscoveryInspectTemplateModifiedCadence",
+        )
     )
 
 
@@ -8530,6 +8635,24 @@ class DiscoverySchemaModifiedCadence(proto.Message):
     frequency: "DataProfileUpdateFrequency" = proto.Field(
         proto.ENUM,
         number=2,
+        enum="DataProfileUpdateFrequency",
+    )
+
+
+class DiscoveryInspectTemplateModifiedCadence(proto.Message):
+    r"""The cadence at which to update data profiles when the inspection
+    rules defined by the ``InspectTemplate`` change.
+
+    Attributes:
+        frequency (google.cloud.dlp_v2.types.DataProfileUpdateFrequency):
+            How frequently data profiles can be updated
+            when the template is modified. Defaults to
+            never.
+    """
+
+    frequency: "DataProfileUpdateFrequency" = proto.Field(
+        proto.ENUM,
+        number=1,
         enum="DataProfileUpdateFrequency",
     )
 
@@ -8922,6 +9045,399 @@ class SecretsDiscoveryTarget(proto.Message):
     """
 
 
+class CloudStorageDiscoveryTarget(proto.Message):
+    r"""Target used to match against for discovery with Cloud Storage
+    buckets.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        filter (google.cloud.dlp_v2.types.DiscoveryCloudStorageFilter):
+            Required. The buckets the generation_cadence applies to. The
+            first target with a matching filter will be the one to apply
+            to a bucket.
+        conditions (google.cloud.dlp_v2.types.DiscoveryFileStoreConditions):
+            Optional. In addition to matching the filter,
+            these conditions must be true before a profile
+            is generated.
+        generation_cadence (google.cloud.dlp_v2.types.DiscoveryCloudStorageGenerationCadence):
+            Optional. How often and when to update
+            profiles. New buckets that match both the filter
+            and conditions are scanned as quickly as
+            possible depending on system capacity.
+
+            This field is a member of `oneof`_ ``cadence``.
+        disabled (google.cloud.dlp_v2.types.Disabled):
+            Optional. Disable profiling for buckets that
+            match this filter.
+
+            This field is a member of `oneof`_ ``cadence``.
+    """
+
+    filter: "DiscoveryCloudStorageFilter" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="DiscoveryCloudStorageFilter",
+    )
+    conditions: "DiscoveryFileStoreConditions" = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message="DiscoveryFileStoreConditions",
+    )
+    generation_cadence: "DiscoveryCloudStorageGenerationCadence" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="cadence",
+        message="DiscoveryCloudStorageGenerationCadence",
+    )
+    disabled: "Disabled" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        oneof="cadence",
+        message="Disabled",
+    )
+
+
+class DiscoveryCloudStorageFilter(proto.Message):
+    r"""Determines which buckets will have profiles generated within
+    an organization or project. Includes the ability to filter by
+    regular expression patterns on project ID and bucket name.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        collection (google.cloud.dlp_v2.types.FileStoreCollection):
+            Optional. A specific set of buckets for this
+            filter to apply to.
+
+            This field is a member of `oneof`_ ``filter``.
+        cloud_storage_resource_reference (google.cloud.dlp_v2.types.CloudStorageResourceReference):
+            Optional. The bucket to scan. Targets
+            including this can only include one target (the
+            target with this bucket). This enables profiling
+            the contents of a single bucket, while the other
+            options allow for easy profiling of many bucets
+            within a project or an organization.
+
+            This field is a member of `oneof`_ ``filter``.
+        others (google.cloud.dlp_v2.types.AllOtherResources):
+            Optional. Catch-all. This should always be
+            the last target in the list because anything
+            above it will apply first. Should only appear
+            once in a configuration. If none is specified, a
+            default one will be added automatically.
+
+            This field is a member of `oneof`_ ``filter``.
+    """
+
+    collection: "FileStoreCollection" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        oneof="filter",
+        message="FileStoreCollection",
+    )
+    cloud_storage_resource_reference: "CloudStorageResourceReference" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="filter",
+        message="CloudStorageResourceReference",
+    )
+    others: "AllOtherResources" = proto.Field(
+        proto.MESSAGE,
+        number=100,
+        oneof="filter",
+        message="AllOtherResources",
+    )
+
+
+class FileStoreCollection(proto.Message):
+    r"""Match file stores (e.g. buckets) using regex filters.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        include_regexes (google.cloud.dlp_v2.types.FileStoreRegexes):
+            Optional. A collection of regular expressions
+            to match a file store against.
+
+            This field is a member of `oneof`_ ``pattern``.
+    """
+
+    include_regexes: "FileStoreRegexes" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        oneof="pattern",
+        message="FileStoreRegexes",
+    )
+
+
+class FileStoreRegexes(proto.Message):
+    r"""A collection of regular expressions to determine what file
+    store to match against.
+
+    Attributes:
+        patterns (MutableSequence[google.cloud.dlp_v2.types.FileStoreRegex]):
+            Required. The group of regular expression
+            patterns to match against one or more file
+            stores. Maximum of 100 entries. The sum of all
+            regular expression's length can't exceed 10 KiB.
+    """
+
+    patterns: MutableSequence["FileStoreRegex"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="FileStoreRegex",
+    )
+
+
+class FileStoreRegex(proto.Message):
+    r"""A pattern to match against one or more file stores.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        cloud_storage_regex (google.cloud.dlp_v2.types.CloudStorageRegex):
+            Optional. Regex for Cloud Storage.
+
+            This field is a member of `oneof`_ ``resource_regex``.
+    """
+
+    cloud_storage_regex: "CloudStorageRegex" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        oneof="resource_regex",
+        message="CloudStorageRegex",
+    )
+
+
+class CloudStorageRegex(proto.Message):
+    r"""A pattern to match against one or more file stores. At least one
+    pattern must be specified. Regular expressions use RE2
+    `syntax <https://github.com/google/re2/wiki/Syntax>`__; a guide can
+    be found under the google/re2 repository on GitHub.
+
+    Attributes:
+        project_id_regex (str):
+            Optional. For organizations, if unset, will
+            match all projects.
+        bucket_name_regex (str):
+            Optional. Regex to test the bucket name
+            against. If empty, all buckets match. Example:
+            "marketing2021" or "(marketing)\d{4}" will both
+            match the bucket gs://marketing2021
+    """
+
+    project_id_regex: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    bucket_name_regex: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class CloudStorageResourceReference(proto.Message):
+    r"""Identifies a single Cloud Storage bucket.
+
+    Attributes:
+        bucket_name (str):
+            Required. The bucket to scan.
+        project_id (str):
+            Required. If within a project-level config,
+            then this must match the config's project id.
+    """
+
+    bucket_name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    project_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class DiscoveryCloudStorageGenerationCadence(proto.Message):
+    r"""How often existing buckets should have their profiles
+    refreshed. New buckets are scanned as quickly as possible
+    depending on system capacity.
+
+    Attributes:
+        refresh_frequency (google.cloud.dlp_v2.types.DataProfileUpdateFrequency):
+            Optional. Data changes in Cloud Storage can't
+            trigger reprofiling. If you set this field,
+            profiles are refreshed at this frequency
+            regardless of whether the underlying buckets
+            have changed. Defaults to never.
+        inspect_template_modified_cadence (google.cloud.dlp_v2.types.DiscoveryInspectTemplateModifiedCadence):
+            Optional. Governs when to update data profiles when the
+            inspection rules defined by the ``InspectTemplate`` change.
+            If not set, changing the template will not cause a data
+            profile to update.
+    """
+
+    refresh_frequency: "DataProfileUpdateFrequency" = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum="DataProfileUpdateFrequency",
+    )
+    inspect_template_modified_cadence: "DiscoveryInspectTemplateModifiedCadence" = (
+        proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message="DiscoveryInspectTemplateModifiedCadence",
+        )
+    )
+
+
+class DiscoveryCloudStorageConditions(proto.Message):
+    r"""Requirements that must be true before a Cloud Storage bucket
+    or object is scanned in discovery for the first time. There is
+    an AND relationship between the top-level attributes.
+
+    Attributes:
+        included_object_attributes (MutableSequence[google.cloud.dlp_v2.types.DiscoveryCloudStorageConditions.CloudStorageObjectAttribute]):
+            Required. Only objects with the specified attributes will be
+            scanned. If an object has one of the specified attributes
+            but is inside an excluded bucket, it will not be scanned.
+            Defaults to [ALL_SUPPORTED_OBJECTS]. A profile will be
+            created even if no objects match the
+            included_object_attributes.
+        included_bucket_attributes (MutableSequence[google.cloud.dlp_v2.types.DiscoveryCloudStorageConditions.CloudStorageBucketAttribute]):
+            Required. Only objects with the specified attributes will be
+            scanned. Defaults to [ALL_SUPPORTED_BUCKETS] if unset.
+    """
+
+    class CloudStorageObjectAttribute(proto.Enum):
+        r"""The attribute of an object. See
+        https://cloud.google.com/storage/docs/storage-classes for more
+        information on storage classes.
+
+        Values:
+            CLOUD_STORAGE_OBJECT_ATTRIBUTE_UNSPECIFIED (0):
+                Unused.
+            ALL_SUPPORTED_OBJECTS (1):
+                Scan objects regardless of the attribute.
+            STANDARD (2):
+                Scan objects with the standard storage class.
+            NEARLINE (3):
+                Scan objects with the nearline storage class.
+                This will incur retrieval fees.
+            COLDLINE (4):
+                Scan objects with the coldline storage class.
+                This will incur retrieval fees.
+            ARCHIVE (5):
+                Scan objects with the archive storage class.
+                This will incur retrieval fees.
+            REGIONAL (6):
+                Scan objects with the regional storage class.
+            MULTI_REGIONAL (7):
+                Scan objects with the multi-regional storage
+                class.
+            DURABLE_REDUCED_AVAILABILITY (8):
+                Scan objects with the dual-regional storage
+                class. This will incur retrieval fees.
+        """
+        CLOUD_STORAGE_OBJECT_ATTRIBUTE_UNSPECIFIED = 0
+        ALL_SUPPORTED_OBJECTS = 1
+        STANDARD = 2
+        NEARLINE = 3
+        COLDLINE = 4
+        ARCHIVE = 5
+        REGIONAL = 6
+        MULTI_REGIONAL = 7
+        DURABLE_REDUCED_AVAILABILITY = 8
+
+    class CloudStorageBucketAttribute(proto.Enum):
+        r"""The attribute of a bucket.
+
+        Values:
+            CLOUD_STORAGE_BUCKET_ATTRIBUTE_UNSPECIFIED (0):
+                Unused.
+            ALL_SUPPORTED_BUCKETS (1):
+                Scan buckets regardless of the attribute.
+            AUTOCLASS_DISABLED (2):
+                Buckets with autoclass disabled
+                (https://cloud.google.com/storage/docs/autoclass). Only one
+                of AUTOCLASS_DISABLED or AUTOCLASS_ENABLED should be set.
+            AUTOCLASS_ENABLED (3):
+                Buckets with autoclass enabled
+                (https://cloud.google.com/storage/docs/autoclass). Only one
+                of AUTOCLASS_DISABLED or AUTOCLASS_ENABLED should be set.
+                Scanning Autoclass-enabled buckets can affect object storage
+                classes.
+        """
+        CLOUD_STORAGE_BUCKET_ATTRIBUTE_UNSPECIFIED = 0
+        ALL_SUPPORTED_BUCKETS = 1
+        AUTOCLASS_DISABLED = 2
+        AUTOCLASS_ENABLED = 3
+
+    included_object_attributes: MutableSequence[
+        CloudStorageObjectAttribute
+    ] = proto.RepeatedField(
+        proto.ENUM,
+        number=1,
+        enum=CloudStorageObjectAttribute,
+    )
+    included_bucket_attributes: MutableSequence[
+        CloudStorageBucketAttribute
+    ] = proto.RepeatedField(
+        proto.ENUM,
+        number=2,
+        enum=CloudStorageBucketAttribute,
+    )
+
+
+class DiscoveryFileStoreConditions(proto.Message):
+    r"""Requirements that must be true before a file store is scanned
+    in discovery for the first time. There is an AND relationship
+    between the top-level attributes.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        created_after (google.protobuf.timestamp_pb2.Timestamp):
+            Optional. File store must have been created
+            after this date. Used to avoid backfilling.
+        min_age (google.protobuf.duration_pb2.Duration):
+            Optional. Minimum age a file store must have.
+            If set, the value must be 1 hour or greater.
+        cloud_storage_conditions (google.cloud.dlp_v2.types.DiscoveryCloudStorageConditions):
+            Optional. Cloud Storage conditions.
+
+            This field is a member of `oneof`_ ``conditions``.
+    """
+
+    created_after: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    min_age: duration_pb2.Duration = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=duration_pb2.Duration,
+    )
+    cloud_storage_conditions: "DiscoveryCloudStorageConditions" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        oneof="conditions",
+        message="DiscoveryCloudStorageConditions",
+    )
+
+
 class DiscoveryStartingLocation(proto.Message):
     r"""The location to begin a discovery scan. Denotes an
     organization ID or folder ID within an organization.
@@ -8939,7 +9455,7 @@ class DiscoveryStartingLocation(proto.Message):
 
             This field is a member of `oneof`_ ``location``.
         folder_id (int):
-            The ID of the Folder within an organization
+            The ID of the folder within an organization
             to scan.
 
             This field is a member of `oneof`_ ``location``.
@@ -8955,6 +9471,10 @@ class DiscoveryStartingLocation(proto.Message):
         number=2,
         oneof="location",
     )
+
+
+class AllOtherResources(proto.Message):
+    r"""Match discovery resources not covered by any other filter."""
 
 
 class DlpJob(proto.Message):
@@ -9187,7 +9707,7 @@ class ListDlpJobsRequest(proto.Message):
         type_ (google.cloud.dlp_v2.types.DlpJobType):
             The type of job. Defaults to ``DlpJobType.INSPECT``
         order_by (str):
-            Comma separated list of fields to order by, followed by
+            Comma-separated list of fields to order by, followed by
             ``asc`` or ``desc`` postfix. This list is case insensitive.
             The default sorting order is ascending. Redundant space
             characters are insignificant.
@@ -9450,7 +9970,7 @@ class ListDeidentifyTemplatesRequest(proto.Message):
             by the server. If zero server returns a page of
             max size 100.
         order_by (str):
-            Comma separated list of fields to order by, followed by
+            Comma-separated list of fields to order by, followed by
             ``asc`` or ``desc`` postfix. This list is case insensitive.
             The default sorting order is ascending. Redundant space
             characters are insignificant.
@@ -9927,7 +10447,7 @@ class ListStoredInfoTypesRequest(proto.Message):
             by the server. If zero server returns a page of
             max size 100.
         order_by (str):
-            Comma separated list of fields to order by, followed by
+            Comma-separated list of fields to order by, followed by
             ``asc`` or ``desc`` postfix. This list is case insensitive.
             The default sorting order is ascending. Redundant space
             characters are insignificant.
@@ -10177,7 +10697,7 @@ class ListProjectDataProfilesRequest(proto.Message):
             by the server. If zero, server returns a page of
             max size 100.
         order_by (str):
-            Comma separated list of fields to order by, followed by
+            Comma-separated list of fields to order by, followed by
             ``asc`` or ``desc`` postfix. This list is case insensitive.
             The default sorting order is ascending. Redundant space
             characters are insignificant. Only one order field at a time
@@ -10291,7 +10811,7 @@ class ListTableDataProfilesRequest(proto.Message):
             by the server. If zero, server returns a page of
             max size 100.
         order_by (str):
-            Comma separated list of fields to order by, followed by
+            Comma-separated list of fields to order by, followed by
             ``asc`` or ``desc`` postfix. This list is case insensitive.
             The default sorting order is ascending. Redundant space
             characters are insignificant. Only one order field at a time
@@ -10418,7 +10938,7 @@ class ListColumnDataProfilesRequest(proto.Message):
             by the server. If zero, server returns a page of
             max size 100.
         order_by (str):
-            Comma separated list of fields to order by, followed by
+            Comma-separated list of fields to order by, followed by
             ``asc`` or ``desc`` postfix. This list is case insensitive.
             The default sorting order is ascending. Redundant space
             characters are insignificant. Only one order field at a time
@@ -10550,6 +11070,8 @@ class DataRiskLevel(proto.Message):
                 that appears to have additional access
                 restrictions in place or no indication of
                 sensitive data found.
+            RISK_UNKNOWN (12):
+                Unable to determine risk.
             RISK_MODERATE (20):
                 Medium risk - Sensitive data may be present
                 but additional access or fine grain access
@@ -10565,6 +11087,7 @@ class DataRiskLevel(proto.Message):
         """
         RISK_SCORE_UNSPECIFIED = 0
         RISK_LOW = 10
+        RISK_UNKNOWN = 12
         RISK_MODERATE = 20
         RISK_HIGH = 30
 
@@ -10593,6 +11116,12 @@ class ProjectDataProfile(proto.Message):
         profile_status (google.cloud.dlp_v2.types.ProfileStatus):
             Success or error status of the last attempt
             to profile the project.
+        table_data_profile_count (int):
+            The number of table data profiles generated
+            for this project.
+        file_store_data_profile_count (int):
+            The number of file store data profiles
+            generated for this project.
     """
 
     name: str = proto.Field(
@@ -10622,6 +11151,14 @@ class ProjectDataProfile(proto.Message):
         proto.MESSAGE,
         number=7,
         message="ProfileStatus",
+    )
+    table_data_profile_count: int = proto.Field(
+        proto.INT64,
+        number=9,
+    )
+    file_store_data_profile_count: int = proto.Field(
+        proto.INT64,
+        number=10,
     )
 
 
@@ -10686,7 +11223,7 @@ class TableDataProfile(proto.Message):
         data_source_type (google.cloud.dlp_v2.types.DataSourceType):
             The resource type that was profiled.
         project_data_profile (str):
-            The resource name to the project data profile
+            The resource name of the project data profile
             for this table.
         dataset_project_id (str):
             The Google Cloud project ID that owns the
@@ -11223,6 +11760,321 @@ class ColumnDataProfile(proto.Message):
     )
 
 
+class FileStoreDataProfile(proto.Message):
+    r"""The profile for a file store.
+
+    -  Cloud Storage: maps 1:1 with a bucket.
+
+    Attributes:
+        name (str):
+            The name of the profile.
+        data_source_type (google.cloud.dlp_v2.types.DataSourceType):
+            The resource type that was profiled.
+        project_data_profile (str):
+            The resource name of the project data profile
+            for this file store.
+        project_id (str):
+            The Google Cloud project ID that owns the
+            resource.
+        file_store_location (str):
+            The location of the file store.
+
+            -  Cloud Storage:
+               https://cloud.google.com/storage/docs/locations#available-locations
+        data_storage_locations (MutableSequence[str]):
+            For resources that have multiple storage locations, these
+            are those regions. For Cloud Storage this is the list of
+            regions chosen for dual-region storage.
+            ``file_store_location`` will normally be the corresponding
+            multi-region for the list of individual locations. The first
+            region is always picked as the processing and storage
+            location for the data profile.
+        location_type (str):
+            The location type of the bucket (region, dual-region,
+            multi-region, etc). If dual-region, expect
+            data_storage_locations to be populated.
+        file_store_path (str):
+            The file store path.
+
+            -  Cloud Storage: ``gs://{bucket}``
+        full_resource (str):
+            The resource name of the resource profiled.
+            https://cloud.google.com/apis/design/resource_names#full_resource_name
+        config_snapshot (google.cloud.dlp_v2.types.DataProfileConfigSnapshot):
+            The snapshot of the configurations used to
+            generate the profile.
+        profile_status (google.cloud.dlp_v2.types.ProfileStatus):
+            Success or error status from the most recent
+            profile generation attempt. May be empty if the
+            profile is still being generated.
+        state (google.cloud.dlp_v2.types.FileStoreDataProfile.State):
+            State of a profile.
+        profile_last_generated (google.protobuf.timestamp_pb2.Timestamp):
+            The last time the profile was generated.
+        resource_visibility (google.cloud.dlp_v2.types.ResourceVisibility):
+            How broadly a resource has been shared.
+        sensitivity_score (google.cloud.dlp_v2.types.SensitivityScore):
+            The sensitivity score of this resource.
+        data_risk_level (google.cloud.dlp_v2.types.DataRiskLevel):
+            The data risk level of this resource.
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            The time the file store was first created.
+        last_modified_time (google.protobuf.timestamp_pb2.Timestamp):
+            The time the file store was last modified.
+        file_cluster_summaries (MutableSequence[google.cloud.dlp_v2.types.FileClusterSummary]):
+            FileClusterSummary per each cluster.
+        resource_attributes (MutableMapping[str, google.cloud.dlp_v2.types.Value]):
+            Attributes of the resource being profiled. Currently used
+            attributes:
+
+            -  customer_managed_encryption: boolean
+
+               -  true: the resource is encrypted with a
+                  customer-managed key.
+               -  false: the resource is encrypted with a
+                  provider-managed key.
+        resource_labels (MutableMapping[str, str]):
+            The labels applied to the resource at the
+            time the profile was generated.
+        file_store_info_type_summaries (MutableSequence[google.cloud.dlp_v2.types.FileStoreInfoTypeSummary]):
+            InfoTypes detected in this file store.
+        file_store_is_empty (bool):
+            The file store does not have any files.
+    """
+
+    class State(proto.Enum):
+        r"""Possible states of a profile. New items may be added.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Unused.
+            RUNNING (1):
+                The profile is currently running. Once a
+                profile has finished it will transition to DONE.
+            DONE (2):
+                The profile is no longer generating. If
+                profile_status.status.code is 0, the profile succeeded,
+                otherwise, it failed.
+        """
+        STATE_UNSPECIFIED = 0
+        RUNNING = 1
+        DONE = 2
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    data_source_type: "DataSourceType" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="DataSourceType",
+    )
+    project_data_profile: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    project_id: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    file_store_location: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    data_storage_locations: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=19,
+    )
+    location_type: str = proto.Field(
+        proto.STRING,
+        number=20,
+    )
+    file_store_path: str = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    full_resource: str = proto.Field(
+        proto.STRING,
+        number=24,
+    )
+    config_snapshot: "DataProfileConfigSnapshot" = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message="DataProfileConfigSnapshot",
+    )
+    profile_status: "ProfileStatus" = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message="ProfileStatus",
+    )
+    state: State = proto.Field(
+        proto.ENUM,
+        number=9,
+        enum=State,
+    )
+    profile_last_generated: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=10,
+        message=timestamp_pb2.Timestamp,
+    )
+    resource_visibility: "ResourceVisibility" = proto.Field(
+        proto.ENUM,
+        number=11,
+        enum="ResourceVisibility",
+    )
+    sensitivity_score: storage.SensitivityScore = proto.Field(
+        proto.MESSAGE,
+        number=12,
+        message=storage.SensitivityScore,
+    )
+    data_risk_level: "DataRiskLevel" = proto.Field(
+        proto.MESSAGE,
+        number=13,
+        message="DataRiskLevel",
+    )
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=14,
+        message=timestamp_pb2.Timestamp,
+    )
+    last_modified_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=15,
+        message=timestamp_pb2.Timestamp,
+    )
+    file_cluster_summaries: MutableSequence["FileClusterSummary"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=16,
+        message="FileClusterSummary",
+    )
+    resource_attributes: MutableMapping[str, "Value"] = proto.MapField(
+        proto.STRING,
+        proto.MESSAGE,
+        number=17,
+        message="Value",
+    )
+    resource_labels: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=18,
+    )
+    file_store_info_type_summaries: MutableSequence[
+        "FileStoreInfoTypeSummary"
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=21,
+        message="FileStoreInfoTypeSummary",
+    )
+    file_store_is_empty: bool = proto.Field(
+        proto.BOOL,
+        number=23,
+    )
+
+
+class FileStoreInfoTypeSummary(proto.Message):
+    r"""Information regarding the discovered InfoType.
+
+    Attributes:
+        info_type (google.cloud.dlp_v2.types.InfoType):
+            The InfoType seen.
+    """
+
+    info_type: storage.InfoType = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=storage.InfoType,
+    )
+
+
+class FileExtensionInfo(proto.Message):
+    r"""Information regarding the discovered file extension.
+
+    Attributes:
+        file_extension (str):
+            The file extension if set. (aka .pdf, .jpg,
+            .txt)
+    """
+
+    file_extension: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class FileClusterSummary(proto.Message):
+    r"""The file cluster summary.
+
+    Attributes:
+        file_cluster_type (google.cloud.dlp_v2.types.FileClusterType):
+            The file cluster type.
+        file_store_info_type_summaries (MutableSequence[google.cloud.dlp_v2.types.FileStoreInfoTypeSummary]):
+            InfoTypes detected in this cluster.
+        sensitivity_score (google.cloud.dlp_v2.types.SensitivityScore):
+            The sensitivity score of this cluster. The score will be
+            SENSITIVITY_LOW if nothing has been scanned.
+        data_risk_level (google.cloud.dlp_v2.types.DataRiskLevel):
+            The data risk level of this cluster. RISK_LOW if nothing has
+            been scanned.
+        errors (MutableSequence[google.cloud.dlp_v2.types.Error]):
+            A list of errors detected while scanning this
+            cluster. The list is truncated to 10 per
+            cluster.
+        file_extensions_scanned (MutableSequence[google.cloud.dlp_v2.types.FileExtensionInfo]):
+            A sample of file types scanned in this
+            cluster. Empty if no files were scanned.
+        file_extensions_seen (MutableSequence[google.cloud.dlp_v2.types.FileExtensionInfo]):
+            A sample of file types seen in this cluster.
+            Empty if no files were seen.
+        no_files_exist (bool):
+            True if no files exist in this cluster. If the bucket had
+            more files than could be listed, this will be false even if
+            no files for this cluster were seen and file_extensions_seen
+            is empty.
+    """
+
+    file_cluster_type: "FileClusterType" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="FileClusterType",
+    )
+    file_store_info_type_summaries: MutableSequence[
+        "FileStoreInfoTypeSummary"
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="FileStoreInfoTypeSummary",
+    )
+    sensitivity_score: storage.SensitivityScore = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=storage.SensitivityScore,
+    )
+    data_risk_level: "DataRiskLevel" = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message="DataRiskLevel",
+    )
+    errors: MutableSequence["Error"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=6,
+        message="Error",
+    )
+    file_extensions_scanned: MutableSequence["FileExtensionInfo"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=7,
+        message="FileExtensionInfo",
+    )
+    file_extensions_seen: MutableSequence["FileExtensionInfo"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=8,
+        message="FileExtensionInfo",
+    )
+    no_files_exist: bool = proto.Field(
+        proto.BOOL,
+        number=9,
+    )
+
+
 class GetProjectDataProfileRequest(proto.Message):
     r"""Request to get a project data profile.
 
@@ -11230,6 +12082,165 @@ class GetProjectDataProfileRequest(proto.Message):
         name (str):
             Required. Resource name, for example
             ``organizations/12345/locations/us/projectDataProfiles/53234423``.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class GetFileStoreDataProfileRequest(proto.Message):
+    r"""Request to get a file store data profile.
+
+    Attributes:
+        name (str):
+            Required. Resource name, for example
+            ``organizations/12345/locations/us/fileStoreDataProfiles/53234423``.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class ListFileStoreDataProfilesRequest(proto.Message):
+    r"""Request to list the file store profiles generated for a given
+    organization or project.
+
+    Attributes:
+        parent (str):
+            Required. Resource name of the organization or project, for
+            example ``organizations/433245324/locations/europe`` or
+            ``projects/project-id/locations/asia``.
+        page_token (str):
+            Optional. Page token to continue retrieval.
+        page_size (int):
+            Optional. Size of the page. This value can be
+            limited by the server. If zero, server returns a
+            page of max size 100.
+        order_by (str):
+            Optional. Comma-separated list of fields to order by,
+            followed by ``asc`` or ``desc`` postfix. This list is case
+            insensitive. The default sorting order is ascending.
+            Redundant space characters are insignificant. Only one order
+            field at a time is allowed.
+
+            Examples:
+
+            -  ``project_id asc``
+            -  ``name``
+            -  ``sensitivity_level desc``
+
+            Supported fields are:
+
+            -  ``project_id``: The Google Cloud project ID.
+            -  ``sensitivity_level``: How sensitive the data in a table
+               is, at most.
+            -  ``data_risk_level``: How much risk is associated with
+               this data.
+            -  ``profile_last_generated``: When the profile was last
+               updated in epoch seconds.
+            -  ``last_modified``: The last time the resource was
+               modified.
+            -  ``resource_visibility``: Visibility restriction for this
+               resource.
+            -  ``name``: The name of the profile.
+            -  ``create_time``: The time the file store was first
+               created.
+        filter (str):
+            Optional. Allows filtering.
+
+            Supported syntax:
+
+            -  Filter expressions are made up of one or more
+               restrictions.
+            -  Restrictions can be combined by ``AND`` or ``OR`` logical
+               operators. A sequence of restrictions implicitly uses
+               ``AND``.
+            -  A restriction has the form of
+               ``{field} {operator} {value}``.
+            -  Supported fields/values:
+
+               -  ``project_id`` - The Google Cloud project ID.
+               -  ``file_store_path`` - The path like "gs://bucket".
+               -  ``sensitivity_level`` - HIGH|MODERATE|LOW
+               -  ``data_risk_level`` - HIGH|MODERATE|LOW
+               -  ``resource_visibility``: PUBLIC|RESTRICTED
+               -  ``status_code`` - an RPC status code as defined in
+                  https://github.com/googleapis/googleapis/blob/master/google/rpc/code.proto
+
+            -  The operator must be ``=`` or ``!=``.
+
+            Examples:
+
+            -  ``project_id = 12345 AND status_code = 1``
+            -  ``project_id = 12345 AND sensitivity_level = HIGH``
+            -  ``project_id = 12345 AND resource_visibility = PUBLIC``
+            -  ``file_store_path = "gs://mybucket"``
+
+            The length of this field should be no more than 500
+            characters.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    order_by: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+
+
+class ListFileStoreDataProfilesResponse(proto.Message):
+    r"""List of file store data profiles generated for a given
+    organization or project.
+
+    Attributes:
+        file_store_data_profiles (MutableSequence[google.cloud.dlp_v2.types.FileStoreDataProfile]):
+            List of data profiles.
+        next_page_token (str):
+            The next page token.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    file_store_data_profiles: MutableSequence[
+        "FileStoreDataProfile"
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="FileStoreDataProfile",
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class DeleteFileStoreDataProfileRequest(proto.Message):
+    r"""Request message for DeleteFileStoreProfile.
+
+    Attributes:
+        name (str):
+            Required. Resource name of the file store
+            data profile.
     """
 
     name: str = proto.Field(
@@ -11390,6 +12401,11 @@ class DataProfilePubSubMessage(proto.Message):
             populated. Otherwise, if ``DetailLevel`` is
             ``RESOURCE_NAME``, then only ``name`` and ``full_resource``
             will be populated.
+        file_store_profile (google.cloud.dlp_v2.types.FileStoreDataProfile):
+            If ``DetailLevel`` is ``FILE_STORE_PROFILE`` this will be
+            fully populated. Otherwise, if ``DetailLevel`` is
+            ``RESOURCE_NAME``, then only ``name`` and
+            ``file_store_path`` will be populated.
         event (google.cloud.dlp_v2.types.DataProfileAction.EventType):
             The event that caused the Pub/Sub message to
             be sent.
@@ -11399,6 +12415,11 @@ class DataProfilePubSubMessage(proto.Message):
         proto.MESSAGE,
         number=1,
         message="TableDataProfile",
+    )
+    file_store_profile: "FileStoreDataProfile" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="FileStoreDataProfile",
     )
     event: "DataProfileAction.EventType" = proto.Field(
         proto.ENUM,
@@ -11818,6 +12839,63 @@ class DataSourceType(proto.Message):
     data_source: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+
+
+class FileClusterType(proto.Message):
+    r"""Message used to identify file cluster type being profiled.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        cluster (google.cloud.dlp_v2.types.FileClusterType.Cluster):
+            Cluster type.
+
+            This field is a member of `oneof`_ ``file_cluster_type``.
+    """
+
+    class Cluster(proto.Enum):
+        r"""Cluster type. Each cluster corresponds to a set of file
+        types. Over time new types may be added.
+
+        Values:
+            CLUSTER_UNSPECIFIED (0):
+                Unused.
+            CLUSTER_UNKNOWN (1):
+                Unsupported files.
+            CLUSTER_TEXT (2):
+                Plain text.
+            CLUSTER_STRUCTURED_DATA (3):
+                Structured data like CSV, TSV etc.
+            CLUSTER_SOURCE_CODE (4):
+                Source code.
+            CLUSTER_RICH_DOCUMENT (5):
+                Rich document like docx, xlsx etc.
+            CLUSTER_IMAGE (6):
+                Images like jpeg, bmp.
+            CLUSTER_ARCHIVE (7):
+                Archives and containers like .zip, .tar etc.
+            CLUSTER_MULTIMEDIA (8):
+                Multimedia like .mp4, .avi etc.
+            CLUSTER_EXECUTABLE (9):
+                Executable files like .exe, .class, .apk etc.
+        """
+        CLUSTER_UNSPECIFIED = 0
+        CLUSTER_UNKNOWN = 1
+        CLUSTER_TEXT = 2
+        CLUSTER_STRUCTURED_DATA = 3
+        CLUSTER_SOURCE_CODE = 4
+        CLUSTER_RICH_DOCUMENT = 5
+        CLUSTER_IMAGE = 6
+        CLUSTER_ARCHIVE = 7
+        CLUSTER_MULTIMEDIA = 8
+        CLUSTER_EXECUTABLE = 9
+
+    cluster: Cluster = proto.Field(
+        proto.ENUM,
+        number=1,
+        oneof="file_cluster_type",
+        enum=Cluster,
     )
 
 

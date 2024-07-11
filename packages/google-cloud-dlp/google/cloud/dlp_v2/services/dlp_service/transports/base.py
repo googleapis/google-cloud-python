@@ -605,6 +605,21 @@ class DlpServiceTransport(abc.ABC):
                 default_timeout=300.0,
                 client_info=client_info,
             ),
+            self.list_file_store_data_profiles: gapic_v1.method.wrap_method(
+                self.list_file_store_data_profiles,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_file_store_data_profile: gapic_v1.method.wrap_method(
+                self.get_file_store_data_profile,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_file_store_data_profile: gapic_v1.method.wrap_method(
+                self.delete_file_store_data_profile,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.get_table_data_profile: gapic_v1.method.wrap_method(
                 self.get_table_data_profile,
                 default_retry=retries.Retry(
@@ -1065,6 +1080,36 @@ class DlpServiceTransport(abc.ABC):
     ) -> Callable[
         [dlp.GetProjectDataProfileRequest],
         Union[dlp.ProjectDataProfile, Awaitable[dlp.ProjectDataProfile]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_file_store_data_profiles(
+        self,
+    ) -> Callable[
+        [dlp.ListFileStoreDataProfilesRequest],
+        Union[
+            dlp.ListFileStoreDataProfilesResponse,
+            Awaitable[dlp.ListFileStoreDataProfilesResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_file_store_data_profile(
+        self,
+    ) -> Callable[
+        [dlp.GetFileStoreDataProfileRequest],
+        Union[dlp.FileStoreDataProfile, Awaitable[dlp.FileStoreDataProfile]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_file_store_data_profile(
+        self,
+    ) -> Callable[
+        [dlp.DeleteFileStoreDataProfileRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
     ]:
         raise NotImplementedError()
 

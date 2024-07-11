@@ -229,6 +229,8 @@ class SensitivityScore(proto.Message):
             SENSITIVITY_LOW (10):
                 No sensitive information detected. The
                 resource isn't publicly accessible.
+            SENSITIVITY_UNKNOWN (12):
+                Unable to determine sensitivity.
             SENSITIVITY_MODERATE (20):
                 Medium risk. Contains personally identifiable
                 information (PII), potentially sensitive data,
@@ -244,6 +246,7 @@ class SensitivityScore(proto.Message):
         """
         SENSITIVITY_SCORE_UNSPECIFIED = 0
         SENSITIVITY_LOW = 10
+        SENSITIVITY_UNKNOWN = 12
         SENSITIVITY_MODERATE = 20
         SENSITIVITY_HIGH = 30
 
