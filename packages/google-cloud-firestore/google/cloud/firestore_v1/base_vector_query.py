@@ -25,7 +25,7 @@ from google.api_core import retry as retries
 from google.cloud.firestore_v1.base_document import DocumentSnapshot
 from google.cloud.firestore_v1.types import query
 from google.cloud.firestore_v1.vector import Vector
-from google.cloud.firestore_v1 import _helpers
+from google.cloud.firestore_v1 import document, _helpers
 
 
 class DistanceMeasure(Enum):
@@ -117,3 +117,11 @@ class BaseVectorQuery(ABC):
         self._limit = limit
         self._distance_measure = distance_measure
         return self
+
+    def stream(
+        self,
+        transaction=None,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+    ) -> Iterable[document.DocumentSnapshot]:
+        """Reads the documents in the collection that match this query."""

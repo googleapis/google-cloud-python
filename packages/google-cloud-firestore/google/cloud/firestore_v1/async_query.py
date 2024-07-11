@@ -35,6 +35,7 @@ from google.cloud.firestore_v1.base_query import (
 
 from google.cloud.firestore_v1 import async_document
 from google.cloud.firestore_v1.async_aggregation import AsyncAggregationQuery
+from google.cloud.firestore_v1.async_vector_query import AsyncVectorQuery
 from google.cloud.firestore_v1.async_stream_generator import AsyncStreamGenerator
 from google.cloud.firestore_v1 import transaction
 from typing import AsyncGenerator, List, Optional, Type, TYPE_CHECKING
@@ -42,7 +43,9 @@ from typing import AsyncGenerator, List, Optional, Type, TYPE_CHECKING
 if TYPE_CHECKING:  # pragma: NO COVER
     # Types needed only for Type Hints
     from google.cloud.firestore_v1.base_document import DocumentSnapshot
+    from google.cloud.firestore_v1.base_vector_query import DistanceMeasure
     from google.cloud.firestore_v1.field_path import FieldPath
+    from google.cloud.firestore_v1.vector import Vector
 
 
 class AsyncQuery(BaseQuery):
@@ -221,6 +224,34 @@ class AsyncQuery(BaseQuery):
             result = list(reversed(result))
 
         return result
+
+    def find_nearest(
+        self,
+        vector_field: str,
+        query_vector: Vector,
+        limit: int,
+        distance_measure: DistanceMeasure,
+    ) -> AsyncVectorQuery:
+        """
+        Finds the closest vector embeddings to the given query vector.
+
+        Args:
+            vector_field(str): An indexed vector field to search upon. Only documents which contain
+                vectors whose dimensionality match the query_vector can be returned.
+            query_vector(Vector): The query vector that we are searching on. Must be a vector of no more
+                than 2048 dimensions.
+            limit (int): The number of nearest neighbors to return. Must be a positive integer of no more than 1000.
+            distance_measure(:class:`DistanceMeasure`): The Distance Measure to use.
+
+        Returns:
+            :class`~firestore_v1.vector_query.VectorQuery`: the vector query.
+        """
+        return AsyncVectorQuery(self).find_nearest(
+            vector_field=vector_field,
+            query_vector=query_vector,
+            limit=limit,
+            distance_measure=distance_measure,
+        )
 
     def count(
         self, alias: str | None = None

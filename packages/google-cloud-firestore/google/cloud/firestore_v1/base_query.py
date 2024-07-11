@@ -978,7 +978,7 @@ class BaseQuery(object):
     def find_nearest(
         self,
         vector_field: str,
-        queryVector: Vector,
+        query_vector: Vector,
         limit: int,
         distance_measure: DistanceMeasure,
     ) -> BaseVectorQuery:
