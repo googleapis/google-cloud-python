@@ -492,6 +492,6 @@ async def test__token_endpoint_request_no_throw_with_retry(can_retry):
     )
 
     if can_retry:
-        assert mock_request.call_count == 4
+        assert mock_request.call_count == 3
     else:
         assert mock_request.call_count == 1

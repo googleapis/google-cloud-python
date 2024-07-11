@@ -183,7 +183,11 @@ def _token_endpoint_request_no_throw(
     if headers:
         headers_to_use.update(headers)
 
-    def _perform_request():
+    response_data = {}
+    retryable_error = False
+
+    retries = _exponential_backoff.ExponentialBackoff()
+    for _ in retries:
         response = request(
             method="POST", url=token_uri, headers=headers_to_use, body=body, **kwargs
         )
@@ -192,7 +196,7 @@ def _token_endpoint_request_no_throw(
             if hasattr(response.data, "decode")
             else response.data
         )
-        response_data = ""
+
         try:
             # response_body should be a JSON
             response_data = json.loads(response_body)
@@ -206,18 +210,8 @@ def _token_endpoint_request_no_throw(
             status_code=response.status, response_data=response_data
         )
 
-        return False, response_data, retryable_error
-
-    request_succeeded, response_data, retryable_error = _perform_request()
-
-    if request_succeeded or not retryable_error or not can_retry:
-        return request_succeeded, response_data, retryable_error
-
-    retries = _exponential_backoff.ExponentialBackoff()
-    for _ in retries:
-        request_succeeded, response_data, retryable_error = _perform_request()
-        if request_succeeded or not retryable_error:
-            return request_succeeded, response_data, retryable_error
+        if not can_retry or not retryable_error:
+            return False, response_data, retryable_error
 
     return False, response_data, retryable_error
 

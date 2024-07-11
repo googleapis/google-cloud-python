@@ -13,8 +13,10 @@
 # limitations under the License.
 
 import mock
+import pytest  # type: ignore
 
 from google.auth import _exponential_backoff
+from google.auth import exceptions
 
 
 @mock.patch("time.sleep", return_value=None)
@@ -24,18 +26,31 @@ def test_exponential_backoff(mock_time):
     iteration_count = 0
 
     for attempt in eb:
-        backoff_interval = mock_time.call_args[0][0]
-        jitter = curr_wait * eb._randomization_factor
+        if attempt == 1:
+            assert mock_time.call_count == 0
+        else:
+            backoff_interval = mock_time.call_args[0][0]
+            jitter = curr_wait * eb._randomization_factor
 
-        assert (curr_wait - jitter) <= backoff_interval <= (curr_wait + jitter)
-        assert attempt == iteration_count + 1
-        assert eb.backoff_count == iteration_count + 1
-        assert eb._current_wait_in_seconds == eb._multiplier ** (iteration_count + 1)
+            assert (curr_wait - jitter) <= backoff_interval <= (curr_wait + jitter)
+            assert attempt == iteration_count + 1
+            assert eb.backoff_count == iteration_count + 1
+            assert eb._current_wait_in_seconds == eb._multiplier ** iteration_count
 
-        curr_wait = eb._current_wait_in_seconds
+            curr_wait = eb._current_wait_in_seconds
         iteration_count += 1
 
     assert eb.total_attempts == _exponential_backoff._DEFAULT_RETRY_TOTAL_ATTEMPTS
     assert eb.backoff_count == _exponential_backoff._DEFAULT_RETRY_TOTAL_ATTEMPTS
     assert iteration_count == _exponential_backoff._DEFAULT_RETRY_TOTAL_ATTEMPTS
-    assert mock_time.call_count == _exponential_backoff._DEFAULT_RETRY_TOTAL_ATTEMPTS
+    assert (
+        mock_time.call_count == _exponential_backoff._DEFAULT_RETRY_TOTAL_ATTEMPTS - 1
+    )
+
+
+def test_minimum_total_attempts():
+    with pytest.raises(exceptions.InvalidValue):
+        _exponential_backoff.ExponentialBackoff(total_attempts=0)
+    with pytest.raises(exceptions.InvalidValue):
+        _exponential_backoff.ExponentialBackoff(total_attempts=-1)
+    _exponential_backoff.ExponentialBackoff(total_attempts=1)

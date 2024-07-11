@@ -67,7 +67,11 @@ async def _token_endpoint_request_no_throw(
     if access_token:
         headers["Authorization"] = "Bearer {}".format(access_token)
 
-    async def _perform_request():
+    response_data = {}
+    retryable_error = False
+
+    retries = _exponential_backoff.ExponentialBackoff()
+    for _ in retries:
         response = await request(
             method="POST", url=token_uri, headers=headers, body=body
         )
@@ -93,18 +97,8 @@ async def _token_endpoint_request_no_throw(
             status_code=response.status, response_data=response_data
         )
 
-        return False, response_data, retryable_error
-
-    request_succeeded, response_data, retryable_error = await _perform_request()
-
-    if request_succeeded or not retryable_error or not can_retry:
-        return request_succeeded, response_data, retryable_error
-
-    retries = _exponential_backoff.ExponentialBackoff()
-    for _ in retries:
-        request_succeeded, response_data, retryable_error = await _perform_request()
-        if request_succeeded or not retryable_error:
-            return request_succeeded, response_data, retryable_error
+        if not can_retry or not retryable_error:
+            return False, response_data, retryable_error
 
     return False, response_data, retryable_error
 

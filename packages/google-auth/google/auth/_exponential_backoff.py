@@ -15,6 +15,8 @@
 import random
 import time
 
+from google.auth import exceptions
+
 # The default amount of retry attempts
 _DEFAULT_RETRY_TOTAL_ATTEMPTS = 3
 
@@ -68,6 +70,11 @@ class ExponentialBackoff:
         randomization_factor=_DEFAULT_RANDOMIZATION_FACTOR,
         multiplier=_DEFAULT_MULTIPLIER,
     ):
+        if total_attempts < 1:
+            raise exceptions.InvalidValue(
+                f"total_attempts must be greater than or equal to 1 but was {total_attempts}"
+            )
+
         self._total_attempts = total_attempts
         self._initial_wait_seconds = initial_wait_seconds
 
@@ -86,6 +93,9 @@ class ExponentialBackoff:
         if self._backoff_count >= self._total_attempts:
             raise StopIteration
         self._backoff_count += 1
+
+        if self._backoff_count <= 1:
+            return self._backoff_count
 
         jitter_variance = self._current_wait_in_seconds * self._randomization_factor
         jitter = random.uniform(
