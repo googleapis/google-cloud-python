@@ -140,8 +140,6 @@ def test_df_construct_from_dict():
 
 
 def test_df_construct_inline_respects_location():
-    import bigframes.pandas as bpd
-
     # Note: This starts a thread-local session.
     with bpd.option_context("bigquery.location", "europe-west1"):
         df = bpd.DataFrame([[1, 2, 3], [4, 5, 6]])
@@ -4336,6 +4334,25 @@ def test_df_cached(scalars_df_index):
     pandas.testing.assert_frame_equal(df.to_pandas(), df_cached_copy.to_pandas())
 
 
+def test_assign_after_binop_row_joins():
+    pd_df = pd.DataFrame(
+        {
+            "idx1": [1, 1, 1, 1, 2, 2, 2, 2],
+            "idx2": [10, 10, 20, 20, 10, 10, 20, 20],
+            "metric1": [10, 14, 2, 13, 6, 2, 9, 5],
+            "metric2": [25, -3, 8, 2, -1, 0, 0, -4],
+        },
+        dtype=pd.Int64Dtype(),
+    ).set_index(["idx1", "idx2"])
+    bf_df = dataframe.DataFrame(pd_df)
+
+    # Expect implicit joiner to be used, preserving input cardinality rather than getting relational join
+    bf_df["metric_diff"] = bf_df.metric1 - bf_df.metric2
+    pd_df["metric_diff"] = pd_df.metric1 - pd_df.metric2
+
+    assert_pandas_df_equal(bf_df.to_pandas(), pd_df)
+
+
 def test_df_cache_with_implicit_join(scalars_df_index):
     """expectation is that cache will be used, but no explicit join will be performed"""
     df = scalars_df_index[["int64_col", "int64_too"]].sort_index().reset_index() + 3
@@ -4510,7 +4527,7 @@ def test_query_complexity_repeated_subtrees(
     bf_df = scalars_df_index
     for _ in range(5):
         pd_df = pd.concat(10 * [pd_df]).head(5)
-        bf_df = bigframes.pandas.concat(10 * [bf_df]).head(5)
+        bf_df = bpd.concat(10 * [bf_df]).head(5)
     bf_result = bf_df.to_pandas()
     pd_result = pd_df
     assert_pandas_df_equal(bf_result, pd_result)

@@ -44,6 +44,15 @@ class JoinColumnMapping:
 
 
 @dataclasses.dataclass(frozen=True)
+class CoalescedColumnMapping:
+    """Special column mapping used only by implicit joiner only"""
+
+    left_source_id: str
+    right_source_id: str
+    destination_id: str
+
+
+@dataclasses.dataclass(frozen=True)
 class JoinDefinition:
     conditions: Tuple[JoinCondition, ...]
     mappings: Tuple[JoinColumnMapping, ...]

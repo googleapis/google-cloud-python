@@ -460,9 +460,9 @@ class ArrayValue:
             conditions=(), mappings=(*labels_mappings, *table_mappings), type="cross"
         )
         if join_side == "left":
-            joined_array = self.join(labels_array, join_def=join)
+            joined_array = self.relational_join(labels_array, join_def=join)
         else:
-            joined_array = labels_array.join(self, join_def=join)
+            joined_array = labels_array.relational_join(self, join_def=join)
         return joined_array
 
     def _create_unpivot_labels_array(
@@ -485,30 +485,27 @@ class ArrayValue:
 
         return ArrayValue.from_pyarrow(pa.Table.from_pylist(rows), session=self.session)
 
-    def join(
+    def relational_join(
         self,
         other: ArrayValue,
         join_def: join_def.JoinDefinition,
-        allow_row_identity_join: bool = False,
-    ):
+    ) -> ArrayValue:
         join_node = nodes.JoinNode(
             left_child=self.node,
             right_child=other.node,
             join=join_def,
-            allow_row_identity_join=allow_row_identity_join,
         )
-        if allow_row_identity_join:
-            return ArrayValue(bigframes.core.rewrite.maybe_rewrite_join(join_node))
         return ArrayValue(join_node)
 
     def try_align_as_projection(
         self,
         other: ArrayValue,
         join_type: join_def.JoinType,
+        join_keys: typing.Tuple[join_def.CoalescedColumnMapping, ...],
         mappings: typing.Tuple[join_def.JoinColumnMapping, ...],
     ) -> typing.Optional[ArrayValue]:
         result = bigframes.core.rewrite.join_as_projection(
-            self.node, other.node, mappings, join_type
+            self.node, other.node, join_keys, mappings, join_type
         )
         if result is not None:
             return ArrayValue(result)

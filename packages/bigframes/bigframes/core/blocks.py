@@ -2008,7 +2008,7 @@ class Block:
             mappings=(*left_mappings, *right_mappings),
             type=how,
         )
-        joined_expr = self.expr.join(other.expr, join_def=join_def)
+        joined_expr = self.expr.relational_join(other.expr, join_def=join_def)
         result_columns = []
         matching_join_labels = []
 
@@ -2267,25 +2267,33 @@ class Block:
             raise NotImplementedError(
                 f"Only how='outer','left','right','inner' currently supported. {constants.FEEDBACK_LINK}"
             )
-        # Special case for null index,
+        # Handle null index, which only supports row join
+        if (self.index.nlevels == other.index.nlevels == 0) and not block_identity_join:
+            if not block_identity_join:
+                result = try_row_join(self, other, how=how)
+                if result is not None:
+                    return result
+            raise bigframes.exceptions.NullIndexError(
+                "Cannot implicitly align objects. Set an explicit index using set_index."
+            )
+
+        # Oddly, pandas row-wise join ignores right index names
         if (
-            (self.index.nlevels == other.index.nlevels == 0)
-            and not sort
-            and not block_identity_join
+            not block_identity_join
+            and (self.index.nlevels == other.index.nlevels)
+            and (self.index.dtypes == other.index.dtypes)
         ):
-            return join_indexless(self, other, how=how)
+            result = try_row_join(self, other, how=how)
+            if result is not None:
+                return result
 
         self._throw_if_null_index("join")
         other._throw_if_null_index("join")
         if self.index.nlevels == other.index.nlevels == 1:
-            return join_mono_indexed(
-                self, other, how=how, sort=sort, block_identity_join=block_identity_join
-            )
-        else:
+            return join_mono_indexed(self, other, how=how, sort=sort)
+        else:  # Handles cases where one or both sides are multi-indexed
             # Always sort mult-index join
-            return join_multi_indexed(
-                self, other, how=how, sort=sort, block_identity_join=block_identity_join
-            )
+            return join_multi_indexed(self, other, how=how, sort=sort)
 
     def _force_reproject(self) -> Block:
         """Forces a reprojection of the underlying tables expression. Used to force predicate/order application before subsequent operations."""
@@ -2623,22 +2631,31 @@ class BlockIndexProperties:
         return len(set(self.names)) == len(self.names)
 
 
-def join_indexless(
+def try_row_join(
     left: Block,
     right: Block,
     *,
     how="left",
-) -> Tuple[Block, Tuple[Mapping[str, str], Mapping[str, str]],]:
-    """Joins two blocks"""
+) -> Optional[Tuple[Block, Tuple[Mapping[str, str], Mapping[str, str]],]]:
+    """Joins two blocks that have a common root expression by merging the projections."""
     left_expr = left.expr
     right_expr = right.expr
+    # Create a new array value, mapping from both, then left, and then right
+    join_keys = tuple(
+        join_defs.CoalescedColumnMapping(
+            left_source_id=left_id,
+            right_source_id=right_id,
+            destination_id=guid.generate_guid(),
+        )
+        for left_id, right_id in zip(left.index_columns, right.index_columns)
+    )
     left_mappings = [
         join_defs.JoinColumnMapping(
             source_table=join_defs.JoinSide.LEFT,
             source_id=id,
             destination_id=guid.generate_guid(),
         )
-        for id in left_expr.column_ids
+        for id in left.value_columns
     ]
     right_mappings = [
         join_defs.JoinColumnMapping(
@@ -2646,23 +2663,23 @@ def join_indexless(
             source_id=id,
             destination_id=guid.generate_guid(),
         )
-        for id in right_expr.column_ids
+        for id in right.value_columns
     ]
     combined_expr = left_expr.try_align_as_projection(
         right_expr,
         join_type=how,
+        join_keys=join_keys,
         mappings=(*left_mappings, *right_mappings),
     )
     if combined_expr is None:
-        raise bigframes.exceptions.NullIndexError(
-            "Cannot implicitly align objects. Set an explicit index using set_index."
-        )
+        return None
     get_column_left = {m.source_id: m.destination_id for m in left_mappings}
     get_column_right = {m.source_id: m.destination_id for m in right_mappings}
     block = Block(
         combined_expr,
         column_labels=[*left.column_labels, *right.column_labels],
-        index_columns=(),
+        index_columns=(key.destination_id for key in join_keys),
+        index_labels=left.index.names,
     )
     return (
         block,
@@ -2704,7 +2721,7 @@ def join_with_single_row(
         mappings=(*left_mappings, *right_mappings),
         type="cross",
     )
-    combined_expr = left_expr.join(
+    combined_expr = left_expr.relational_join(
         right_expr,
         join_def=join_def,
     )
@@ -2731,7 +2748,6 @@ def join_mono_indexed(
     *,
     how="left",
     sort=False,
-    block_identity_join: bool = False,
 ) -> Tuple[Block, Tuple[Mapping[str, str], Mapping[str, str]],]:
     left_expr = left.expr
     right_expr = right.expr
@@ -2759,14 +2775,14 @@ def join_mono_indexed(
         mappings=(*left_mappings, *right_mappings),
         type=how,
     )
-    combined_expr = left_expr.join(
+
+    combined_expr = left_expr.relational_join(
         right_expr,
         join_def=join_def,
-        allow_row_identity_join=(not block_identity_join),
     )
+
     get_column_left = join_def.get_left_mapping()
     get_column_right = join_def.get_right_mapping()
-    # Drop original indices from each side. and used the coalesced combination generated by the join.
     left_index = get_column_left[left.index_columns[0]]
     right_index = get_column_right[right.index_columns[0]]
     # Drop original indices from each side. and used the coalesced combination generated by the join.
@@ -2800,7 +2816,6 @@ def join_multi_indexed(
     *,
     how="left",
     sort=False,
-    block_identity_join: bool = False,
 ) -> Tuple[Block, Tuple[Mapping[str, str], Mapping[str, str]],]:
     if not (left.index.is_uniquely_named() and right.index.is_uniquely_named()):
         raise ValueError("Joins not supported on indices with non-unique level names")
@@ -2818,8 +2833,6 @@ def join_multi_indexed(
 
     left_join_ids = [left.index.resolve_level_exact(name) for name in common_names]
     right_join_ids = [right.index.resolve_level_exact(name) for name in common_names]
-
-    names_fully_match = len(left_only_names) == 0 and len(right_only_names) == 0
 
     left_expr = left.expr
     right_expr = right.expr
@@ -2850,13 +2863,11 @@ def join_multi_indexed(
         type=how,
     )
 
-    combined_expr = left_expr.join(
+    combined_expr = left_expr.relational_join(
         right_expr,
         join_def=join_def,
-        # If we're only joining on a subset of the index columns, we need to
-        # perform a true join.
-        allow_row_identity_join=(names_fully_match and not block_identity_join),
     )
+
     get_column_left = join_def.get_left_mapping()
     get_column_right = join_def.get_right_mapping()
     left_ids_post_join = [get_column_left[id] for id in left_join_ids]

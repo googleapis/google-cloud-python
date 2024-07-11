@@ -106,21 +106,25 @@ class SquashedSelect:
         )
 
     def can_merge(
-        self, right: SquashedSelect, join_def: join_defs.JoinDefinition
+        self,
+        right: SquashedSelect,
+        join_keys: Tuple[join_defs.CoalescedColumnMapping, ...],
     ) -> bool:
         """Determines whether the two selections can be merged into a single selection."""
-        if join_def.type == "cross":
-            # Cannot convert cross join to projection
-            return False
-
         r_exprs_by_id = {id: expr for expr, id in right.columns}
         l_exprs_by_id = {id: expr for expr, id in self.columns}
-        l_join_exprs = [l_exprs_by_id[cond.left_id] for cond in join_def.conditions]
-        r_join_exprs = [r_exprs_by_id[cond.right_id] for cond in join_def.conditions]
+        l_join_exprs = [
+            l_exprs_by_id[join_key.left_source_id] for join_key in join_keys
+        ]
+        r_join_exprs = [
+            r_exprs_by_id[join_key.right_source_id] for join_key in join_keys
+        ]
 
-        if (self.root != right.root) or any(
-            l_expr != r_expr for l_expr, r_expr in zip(l_join_exprs, r_join_exprs)
-        ):
+        if self.root != right.root:
+            return False
+        if len(l_join_exprs) != len(r_join_exprs):
+            return False
+        if any(l_expr != r_expr for l_expr, r_expr in zip(l_join_exprs, r_join_exprs)):
             return False
         return True
 
@@ -128,6 +132,7 @@ class SquashedSelect:
         self,
         right: SquashedSelect,
         join_type: join_defs.JoinType,
+        join_keys: Tuple[join_defs.CoalescedColumnMapping, ...],
         mappings: Tuple[join_defs.JoinColumnMapping, ...],
     ) -> SquashedSelect:
         if self.root != right.root:
@@ -147,11 +152,9 @@ class SquashedSelect:
         l_relative, r_relative = relative_predicates(self.predicate, right.predicate)
         lmask = l_relative if join_type in {"right", "outer"} else None
         rmask = r_relative if join_type in {"left", "outer"} else None
-        if lmask is not None:
-            lselection = tuple((apply_mask(expr, lmask), id) for expr, id in lselection)
-        if rmask is not None:
-            rselection = tuple((apply_mask(expr, rmask), id) for expr, id in rselection)
-        new_columns = remap_names(mappings, lselection, rselection)
+        new_columns = merge_expressions(
+            join_keys, mappings, lselection, rselection, lmask, rmask
+        )
 
         # Reconstruct ordering
         reverse_root = self.reverse_root
@@ -204,26 +207,10 @@ class SquashedSelect:
         return nodes.ProjectionNode(child=root, assignments=self.columns)
 
 
-def maybe_rewrite_join(join_node: nodes.JoinNode) -> nodes.BigFrameNode:
-    rewrite_common_node = common_selection_root(
-        join_node.left_child, join_node.right_child
-    )
-    if rewrite_common_node is None:
-        return join_node
-    left_side = SquashedSelect.from_node_span(join_node.left_child, rewrite_common_node)
-    right_side = SquashedSelect.from_node_span(
-        join_node.right_child, rewrite_common_node
-    )
-    if left_side.can_merge(right_side, join_node.join):
-        return left_side.merge(
-            right_side, join_node.join.type, join_node.join.mappings
-        ).expand()
-    return join_node
-
-
 def join_as_projection(
     l_node: nodes.BigFrameNode,
     r_node: nodes.BigFrameNode,
+    join_keys: Tuple[join_defs.CoalescedColumnMapping, ...],
     mappings: Tuple[join_defs.JoinColumnMapping, ...],
     how: join_defs.JoinType,
 ) -> Optional[nodes.BigFrameNode]:
@@ -231,7 +218,10 @@ def join_as_projection(
     if rewrite_common_node is not None:
         left_side = SquashedSelect.from_node_span(l_node, rewrite_common_node)
         right_side = SquashedSelect.from_node_span(r_node, rewrite_common_node)
-        merged = left_side.merge(right_side, how, mappings)
+        if not left_side.can_merge(right_side, join_keys):
+            # Most likely because join keys didn't match
+            return None
+        merged = left_side.merge(right_side, how, join_keys, mappings)
         assert (
             merged is not None
         ), "Couldn't merge nodes. This shouldn't happen. Please share full stacktrace with the BigQuery DataFrames team at bigframes-feedback@google.com."
@@ -240,21 +230,33 @@ def join_as_projection(
         return None
 
 
-def remap_names(
+def merge_expressions(
+    join_keys: Tuple[join_defs.CoalescedColumnMapping, ...],
     mappings: Tuple[join_defs.JoinColumnMapping, ...],
     lselection: Selection,
     rselection: Selection,
+    lmask: Optional[scalar_exprs.Expression],
+    rmask: Optional[scalar_exprs.Expression],
 ) -> Selection:
     new_selection: Selection = tuple()
     l_exprs_by_id = {id: expr for expr, id in lselection}
     r_exprs_by_id = {id: expr for expr, id in rselection}
+    for key in join_keys:
+        # Join keys expressions are equivalent on both sides, so can choose either left or right key
+        assert l_exprs_by_id[key.left_source_id] == r_exprs_by_id[key.right_source_id]
+        expr = l_exprs_by_id[key.left_source_id]
+        id = key.destination_id
+        new_selection = (*new_selection, (expr, id))
     for mapping in mappings:
         if mapping.source_table == join_defs.JoinSide.LEFT:
             expr = l_exprs_by_id[mapping.source_id]
+            if lmask is not None:
+                expr = apply_mask(expr, lmask)
         else:  # Right
             expr = r_exprs_by_id[mapping.source_id]
-        id = mapping.destination_id
-        new_selection = (*new_selection, (expr, id))
+            if rmask is not None:
+                expr = apply_mask(expr, rmask)
+        new_selection = (*new_selection, (expr, mapping.destination_id))
     return new_selection
 
 
