@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.2](https://github.com/googleapis/google-cloud-python/compare/google-maps-fleetengine-delivery-v0.2.1...google-maps-fleetengine-delivery-v0.2.2) (2024-07-11)
+
+
+### Documentation
+
+* [google-maps-fleetengine-delivery] clarify behavior of UpdateDeliveryVehicle ([#12896](https://github.com/googleapis/google-cloud-python/issues/12896)) ([a19cfa8](https://github.com/googleapis/google-cloud-python/commit/a19cfa832866bdec91a195da49ede602db071239))
+
 ## [0.2.1](https://github.com/googleapis/google-cloud-python/compare/google-maps-fleetengine-delivery-v0.2.0...google-maps-fleetengine-delivery-v0.2.1) (2024-07-08)
 
 

@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-container/#history
 
+## [2.49.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-container-v2.48.0...google-cloud-container-v2.49.0) (2024-07-11)
+
+
+### Features
+
+* add DCGM enum in monitoring config ([c321484](https://github.com/googleapis/google-cloud-python/commit/c321484b7eeccf02fd9ca12f982edbf3bac670a2))
+
+
+### Bug Fixes
+
+* Deprecate "EXPERIMENTAL" option for Gateway API ([c321484](https://github.com/googleapis/google-cloud-python/commit/c321484b7eeccf02fd9ca12f982edbf3bac670a2))
+
 ## [2.48.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-container-v2.47.1...google-cloud-container-v2.48.0) (2024-07-10)
 
 
