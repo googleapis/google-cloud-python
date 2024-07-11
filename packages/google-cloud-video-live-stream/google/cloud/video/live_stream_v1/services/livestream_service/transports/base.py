@@ -265,6 +265,26 @@ class LivestreamServiceTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.list_clips: gapic_v1.method.wrap_method(
+                self.list_clips,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_clip: gapic_v1.method.wrap_method(
+                self.get_clip,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_clip: gapic_v1.method.wrap_method(
+                self.create_clip,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_clip: gapic_v1.method.wrap_method(
+                self.delete_clip,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.create_asset: gapic_v1.method.wrap_method(
                 self.create_asset,
                 default_timeout=None,
@@ -448,6 +468,41 @@ class LivestreamServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [service.DeleteEventRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_clips(
+        self,
+    ) -> Callable[
+        [service.ListClipsRequest],
+        Union[service.ListClipsResponse, Awaitable[service.ListClipsResponse]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_clip(
+        self,
+    ) -> Callable[
+        [service.GetClipRequest], Union[resources.Clip, Awaitable[resources.Clip]]
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_clip(
+        self,
+    ) -> Callable[
+        [service.CreateClipRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_clip(
+        self,
+    ) -> Callable[
+        [service.DeleteClipRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 

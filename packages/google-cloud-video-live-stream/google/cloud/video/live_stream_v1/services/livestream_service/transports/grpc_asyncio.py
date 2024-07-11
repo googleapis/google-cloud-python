@@ -691,6 +691,111 @@ class LivestreamServiceGrpcAsyncIOTransport(LivestreamServiceTransport):
         return self._stubs["delete_event"]
 
     @property
+    def list_clips(
+        self,
+    ) -> Callable[[service.ListClipsRequest], Awaitable[service.ListClipsResponse]]:
+        r"""Return a callable for the list clips method over gRPC.
+
+        Returns a list of all clips in the specified channel.
+
+        Returns:
+            Callable[[~.ListClipsRequest],
+                    Awaitable[~.ListClipsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_clips" not in self._stubs:
+            self._stubs["list_clips"] = self.grpc_channel.unary_unary(
+                "/google.cloud.video.livestream.v1.LivestreamService/ListClips",
+                request_serializer=service.ListClipsRequest.serialize,
+                response_deserializer=service.ListClipsResponse.deserialize,
+            )
+        return self._stubs["list_clips"]
+
+    @property
+    def get_clip(self) -> Callable[[service.GetClipRequest], Awaitable[resources.Clip]]:
+        r"""Return a callable for the get clip method over gRPC.
+
+        Returns the specified clip.
+
+        Returns:
+            Callable[[~.GetClipRequest],
+                    Awaitable[~.Clip]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_clip" not in self._stubs:
+            self._stubs["get_clip"] = self.grpc_channel.unary_unary(
+                "/google.cloud.video.livestream.v1.LivestreamService/GetClip",
+                request_serializer=service.GetClipRequest.serialize,
+                response_deserializer=resources.Clip.deserialize,
+            )
+        return self._stubs["get_clip"]
+
+    @property
+    def create_clip(
+        self,
+    ) -> Callable[[service.CreateClipRequest], Awaitable[operations_pb2.Operation]]:
+        r"""Return a callable for the create clip method over gRPC.
+
+        Creates a clip with the provided clip ID in the
+        specified channel.
+
+        Returns:
+            Callable[[~.CreateClipRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_clip" not in self._stubs:
+            self._stubs["create_clip"] = self.grpc_channel.unary_unary(
+                "/google.cloud.video.livestream.v1.LivestreamService/CreateClip",
+                request_serializer=service.CreateClipRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["create_clip"]
+
+    @property
+    def delete_clip(
+        self,
+    ) -> Callable[[service.DeleteClipRequest], Awaitable[operations_pb2.Operation]]:
+        r"""Return a callable for the delete clip method over gRPC.
+
+        Deletes the specified clip job resource. This method
+        only deletes the clip job and does not delete the VOD
+        clip stored in the GCS.
+
+        Returns:
+            Callable[[~.DeleteClipRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_clip" not in self._stubs:
+            self._stubs["delete_clip"] = self.grpc_channel.unary_unary(
+                "/google.cloud.video.livestream.v1.LivestreamService/DeleteClip",
+                request_serializer=service.DeleteClipRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["delete_clip"]
+
+    @property
     def create_asset(
         self,
     ) -> Callable[[service.CreateAssetRequest], Awaitable[operations_pb2.Operation]]:
@@ -980,6 +1085,26 @@ class LivestreamServiceGrpcAsyncIOTransport(LivestreamServiceTransport):
             self.delete_event: gapic_v1.method_async.wrap_method(
                 self.delete_event,
                 default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.list_clips: gapic_v1.method_async.wrap_method(
+                self.list_clips,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_clip: gapic_v1.method_async.wrap_method(
+                self.get_clip,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_clip: gapic_v1.method_async.wrap_method(
+                self.create_clip,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_clip: gapic_v1.method_async.wrap_method(
+                self.delete_clip,
+                default_timeout=None,
                 client_info=client_info,
             ),
             self.create_asset: gapic_v1.method_async.wrap_method(

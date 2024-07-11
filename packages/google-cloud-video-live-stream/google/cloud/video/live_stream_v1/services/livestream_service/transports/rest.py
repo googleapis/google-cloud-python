@@ -89,6 +89,14 @@ class LivestreamServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_create_clip(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_clip(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_create_event(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -121,6 +129,14 @@ class LivestreamServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_delete_clip(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_delete_clip(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_delete_event(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -146,6 +162,14 @@ class LivestreamServiceRestInterceptor:
                 return request, metadata
 
             def post_get_channel(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_get_clip(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_clip(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -186,6 +210,14 @@ class LivestreamServiceRestInterceptor:
                 return request, metadata
 
             def post_list_channels(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_list_clips(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_clips(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -293,6 +325,27 @@ class LivestreamServiceRestInterceptor:
         """
         return response
 
+    def pre_create_clip(
+        self, request: service.CreateClipRequest, metadata: Sequence[Tuple[str, str]]
+    ) -> Tuple[service.CreateClipRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for create_clip
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the LivestreamService server.
+        """
+        return request, metadata
+
+    def post_create_clip(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for create_clip
+
+        Override in a subclass to manipulate the response
+        after it is returned by the LivestreamService server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_create_event(
         self, request: service.CreateEventRequest, metadata: Sequence[Tuple[str, str]]
     ) -> Tuple[service.CreateEventRequest, Sequence[Tuple[str, str]]]:
@@ -375,6 +428,27 @@ class LivestreamServiceRestInterceptor:
         """
         return response
 
+    def pre_delete_clip(
+        self, request: service.DeleteClipRequest, metadata: Sequence[Tuple[str, str]]
+    ) -> Tuple[service.DeleteClipRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for delete_clip
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the LivestreamService server.
+        """
+        return request, metadata
+
+    def post_delete_clip(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for delete_clip
+
+        Override in a subclass to manipulate the response
+        after it is returned by the LivestreamService server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_delete_event(
         self, request: service.DeleteEventRequest, metadata: Sequence[Tuple[str, str]]
     ) -> Tuple[service.DeleteEventRequest, Sequence[Tuple[str, str]]]:
@@ -437,6 +511,25 @@ class LivestreamServiceRestInterceptor:
 
     def post_get_channel(self, response: resources.Channel) -> resources.Channel:
         """Post-rpc interceptor for get_channel
+
+        Override in a subclass to manipulate the response
+        after it is returned by the LivestreamService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get_clip(
+        self, request: service.GetClipRequest, metadata: Sequence[Tuple[str, str]]
+    ) -> Tuple[service.GetClipRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_clip
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the LivestreamService server.
+        """
+        return request, metadata
+
+    def post_get_clip(self, response: resources.Clip) -> resources.Clip:
+        """Post-rpc interceptor for get_clip
 
         Override in a subclass to manipulate the response
         after it is returned by the LivestreamService server but before
@@ -536,6 +629,27 @@ class LivestreamServiceRestInterceptor:
         self, response: service.ListChannelsResponse
     ) -> service.ListChannelsResponse:
         """Post-rpc interceptor for list_channels
+
+        Override in a subclass to manipulate the response
+        after it is returned by the LivestreamService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_list_clips(
+        self, request: service.ListClipsRequest, metadata: Sequence[Tuple[str, str]]
+    ) -> Tuple[service.ListClipsRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for list_clips
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the LivestreamService server.
+        """
+        return request, metadata
+
+    def post_list_clips(
+        self, response: service.ListClipsResponse
+    ) -> service.ListClipsResponse:
+        """Post-rpc interceptor for list_clips
 
         Override in a subclass to manipulate the response
         after it is returned by the LivestreamService server but before
@@ -1172,6 +1286,102 @@ class LivestreamServiceRestTransport(LivestreamServiceTransport):
             resp = self._interceptor.post_create_channel(resp)
             return resp
 
+    class _CreateClip(LivestreamServiceRestStub):
+        def __hash__(self):
+            return hash("CreateClip")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
+            "clipId": "",
+        }
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: service.CreateClipRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the create clip method over HTTP.
+
+            Args:
+                request (~.service.CreateClipRequest):
+                    The request object. Request message for
+                "LivestreamService.CreateClip".
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1/{parent=projects/*/locations/*/channels/*}/clips",
+                    "body": "clip",
+                },
+            ]
+            request, metadata = self._interceptor.pre_create_clip(request, metadata)
+            pb_request = service.CreateClipRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"], use_integers_for_enums=True
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_create_clip(resp)
+            return resp
+
     class _CreateEvent(LivestreamServiceRestStub):
         def __hash__(self):
             return hash("CreateEvent")
@@ -1541,6 +1751,93 @@ class LivestreamServiceRestTransport(LivestreamServiceTransport):
             resp = self._interceptor.post_delete_channel(resp)
             return resp
 
+    class _DeleteClip(LivestreamServiceRestStub):
+        def __hash__(self):
+            return hash("DeleteClip")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: service.DeleteClipRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the delete clip method over HTTP.
+
+            Args:
+                request (~.service.DeleteClipRequest):
+                    The request object. Request message for
+                "LivestreamService.DeleteClip".
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "delete",
+                    "uri": "/v1/{name=projects/*/locations/*/channels/*/clips/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_delete_clip(request, metadata)
+            pb_request = service.DeleteClipRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_delete_clip(resp)
+            return resp
+
     class _DeleteEvent(LivestreamServiceRestStub):
         def __hash__(self):
             return hash("DeleteEvent")
@@ -1882,6 +2179,97 @@ class LivestreamServiceRestTransport(LivestreamServiceTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get_channel(resp)
+            return resp
+
+    class _GetClip(LivestreamServiceRestStub):
+        def __hash__(self):
+            return hash("GetClip")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: service.GetClipRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> resources.Clip:
+            r"""Call the get clip method over HTTP.
+
+            Args:
+                request (~.service.GetClipRequest):
+                    The request object. Request message for
+                "LivestreamService.GetClip".
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.resources.Clip:
+                    Clip is a sub-resource under channel.
+                Each clip represents a clipping
+                operation that generates a VOD playlist
+                from its channel given a set of
+                timestamp ranges.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=projects/*/locations/*/channels/*/clips/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_get_clip(request, metadata)
+            pb_request = service.GetClipRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = resources.Clip()
+            pb_resp = resources.Clip.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_clip(resp)
             return resp
 
     class _GetEvent(LivestreamServiceRestStub):
@@ -2331,6 +2719,94 @@ class LivestreamServiceRestTransport(LivestreamServiceTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_list_channels(resp)
+            return resp
+
+    class _ListClips(LivestreamServiceRestStub):
+        def __hash__(self):
+            return hash("ListClips")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: service.ListClipsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> service.ListClipsResponse:
+            r"""Call the list clips method over HTTP.
+
+            Args:
+                request (~.service.ListClipsRequest):
+                    The request object. Request message for
+                "LivestreamService.ListClips".
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.service.ListClipsResponse:
+                    Response message for
+                "LivestreamService.ListClips".
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{parent=projects/*/locations/*/channels/*}/clips",
+                },
+            ]
+            request, metadata = self._interceptor.pre_list_clips(request, metadata)
+            pb_request = service.ListClipsRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = service.ListClipsResponse()
+            pb_resp = service.ListClipsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_list_clips(resp)
             return resp
 
     class _ListEvents(LivestreamServiceRestStub):
@@ -2996,6 +3472,14 @@ class LivestreamServiceRestTransport(LivestreamServiceTransport):
         return self._CreateChannel(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def create_clip(
+        self,
+    ) -> Callable[[service.CreateClipRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreateClip(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def create_event(self) -> Callable[[service.CreateEventRequest], resources.Event]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
@@ -3026,6 +3510,14 @@ class LivestreamServiceRestTransport(LivestreamServiceTransport):
         return self._DeleteChannel(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def delete_clip(
+        self,
+    ) -> Callable[[service.DeleteClipRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteClip(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def delete_event(self) -> Callable[[service.DeleteEventRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
@@ -3050,6 +3542,12 @@ class LivestreamServiceRestTransport(LivestreamServiceTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetChannel(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_clip(self) -> Callable[[service.GetClipRequest], resources.Clip]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetClip(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_event(self) -> Callable[[service.GetEventRequest], resources.Event]:
@@ -3084,6 +3582,14 @@ class LivestreamServiceRestTransport(LivestreamServiceTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListChannels(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_clips(
+        self,
+    ) -> Callable[[service.ListClipsRequest], service.ListClipsResponse]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListClips(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list_events(

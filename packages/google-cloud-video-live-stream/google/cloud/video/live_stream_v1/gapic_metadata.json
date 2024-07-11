@@ -20,6 +20,11 @@
                 "create_channel"
               ]
             },
+            "CreateClip": {
+              "methods": [
+                "create_clip"
+              ]
+            },
             "CreateEvent": {
               "methods": [
                 "create_event"
@@ -40,6 +45,11 @@
                 "delete_channel"
               ]
             },
+            "DeleteClip": {
+              "methods": [
+                "delete_clip"
+              ]
+            },
             "DeleteEvent": {
               "methods": [
                 "delete_event"
@@ -58,6 +68,11 @@
             "GetChannel": {
               "methods": [
                 "get_channel"
+              ]
+            },
+            "GetClip": {
+              "methods": [
+                "get_clip"
               ]
             },
             "GetEvent": {
@@ -83,6 +98,11 @@
             "ListChannels": {
               "methods": [
                 "list_channels"
+              ]
+            },
+            "ListClips": {
+              "methods": [
+                "list_clips"
               ]
             },
             "ListEvents": {
@@ -135,6 +155,11 @@
                 "create_channel"
               ]
             },
+            "CreateClip": {
+              "methods": [
+                "create_clip"
+              ]
+            },
             "CreateEvent": {
               "methods": [
                 "create_event"
@@ -155,6 +180,11 @@
                 "delete_channel"
               ]
             },
+            "DeleteClip": {
+              "methods": [
+                "delete_clip"
+              ]
+            },
             "DeleteEvent": {
               "methods": [
                 "delete_event"
@@ -173,6 +203,11 @@
             "GetChannel": {
               "methods": [
                 "get_channel"
+              ]
+            },
+            "GetClip": {
+              "methods": [
+                "get_clip"
               ]
             },
             "GetEvent": {
@@ -198,6 +233,11 @@
             "ListChannels": {
               "methods": [
                 "list_channels"
+              ]
+            },
+            "ListClips": {
+              "methods": [
+                "list_clips"
               ]
             },
             "ListEvents": {
@@ -250,6 +290,11 @@
                 "create_channel"
               ]
             },
+            "CreateClip": {
+              "methods": [
+                "create_clip"
+              ]
+            },
             "CreateEvent": {
               "methods": [
                 "create_event"
@@ -270,6 +315,11 @@
                 "delete_channel"
               ]
             },
+            "DeleteClip": {
+              "methods": [
+                "delete_clip"
+              ]
+            },
             "DeleteEvent": {
               "methods": [
                 "delete_event"
@@ -288,6 +338,11 @@
             "GetChannel": {
               "methods": [
                 "get_channel"
+              ]
+            },
+            "GetClip": {
+              "methods": [
+                "get_clip"
               ]
             },
             "GetEvent": {
@@ -313,6 +368,11 @@
             "ListChannels": {
               "methods": [
                 "list_channels"
+              ]
+            },
+            "ListClips": {
+              "methods": [
+                "list_clips"
               ]
             },
             "ListEvents": {

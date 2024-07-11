@@ -51,6 +51,11 @@ __protobuf__ = proto.module(
         "GetEventRequest",
         "DeleteEventRequest",
         "ChannelOperationResponse",
+        "ListClipsRequest",
+        "ListClipsResponse",
+        "GetClipRequest",
+        "CreateClipRequest",
+        "DeleteClipRequest",
         "OperationMetadata",
         "GetPoolRequest",
         "UpdatePoolRequest",
@@ -989,6 +994,187 @@ class ChannelOperationResponse(proto.Message):
     operations.
 
     """
+
+
+class ListClipsRequest(proto.Message):
+    r"""Request message for "LivestreamService.ListClips".
+
+    Attributes:
+        parent (str):
+            Required. Parent value for ListClipsRequest
+        page_size (int):
+            Requested page size. Server may return fewer
+            items than requested. If unspecified, server
+            will pick an appropriate default.
+        page_token (str):
+            A token identifying a page of results the
+            server should return.
+        filter (str):
+            Filtering results
+        order_by (str):
+            Hint for how to order the results
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    order_by: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+
+
+class ListClipsResponse(proto.Message):
+    r"""Response message for "LivestreamService.ListClips".
+
+    Attributes:
+        clips (MutableSequence[google.cloud.video.live_stream_v1.types.Clip]):
+            The list of Clip
+        next_page_token (str):
+            A token identifying a page of results the
+            server should return.
+        unreachable (MutableSequence[str]):
+            Locations that could not be reached.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    clips: MutableSequence[resources.Clip] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=resources.Clip,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+
+
+class GetClipRequest(proto.Message):
+    r"""Request message for "LivestreamService.GetClip".
+
+    Attributes:
+        name (str):
+            Required. Name of the resource, in the following form:
+            ``projects/{project}/locations/{location}/channels/{channel}/clips/{clip}``.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class CreateClipRequest(proto.Message):
+    r"""Request message for "LivestreamService.CreateClip".
+
+    Attributes:
+        parent (str):
+            Required. The parent resource name, in the following form:
+            ``projects/{project}/locations/{location}/channels/{channel}``.
+        clip_id (str):
+            Required. Id of the requesting object in the
+            following form:
+
+            1. 1 character minimum, 63 characters maximum
+            2. Only contains letters, digits, underscores,
+                and hyphens
+        clip (google.cloud.video.live_stream_v1.types.Clip):
+            Required. The resource being created
+        request_id (str):
+            Optional. An optional request ID to identify
+            requests. Specify a unique request ID so that if
+            you must retry your request, the server will
+            know to ignore the request if it has already
+            been completed. The server will guarantee that
+            for at least 60 minutes since the first request.
+
+            For example, consider a situation where you make
+            an initial request and the request times out. If
+            you make the request again with the same request
+            ID, the server can check if original operation
+            with the same request ID was received, and if
+            so, will ignore the second request. This
+            prevents clients from accidentally creating
+            duplicate commitments.
+
+            The request ID must be a valid UUID with the
+            exception that zero UUID is not supported
+            (00000000-0000-0000-0000-000000000000).
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    clip_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    clip: resources.Clip = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=resources.Clip,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+
+
+class DeleteClipRequest(proto.Message):
+    r"""Request message for "LivestreamService.DeleteClip".
+
+    Attributes:
+        name (str):
+            Required. The name of the clip resource, in the form of:
+            ``projects/{project}/locations/{location}/channels/{channelId}/clips/{clipId}``.
+        request_id (str):
+            Optional. A request ID to identify requests. Specify a
+            unique request ID so that if you must retry your request,
+            the server will know to ignore the request if it has already
+            been completed. The server will guarantee that for at least
+            60 minutes since the first request.
+
+            For example, consider a situation where you make an initial
+            request and the request times out. If you make the request
+            again with the same request ID, the server can check if
+            original operation with the same request ID was received,
+            and if so, will ignore the second request. This prevents
+            clients from accidentally creating duplicate commitments.
+
+            The request ID must be a valid UUID with the exception that
+            zero UUID is not supported
+            ``(00000000-0000-0000-0000-000000000000)``.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class OperationMetadata(proto.Message):

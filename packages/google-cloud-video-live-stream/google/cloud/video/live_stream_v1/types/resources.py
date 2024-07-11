@@ -29,8 +29,12 @@ __protobuf__ = proto.module(
     manifest={
         "Input",
         "Channel",
+        "NormalizedCoordinate",
+        "NormalizedResolution",
+        "StaticOverlay",
         "InputConfig",
         "LogConfig",
+        "RetentionConfig",
         "InputStreamProperty",
         "VideoStreamProperty",
         "VideoFormat",
@@ -38,6 +42,7 @@ __protobuf__ = proto.module(
         "AudioFormat",
         "InputAttachment",
         "Event",
+        "Clip",
         "Asset",
         "Encryption",
         "Pool",
@@ -253,6 +258,13 @@ class Channel(proto.Message):
         input_config (google.cloud.video.live_stream_v1.types.InputConfig):
             The configuration for input sources defined in
             [input_attachments][google.cloud.video.livestream.v1.Channel.input_attachments].
+        retention_config (google.cloud.video.live_stream_v1.types.RetentionConfig):
+            Optional. Configuration for retention of
+            output files for this channel.
+        static_overlays (MutableSequence[google.cloud.video.live_stream_v1.types.StaticOverlay]):
+            Optional. List of static overlay images.
+            Those images display over the output content for
+            the whole duration of the live stream.
     """
 
     class StreamingState(proto.Enum):
@@ -391,6 +403,109 @@ class Channel(proto.Message):
         number=25,
         message="InputConfig",
     )
+    retention_config: "RetentionConfig" = proto.Field(
+        proto.MESSAGE,
+        number=26,
+        message="RetentionConfig",
+    )
+    static_overlays: MutableSequence["StaticOverlay"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=27,
+        message="StaticOverlay",
+    )
+
+
+class NormalizedCoordinate(proto.Message):
+    r"""2D normalized coordinates.
+
+    Attributes:
+        x (float):
+            Optional. Normalized x coordinate. Valid range is [0.0,
+            1.0]. Default is 0.
+        y (float):
+            Optional. Normalized y coordinate. Valid range is [0.0,
+            1.0]. Default is 0.
+    """
+
+    x: float = proto.Field(
+        proto.DOUBLE,
+        number=1,
+    )
+    y: float = proto.Field(
+        proto.DOUBLE,
+        number=2,
+    )
+
+
+class NormalizedResolution(proto.Message):
+    r"""Normalized resolution.
+
+    Attributes:
+        w (float):
+            Optional. Normalized width. Valid range is [0.0, 1.0].
+            Default is 0.
+        h (float):
+            Optional. Normalized height. Valid range is [0.0, 1.0].
+            Default is 0.
+    """
+
+    w: float = proto.Field(
+        proto.DOUBLE,
+        number=1,
+    )
+    h: float = proto.Field(
+        proto.DOUBLE,
+        number=2,
+    )
+
+
+class StaticOverlay(proto.Message):
+    r"""Configuration for the static overlay.
+
+    Attributes:
+        asset (str):
+            Required. Asset to use for the overlaid image. The asset
+            must be represented in the form of:
+            ``projects/{project}/locations/{location}/assets/{assetId}``.
+            The asset's resource type must be image.
+        resolution (google.cloud.video.live_stream_v1.types.NormalizedResolution):
+            Optional. Normalized image resolution, based on output video
+            resolution. Valid values are [0.0, 1.0]. To respect the
+            original image aspect ratio, set either ``w`` or ``h`` to 0.
+            To use the original image resolution, set both ``w`` and
+            ``h`` to 0. The default is {0, 0}.
+        position (google.cloud.video.live_stream_v1.types.NormalizedCoordinate):
+            Optional. Position of the image in terms of
+            normalized coordinates of the upper-left corner
+            of the image, based on output video resolution.
+            For example, use the x and y coordinates {0, 0}
+            to position the top-left corner of the overlay
+            animation in the top-left corner of the output
+            video.
+        opacity (float):
+            Optional. Target image opacity. Valid values are from
+            ``1.0`` (solid, default) to ``0.0`` (transparent),
+            exclusive. Set this to a value greater than ``0.0``.
+    """
+
+    asset: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    resolution: "NormalizedResolution" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="NormalizedResolution",
+    )
+    position: "NormalizedCoordinate" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="NormalizedCoordinate",
+    )
+    opacity: float = proto.Field(
+        proto.DOUBLE,
+        number=4,
+    )
 
 
 class InputConfig(proto.Message):
@@ -484,6 +599,37 @@ class LogConfig(proto.Message):
         proto.ENUM,
         number=1,
         enum=LogSeverity,
+    )
+
+
+class RetentionConfig(proto.Message):
+    r"""Configuration for retention of output files.
+
+    Attributes:
+        retention_window_duration (google.protobuf.duration_pb2.Duration):
+            The minimum duration for which the output files from the
+            channel will remain in the output bucket. After this
+            duration, output files are deleted asynchronously.
+
+            When the channel is deleted, all output files are deleted
+            from the output bucket asynchronously.
+
+            If omitted or set to zero, output files will remain in the
+            output bucket based on
+            [Manifest.segment_keep_duration][google.cloud.video.livestream.v1.Manifest.segment_keep_duration],
+            which defaults to 60s.
+
+            If both retention_window_duration and
+            [Manifest.segment_keep_duration][google.cloud.video.livestream.v1.Manifest.segment_keep_duration]
+            are set, retention_window_duration is used and
+            [Manifest.segment_keep_duration][google.cloud.video.livestream.v1.Manifest.segment_keep_duration]
+            is ignored.
+    """
+
+    retention_window_duration: duration_pb2.Duration = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=duration_pb2.Duration,
     )
 
 
@@ -624,7 +770,11 @@ class InputAttachment(proto.Message):
 
     Attributes:
         key (str):
-            A unique key for this input attachment.
+            A unique key for this input attachment. The
+            key must be 1-63 characters in length. The key
+            must begin and end with a letter (regardless of
+            case) or a number, but can contain dashes or
+            underscores in between.
         input (str):
             The resource name of an existing input, in the form of:
             ``projects/{project}/locations/{location}/inputs/{inputId}``.
@@ -802,7 +952,7 @@ class Event(proto.Message):
                 a long running slate.
             asset (str):
                 Slate asset to use for the duration. If its duration is less
-                than the duration of the SlateTask, then it will be looped.
+                than the duration of the SlateTask, then the slate loops.
                 The slate must be represented in the form of:
                 ``projects/{project}/locations/{location}/assets/{assetId}``.
         """
@@ -840,7 +990,7 @@ class Event(proto.Message):
         )
 
     class UnmuteTask(proto.Message):
-        r"""Unmutes the stream. The task will fail if the stream is not
+        r"""Unmutes the stream. The task fails if the stream is not
         currently muted.
 
         """
@@ -921,6 +1071,202 @@ class Event(proto.Message):
     )
 
 
+class Clip(proto.Message):
+    r"""Clip is a sub-resource under channel. Each clip represents a
+    clipping operation that generates a VOD playlist from its
+    channel given a set of timestamp ranges.
+
+    Attributes:
+        name (str):
+            The resource name of the clip, in the following format:
+            ``projects/{project}/locations/{location}/channels/{c}/clips/{clipId}``.
+            ``{clipId}`` is a user-specified resource id that conforms
+            to the following criteria:
+
+            1. 1 character minimum, 63 characters maximum
+            2. Only contains letters, digits, underscores, and hyphens
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The creation timestamp of the
+            clip resource.
+        start_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The timestamp when the clip
+            request starts to be processed.
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The update timestamp of the clip
+            resource.
+        labels (MutableMapping[str, str]):
+            The labels associated with this resource.
+            Each label is a key-value pair.
+        state (google.cloud.video.live_stream_v1.types.Clip.State):
+            Output only. The state of the clip.
+        output_uri (str):
+            Specify the ``output_uri`` to determine where to place the
+            clip segments and clip manifest files in Cloud Storage. The
+            manifests specified in ``clip_manifests`` fields will be
+            placed under this URI. The exact URI of the generated
+            manifests will be provided in ``clip_manifests.output_uri``
+            for each manifest. Example: "output_uri":
+            "gs://my-bucket/clip-outputs" "clip_manifests.output_uri":
+            "gs://my-bucket/clip-outputs/main.m3u8".
+        error (google.rpc.status_pb2.Status):
+            Output only. An error object that describes the reason for
+            the failure. This property only presents when ``state`` is
+            ``FAILED``.
+        slices (MutableSequence[google.cloud.video.live_stream_v1.types.Clip.Slice]):
+            The specified ranges of segments to generate
+            a clip.
+        clip_manifests (MutableSequence[google.cloud.video.live_stream_v1.types.Clip.ClipManifest]):
+            Required. A list of clip manifests. Currently
+            only one clip manifest is allowed.
+    """
+
+    class State(proto.Enum):
+        r"""State of clipping operation.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                State is not specified.
+            PENDING (1):
+                The operation is pending to be picked up by
+                the server.
+            CREATING (2):
+                The server admitted this create clip request,
+                and outputs are under processing.
+            SUCCEEDED (3):
+                Outputs are available in the specified Cloud Storage bucket.
+                For additional information, see the ``outputs`` field.
+            FAILED (4):
+                The operation has failed. For additional information, see
+                the ``error`` field.
+        """
+        STATE_UNSPECIFIED = 0
+        PENDING = 1
+        CREATING = 2
+        SUCCEEDED = 3
+        FAILED = 4
+
+    class TimeSlice(proto.Message):
+        r"""TimeSlice represents a tuple of Unix epoch timestamps that
+        specifies a time range.
+
+        Attributes:
+            markin_time (google.protobuf.timestamp_pb2.Timestamp):
+                The mark-in Unix epoch time in the original
+                live stream manifest.
+            markout_time (google.protobuf.timestamp_pb2.Timestamp):
+                The mark-out Unix epoch time in the original
+                live stream manifest.
+        """
+
+        markin_time: timestamp_pb2.Timestamp = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message=timestamp_pb2.Timestamp,
+        )
+        markout_time: timestamp_pb2.Timestamp = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message=timestamp_pb2.Timestamp,
+        )
+
+    class Slice(proto.Message):
+        r"""Slice represents a slice of the requested clip.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            time_slice (google.cloud.video.live_stream_v1.types.Clip.TimeSlice):
+                A slice in form of a tuple of Unix epoch
+                time.
+
+                This field is a member of `oneof`_ ``kind``.
+        """
+
+        time_slice: "Clip.TimeSlice" = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            oneof="kind",
+            message="Clip.TimeSlice",
+        )
+
+    class ClipManifest(proto.Message):
+        r"""ClipManifest identifies a source manifest for the generated
+        clip manifest.
+
+        Attributes:
+            manifest_key (str):
+                Required. A unique key that identifies a manifest config in
+                the parent channel. This key is the same as
+                ``channel.manifests.key`` for the selected manifest.
+            output_uri (str):
+                Output only. The output URI of the generated clip manifest.
+                This field will be populated when the CreateClip request is
+                accepted. Current output format is provided below but may
+                change in the future. Please read this field to get the uri
+                to the generated clip manifest. Format:
+                {clip.output_uri}/{channel.manifest.fileName} Example:
+                gs://my-bucket/clip-outputs/main.m3u8
+        """
+
+        manifest_key: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        output_uri: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    start_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
+    labels: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=5,
+    )
+    state: State = proto.Field(
+        proto.ENUM,
+        number=6,
+        enum=State,
+    )
+    output_uri: str = proto.Field(
+        proto.STRING,
+        number=7,
+    )
+    error: status_pb2.Status = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message=status_pb2.Status,
+    )
+    slices: MutableSequence[Slice] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=10,
+        message=Slice,
+    )
+    clip_manifests: MutableSequence[ClipManifest] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=12,
+        message=ClipManifest,
+    )
+
+
 class Asset(proto.Message):
     r"""An asset represents a video or an image.
 
@@ -956,11 +1302,16 @@ class Asset(proto.Message):
             resource <https://cloud.google.com/storage/docs/json_api/v1/objects>`__.
             If crc32c is omitted or left empty when the asset is
             created, this field is filled by the crc32c checksum of the
-            Cloud Storage object indicated by [VideoAsset.uri] or
-            [ImageAsset.uri]. If crc32c is set, the asset can't be
-            created if the crc32c value does not match with the crc32c
-            checksum of the Cloud Storage object indicated by
-            [VideoAsset.uri] or [ImageAsset.uri].
+            Cloud Storage object indicated by
+            [VideoAsset.uri][google.cloud.video.livestream.v1.Asset.VideoAsset.uri]
+            or
+            [ImageAsset.uri][google.cloud.video.livestream.v1.Asset.ImageAsset.uri].
+            If crc32c is set, the asset can't be created if the crc32c
+            value does not match with the crc32c checksum of the Cloud
+            Storage object indicated by
+            [VideoAsset.uri][google.cloud.video.livestream.v1.Asset.VideoAsset.uri]
+            or
+            [ImageAsset.uri][google.cloud.video.livestream.v1.Asset.ImageAsset.uri].
         state (google.cloud.video.live_stream_v1.types.Asset.State):
             Output only. The state of the asset resource.
         error (google.rpc.status_pb2.Status):
@@ -1006,7 +1357,8 @@ class Asset(proto.Message):
         )
 
     class ImageAsset(proto.Message):
-        r"""Image represents an image. The supported format is JPEG.
+        r"""Image represents an image. The supported formats are JPEG,
+        PNG.
 
         Attributes:
             uri (str):
@@ -1079,7 +1431,11 @@ class Encryption(proto.Message):
     Attributes:
         id (str):
             Required. Identifier for this set of
-            encryption options.
+            encryption options. The ID must be 1-63
+            characters in length. The ID must begin and end
+            with a letter (regardless of case) or a number,
+            but can contain dashes or underscores in
+            between.
         secret_manager_key_source (google.cloud.video.live_stream_v1.types.Encryption.SecretManagerSource):
             For keys stored in Google Secret Manager.
 
