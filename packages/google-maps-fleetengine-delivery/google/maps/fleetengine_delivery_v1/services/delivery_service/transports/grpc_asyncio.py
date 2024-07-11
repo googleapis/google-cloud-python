@@ -313,8 +313,8 @@ class DeliveryServiceGrpcAsyncIOTransport(DeliveryServiceTransport):
         Writes updated ``DeliveryVehicle`` data to Fleet Engine, and
         assigns ``Tasks`` to the ``DeliveryVehicle``. You cannot update
         the name of the ``DeliveryVehicle``. You *can* update
-        ``remaining_vehicle_journey_segments`` though, but it must
-        contain all of the ``VehicleJourneySegment``\ s currently on the
+        ``remaining_vehicle_journey_segments``, but it must contain all
+        of the ``VehicleJourneySegment``\ s to be persisted on the
         ``DeliveryVehicle``. The ``task_id``\ s are retrieved from
         ``remaining_vehicle_journey_segments``, and their corresponding
         ``Tasks`` are assigned to the ``DeliveryVehicle`` if they have
