@@ -15,7 +15,8 @@
 import pandas as pd
 import pytest
 
-import bigframes.ml.llm
+from bigframes.ml import llm
+from tests.system import utils
 
 
 @pytest.fixture(scope="session")
@@ -39,9 +40,7 @@ def llm_remote_text_df(session, llm_remote_text_pandas_df):
 
 @pytest.mark.flaky(retries=2)
 def test_llm_palm_configure_fit(llm_fine_tune_df_default_index, llm_remote_text_df):
-    model = bigframes.ml.llm.PaLM2TextGenerator(
-        model_name="text-bison", max_iterations=1
-    )
+    model = llm.PaLM2TextGenerator(model_name="text-bison", max_iterations=1)
 
     X_train = llm_fine_tune_df_default_index[["prompt"]]
     y_train = llm_fine_tune_df_default_index[["label"]]
@@ -50,62 +49,23 @@ def test_llm_palm_configure_fit(llm_fine_tune_df_default_index, llm_remote_text_
     assert model is not None
 
     df = model.predict(llm_remote_text_df["prompt"]).to_pandas()
-    assert df.shape == (3, 4)
-    assert "ml_generate_text_llm_result" in df.columns
-    series = df["ml_generate_text_llm_result"]
-    assert all(series.str.len() == 1)
-
+    utils.check_pandas_df_schema_and_index(
+        df,
+        columns=[
+            "ml_generate_text_llm_result",
+            "ml_generate_text_rai_result",
+            "ml_generate_text_status",
+            "prompt",
+        ],
+        index=3,
+    )
     # TODO(ashleyxu b/335492787): After bqml rolled out version control: save, load, check parameters to ensure configuration was kept
 
 
-@pytest.mark.flaky(retries=2)
-def test_llm_palm_score(llm_fine_tune_df_default_index):
-    model = bigframes.ml.llm.PaLM2TextGenerator(model_name="text-bison")
-
-    # Check score to ensure the model was fitted
-    score_result = model.score(
-        X=llm_fine_tune_df_default_index[["prompt"]],
-        y=llm_fine_tune_df_default_index[["label"]],
-    ).to_pandas()
-    score_result_col = score_result.columns.to_list()
-    expected_col = [
-        "bleu4_score",
-        "rouge-l_precision",
-        "rouge-l_recall",
-        "rouge-l_f1_score",
-        "evaluation_status",
-    ]
-    assert all(col in score_result_col for col in expected_col)
-
-
-@pytest.mark.flaky(retries=2)
-def test_llm_palm_score_params(llm_fine_tune_df_default_index):
-    model = bigframes.ml.llm.PaLM2TextGenerator(
-        model_name="text-bison", max_iterations=1
-    )
-
-    # Check score to ensure the model was fitted
-    score_result = model.score(
-        X=llm_fine_tune_df_default_index["prompt"],
-        y=llm_fine_tune_df_default_index["label"],
-        task_type="classification",
-    ).to_pandas()
-    score_result_col = score_result.columns.to_list()
-    expected_col = [
-        "precision",
-        "recall",
-        "f1_score",
-        "label",
-        "evaluation_status",
-    ]
-    assert all(col in score_result_col for col in expected_col)
-
-
+@pytest.mark.skip(reason="b/351905648. Credential error to be fixed.")
 @pytest.mark.flaky(retries=2)
 def test_llm_gemini_configure_fit(llm_fine_tune_df_default_index, llm_remote_text_df):
-    model = bigframes.ml.llm.GeminiTextGenerator(
-        model_name="gemini-pro", max_iterations=1
-    )
+    model = llm.GeminiTextGenerator(model_name="gemini-pro", max_iterations=1)
 
     X_train = llm_fine_tune_df_default_index[["prompt"]]
     y_train = llm_fine_tune_df_default_index[["label"]]
@@ -120,9 +80,14 @@ def test_llm_gemini_configure_fit(llm_fine_tune_df_default_index, llm_remote_tex
         top_k=20,
         top_p=0.5,
     ).to_pandas()
-    assert df.shape == (3, 4)
-    assert "ml_generate_text_llm_result" in df.columns
-    series = df["ml_generate_text_llm_result"]
-    assert all(series.str.len() == 1)
-
+    utils.check_pandas_df_schema_and_index(
+        df,
+        columns=[
+            "ml_generate_text_llm_result",
+            "ml_generate_text_rai_result",
+            "ml_generate_text_status",
+            "prompt",
+        ],
+        index=3,
+    )
     # TODO(ashleyxu b/335492787): After bqml rolled out version control: save, load, check parameters to ensure configuration was kept

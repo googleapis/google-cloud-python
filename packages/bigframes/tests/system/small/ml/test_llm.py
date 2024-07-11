@@ -370,6 +370,51 @@ def test_gemini_text_generator_predict_with_params_success(
 
 
 @pytest.mark.flaky(retries=2)
+def test_llm_palm_score(llm_fine_tune_df_default_index):
+    model = llm.PaLM2TextGenerator(model_name="text-bison")
+
+    # Check score to ensure the model was fitted
+    score_result = model.score(
+        X=llm_fine_tune_df_default_index[["prompt"]],
+        y=llm_fine_tune_df_default_index[["label"]],
+    ).to_pandas()
+    utils.check_pandas_df_schema_and_index(
+        score_result,
+        columns=[
+            "bleu4_score",
+            "rouge-l_precision",
+            "rouge-l_recall",
+            "rouge-l_f1_score",
+            "evaluation_status",
+        ],
+        index=1,
+    )
+
+
+@pytest.mark.flaky(retries=2)
+def test_llm_palm_score_params(llm_fine_tune_df_default_index):
+    model = llm.PaLM2TextGenerator(model_name="text-bison", max_iterations=1)
+
+    # Check score to ensure the model was fitted
+    score_result = model.score(
+        X=llm_fine_tune_df_default_index["prompt"],
+        y=llm_fine_tune_df_default_index["label"],
+        task_type="classification",
+    ).to_pandas()
+    utils.check_pandas_df_schema_and_index(
+        score_result,
+        columns=[
+            "precision",
+            "recall",
+            "f1_score",
+            "label",
+            "evaluation_status",
+        ],
+        index=6,
+    )
+
+
+@pytest.mark.flaky(retries=2)
 def test_llm_gemini_pro_score(llm_fine_tune_df_default_index):
     model = llm.GeminiTextGenerator(model_name="gemini-pro")
 
