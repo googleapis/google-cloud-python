@@ -51,7 +51,8 @@ def compile_raw(
     ir = compiler.compile_ordered_ir(node)
     sql = ir.raw_sql()
     ordering_info = ir._ordering
-    return sql, ordering_info
+    assert ir.has_total_order
+    return sql, ordering_info  # type: ignore
 
 
 def test_only_try_evaluate(node: bigframes.core.nodes.BigFrameNode):

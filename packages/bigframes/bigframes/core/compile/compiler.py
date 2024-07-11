@@ -38,7 +38,9 @@ if typing.TYPE_CHECKING:
 
 
 def compile_ordered_ir(node: nodes.BigFrameNode) -> compiled.OrderedIR:
-    return typing.cast(compiled.OrderedIR, compile_node(node, True))
+    ir = typing.cast(compiled.OrderedIR, compile_node(node, True))
+    assert ir.has_total_order
+    return ir
 
 
 def compile_unordered_ir(node: nodes.BigFrameNode) -> compiled.UnorderedIR:

@@ -98,6 +98,8 @@ class RowOrdering:
     """Immutable object that holds information about the ordering of rows in a ArrayValue object. May not be unambiguous."""
 
     ordering_value_columns: typing.Tuple[OrderingExpression, ...] = ()
+    integer_encoding: IntegerEncoding = IntegerEncoding(False)
+    string_encoding: StringEncoding = StringEncoding(False)
 
     @property
     def all_ordering_columns(self) -> Sequence[OrderingExpression]:
@@ -111,6 +113,20 @@ class RowOrdering:
             for col in part.scalar_expression.unbound_variables
         )
 
+    @property
+    def is_string_encoded(self) -> bool:
+        """True if ordering is fully defined by a fixed length string column."""
+        return self.string_encoding.is_encoded
+
+    @property
+    def is_sequential(self) -> bool:
+        return self.integer_encoding.is_encoded and self.integer_encoding.is_sequential
+
+    @property
+    def total_order_col(self) -> Optional[OrderingExpression]:
+        """Returns column id of columns that defines total ordering, if such as column exists"""
+        return None
+
     def with_reverse(self) -> RowOrdering:
         """Reverses the ordering."""
         return RowOrdering(
@@ -121,17 +137,66 @@ class RowOrdering:
         new_value_columns = [
             col.remap_names(mapping) for col in self.all_ordering_columns
         ]
-        return TotalOrdering(
+        return RowOrdering(
             tuple(new_value_columns),
         )
+
+    def with_non_sequential(self):
+        """Create a copy that is marked as non-sequential.
+
+        This is useful when filtering, but not sorting, an expression.
+        """
+        if self.integer_encoding.is_sequential:
+            return RowOrdering(
+                self.ordering_value_columns,
+                integer_encoding=IntegerEncoding(
+                    self.integer_encoding.is_encoded, is_sequential=False
+                ),
+            )
+
+        return self
+
+    def with_ordering_columns(
+        self,
+        ordering_value_columns: Sequence[OrderingExpression] = (),
+    ) -> RowOrdering:
+        """Creates a new ordering that reorders by the given columns.
+
+        Args:
+            ordering_value_columns:
+                In decreasing precedence order, the values used to sort the ordering
+
+        Returns:
+            Modified ExpressionOrdering
+        """
+
+        # Truncate to remove any unneded col references after all total order cols included
+        new_ordering = self._truncate_ordering(
+            (*ordering_value_columns, *self.ordering_value_columns)
+        )
+        return RowOrdering(
+            new_ordering,
+        )
+
+    def _truncate_ordering(
+        self, order_refs: tuple[OrderingExpression, ...]
+    ) -> tuple[OrderingExpression, ...]:
+        # Truncate once we refer to a full key in bijective operations
+        columns_seen: Set[str] = set()
+        truncated_refs = []
+        for order_part in order_refs:
+            expr = order_part.scalar_expression
+            if not set(expr.unbound_variables).issubset(columns_seen):
+                if expr.is_bijective:
+                    columns_seen.update(expr.unbound_variables)
+                truncated_refs.append(order_part)
+        return tuple(truncated_refs)
 
 
 @dataclass(frozen=True)
 class TotalOrdering(RowOrdering):
     """Immutable object that holds information about the ordering of rows in a ArrayValue object. Guaranteed to be unambiguous."""
 
-    integer_encoding: IntegerEncoding = IntegerEncoding(False)
-    string_encoding: StringEncoding = StringEncoding(False)
     # A table has a total ordering defined by the identities of a set of 1 or more columns.
     # These columns must always be part of the ordering, in order to guarantee that the ordering is total.
     # Therefore, any modifications(or drops) done to these columns must result in hidden copies being made.
@@ -233,15 +298,6 @@ class TotalOrdering(RowOrdering):
         if order_ref.direction != OrderingDirection.ASC:
             return None
         return order_ref
-
-    @property
-    def is_string_encoded(self) -> bool:
-        """True if ordering is fully defined by a fixed length string column."""
-        return self.string_encoding.is_encoded
-
-    @property
-    def is_sequential(self) -> bool:
-        return self.integer_encoding.is_encoded and self.integer_encoding.is_sequential
 
 
 def encode_order_string(
