@@ -20,18 +20,19 @@
 
 from google.protobuf.internal import containers
 
-# Import protobuf 4.xx first and fallback to earlier version
-# if not present.
+# Import all message types to ensure that pyext types are recognized
+# when upb types exist. Conda's protobuf defaults to pyext despite upb existing.
+# See https://github.com/googleapis/proto-plus-python/issues/470
 try:
-    from google._upb import _message
+    from google._upb import _message as _message_upb
 except ImportError:
-    _message = None
+    _message_upb = None
 
-if not _message:
-    try:
-        from google.protobuf.pyext import _message
-    except ImportError:
-        _message = None
+try:
+    from google.protobuf.pyext import _message as _message_pyext
+except ImportError:
+    _message_pyext = None
+
 
 repeated_composite_types = (containers.RepeatedCompositeFieldContainer,)
 repeated_scalar_types = (containers.RepeatedScalarFieldContainer,)
@@ -44,16 +45,16 @@ map_composite_types = (containers.MessageMap,)
 # See https://github.com/protocolbuffers/protobuf/issues/16596
 map_composite_type_names = ("MessageMapContainer",)
 
-if _message:
-    repeated_composite_types += (_message.RepeatedCompositeContainer,)
-    repeated_scalar_types += (_message.RepeatedScalarContainer,)
+for message in [_message_upb, _message_pyext]:
+    if message:
+        repeated_composite_types += (message.RepeatedCompositeContainer,)
+        repeated_scalar_types += (message.RepeatedScalarContainer,)
 
-    try:
-        map_composite_types += (_message.MessageMapContainer,)
-    except AttributeError:
-        # The `MessageMapContainer` attribute is not available in Protobuf 5.x+
-        pass
-
+        try:
+            map_composite_types += (message.MessageMapContainer,)
+        except AttributeError:
+            # The `MessageMapContainer` attribute is not available in Protobuf 5.x+
+            pass
 
 __all__ = (
     "repeated_composite_types",
