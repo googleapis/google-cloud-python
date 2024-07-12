@@ -17,19 +17,18 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.apps.chat_v1.types import event_payload
-from google.protobuf import timestamp_pb2  # type: ignore
-
 
 __protobuf__ = proto.module(
-    package='google.chat.v1',
+    package="google.chat.v1",
     manifest={
-        'SpaceEvent',
-        'GetSpaceEventRequest',
-        'ListSpaceEventsRequest',
-        'ListSpaceEventsResponse',
+        "SpaceEvent",
+        "GetSpaceEventRequest",
+        "ListSpaceEventsRequest",
+        "ListSpaceEventsResponse",
     },
 )
 
@@ -243,110 +242,128 @@ class SpaceEvent(proto.Message):
     message_created_event_data: event_payload.MessageCreatedEventData = proto.Field(
         proto.MESSAGE,
         number=12,
-        oneof='payload',
+        oneof="payload",
         message=event_payload.MessageCreatedEventData,
     )
     message_updated_event_data: event_payload.MessageUpdatedEventData = proto.Field(
         proto.MESSAGE,
         number=13,
-        oneof='payload',
+        oneof="payload",
         message=event_payload.MessageUpdatedEventData,
     )
     message_deleted_event_data: event_payload.MessageDeletedEventData = proto.Field(
         proto.MESSAGE,
         number=14,
-        oneof='payload',
+        oneof="payload",
         message=event_payload.MessageDeletedEventData,
     )
-    message_batch_created_event_data: event_payload.MessageBatchCreatedEventData = proto.Field(
-        proto.MESSAGE,
-        number=26,
-        oneof='payload',
-        message=event_payload.MessageBatchCreatedEventData,
+    message_batch_created_event_data: event_payload.MessageBatchCreatedEventData = (
+        proto.Field(
+            proto.MESSAGE,
+            number=26,
+            oneof="payload",
+            message=event_payload.MessageBatchCreatedEventData,
+        )
     )
-    message_batch_updated_event_data: event_payload.MessageBatchUpdatedEventData = proto.Field(
-        proto.MESSAGE,
-        number=27,
-        oneof='payload',
-        message=event_payload.MessageBatchUpdatedEventData,
+    message_batch_updated_event_data: event_payload.MessageBatchUpdatedEventData = (
+        proto.Field(
+            proto.MESSAGE,
+            number=27,
+            oneof="payload",
+            message=event_payload.MessageBatchUpdatedEventData,
+        )
     )
-    message_batch_deleted_event_data: event_payload.MessageBatchDeletedEventData = proto.Field(
-        proto.MESSAGE,
-        number=28,
-        oneof='payload',
-        message=event_payload.MessageBatchDeletedEventData,
+    message_batch_deleted_event_data: event_payload.MessageBatchDeletedEventData = (
+        proto.Field(
+            proto.MESSAGE,
+            number=28,
+            oneof="payload",
+            message=event_payload.MessageBatchDeletedEventData,
+        )
     )
     space_updated_event_data: event_payload.SpaceUpdatedEventData = proto.Field(
         proto.MESSAGE,
         number=15,
-        oneof='payload',
+        oneof="payload",
         message=event_payload.SpaceUpdatedEventData,
     )
-    space_batch_updated_event_data: event_payload.SpaceBatchUpdatedEventData = proto.Field(
-        proto.MESSAGE,
-        number=29,
-        oneof='payload',
-        message=event_payload.SpaceBatchUpdatedEventData,
+    space_batch_updated_event_data: event_payload.SpaceBatchUpdatedEventData = (
+        proto.Field(
+            proto.MESSAGE,
+            number=29,
+            oneof="payload",
+            message=event_payload.SpaceBatchUpdatedEventData,
+        )
     )
-    membership_created_event_data: event_payload.MembershipCreatedEventData = proto.Field(
-        proto.MESSAGE,
-        number=17,
-        oneof='payload',
-        message=event_payload.MembershipCreatedEventData,
+    membership_created_event_data: event_payload.MembershipCreatedEventData = (
+        proto.Field(
+            proto.MESSAGE,
+            number=17,
+            oneof="payload",
+            message=event_payload.MembershipCreatedEventData,
+        )
     )
-    membership_updated_event_data: event_payload.MembershipUpdatedEventData = proto.Field(
-        proto.MESSAGE,
-        number=18,
-        oneof='payload',
-        message=event_payload.MembershipUpdatedEventData,
+    membership_updated_event_data: event_payload.MembershipUpdatedEventData = (
+        proto.Field(
+            proto.MESSAGE,
+            number=18,
+            oneof="payload",
+            message=event_payload.MembershipUpdatedEventData,
+        )
     )
-    membership_deleted_event_data: event_payload.MembershipDeletedEventData = proto.Field(
-        proto.MESSAGE,
-        number=219,
-        oneof='payload',
-        message=event_payload.MembershipDeletedEventData,
+    membership_deleted_event_data: event_payload.MembershipDeletedEventData = (
+        proto.Field(
+            proto.MESSAGE,
+            number=219,
+            oneof="payload",
+            message=event_payload.MembershipDeletedEventData,
+        )
     )
     membership_batch_created_event_data: event_payload.MembershipBatchCreatedEventData = proto.Field(
         proto.MESSAGE,
         number=31,
-        oneof='payload',
+        oneof="payload",
         message=event_payload.MembershipBatchCreatedEventData,
     )
     membership_batch_updated_event_data: event_payload.MembershipBatchUpdatedEventData = proto.Field(
         proto.MESSAGE,
         number=32,
-        oneof='payload',
+        oneof="payload",
         message=event_payload.MembershipBatchUpdatedEventData,
     )
     membership_batch_deleted_event_data: event_payload.MembershipBatchDeletedEventData = proto.Field(
         proto.MESSAGE,
         number=33,
-        oneof='payload',
+        oneof="payload",
         message=event_payload.MembershipBatchDeletedEventData,
     )
     reaction_created_event_data: event_payload.ReactionCreatedEventData = proto.Field(
         proto.MESSAGE,
         number=21,
-        oneof='payload',
+        oneof="payload",
         message=event_payload.ReactionCreatedEventData,
     )
     reaction_deleted_event_data: event_payload.ReactionDeletedEventData = proto.Field(
         proto.MESSAGE,
         number=22,
-        oneof='payload',
+        oneof="payload",
         message=event_payload.ReactionDeletedEventData,
     )
-    reaction_batch_created_event_data: event_payload.ReactionBatchCreatedEventData = proto.Field(
-        proto.MESSAGE,
-        number=34,
-        oneof='payload',
-        message=event_payload.ReactionBatchCreatedEventData,
+    reaction_batch_created_event_data: event_payload.ReactionBatchCreatedEventData = (
+        proto.Field(
+            proto.MESSAGE,
+            number=34,
+            oneof="payload",
+            message=event_payload.ReactionBatchCreatedEventData,
+        )
     )
-    reaction_batch_deleted_event_data: event_payload.ReactionBatchDeletedEventData = proto.Field(
-        proto.MESSAGE,
-        number=35,
-        oneof='payload',
-        message=event_payload.ReactionBatchDeletedEventData,
+    reaction_batch_deleted_event_data: event_payload.ReactionBatchDeletedEventData = (
+        proto.Field(
+            proto.MESSAGE,
+            number=35,
+            oneof="payload",
+            message=event_payload.ReactionBatchDeletedEventData,
+        )
     )
 
 
@@ -487,10 +504,10 @@ class ListSpaceEventsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    space_events: MutableSequence['SpaceEvent'] = proto.RepeatedField(
+    space_events: MutableSequence["SpaceEvent"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
-        message='SpaceEvent',
+        message="SpaceEvent",
     )
     next_page_token: str = proto.Field(
         proto.STRING,

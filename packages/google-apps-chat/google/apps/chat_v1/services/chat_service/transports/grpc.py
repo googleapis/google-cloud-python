@@ -32,6 +32,7 @@ from google.apps.chat_v1.types import reaction
 from google.apps.chat_v1.types import reaction as gc_reaction
 from google.apps.chat_v1.types import space
 from google.apps.chat_v1.types import space as gc_space
+from google.apps.chat_v1.types import space_event
 from google.apps.chat_v1.types import space_read_state
 from google.apps.chat_v1.types import space_read_state as gc_space_read_state
 from google.apps.chat_v1.types import space_setup, thread_read_state
@@ -1226,6 +1227,89 @@ class ChatServiceGrpcTransport(ChatServiceTransport):
                 response_deserializer=thread_read_state.ThreadReadState.deserialize,
             )
         return self._stubs["get_thread_read_state"]
+
+    @property
+    def get_space_event(
+        self,
+    ) -> Callable[[space_event.GetSpaceEventRequest], space_event.SpaceEvent]:
+        r"""Return a callable for the get space event method over gRPC.
+
+        Returns an event from a Google Chat space. The `event
+        payload <https://developers.google.com/workspace/chat/api/reference/rest/v1/spaces.spaceEvents#SpaceEvent.FIELDS.oneof_payload>`__
+        contains the most recent version of the resource that changed.
+        For example, if you request an event about a new message but the
+        message was later updated, the server returns the updated
+        ``Message`` resource in the event payload.
+
+        Requires `user
+        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__.
+        To get an event, the authenticated user must be a member of the
+        space.
+
+        For an example, see `Get details about an event from a Google
+        Chat
+        space <https://developers.google.com/workspace/chat/get-space-event>`__.
+
+        Returns:
+            Callable[[~.GetSpaceEventRequest],
+                    ~.SpaceEvent]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_space_event" not in self._stubs:
+            self._stubs["get_space_event"] = self.grpc_channel.unary_unary(
+                "/google.chat.v1.ChatService/GetSpaceEvent",
+                request_serializer=space_event.GetSpaceEventRequest.serialize,
+                response_deserializer=space_event.SpaceEvent.deserialize,
+            )
+        return self._stubs["get_space_event"]
+
+    @property
+    def list_space_events(
+        self,
+    ) -> Callable[
+        [space_event.ListSpaceEventsRequest], space_event.ListSpaceEventsResponse
+    ]:
+        r"""Return a callable for the list space events method over gRPC.
+
+        Lists events from a Google Chat space. For each event, the
+        `payload <https://developers.google.com/workspace/chat/api/reference/rest/v1/spaces.spaceEvents#SpaceEvent.FIELDS.oneof_payload>`__
+        contains the most recent version of the Chat resource. For
+        example, if you list events about new space members, the server
+        returns ``Membership`` resources that contain the latest
+        membership details. If new members were removed during the
+        requested period, the event payload contains an empty
+        ``Membership`` resource.
+
+        Requires `user
+        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__.
+        To list events, the authenticated user must be a member of the
+        space.
+
+        For an example, see `List events from a Google Chat
+        space <https://developers.google.com/workspace/chat/list-space-events>`__.
+
+        Returns:
+            Callable[[~.ListSpaceEventsRequest],
+                    ~.ListSpaceEventsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_space_events" not in self._stubs:
+            self._stubs["list_space_events"] = self.grpc_channel.unary_unary(
+                "/google.chat.v1.ChatService/ListSpaceEvents",
+                request_serializer=space_event.ListSpaceEventsRequest.serialize,
+                response_deserializer=space_event.ListSpaceEventsResponse.deserialize,
+            )
+        return self._stubs["list_space_events"]
 
     def close(self):
         self.grpc_channel.close()

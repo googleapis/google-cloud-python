@@ -80,6 +80,11 @@
                 "get_space"
               ]
             },
+            "GetSpaceEvent": {
+              "methods": [
+                "get_space_event"
+              ]
+            },
             "GetSpaceReadState": {
               "methods": [
                 "get_space_read_state"
@@ -103,6 +108,11 @@
             "ListReactions": {
               "methods": [
                 "list_reactions"
+              ]
+            },
+            "ListSpaceEvents": {
+              "methods": [
+                "list_space_events"
               ]
             },
             "ListSpaces": {
@@ -215,6 +225,11 @@
                 "get_space"
               ]
             },
+            "GetSpaceEvent": {
+              "methods": [
+                "get_space_event"
+              ]
+            },
             "GetSpaceReadState": {
               "methods": [
                 "get_space_read_state"
@@ -238,6 +253,11 @@
             "ListReactions": {
               "methods": [
                 "list_reactions"
+              ]
+            },
+            "ListSpaceEvents": {
+              "methods": [
+                "list_space_events"
               ]
             },
             "ListSpaces": {
@@ -350,6 +370,11 @@
                 "get_space"
               ]
             },
+            "GetSpaceEvent": {
+              "methods": [
+                "get_space_event"
+              ]
+            },
             "GetSpaceReadState": {
               "methods": [
                 "get_space_read_state"
@@ -373,6 +398,11 @@
             "ListReactions": {
               "methods": [
                 "list_reactions"
+              ]
+            },
+            "ListSpaceEvents": {
+              "methods": [
+                "list_space_events"
               ]
             },
             "ListSpaces": {

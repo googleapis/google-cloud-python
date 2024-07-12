@@ -24,28 +24,27 @@ from google.apps.chat_v1.types import message as gc_message
 from google.apps.chat_v1.types import reaction as gc_reaction
 from google.apps.chat_v1.types import space as gc_space
 
-
 __protobuf__ = proto.module(
-    package='google.chat.v1',
+    package="google.chat.v1",
     manifest={
-        'MembershipCreatedEventData',
-        'MembershipDeletedEventData',
-        'MembershipUpdatedEventData',
-        'MembershipBatchCreatedEventData',
-        'MembershipBatchUpdatedEventData',
-        'MembershipBatchDeletedEventData',
-        'MessageCreatedEventData',
-        'MessageUpdatedEventData',
-        'MessageDeletedEventData',
-        'MessageBatchCreatedEventData',
-        'MessageBatchUpdatedEventData',
-        'MessageBatchDeletedEventData',
-        'SpaceUpdatedEventData',
-        'SpaceBatchUpdatedEventData',
-        'ReactionCreatedEventData',
-        'ReactionDeletedEventData',
-        'ReactionBatchCreatedEventData',
-        'ReactionBatchDeletedEventData',
+        "MembershipCreatedEventData",
+        "MembershipDeletedEventData",
+        "MembershipUpdatedEventData",
+        "MembershipBatchCreatedEventData",
+        "MembershipBatchUpdatedEventData",
+        "MembershipBatchDeletedEventData",
+        "MessageCreatedEventData",
+        "MessageUpdatedEventData",
+        "MessageDeletedEventData",
+        "MessageBatchCreatedEventData",
+        "MessageBatchUpdatedEventData",
+        "MessageBatchDeletedEventData",
+        "SpaceUpdatedEventData",
+        "SpaceBatchUpdatedEventData",
+        "ReactionCreatedEventData",
+        "ReactionDeletedEventData",
+        "ReactionBatchCreatedEventData",
+        "ReactionBatchDeletedEventData",
     },
 )
 
@@ -112,10 +111,10 @@ class MembershipBatchCreatedEventData(proto.Message):
             A list of new memberships.
     """
 
-    memberships: MutableSequence['MembershipCreatedEventData'] = proto.RepeatedField(
+    memberships: MutableSequence["MembershipCreatedEventData"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
-        message='MembershipCreatedEventData',
+        message="MembershipCreatedEventData",
     )
 
 
@@ -129,10 +128,10 @@ class MembershipBatchUpdatedEventData(proto.Message):
             A list of updated memberships.
     """
 
-    memberships: MutableSequence['MembershipUpdatedEventData'] = proto.RepeatedField(
+    memberships: MutableSequence["MembershipUpdatedEventData"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
-        message='MembershipUpdatedEventData',
+        message="MembershipUpdatedEventData",
     )
 
 
@@ -146,10 +145,10 @@ class MembershipBatchDeletedEventData(proto.Message):
             A list of deleted memberships.
     """
 
-    memberships: MutableSequence['MembershipDeletedEventData'] = proto.RepeatedField(
+    memberships: MutableSequence["MembershipDeletedEventData"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
-        message='MembershipDeletedEventData',
+        message="MembershipDeletedEventData",
     )
 
 
@@ -216,10 +215,10 @@ class MessageBatchCreatedEventData(proto.Message):
             A list of new messages.
     """
 
-    messages: MutableSequence['MessageCreatedEventData'] = proto.RepeatedField(
+    messages: MutableSequence["MessageCreatedEventData"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
-        message='MessageCreatedEventData',
+        message="MessageCreatedEventData",
     )
 
 
@@ -233,10 +232,10 @@ class MessageBatchUpdatedEventData(proto.Message):
             A list of updated messages.
     """
 
-    messages: MutableSequence['MessageUpdatedEventData'] = proto.RepeatedField(
+    messages: MutableSequence["MessageUpdatedEventData"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
-        message='MessageUpdatedEventData',
+        message="MessageUpdatedEventData",
     )
 
 
@@ -250,10 +249,10 @@ class MessageBatchDeletedEventData(proto.Message):
             A list of deleted messages.
     """
 
-    messages: MutableSequence['MessageDeletedEventData'] = proto.RepeatedField(
+    messages: MutableSequence["MessageDeletedEventData"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
-        message='MessageDeletedEventData',
+        message="MessageDeletedEventData",
     )
 
 
@@ -284,10 +283,10 @@ class SpaceBatchUpdatedEventData(proto.Message):
             A list of updated spaces.
     """
 
-    spaces: MutableSequence['SpaceUpdatedEventData'] = proto.RepeatedField(
+    spaces: MutableSequence["SpaceUpdatedEventData"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
-        message='SpaceUpdatedEventData',
+        message="SpaceUpdatedEventData",
     )
 
 
@@ -335,10 +334,10 @@ class ReactionBatchCreatedEventData(proto.Message):
             A list of new reactions.
     """
 
-    reactions: MutableSequence['ReactionCreatedEventData'] = proto.RepeatedField(
+    reactions: MutableSequence["ReactionCreatedEventData"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
-        message='ReactionCreatedEventData',
+        message="ReactionCreatedEventData",
     )
 
 
@@ -352,10 +351,10 @@ class ReactionBatchDeletedEventData(proto.Message):
             A list of deleted reactions.
     """
 
-    reactions: MutableSequence['ReactionDeletedEventData'] = proto.RepeatedField(
+    reactions: MutableSequence["ReactionDeletedEventData"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
-        message='ReactionDeletedEventData',
+        message="ReactionDeletedEventData",
     )
 
 
