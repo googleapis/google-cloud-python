@@ -481,7 +481,7 @@ class MessageMeta(type):
                 `always_print_fields_with_no_presence` instead. An option that
                 determines whether the default field values should be included in the results.
                 This value must match `always_print_fields_with_no_presence`,
-                if both arguments are explictly set.
+                if both arguments are explicitly set.
             preserving_proto_field_name (Optional(bool)): An option that
                 determines whether field name representations preserve
                 proto case (snake_case) or use lowerCamelCase. Default is False.
@@ -497,7 +497,7 @@ class MessageMeta(type):
                 always be serialized. Any field that supports presence is not affected by
                 this option (including singular message fields and oneof fields).
                 This value must match `including_default_value_fields`,
-                if both arguments are explictly set.
+                if both arguments are explicitly set.
         Returns:
             str: The json string representation of the protocol buffer.
         """
@@ -574,14 +574,14 @@ class MessageMeta(type):
                 `always_print_fields_with_no_presence` instead. An option that
                 determines whether the default field values should be included in the results.
                 This value must match `always_print_fields_with_no_presence`,
-                if both arguments are explictly set.
+                if both arguments are explicitly set.
             float_precision (Optional(int)): If set, use this to specify float field valid digits.
                 Default is None.
             always_print_fields_with_no_presence (Optional(bool)): If True, fields without
                 presence (implicit presence scalars, repeated fields, and map fields) will
                 always be serialized. Any field that supports presence is not affected by
                 this option (including singular message fields and oneof fields). This value
-                must match `including_default_value_fields`, if both arguments are explictly set.
+                must match `including_default_value_fields`, if both arguments are explicitly set.
 
         Returns:
             dict: A representation of the protocol buffer using pythonic data structures.
