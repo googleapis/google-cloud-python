@@ -27,6 +27,8 @@ from .types.dataset import Dataset, Status, Usage
 from .types.maps_platform_datasets import (
     CreateDatasetRequest,
     DeleteDatasetRequest,
+    FetchDatasetErrorsRequest,
+    FetchDatasetErrorsResponse,
     GetDatasetRequest,
     ListDatasetsRequest,
     ListDatasetsResponse,
@@ -38,6 +40,8 @@ __all__ = (
     "CreateDatasetRequest",
     "Dataset",
     "DeleteDatasetRequest",
+    "FetchDatasetErrorsRequest",
+    "FetchDatasetErrorsResponse",
     "FileFormat",
     "GcsSource",
     "GetDatasetRequest",

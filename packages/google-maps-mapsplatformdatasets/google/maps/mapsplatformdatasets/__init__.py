@@ -33,6 +33,8 @@ from google.maps.mapsplatformdatasets_v1.types.dataset import Dataset, Status, U
 from google.maps.mapsplatformdatasets_v1.types.maps_platform_datasets import (
     CreateDatasetRequest,
     DeleteDatasetRequest,
+    FetchDatasetErrorsRequest,
+    FetchDatasetErrorsResponse,
     GetDatasetRequest,
     ListDatasetsRequest,
     ListDatasetsResponse,
@@ -50,6 +52,8 @@ __all__ = (
     "Usage",
     "CreateDatasetRequest",
     "DeleteDatasetRequest",
+    "FetchDatasetErrorsRequest",
+    "FetchDatasetErrorsResponse",
     "GetDatasetRequest",
     "ListDatasetsRequest",
     "ListDatasetsResponse",

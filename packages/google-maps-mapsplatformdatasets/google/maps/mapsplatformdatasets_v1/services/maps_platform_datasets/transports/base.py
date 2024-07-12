@@ -155,6 +155,20 @@ class MapsPlatformDatasetsTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.fetch_dataset_errors: gapic_v1.method.wrap_method(
+                self.fetch_dataset_errors,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
             self.list_datasets: gapic_v1.method.wrap_method(
                 self.list_datasets,
                 default_retry=retries.Retry(
@@ -209,6 +223,18 @@ class MapsPlatformDatasetsTransport(abc.ABC):
     ) -> Callable[
         [maps_platform_datasets.GetDatasetRequest],
         Union[dataset.Dataset, Awaitable[dataset.Dataset]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def fetch_dataset_errors(
+        self,
+    ) -> Callable[
+        [maps_platform_datasets.FetchDatasetErrorsRequest],
+        Union[
+            maps_platform_datasets.FetchDatasetErrorsResponse,
+            Awaitable[maps_platform_datasets.FetchDatasetErrorsResponse],
+        ],
     ]:
         raise NotImplementedError()
 

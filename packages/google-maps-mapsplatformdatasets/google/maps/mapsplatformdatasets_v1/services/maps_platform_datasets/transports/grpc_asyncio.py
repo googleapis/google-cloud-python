@@ -327,6 +327,35 @@ class MapsPlatformDatasetsGrpcAsyncIOTransport(MapsPlatformDatasetsTransport):
         return self._stubs["get_dataset"]
 
     @property
+    def fetch_dataset_errors(
+        self,
+    ) -> Callable[
+        [maps_platform_datasets.FetchDatasetErrorsRequest],
+        Awaitable[maps_platform_datasets.FetchDatasetErrorsResponse],
+    ]:
+        r"""Return a callable for the fetch dataset errors method over gRPC.
+
+        Gets all the errors of a dataset.
+
+        Returns:
+            Callable[[~.FetchDatasetErrorsRequest],
+                    Awaitable[~.FetchDatasetErrorsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "fetch_dataset_errors" not in self._stubs:
+            self._stubs["fetch_dataset_errors"] = self.grpc_channel.unary_unary(
+                "/google.maps.mapsplatformdatasets.v1.MapsPlatformDatasets/FetchDatasetErrors",
+                request_serializer=maps_platform_datasets.FetchDatasetErrorsRequest.serialize,
+                response_deserializer=maps_platform_datasets.FetchDatasetErrorsResponse.deserialize,
+            )
+        return self._stubs["fetch_dataset_errors"]
+
+    @property
     def list_datasets(
         self,
     ) -> Callable[
@@ -398,6 +427,20 @@ class MapsPlatformDatasetsGrpcAsyncIOTransport(MapsPlatformDatasetsTransport):
             ),
             self.get_dataset: gapic_v1.method_async.wrap_method(
                 self.get_dataset,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.fetch_dataset_errors: gapic_v1.method_async.wrap_method(
+                self.fetch_dataset_errors,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
                     maximum=10.0,

@@ -318,6 +318,35 @@ class MapsPlatformDatasetsGrpcTransport(MapsPlatformDatasetsTransport):
         return self._stubs["get_dataset"]
 
     @property
+    def fetch_dataset_errors(
+        self,
+    ) -> Callable[
+        [maps_platform_datasets.FetchDatasetErrorsRequest],
+        maps_platform_datasets.FetchDatasetErrorsResponse,
+    ]:
+        r"""Return a callable for the fetch dataset errors method over gRPC.
+
+        Gets all the errors of a dataset.
+
+        Returns:
+            Callable[[~.FetchDatasetErrorsRequest],
+                    ~.FetchDatasetErrorsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "fetch_dataset_errors" not in self._stubs:
+            self._stubs["fetch_dataset_errors"] = self.grpc_channel.unary_unary(
+                "/google.maps.mapsplatformdatasets.v1.MapsPlatformDatasets/FetchDatasetErrors",
+                request_serializer=maps_platform_datasets.FetchDatasetErrorsRequest.serialize,
+                response_deserializer=maps_platform_datasets.FetchDatasetErrorsResponse.deserialize,
+            )
+        return self._stubs["fetch_dataset_errors"]
+
+    @property
     def list_datasets(
         self,
     ) -> Callable[

@@ -18,6 +18,7 @@ from __future__ import annotations
 from typing import MutableMapping, MutableSequence
 
 from google.protobuf import field_mask_pb2  # type: ignore
+from google.rpc import status_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.maps.mapsplatformdatasets_v1.types import dataset as gmm_dataset
@@ -30,6 +31,8 @@ __protobuf__ = proto.module(
         "GetDatasetRequest",
         "ListDatasetsRequest",
         "ListDatasetsResponse",
+        "FetchDatasetErrorsRequest",
+        "FetchDatasetErrorsResponse",
         "DeleteDatasetRequest",
     },
 )
@@ -177,6 +180,69 @@ class ListDatasetsResponse(proto.Message):
     next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+
+
+class FetchDatasetErrorsRequest(proto.Message):
+    r"""Request to list detailed errors belonging to a dataset.
+
+    Attributes:
+        dataset (str):
+            Required. The name of the dataset to list all the errors
+            for. Format: projects/{project}/datasets/{dataset_id}
+        page_size (int):
+            The maximum number of errors to return per
+            page.
+            The maximum value is 500; values above 500 will
+            be capped to 500.
+
+            If unspecified, at most 50 errors will be
+            returned.
+        page_token (str):
+            The page token, received from a previous
+            ListDatasetErrors call. Provide this to retrieve
+            the subsequent page.
+    """
+
+    dataset: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class FetchDatasetErrorsResponse(proto.Message):
+    r"""Response object of FetchDatasetErrors.
+
+    Attributes:
+        next_page_token (str):
+            A token that can be sent as ``page_token`` to retrieve the
+            next page.
+
+            If this field is omitted, there are no subsequent pages.
+        errors (MutableSequence[google.rpc.status_pb2.Status]):
+            The errors associated with a dataset.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    errors: MutableSequence[status_pb2.Status] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message=status_pb2.Status,
     )
 
 
