@@ -274,6 +274,7 @@ def test_documentsnapshot___eq___same_reference_same_data():
 @pytest.mark.xfail(strict=False)
 def test_documentsnapshot___hash__():
     import datetime
+
     from proto.datetime_helpers import DatetimeWithNanoseconds
 
     client = mock.MagicMock()
@@ -401,8 +402,9 @@ def test__consume_single_get_failure_too_many():
 
 def test__first_write_result_success():
     from google.protobuf import timestamp_pb2
-    from google.cloud.firestore_v1.types import write
+
     from google.cloud.firestore_v1.base_document import _first_write_result
+    from google.cloud.firestore_v1.types import write
 
     single_result = write.WriteResult(
         update_time=timestamp_pb2.Timestamp(seconds=1368767504, nanos=458000123)
@@ -421,8 +423,8 @@ def test__first_write_result_failure_not_enough():
 
 
 def test__first_write_result_more_than_one():
-    from google.cloud.firestore_v1.types import write
     from google.cloud.firestore_v1.base_document import _first_write_result
+    from google.cloud.firestore_v1.types import write
 
     result1 = write.WriteResult()
     result2 = write.WriteResult()

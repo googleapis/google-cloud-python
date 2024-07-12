@@ -18,11 +18,8 @@ import mock
 import pytest
 
 from google.cloud.firestore_v1.base_client import DEFAULT_DATABASE
-
-from tests.unit.v1.test_base_query import _make_cursor_pb
-from tests.unit.v1.test_base_query import _make_query_response
-
 from tests.unit.v1._test_helpers import DEFAULT_TEST_PROJECT, make_client, make_query
+from tests.unit.v1.test_base_query import _make_cursor_pb, _make_query_response
 
 
 def test_query_constructor():
@@ -154,8 +151,8 @@ def test_query_get_limit_to_last(database):
 
 @pytest.mark.parametrize("database", [None, "somedb"])
 def test_query_sum(database):
-    from google.cloud.firestore_v1.field_path import FieldPath
     from google.cloud.firestore_v1.base_aggregation import SumAggregation
+    from google.cloud.firestore_v1.field_path import FieldPath
 
     client = make_client(database=database)
     parent = client.collection("dee")
@@ -184,8 +181,8 @@ def test_query_sum(database):
 
 @pytest.mark.parametrize("database", [None, "somedb"])
 def test_query_avg(database):
-    from google.cloud.firestore_v1.field_path import FieldPath
     from google.cloud.firestore_v1.base_aggregation import AvgAggregation
+    from google.cloud.firestore_v1.field_path import FieldPath
 
     client = make_client(database=database)
     parent = client.collection("dee")
@@ -638,8 +635,8 @@ _not_passed = object()
 def _query_stream_w_retriable_exc_helper(
     retry=_not_passed, timeout=None, transaction=None, expect_retry=True, database=None
 ):
-    from google.api_core import exceptions
-    from google.api_core import gapic_v1
+    from google.api_core import exceptions, gapic_v1
+
     from google.cloud.firestore_v1 import _helpers
     from google.cloud.firestore_v1.stream_generator import StreamGenerator
 

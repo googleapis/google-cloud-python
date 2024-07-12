@@ -18,7 +18,6 @@ import datetime
 import mock
 import pytest
 
-
 from tests.unit.v1._test_helpers import make_test_credentials
 
 
@@ -149,6 +148,7 @@ def test_verify_path_w_success_document():
 
 def test_encode_value_w_none():
     from google.protobuf import struct_pb2
+
     from google.cloud.firestore_v1._helpers import encode_value
 
     result = encode_value(None)
@@ -184,8 +184,9 @@ def test_encode_value_w_float():
 
 def test_encode_value_w_datetime_with_nanos():
     from google.api_core.datetime_helpers import DatetimeWithNanoseconds
-    from google.cloud.firestore_v1._helpers import encode_value
     from google.protobuf import timestamp_pb2
+
+    from google.cloud.firestore_v1._helpers import encode_value
 
     dt_seconds = 1488768504
     dt_nanos = 458816991
@@ -199,6 +200,7 @@ def test_encode_value_w_datetime_with_nanos():
 
 def test_encode_value_w_datetime_wo_nanos():
     from google.protobuf import timestamp_pb2
+
     from google.cloud.firestore_v1._helpers import encode_value
 
     dt_seconds = 1488768504
@@ -245,8 +247,7 @@ def test_encode_value_w_reference_value():
 
 
 def test_encode_value_w_geo_point():
-    from google.cloud.firestore_v1._helpers import encode_value
-    from google.cloud.firestore_v1._helpers import GeoPoint
+    from google.cloud.firestore_v1._helpers import GeoPoint, encode_value
 
     value = GeoPoint(50.5, 88.75)
     result = encode_value(value)
@@ -296,11 +297,10 @@ def test_encode_value_w_bad_type():
 
 
 def test_encode_dict_w_many_types():
-    from google.protobuf import struct_pb2
-    from google.protobuf import timestamp_pb2
+    from google.protobuf import struct_pb2, timestamp_pb2
+
     from google.cloud.firestore_v1._helpers import encode_dict
-    from google.cloud.firestore_v1.types.document import ArrayValue
-    from google.cloud.firestore_v1.types.document import MapValue
+    from google.cloud.firestore_v1.types.document import ArrayValue, MapValue
 
     dt_seconds = 1497397225
     dt_nanos = 465964000
@@ -355,8 +355,10 @@ def test_encode_dict_w_many_types():
 
 
 def test_reference_value_to_document_w_bad_format():
-    from google.cloud.firestore_v1._helpers import BAD_REFERENCE_ERROR
-    from google.cloud.firestore_v1._helpers import reference_value_to_document
+    from google.cloud.firestore_v1._helpers import (
+        BAD_REFERENCE_ERROR,
+        reference_value_to_document,
+    )
 
     reference_value = "not/the/right/format"
     with pytest.raises(ValueError) as exc_info:
@@ -367,8 +369,8 @@ def test_reference_value_to_document_w_bad_format():
 
 
 def test_reference_value_to_document_w_same_client():
-    from google.cloud.firestore_v1.document import DocumentReference
     from google.cloud.firestore_v1._helpers import reference_value_to_document
+    from google.cloud.firestore_v1.document import DocumentReference
 
     client = _make_client()
     document = client.document("that", "this")
@@ -383,8 +385,10 @@ def test_reference_value_to_document_w_same_client():
 
 
 def test_reference_value_to_document_w_different_client():
-    from google.cloud.firestore_v1._helpers import WRONG_APP_REFERENCE
-    from google.cloud.firestore_v1._helpers import reference_value_to_document
+    from google.cloud.firestore_v1._helpers import (
+        WRONG_APP_REFERENCE,
+        reference_value_to_document,
+    )
 
     client1 = _make_client(project="kirk")
     document = client1.document("tin", "foil")
@@ -431,11 +435,12 @@ def test_documentreferencevalue_w_broken():
 
 
 def test_document_snapshot_to_protobuf_w_real_snapshot():
+    from google.protobuf import timestamp_pb2  # type: ignore
+
     from google.cloud.firestore_v1._helpers import document_snapshot_to_protobuf
-    from google.cloud.firestore_v1.types import Document
     from google.cloud.firestore_v1.base_document import DocumentSnapshot
     from google.cloud.firestore_v1.document import DocumentReference
-    from google.protobuf import timestamp_pb2  # type: ignore
+    from google.cloud.firestore_v1.types import Document
 
     client = _make_client()
     snapshot = DocumentSnapshot(
@@ -468,6 +473,7 @@ def test_document_snapshot_to_protobuf_w_non_existant_snapshot():
 
 def test_decode_value_w_none():
     from google.protobuf import struct_pb2
+
     from google.cloud.firestore_v1._helpers import decode_value
 
     value = _value_pb(null_value=struct_pb2.NULL_VALUE)
@@ -500,9 +506,10 @@ def test_decode_value_w_float():
 
 
 def test_decode_value_w_datetime():
-    from google.cloud.firestore_v1._helpers import decode_value
     from google.api_core.datetime_helpers import DatetimeWithNanoseconds
     from google.protobuf import timestamp_pb2
+
+    from google.cloud.firestore_v1._helpers import decode_value
 
     dt_seconds = 552855006
     dt_nanos = 766961828
@@ -531,8 +538,8 @@ def test_decode_value_w_bytes():
 
 
 def test_decode_value_w_reference():
-    from google.cloud.firestore_v1.document import DocumentReference
     from google.cloud.firestore_v1._helpers import decode_value
+    from google.cloud.firestore_v1.document import DocumentReference
 
     client = _make_client()
     path = ("then", "there-was-one")
@@ -547,8 +554,7 @@ def test_decode_value_w_reference():
 
 
 def test_decode_value_w_geo_point():
-    from google.cloud.firestore_v1._helpers import GeoPoint
-    from google.cloud.firestore_v1._helpers import decode_value
+    from google.cloud.firestore_v1._helpers import GeoPoint, decode_value
 
     geo_pt = GeoPoint(latitude=42.5, longitude=99.0625)
     value = _value_pb(geo_point_value=geo_pt.to_protobuf())
@@ -556,8 +562,8 @@ def test_decode_value_w_geo_point():
 
 
 def test_decode_value_w_array():
-    from google.cloud.firestore_v1.types import document
     from google.cloud.firestore_v1._helpers import decode_value
+    from google.cloud.firestore_v1.types import document
 
     sub_value1 = _value_pb(boolean_value=True)
     sub_value2 = _value_pb(double_value=14.1396484375)
@@ -574,8 +580,8 @@ def test_decode_value_w_array():
 
 
 def test_decode_value_w_map():
-    from google.cloud.firestore_v1.types import document
     from google.cloud.firestore_v1._helpers import decode_value
+    from google.cloud.firestore_v1.types import document
 
     sub_value1 = _value_pb(integer_value=187680)
     sub_value2 = _value_pb(string_value="how low can you go?")
@@ -590,8 +596,8 @@ def test_decode_value_w_map():
 
 
 def test_decode_value_w_nested_map():
-    from google.cloud.firestore_v1.types import document
     from google.cloud.firestore_v1._helpers import decode_value
+    from google.cloud.firestore_v1.types import document
 
     actual_value1 = 1009876
     actual_value2 = "hey you guys"
@@ -646,12 +652,11 @@ def test_decode_value_w_unknown_value_type():
 
 
 def test_decode_dict_w_many_types():
-    from google.protobuf import struct_pb2
-    from google.protobuf import timestamp_pb2
-    from google.cloud.firestore_v1.types.document import ArrayValue
-    from google.cloud.firestore_v1.types.document import MapValue
-    from google.cloud.firestore_v1.field_path import FieldPath
+    from google.protobuf import struct_pb2, timestamp_pb2
+
     from google.cloud.firestore_v1._helpers import decode_dict
+    from google.cloud.firestore_v1.field_path import FieldPath
+    from google.cloud.firestore_v1.types.document import ArrayValue, MapValue
 
     dt_seconds = 1394037350
     dt_nanos = 667285000
@@ -711,8 +716,8 @@ def _dummy_ref_string(collection_id):
 
 
 def test_get_doc_id_w_success():
-    from google.cloud.firestore_v1.types import document
     from google.cloud.firestore_v1._helpers import get_doc_id
+    from google.cloud.firestore_v1.types import document
 
     prefix = _dummy_ref_string("sub-collection")
     actual_id = "this-is-the-one"
@@ -724,8 +729,8 @@ def test_get_doc_id_w_success():
 
 
 def test_get_doc_id_w_failure():
-    from google.cloud.firestore_v1.types import document
     from google.cloud.firestore_v1._helpers import get_doc_id
+    from google.cloud.firestore_v1.types import document
 
     actual_prefix = _dummy_ref_string("the-right-one")
     wrong_prefix = _dummy_ref_string("the-wrong-one")
@@ -742,8 +747,7 @@ def test_get_doc_id_w_failure():
 
 
 def test_extract_fields_w_empty_document():
-    from google.cloud.firestore_v1._helpers import extract_fields
-    from google.cloud.firestore_v1._helpers import _EmptyDict
+    from google.cloud.firestore_v1._helpers import _EmptyDict, extract_fields
 
     document_data = {}
     prefix_path = _make_field_path()
@@ -779,8 +783,7 @@ def test_extract_fields_w_shallow_keys():
 
 
 def test_extract_fields_w_nested():
-    from google.cloud.firestore_v1._helpers import _EmptyDict
-    from google.cloud.firestore_v1._helpers import extract_fields
+    from google.cloud.firestore_v1._helpers import _EmptyDict, extract_fields
 
     document_data = {"b": {"a": {"d": 4, "c": 3, "g": {}}, "e": 7}, "f": 5}
     prefix_path = _make_field_path()
@@ -797,8 +800,7 @@ def test_extract_fields_w_nested():
 
 
 def test_extract_fields_w_expand_dotted():
-    from google.cloud.firestore_v1._helpers import _EmptyDict
-    from google.cloud.firestore_v1._helpers import extract_fields
+    from google.cloud.firestore_v1._helpers import _EmptyDict, extract_fields
 
     document_data = {
         "b": {"a": {"d": 4, "c": 3, "g": {}, "k.l.m": 17}, "e": 7},
@@ -845,8 +847,7 @@ def test_set_field_value_normal_value_w_nested():
 
 
 def test_set_field_value_empty_dict_w_shallow():
-    from google.cloud.firestore_v1._helpers import _EmptyDict
-    from google.cloud.firestore_v1._helpers import set_field_value
+    from google.cloud.firestore_v1._helpers import _EmptyDict, set_field_value
 
     document = {}
     field_path = _make_field_path("a")
@@ -858,8 +859,7 @@ def test_set_field_value_empty_dict_w_shallow():
 
 
 def test_set_field_value_empty_dict_w_nested():
-    from google.cloud.firestore_v1._helpers import _EmptyDict
-    from google.cloud.firestore_v1._helpers import set_field_value
+    from google.cloud.firestore_v1._helpers import _EmptyDict, set_field_value
 
     document = {}
     field_path = _make_field_path("a", "b", "c")
@@ -1369,8 +1369,8 @@ def test_documentextractor_get_update_pb_w_exists_precondition():
 
 
 def test_documentextractor_get_update_pb_wo_exists_precondition():
-    from google.cloud.firestore_v1.types import write
     from google.cloud.firestore_v1._helpers import encode_dict
+    from google.cloud.firestore_v1.types import write
 
     document_data = {"a": 1}
     inst = _make_document_extractor(document_data)
@@ -1395,9 +1395,9 @@ def test_documentextractor_get_field_transform_pbs_miss():
 
 
 def test_documentextractor_get_field_transform_pbs_w_server_timestamp():
-    from google.cloud.firestore_v1.types import write
-    from google.cloud.firestore_v1.transforms import SERVER_TIMESTAMP
     from google.cloud.firestore_v1._helpers import REQUEST_TIME_ENUM
+    from google.cloud.firestore_v1.transforms import SERVER_TIMESTAMP
+    from google.cloud.firestore_v1.types import write
 
     document_data = {"a": SERVER_TIMESTAMP}
     inst = _make_document_extractor(document_data)
@@ -1413,9 +1413,9 @@ def test_documentextractor_get_field_transform_pbs_w_server_timestamp():
 
 
 def test_documentextractor_get_transform_pb_w_server_timestamp_w_exists_precondition():
-    from google.cloud.firestore_v1.types import write
-    from google.cloud.firestore_v1.transforms import SERVER_TIMESTAMP
     from google.cloud.firestore_v1._helpers import REQUEST_TIME_ENUM
+    from google.cloud.firestore_v1.transforms import SERVER_TIMESTAMP
+    from google.cloud.firestore_v1.types import write
 
     document_data = {"a": SERVER_TIMESTAMP}
     inst = _make_document_extractor(document_data)
@@ -1435,9 +1435,9 @@ def test_documentextractor_get_transform_pb_w_server_timestamp_w_exists_precondi
 
 
 def test_documentextractor_get_transform_pb_w_server_timestamp_wo_exists_precondition():
-    from google.cloud.firestore_v1.types import write
-    from google.cloud.firestore_v1.transforms import SERVER_TIMESTAMP
     from google.cloud.firestore_v1._helpers import REQUEST_TIME_ENUM
+    from google.cloud.firestore_v1.transforms import SERVER_TIMESTAMP
+    from google.cloud.firestore_v1.types import write
 
     document_data = {"a": {"b": {"c": SERVER_TIMESTAMP}}}
     inst = _make_document_extractor(document_data)
@@ -1462,8 +1462,8 @@ def _array_value_to_list(array_value):
 
 
 def test_documentextractor_get_transform_pb_w_array_remove():
-    from google.cloud.firestore_v1.types import write
     from google.cloud.firestore_v1.transforms import ArrayRemove
+    from google.cloud.firestore_v1.types import write
 
     values = [2, 4, 8]
     document_data = {"a": {"b": {"c": ArrayRemove(values)}}}
@@ -1484,8 +1484,8 @@ def test_documentextractor_get_transform_pb_w_array_remove():
 
 
 def test_documentextractor_get_transform_pb_w_array_union():
-    from google.cloud.firestore_v1.types import write
     from google.cloud.firestore_v1.transforms import ArrayUnion
+    from google.cloud.firestore_v1.types import write
 
     values = [1, 3, 5]
     document_data = {"a": {"b": {"c": ArrayUnion(values)}}}
@@ -1506,8 +1506,8 @@ def test_documentextractor_get_transform_pb_w_array_union():
 
 
 def test_documentextractor_get_transform_pb_w_increment_int():
-    from google.cloud.firestore_v1.types import write
     from google.cloud.firestore_v1.transforms import Increment
+    from google.cloud.firestore_v1.types import write
 
     value = 1
     document_data = {"a": {"b": {"c": Increment(value)}}}
@@ -1528,8 +1528,8 @@ def test_documentextractor_get_transform_pb_w_increment_int():
 
 
 def test_documentextractor_get_transform_pb_w_increment_float():
-    from google.cloud.firestore_v1.types import write
     from google.cloud.firestore_v1.transforms import Increment
+    from google.cloud.firestore_v1.types import write
 
     value = 3.1415926
     document_data = {"a": {"b": {"c": Increment(value)}}}
@@ -1550,8 +1550,8 @@ def test_documentextractor_get_transform_pb_w_increment_float():
 
 
 def test_documentextractor_get_transform_pb_w_maximum_int():
-    from google.cloud.firestore_v1.types import write
     from google.cloud.firestore_v1.transforms import Maximum
+    from google.cloud.firestore_v1.types import write
 
     value = 1
     document_data = {"a": {"b": {"c": Maximum(value)}}}
@@ -1572,8 +1572,8 @@ def test_documentextractor_get_transform_pb_w_maximum_int():
 
 
 def test_documentextractor_get_transform_pb_w_maximum_float():
-    from google.cloud.firestore_v1.types import write
     from google.cloud.firestore_v1.transforms import Maximum
+    from google.cloud.firestore_v1.types import write
 
     value = 3.1415926
     document_data = {"a": {"b": {"c": Maximum(value)}}}
@@ -1594,8 +1594,8 @@ def test_documentextractor_get_transform_pb_w_maximum_float():
 
 
 def test_documentextractor_get_transform_pb_w_minimum_int():
-    from google.cloud.firestore_v1.types import write
     from google.cloud.firestore_v1.transforms import Minimum
+    from google.cloud.firestore_v1.types import write
 
     value = 1
     document_data = {"a": {"b": {"c": Minimum(value)}}}
@@ -1616,8 +1616,8 @@ def test_documentextractor_get_transform_pb_w_minimum_int():
 
 
 def test_documentextractor_get_transform_pb_w_minimum_float():
-    from google.cloud.firestore_v1.types import write
     from google.cloud.firestore_v1.transforms import Minimum
+    from google.cloud.firestore_v1.types import write
 
     value = 3.1415926
     document_data = {"a": {"b": {"c": Minimum(value)}}}
@@ -1638,10 +1638,8 @@ def test_documentextractor_get_transform_pb_w_minimum_float():
 
 
 def _make_write_w_document_for_create(document_path, **data):
-    from google.cloud.firestore_v1.types import document
-    from google.cloud.firestore_v1.types import write
     from google.cloud.firestore_v1._helpers import encode_dict
-    from google.cloud.firestore_v1.types import common
+    from google.cloud.firestore_v1.types import common, document, write
 
     return write.Write(
         update=document.Document(name=document_path, fields=encode_dict(data)),
@@ -1662,8 +1660,8 @@ def _add_field_transforms_for_create(update_pb, fields):
 
 
 def __pbs_for_create_helper(do_transform=False, empty_val=False):
-    from google.cloud.firestore_v1.transforms import SERVER_TIMESTAMP
     from google.cloud.firestore_v1._helpers import pbs_for_create
+    from google.cloud.firestore_v1.transforms import SERVER_TIMESTAMP
 
     document_path = _make_ref_string("little", "town", "of", "ham")
     document_data = {"cheese": 1.5, "crackers": True}
@@ -1705,9 +1703,8 @@ def test__pbs_for_create_w_transform_and_empty_value():
 
 
 def _make_write_w_document_for_set_no_merge(document_path, **data):
-    from google.cloud.firestore_v1.types import document
-    from google.cloud.firestore_v1.types import write
     from google.cloud.firestore_v1._helpers import encode_dict
+    from google.cloud.firestore_v1.types import document, write
 
     return write.Write(
         update=document.Document(name=document_path, fields=encode_dict(data))
@@ -1740,8 +1737,8 @@ def test__pbs_for_set_w_empty_document():
 
 
 def test__pbs_for_set_w_only_server_timestamp():
-    from google.cloud.firestore_v1.transforms import SERVER_TIMESTAMP
     from google.cloud.firestore_v1._helpers import pbs_for_set_no_merge
+    from google.cloud.firestore_v1.transforms import SERVER_TIMESTAMP
 
     document_path = _make_ref_string("little", "town", "of", "ham")
     document_data = {"butter": SERVER_TIMESTAMP}
@@ -1755,8 +1752,8 @@ def test__pbs_for_set_w_only_server_timestamp():
 
 
 def _pbs_for_set_no_merge_helper(do_transform=False, empty_val=False):
-    from google.cloud.firestore_v1.transforms import SERVER_TIMESTAMP
     from google.cloud.firestore_v1._helpers import pbs_for_set_no_merge
+    from google.cloud.firestore_v1.transforms import SERVER_TIMESTAMP
 
     document_path = _make_ref_string("little", "town", "of", "ham")
     document_data = {"cheese": 1.5, "crackers": True}
@@ -1994,9 +1991,8 @@ def test_documentextractorformerge_apply_merge_list_fields_w_array_union():
 
 
 def _make_write_w_document_for_set_w_merge(document_path, **data):
-    from google.cloud.firestore_v1.types import document
-    from google.cloud.firestore_v1.types import write
     from google.cloud.firestore_v1._helpers import encode_dict
+    from google.cloud.firestore_v1.types import document, write
 
     return write.Write(
         update=document.Document(name=document_path, fields=encode_dict(data))
@@ -2054,8 +2050,8 @@ def test__pbs_for_set_with_merge_w_merge_field_wo_transform():
 
 
 def test__pbs_for_set_with_merge_w_merge_true_w_only_transform():
-    from google.cloud.firestore_v1.transforms import SERVER_TIMESTAMP
     from google.cloud.firestore_v1._helpers import pbs_for_set_with_merge
+    from google.cloud.firestore_v1.transforms import SERVER_TIMESTAMP
 
     document_path = _make_ref_string("little", "town", "of", "ham")
     document_data = {"butter": SERVER_TIMESTAMP}
@@ -2070,8 +2066,8 @@ def test__pbs_for_set_with_merge_w_merge_true_w_only_transform():
 
 
 def test__pbs_for_set_with_merge_w_merge_true_w_transform():
-    from google.cloud.firestore_v1.transforms import SERVER_TIMESTAMP
     from google.cloud.firestore_v1._helpers import pbs_for_set_with_merge
+    from google.cloud.firestore_v1.transforms import SERVER_TIMESTAMP
 
     document_path = _make_ref_string("little", "town", "of", "ham")
     update_data = {"cheese": 1.5, "crackers": True}
@@ -2088,8 +2084,8 @@ def test__pbs_for_set_with_merge_w_merge_true_w_transform():
 
 
 def test__pbs_for_set_with_merge_w_merge_field_w_transform():
-    from google.cloud.firestore_v1.transforms import SERVER_TIMESTAMP
     from google.cloud.firestore_v1._helpers import pbs_for_set_with_merge
+    from google.cloud.firestore_v1.transforms import SERVER_TIMESTAMP
 
     document_path = _make_ref_string("little", "town", "of", "ham")
     update_data = {"cheese": 1.5, "crackers": True}
@@ -2110,8 +2106,8 @@ def test__pbs_for_set_with_merge_w_merge_field_w_transform():
 
 
 def test__pbs_for_set_with_merge_w_merge_field_w_transform_masking_simple():
-    from google.cloud.firestore_v1.transforms import SERVER_TIMESTAMP
     from google.cloud.firestore_v1._helpers import pbs_for_set_with_merge
+    from google.cloud.firestore_v1.transforms import SERVER_TIMESTAMP
 
     document_path = _make_ref_string("little", "town", "of", "ham")
     update_data = {"cheese": 1.5, "crackers": True}
@@ -2130,8 +2126,8 @@ def test__pbs_for_set_with_merge_w_merge_field_w_transform_masking_simple():
 
 
 def test__pbs_for_set_with_merge_w_merge_field_w_transform_parent():
-    from google.cloud.firestore_v1.transforms import SERVER_TIMESTAMP
     from google.cloud.firestore_v1._helpers import pbs_for_set_with_merge
+    from google.cloud.firestore_v1.transforms import SERVER_TIMESTAMP
 
     document_path = _make_ref_string("little", "town", "of", "ham")
     update_data = {"cheese": 1.5, "crackers": True}
@@ -2215,14 +2211,11 @@ def test_documentextractorforupdate_ctor_w_nested_dotted_keys():
 
 
 def _pbs_for_update_helper(option=None, do_transform=False, **write_kwargs):
-    from google.cloud.firestore_v1 import _helpers
+    from google.cloud.firestore_v1 import DocumentTransform, _helpers
+    from google.cloud.firestore_v1._helpers import pbs_for_update
     from google.cloud.firestore_v1.field_path import FieldPath
     from google.cloud.firestore_v1.transforms import SERVER_TIMESTAMP
-    from google.cloud.firestore_v1 import DocumentTransform
-    from google.cloud.firestore_v1.types import common
-    from google.cloud.firestore_v1.types import document
-    from google.cloud.firestore_v1.types import write
-    from google.cloud.firestore_v1._helpers import pbs_for_update
+    from google.cloud.firestore_v1.types import common, document, write
 
     document_path = _make_ref_string("toy", "car", "onion", "garlic")
     field_path1 = "bitez.yum"
@@ -2286,8 +2279,8 @@ def test__pbs_for_update_w_update_and_transform():
 
 
 def _pb_for_delete_helper(option=None, **write_kwargs):
-    from google.cloud.firestore_v1.types import write
     from google.cloud.firestore_v1._helpers import pb_for_delete
+    from google.cloud.firestore_v1.types import write
 
     document_path = _make_ref_string("chicken", "philly", "one", "two")
     write_pb = pb_for_delete(document_path, option)
@@ -2302,8 +2295,9 @@ def test__pb_for_delete_wo_option():
 
 def test__pb_for_delete_w_option():
     from google.protobuf import timestamp_pb2
-    from google.cloud.firestore_v1.types import common
+
     from google.cloud.firestore_v1 import _helpers
+    from google.cloud.firestore_v1.types import common
 
     update_time = timestamp_pb2.Timestamp(seconds=1309700594, nanos=822211297)
     option = _helpers.LastUpdateOption(update_time)
@@ -2319,8 +2313,8 @@ def test_get_transaction_id_w_no_transaction():
 
 
 def test_get_transaction_id_w_invalid_transaction():
-    from google.cloud.firestore_v1.transaction import Transaction
     from google.cloud.firestore_v1._helpers import get_transaction_id
+    from google.cloud.firestore_v1.transaction import Transaction
 
     transaction = Transaction(mock.sentinel.client)
     assert not transaction.in_progress
@@ -2329,9 +2323,11 @@ def test_get_transaction_id_w_invalid_transaction():
 
 
 def test_get_transaction_id_w_after_writes_not_allowed():
-    from google.cloud.firestore_v1._helpers import ReadAfterWriteError
+    from google.cloud.firestore_v1._helpers import (
+        ReadAfterWriteError,
+        get_transaction_id,
+    )
     from google.cloud.firestore_v1.transaction import Transaction
-    from google.cloud.firestore_v1._helpers import get_transaction_id
 
     transaction = Transaction(mock.sentinel.client)
     transaction._id = b"under-hook"
@@ -2342,8 +2338,8 @@ def test_get_transaction_id_w_after_writes_not_allowed():
 
 
 def test_get_transaction_id_w_after_writes_allowed():
-    from google.cloud.firestore_v1.transaction import Transaction
     from google.cloud.firestore_v1._helpers import get_transaction_id
+    from google.cloud.firestore_v1.transaction import Transaction
 
     transaction = Transaction(mock.sentinel.client)
     txn_id = b"we-are-0fine"
@@ -2355,8 +2351,8 @@ def test_get_transaction_id_w_after_writes_allowed():
 
 
 def test_get_transaction_id_w_good_transaction():
-    from google.cloud.firestore_v1.transaction import Transaction
     from google.cloud.firestore_v1._helpers import get_transaction_id
+    from google.cloud.firestore_v1.transaction import Transaction
 
     transaction = Transaction(mock.sentinel.client)
     txn_id = b"doubt-it"
@@ -2416,9 +2412,9 @@ def test_lastupdateoption___eq___same_timestamp():
 
 def test_lastupdateoption_modify_write_update_time():
     from google.protobuf import timestamp_pb2
-    from google.cloud.firestore_v1.types import common
-    from google.cloud.firestore_v1.types import write
+
     from google.cloud.firestore_v1._helpers import LastUpdateOption
+    from google.cloud.firestore_v1.types import common, write
 
     timestamp_pb = timestamp_pb2.Timestamp(seconds=683893592, nanos=229362000)
     option = LastUpdateOption(timestamp_pb)
@@ -2462,9 +2458,8 @@ def test_existsoption___eq___same_exists():
 
 
 def test_existsoption_modify_write():
-    from google.cloud.firestore_v1.types import common
-    from google.cloud.firestore_v1.types import write
     from google.cloud.firestore_v1._helpers import ExistsOption
+    from google.cloud.firestore_v1.types import common, write
 
     for exists in (True, False):
         option = ExistsOption(exists)
@@ -2478,6 +2473,7 @@ def test_existsoption_modify_write():
 
 def test_make_retry_timeout_kwargs_default():
     from google.api_core.gapic_v1.method import DEFAULT
+
     from google.cloud.firestore_v1._helpers import make_retry_timeout_kwargs
 
     kwargs = make_retry_timeout_kwargs(DEFAULT, None)
@@ -2495,6 +2491,7 @@ def test_make_retry_timeout_kwargs_retry_None():
 
 def test_make_retry_timeout_kwargs_retry_only():
     from google.api_core.retry import Retry
+
     from google.cloud.firestore_v1._helpers import make_retry_timeout_kwargs
 
     retry = Retry(predicate=object())
@@ -2505,6 +2502,7 @@ def test_make_retry_timeout_kwargs_retry_only():
 
 def test_make_retry_timeout_kwargs_timeout_only():
     from google.api_core.gapic_v1.method import DEFAULT
+
     from google.cloud.firestore_v1._helpers import make_retry_timeout_kwargs
 
     timeout = 123.0
@@ -2515,6 +2513,7 @@ def test_make_retry_timeout_kwargs_timeout_only():
 
 def test_make_retry_timeout_kwargs_retry_and_timeout():
     from google.api_core.retry import Retry
+
     from google.cloud.firestore_v1._helpers import make_retry_timeout_kwargs
 
     retry = Retry(predicate=object())

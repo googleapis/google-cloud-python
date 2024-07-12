@@ -19,6 +19,7 @@ from typing import Dict, Union
 
 # Types needed only for Type Hints
 from google.api_core import retry as retries
+
 from google.cloud.firestore_v1 import _helpers
 from google.cloud.firestore_v1.base_document import BaseDocumentReference
 

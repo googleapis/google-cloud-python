@@ -13,8 +13,8 @@
 # limitations under the License.
 
 import datetime
-import grpc
 
+import grpc
 import mock
 import pytest
 
@@ -34,8 +34,11 @@ def _make_default_base_client():
 
 def test_baseclient_constructor_with_emulator_host_defaults():
     from google.auth.credentials import AnonymousCredentials
-    from google.cloud.firestore_v1.base_client import _DEFAULT_EMULATOR_PROJECT
-    from google.cloud.firestore_v1.base_client import _FIRESTORE_EMULATOR_HOST
+
+    from google.cloud.firestore_v1.base_client import (
+        _DEFAULT_EMULATOR_PROJECT,
+        _FIRESTORE_EMULATOR_HOST,
+    )
 
     emulator_host = "localhost:8081"
 
@@ -49,6 +52,7 @@ def test_baseclient_constructor_with_emulator_host_defaults():
 
 def test_baseclient_constructor_with_emulator_host_w_project():
     from google.auth.credentials import AnonymousCredentials
+
     from google.cloud.firestore_v1.base_client import _FIRESTORE_EMULATOR_HOST
 
     emulator_host = "localhost:8081"
@@ -61,8 +65,10 @@ def test_baseclient_constructor_with_emulator_host_w_project():
 
 
 def test_baseclient_constructor_with_emulator_host_w_creds():
-    from google.cloud.firestore_v1.base_client import _DEFAULT_EMULATOR_PROJECT
-    from google.cloud.firestore_v1.base_client import _FIRESTORE_EMULATOR_HOST
+    from google.cloud.firestore_v1.base_client import (
+        _DEFAULT_EMULATOR_PROJECT,
+        _FIRESTORE_EMULATOR_HOST,
+    )
 
     credentials = _make_credentials()
     emulator_host = "localhost:8081"
@@ -296,6 +302,7 @@ def test_baseclient_field_path():
 
 def test_baseclient_write_option_last_update():
     from google.protobuf import timestamp_pb2
+
     from google.cloud.firestore_v1._helpers import LastUpdateOption
     from google.cloud.firestore_v1.base_client import BaseClient
 
@@ -320,8 +327,7 @@ def test_baseclient_write_option_exists():
 
 
 def test_baseclient_write_open_neither_arg():
-    from google.cloud.firestore_v1.base_client import _BAD_OPTION_ERR
-    from google.cloud.firestore_v1.base_client import BaseClient
+    from google.cloud.firestore_v1.base_client import _BAD_OPTION_ERR, BaseClient
 
     with pytest.raises(TypeError) as exc_info:
         BaseClient.write_option()
@@ -330,8 +336,7 @@ def test_baseclient_write_open_neither_arg():
 
 
 def test_baseclient_write_multiple_args():
-    from google.cloud.firestore_v1.base_client import _BAD_OPTION_ERR
-    from google.cloud.firestore_v1.base_client import BaseClient
+    from google.cloud.firestore_v1.base_client import _BAD_OPTION_ERR, BaseClient
 
     with pytest.raises(TypeError) as exc_info:
         BaseClient.write_option(exists=False, last_update_time=mock.sentinel.timestamp)
@@ -340,8 +345,7 @@ def test_baseclient_write_multiple_args():
 
 
 def test_baseclient_write_bad_arg():
-    from google.cloud.firestore_v1.base_client import _BAD_OPTION_ERR
-    from google.cloud.firestore_v1.base_client import BaseClient
+    from google.cloud.firestore_v1.base_client import _BAD_OPTION_ERR, BaseClient
 
     with pytest.raises(TypeError) as exc_info:
         BaseClient.write_option(spinach="popeye")
@@ -376,8 +380,7 @@ def test__get_reference_success():
 
 
 def test__get_reference_failure():
-    from google.cloud.firestore_v1.base_client import _BAD_DOC_TEMPLATE
-    from google.cloud.firestore_v1.base_client import _get_reference
+    from google.cloud.firestore_v1.base_client import _BAD_DOC_TEMPLATE, _get_reference
 
     doc_path = "1/888/call-now"
     with pytest.raises(ValueError) as exc_info:
@@ -399,10 +402,11 @@ def _dummy_ref_string():
 
 
 def test__parse_batch_get_found():
-    from google.cloud.firestore_v1.types import document
     from google.cloud._helpers import _datetime_to_pb_timestamp
-    from google.cloud.firestore_v1.document import DocumentSnapshot
+
     from google.cloud.firestore_v1.base_client import _parse_batch_get
+    from google.cloud.firestore_v1.document import DocumentSnapshot
+    from google.cloud.firestore_v1.types import document
 
     now = datetime.datetime.now(tz=datetime.timezone.utc)
     read_time = _datetime_to_pb_timestamp(now)
@@ -434,8 +438,8 @@ def test__parse_batch_get_found():
 
 
 def test__parse_batch_get_missing():
-    from google.cloud.firestore_v1.document import DocumentReference
     from google.cloud.firestore_v1.base_client import _parse_batch_get
+    from google.cloud.firestore_v1.document import DocumentReference
 
     ref_string = _dummy_ref_string()
     response_pb = _make_batch_response(missing=ref_string)
@@ -475,8 +479,8 @@ def test__get_doc_mask_w_none():
 
 
 def test__get_doc_mask_w_paths():
-    from google.cloud.firestore_v1.types import common
     from google.cloud.firestore_v1.base_client import _get_doc_mask
+    from google.cloud.firestore_v1.types import common
 
     field_paths = ["a.b", "c"]
     result = _get_doc_mask(field_paths)

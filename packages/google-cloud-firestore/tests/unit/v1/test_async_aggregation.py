@@ -12,27 +12,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from datetime import datetime, timedelta, timezone
+
 import pytest
 
-
-from datetime import datetime, timezone, timedelta
-
 from google.cloud.firestore_v1.base_aggregation import (
+    AggregationResult,
+    AvgAggregation,
     CountAggregation,
     SumAggregation,
-    AvgAggregation,
-    AggregationResult,
 )
-
-from tests.unit.v1.test__helpers import AsyncIter
-from tests.unit.v1.test__helpers import AsyncMock
 from tests.unit.v1._test_helpers import (
+    make_aggregation_query_response,
+    make_async_aggregation_query,
     make_async_client,
     make_async_query,
-    make_async_aggregation_query,
-    make_aggregation_query_response,
 )
-
+from tests.unit.v1.test__helpers import AsyncIter, AsyncMock
 
 _PROJECT = "PROJECT"
 
@@ -298,8 +294,9 @@ def test_async_aggregation_query_prep_stream_with_transaction():
 
 @pytest.mark.asyncio
 async def _async_aggregation_query_get_helper(retry=None, timeout=None, read_time=None):
-    from google.cloud.firestore_v1 import _helpers
     from google.cloud._helpers import _datetime_to_pb_timestamp
+
+    from google.cloud.firestore_v1 import _helpers
 
     # Create a minimal fake GAPIC.
     firestore_api = AsyncMock(spec=["run_aggregation_query"])

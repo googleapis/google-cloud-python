@@ -19,8 +19,8 @@ import mock
 import pytest
 
 from google.cloud.firestore_v1.base_client import (
-    DEFAULT_DATABASE,
     _DEFAULT_EMULATOR_PROJECT,
+    DEFAULT_DATABASE,
 )
 
 PROJECT = "my-prahjekt"
@@ -348,8 +348,8 @@ def _get_all_helper(
     num_snapshots=2, txn_id=None, retry=None, timeout=None, database=None
 ):
     from google.cloud.firestore_v1 import _helpers
-    from google.cloud.firestore_v1.types import common
     from google.cloud.firestore_v1.async_document import DocumentSnapshot
+    from google.cloud.firestore_v1.types import common
 
     client = _make_default_client(database=database)
 
@@ -475,8 +475,7 @@ def test_client_get_all_unknown_result(database):
 
 @pytest.mark.parametrize("database", [None, DEFAULT_DATABASE, "somedb"])
 def test_client_recursive_delete(database):
-    from google.cloud.firestore_v1.types import document
-    from google.cloud.firestore_v1.types import firestore
+    from google.cloud.firestore_v1.types import document, firestore
 
     client = _make_default_client(database=database)
     client._firestore_api_internal = mock.Mock(spec=["run_query"])
@@ -513,8 +512,7 @@ def test_client_recursive_delete(database):
 
 @pytest.mark.parametrize("database", [None, DEFAULT_DATABASE, "somedb"])
 def test_client_recursive_delete_from_document(database):
-    from google.cloud.firestore_v1.types import document
-    from google.cloud.firestore_v1.types import firestore
+    from google.cloud.firestore_v1.types import document, firestore
 
     client = _make_default_client(database=database)
     client._firestore_api_internal = mock.Mock(
@@ -631,9 +629,10 @@ def _make_batch_response(**kwargs):
 
 
 def _doc_get_info(ref_string, values):
-    from google.cloud.firestore_v1.types import document
     from google.cloud._helpers import _datetime_to_pb_timestamp
+
     from google.cloud.firestore_v1 import _helpers
+    from google.cloud.firestore_v1.types import document
 
     now = datetime.datetime.now(tz=datetime.timezone.utc)
     read_time = _datetime_to_pb_timestamp(now)

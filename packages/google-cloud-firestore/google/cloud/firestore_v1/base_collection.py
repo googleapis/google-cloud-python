@@ -14,42 +14,40 @@
 
 """Classes for representing collections for the Google Cloud Firestore API."""
 from __future__ import annotations
+
 import random
+from typing import (
+    TYPE_CHECKING,
+    Any,
+    AsyncGenerator,
+    AsyncIterator,
+    Coroutine,
+    Generator,
+    Generic,
+    Iterable,
+    Iterator,
+    NoReturn,
+    Optional,
+    Tuple,
+    Union,
+)
 
 from google.api_core import retry as retries
 
 from google.cloud.firestore_v1 import _helpers
-from google.cloud.firestore_v1.base_vector_query import DistanceMeasure
-from google.cloud.firestore_v1.document import DocumentReference
 from google.cloud.firestore_v1.base_aggregation import BaseAggregationQuery
-from google.cloud.firestore_v1.base_vector_query import BaseVectorQuery
 from google.cloud.firestore_v1.base_query import QueryType
+from google.cloud.firestore_v1.base_vector_query import BaseVectorQuery, DistanceMeasure
+from google.cloud.firestore_v1.document import DocumentReference
 from google.cloud.firestore_v1.vector import Vector
-
-
-from typing import (
-    Optional,
-    Any,
-    AsyncGenerator,
-    Coroutine,
-    Generator,
-    Generic,
-    AsyncIterator,
-    Iterator,
-    Iterable,
-    NoReturn,
-    Tuple,
-    Union,
-    TYPE_CHECKING,
-)
-
 
 if TYPE_CHECKING:  # pragma: NO COVER
     # Types needed only for Type Hints
-    from google.cloud.firestore_v1.base_document import DocumentSnapshot
-    from google.cloud.firestore_v1.transaction import Transaction
-    from google.cloud.firestore_v1.field_path import FieldPath
     from firestore_v1.vector_query import VectorQuery
+
+    from google.cloud.firestore_v1.base_document import DocumentSnapshot
+    from google.cloud.firestore_v1.field_path import FieldPath
+    from google.cloud.firestore_v1.transaction import Transaction
 
 _AUTO_ID_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
 

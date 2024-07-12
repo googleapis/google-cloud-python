@@ -14,23 +14,22 @@
 
 """Classes for representing collections for the Google Cloud Firestore API."""
 
+from typing import TYPE_CHECKING, Any, AsyncGenerator, Optional, Tuple
+
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 
-from google.cloud.firestore_v1.base_collection import (
-    BaseCollectionReference,
-    _item_to_document_ref,
-)
 from google.cloud.firestore_v1 import (
     async_aggregation,
     async_document,
     async_query,
     transaction,
 )
-
+from google.cloud.firestore_v1.base_collection import (
+    BaseCollectionReference,
+    _item_to_document_ref,
+)
 from google.cloud.firestore_v1.document import DocumentReference
-
-from typing import Any, AsyncGenerator, Optional, Tuple, TYPE_CHECKING
 
 if TYPE_CHECKING:  # pragma: NO COVER
     from google.cloud.firestore_v1.async_stream_generator import AsyncStreamGenerator

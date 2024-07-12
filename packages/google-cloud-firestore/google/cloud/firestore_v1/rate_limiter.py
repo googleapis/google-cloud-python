@@ -13,8 +13,8 @@
 # limitations under the License.
 
 import datetime
-from typing import NoReturn, Optional
 import warnings
+from typing import NoReturn, Optional
 
 
 def utcnow():

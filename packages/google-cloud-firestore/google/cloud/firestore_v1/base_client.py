@@ -25,22 +25,6 @@ In the hierarchy of API concepts
 """
 
 import os
-import grpc  # type: ignore
-
-from google.auth.credentials import AnonymousCredentials
-import google.api_core.client_options
-import google.api_core.path_template
-from google.api_core import retry as retries
-from google.api_core.gapic_v1 import client_info
-from google.cloud.client import ClientWithProject  # type: ignore
-
-from google.cloud.firestore_v1 import _helpers
-from google.cloud.firestore_v1 import __version__
-from google.cloud.firestore_v1 import types
-from google.cloud.firestore_v1.base_document import DocumentSnapshot
-
-from google.cloud.firestore_v1.field_path import render_field_path
-from google.cloud.firestore_v1.bulk_writer import BulkWriter, BulkWriterOptions
 from typing import (
     Any,
     AsyncGenerator,
@@ -52,13 +36,27 @@ from typing import (
     Union,
 )
 
+import google.api_core.client_options
+import google.api_core.path_template
+import grpc  # type: ignore
+from google.api_core import retry as retries
+from google.api_core.gapic_v1 import client_info
+from google.auth.credentials import AnonymousCredentials
+from google.cloud.client import ClientWithProject  # type: ignore
+
+from google.cloud.firestore_v1 import __version__, _helpers, types
+from google.cloud.firestore_v1.base_batch import BaseWriteBatch
+
 # Types needed only for Type Hints
 from google.cloud.firestore_v1.base_collection import BaseCollectionReference
-from google.cloud.firestore_v1.base_document import BaseDocumentReference
-from google.cloud.firestore_v1.base_transaction import BaseTransaction
-from google.cloud.firestore_v1.base_batch import BaseWriteBatch
+from google.cloud.firestore_v1.base_document import (
+    BaseDocumentReference,
+    DocumentSnapshot,
+)
 from google.cloud.firestore_v1.base_query import BaseQuery
-
+from google.cloud.firestore_v1.base_transaction import BaseTransaction
+from google.cloud.firestore_v1.bulk_writer import BulkWriter, BulkWriterOptions
+from google.cloud.firestore_v1.field_path import render_field_path
 
 DEFAULT_DATABASE = "(default)"
 """str: The default database used in a :class:`~google.cloud.firestore_v1.client.Client`."""

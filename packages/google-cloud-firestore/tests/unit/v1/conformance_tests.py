@@ -16,14 +16,10 @@
 #
 
 import proto  # type: ignore
-
-
-from google.cloud.firestore_v1.types import common
-from google.cloud.firestore_v1.types import document
-from google.cloud.firestore_v1.types import firestore
-from google.cloud.firestore_v1.types import query as gcf_query
 from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
 
+from google.cloud.firestore_v1.types import common, document, firestore
+from google.cloud.firestore_v1.types import query as gcf_query
 
 __protobuf__ = proto.module(
     package="tests.unit.v1",

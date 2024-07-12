@@ -18,9 +18,7 @@ import types
 import mock
 import pytest
 
-from tests.unit.v1.test__helpers import AsyncIter
-from tests.unit.v1.test__helpers import AsyncMock
-
+from tests.unit.v1.test__helpers import AsyncIter, AsyncMock
 
 PROJECT = "my-prahjekt"
 
@@ -190,8 +188,8 @@ def test_asyncclient_document_factory_w_nested_path():
 
 
 async def _collections_helper(retry=None, timeout=None):
-    from google.cloud.firestore_v1.async_collection import AsyncCollectionReference
     from google.cloud.firestore_v1 import _helpers
+    from google.cloud.firestore_v1.async_collection import AsyncCollectionReference
 
     collection_ids = ["users", "projects"]
 
@@ -256,8 +254,8 @@ async def _invoke_get_all(client, references, document_pbs, **kwargs):
 
 async def _get_all_helper(num_snapshots=2, txn_id=None, retry=None, timeout=None):
     from google.cloud.firestore_v1 import _helpers
-    from google.cloud.firestore_v1.types import common
     from google.cloud.firestore_v1.async_document import DocumentSnapshot
+    from google.cloud.firestore_v1.types import common
 
     client = _make_default_async_client()
 
@@ -400,8 +398,7 @@ def test_asyncclient_sync_copy():
 
 @pytest.mark.asyncio
 async def test_asyncclient_recursive_delete():
-    from google.cloud.firestore_v1.types import document
-    from google.cloud.firestore_v1.types import firestore
+    from google.cloud.firestore_v1.types import document, firestore
 
     client = _make_default_async_client()
     client._firestore_api_internal = AsyncMock(spec=["run_query"])
@@ -438,8 +435,7 @@ async def test_asyncclient_recursive_delete():
 
 @pytest.mark.asyncio
 async def test_asyncclient_recursive_delete_from_document():
-    from google.cloud.firestore_v1.types import document
-    from google.cloud.firestore_v1.types import firestore
+    from google.cloud.firestore_v1.types import document, firestore
 
     client = _make_default_async_client()
     client._firestore_api_internal = mock.Mock(
@@ -550,9 +546,10 @@ def _make_batch_response(**kwargs):
 
 
 def _doc_get_info(ref_string, values):
-    from google.cloud.firestore_v1.types import document
     from google.cloud._helpers import _datetime_to_pb_timestamp
+
     from google.cloud.firestore_v1 import _helpers
+    from google.cloud.firestore_v1.types import document
 
     now = datetime.datetime.now(tz=datetime.timezone.utc)
     read_time = _datetime_to_pb_timestamp(now)

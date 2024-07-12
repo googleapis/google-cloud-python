@@ -16,16 +16,17 @@
 """
 
 import abc
-
 from abc import ABC
 from enum import Enum
 from typing import Iterable, Optional, Tuple, Union
+
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
+
+from google.cloud.firestore_v1 import _helpers, document
 from google.cloud.firestore_v1.base_document import DocumentSnapshot
 from google.cloud.firestore_v1.types import query
 from google.cloud.firestore_v1.vector import Vector
-from google.cloud.firestore_v1 import document, _helpers
 
 
 class DistanceMeasure(Enum):

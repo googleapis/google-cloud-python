@@ -195,8 +195,7 @@ async def test_asynctransaction__rollback_failure():
 
 @pytest.mark.asyncio
 async def test_asynctransaction__commit():
-    from google.cloud.firestore_v1.types import firestore
-    from google.cloud.firestore_v1.types import write
+    from google.cloud.firestore_v1.types import firestore, write
 
     # Create a minimal fake GAPIC with a dummy result.
     firestore_api = AsyncMock()
@@ -316,8 +315,8 @@ async def test_asynctransaction_get_all_w_retry_timeout():
 
 
 async def _get_w_document_ref_helper(retry=None, timeout=None):
-    from google.cloud.firestore_v1.async_document import AsyncDocumentReference
     from google.cloud.firestore_v1 import _helpers
+    from google.cloud.firestore_v1.async_document import AsyncDocumentReference
 
     client = AsyncMock(spec=["get_all"])
     transaction = _make_async_transaction(client)
@@ -345,8 +344,8 @@ async def test_asynctransaction_get_w_document_ref_w_retry_timeout():
 
 
 async def _get_w_query_helper(retry=None, timeout=None):
-    from google.cloud.firestore_v1.async_query import AsyncQuery
     from google.cloud.firestore_v1 import _helpers
+    from google.cloud.firestore_v1.async_query import AsyncQuery
 
     client = AsyncMock(spec=[])
     transaction = _make_async_transaction(client)
@@ -493,9 +492,8 @@ async def test_asynctransactional___call__success_first_attempt():
 @pytest.mark.asyncio
 async def test_asynctransactional___call__success_second_attempt():
     from google.api_core import exceptions
-    from google.cloud.firestore_v1.types import common
-    from google.cloud.firestore_v1.types import firestore
-    from google.cloud.firestore_v1.types import write
+
+    from google.cloud.firestore_v1.types import common, firestore, write
 
     to_wrap = AsyncMock(return_value=mock.sentinel.result, spec=[])
     wrapped = _make_async_transactional(to_wrap)
@@ -553,8 +551,9 @@ async def test_asynctransactional___call__failure_max_attempts(max_attempts):
     rasie retryable error and exhause max_attempts
     """
     from google.api_core import exceptions
-    from google.cloud.firestore_v1.types import common
+
     from google.cloud.firestore_v1.async_transaction import _EXCEED_ATTEMPTS_TEMPLATE
+    from google.cloud.firestore_v1.types import common
 
     to_wrap = AsyncMock(return_value=mock.sentinel.result, spec=[])
     wrapped = _make_async_transactional(to_wrap)
@@ -623,6 +622,7 @@ async def test_asynctransactional___call__failure_readonly(max_attempts):
     readonly transaction should never retry
     """
     from google.api_core import exceptions
+
     from google.cloud.firestore_v1.types import common
 
     to_wrap = AsyncMock(return_value=mock.sentinel.result, spec=[])
@@ -789,8 +789,10 @@ async def test_asynctransactional___call__failure_with_rollback_failure():
 
 
 def test_async_transactional_factory():
-    from google.cloud.firestore_v1.async_transaction import _AsyncTransactional
-    from google.cloud.firestore_v1.async_transaction import async_transactional
+    from google.cloud.firestore_v1.async_transaction import (
+        _AsyncTransactional,
+        async_transactional,
+    )
 
     wrapped = async_transactional(mock.sentinel.callable_)
     assert isinstance(wrapped, _AsyncTransactional)
@@ -832,6 +834,7 @@ async def test__commit_with_retry_success_first_attempt(_sleep):
 @pytest.mark.asyncio
 async def test__commit_with_retry_success_third_attempt(_sleep):
     from google.api_core import exceptions
+
     from google.cloud.firestore_v1.async_transaction import _commit_with_retry
 
     # Create a minimal fake GAPIC with a dummy result.
@@ -874,6 +877,7 @@ async def test__commit_with_retry_success_third_attempt(_sleep):
 @pytest.mark.asyncio
 async def test__commit_with_retry_failure_first_attempt(_sleep):
     from google.api_core import exceptions
+
     from google.cloud.firestore_v1.async_transaction import _commit_with_retry
 
     # Create a minimal fake GAPIC with a dummy result.
@@ -910,6 +914,7 @@ async def test__commit_with_retry_failure_first_attempt(_sleep):
 @pytest.mark.asyncio
 async def test__commit_with_retry_failure_second_attempt(_sleep):
     from google.api_core import exceptions
+
     from google.cloud.firestore_v1.async_transaction import _commit_with_retry
 
     # Create a minimal fake GAPIC with a dummy result.
@@ -1011,9 +1016,9 @@ def _make_client(project="feral-tom-cat"):
 
 def _make_transaction(txn_id, **txn_kwargs):
     from google.protobuf import empty_pb2
-    from google.cloud.firestore_v1.types import firestore
-    from google.cloud.firestore_v1.types import write
+
     from google.cloud.firestore_v1.async_transaction import AsyncTransaction
+    from google.cloud.firestore_v1.types import firestore, write
 
     # Create a fake GAPIC ...
     firestore_api = AsyncMock()

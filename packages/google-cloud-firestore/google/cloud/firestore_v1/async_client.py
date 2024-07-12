@@ -24,24 +24,21 @@ In the hierarchy of API concepts
   :class:`~google.cloud.firestore_v1.async_document.AsyncDocumentReference`
 """
 
+from typing import TYPE_CHECKING, Any, AsyncGenerator, Iterable, List, Optional, Union
+
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 
-from google.cloud.firestore_v1.base_client import (
-    BaseClient,
-    _CLIENT_INFO,
-    _parse_batch_get,  # type: ignore
-    _path_helper,
-)
-
-from google.cloud.firestore_v1.async_query import AsyncCollectionGroup
 from google.cloud.firestore_v1.async_batch import AsyncWriteBatch
 from google.cloud.firestore_v1.async_collection import AsyncCollectionReference
 from google.cloud.firestore_v1.async_document import (
     AsyncDocumentReference,
     DocumentSnapshot,
 )
+from google.cloud.firestore_v1.async_query import AsyncCollectionGroup
 from google.cloud.firestore_v1.async_transaction import AsyncTransaction
+from google.cloud.firestore_v1.base_client import _parse_batch_get  # type: ignore
+from google.cloud.firestore_v1.base_client import _CLIENT_INFO, BaseClient, _path_helper
 from google.cloud.firestore_v1.field_path import FieldPath
 from google.cloud.firestore_v1.services.firestore import (
     async_client as firestore_client,
@@ -49,7 +46,6 @@ from google.cloud.firestore_v1.services.firestore import (
 from google.cloud.firestore_v1.services.firestore.transports import (
     grpc_asyncio as firestore_grpc_transport,
 )
-from typing import Any, AsyncGenerator, Iterable, List, Optional, Union, TYPE_CHECKING
 
 if TYPE_CHECKING:
     from google.cloud.firestore_v1.bulk_writer import BulkWriter  # pragma: NO COVER

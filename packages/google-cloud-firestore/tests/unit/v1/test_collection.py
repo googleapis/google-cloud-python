@@ -39,8 +39,8 @@ def _get_public_methods(klass):
 
 
 def test_query_method_matching():
-    from google.cloud.firestore_v1.query import Query
     from google.cloud.firestore_v1.collection import CollectionReference
+    from google.cloud.firestore_v1.query import Query
 
     query_methods = _get_public_methods(Query)
     collection_methods = _get_public_methods(CollectionReference)
@@ -134,10 +134,10 @@ def test_constructor():
 
 
 def test_add_auto_assigned():
-    from google.cloud.firestore_v1.types import document
-    from google.cloud.firestore_v1.document import DocumentReference
     from google.cloud.firestore_v1 import SERVER_TIMESTAMP
     from google.cloud.firestore_v1._helpers import pbs_for_create
+    from google.cloud.firestore_v1.document import DocumentReference
+    from google.cloud.firestore_v1.types import document
     from tests.unit.v1 import _test_helpers
 
     # Create a minimal fake GAPIC add attach it to a real client.
@@ -194,10 +194,8 @@ def test_add_auto_assigned():
 
 
 def _write_pb_for_create(document_path, document_data):
-    from google.cloud.firestore_v1.types import common
-    from google.cloud.firestore_v1.types import document
-    from google.cloud.firestore_v1.types import write
     from google.cloud.firestore_v1 import _helpers
+    from google.cloud.firestore_v1.types import common, document, write
 
     return write.Write(
         update=document.Document(
@@ -208,8 +206,8 @@ def _write_pb_for_create(document_path, document_data):
 
 
 def _add_helper(retry=None, timeout=None):
-    from google.cloud.firestore_v1.document import DocumentReference
     from google.cloud.firestore_v1 import _helpers as _fs_v1_helpers
+    from google.cloud.firestore_v1.document import DocumentReference
     from tests.unit.v1 import _test_helpers
 
     # Create a minimal fake GAPIC with a dummy response.
@@ -269,9 +267,9 @@ def test_add_w_retry_timeout():
 
 
 def _list_documents_helper(page_size=None, retry=None, timeout=None):
+    from google.api_core.page_iterator import Iterator, Page
+
     from google.cloud.firestore_v1 import _helpers as _fs_v1_helpers
-    from google.api_core.page_iterator import Iterator
-    from google.api_core.page_iterator import Page
     from google.cloud.firestore_v1.document import DocumentReference
     from google.cloud.firestore_v1.services.firestore.client import FirestoreClient
     from google.cloud.firestore_v1.types.document import Document

@@ -30,8 +30,7 @@ def test_bulkwritebatch_ctor():
 
 def _write_helper(retry=None, timeout=None):
     from google.cloud.firestore_v1 import _helpers
-    from google.cloud.firestore_v1.types import firestore
-    from google.cloud.firestore_v1.types import write
+    from google.cloud.firestore_v1.types import firestore, write
 
     # Create a minimal fake GAPIC with a dummy result.
     firestore_api = mock.Mock(spec=["batch_write"])

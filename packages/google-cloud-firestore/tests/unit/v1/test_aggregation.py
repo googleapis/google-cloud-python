@@ -12,17 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from datetime import datetime, timedelta, timezone
+
 import mock
 import pytest
 
-
-from datetime import datetime, timezone, timedelta
-
 from google.cloud.firestore_v1.base_aggregation import (
+    AggregationResult,
+    AvgAggregation,
     CountAggregation,
     SumAggregation,
-    AvgAggregation,
-    AggregationResult,
 )
 from tests.unit.v1._test_helpers import (
     make_aggregation_query,
@@ -357,8 +356,9 @@ def test_aggregation_query_prep_stream_with_transaction():
 
 
 def _aggregation_query_get_helper(retry=None, timeout=None, read_time=None):
-    from google.cloud.firestore_v1 import _helpers
     from google.cloud._helpers import _datetime_to_pb_timestamp
+
+    from google.cloud.firestore_v1 import _helpers
 
     # Create a minimal fake GAPIC.
     firestore_api = mock.Mock(spec=["run_aggregation_query"])
@@ -491,10 +491,9 @@ def _aggregation_query_stream_w_retriable_exc_helper(
     transaction=None,
     expect_retry=True,
 ):
-    from google.api_core import exceptions
-    from google.api_core import gapic_v1
-    from google.cloud.firestore_v1 import _helpers
-    from google.cloud.firestore_v1 import stream_generator
+    from google.api_core import exceptions, gapic_v1
+
+    from google.cloud.firestore_v1 import _helpers, stream_generator
 
     if retry is _not_passed:
         retry = gapic_v1.method.DEFAULT

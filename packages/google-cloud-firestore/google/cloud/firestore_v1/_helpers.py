@@ -16,26 +16,6 @@
 
 import datetime
 import json
-
-import google
-from google.api_core.datetime_helpers import DatetimeWithNanoseconds
-from google.api_core import gapic_v1
-from google.protobuf import struct_pb2
-from google.type import latlng_pb2  # type: ignore
-import grpc  # type: ignore
-
-from google.cloud import exceptions  # type: ignore
-from google.cloud._helpers import _datetime_to_pb_timestamp  # type: ignore
-from google.cloud.firestore_v1.vector import Vector
-from google.cloud.firestore_v1.types.write import DocumentTransform
-from google.cloud.firestore_v1 import transforms
-from google.cloud.firestore_v1 import types
-from google.cloud.firestore_v1.field_path import FieldPath
-from google.cloud.firestore_v1.field_path import parse_field_path
-from google.cloud.firestore_v1.types import common
-from google.cloud.firestore_v1.types import document
-from google.cloud.firestore_v1.types import write
-from google.protobuf.timestamp_pb2 import Timestamp  # type: ignore
 from typing import (
     Any,
     Dict,
@@ -47,6 +27,22 @@ from typing import (
     Tuple,
     Union,
 )
+
+import grpc  # type: ignore
+from google.api_core import gapic_v1
+from google.api_core.datetime_helpers import DatetimeWithNanoseconds
+from google.cloud._helpers import _datetime_to_pb_timestamp  # type: ignore
+from google.protobuf import struct_pb2
+from google.protobuf.timestamp_pb2 import Timestamp  # type: ignore
+from google.type import latlng_pb2  # type: ignore
+
+import google
+from google.cloud import exceptions  # type: ignore
+from google.cloud.firestore_v1 import transforms, types
+from google.cloud.firestore_v1.field_path import FieldPath, parse_field_path
+from google.cloud.firestore_v1.types import common, document, write
+from google.cloud.firestore_v1.types.write import DocumentTransform
+from google.cloud.firestore_v1.vector import Vector
 
 _EmptyDict: transforms.Sentinel
 _GRPC_ERROR_MAPPING: dict

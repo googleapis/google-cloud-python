@@ -15,18 +15,15 @@
 """Classes for representing documents for the Google Cloud Firestore API."""
 
 import copy
+from typing import Any, Dict, Iterable, NoReturn, Optional, Tuple, Union
 
 from google.api_core import retry as retries
 
-from google.cloud.firestore_v1.types import Document
 from google.cloud.firestore_v1 import _helpers
 from google.cloud.firestore_v1 import field_path as field_path_module
-from google.cloud.firestore_v1.types import common
 
 # Types needed only for Type Hints
-from google.cloud.firestore_v1.types import firestore
-from google.cloud.firestore_v1.types import write
-from typing import Any, Dict, Iterable, NoReturn, Optional, Union, Tuple
+from google.cloud.firestore_v1.types import Document, common, firestore, write
 
 
 class BaseDocumentReference(object):

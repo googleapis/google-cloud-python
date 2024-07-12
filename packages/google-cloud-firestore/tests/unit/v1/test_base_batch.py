@@ -47,9 +47,7 @@ def test_basewritebatch__add_write_pbs():
 
 
 def test_basewritebatch_create():
-    from google.cloud.firestore_v1.types import common
-    from google.cloud.firestore_v1.types import document
-    from google.cloud.firestore_v1.types import write
+    from google.cloud.firestore_v1.types import common, document, write
 
     client = _make_client()
     batch = _make_derived_write_batch(client)
@@ -73,8 +71,7 @@ def test_basewritebatch_create():
 
 
 def test_basewritebatch_set():
-    from google.cloud.firestore_v1.types import document
-    from google.cloud.firestore_v1.types import write
+    from google.cloud.firestore_v1.types import document, write
 
     client = _make_client()
     batch = _make_derived_write_batch(client)
@@ -96,8 +93,7 @@ def test_basewritebatch_set():
 
 
 def test_basewritebatch_set_merge():
-    from google.cloud.firestore_v1.types import document
-    from google.cloud.firestore_v1.types import write
+    from google.cloud.firestore_v1.types import document, write
 
     client = _make_client()
     batch = _make_derived_write_batch(client)
@@ -120,9 +116,7 @@ def test_basewritebatch_set_merge():
 
 
 def test_basewritebatch_update():
-    from google.cloud.firestore_v1.types import common
-    from google.cloud.firestore_v1.types import document
-    from google.cloud.firestore_v1.types import write
+    from google.cloud.firestore_v1.types import common, document, write
 
     client = _make_client()
     batch = _make_derived_write_batch(client)

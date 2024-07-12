@@ -19,11 +19,9 @@ import typing
 import mock
 import pytest
 
-from google.cloud.firestore_v1 import base_query
-from google.cloud.firestore_v1 import collection
+from google.cloud.firestore_v1 import base_query, collection
 from google.cloud.firestore_v1 import query as query_mod
 from tests.unit.v1 import _test_helpers
-
 from tests.unit.v1._test_helpers import DEFAULT_TEST_PROJECT
 
 
@@ -61,10 +59,11 @@ class _CollectionQueryMixin:
         and this method arranges all of the necessary mocks so that unit tests
         can think they are evaluating a live query.
         """
+        from google.protobuf.timestamp_pb2 import Timestamp  # type: ignore
+
         from google.cloud.firestore_v1 import _helpers
         from google.cloud.firestore_v1.types.document import Document
         from google.cloud.firestore_v1.types.firestore import RunQueryResponse
-        from google.protobuf.timestamp_pb2 import Timestamp  # type: ignore
 
         client = self.get_client()
         template = client._database_string + "/documents/col/{}"
@@ -136,6 +135,7 @@ class TestBundle(_CollectionQueryMixin):
 
     def test_add_newer_document(self):
         from google.protobuf.timestamp_pb2 import Timestamp  # type: ignore
+
         from google.cloud.firestore_bundle import FirestoreBundle
 
         bundle = FirestoreBundle("test")
@@ -158,6 +158,7 @@ class TestBundle(_CollectionQueryMixin):
 
     def test_add_older_document(self):
         from google.protobuf.timestamp_pb2 import Timestamp  # type: ignore
+
         from google.cloud.firestore_bundle import FirestoreBundle
 
         bundle = FirestoreBundle("test")
@@ -245,8 +246,8 @@ class TestBundle(_CollectionQueryMixin):
         assert isinstance(bundle.build(), str)
 
     def test_get_documents(self):
-        from google.cloud.firestore_v1 import _helpers
         from google.cloud.firestore_bundle import FirestoreBundle
+        from google.cloud.firestore_v1 import _helpers
 
         bundle = FirestoreBundle("test")
         query: query_mod.Query = self._bundled_query_helper()  # type: ignore
@@ -454,6 +455,7 @@ class TestBundleBuilder(_CollectionQueryMixin):
 
     def test_roundtrip_binary_data(self):
         import sys
+
         from google.cloud.firestore_bundle import FirestoreBundle
         from google.cloud.firestore_v1 import _helpers
 
@@ -475,6 +477,7 @@ class TestBundleBuilder(_CollectionQueryMixin):
         '{"seconds": 123, "nanos": 456}', instead of an ISO-formatted string.
         This tests deserialization from that format."""
         from google.protobuf.json_format import ParseError
+
         from google.cloud.firestore_v1 import _helpers
 
         client = _test_helpers.make_client(project_name="fir-bundles-test")
@@ -613,8 +616,7 @@ class TestBundleBuilder(_CollectionQueryMixin):
             _helpers.deserialize_bundle("{}", client)
 
     def test_add_invalid_bundle_element_type(self):
-        from google.cloud.firestore_bundle import FirestoreBundle
-        from google.cloud.firestore_bundle import BundleElement
+        from google.cloud.firestore_bundle import BundleElement, FirestoreBundle
 
         client = _test_helpers.make_client()
         bundle = FirestoreBundle("asdf")

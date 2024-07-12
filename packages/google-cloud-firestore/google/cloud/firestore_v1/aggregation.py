@@ -20,10 +20,10 @@ a more common way to create an aggregation query than direct usage of the constr
 """
 from __future__ import annotations
 
-from google.api_core import exceptions
-from google.api_core import gapic_v1
-from google.api_core import retry as retries
+from typing import TYPE_CHECKING, Any, Generator, List, Optional, Union
 
+from google.api_core import exceptions, gapic_v1
+from google.api_core import retry as retries
 
 from google.cloud.firestore_v1.base_aggregation import (
     AggregationResult,
@@ -32,8 +32,6 @@ from google.cloud.firestore_v1.base_aggregation import (
 )
 from google.cloud.firestore_v1.base_document import DocumentSnapshot
 from google.cloud.firestore_v1.stream_generator import StreamGenerator
-
-from typing import Any, Generator, List, Optional, TYPE_CHECKING, Union
 
 # Types needed only for Type Hints
 if TYPE_CHECKING:

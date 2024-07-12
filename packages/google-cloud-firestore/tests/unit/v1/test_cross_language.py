@@ -18,15 +18,11 @@ import json
 import os
 
 import mock
-import pytest
-
 import proto as proto_plus
-
-from google.cloud.firestore_v1.types import document
-from google.cloud.firestore_v1.types import firestore
-from google.cloud.firestore_v1.types import write
+import pytest
 from google.protobuf.timestamp_pb2 import Timestamp
 
+from google.cloud.firestore_v1.types import document, firestore, write
 from tests.unit.v1 import conformance_tests
 
 
@@ -87,9 +83,10 @@ def _mock_firestore_api():
 
 
 def _make_client_document(firestore_api, testcase):
+    import google.auth.credentials
+
     from google.cloud.firestore_v1 import Client
     from google.cloud.firestore_v1.base_client import DEFAULT_DATABASE
-    import google.auth.credentials
 
     _, project, _, database, _, doc_path = testcase.doc_ref_path.split("/", 5)
     assert database == DEFAULT_DATABASE
@@ -219,10 +216,9 @@ def test_listen_testprotos(test_proto):  # pragma: NO COVER
     # and then an expected list of 'snapshots' (local 'Snapshot'), containing
     # 'docs' (list of 'google.firestore_v1.Document'),
     # 'changes' (list lof local 'DocChange', and 'read_time' timestamp.
-    from google.cloud.firestore_v1 import Client
-    from google.cloud.firestore_v1 import DocumentSnapshot
-    from google.cloud.firestore_v1 import Watch
     import google.auth.credentials
+
+    from google.cloud.firestore_v1 import Client, DocumentSnapshot, Watch
 
     testcase = test_proto.listen
     testname = test_proto.description
@@ -303,10 +299,12 @@ def test_query_testprotos(test_proto):  # pragma: NO COVER
 def convert_data(v):
     # Replace the strings 'ServerTimestamp' and 'Delete' with the corresponding
     # sentinels.
-    from google.cloud.firestore_v1 import ArrayRemove
-    from google.cloud.firestore_v1 import ArrayUnion
-    from google.cloud.firestore_v1 import DELETE_FIELD
-    from google.cloud.firestore_v1 import SERVER_TIMESTAMP
+    from google.cloud.firestore_v1 import (
+        DELETE_FIELD,
+        SERVER_TIMESTAMP,
+        ArrayRemove,
+        ArrayUnion,
+    )
 
     if v == "ServerTimestamp":
         return SERVER_TIMESTAMP
@@ -453,8 +451,8 @@ def parse_query(testcase):
     # 'path': str
     # 'json_data': str
     from google.auth.credentials import Credentials
-    from google.cloud.firestore_v1 import Client
-    from google.cloud.firestore_v1 import Query
+
+    from google.cloud.firestore_v1 import Client, Query
 
     _directions = {"asc": Query.ASCENDING, "desc": Query.DESCENDING}
 
@@ -507,8 +505,7 @@ def parse_path(path):
 
 
 def parse_cursor(cursor, client):
-    from google.cloud.firestore_v1 import DocumentReference
-    from google.cloud.firestore_v1 import DocumentSnapshot
+    from google.cloud.firestore_v1 import DocumentReference, DocumentSnapshot
 
     if "doc_snapshot" in cursor:
         path = parse_path(cursor.doc_snapshot.path)

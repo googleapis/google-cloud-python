@@ -17,15 +17,13 @@ import types
 import mock
 import pytest
 
-from tests.unit.v1.test__helpers import AsyncIter
-from tests.unit.v1.test__helpers import AsyncMock
-from tests.unit.v1.test_base_query import _make_query_response
-from tests.unit.v1.test_base_query import _make_cursor_pb
 from tests.unit.v1._test_helpers import (
     DEFAULT_TEST_PROJECT,
     make_async_client,
     make_async_query,
 )
+from tests.unit.v1.test__helpers import AsyncIter, AsyncMock
+from tests.unit.v1.test_base_query import _make_cursor_pb, _make_query_response
 
 
 def test_asyncquery_constructor():
@@ -161,8 +159,8 @@ async def test_asyncquery_get_limit_to_last():
 
 
 def test_asyncquery_sum():
-    from google.cloud.firestore_v1.field_path import FieldPath
     from google.cloud.firestore_v1.base_aggregation import SumAggregation
+    from google.cloud.firestore_v1.field_path import FieldPath
 
     client = make_async_client()
     parent = client.collection("dee")
@@ -190,8 +188,8 @@ def test_asyncquery_sum():
 
 
 def test_asyncquery_avg():
-    from google.cloud.firestore_v1.field_path import FieldPath
     from google.cloud.firestore_v1.base_aggregation import AvgAggregation
+    from google.cloud.firestore_v1.field_path import FieldPath
 
     client = make_async_client()
     parent = client.collection("dee")
@@ -235,8 +233,7 @@ async def test_asyncquery_chunkify_w_empty():
 
 @pytest.mark.asyncio
 async def test_asyncquery_chunkify_w_chunksize_lt_limit():
-    from google.cloud.firestore_v1.types import document
-    from google.cloud.firestore_v1.types import firestore
+    from google.cloud.firestore_v1.types import document, firestore
 
     client = make_async_client()
     firestore_api = AsyncMock(spec=["run_query"])
@@ -283,8 +280,7 @@ async def test_asyncquery_chunkify_w_chunksize_lt_limit():
 
 @pytest.mark.asyncio
 async def test_asyncquery_chunkify_w_chunksize_gt_limit():
-    from google.cloud.firestore_v1.types import document
-    from google.cloud.firestore_v1.types import firestore
+    from google.cloud.firestore_v1.types import document, firestore
 
     client = make_async_client()
 

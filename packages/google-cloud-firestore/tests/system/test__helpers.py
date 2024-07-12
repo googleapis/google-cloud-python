@@ -1,8 +1,9 @@
 import os
 import re
+
+from test_utils.system import EmulatorCreds, unique_resource_id
+
 from google.cloud.firestore_v1.base_client import _FIRESTORE_EMULATOR_HOST
-from test_utils.system import unique_resource_id
-from test_utils.system import EmulatorCreds
 
 FIRESTORE_CREDS = os.environ.get("FIRESTORE_APPLICATION_CREDENTIALS")
 FIRESTORE_PROJECT = os.environ.get("GCLOUD_PROJECT")

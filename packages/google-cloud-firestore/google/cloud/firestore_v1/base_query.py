@@ -24,22 +24,8 @@ import abc
 import copy
 import math
 import warnings
-
-from google.api_core import retry as retries
-from google.protobuf import wrappers_pb2
-
-from google.cloud import firestore_v1
-from google.cloud.firestore_v1 import _helpers
-from google.cloud.firestore_v1 import document
-from google.cloud.firestore_v1 import field_path as field_path_module
-from google.cloud.firestore_v1 import transforms
-from google.cloud.firestore_v1.base_vector_query import DistanceMeasure
-from google.cloud.firestore_v1.types import StructuredQuery
-from google.cloud.firestore_v1.types import query
-from google.cloud.firestore_v1.types import Cursor
-from google.cloud.firestore_v1.types import RunQueryResponse
-from google.cloud.firestore_v1.order import Order
 from typing import (
+    TYPE_CHECKING,
     Any,
     Dict,
     Generator,
@@ -50,12 +36,27 @@ from typing import (
     Type,
     TypeVar,
     Union,
-    TYPE_CHECKING,
 )
-from google.cloud.firestore_v1.vector import Vector
+
+from google.api_core import retry as retries
+from google.protobuf import wrappers_pb2
+
+from google.cloud import firestore_v1
+from google.cloud.firestore_v1 import _helpers, document
+from google.cloud.firestore_v1 import field_path as field_path_module
+from google.cloud.firestore_v1 import transforms
 
 # Types needed only for Type Hints
 from google.cloud.firestore_v1.base_document import DocumentSnapshot
+from google.cloud.firestore_v1.base_vector_query import DistanceMeasure
+from google.cloud.firestore_v1.order import Order
+from google.cloud.firestore_v1.types import (
+    Cursor,
+    RunQueryResponse,
+    StructuredQuery,
+    query,
+)
+from google.cloud.firestore_v1.vector import Vector
 
 if TYPE_CHECKING:  # pragma: NO COVER
     from google.cloud.firestore_v1.base_vector_query import BaseVectorQuery

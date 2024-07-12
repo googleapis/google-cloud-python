@@ -14,11 +14,9 @@
 
 """Utilities for managing / converting field paths to / from strings."""
 
-from collections import abc
-
 import re
+from collections import abc
 from typing import Iterable
-
 
 _FIELD_PATH_MISSING_TOP = "{!r} is not contained in the data"
 _FIELD_PATH_MISSING_KEY = "{!r} is not contained in the data for the key {!r}"

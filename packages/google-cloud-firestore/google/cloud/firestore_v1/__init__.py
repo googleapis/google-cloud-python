@@ -23,41 +23,44 @@ from google.cloud.firestore_v1 import gapic_version as package_version
 
 __version__ = package_version.__version__
 
+from typing import List
+
 from google.cloud.firestore_v1 import types
-from google.cloud.firestore_v1._helpers import GeoPoint
-from google.cloud.firestore_v1._helpers import ExistsOption
-from google.cloud.firestore_v1._helpers import LastUpdateOption
-from google.cloud.firestore_v1._helpers import ReadAfterWriteError
-from google.cloud.firestore_v1._helpers import WriteOption
-from google.cloud.firestore_v1.base_aggregation import CountAggregation
-from google.cloud.firestore_v1.base_query import And
-from google.cloud.firestore_v1.base_query import FieldFilter
-from google.cloud.firestore_v1.base_query import Or
+from google.cloud.firestore_v1._helpers import (
+    ExistsOption,
+    GeoPoint,
+    LastUpdateOption,
+    ReadAfterWriteError,
+    WriteOption,
+)
 from google.cloud.firestore_v1.async_batch import AsyncWriteBatch
 from google.cloud.firestore_v1.async_client import AsyncClient
 from google.cloud.firestore_v1.async_collection import AsyncCollectionReference
 from google.cloud.firestore_v1.async_document import AsyncDocumentReference
 from google.cloud.firestore_v1.async_query import AsyncQuery
-from google.cloud.firestore_v1.async_transaction import async_transactional
-from google.cloud.firestore_v1.async_transaction import AsyncTransaction
+from google.cloud.firestore_v1.async_transaction import (
+    AsyncTransaction,
+    async_transactional,
+)
+from google.cloud.firestore_v1.base_aggregation import CountAggregation
 from google.cloud.firestore_v1.base_document import DocumentSnapshot
+from google.cloud.firestore_v1.base_query import And, FieldFilter, Or
 from google.cloud.firestore_v1.batch import WriteBatch
 from google.cloud.firestore_v1.client import Client
 from google.cloud.firestore_v1.collection import CollectionReference
 from google.cloud.firestore_v1.document import DocumentReference
-from google.cloud.firestore_v1.query import CollectionGroup
-from google.cloud.firestore_v1.query import Query
-from google.cloud.firestore_v1.transaction import Transaction
-from google.cloud.firestore_v1.transaction import transactional
-from google.cloud.firestore_v1.transforms import ArrayRemove
-from google.cloud.firestore_v1.transforms import ArrayUnion
-from google.cloud.firestore_v1.transforms import DELETE_FIELD
-from google.cloud.firestore_v1.transforms import Increment
-from google.cloud.firestore_v1.transforms import Maximum
-from google.cloud.firestore_v1.transforms import Minimum
-from google.cloud.firestore_v1.transforms import SERVER_TIMESTAMP
+from google.cloud.firestore_v1.query import CollectionGroup, Query
+from google.cloud.firestore_v1.transaction import Transaction, transactional
+from google.cloud.firestore_v1.transforms import (
+    DELETE_FIELD,
+    SERVER_TIMESTAMP,
+    ArrayRemove,
+    ArrayUnion,
+    Increment,
+    Maximum,
+    Minimum,
+)
 from google.cloud.firestore_v1.watch import Watch
-
 
 # TODO(https://github.com/googleapis/python-firestore/issues/93): this is all on the generated surface. We require this to match
 # firestore.py. So comment out until needed on customer level for certain.
@@ -102,8 +105,6 @@ from google.cloud.firestore_v1.watch import Watch
 # from .types.write import DocumentDelete
 # from .types.write import DocumentRemove
 from .types.write import DocumentTransform
-from typing import List
-
 
 # from .types.write import ExistenceFilter
 # from .types.write import Write

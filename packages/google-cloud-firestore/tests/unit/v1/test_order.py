@@ -179,7 +179,7 @@ def test_order_compare_w_failure_to_find_type():
 
 
 def test_order_all_value_present():
-    from google.cloud.firestore_v1.order import TypeOrder, _TYPE_ORDER_MAP
+    from google.cloud.firestore_v1.order import _TYPE_ORDER_MAP, TypeOrder
 
     for type_order in TypeOrder:
         assert type_order in _TYPE_ORDER_MAP
@@ -236,8 +236,9 @@ def nullValue():
 
 
 def _timestamp_value(seconds, nanos):
-    from google.cloud.firestore_v1.types import document
     from google.protobuf import timestamp_pb2
+
+    from google.cloud.firestore_v1.types import document
 
     return document.Value(
         timestamp_value=timestamp_pb2.Timestamp(seconds=seconds, nanos=nanos)
@@ -245,8 +246,7 @@ def _timestamp_value(seconds, nanos):
 
 
 def _geoPoint_value(latitude, longitude):
-    from google.cloud.firestore_v1._helpers import encode_value
-    from google.cloud.firestore_v1._helpers import GeoPoint
+    from google.cloud.firestore_v1._helpers import GeoPoint, encode_value
 
     return encode_value(GeoPoint(latitude, longitude))
 

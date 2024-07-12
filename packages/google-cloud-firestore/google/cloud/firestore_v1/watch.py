@@ -13,21 +13,21 @@
 # limitations under the License.
 
 import collections
-from enum import Enum
 import functools
 import logging
 import threading
+from enum import Enum
 
-from google.api_core.bidi import ResumableBidiRpc
-from google.api_core.bidi import BackgroundConsumer
-from google.api_core import exceptions
 import grpc  # type: ignore
+from google.api_core import exceptions
+from google.api_core.bidi import BackgroundConsumer, ResumableBidiRpc
 
-from google.cloud.firestore_v1.types.firestore import ListenRequest
-from google.cloud.firestore_v1.types.firestore import Target
-from google.cloud.firestore_v1.types.firestore import TargetChange
 from google.cloud.firestore_v1 import _helpers
-
+from google.cloud.firestore_v1.types.firestore import (
+    ListenRequest,
+    Target,
+    TargetChange,
+)
 
 TargetChangeType = TargetChange.TargetChangeType
 

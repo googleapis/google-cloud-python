@@ -13,15 +13,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import google.auth.credentials
+from unittest import mock
 
+import google.auth.credentials
 from google.api_core import gapic_v1
+
+from google.cloud.firestore_v1 import _helpers
 from google.cloud.firestore_v1.client import Client
 from google.cloud.firestore_v1.document import DocumentReference
-from google.cloud.firestore_v1.vector import Vector
 from google.cloud.firestore_v1.types import common, document, firestore, write
-from google.cloud.firestore_v1 import _helpers
-from unittest import mock
+from google.cloud.firestore_v1.vector import Vector
 
 
 def _make_commit_repsonse():

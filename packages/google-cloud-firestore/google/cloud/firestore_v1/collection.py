@@ -14,20 +14,19 @@
 
 """Classes for representing collections for the Google Cloud Firestore API."""
 
+from typing import TYPE_CHECKING, Any, Callable, Generator, Optional, Tuple, Union
+
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
 
+from google.cloud.firestore_v1 import aggregation, document
+from google.cloud.firestore_v1 import query as query_mod
+from google.cloud.firestore_v1 import transaction, vector_query
 from google.cloud.firestore_v1.base_collection import (
     BaseCollectionReference,
     _item_to_document_ref,
 )
-from google.cloud.firestore_v1 import query as query_mod
-from google.cloud.firestore_v1 import aggregation
-from google.cloud.firestore_v1 import vector_query
 from google.cloud.firestore_v1.watch import Watch
-from google.cloud.firestore_v1 import document
-from google.cloud.firestore_v1 import transaction
-from typing import Any, Callable, Generator, Optional, Tuple, Union, TYPE_CHECKING
 
 if TYPE_CHECKING:  # pragma: NO COVER
     from google.cloud.firestore_v1.base_document import DocumentSnapshot

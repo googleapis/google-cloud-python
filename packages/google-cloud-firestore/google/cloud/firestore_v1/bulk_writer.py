@@ -23,9 +23,8 @@ import enum
 import functools
 import logging
 import time
-
 from dataclasses import dataclass
-from typing import Callable, Dict, List, Optional, Union, TYPE_CHECKING
+from typing import TYPE_CHECKING, Callable, Dict, List, Optional, Union
 
 from google.rpc import status_pb2  # type: ignore
 

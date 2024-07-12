@@ -22,50 +22,44 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
-import grpc
-from grpc.experimental import aio
-from collections.abc import Iterable
-from google.protobuf import json_format
 import json
 import math
-import pytest
-from google.api_core import api_core_version
-from proto.marshal.rules.dates import DurationRule, TimestampRule
-from proto.marshal.rules import wrappers
-from requests import Response
-from requests import Request, PreparedRequest
-from requests.sessions import Session
-from google.protobuf import json_format
+from collections.abc import Iterable
 
-from google.api_core import client_options
+import google.auth
+import grpc
+import pytest
+from google.api_core import api_core_version, client_options
 from google.api_core import exceptions as core_exceptions
-from google.api_core import gapic_v1
-from google.api_core import grpc_helpers
-from google.api_core import grpc_helpers_async
-from google.api_core import path_template
+from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
-from google.cloud.firestore_v1.services.firestore import FirestoreAsyncClient
-from google.cloud.firestore_v1.services.firestore import FirestoreClient
-from google.cloud.firestore_v1.services.firestore import pagers
-from google.cloud.firestore_v1.services.firestore import transports
-from google.cloud.firestore_v1.types import aggregation_result
-from google.cloud.firestore_v1.types import common
-from google.cloud.firestore_v1.types import document
-from google.cloud.firestore_v1.types import document as gf_document
-from google.cloud.firestore_v1.types import firestore
-from google.cloud.firestore_v1.types import query
-from google.cloud.firestore_v1.types import query_profile
-from google.cloud.firestore_v1.types import write as gf_write
 from google.cloud.location import locations_pb2
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
 from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.protobuf import wrappers_pb2  # type: ignore
+from google.protobuf import json_format
 from google.rpc import status_pb2  # type: ignore
 from google.type import latlng_pb2  # type: ignore
-import google.auth
+from grpc.experimental import aio
+from proto.marshal.rules import wrappers
+from proto.marshal.rules.dates import DurationRule, TimestampRule
+from requests import PreparedRequest, Request, Response
+from requests.sessions import Session
+
+from google.cloud.firestore_v1.services.firestore import (
+    FirestoreAsyncClient,
+    FirestoreClient,
+    pagers,
+    transports,
+)
+from google.cloud.firestore_v1.types import aggregation_result, common
+from google.cloud.firestore_v1.types import document
+from google.cloud.firestore_v1.types import document as gf_document
+from google.cloud.firestore_v1.types import firestore, query, query_profile
+from google.cloud.firestore_v1.types import write as gf_write
 
 
 def client_cert_source_callback():

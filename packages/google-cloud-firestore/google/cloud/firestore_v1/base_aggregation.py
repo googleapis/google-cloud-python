@@ -23,30 +23,28 @@ a more common way to create an aggregation query than direct usage of the constr
 from __future__ import annotations
 
 import abc
-
-
 from abc import ABC
-
 from typing import (
-    List,
-    Coroutine,
-    Union,
-    Tuple,
-    Generator,
+    TYPE_CHECKING,
     Any,
     AsyncGenerator,
+    Coroutine,
+    Generator,
+    List,
     Optional,
-    TYPE_CHECKING,
+    Tuple,
+    Union,
 )
 
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
 
-
-from google.cloud.firestore_v1.field_path import FieldPath
-from google.cloud.firestore_v1.types import RunAggregationQueryResponse
-from google.cloud.firestore_v1.types import StructuredAggregationQuery
 from google.cloud.firestore_v1 import _helpers
+from google.cloud.firestore_v1.field_path import FieldPath
+from google.cloud.firestore_v1.types import (
+    RunAggregationQueryResponse,
+    StructuredAggregationQuery,
+)
 
 # Types needed only for Type Hints
 if TYPE_CHECKING:

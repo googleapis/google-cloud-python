@@ -34,9 +34,9 @@ def test_constructor():
 
 async def _commit_helper(retry=None, timeout=None):
     from google.protobuf import timestamp_pb2
+
     from google.cloud.firestore_v1 import _helpers
-    from google.cloud.firestore_v1.types import firestore
-    from google.cloud.firestore_v1.types import write
+    from google.cloud.firestore_v1.types import firestore, write
 
     # Create a minimal fake GAPIC with a dummy result.
     firestore_api = AsyncMock(spec=["commit"])
@@ -98,8 +98,8 @@ async def test_commit_w_retry_timeout():
 @pytest.mark.asyncio
 async def test_as_context_mgr_wo_error():
     from google.protobuf import timestamp_pb2
-    from google.cloud.firestore_v1.types import firestore
-    from google.cloud.firestore_v1.types import write
+
+    from google.cloud.firestore_v1.types import firestore, write
 
     firestore_api = AsyncMock(spec=["commit"])
     timestamp = timestamp_pb2.Timestamp(seconds=1234567, nanos=123456798)

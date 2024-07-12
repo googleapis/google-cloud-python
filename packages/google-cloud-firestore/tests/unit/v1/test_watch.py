@@ -90,6 +90,7 @@ def test_watchresult_ctor():
 def test__maybe_wrap_exception_w_grpc_error():
     import grpc
     from google.api_core.exceptions import GoogleAPICallError
+
     from google.cloud.firestore_v1.watch import _maybe_wrap_exception
 
     exc = grpc.RpcError()
@@ -121,6 +122,7 @@ def test_document_watch_comparator_wdiff_doc():
 
 def test__should_recover_w_unavailable():
     from google.api_core.exceptions import ServiceUnavailable
+
     from google.cloud.firestore_v1.watch import _should_recover
 
     exception = ServiceUnavailable("testing")
@@ -138,6 +140,7 @@ def test__should_recover_w_non_recoverable():
 
 def test__should_terminate_w_unavailable():
     from google.api_core.exceptions import Cancelled
+
     from google.cloud.firestore_v1.watch import _should_terminate
 
     exception = Cancelled("testing")
@@ -194,8 +197,7 @@ def _make_watch(snapshots=None, comparator=_document_watch_comparator):
 
 
 def test_watch_ctor():
-    from google.cloud.firestore_v1.watch import _should_recover
-    from google.cloud.firestore_v1.watch import _should_terminate
+    from google.cloud.firestore_v1.watch import _should_recover, _should_terminate
 
     with mock.patch("google.cloud.firestore_v1.watch.ResumableBidiRpc") as rpc:
         with mock.patch("google.cloud.firestore_v1.watch.BackgroundConsumer") as bc:
@@ -406,6 +408,7 @@ def test_watch_on_snapshot_target_no_change_no_target_ids_not_current():
 
 def test_watch_on_snapshot_target_no_change_no_target_ids_current():
     import datetime
+
     from proto.datetime_helpers import DatetimeWithNanoseconds
 
     inst = _make_watch()
@@ -512,8 +515,7 @@ def test_watch_on_snapshot_target_unknown():
 
 def test_watch_on_snapshot_document_change_removed():
     from google.cloud.firestore_v1.types.document import Document
-    from google.cloud.firestore_v1.watch import WATCH_TARGET_ID
-    from google.cloud.firestore_v1.watch import ChangeType
+    from google.cloud.firestore_v1.watch import WATCH_TARGET_ID, ChangeType
 
     inst = _make_watch()
     proto = _make_listen_response()
@@ -982,8 +984,7 @@ class DummyThreading(object):
 
 
 def _make_listen_response():
-    from google.cloud.firestore_v1.types.firestore import ListenResponse
-    from google.cloud.firestore_v1.types.firestore import TargetChange
+    from google.cloud.firestore_v1.types.firestore import ListenResponse, TargetChange
 
     response = ListenResponse()
     tc = response.target_change

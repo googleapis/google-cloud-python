@@ -20,18 +20,18 @@ a more common way to create an aggregation query than direct usage of the constr
 """
 from __future__ import annotations
 
+from typing import TYPE_CHECKING, AsyncGenerator, List, Optional, Union
+
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 
-from typing import AsyncGenerator, List, Optional, Union, TYPE_CHECKING
-
+from google.cloud.firestore_v1 import transaction
 from google.cloud.firestore_v1.async_stream_generator import AsyncStreamGenerator
 from google.cloud.firestore_v1.base_aggregation import (
     AggregationResult,
-    _query_response_to_result,
     BaseAggregationQuery,
+    _query_response_to_result,
 )
-from google.cloud.firestore_v1 import transaction
 
 if TYPE_CHECKING:  # pragma: NO COVER
     from google.cloud.firestore_v1.base_document import DocumentSnapshot

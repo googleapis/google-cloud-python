@@ -53,10 +53,8 @@ def _make_commit_repsonse(write_results=None):
 
 
 def _write_pb_for_create(document_path, document_data):
-    from google.cloud.firestore_v1.types import common
-    from google.cloud.firestore_v1.types import document
-    from google.cloud.firestore_v1.types import write
     from google.cloud.firestore_v1 import _helpers
+    from google.cloud.firestore_v1.types import common, document, write
 
     return write.Write(
         update=document.Document(
@@ -116,8 +114,7 @@ def test_documentreference_create_w_retry_timeout(database):
 @pytest.mark.parametrize("database", [None, "somedb"])
 def test_documentreference_create_empty(database):
     # Create a minimal fake GAPIC with a dummy response.
-    from google.cloud.firestore_v1.document import DocumentReference
-    from google.cloud.firestore_v1.document import DocumentSnapshot
+    from google.cloud.firestore_v1.document import DocumentReference, DocumentSnapshot
 
     firestore_api = mock.Mock(spec=["commit"])
     document_reference = mock.create_autospec(DocumentReference)
@@ -142,10 +139,8 @@ def test_documentreference_create_empty(database):
 
 
 def _write_pb_for_set(document_path, document_data, merge):
-    from google.cloud.firestore_v1.types import common
-    from google.cloud.firestore_v1.types import document
-    from google.cloud.firestore_v1.types import write
     from google.cloud.firestore_v1 import _helpers
+    from google.cloud.firestore_v1.types import common, document, write
 
     write_pbs = write.Write(
         update=document.Document(
@@ -218,10 +213,8 @@ def test_documentreference_set_merge(database):
 
 
 def _write_pb_for_update(document_path, update_values, field_paths):
-    from google.cloud.firestore_v1.types import common
-    from google.cloud.firestore_v1.types import document
-    from google.cloud.firestore_v1.types import write
     from google.cloud.firestore_v1 import _helpers
+    from google.cloud.firestore_v1.types import common, document, write
 
     return write.Write(
         update=document.Document(
@@ -234,6 +227,7 @@ def _write_pb_for_update(document_path, update_values, field_paths):
 
 def _update_helper(retry=None, timeout=None, database=None, **option_kwargs):
     from collections import OrderedDict
+
     from google.cloud.firestore_v1 import _helpers
     from google.cloud.firestore_v1.transforms import DELETE_FIELD
 
@@ -401,10 +395,8 @@ def _get_helper(
     database=None,
 ):
     from google.cloud.firestore_v1 import _helpers
-    from google.cloud.firestore_v1.types import common
-    from google.cloud.firestore_v1.types import document
-    from google.cloud.firestore_v1.types import firestore
     from google.cloud.firestore_v1.transaction import Transaction
+    from google.cloud.firestore_v1.types import common, document, firestore
 
     # Create a minimal fake GAPIC with a dummy response.
     create_time = 123
@@ -529,8 +521,8 @@ def test_documentreference_get_with_transaction(database):
 
 
 def _collections_helper(page_size=None, retry=None, timeout=None, database=None):
-    from google.cloud.firestore_v1.collection import CollectionReference
     from google.cloud.firestore_v1 import _helpers
+    from google.cloud.firestore_v1.collection import CollectionReference
     from google.cloud.firestore_v1.services.firestore.client import FirestoreClient
 
     collection_ids = ["coll-1", "coll-2"]

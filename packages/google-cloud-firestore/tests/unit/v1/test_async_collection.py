@@ -17,9 +17,8 @@ import types
 import mock
 import pytest
 
-from tests.unit.v1.test__helpers import AsyncIter
-from tests.unit.v1.test__helpers import AsyncMock
 from tests.unit.v1._test_helpers import DEFAULT_TEST_PROJECT, make_async_client
+from tests.unit.v1.test__helpers import AsyncIter, AsyncMock
 
 
 def _make_async_collection_reference(*args, **kwargs):
@@ -56,8 +55,8 @@ def test_asynccollectionreference_constructor():
 
 
 def test_asynccollectionreference_query_method_matching():
-    from google.cloud.firestore_v1.async_query import AsyncQuery
     from google.cloud.firestore_v1.async_collection import AsyncCollectionReference
+    from google.cloud.firestore_v1.async_query import AsyncQuery
 
     query_methods = _get_public_methods(AsyncQuery)
     collection_methods = _get_public_methods(AsyncCollectionReference)
@@ -129,10 +128,10 @@ def test_async_collection_avg():
 
 @pytest.mark.asyncio
 async def test_asynccollectionreference_add_auto_assigned():
-    from google.cloud.firestore_v1.types import document
-    from google.cloud.firestore_v1.async_document import AsyncDocumentReference
     from google.cloud.firestore_v1 import SERVER_TIMESTAMP
     from google.cloud.firestore_v1._helpers import pbs_for_create
+    from google.cloud.firestore_v1.async_document import AsyncDocumentReference
+    from google.cloud.firestore_v1.types import document
 
     # Create a minimal fake GAPIC add attach it to a real client.
     firestore_api = AsyncMock(spec=["create_document", "commit"])
@@ -186,10 +185,8 @@ async def test_asynccollectionreference_add_auto_assigned():
 
 
 def _write_pb_for_create(document_path, document_data):
-    from google.cloud.firestore_v1.types import common
-    from google.cloud.firestore_v1.types import document
-    from google.cloud.firestore_v1.types import write
     from google.cloud.firestore_v1 import _helpers
+    from google.cloud.firestore_v1.types import common, document, write
 
     return write.Write(
         update=document.Document(
@@ -200,8 +197,8 @@ def _write_pb_for_create(document_path, document_data):
 
 
 async def _add_helper(retry=None, timeout=None):
-    from google.cloud.firestore_v1.async_document import AsyncDocumentReference
     from google.cloud.firestore_v1 import _helpers
+    from google.cloud.firestore_v1.async_document import AsyncDocumentReference
 
     # Create a minimal fake GAPIC with a dummy response.
     firestore_api = AsyncMock(spec=["commit"])
@@ -265,8 +262,7 @@ async def test_asynccollectionreference_add_w_retry_timeout():
 
 @pytest.mark.asyncio
 async def test_asynccollectionreference_chunkify():
-    from google.cloud.firestore_v1.types import document
-    from google.cloud.firestore_v1.types import firestore
+    from google.cloud.firestore_v1.types import document, firestore
 
     client = make_async_client()
     col = client.collection("my-collection")
@@ -307,9 +303,10 @@ async def test_asynccollectionreference_chunkify():
 
 @pytest.mark.asyncio
 async def _list_documents_helper(page_size=None, retry=None, timeout=None):
-    from google.cloud.firestore_v1 import _helpers
-    from google.api_core.page_iterator_async import AsyncIterator
     from google.api_core.page_iterator import Page
+    from google.api_core.page_iterator_async import AsyncIterator
+
+    from google.cloud.firestore_v1 import _helpers
     from google.cloud.firestore_v1.async_document import AsyncDocumentReference
     from google.cloud.firestore_v1.types.document import Document
 

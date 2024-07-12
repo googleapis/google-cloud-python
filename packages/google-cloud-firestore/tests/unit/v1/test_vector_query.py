@@ -15,17 +15,12 @@
 import mock
 import pytest
 
+from google.cloud.firestore_v1._helpers import encode_value, make_retry_timeout_kwargs
+from google.cloud.firestore_v1.base_vector_query import DistanceMeasure
 from google.cloud.firestore_v1.types.query import StructuredQuery
 from google.cloud.firestore_v1.vector import Vector
-from google.cloud.firestore_v1.base_vector_query import DistanceMeasure
-
-from tests.unit.v1._test_helpers import (
-    make_vector_query,
-    make_client,
-    make_query,
-)
+from tests.unit.v1._test_helpers import make_client, make_query, make_vector_query
 from tests.unit.v1.test_base_query import _make_query_response
-from google.cloud.firestore_v1._helpers import encode_value, make_retry_timeout_kwargs
 
 _PROJECT = "PROJECT"
 _TXN_ID = b"\x00\x00\x01-work-\xf2"

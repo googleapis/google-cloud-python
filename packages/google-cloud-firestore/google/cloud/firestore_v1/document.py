@@ -15,22 +15,21 @@
 """Classes for representing documents for the Google Cloud Firestore API."""
 import datetime
 import logging
+from typing import Any, Callable, Generator, Iterable
 
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
 from google.cloud._helpers import _datetime_to_pb_timestamp  # type: ignore
+from google.protobuf.timestamp_pb2 import Timestamp
 
+from google.cloud.firestore_v1 import _helpers
 from google.cloud.firestore_v1.base_document import (
     BaseDocumentReference,
     DocumentSnapshot,
     _first_write_result,
 )
-from google.cloud.firestore_v1 import _helpers
 from google.cloud.firestore_v1.types import write
 from google.cloud.firestore_v1.watch import Watch
-from google.protobuf.timestamp_pb2 import Timestamp
-from typing import Any, Callable, Generator, Iterable
-
 
 logger = logging.getLogger(__name__)
 

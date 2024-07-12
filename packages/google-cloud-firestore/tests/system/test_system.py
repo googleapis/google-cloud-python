@@ -16,34 +16,33 @@ import datetime
 import itertools
 import math
 import operator
-
-import google.auth
-from google.oauth2 import service_account
-import pytest
-
-from google.api_core.exceptions import AlreadyExists
-from google.api_core.exceptions import FailedPrecondition
-from google.api_core.exceptions import InvalidArgument
-from google.api_core.exceptions import NotFound
-from google.cloud._helpers import _datetime_to_pb_timestamp
-from google.cloud import firestore_v1 as firestore
-from google.cloud.firestore_v1.base_query import FieldFilter, And, Or
-from google.cloud.firestore_v1.base_vector_query import DistanceMeasure
-from google.cloud.firestore_v1.vector import Vector
-
-
 from time import sleep
 from typing import Callable, Dict, List, Optional
 
+import google.auth
+import pytest
+from google.api_core.exceptions import (
+    AlreadyExists,
+    FailedPrecondition,
+    InvalidArgument,
+    NotFound,
+)
+from google.cloud._helpers import _datetime_to_pb_timestamp
+from google.oauth2 import service_account
+
+from google.cloud import firestore_v1 as firestore
+from google.cloud.firestore_v1.base_query import And, FieldFilter, Or
+from google.cloud.firestore_v1.base_vector_query import DistanceMeasure
+from google.cloud.firestore_v1.vector import Vector
 from tests.system.test__helpers import (
-    FIRESTORE_CREDS,
-    FIRESTORE_PROJECT,
-    RANDOM_ID_REGEX,
-    MISSING_DOCUMENT,
-    UNIQUE_RESOURCE_ID,
     EMULATOR_CREDS,
+    FIRESTORE_CREDS,
     FIRESTORE_EMULATOR,
     FIRESTORE_OTHER_DB,
+    FIRESTORE_PROJECT,
+    MISSING_DOCUMENT,
+    RANDOM_ID_REGEX,
+    UNIQUE_RESOURCE_ID,
 )
 
 
@@ -1239,8 +1238,8 @@ def test_batch(client, cleanup, database):
 
 @pytest.mark.parametrize("database", [None, FIRESTORE_OTHER_DB], indirect=True)
 def test_live_bulk_writer(client, cleanup, database):
-    from google.cloud.firestore_v1.client import Client
     from google.cloud.firestore_v1.bulk_writer import BulkWriter
+    from google.cloud.firestore_v1.client import Client
 
     db: Client = client
     bw: BulkWriter = db.bulk_writer()

@@ -302,8 +302,8 @@ def test_basecollectionreference_where_w___name___w_value_as_list_of_docref(mock
 
 @mock.patch("google.cloud.firestore_v1.base_query.BaseQuery", autospec=True)
 def test_basecollectionreference_order_by(mock_query):
-    from google.cloud.firestore_v1.base_query import BaseQuery
     from google.cloud.firestore_v1.base_collection import BaseCollectionReference
+    from google.cloud.firestore_v1.base_query import BaseQuery
 
     with mock.patch.object(BaseCollectionReference, "_query") as _query:
         _query.return_value = mock_query
@@ -424,8 +424,7 @@ def test_basecollectionreference_end_at(mock_query):
 
 @mock.patch("random.choice")
 def test__auto_id(mock_rand_choice):
-    from google.cloud.firestore_v1.base_collection import _AUTO_ID_CHARS
-    from google.cloud.firestore_v1.base_collection import _auto_id
+    from google.cloud.firestore_v1.base_collection import _AUTO_ID_CHARS, _auto_id
 
     mock_result = "0123456789abcdefghij"
     mock_rand_choice.side_effect = list(mock_result)

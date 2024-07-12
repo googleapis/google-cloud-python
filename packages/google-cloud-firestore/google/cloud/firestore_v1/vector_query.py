@@ -15,21 +15,23 @@
 """Classes for representing vector queries for the Google Cloud Firestore API.
 """
 
-from typing import Any, Iterable, Optional, TypeVar, TYPE_CHECKING, Union, Generator
+from typing import TYPE_CHECKING, Any, Generator, Iterable, Optional, TypeVar, Union
+
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
-from google.cloud.firestore_v1.base_vector_query import BaseVectorQuery
+
 from google.cloud.firestore_v1.base_query import (
     BaseQuery,
-    _query_response_to_snapshot,
     _collection_group_query_response_to_snapshot,
+    _query_response_to_snapshot,
 )
+from google.cloud.firestore_v1.base_vector_query import BaseVectorQuery
 from google.cloud.firestore_v1.stream_generator import StreamGenerator
 
 # Types needed only for Type Hints
 if TYPE_CHECKING:  # pragma: NO COVER
-    from google.cloud.firestore_v1.base_document import DocumentSnapshot
     from google.cloud.firestore_v1 import transaction
+    from google.cloud.firestore_v1.base_document import DocumentSnapshot
 
 
 TVectorQuery = TypeVar("TVectorQuery", bound="VectorQuery")

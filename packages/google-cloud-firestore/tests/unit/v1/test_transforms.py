@@ -117,8 +117,9 @@ def test__numericvalue___eq___same_value():
 
 
 def test__server_timestamp_is_same_after_copy():
-    from google.cloud.firestore_v1.transforms import SERVER_TIMESTAMP
     import copy
+
+    from google.cloud.firestore_v1.transforms import SERVER_TIMESTAMP
 
     value = SERVER_TIMESTAMP
 
@@ -127,8 +128,9 @@ def test__server_timestamp_is_same_after_copy():
 
 
 def test__server_timestamp_is_same_after_deepcopy():
-    from google.cloud.firestore_v1.transforms import SERVER_TIMESTAMP
     import copy
+
+    from google.cloud.firestore_v1.transforms import SERVER_TIMESTAMP
 
     value = SERVER_TIMESTAMP
 

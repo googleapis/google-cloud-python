@@ -17,8 +17,8 @@ import collections
 import mock
 import pytest
 
-from tests.unit.v1.test__helpers import AsyncIter, AsyncMock
 from tests.unit.v1._test_helpers import make_async_client
+from tests.unit.v1.test__helpers import AsyncIter, AsyncMock
 
 
 def _make_async_document_reference(*args, **kwargs):
@@ -55,10 +55,8 @@ def _make_commit_repsonse(write_results=None):
 
 
 def _write_pb_for_create(document_path, document_data):
-    from google.cloud.firestore_v1.types import common
-    from google.cloud.firestore_v1.types import document
-    from google.cloud.firestore_v1.types import write
     from google.cloud.firestore_v1 import _helpers
+    from google.cloud.firestore_v1.types import common, document, write
 
     return write.Write(
         update=document.Document(
@@ -118,8 +116,10 @@ async def test_asyncdocumentreference_create_w_retry_timeout():
 @pytest.mark.asyncio
 async def test_asyncdocumentreference_create_empty():
     # Create a minimal fake GAPIC with a dummy response.
-    from google.cloud.firestore_v1.async_document import AsyncDocumentReference
-    from google.cloud.firestore_v1.async_document import DocumentSnapshot
+    from google.cloud.firestore_v1.async_document import (
+        AsyncDocumentReference,
+        DocumentSnapshot,
+    )
 
     firestore_api = AsyncMock(spec=["commit"])
     document_reference = mock.create_autospec(AsyncDocumentReference)
@@ -144,10 +144,8 @@ async def test_asyncdocumentreference_create_empty():
 
 
 def _write_pb_for_set(document_path, document_data, merge):
-    from google.cloud.firestore_v1.types import common
-    from google.cloud.firestore_v1.types import document
-    from google.cloud.firestore_v1.types import write
     from google.cloud.firestore_v1 import _helpers
+    from google.cloud.firestore_v1.types import common, document, write
 
     write_pbs = write.Write(
         update=document.Document(
@@ -221,10 +219,8 @@ async def test_asyncdocumentreference_set_merge():
 
 
 def _write_pb_for_update(document_path, update_values, field_paths):
-    from google.cloud.firestore_v1.types import common
-    from google.cloud.firestore_v1.types import document
-    from google.cloud.firestore_v1.types import write
     from google.cloud.firestore_v1 import _helpers
+    from google.cloud.firestore_v1.types import common, document, write
 
     return write.Write(
         update=document.Document(
@@ -405,10 +401,8 @@ async def _get_helper(
     timeout=None,
 ):
     from google.cloud.firestore_v1 import _helpers
-    from google.cloud.firestore_v1.types import common
-    from google.cloud.firestore_v1.types import document
-    from google.cloud.firestore_v1.types import firestore
     from google.cloud.firestore_v1.transaction import Transaction
+    from google.cloud.firestore_v1.types import common, document, firestore
 
     # Create a minimal fake GAPIC with a dummy response.
     create_time = 123

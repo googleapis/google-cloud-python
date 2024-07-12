@@ -24,30 +24,30 @@ In the hierarchy of API concepts
   :class:`~google.cloud.firestore_v1.document.DocumentReference`
 """
 
+from typing import TYPE_CHECKING, Any, Generator, Iterable, List, Optional, Union
+
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
 
 from google.cloud.firestore_v1.base_client import (
-    BaseClient,
     _CLIENT_INFO,
+    BaseClient,
     _parse_batch_get,
     _path_helper,
 )
 
-from google.cloud.firestore_v1.query import CollectionGroup
+# Types needed only for Type Hints
+from google.cloud.firestore_v1.base_document import DocumentSnapshot
 from google.cloud.firestore_v1.batch import WriteBatch
 from google.cloud.firestore_v1.collection import CollectionReference
 from google.cloud.firestore_v1.document import DocumentReference
 from google.cloud.firestore_v1.field_path import FieldPath
-from google.cloud.firestore_v1.transaction import Transaction
+from google.cloud.firestore_v1.query import CollectionGroup
 from google.cloud.firestore_v1.services.firestore import client as firestore_client
 from google.cloud.firestore_v1.services.firestore.transports import (
     grpc as firestore_grpc_transport,
 )
-from typing import Any, Generator, Iterable, List, Optional, Union, TYPE_CHECKING
-
-# Types needed only for Type Hints
-from google.cloud.firestore_v1.base_document import DocumentSnapshot
+from google.cloud.firestore_v1.transaction import Transaction
 
 if TYPE_CHECKING:
     from google.cloud.firestore_v1.bulk_writer import BulkWriter  # pragma: NO COVER

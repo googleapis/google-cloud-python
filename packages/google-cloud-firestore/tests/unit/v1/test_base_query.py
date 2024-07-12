@@ -225,9 +225,7 @@ def test_basequery_where_invalid_path():
 
 def test_basequery_where():
     from google.cloud.firestore_v1.base_query import BaseQuery
-    from google.cloud.firestore_v1.types import StructuredQuery
-    from google.cloud.firestore_v1.types import document
-    from google.cloud.firestore_v1.types import query
+    from google.cloud.firestore_v1.types import StructuredQuery, document, query
 
     query_inst = _make_base_query_all_fields(
         skip_fields=("field_filters",), all_descendants=True
@@ -433,8 +431,8 @@ def test_basequery_order_by_invalid_path():
 
 
 def test_basequery_order_by():
-    from google.cloud.firestore_v1.types import StructuredQuery
     from google.cloud.firestore_v1.base_query import BaseQuery
+    from google.cloud.firestore_v1.types import StructuredQuery
 
     query1 = _make_base_query_all_fields(skip_fields=("orders",), all_descendants=True)
 
@@ -760,10 +758,8 @@ def test_basequery_end_at():
 
 
 def test_basequery_where_filter_keyword_arg():
-    from google.cloud.firestore_v1.types import StructuredQuery
-    from google.cloud.firestore_v1.types import document
-    from google.cloud.firestore_v1.types import query
-    from google.cloud.firestore_v1.base_query import FieldFilter, And, Or
+    from google.cloud.firestore_v1.base_query import And, FieldFilter, Or
+    from google.cloud.firestore_v1.types import StructuredQuery, document, query
 
     op_class = StructuredQuery.FieldFilter.Operator
 
@@ -877,7 +873,7 @@ def test_basequery_where_cannot_pass_both_positional_and_keyword_filter_arg():
 
 
 def test_basequery_where_cannot_pass_filter_without_keyword_arg():
-    from google.cloud.firestore_v1.base_query import FieldFilter, And
+    from google.cloud.firestore_v1.base_query import And, FieldFilter
 
     field_path_1 = "x.y"
     op_str_1 = ">"
@@ -900,10 +896,9 @@ def test_basequery_where_cannot_pass_filter_without_keyword_arg():
 
 
 def test_basequery_where_mix_of_field_and_composite():
-    from google.cloud.firestore_v1.base_query import FieldFilter, And, Or
-    from google.cloud.firestore_v1.types import query
+    from google.cloud.firestore_v1.base_query import And, FieldFilter, Or
+    from google.cloud.firestore_v1.types import document, query
     from google.cloud.firestore_v1.types.query import StructuredQuery
-    from google.cloud.firestore_v1.types import document
 
     op_class = StructuredQuery.FieldFilter.Operator
 
@@ -1046,10 +1041,7 @@ def test_basequery__filters_pb_empty():
 
 
 def test_basequery__filters_pb_single():
-    from google.cloud.firestore_v1.types import StructuredQuery
-
-    from google.cloud.firestore_v1.types import document
-    from google.cloud.firestore_v1.types import query
+    from google.cloud.firestore_v1.types import StructuredQuery, document, query
 
     query1 = _make_base_query(mock.sentinel.parent)
     query2 = query1.where("x.y", ">", 50.5)
@@ -1065,10 +1057,7 @@ def test_basequery__filters_pb_single():
 
 
 def test_basequery__filters_pb_multi():
-    from google.cloud.firestore_v1.types import StructuredQuery
-
-    from google.cloud.firestore_v1.types import document
-    from google.cloud.firestore_v1.types import query
+    from google.cloud.firestore_v1.types import StructuredQuery, document, query
 
     query1 = _make_base_query(mock.sentinel.parent)
     query2 = query1.where("x.y", ">", 50.5)
@@ -1418,10 +1407,8 @@ def test_basequery__normalize_cursor_w___name___wo_slash():
 
 def test_basequery__to_protobuf_all_fields():
     from google.protobuf import wrappers_pb2
-    from google.cloud.firestore_v1.types import StructuredQuery
 
-    from google.cloud.firestore_v1.types import document
-    from google.cloud.firestore_v1.types import query
+    from google.cloud.firestore_v1.types import StructuredQuery, document, query
 
     parent = mock.Mock(id="cat", spec=["id"])
     query1 = _make_base_query(parent)
@@ -1484,10 +1471,7 @@ def test_basequery__to_protobuf_select_only():
 
 
 def test_basequery__to_protobuf_where_only():
-    from google.cloud.firestore_v1.types import StructuredQuery
-
-    from google.cloud.firestore_v1.types import document
-    from google.cloud.firestore_v1.types import query
+    from google.cloud.firestore_v1.types import StructuredQuery, document, query
 
     parent = mock.Mock(id="dog", spec=["id"])
     query1 = _make_base_query(parent)
@@ -1509,9 +1493,7 @@ def test_basequery__to_protobuf_where_only():
 
 
 def test_basequery__to_protobuf_order_by_only():
-    from google.cloud.firestore_v1.types import StructuredQuery
-
-    from google.cloud.firestore_v1.types import query
+    from google.cloud.firestore_v1.types import StructuredQuery, query
 
     parent = mock.Mock(id="fish", spec=["id"])
     query1 = _make_base_query(parent)
@@ -1528,10 +1510,7 @@ def test_basequery__to_protobuf_order_by_only():
 
 def test_basequery__to_protobuf_start_at_only():
     # NOTE: "only" is wrong since we must have ``order_by`` as well.
-    from google.cloud.firestore_v1.types import StructuredQuery
-
-    from google.cloud.firestore_v1.types import document
-    from google.cloud.firestore_v1.types import query
+    from google.cloud.firestore_v1.types import StructuredQuery, document, query
 
     parent = mock.Mock(id="phish", spec=["id"])
     query_inst = _make_base_query(parent).order_by("X.Y").start_after({"X": {"Y": "Z"}})
@@ -1548,10 +1527,7 @@ def test_basequery__to_protobuf_start_at_only():
 
 def test_basequery__to_protobuf_end_at_only():
     # NOTE: "only" is wrong since we must have ``order_by`` as well.
-    from google.cloud.firestore_v1.types import StructuredQuery
-
-    from google.cloud.firestore_v1.types import document
-    from google.cloud.firestore_v1.types import query
+    from google.cloud.firestore_v1.types import StructuredQuery, document, query
 
     parent = mock.Mock(id="ghoti", spec=["id"])
     query_inst = _make_base_query(parent).order_by("a").end_at({"a": 88})
@@ -1585,6 +1561,7 @@ def test_basequery__to_protobuf_offset_only():
 
 def test_basequery__to_protobuf_limit_only():
     from google.protobuf import wrappers_pb2
+
     from google.cloud.firestore_v1.types import query
 
     parent = mock.Mock(id="donut", spec=["id"])
@@ -1701,8 +1678,8 @@ def test_basequery_comparator_missing_order_by_field_in_data_raises():
 
 
 def test_basequery_recursive_multiple():
-    from google.cloud.firestore_v1.collection import CollectionReference
     from google.cloud.firestore_v1.base_query import BaseQuery
+    from google.cloud.firestore_v1.collection import CollectionReference
 
     class DerivedQuery(BaseQuery):
         @staticmethod
@@ -1813,9 +1790,9 @@ def test__isnan_invalid():
 
 
 def test__enum_from_direction_success():
-    from google.cloud.firestore_v1.types import StructuredQuery
     from google.cloud.firestore_v1.base_query import _enum_from_direction
     from google.cloud.firestore_v1.query import Query
+    from google.cloud.firestore_v1.types import StructuredQuery
 
     dir_class = StructuredQuery.Direction
     assert _enum_from_direction(Query.ASCENDING) == dir_class.ASCENDING
@@ -1834,9 +1811,8 @@ def test__enum_from_direction_failure():
 
 
 def test__filter_pb_unary():
-    from google.cloud.firestore_v1.types import StructuredQuery
     from google.cloud.firestore_v1.base_query import _filter_pb
-    from google.cloud.firestore_v1.types import query
+    from google.cloud.firestore_v1.types import StructuredQuery, query
 
     unary_pb = query.StructuredQuery.UnaryFilter(
         field=query.StructuredQuery.FieldReference(field_path="a.b.c"),
@@ -1848,10 +1824,8 @@ def test__filter_pb_unary():
 
 
 def test__filter_pb_field():
-    from google.cloud.firestore_v1.types import StructuredQuery
-    from google.cloud.firestore_v1.types import document
-    from google.cloud.firestore_v1.types import query
     from google.cloud.firestore_v1.base_query import _filter_pb
+    from google.cloud.firestore_v1.types import StructuredQuery, document, query
 
     field_filter_pb = query.StructuredQuery.FieldFilter(
         field=query.StructuredQuery.FieldReference(field_path="XYZ"),
@@ -1877,9 +1851,9 @@ def test__cursor_pb_no_pair():
 
 
 def test__cursor_pb_success():
-    from google.cloud.firestore_v1.types import query
     from google.cloud.firestore_v1 import _helpers
     from google.cloud.firestore_v1.base_query import _cursor_pb
+    from google.cloud.firestore_v1.types import query
 
     data = [1.5, 10, True]
     cursor_pair = data, True
@@ -1956,10 +1930,10 @@ def test__collection_group_query_response_to_snapshot_after_offset():
 
 
 def test__collection_group_query_response_to_snapshot_response():
-    from google.cloud.firestore_v1.document import DocumentSnapshot
     from google.cloud.firestore_v1.base_query import (
         _collection_group_query_response_to_snapshot,
     )
+    from google.cloud.firestore_v1.document import DocumentSnapshot
 
     client = make_client()
     collection = client.collection("a", "b", "c")
@@ -1989,10 +1963,10 @@ def _make_order_pb(field_path, direction):
 
 def _make_query_response(**kwargs):
     # kwargs supported are ``skipped_results``, ``name`` and ``data``
-    from google.cloud.firestore_v1.types import document
-    from google.cloud.firestore_v1.types import firestore
     from google.cloud._helpers import _datetime_to_pb_timestamp
+
     from google.cloud.firestore_v1 import _helpers
+    from google.cloud.firestore_v1.types import document, firestore
 
     now = datetime.datetime.now(tz=datetime.timezone.utc)
     read_time = _datetime_to_pb_timestamp(now)

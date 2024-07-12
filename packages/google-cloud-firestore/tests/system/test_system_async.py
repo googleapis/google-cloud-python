@@ -16,39 +16,37 @@ import asyncio
 import datetime
 import itertools
 import math
-import pytest
-import pytest_asyncio
 import operator
-import google.auth
-
 from typing import Callable, Dict, List, Optional
 
+import google.auth
+import pytest
+import pytest_asyncio
+from google.api_core import exceptions as core_exceptions
+from google.api_core import retry_async as retries
+from google.api_core.exceptions import (
+    AlreadyExists,
+    FailedPrecondition,
+    InvalidArgument,
+    NotFound,
+)
+from google.cloud._helpers import _datetime_to_pb_timestamp
 from google.oauth2 import service_account
 
-from google.api_core import retry_async as retries
-from google.api_core import exceptions as core_exceptions
-
-from google.api_core.exceptions import AlreadyExists
-from google.api_core.exceptions import FailedPrecondition
-from google.api_core.exceptions import InvalidArgument
-from google.api_core.exceptions import NotFound
-from google.cloud._helpers import _datetime_to_pb_timestamp
 from google.cloud import firestore_v1 as firestore
-from google.cloud.firestore_v1.base_query import FieldFilter, And, Or
+from google.cloud.firestore_v1.base_query import And, FieldFilter, Or
 from google.cloud.firestore_v1.base_vector_query import DistanceMeasure
 from google.cloud.firestore_v1.vector import Vector
-
 from tests.system.test__helpers import (
-    FIRESTORE_CREDS,
-    FIRESTORE_PROJECT,
-    RANDOM_ID_REGEX,
-    MISSING_DOCUMENT,
-    UNIQUE_RESOURCE_ID,
     EMULATOR_CREDS,
+    FIRESTORE_CREDS,
     FIRESTORE_EMULATOR,
     FIRESTORE_OTHER_DB,
+    FIRESTORE_PROJECT,
+    MISSING_DOCUMENT,
+    RANDOM_ID_REGEX,
+    UNIQUE_RESOURCE_ID,
 )
-
 
 RETRIES = retries.AsyncRetry(
     initial=0.1,

@@ -12,10 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from enum import Enum
-from google.cloud.firestore_v1._helpers import decode_value
 import math
+from enum import Enum
 from typing import Any
+
+from google.cloud.firestore_v1._helpers import decode_value
 
 
 class TypeOrder(Enum):

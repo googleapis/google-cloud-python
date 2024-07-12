@@ -20,25 +20,24 @@ a more common way to create a query than direct usage of the constructor.
 """
 from __future__ import annotations
 
+from typing import TYPE_CHECKING, AsyncGenerator, List, Optional, Type
+
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 
 from google.cloud import firestore_v1
+from google.cloud.firestore_v1 import async_document, transaction
+from google.cloud.firestore_v1.async_aggregation import AsyncAggregationQuery
+from google.cloud.firestore_v1.async_stream_generator import AsyncStreamGenerator
+from google.cloud.firestore_v1.async_vector_query import AsyncVectorQuery
 from google.cloud.firestore_v1.base_query import (
     BaseCollectionGroup,
     BaseQuery,
     QueryPartition,
-    _query_response_to_snapshot,
     _collection_group_query_response_to_snapshot,
     _enum_from_direction,
+    _query_response_to_snapshot,
 )
-
-from google.cloud.firestore_v1 import async_document
-from google.cloud.firestore_v1.async_aggregation import AsyncAggregationQuery
-from google.cloud.firestore_v1.async_vector_query import AsyncVectorQuery
-from google.cloud.firestore_v1.async_stream_generator import AsyncStreamGenerator
-from google.cloud.firestore_v1 import transaction
-from typing import AsyncGenerator, List, Optional, Type, TYPE_CHECKING
 
 if TYPE_CHECKING:  # pragma: NO COVER
     # Types needed only for Type Hints

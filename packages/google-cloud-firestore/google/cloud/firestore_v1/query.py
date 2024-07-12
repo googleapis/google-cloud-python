@@ -20,30 +20,27 @@ a more common way to create a query than direct usage of the constructor.
 """
 from __future__ import annotations
 
-from google.cloud import firestore_v1
-from google.cloud.firestore_v1.base_document import DocumentSnapshot
-from google.api_core import exceptions
-from google.api_core import gapic_v1
+from typing import TYPE_CHECKING, Any, Callable, Generator, List, Optional, Type
+
+from google.api_core import exceptions, gapic_v1
 from google.api_core import retry as retries
 
+from google.cloud import firestore_v1
+from google.cloud.firestore_v1 import aggregation, transaction
+from google.cloud.firestore_v1.base_document import DocumentSnapshot
 from google.cloud.firestore_v1.base_query import (
     BaseCollectionGroup,
     BaseQuery,
     QueryPartition,
-    _query_response_to_snapshot,
     _collection_group_query_response_to_snapshot,
     _enum_from_direction,
+    _query_response_to_snapshot,
 )
 from google.cloud.firestore_v1.base_vector_query import DistanceMeasure
-from google.cloud.firestore_v1.vector_query import VectorQuery
-from google.cloud.firestore_v1.vector import Vector
-from google.cloud.firestore_v1 import aggregation
-
 from google.cloud.firestore_v1.stream_generator import StreamGenerator
-from google.cloud.firestore_v1 import transaction
-
+from google.cloud.firestore_v1.vector import Vector
+from google.cloud.firestore_v1.vector_query import VectorQuery
 from google.cloud.firestore_v1.watch import Watch
-from typing import Any, Callable, Generator, List, Optional, Type, TYPE_CHECKING
 
 if TYPE_CHECKING:  # pragma: NO COVER
     from google.cloud.firestore_v1.field_path import FieldPath

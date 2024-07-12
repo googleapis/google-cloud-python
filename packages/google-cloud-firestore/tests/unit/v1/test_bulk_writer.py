@@ -19,17 +19,15 @@ import aiounittest  # type: ignore
 import mock
 import pytest
 
-from google.cloud.firestore_v1 import async_client
-from google.cloud.firestore_v1 import client
-from google.cloud.firestore_v1 import base_client
+from google.cloud.firestore_v1 import async_client, base_client, client
 
 
 def _make_no_send_bulk_writer(*args, **kwargs):
     from google.rpc import status_pb2
+
     from google.cloud.firestore_v1._helpers import build_timestamp
     from google.cloud.firestore_v1.bulk_batch import BulkWriteBatch
-    from google.cloud.firestore_v1.bulk_writer import BulkWriter
-    from google.cloud.firestore_v1.bulk_writer import BulkWriterOperation
+    from google.cloud.firestore_v1.bulk_writer import BulkWriter, BulkWriterOperation
     from google.cloud.firestore_v1.types.firestore import BatchWriteResponse
     from google.cloud.firestore_v1.types.write import WriteResult
     from tests.unit.v1._test_helpers import FakeThreadPoolExecutor
@@ -133,8 +131,7 @@ class _BaseBulkWriterTests:
         self._basebulkwriter_ctor_helper()
 
     def test_basebulkwriter_ctor_explicit(self):
-        from google.cloud.firestore_v1.bulk_writer import BulkRetry
-        from google.cloud.firestore_v1.bulk_writer import BulkWriterOptions
+        from google.cloud.firestore_v1.bulk_writer import BulkRetry, BulkWriterOptions
 
         options = BulkWriterOptions(retry=BulkRetry.immediate)
         self._basebulkwriter_ctor_helper(options=options)
@@ -372,9 +369,11 @@ class _BaseBulkWriterTests:
         assert len(bw._operations) == 0
 
     def test_basebulkwriter_invokes_error_callbacks_successfully_multiple_retries(self):
-        from google.cloud.firestore_v1.bulk_writer import BulkRetry
-        from google.cloud.firestore_v1.bulk_writer import BulkWriteFailure
-        from google.cloud.firestore_v1.bulk_writer import BulkWriterOptions
+        from google.cloud.firestore_v1.bulk_writer import (
+            BulkRetry,
+            BulkWriteFailure,
+            BulkWriterOptions,
+        )
 
         client = self._make_client()
         bw = _make_no_send_bulk_writer(
@@ -416,8 +415,7 @@ class _BaseBulkWriterTests:
         assert len(bw._operations) == 0
 
     def test_basebulkwriter_default_error_handler(self):
-        from google.cloud.firestore_v1.bulk_writer import BulkRetry
-        from google.cloud.firestore_v1.bulk_writer import BulkWriterOptions
+        from google.cloud.firestore_v1.bulk_writer import BulkRetry, BulkWriterOptions
 
         client = self._make_client()
         bw = _make_no_send_bulk_writer(
@@ -440,9 +438,11 @@ class _BaseBulkWriterTests:
         assert bw._attempts == 15
 
     def test_basebulkwriter_handles_errors_and_successes_correctly(self):
-        from google.cloud.firestore_v1.bulk_writer import BulkRetry
-        from google.cloud.firestore_v1.bulk_writer import BulkWriteFailure
-        from google.cloud.firestore_v1.bulk_writer import BulkWriterOptions
+        from google.cloud.firestore_v1.bulk_writer import (
+            BulkRetry,
+            BulkWriteFailure,
+            BulkWriterOptions,
+        )
 
         client = self._make_client()
         bw = _make_no_send_bulk_writer(
@@ -485,9 +485,11 @@ class _BaseBulkWriterTests:
         assert len(bw._operations) == 0
 
     def test_basebulkwriter_create_retriable(self):
-        from google.cloud.firestore_v1.bulk_writer import BulkRetry
-        from google.cloud.firestore_v1.bulk_writer import BulkWriteFailure
-        from google.cloud.firestore_v1.bulk_writer import BulkWriterOptions
+        from google.cloud.firestore_v1.bulk_writer import (
+            BulkRetry,
+            BulkWriteFailure,
+            BulkWriterOptions,
+        )
 
         client = self._make_client()
         bw = _make_no_send_bulk_writer(
@@ -516,9 +518,11 @@ class _BaseBulkWriterTests:
         assert len(bw._operations) == 0
 
     def test_basebulkwriter_delete_retriable(self):
-        from google.cloud.firestore_v1.bulk_writer import BulkRetry
-        from google.cloud.firestore_v1.bulk_writer import BulkWriteFailure
-        from google.cloud.firestore_v1.bulk_writer import BulkWriterOptions
+        from google.cloud.firestore_v1.bulk_writer import (
+            BulkRetry,
+            BulkWriteFailure,
+            BulkWriterOptions,
+        )
 
         client = self._make_client()
         bw = _make_no_send_bulk_writer(
@@ -547,9 +551,11 @@ class _BaseBulkWriterTests:
         assert len(bw._operations) == 0
 
     def test_basebulkwriter_set_retriable(self):
-        from google.cloud.firestore_v1.bulk_writer import BulkRetry
-        from google.cloud.firestore_v1.bulk_writer import BulkWriteFailure
-        from google.cloud.firestore_v1.bulk_writer import BulkWriterOptions
+        from google.cloud.firestore_v1.bulk_writer import (
+            BulkRetry,
+            BulkWriteFailure,
+            BulkWriterOptions,
+        )
 
         client = self._make_client()
         bw = _make_no_send_bulk_writer(
@@ -578,9 +584,11 @@ class _BaseBulkWriterTests:
         assert len(bw._operations) == 0
 
     def test_basebulkwriter_update_retriable(self):
-        from google.cloud.firestore_v1.bulk_writer import BulkRetry
-        from google.cloud.firestore_v1.bulk_writer import BulkWriteFailure
-        from google.cloud.firestore_v1.bulk_writer import BulkWriterOptions
+        from google.cloud.firestore_v1.bulk_writer import (
+            BulkRetry,
+            BulkWriteFailure,
+            BulkWriterOptions,
+        )
 
         client = self._make_client()
         bw = _make_no_send_bulk_writer(
@@ -609,8 +617,7 @@ class _BaseBulkWriterTests:
         assert len(bw._operations) == 0
 
     def test_basebulkwriter_serial_calls_send_correctly(self):
-        from google.cloud.firestore_v1.bulk_writer import BulkWriterOptions
-        from google.cloud.firestore_v1.bulk_writer import SendMode
+        from google.cloud.firestore_v1.bulk_writer import BulkWriterOptions, SendMode
 
         client = self._make_client()
         bw = _make_no_send_bulk_writer(
@@ -779,8 +786,10 @@ def test_scheduling_max_in_flight_honored():
 
 
 def test_scheduling_operation_retry_scheduling():
-    from google.cloud.firestore_v1.bulk_writer import BulkWriterCreateOperation
-    from google.cloud.firestore_v1.bulk_writer import OperationRetry
+    from google.cloud.firestore_v1.bulk_writer import (
+        BulkWriterCreateOperation,
+        OperationRetry,
+    )
 
     now = datetime.datetime.now()
     one_second_from_now = now + datetime.timedelta(seconds=1)

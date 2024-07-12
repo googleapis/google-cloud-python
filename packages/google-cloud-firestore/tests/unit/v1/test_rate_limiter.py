@@ -13,9 +13,9 @@
 # limitations under the License.
 
 import datetime
-import pytest
 
 import freezegun
+import pytest
 
 from google.cloud.firestore_v1 import rate_limiter
 
