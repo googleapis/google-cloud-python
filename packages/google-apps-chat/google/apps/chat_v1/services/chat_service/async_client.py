@@ -52,6 +52,7 @@ from google.apps.chat_v1.types import (
     attachment,
     contextual_addon,
     deletion_metadata,
+    event_payload,
     group,
     history_state,
     matched_url,
@@ -65,6 +66,7 @@ from google.apps.chat_v1.types import reaction as gc_reaction
 from google.apps.chat_v1.types import slash_command
 from google.apps.chat_v1.types import space
 from google.apps.chat_v1.types import space as gc_space
+from google.apps.chat_v1.types import space_event
 from google.apps.chat_v1.types import space_read_state
 from google.apps.chat_v1.types import space_read_state as gc_space_read_state
 from google.apps.chat_v1.types import space_setup, thread_read_state, user
@@ -104,6 +106,8 @@ class ChatServiceAsyncClient:
     parse_reaction_path = staticmethod(ChatServiceClient.parse_reaction_path)
     space_path = staticmethod(ChatServiceClient.space_path)
     parse_space_path = staticmethod(ChatServiceClient.parse_space_path)
+    space_event_path = staticmethod(ChatServiceClient.space_event_path)
+    parse_space_event_path = staticmethod(ChatServiceClient.parse_space_event_path)
     space_read_state_path = staticmethod(ChatServiceClient.space_read_state_path)
     parse_space_read_state_path = staticmethod(
         ChatServiceClient.parse_space_read_state_path
@@ -3566,6 +3570,333 @@ class ChatServiceAsyncClient:
             request,
             retry=retry,
             timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def get_space_event(
+        self,
+        request: Optional[Union[space_event.GetSpaceEventRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> space_event.SpaceEvent:
+        r"""Returns an event from a Google Chat space. The `event
+        payload <https://developers.google.com/workspace/chat/api/reference/rest/v1/spaces.spaceEvents#SpaceEvent.FIELDS.oneof_payload>`__
+        contains the most recent version of the resource that changed.
+        For example, if you request an event about a new message but the
+        message was later updated, the server returns the updated
+        ``Message`` resource in the event payload.
+
+        Requires `user
+        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__.
+        To get an event, the authenticated user must be a member of the
+        space.
+
+        For an example, see `Get details about an event from a Google
+        Chat
+        space <https://developers.google.com/workspace/chat/get-space-event>`__.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.apps import chat_v1
+
+            async def sample_get_space_event():
+                # Create a client
+                client = chat_v1.ChatServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = chat_v1.GetSpaceEventRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.get_space_event(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.apps.chat_v1.types.GetSpaceEventRequest, dict]]):
+                The request object. Request message for getting a space
+                event.
+            name (:class:`str`):
+                Required. The resource name of the space event.
+
+                Format: ``spaces/{space}/spaceEvents/{spaceEvent}``
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.apps.chat_v1.types.SpaceEvent:
+                An event that represents a change or activity in a Google Chat space. To
+                   learn more, see [Work with events from Google
+                   Chat](\ https://developers.google.com/workspace/chat/events-overview).
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, space_event.GetSpaceEventRequest):
+            request = space_event.GetSpaceEventRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_space_event
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def list_space_events(
+        self,
+        request: Optional[Union[space_event.ListSpaceEventsRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        filter: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListSpaceEventsAsyncPager:
+        r"""Lists events from a Google Chat space. For each event, the
+        `payload <https://developers.google.com/workspace/chat/api/reference/rest/v1/spaces.spaceEvents#SpaceEvent.FIELDS.oneof_payload>`__
+        contains the most recent version of the Chat resource. For
+        example, if you list events about new space members, the server
+        returns ``Membership`` resources that contain the latest
+        membership details. If new members were removed during the
+        requested period, the event payload contains an empty
+        ``Membership`` resource.
+
+        Requires `user
+        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__.
+        To list events, the authenticated user must be a member of the
+        space.
+
+        For an example, see `List events from a Google Chat
+        space <https://developers.google.com/workspace/chat/list-space-events>`__.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.apps import chat_v1
+
+            async def sample_list_space_events():
+                # Create a client
+                client = chat_v1.ChatServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = chat_v1.ListSpaceEventsRequest(
+                    parent="parent_value",
+                    filter="filter_value",
+                )
+
+                # Make the request
+                page_result = client.list_space_events(request=request)
+
+                # Handle the response
+                async for response in page_result:
+                    print(response)
+
+        Args:
+            request (Optional[Union[google.apps.chat_v1.types.ListSpaceEventsRequest, dict]]):
+                The request object. Request message for listing space
+                events.
+            parent (:class:`str`):
+                Required. Resource name of the `Google Chat
+                space <https://developers.google.com/workspace/chat/api/reference/rest/v1/spaces>`__
+                where the events occurred.
+
+                Format: ``spaces/{space}``.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            filter (:class:`str`):
+                Required. A query filter.
+
+                You must specify at least one event type
+                (``event_type``) using the has ``:`` operator. To filter
+                by multiple event types, use the ``OR`` operator. Omit
+                batch event types in your filter. The request
+                automatically returns any related batch events. For
+                example, if you filter by new reactions
+                (``google.workspace.chat.reaction.v1.created``), the
+                server also returns batch new reactions events
+                (``google.workspace.chat.reaction.v1.batchCreated``).
+                For a list of supported event types, see the
+                ```SpaceEvents`` reference
+                documentation <https://developers.google.com/workspace/chat/api/reference/rest/v1/spaces.spaceEvents#SpaceEvent.FIELDS.event_type>`__.
+
+                Optionally, you can also filter by start time
+                (``start_time``) and end time (``end_time``):
+
+                -  ``start_time``: Exclusive timestamp from which to
+                   start listing space events. You can list events that
+                   occurred up to 28 days ago. If unspecified, lists
+                   space events from the past 28 days.
+                -  ``end_time``: Inclusive timestamp until which space
+                   events are listed. If unspecified, lists events up to
+                   the time of the request.
+
+                To specify a start or end time, use the equals ``=``
+                operator and format in
+                `RFC-3339 <https://www.rfc-editor.org/rfc/rfc3339>`__.
+                To filter by both ``start_time`` and ``end_time``, use
+                the ``AND`` operator.
+
+                For example, the following queries are valid:
+
+                ::
+
+                   start_time="2023-08-23T19:20:33+00:00" AND
+                   end_time="2023-08-23T19:21:54+00:00"
+
+                ::
+
+                   start_time="2023-08-23T19:20:33+00:00" AND
+                   (event_types:"google.workspace.chat.space.v1.updated" OR
+                   event_types:"google.workspace.chat.message.v1.created")
+
+                The following queries are invalid:
+
+                ::
+
+                   start_time="2023-08-23T19:20:33+00:00" OR
+                   end_time="2023-08-23T19:21:54+00:00"
+
+                ::
+
+                   event_types:"google.workspace.chat.space.v1.updated" AND
+                   event_types:"google.workspace.chat.message.v1.created"
+
+                Invalid queries are rejected by the server with an
+                ``INVALID_ARGUMENT`` error.
+
+                This corresponds to the ``filter`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.apps.chat_v1.services.chat_service.pagers.ListSpaceEventsAsyncPager:
+                Response message for listing space
+                events.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, filter])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, space_event.ListSpaceEventsRequest):
+            request = space_event.ListSpaceEventsRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+        if filter is not None:
+            request.filter = filter
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_space_events
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.ListSpaceEventsAsyncPager(
+            method=rpc,
+            request=request,
+            response=response,
             metadata=metadata,
         )
 

@@ -60,6 +60,7 @@ from google.apps.chat_v1.types import (
     attachment,
     contextual_addon,
     deletion_metadata,
+    event_payload,
     group,
     history_state,
     matched_url,
@@ -74,6 +75,7 @@ from google.apps.chat_v1.types import reaction as gc_reaction
 from google.apps.chat_v1.types import slash_command
 from google.apps.chat_v1.types import space
 from google.apps.chat_v1.types import space as gc_space
+from google.apps.chat_v1.types import space_event
 from google.apps.chat_v1.types import space_read_state
 from google.apps.chat_v1.types import space_read_state as gc_space_read_state
 
@@ -11341,6 +11343,971 @@ async def test_get_thread_read_state_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
+        space_event.GetSpaceEventRequest,
+        dict,
+    ],
+)
+def test_get_space_event(request_type, transport: str = "grpc"):
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_space_event), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = space_event.SpaceEvent(
+            name="name_value",
+            event_type="event_type_value",
+        )
+        response = client.get_space_event(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = space_event.GetSpaceEventRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, space_event.SpaceEvent)
+    assert response.name == "name_value"
+    assert response.event_type == "event_type_value"
+
+
+def test_get_space_event_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_space_event), "__call__") as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.get_space_event()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == space_event.GetSpaceEventRequest()
+
+
+def test_get_space_event_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = space_event.GetSpaceEventRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_space_event), "__call__") as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.get_space_event(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == space_event.GetSpaceEventRequest(
+            name="name_value",
+        )
+
+
+def test_get_space_event_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ChatServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.get_space_event in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.get_space_event] = mock_rpc
+        request = {}
+        client.get_space_event(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_space_event(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_get_space_event_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ChatServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_space_event), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            space_event.SpaceEvent(
+                name="name_value",
+                event_type="event_type_value",
+            )
+        )
+        response = await client.get_space_event()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == space_event.GetSpaceEventRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_space_event_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = ChatServiceAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.get_space_event
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_object = mock.AsyncMock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.get_space_event
+        ] = mock_object
+
+        request = {}
+        await client.get_space_event(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_object.call_count == 1
+
+        await client.get_space_event(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_object.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_get_space_event_async(
+    transport: str = "grpc_asyncio", request_type=space_event.GetSpaceEventRequest
+):
+    client = ChatServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_space_event), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            space_event.SpaceEvent(
+                name="name_value",
+                event_type="event_type_value",
+            )
+        )
+        response = await client.get_space_event(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = space_event.GetSpaceEventRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, space_event.SpaceEvent)
+    assert response.name == "name_value"
+    assert response.event_type == "event_type_value"
+
+
+@pytest.mark.asyncio
+async def test_get_space_event_async_from_dict():
+    await test_get_space_event_async(request_type=dict)
+
+
+def test_get_space_event_field_headers():
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = space_event.GetSpaceEventRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_space_event), "__call__") as call:
+        call.return_value = space_event.SpaceEvent()
+        client.get_space_event(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_space_event_field_headers_async():
+    client = ChatServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = space_event.GetSpaceEventRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_space_event), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            space_event.SpaceEvent()
+        )
+        await client.get_space_event(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_get_space_event_flattened():
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_space_event), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = space_event.SpaceEvent()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_space_event(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_space_event_flattened_error():
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_space_event(
+            space_event.GetSpaceEventRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_space_event_flattened_async():
+    client = ChatServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_space_event), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = space_event.SpaceEvent()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            space_event.SpaceEvent()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_space_event(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_space_event_flattened_error_async():
+    client = ChatServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_space_event(
+            space_event.GetSpaceEventRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        space_event.ListSpaceEventsRequest,
+        dict,
+    ],
+)
+def test_list_space_events(request_type, transport: str = "grpc"):
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_space_events), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = space_event.ListSpaceEventsResponse(
+            next_page_token="next_page_token_value",
+        )
+        response = client.list_space_events(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = space_event.ListSpaceEventsRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListSpaceEventsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_space_events_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_space_events), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.list_space_events()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == space_event.ListSpaceEventsRequest()
+
+
+def test_list_space_events_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = space_event.ListSpaceEventsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_space_events), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.list_space_events(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == space_event.ListSpaceEventsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+        )
+
+
+def test_list_space_events_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ChatServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.list_space_events in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.list_space_events
+        ] = mock_rpc
+        request = {}
+        client.list_space_events(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.list_space_events(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_list_space_events_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ChatServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_space_events), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            space_event.ListSpaceEventsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_space_events()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == space_event.ListSpaceEventsRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_space_events_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = ChatServiceAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.list_space_events
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_object = mock.AsyncMock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.list_space_events
+        ] = mock_object
+
+        request = {}
+        await client.list_space_events(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_object.call_count == 1
+
+        await client.list_space_events(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_object.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_list_space_events_async(
+    transport: str = "grpc_asyncio", request_type=space_event.ListSpaceEventsRequest
+):
+    client = ChatServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_space_events), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            space_event.ListSpaceEventsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_space_events(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = space_event.ListSpaceEventsRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListSpaceEventsAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.asyncio
+async def test_list_space_events_async_from_dict():
+    await test_list_space_events_async(request_type=dict)
+
+
+def test_list_space_events_field_headers():
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = space_event.ListSpaceEventsRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_space_events), "__call__"
+    ) as call:
+        call.return_value = space_event.ListSpaceEventsResponse()
+        client.list_space_events(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_space_events_field_headers_async():
+    client = ChatServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = space_event.ListSpaceEventsRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_space_events), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            space_event.ListSpaceEventsResponse()
+        )
+        await client.list_space_events(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_list_space_events_flattened():
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_space_events), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = space_event.ListSpaceEventsResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_space_events(
+            parent="parent_value",
+            filter="filter_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].filter
+        mock_val = "filter_value"
+        assert arg == mock_val
+
+
+def test_list_space_events_flattened_error():
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_space_events(
+            space_event.ListSpaceEventsRequest(),
+            parent="parent_value",
+            filter="filter_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_space_events_flattened_async():
+    client = ChatServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_space_events), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = space_event.ListSpaceEventsResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            space_event.ListSpaceEventsResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_space_events(
+            parent="parent_value",
+            filter="filter_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].filter
+        mock_val = "filter_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_list_space_events_flattened_error_async():
+    client = ChatServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_space_events(
+            space_event.ListSpaceEventsRequest(),
+            parent="parent_value",
+            filter="filter_value",
+        )
+
+
+def test_list_space_events_pager(transport_name: str = "grpc"):
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_space_events), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            space_event.ListSpaceEventsResponse(
+                space_events=[
+                    space_event.SpaceEvent(),
+                    space_event.SpaceEvent(),
+                    space_event.SpaceEvent(),
+                ],
+                next_page_token="abc",
+            ),
+            space_event.ListSpaceEventsResponse(
+                space_events=[],
+                next_page_token="def",
+            ),
+            space_event.ListSpaceEventsResponse(
+                space_events=[
+                    space_event.SpaceEvent(),
+                ],
+                next_page_token="ghi",
+            ),
+            space_event.ListSpaceEventsResponse(
+                space_events=[
+                    space_event.SpaceEvent(),
+                    space_event.SpaceEvent(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        expected_metadata = ()
+        expected_metadata = tuple(expected_metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
+        )
+        pager = client.list_space_events(request={})
+
+        assert pager._metadata == expected_metadata
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, space_event.SpaceEvent) for i in results)
+
+
+def test_list_space_events_pages(transport_name: str = "grpc"):
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_space_events), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            space_event.ListSpaceEventsResponse(
+                space_events=[
+                    space_event.SpaceEvent(),
+                    space_event.SpaceEvent(),
+                    space_event.SpaceEvent(),
+                ],
+                next_page_token="abc",
+            ),
+            space_event.ListSpaceEventsResponse(
+                space_events=[],
+                next_page_token="def",
+            ),
+            space_event.ListSpaceEventsResponse(
+                space_events=[
+                    space_event.SpaceEvent(),
+                ],
+                next_page_token="ghi",
+            ),
+            space_event.ListSpaceEventsResponse(
+                space_events=[
+                    space_event.SpaceEvent(),
+                    space_event.SpaceEvent(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.list_space_events(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_space_events_async_pager():
+    client = ChatServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_space_events),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            space_event.ListSpaceEventsResponse(
+                space_events=[
+                    space_event.SpaceEvent(),
+                    space_event.SpaceEvent(),
+                    space_event.SpaceEvent(),
+                ],
+                next_page_token="abc",
+            ),
+            space_event.ListSpaceEventsResponse(
+                space_events=[],
+                next_page_token="def",
+            ),
+            space_event.ListSpaceEventsResponse(
+                space_events=[
+                    space_event.SpaceEvent(),
+                ],
+                next_page_token="ghi",
+            ),
+            space_event.ListSpaceEventsResponse(
+                space_events=[
+                    space_event.SpaceEvent(),
+                    space_event.SpaceEvent(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_space_events(
+            request={},
+        )
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(isinstance(i, space_event.SpaceEvent) for i in responses)
+
+
+@pytest.mark.asyncio
+async def test_list_space_events_async_pages():
+    client = ChatServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_space_events),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            space_event.ListSpaceEventsResponse(
+                space_events=[
+                    space_event.SpaceEvent(),
+                    space_event.SpaceEvent(),
+                    space_event.SpaceEvent(),
+                ],
+                next_page_token="abc",
+            ),
+            space_event.ListSpaceEventsResponse(
+                space_events=[],
+                next_page_token="def",
+            ),
+            space_event.ListSpaceEventsResponse(
+                space_events=[
+                    space_event.SpaceEvent(),
+                ],
+                next_page_token="ghi",
+            ),
+            space_event.ListSpaceEventsResponse(
+                space_events=[
+                    space_event.SpaceEvent(),
+                    space_event.SpaceEvent(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
+            await client.list_space_events(request={})
+        ).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         gc_message.CreateMessageRequest,
         dict,
     ],
@@ -20654,6 +21621,706 @@ def test_get_thread_read_state_rest_error():
     )
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        space_event.GetSpaceEventRequest,
+        dict,
+    ],
+)
+def test_get_space_event_rest(request_type):
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "spaces/sample1/spaceEvents/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = space_event.SpaceEvent(
+            name="name_value",
+            event_type="event_type_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = space_event.SpaceEvent.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_space_event(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, space_event.SpaceEvent)
+    assert response.name == "name_value"
+    assert response.event_type == "event_type_value"
+
+
+def test_get_space_event_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ChatServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.get_space_event in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.get_space_event] = mock_rpc
+
+        request = {}
+        client.get_space_event(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_space_event(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_get_space_event_rest_required_fields(
+    request_type=space_event.GetSpaceEventRequest,
+):
+    transport_class = transports.ChatServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_space_event._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_space_event._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = space_event.SpaceEvent()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = space_event.SpaceEvent.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_space_event(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_space_event_rest_unset_required_fields():
+    transport = transports.ChatServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_space_event._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_space_event_rest_interceptors(null_interceptor):
+    transport = transports.ChatServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ChatServiceRestInterceptor(),
+    )
+    client = ChatServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ChatServiceRestInterceptor, "post_get_space_event"
+    ) as post, mock.patch.object(
+        transports.ChatServiceRestInterceptor, "pre_get_space_event"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = space_event.GetSpaceEventRequest.pb(
+            space_event.GetSpaceEventRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = space_event.SpaceEvent.to_json(
+            space_event.SpaceEvent()
+        )
+
+        request = space_event.GetSpaceEventRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = space_event.SpaceEvent()
+
+        client.get_space_event(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_space_event_rest_bad_request(
+    transport: str = "rest", request_type=space_event.GetSpaceEventRequest
+):
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "spaces/sample1/spaceEvents/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_space_event(request)
+
+
+def test_get_space_event_rest_flattened():
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = space_event.SpaceEvent()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "spaces/sample1/spaceEvents/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = space_event.SpaceEvent.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_space_event(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=spaces/*/spaceEvents/*}" % client.transport._host, args[1]
+        )
+
+
+def test_get_space_event_rest_flattened_error(transport: str = "rest"):
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_space_event(
+            space_event.GetSpaceEventRequest(),
+            name="name_value",
+        )
+
+
+def test_get_space_event_rest_error():
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        space_event.ListSpaceEventsRequest,
+        dict,
+    ],
+)
+def test_list_space_events_rest(request_type):
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "spaces/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = space_event.ListSpaceEventsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = space_event.ListSpaceEventsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_space_events(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListSpaceEventsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_space_events_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ChatServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.list_space_events in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.list_space_events
+        ] = mock_rpc
+
+        request = {}
+        client.list_space_events(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.list_space_events(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_list_space_events_rest_required_fields(
+    request_type=space_event.ListSpaceEventsRequest,
+):
+    transport_class = transports.ChatServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["filter"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+    assert "filter" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_space_events._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "filter" in jsonified_request
+    assert jsonified_request["filter"] == request_init["filter"]
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["filter"] = "filter_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_space_events._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "filter" in jsonified_request
+    assert jsonified_request["filter"] == "filter_value"
+
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = space_event.ListSpaceEventsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = space_event.ListSpaceEventsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_space_events(request)
+
+            expected_params = [
+                (
+                    "filter",
+                    "",
+                ),
+                ("$alt", "json;enum-encoding=int"),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_space_events_rest_unset_required_fields():
+    transport = transports.ChatServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_space_events._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(
+            (
+                "parent",
+                "filter",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_space_events_rest_interceptors(null_interceptor):
+    transport = transports.ChatServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ChatServiceRestInterceptor(),
+    )
+    client = ChatServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ChatServiceRestInterceptor, "post_list_space_events"
+    ) as post, mock.patch.object(
+        transports.ChatServiceRestInterceptor, "pre_list_space_events"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = space_event.ListSpaceEventsRequest.pb(
+            space_event.ListSpaceEventsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = space_event.ListSpaceEventsResponse.to_json(
+            space_event.ListSpaceEventsResponse()
+        )
+
+        request = space_event.ListSpaceEventsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = space_event.ListSpaceEventsResponse()
+
+        client.list_space_events(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_space_events_rest_bad_request(
+    transport: str = "rest", request_type=space_event.ListSpaceEventsRequest
+):
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "spaces/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_space_events(request)
+
+
+def test_list_space_events_rest_flattened():
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = space_event.ListSpaceEventsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "spaces/sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            filter="filter_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = space_event.ListSpaceEventsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_space_events(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=spaces/*}/spaceEvents" % client.transport._host, args[1]
+        )
+
+
+def test_list_space_events_rest_flattened_error(transport: str = "rest"):
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_space_events(
+            space_event.ListSpaceEventsRequest(),
+            parent="parent_value",
+            filter="filter_value",
+        )
+
+
+def test_list_space_events_rest_pager(transport: str = "rest"):
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            space_event.ListSpaceEventsResponse(
+                space_events=[
+                    space_event.SpaceEvent(),
+                    space_event.SpaceEvent(),
+                    space_event.SpaceEvent(),
+                ],
+                next_page_token="abc",
+            ),
+            space_event.ListSpaceEventsResponse(
+                space_events=[],
+                next_page_token="def",
+            ),
+            space_event.ListSpaceEventsResponse(
+                space_events=[
+                    space_event.SpaceEvent(),
+                ],
+                next_page_token="ghi",
+            ),
+            space_event.ListSpaceEventsResponse(
+                space_events=[
+                    space_event.SpaceEvent(),
+                    space_event.SpaceEvent(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            space_event.ListSpaceEventsResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "spaces/sample1"}
+
+        pager = client.list_space_events(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, space_event.SpaceEvent) for i in results)
+
+        pages = list(client.list_space_events(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.ChatServiceGrpcTransport(
@@ -20819,6 +22486,8 @@ def test_chat_service_base_transport():
         "get_space_read_state",
         "update_space_read_state",
         "get_thread_read_state",
+        "get_space_event",
+        "list_space_events",
     )
     for method in methods:
         with pytest.raises(NotImplementedError):
@@ -21242,6 +22911,12 @@ def test_chat_service_client_transport_session_collision(transport_name):
     session1 = client1.transport.get_thread_read_state._session
     session2 = client2.transport.get_thread_read_state._session
     assert session1 != session2
+    session1 = client1.transport.get_space_event._session
+    session2 = client2.transport.get_space_event._session
+    assert session1 != session2
+    session1 = client1.transport.list_space_events._session
+    session2 = client2.transport.list_space_events._session
+    assert session1 != session2
 
 
 def test_chat_service_grpc_transport_channel():
@@ -21508,9 +23183,32 @@ def test_parse_space_path():
     assert expected == actual
 
 
+def test_space_event_path():
+    space = "oyster"
+    space_event = "nudibranch"
+    expected = "spaces/{space}/spaceEvents/{space_event}".format(
+        space=space,
+        space_event=space_event,
+    )
+    actual = ChatServiceClient.space_event_path(space, space_event)
+    assert expected == actual
+
+
+def test_parse_space_event_path():
+    expected = {
+        "space": "cuttlefish",
+        "space_event": "mussel",
+    }
+    path = ChatServiceClient.space_event_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ChatServiceClient.parse_space_event_path(path)
+    assert expected == actual
+
+
 def test_space_read_state_path():
-    user = "oyster"
-    space = "nudibranch"
+    user = "winkle"
+    space = "nautilus"
     expected = "users/{user}/spaces/{space}/spaceReadState".format(
         user=user,
         space=space,
@@ -21521,8 +23219,8 @@ def test_space_read_state_path():
 
 def test_parse_space_read_state_path():
     expected = {
-        "user": "cuttlefish",
-        "space": "mussel",
+        "user": "scallop",
+        "space": "abalone",
     }
     path = ChatServiceClient.space_read_state_path(**expected)
 
@@ -21532,8 +23230,8 @@ def test_parse_space_read_state_path():
 
 
 def test_thread_path():
-    space = "winkle"
-    thread = "nautilus"
+    space = "squid"
+    thread = "clam"
     expected = "spaces/{space}/threads/{thread}".format(
         space=space,
         thread=thread,
@@ -21544,8 +23242,8 @@ def test_thread_path():
 
 def test_parse_thread_path():
     expected = {
-        "space": "scallop",
-        "thread": "abalone",
+        "space": "whelk",
+        "thread": "octopus",
     }
     path = ChatServiceClient.thread_path(**expected)
 
@@ -21555,9 +23253,9 @@ def test_parse_thread_path():
 
 
 def test_thread_read_state_path():
-    user = "squid"
-    space = "clam"
-    thread = "whelk"
+    user = "oyster"
+    space = "nudibranch"
+    thread = "cuttlefish"
     expected = "users/{user}/spaces/{space}/threads/{thread}/threadReadState".format(
         user=user,
         space=space,
@@ -21569,9 +23267,9 @@ def test_thread_read_state_path():
 
 def test_parse_thread_read_state_path():
     expected = {
-        "user": "octopus",
-        "space": "oyster",
-        "thread": "nudibranch",
+        "user": "mussel",
+        "space": "winkle",
+        "thread": "nautilus",
     }
     path = ChatServiceClient.thread_read_state_path(**expected)
 
@@ -21581,7 +23279,7 @@ def test_parse_thread_read_state_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "cuttlefish"
+    billing_account = "scallop"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -21591,7 +23289,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "mussel",
+        "billing_account": "abalone",
     }
     path = ChatServiceClient.common_billing_account_path(**expected)
 
@@ -21601,7 +23299,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "winkle"
+    folder = "squid"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -21611,7 +23309,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "nautilus",
+        "folder": "clam",
     }
     path = ChatServiceClient.common_folder_path(**expected)
 
@@ -21621,7 +23319,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "scallop"
+    organization = "whelk"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -21631,7 +23329,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "abalone",
+        "organization": "octopus",
     }
     path = ChatServiceClient.common_organization_path(**expected)
 
@@ -21641,7 +23339,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "squid"
+    project = "oyster"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -21651,7 +23349,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "clam",
+        "project": "nudibranch",
     }
     path = ChatServiceClient.common_project_path(**expected)
 
@@ -21661,8 +23359,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "whelk"
-    location = "octopus"
+    project = "cuttlefish"
+    location = "mussel"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -21673,8 +23371,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "oyster",
-        "location": "nudibranch",
+        "project": "winkle",
+        "location": "nautilus",
     }
     path = ChatServiceClient.common_location_path(**expected)
 

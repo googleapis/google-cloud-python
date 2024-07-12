@@ -47,6 +47,7 @@ from google.apps.chat_v1.types import reaction
 from google.apps.chat_v1.types import reaction as gc_reaction
 from google.apps.chat_v1.types import space
 from google.apps.chat_v1.types import space as gc_space
+from google.apps.chat_v1.types import space_event
 from google.apps.chat_v1.types import space_read_state
 from google.apps.chat_v1.types import space_read_state as gc_space_read_state
 from google.apps.chat_v1.types import space_setup, thread_read_state
@@ -176,6 +177,14 @@ class ChatServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_get_space_event(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_space_event(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_get_space_read_state(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -213,6 +222,14 @@ class ChatServiceRestInterceptor:
                 return request, metadata
 
             def post_list_reactions(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_list_space_events(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_space_events(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -547,6 +564,29 @@ class ChatServiceRestInterceptor:
         """
         return response
 
+    def pre_get_space_event(
+        self,
+        request: space_event.GetSpaceEventRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[space_event.GetSpaceEventRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_space_event
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ChatService server.
+        """
+        return request, metadata
+
+    def post_get_space_event(
+        self, response: space_event.SpaceEvent
+    ) -> space_event.SpaceEvent:
+        """Post-rpc interceptor for get_space_event
+
+        Override in a subclass to manipulate the response
+        after it is returned by the ChatService server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_get_space_read_state(
         self,
         request: space_read_state.GetSpaceReadStateRequest,
@@ -653,6 +693,29 @@ class ChatServiceRestInterceptor:
         self, response: reaction.ListReactionsResponse
     ) -> reaction.ListReactionsResponse:
         """Post-rpc interceptor for list_reactions
+
+        Override in a subclass to manipulate the response
+        after it is returned by the ChatService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_list_space_events(
+        self,
+        request: space_event.ListSpaceEventsRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[space_event.ListSpaceEventsRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for list_space_events
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ChatService server.
+        """
+        return request, metadata
+
+    def post_list_space_events(
+        self, response: space_event.ListSpaceEventsResponse
+    ) -> space_event.ListSpaceEventsResponse:
+        """Post-rpc interceptor for list_space_events
 
         Override in a subclass to manipulate the response
         after it is returned by the ChatService server but before
@@ -2141,6 +2204,96 @@ class ChatServiceRestTransport(ChatServiceTransport):
             resp = self._interceptor.post_get_space(resp)
             return resp
 
+    class _GetSpaceEvent(ChatServiceRestStub):
+        def __hash__(self):
+            return hash("GetSpaceEvent")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: space_event.GetSpaceEventRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> space_event.SpaceEvent:
+            r"""Call the get space event method over HTTP.
+
+            Args:
+                request (~.space_event.GetSpaceEventRequest):
+                    The request object. Request message for getting a space
+                event.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.space_event.SpaceEvent:
+                    An event that represents a change or activity in a
+                Google Chat space. To learn more, see `Work with events
+                from Google
+                Chat <https://developers.google.com/workspace/chat/events-overview>`__.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=spaces/*/spaceEvents/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_get_space_event(request, metadata)
+            pb_request = space_event.GetSpaceEventRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = space_event.SpaceEvent()
+            pb_resp = space_event.SpaceEvent.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_space_event(resp)
+            return resp
+
     class _GetSpaceReadState(ChatServiceRestStub):
         def __hash__(self):
             return hash("GetSpaceReadState")
@@ -2584,6 +2737,98 @@ class ChatServiceRestTransport(ChatServiceTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_list_reactions(resp)
+            return resp
+
+    class _ListSpaceEvents(ChatServiceRestStub):
+        def __hash__(self):
+            return hash("ListSpaceEvents")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
+            "filter": "",
+        }
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: space_event.ListSpaceEventsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> space_event.ListSpaceEventsResponse:
+            r"""Call the list space events method over HTTP.
+
+            Args:
+                request (~.space_event.ListSpaceEventsRequest):
+                    The request object. Request message for listing space
+                events.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.space_event.ListSpaceEventsResponse:
+                    Response message for listing space
+                events.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{parent=spaces/*}/spaceEvents",
+                },
+            ]
+            request, metadata = self._interceptor.pre_list_space_events(
+                request, metadata
+            )
+            pb_request = space_event.ListSpaceEventsRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = space_event.ListSpaceEventsResponse()
+            pb_resp = space_event.ListSpaceEventsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_list_space_events(resp)
             return resp
 
     class _ListSpaces(ChatServiceRestStub):
@@ -3355,6 +3600,14 @@ class ChatServiceRestTransport(ChatServiceTransport):
         return self._GetSpace(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def get_space_event(
+        self,
+    ) -> Callable[[space_event.GetSpaceEventRequest], space_event.SpaceEvent]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetSpaceEvent(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def get_space_read_state(
         self,
     ) -> Callable[
@@ -3399,6 +3652,16 @@ class ChatServiceRestTransport(ChatServiceTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListReactions(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_space_events(
+        self,
+    ) -> Callable[
+        [space_event.ListSpaceEventsRequest], space_event.ListSpaceEventsResponse
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListSpaceEvents(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list_spaces(

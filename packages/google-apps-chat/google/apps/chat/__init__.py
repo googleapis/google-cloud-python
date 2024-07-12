@@ -41,6 +41,26 @@ from google.apps.chat_v1.types.attachment import (
 )
 from google.apps.chat_v1.types.contextual_addon import ContextualAddOnMarkup
 from google.apps.chat_v1.types.deletion_metadata import DeletionMetadata
+from google.apps.chat_v1.types.event_payload import (
+    MembershipBatchCreatedEventData,
+    MembershipBatchDeletedEventData,
+    MembershipBatchUpdatedEventData,
+    MembershipCreatedEventData,
+    MembershipDeletedEventData,
+    MembershipUpdatedEventData,
+    MessageBatchCreatedEventData,
+    MessageBatchDeletedEventData,
+    MessageBatchUpdatedEventData,
+    MessageCreatedEventData,
+    MessageDeletedEventData,
+    MessageUpdatedEventData,
+    ReactionBatchCreatedEventData,
+    ReactionBatchDeletedEventData,
+    ReactionCreatedEventData,
+    ReactionDeletedEventData,
+    SpaceBatchUpdatedEventData,
+    SpaceUpdatedEventData,
+)
 from google.apps.chat_v1.types.group import Group
 from google.apps.chat_v1.types.history_state import HistoryState
 from google.apps.chat_v1.types.matched_url import MatchedUrl
@@ -93,6 +113,12 @@ from google.apps.chat_v1.types.space import (
     Space,
     UpdateSpaceRequest,
 )
+from google.apps.chat_v1.types.space_event import (
+    GetSpaceEventRequest,
+    ListSpaceEventsRequest,
+    ListSpaceEventsResponse,
+    SpaceEvent,
+)
 from google.apps.chat_v1.types.space_read_state import (
     GetSpaceReadStateRequest,
     SpaceReadState,
@@ -124,6 +150,24 @@ __all__ = (
     "UploadAttachmentResponse",
     "ContextualAddOnMarkup",
     "DeletionMetadata",
+    "MembershipBatchCreatedEventData",
+    "MembershipBatchDeletedEventData",
+    "MembershipBatchUpdatedEventData",
+    "MembershipCreatedEventData",
+    "MembershipDeletedEventData",
+    "MembershipUpdatedEventData",
+    "MessageBatchCreatedEventData",
+    "MessageBatchDeletedEventData",
+    "MessageBatchUpdatedEventData",
+    "MessageCreatedEventData",
+    "MessageDeletedEventData",
+    "MessageUpdatedEventData",
+    "ReactionBatchCreatedEventData",
+    "ReactionBatchDeletedEventData",
+    "ReactionCreatedEventData",
+    "ReactionDeletedEventData",
+    "SpaceBatchUpdatedEventData",
+    "SpaceUpdatedEventData",
     "Group",
     "HistoryState",
     "MatchedUrl",
@@ -168,6 +212,10 @@ __all__ = (
     "ListSpacesResponse",
     "Space",
     "UpdateSpaceRequest",
+    "GetSpaceEventRequest",
+    "ListSpaceEventsRequest",
+    "ListSpaceEventsResponse",
+    "SpaceEvent",
     "GetSpaceReadStateRequest",
     "SpaceReadState",
     "UpdateSpaceReadStateRequest",

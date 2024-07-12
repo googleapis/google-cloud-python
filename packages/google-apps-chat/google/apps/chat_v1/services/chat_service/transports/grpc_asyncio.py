@@ -34,6 +34,7 @@ from google.apps.chat_v1.types import reaction
 from google.apps.chat_v1.types import reaction as gc_reaction
 from google.apps.chat_v1.types import space
 from google.apps.chat_v1.types import space as gc_space
+from google.apps.chat_v1.types import space_event
 from google.apps.chat_v1.types import space_read_state
 from google.apps.chat_v1.types import space_read_state as gc_space_read_state
 from google.apps.chat_v1.types import space_setup, thread_read_state
@@ -1255,6 +1256,92 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
             )
         return self._stubs["get_thread_read_state"]
 
+    @property
+    def get_space_event(
+        self,
+    ) -> Callable[
+        [space_event.GetSpaceEventRequest], Awaitable[space_event.SpaceEvent]
+    ]:
+        r"""Return a callable for the get space event method over gRPC.
+
+        Returns an event from a Google Chat space. The `event
+        payload <https://developers.google.com/workspace/chat/api/reference/rest/v1/spaces.spaceEvents#SpaceEvent.FIELDS.oneof_payload>`__
+        contains the most recent version of the resource that changed.
+        For example, if you request an event about a new message but the
+        message was later updated, the server returns the updated
+        ``Message`` resource in the event payload.
+
+        Requires `user
+        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__.
+        To get an event, the authenticated user must be a member of the
+        space.
+
+        For an example, see `Get details about an event from a Google
+        Chat
+        space <https://developers.google.com/workspace/chat/get-space-event>`__.
+
+        Returns:
+            Callable[[~.GetSpaceEventRequest],
+                    Awaitable[~.SpaceEvent]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_space_event" not in self._stubs:
+            self._stubs["get_space_event"] = self.grpc_channel.unary_unary(
+                "/google.chat.v1.ChatService/GetSpaceEvent",
+                request_serializer=space_event.GetSpaceEventRequest.serialize,
+                response_deserializer=space_event.SpaceEvent.deserialize,
+            )
+        return self._stubs["get_space_event"]
+
+    @property
+    def list_space_events(
+        self,
+    ) -> Callable[
+        [space_event.ListSpaceEventsRequest],
+        Awaitable[space_event.ListSpaceEventsResponse],
+    ]:
+        r"""Return a callable for the list space events method over gRPC.
+
+        Lists events from a Google Chat space. For each event, the
+        `payload <https://developers.google.com/workspace/chat/api/reference/rest/v1/spaces.spaceEvents#SpaceEvent.FIELDS.oneof_payload>`__
+        contains the most recent version of the Chat resource. For
+        example, if you list events about new space members, the server
+        returns ``Membership`` resources that contain the latest
+        membership details. If new members were removed during the
+        requested period, the event payload contains an empty
+        ``Membership`` resource.
+
+        Requires `user
+        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__.
+        To list events, the authenticated user must be a member of the
+        space.
+
+        For an example, see `List events from a Google Chat
+        space <https://developers.google.com/workspace/chat/list-space-events>`__.
+
+        Returns:
+            Callable[[~.ListSpaceEventsRequest],
+                    Awaitable[~.ListSpaceEventsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_space_events" not in self._stubs:
+            self._stubs["list_space_events"] = self.grpc_channel.unary_unary(
+                "/google.chat.v1.ChatService/ListSpaceEvents",
+                request_serializer=space_event.ListSpaceEventsRequest.serialize,
+                response_deserializer=space_event.ListSpaceEventsResponse.deserialize,
+            )
+        return self._stubs["list_space_events"]
+
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
@@ -1610,6 +1697,34 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
             ),
             self.get_thread_read_state: gapic_v1.method_async.wrap_method(
                 self.get_thread_read_state,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=30.0,
+                ),
+                default_timeout=30.0,
+                client_info=client_info,
+            ),
+            self.get_space_event: gapic_v1.method_async.wrap_method(
+                self.get_space_event,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=30.0,
+                ),
+                default_timeout=30.0,
+                client_info=client_info,
+            ),
+            self.list_space_events: gapic_v1.method_async.wrap_method(
+                self.list_space_events,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
                     maximum=10.0,
