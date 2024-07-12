@@ -129,7 +129,7 @@ def prerelease_deps(session, implementation):
     )
 
 
-@nox.session(python="3.9")
+@nox.session(python="3.10")
 def docs(session):
     """Build the docs."""
 
