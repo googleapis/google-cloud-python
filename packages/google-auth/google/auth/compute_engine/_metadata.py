@@ -28,11 +28,12 @@ from google.auth import _helpers
 from google.auth import environment_vars
 from google.auth import exceptions
 from google.auth import metrics
+from google.auth._exponential_backoff import ExponentialBackoff
 
 _LOGGER = logging.getLogger(__name__)
 
 # Environment variable GCE_METADATA_HOST is originally named
-# GCE_METADATA_ROOT. For compatiblity reasons, here it checks
+# GCE_METADATA_ROOT. For compatibility reasons, here it checks
 # the new variable first; if not set, the system falls back
 # to the old variable.
 _GCE_METADATA_HOST = os.getenv(environment_vars.GCE_METADATA_HOST, None)
@@ -119,11 +120,12 @@ def ping(request, timeout=_METADATA_DEFAULT_TIMEOUT, retry_count=3):
     #       could lead to false negatives in the event that we are on GCE, but
     #       the metadata resolution was particularly slow. The latter case is
     #       "unlikely".
-    retries = 0
     headers = _METADATA_HEADERS.copy()
     headers[metrics.API_CLIENT_HEADER] = metrics.mds_ping()
 
-    while retries < retry_count:
+    backoff = ExponentialBackoff(total_attempts=retry_count)
+
+    for attempt in backoff:
         try:
             response = request(
                 url=_METADATA_IP_ROOT, method="GET", headers=headers, timeout=timeout
@@ -139,11 +141,10 @@ def ping(request, timeout=_METADATA_DEFAULT_TIMEOUT, retry_count=3):
             _LOGGER.warning(
                 "Compute Engine Metadata server unavailable on "
                 "attempt %s of %s. Reason: %s",
-                retries + 1,
+                attempt,
                 retry_count,
                 e,
             )
-            retries += 1
 
     return False
 
@@ -179,7 +180,7 @@ def get(
 
     Returns:
         Union[Mapping, str]: If the metadata server returns JSON, a mapping of
-            the decoded JSON is return. Otherwise, the response content is
+            the decoded JSON is returned. Otherwise, the response content is
             returned as a string.
 
     Raises:
@@ -198,8 +199,9 @@ def get(
 
     url = _helpers.update_query(base_url, query_params)
 
-    retries = 0
-    while retries < retry_count:
+    backoff = ExponentialBackoff(total_attempts=retry_count)
+
+    for attempt in backoff:
         try:
             response = request(url=url, method="GET", headers=headers_to_use)
             break
@@ -208,11 +210,10 @@ def get(
             _LOGGER.warning(
                 "Compute Engine Metadata server unavailable on "
                 "attempt %s of %s. Reason: %s",
-                retries + 1,
+                attempt,
                 retry_count,
                 e,
             )
-            retries += 1
     else:
         raise exceptions.TransportError(
             "Failed to retrieve {} from the Google Compute Engine "
