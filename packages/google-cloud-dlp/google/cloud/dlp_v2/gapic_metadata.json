@@ -80,6 +80,11 @@
                 "delete_dlp_job"
               ]
             },
+            "DeleteFileStoreDataProfile": {
+              "methods": [
+                "delete_file_store_data_profile"
+              ]
+            },
             "DeleteInspectTemplate": {
               "methods": [
                 "delete_inspect_template"
@@ -128,6 +133,11 @@
             "GetDlpJob": {
               "methods": [
                 "get_dlp_job"
+              ]
+            },
+            "GetFileStoreDataProfile": {
+              "methods": [
+                "get_file_store_data_profile"
               ]
             },
             "GetInspectTemplate": {
@@ -193,6 +203,11 @@
             "ListDlpJobs": {
               "methods": [
                 "list_dlp_jobs"
+              ]
+            },
+            "ListFileStoreDataProfiles": {
+              "methods": [
+                "list_file_store_data_profiles"
               ]
             },
             "ListInfoTypes": {
@@ -345,6 +360,11 @@
                 "delete_dlp_job"
               ]
             },
+            "DeleteFileStoreDataProfile": {
+              "methods": [
+                "delete_file_store_data_profile"
+              ]
+            },
             "DeleteInspectTemplate": {
               "methods": [
                 "delete_inspect_template"
@@ -393,6 +413,11 @@
             "GetDlpJob": {
               "methods": [
                 "get_dlp_job"
+              ]
+            },
+            "GetFileStoreDataProfile": {
+              "methods": [
+                "get_file_store_data_profile"
               ]
             },
             "GetInspectTemplate": {
@@ -458,6 +483,11 @@
             "ListDlpJobs": {
               "methods": [
                 "list_dlp_jobs"
+              ]
+            },
+            "ListFileStoreDataProfiles": {
+              "methods": [
+                "list_file_store_data_profiles"
               ]
             },
             "ListInfoTypes": {
@@ -610,6 +640,11 @@
                 "delete_dlp_job"
               ]
             },
+            "DeleteFileStoreDataProfile": {
+              "methods": [
+                "delete_file_store_data_profile"
+              ]
+            },
             "DeleteInspectTemplate": {
               "methods": [
                 "delete_inspect_template"
@@ -658,6 +693,11 @@
             "GetDlpJob": {
               "methods": [
                 "get_dlp_job"
+              ]
+            },
+            "GetFileStoreDataProfile": {
+              "methods": [
+                "get_file_store_data_profile"
               ]
             },
             "GetInspectTemplate": {
@@ -723,6 +763,11 @@
             "ListDlpJobs": {
               "methods": [
                 "list_dlp_jobs"
+              ]
+            },
+            "ListFileStoreDataProfiles": {
+              "methods": [
+                "list_file_store_data_profiles"
               ]
             },
             "ListInfoTypes": {
