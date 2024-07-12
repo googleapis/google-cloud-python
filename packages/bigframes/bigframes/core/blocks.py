@@ -498,7 +498,7 @@ class Block:
         sampling_method: Optional[str] = None,
         random_state: Optional[int] = None,
         *,
-        ordered: bool = True,
+        ordered: Optional[bool] = None,
     ) -> Tuple[pd.DataFrame, bigquery.QueryJob]:
         """Run query and download results as a pandas DataFrame."""
         if (sampling_method is not None) and (sampling_method not in _SAMPLING_METHODS):
@@ -517,7 +517,10 @@ class Block:
 
         df, query_job = self._materialize_local(
             materialize_options=MaterializationOptions(
-                downsampling=sampling, ordered=ordered
+                downsampling=sampling,
+                ordered=ordered
+                if ordered is not None
+                else self.session._strictly_ordered,
             )
         )
         df.set_axis(self.column_labels, axis=1, copy=False)

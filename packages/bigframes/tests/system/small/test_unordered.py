@@ -31,6 +31,12 @@ def test_unordered_mode_cache_aggregate(unordered_session):
     assert_pandas_df_equal(bf_result, pd_result, ignore_order=True)
 
 
+def test_unordered_mode_print(unordered_session):
+    pd_df = pd.DataFrame({"a": [1, 2, 3], "b": [4, 5, 6]}, dtype=pd.Int64Dtype())
+    df = bpd.DataFrame(pd_df, session=unordered_session).cache()
+    print(df)
+
+
 @skip_legacy_pandas
 def test_unordered_mode_read_gbq(unordered_session):
     df = unordered_session.read_gbq(
