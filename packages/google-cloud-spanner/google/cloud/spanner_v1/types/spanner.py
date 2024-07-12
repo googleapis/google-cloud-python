@@ -1320,7 +1320,99 @@ class ReadRequest(proto.Message):
             If the field is set to ``true`` but the request does not set
             ``partition_token``, the API returns an ``INVALID_ARGUMENT``
             error.
+        order_by (google.cloud.spanner_v1.types.ReadRequest.OrderBy):
+            Optional. Order for the returned rows.
+
+            By default, Spanner will return result rows in primary key
+            order except for PartitionRead requests. For applications
+            that do not require rows to be returned in primary key
+            (``ORDER_BY_PRIMARY_KEY``) order, setting
+            ``ORDER_BY_NO_ORDER`` option allows Spanner to optimize row
+            retrieval, resulting in lower latencies in certain cases
+            (e.g. bulk point lookups).
+        lock_hint (google.cloud.spanner_v1.types.ReadRequest.LockHint):
+            Optional. Lock Hint for the request, it can
+            only be used with read-write transactions.
     """
+
+    class OrderBy(proto.Enum):
+        r"""An option to control the order in which rows are returned
+        from a read.
+
+        Values:
+            ORDER_BY_UNSPECIFIED (0):
+                Default value.
+
+                ORDER_BY_UNSPECIFIED is equivalent to ORDER_BY_PRIMARY_KEY.
+            ORDER_BY_PRIMARY_KEY (1):
+                Read rows are returned in primary key order.
+
+                In the event that this option is used in conjunction with
+                the ``partition_token`` field, the API will return an
+                ``INVALID_ARGUMENT`` error.
+            ORDER_BY_NO_ORDER (2):
+                Read rows are returned in any order.
+        """
+        ORDER_BY_UNSPECIFIED = 0
+        ORDER_BY_PRIMARY_KEY = 1
+        ORDER_BY_NO_ORDER = 2
+
+    class LockHint(proto.Enum):
+        r"""A lock hint mechanism for reads done within a transaction.
+
+        Values:
+            LOCK_HINT_UNSPECIFIED (0):
+                Default value.
+
+                LOCK_HINT_UNSPECIFIED is equivalent to LOCK_HINT_SHARED.
+            LOCK_HINT_SHARED (1):
+                Acquire shared locks.
+
+                By default when you perform a read as part of a read-write
+                transaction, Spanner acquires shared read locks, which
+                allows other reads to still access the data until your
+                transaction is ready to commit. When your transaction is
+                committing and writes are being applied, the transaction
+                attempts to upgrade to an exclusive lock for any data you
+                are writing. For more information about locks, see `Lock
+                modes <https://cloud.google.com/spanner/docs/introspection/lock-statistics#explain-lock-modes>`__.
+            LOCK_HINT_EXCLUSIVE (2):
+                Acquire exclusive locks.
+
+                Requesting exclusive locks is beneficial if you observe high
+                write contention, which means you notice that multiple
+                transactions are concurrently trying to read and write to
+                the same data, resulting in a large number of aborts. This
+                problem occurs when two transactions initially acquire
+                shared locks and then both try to upgrade to exclusive locks
+                at the same time. In this situation both transactions are
+                waiting for the other to give up their lock, resulting in a
+                deadlocked situation. Spanner is able to detect this
+                occurring and force one of the transactions to abort.
+                However, this is a slow and expensive operation and results
+                in lower performance. In this case it makes sense to acquire
+                exclusive locks at the start of the transaction because then
+                when multiple transactions try to act on the same data, they
+                automatically get serialized. Each transaction waits its
+                turn to acquire the lock and avoids getting into deadlock
+                situations.
+
+                Because the exclusive lock hint is just a hint, it should
+                not be considered equivalent to a mutex. In other words, you
+                should not use Spanner exclusive locks as a mutual exclusion
+                mechanism for the execution of code outside of Spanner.
+
+                **Note:** Request exclusive locks judiciously because they
+                block others from reading that data for the entire
+                transaction, rather than just when the writes are being
+                performed. Unless you observe high write contention, you
+                should use the default of shared read locks so you don't
+                prematurely block other clients from reading the data that
+                you're writing to.
+        """
+        LOCK_HINT_UNSPECIFIED = 0
+        LOCK_HINT_SHARED = 1
+        LOCK_HINT_EXCLUSIVE = 2
 
     session: str = proto.Field(
         proto.STRING,
@@ -1373,6 +1465,16 @@ class ReadRequest(proto.Message):
     data_boost_enabled: bool = proto.Field(
         proto.BOOL,
         number=15,
+    )
+    order_by: OrderBy = proto.Field(
+        proto.ENUM,
+        number=16,
+        enum=OrderBy,
+    )
+    lock_hint: LockHint = proto.Field(
+        proto.ENUM,
+        number=17,
+        enum=LockHint,
     )
 
 

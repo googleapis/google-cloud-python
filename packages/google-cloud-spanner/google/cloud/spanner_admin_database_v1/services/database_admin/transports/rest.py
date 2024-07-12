@@ -42,6 +42,10 @@ except AttributeError:  # pragma: NO COVER
 
 from google.cloud.spanner_admin_database_v1.types import backup
 from google.cloud.spanner_admin_database_v1.types import backup as gsad_backup
+from google.cloud.spanner_admin_database_v1.types import backup_schedule
+from google.cloud.spanner_admin_database_v1.types import (
+    backup_schedule as gsad_backup_schedule,
+)
 from google.cloud.spanner_admin_database_v1.types import spanner_database_admin
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
@@ -92,6 +96,14 @@ class DatabaseAdminRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_create_backup_schedule(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_backup_schedule(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_create_database(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -104,6 +116,10 @@ class DatabaseAdminRestInterceptor:
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
+            def pre_delete_backup_schedule(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
             def pre_drop_database(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -113,6 +129,14 @@ class DatabaseAdminRestInterceptor:
                 return request, metadata
 
             def post_get_backup(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_get_backup_schedule(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_backup_schedule(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -153,6 +177,14 @@ class DatabaseAdminRestInterceptor:
                 return request, metadata
 
             def post_list_backups(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_list_backup_schedules(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_backup_schedules(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -209,6 +241,14 @@ class DatabaseAdminRestInterceptor:
                 return request, metadata
 
             def post_update_backup(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_update_backup_schedule(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_backup_schedule(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -278,6 +318,31 @@ class DatabaseAdminRestInterceptor:
         """
         return response
 
+    def pre_create_backup_schedule(
+        self,
+        request: gsad_backup_schedule.CreateBackupScheduleRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        gsad_backup_schedule.CreateBackupScheduleRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for create_backup_schedule
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the DatabaseAdmin server.
+        """
+        return request, metadata
+
+    def post_create_backup_schedule(
+        self, response: gsad_backup_schedule.BackupSchedule
+    ) -> gsad_backup_schedule.BackupSchedule:
+        """Post-rpc interceptor for create_backup_schedule
+
+        Override in a subclass to manipulate the response
+        after it is returned by the DatabaseAdmin server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_create_database(
         self,
         request: spanner_database_admin.CreateDatabaseRequest,
@@ -311,6 +376,18 @@ class DatabaseAdminRestInterceptor:
         """
         return request, metadata
 
+    def pre_delete_backup_schedule(
+        self,
+        request: backup_schedule.DeleteBackupScheduleRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[backup_schedule.DeleteBackupScheduleRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for delete_backup_schedule
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the DatabaseAdmin server.
+        """
+        return request, metadata
+
     def pre_drop_database(
         self,
         request: spanner_database_admin.DropDatabaseRequest,
@@ -335,6 +412,29 @@ class DatabaseAdminRestInterceptor:
 
     def post_get_backup(self, response: backup.Backup) -> backup.Backup:
         """Post-rpc interceptor for get_backup
+
+        Override in a subclass to manipulate the response
+        after it is returned by the DatabaseAdmin server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get_backup_schedule(
+        self,
+        request: backup_schedule.GetBackupScheduleRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[backup_schedule.GetBackupScheduleRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_backup_schedule
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the DatabaseAdmin server.
+        """
+        return request, metadata
+
+    def post_get_backup_schedule(
+        self, response: backup_schedule.BackupSchedule
+    ) -> backup_schedule.BackupSchedule:
+        """Post-rpc interceptor for get_backup_schedule
 
         Override in a subclass to manipulate the response
         after it is returned by the DatabaseAdmin server but before
@@ -446,6 +546,29 @@ class DatabaseAdminRestInterceptor:
         self, response: backup.ListBackupsResponse
     ) -> backup.ListBackupsResponse:
         """Post-rpc interceptor for list_backups
+
+        Override in a subclass to manipulate the response
+        after it is returned by the DatabaseAdmin server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_list_backup_schedules(
+        self,
+        request: backup_schedule.ListBackupSchedulesRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[backup_schedule.ListBackupSchedulesRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for list_backup_schedules
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the DatabaseAdmin server.
+        """
+        return request, metadata
+
+    def post_list_backup_schedules(
+        self, response: backup_schedule.ListBackupSchedulesResponse
+    ) -> backup_schedule.ListBackupSchedulesResponse:
+        """Post-rpc interceptor for list_backup_schedules
 
         Override in a subclass to manipulate the response
         after it is returned by the DatabaseAdmin server but before
@@ -609,6 +732,31 @@ class DatabaseAdminRestInterceptor:
 
     def post_update_backup(self, response: gsad_backup.Backup) -> gsad_backup.Backup:
         """Post-rpc interceptor for update_backup
+
+        Override in a subclass to manipulate the response
+        after it is returned by the DatabaseAdmin server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_update_backup_schedule(
+        self,
+        request: gsad_backup_schedule.UpdateBackupScheduleRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        gsad_backup_schedule.UpdateBackupScheduleRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for update_backup_schedule
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the DatabaseAdmin server.
+        """
+        return request, metadata
+
+    def post_update_backup_schedule(
+        self, response: gsad_backup_schedule.BackupSchedule
+    ) -> gsad_backup_schedule.BackupSchedule:
+        """Post-rpc interceptor for update_backup_schedule
 
         Override in a subclass to manipulate the response
         after it is returned by the DatabaseAdmin server but before
@@ -1147,6 +1295,106 @@ class DatabaseAdminRestTransport(DatabaseAdminTransport):
             resp = self._interceptor.post_create_backup(resp)
             return resp
 
+    class _CreateBackupSchedule(DatabaseAdminRestStub):
+        def __hash__(self):
+            return hash("CreateBackupSchedule")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
+            "backupScheduleId": "",
+        }
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: gsad_backup_schedule.CreateBackupScheduleRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> gsad_backup_schedule.BackupSchedule:
+            r"""Call the create backup schedule method over HTTP.
+
+            Args:
+                request (~.gsad_backup_schedule.CreateBackupScheduleRequest):
+                    The request object. The request for
+                [CreateBackupSchedule][google.spanner.admin.database.v1.DatabaseAdmin.CreateBackupSchedule].
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.gsad_backup_schedule.BackupSchedule:
+                    BackupSchedule expresses the
+                automated backup creation specification
+                for a Spanner database. Next ID: 10
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1/{parent=projects/*/instances/*/databases/*}/backupSchedules",
+                    "body": "backup_schedule",
+                },
+            ]
+            request, metadata = self._interceptor.pre_create_backup_schedule(
+                request, metadata
+            )
+            pb_request = gsad_backup_schedule.CreateBackupScheduleRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"], use_integers_for_enums=True
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = gsad_backup_schedule.BackupSchedule()
+            pb_resp = gsad_backup_schedule.BackupSchedule.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_create_backup_schedule(resp)
+            return resp
+
     class _CreateDatabase(DatabaseAdminRestStub):
         def __hash__(self):
             return hash("CreateDatabase")
@@ -1284,6 +1532,82 @@ class DatabaseAdminRestTransport(DatabaseAdminTransport):
             ]
             request, metadata = self._interceptor.pre_delete_backup(request, metadata)
             pb_request = backup.DeleteBackupRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+    class _DeleteBackupSchedule(DatabaseAdminRestStub):
+        def __hash__(self):
+            return hash("DeleteBackupSchedule")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: backup_schedule.DeleteBackupScheduleRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ):
+            r"""Call the delete backup schedule method over HTTP.
+
+            Args:
+                request (~.backup_schedule.DeleteBackupScheduleRequest):
+                    The request object. The request for
+                [DeleteBackupSchedule][google.spanner.admin.database.v1.DatabaseAdmin.DeleteBackupSchedule].
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "delete",
+                    "uri": "/v1/{name=projects/*/instances/*/databases/*/backupSchedules/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_delete_backup_schedule(
+                request, metadata
+            )
+            pb_request = backup_schedule.DeleteBackupScheduleRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
 
             uri = transcoded_request["uri"]
@@ -1473,6 +1797,97 @@ class DatabaseAdminRestTransport(DatabaseAdminTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get_backup(resp)
+            return resp
+
+    class _GetBackupSchedule(DatabaseAdminRestStub):
+        def __hash__(self):
+            return hash("GetBackupSchedule")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: backup_schedule.GetBackupScheduleRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> backup_schedule.BackupSchedule:
+            r"""Call the get backup schedule method over HTTP.
+
+            Args:
+                request (~.backup_schedule.GetBackupScheduleRequest):
+                    The request object. The request for
+                [GetBackupSchedule][google.spanner.admin.database.v1.DatabaseAdmin.GetBackupSchedule].
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.backup_schedule.BackupSchedule:
+                    BackupSchedule expresses the
+                automated backup creation specification
+                for a Spanner database. Next ID: 10
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=projects/*/instances/*/databases/*/backupSchedules/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_get_backup_schedule(
+                request, metadata
+            )
+            pb_request = backup_schedule.GetBackupScheduleRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = backup_schedule.BackupSchedule()
+            pb_resp = backup_schedule.BackupSchedule.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_backup_schedule(resp)
             return resp
 
     class _GetDatabase(DatabaseAdminRestStub):
@@ -1775,6 +2190,11 @@ class DatabaseAdminRestTransport(DatabaseAdminTransport):
                     "uri": "/v1/{resource=projects/*/instances/*/backups/*}:getIamPolicy",
                     "body": "*",
                 },
+                {
+                    "method": "post",
+                    "uri": "/v1/{resource=projects/*/instances/*/databases/*/backupSchedules/*}:getIamPolicy",
+                    "body": "*",
+                },
             ]
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
             pb_request = request
@@ -1999,6 +2419,96 @@ class DatabaseAdminRestTransport(DatabaseAdminTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_list_backups(resp)
+            return resp
+
+    class _ListBackupSchedules(DatabaseAdminRestStub):
+        def __hash__(self):
+            return hash("ListBackupSchedules")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: backup_schedule.ListBackupSchedulesRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> backup_schedule.ListBackupSchedulesResponse:
+            r"""Call the list backup schedules method over HTTP.
+
+            Args:
+                request (~.backup_schedule.ListBackupSchedulesRequest):
+                    The request object. The request for
+                [ListBackupSchedules][google.spanner.admin.database.v1.DatabaseAdmin.ListBackupSchedules].
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.backup_schedule.ListBackupSchedulesResponse:
+                    The response for
+                [ListBackupSchedules][google.spanner.admin.database.v1.DatabaseAdmin.ListBackupSchedules].
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{parent=projects/*/instances/*/databases/*}/backupSchedules",
+                },
+            ]
+            request, metadata = self._interceptor.pre_list_backup_schedules(
+                request, metadata
+            )
+            pb_request = backup_schedule.ListBackupSchedulesRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = backup_schedule.ListBackupSchedulesResponse()
+            pb_resp = backup_schedule.ListBackupSchedulesResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_list_backup_schedules(resp)
             return resp
 
     class _ListDatabaseOperations(DatabaseAdminRestStub):
@@ -2491,6 +3001,11 @@ class DatabaseAdminRestTransport(DatabaseAdminTransport):
                     "uri": "/v1/{resource=projects/*/instances/*/backups/*}:setIamPolicy",
                     "body": "*",
                 },
+                {
+                    "method": "post",
+                    "uri": "/v1/{resource=projects/*/instances/*/databases/*/backupSchedules/*}:setIamPolicy",
+                    "body": "*",
+                },
             ]
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
             pb_request = request
@@ -2586,6 +3101,11 @@ class DatabaseAdminRestTransport(DatabaseAdminTransport):
                 {
                     "method": "post",
                     "uri": "/v1/{resource=projects/*/instances/*/backups/*}:testIamPermissions",
+                    "body": "*",
+                },
+                {
+                    "method": "post",
+                    "uri": "/v1/{resource=projects/*/instances/*/databases/*/backupSchedules/*}:testIamPermissions",
                     "body": "*",
                 },
                 {
@@ -2736,6 +3256,106 @@ class DatabaseAdminRestTransport(DatabaseAdminTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_update_backup(resp)
+            return resp
+
+    class _UpdateBackupSchedule(DatabaseAdminRestStub):
+        def __hash__(self):
+            return hash("UpdateBackupSchedule")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
+            "updateMask": {},
+        }
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: gsad_backup_schedule.UpdateBackupScheduleRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> gsad_backup_schedule.BackupSchedule:
+            r"""Call the update backup schedule method over HTTP.
+
+            Args:
+                request (~.gsad_backup_schedule.UpdateBackupScheduleRequest):
+                    The request object. The request for
+                [UpdateBackupScheduleRequest][google.spanner.admin.database.v1.DatabaseAdmin.UpdateBackupSchedule].
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.gsad_backup_schedule.BackupSchedule:
+                    BackupSchedule expresses the
+                automated backup creation specification
+                for a Spanner database. Next ID: 10
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "patch",
+                    "uri": "/v1/{backup_schedule.name=projects/*/instances/*/databases/*/backupSchedules/*}",
+                    "body": "backup_schedule",
+                },
+            ]
+            request, metadata = self._interceptor.pre_update_backup_schedule(
+                request, metadata
+            )
+            pb_request = gsad_backup_schedule.UpdateBackupScheduleRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"], use_integers_for_enums=True
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = gsad_backup_schedule.BackupSchedule()
+            pb_resp = gsad_backup_schedule.BackupSchedule.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_update_backup_schedule(resp)
             return resp
 
     class _UpdateDatabase(DatabaseAdminRestStub):
@@ -2964,6 +3584,17 @@ class DatabaseAdminRestTransport(DatabaseAdminTransport):
         return self._CreateBackup(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def create_backup_schedule(
+        self,
+    ) -> Callable[
+        [gsad_backup_schedule.CreateBackupScheduleRequest],
+        gsad_backup_schedule.BackupSchedule,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreateBackupSchedule(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def create_database(
         self,
     ) -> Callable[
@@ -2980,6 +3611,14 @@ class DatabaseAdminRestTransport(DatabaseAdminTransport):
         return self._DeleteBackup(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def delete_backup_schedule(
+        self,
+    ) -> Callable[[backup_schedule.DeleteBackupScheduleRequest], empty_pb2.Empty]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteBackupSchedule(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def drop_database(
         self,
     ) -> Callable[[spanner_database_admin.DropDatabaseRequest], empty_pb2.Empty]:
@@ -2992,6 +3631,16 @@ class DatabaseAdminRestTransport(DatabaseAdminTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetBackup(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_backup_schedule(
+        self,
+    ) -> Callable[
+        [backup_schedule.GetBackupScheduleRequest], backup_schedule.BackupSchedule
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetBackupSchedule(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_database(
@@ -3039,6 +3688,17 @@ class DatabaseAdminRestTransport(DatabaseAdminTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListBackups(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_backup_schedules(
+        self,
+    ) -> Callable[
+        [backup_schedule.ListBackupSchedulesRequest],
+        backup_schedule.ListBackupSchedulesResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListBackupSchedules(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list_database_operations(
@@ -3109,6 +3769,17 @@ class DatabaseAdminRestTransport(DatabaseAdminTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateBackup(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def update_backup_schedule(
+        self,
+    ) -> Callable[
+        [gsad_backup_schedule.UpdateBackupScheduleRequest],
+        gsad_backup_schedule.BackupSchedule,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdateBackupSchedule(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def update_database(

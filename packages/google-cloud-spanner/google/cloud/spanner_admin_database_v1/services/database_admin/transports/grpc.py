@@ -27,6 +27,10 @@ import grpc  # type: ignore
 
 from google.cloud.spanner_admin_database_v1.types import backup
 from google.cloud.spanner_admin_database_v1.types import backup as gsad_backup
+from google.cloud.spanner_admin_database_v1.types import backup_schedule
+from google.cloud.spanner_admin_database_v1.types import (
+    backup_schedule as gsad_backup_schedule,
+)
 from google.cloud.spanner_admin_database_v1.types import spanner_database_admin
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
@@ -137,7 +141,8 @@ class DatabaseAdminGrpcTransport(DatabaseAdminTransport):
 
         if isinstance(channel, grpc.Channel):
             # Ignore credentials if a channel was passed.
-            credentials = False
+            credentials = None
+            self._ignore_credentials = True
             # If a channel was explicitly provided, set it.
             self._grpc_channel = channel
             self._ssl_channel_credentials = None
@@ -958,6 +963,147 @@ class DatabaseAdminGrpcTransport(DatabaseAdminTransport):
                 response_deserializer=spanner_database_admin.ListDatabaseRolesResponse.deserialize,
             )
         return self._stubs["list_database_roles"]
+
+    @property
+    def create_backup_schedule(
+        self,
+    ) -> Callable[
+        [gsad_backup_schedule.CreateBackupScheduleRequest],
+        gsad_backup_schedule.BackupSchedule,
+    ]:
+        r"""Return a callable for the create backup schedule method over gRPC.
+
+        Creates a new backup schedule.
+
+        Returns:
+            Callable[[~.CreateBackupScheduleRequest],
+                    ~.BackupSchedule]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_backup_schedule" not in self._stubs:
+            self._stubs["create_backup_schedule"] = self.grpc_channel.unary_unary(
+                "/google.spanner.admin.database.v1.DatabaseAdmin/CreateBackupSchedule",
+                request_serializer=gsad_backup_schedule.CreateBackupScheduleRequest.serialize,
+                response_deserializer=gsad_backup_schedule.BackupSchedule.deserialize,
+            )
+        return self._stubs["create_backup_schedule"]
+
+    @property
+    def get_backup_schedule(
+        self,
+    ) -> Callable[
+        [backup_schedule.GetBackupScheduleRequest], backup_schedule.BackupSchedule
+    ]:
+        r"""Return a callable for the get backup schedule method over gRPC.
+
+        Gets backup schedule for the input schedule name.
+
+        Returns:
+            Callable[[~.GetBackupScheduleRequest],
+                    ~.BackupSchedule]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_backup_schedule" not in self._stubs:
+            self._stubs["get_backup_schedule"] = self.grpc_channel.unary_unary(
+                "/google.spanner.admin.database.v1.DatabaseAdmin/GetBackupSchedule",
+                request_serializer=backup_schedule.GetBackupScheduleRequest.serialize,
+                response_deserializer=backup_schedule.BackupSchedule.deserialize,
+            )
+        return self._stubs["get_backup_schedule"]
+
+    @property
+    def update_backup_schedule(
+        self,
+    ) -> Callable[
+        [gsad_backup_schedule.UpdateBackupScheduleRequest],
+        gsad_backup_schedule.BackupSchedule,
+    ]:
+        r"""Return a callable for the update backup schedule method over gRPC.
+
+        Updates a backup schedule.
+
+        Returns:
+            Callable[[~.UpdateBackupScheduleRequest],
+                    ~.BackupSchedule]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_backup_schedule" not in self._stubs:
+            self._stubs["update_backup_schedule"] = self.grpc_channel.unary_unary(
+                "/google.spanner.admin.database.v1.DatabaseAdmin/UpdateBackupSchedule",
+                request_serializer=gsad_backup_schedule.UpdateBackupScheduleRequest.serialize,
+                response_deserializer=gsad_backup_schedule.BackupSchedule.deserialize,
+            )
+        return self._stubs["update_backup_schedule"]
+
+    @property
+    def delete_backup_schedule(
+        self,
+    ) -> Callable[[backup_schedule.DeleteBackupScheduleRequest], empty_pb2.Empty]:
+        r"""Return a callable for the delete backup schedule method over gRPC.
+
+        Deletes a backup schedule.
+
+        Returns:
+            Callable[[~.DeleteBackupScheduleRequest],
+                    ~.Empty]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_backup_schedule" not in self._stubs:
+            self._stubs["delete_backup_schedule"] = self.grpc_channel.unary_unary(
+                "/google.spanner.admin.database.v1.DatabaseAdmin/DeleteBackupSchedule",
+                request_serializer=backup_schedule.DeleteBackupScheduleRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
+            )
+        return self._stubs["delete_backup_schedule"]
+
+    @property
+    def list_backup_schedules(
+        self,
+    ) -> Callable[
+        [backup_schedule.ListBackupSchedulesRequest],
+        backup_schedule.ListBackupSchedulesResponse,
+    ]:
+        r"""Return a callable for the list backup schedules method over gRPC.
+
+        Lists all the backup schedules for the database.
+
+        Returns:
+            Callable[[~.ListBackupSchedulesRequest],
+                    ~.ListBackupSchedulesResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_backup_schedules" not in self._stubs:
+            self._stubs["list_backup_schedules"] = self.grpc_channel.unary_unary(
+                "/google.spanner.admin.database.v1.DatabaseAdmin/ListBackupSchedules",
+                request_serializer=backup_schedule.ListBackupSchedulesRequest.serialize,
+                response_deserializer=backup_schedule.ListBackupSchedulesResponse.deserialize,
+            )
+        return self._stubs["list_backup_schedules"]
 
     def close(self):
         self.grpc_channel.close()

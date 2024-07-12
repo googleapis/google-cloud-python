@@ -29,6 +29,10 @@ from google.oauth2 import service_account  # type: ignore
 
 from google.cloud.spanner_admin_database_v1.types import backup
 from google.cloud.spanner_admin_database_v1.types import backup as gsad_backup
+from google.cloud.spanner_admin_database_v1.types import backup_schedule
+from google.cloud.spanner_admin_database_v1.types import (
+    backup_schedule as gsad_backup_schedule,
+)
 from google.cloud.spanner_admin_database_v1.types import spanner_database_admin
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
@@ -92,6 +96,8 @@ class DatabaseAdminTransport(abc.ABC):
 
         # Save the scopes.
         self._scopes = scopes
+        if not hasattr(self, "_ignore_credentials"):
+            self._ignore_credentials: bool = False
 
         # If no credentials are provided, then determine the appropriate
         # defaults.
@@ -104,7 +110,7 @@ class DatabaseAdminTransport(abc.ABC):
             credentials, _ = google.auth.load_credentials_from_file(
                 credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
             )
-        elif credentials is None:
+        elif credentials is None and not self._ignore_credentials:
             credentials, _ = google.auth.default(
                 **scopes_kwargs, quota_project_id=quota_project_id
             )
@@ -377,6 +383,81 @@ class DatabaseAdminTransport(abc.ABC):
                 default_timeout=3600.0,
                 client_info=client_info,
             ),
+            self.create_backup_schedule: gapic_v1.method.wrap_method(
+                self.create_backup_schedule,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=32.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=3600.0,
+                ),
+                default_timeout=3600.0,
+                client_info=client_info,
+            ),
+            self.get_backup_schedule: gapic_v1.method.wrap_method(
+                self.get_backup_schedule,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=32.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=3600.0,
+                ),
+                default_timeout=3600.0,
+                client_info=client_info,
+            ),
+            self.update_backup_schedule: gapic_v1.method.wrap_method(
+                self.update_backup_schedule,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=32.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=3600.0,
+                ),
+                default_timeout=3600.0,
+                client_info=client_info,
+            ),
+            self.delete_backup_schedule: gapic_v1.method.wrap_method(
+                self.delete_backup_schedule,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=32.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=3600.0,
+                ),
+                default_timeout=3600.0,
+                client_info=client_info,
+            ),
+            self.list_backup_schedules: gapic_v1.method.wrap_method(
+                self.list_backup_schedules,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=32.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=3600.0,
+                ),
+                default_timeout=3600.0,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -587,6 +668,62 @@ class DatabaseAdminTransport(abc.ABC):
         Union[
             spanner_database_admin.ListDatabaseRolesResponse,
             Awaitable[spanner_database_admin.ListDatabaseRolesResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_backup_schedule(
+        self,
+    ) -> Callable[
+        [gsad_backup_schedule.CreateBackupScheduleRequest],
+        Union[
+            gsad_backup_schedule.BackupSchedule,
+            Awaitable[gsad_backup_schedule.BackupSchedule],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_backup_schedule(
+        self,
+    ) -> Callable[
+        [backup_schedule.GetBackupScheduleRequest],
+        Union[
+            backup_schedule.BackupSchedule, Awaitable[backup_schedule.BackupSchedule]
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_backup_schedule(
+        self,
+    ) -> Callable[
+        [gsad_backup_schedule.UpdateBackupScheduleRequest],
+        Union[
+            gsad_backup_schedule.BackupSchedule,
+            Awaitable[gsad_backup_schedule.BackupSchedule],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_backup_schedule(
+        self,
+    ) -> Callable[
+        [backup_schedule.DeleteBackupScheduleRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_backup_schedules(
+        self,
+    ) -> Callable[
+        [backup_schedule.ListBackupSchedulesRequest],
+        Union[
+            backup_schedule.ListBackupSchedulesResponse,
+            Awaitable[backup_schedule.ListBackupSchedulesResponse],
         ],
     ]:
         raise NotImplementedError()

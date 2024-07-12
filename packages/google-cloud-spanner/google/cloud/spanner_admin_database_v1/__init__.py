@@ -30,12 +30,22 @@ from .types.backup import CreateBackupEncryptionConfig
 from .types.backup import CreateBackupMetadata
 from .types.backup import CreateBackupRequest
 from .types.backup import DeleteBackupRequest
+from .types.backup import FullBackupSpec
 from .types.backup import GetBackupRequest
 from .types.backup import ListBackupOperationsRequest
 from .types.backup import ListBackupOperationsResponse
 from .types.backup import ListBackupsRequest
 from .types.backup import ListBackupsResponse
 from .types.backup import UpdateBackupRequest
+from .types.backup_schedule import BackupSchedule
+from .types.backup_schedule import BackupScheduleSpec
+from .types.backup_schedule import CreateBackupScheduleRequest
+from .types.backup_schedule import CrontabSpec
+from .types.backup_schedule import DeleteBackupScheduleRequest
+from .types.backup_schedule import GetBackupScheduleRequest
+from .types.backup_schedule import ListBackupSchedulesRequest
+from .types.backup_schedule import ListBackupSchedulesResponse
+from .types.backup_schedule import UpdateBackupScheduleRequest
 from .types.common import EncryptionConfig
 from .types.common import EncryptionInfo
 from .types.common import OperationProgress
@@ -70,29 +80,38 @@ __all__ = (
     "DatabaseAdminAsyncClient",
     "Backup",
     "BackupInfo",
+    "BackupSchedule",
+    "BackupScheduleSpec",
     "CopyBackupEncryptionConfig",
     "CopyBackupMetadata",
     "CopyBackupRequest",
     "CreateBackupEncryptionConfig",
     "CreateBackupMetadata",
     "CreateBackupRequest",
+    "CreateBackupScheduleRequest",
     "CreateDatabaseMetadata",
     "CreateDatabaseRequest",
+    "CrontabSpec",
     "Database",
     "DatabaseAdminClient",
     "DatabaseDialect",
     "DatabaseRole",
     "DdlStatementActionInfo",
     "DeleteBackupRequest",
+    "DeleteBackupScheduleRequest",
     "DropDatabaseRequest",
     "EncryptionConfig",
     "EncryptionInfo",
+    "FullBackupSpec",
     "GetBackupRequest",
+    "GetBackupScheduleRequest",
     "GetDatabaseDdlRequest",
     "GetDatabaseDdlResponse",
     "GetDatabaseRequest",
     "ListBackupOperationsRequest",
     "ListBackupOperationsResponse",
+    "ListBackupSchedulesRequest",
+    "ListBackupSchedulesResponse",
     "ListBackupsRequest",
     "ListBackupsResponse",
     "ListDatabaseOperationsRequest",
@@ -109,6 +128,7 @@ __all__ = (
     "RestoreInfo",
     "RestoreSourceType",
     "UpdateBackupRequest",
+    "UpdateBackupScheduleRequest",
     "UpdateDatabaseDdlMetadata",
     "UpdateDatabaseDdlRequest",
     "UpdateDatabaseMetadata",

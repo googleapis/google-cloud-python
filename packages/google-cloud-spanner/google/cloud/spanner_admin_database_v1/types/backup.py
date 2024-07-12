@@ -43,6 +43,7 @@ __protobuf__ = proto.module(
         "BackupInfo",
         "CreateBackupEncryptionConfig",
         "CopyBackupEncryptionConfig",
+        "FullBackupSpec",
     },
 )
 
@@ -141,6 +142,20 @@ class Backup(proto.Message):
             UpdateBackup, CopyBackup. When updating or copying an
             existing backup, the expiration time specified must be less
             than ``Backup.max_expire_time``.
+        backup_schedules (MutableSequence[str]):
+            Output only. List of backup schedule URIs
+            that are associated with creating this backup.
+            This is only applicable for scheduled backups,
+            and is empty for on-demand backups.
+
+            To optimize for storage, whenever possible,
+            multiple schedules are collapsed together to
+            create one backup. In such cases, this field
+            captures the list of all backup schedule URIs
+            that are associated with creating this backup.
+            If collapsing is not done, then this field
+            captures the single backup schedule URI
+            associated with creating this backup.
     """
 
     class State(proto.Enum):
@@ -220,6 +235,10 @@ class Backup(proto.Message):
         proto.MESSAGE,
         number=12,
         message=timestamp_pb2.Timestamp,
+    )
+    backup_schedules: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=14,
     )
 
 
@@ -970,6 +989,14 @@ class CopyBackupEncryptionConfig(proto.Message):
         proto.STRING,
         number=3,
     )
+
+
+class FullBackupSpec(proto.Message):
+    r"""The specification for full backups.
+    A full backup stores the entire contents of the database at a
+    given version time.
+
+    """
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

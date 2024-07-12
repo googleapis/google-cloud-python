@@ -53,12 +53,17 @@ from google.api_core import operation_async  # type: ignore
 from google.cloud.spanner_admin_database_v1.services.database_admin import pagers
 from google.cloud.spanner_admin_database_v1.types import backup
 from google.cloud.spanner_admin_database_v1.types import backup as gsad_backup
+from google.cloud.spanner_admin_database_v1.types import backup_schedule
+from google.cloud.spanner_admin_database_v1.types import (
+    backup_schedule as gsad_backup_schedule,
+)
 from google.cloud.spanner_admin_database_v1.types import common
 from google.cloud.spanner_admin_database_v1.types import spanner_database_admin
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
@@ -218,6 +223,30 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
         """Parses a backup path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/instances/(?P<instance>.+?)/backups/(?P<backup>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def backup_schedule_path(
+        project: str,
+        instance: str,
+        database: str,
+        schedule: str,
+    ) -> str:
+        """Returns a fully-qualified backup_schedule string."""
+        return "projects/{project}/instances/{instance}/databases/{database}/backupSchedules/{schedule}".format(
+            project=project,
+            instance=instance,
+            database=database,
+            schedule=schedule,
+        )
+
+    @staticmethod
+    def parse_backup_schedule_path(path: str) -> Dict[str, str]:
+        """Parses a backup_schedule path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/instances/(?P<instance>.+?)/databases/(?P<database>.+?)/backupSchedules/(?P<schedule>.+?)$",
             path,
         )
         return m.groupdict() if m else {}
@@ -3424,6 +3453,579 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListDatabaseRolesPager(
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def create_backup_schedule(
+        self,
+        request: Optional[
+            Union[gsad_backup_schedule.CreateBackupScheduleRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        backup_schedule: Optional[gsad_backup_schedule.BackupSchedule] = None,
+        backup_schedule_id: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> gsad_backup_schedule.BackupSchedule:
+        r"""Creates a new backup schedule.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import spanner_admin_database_v1
+
+            def sample_create_backup_schedule():
+                # Create a client
+                client = spanner_admin_database_v1.DatabaseAdminClient()
+
+                # Initialize request argument(s)
+                request = spanner_admin_database_v1.CreateBackupScheduleRequest(
+                    parent="parent_value",
+                    backup_schedule_id="backup_schedule_id_value",
+                )
+
+                # Make the request
+                response = client.create_backup_schedule(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.spanner_admin_database_v1.types.CreateBackupScheduleRequest, dict]):
+                The request object. The request for
+                [CreateBackupSchedule][google.spanner.admin.database.v1.DatabaseAdmin.CreateBackupSchedule].
+            parent (str):
+                Required. The name of the database
+                that this backup schedule applies to.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            backup_schedule (google.cloud.spanner_admin_database_v1.types.BackupSchedule):
+                Required. The backup schedule to
+                create.
+
+                This corresponds to the ``backup_schedule`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            backup_schedule_id (str):
+                Required. The Id to use for the backup schedule. The
+                ``backup_schedule_id`` appended to ``parent`` forms the
+                full backup schedule name of the form
+                ``projects/<project>/instances/<instance>/databases/<database>/backupSchedules/<backup_schedule_id>``.
+
+                This corresponds to the ``backup_schedule_id`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.spanner_admin_database_v1.types.BackupSchedule:
+                BackupSchedule expresses the
+                automated backup creation specification
+                for a Spanner database. Next ID: 10
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, backup_schedule, backup_schedule_id])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gsad_backup_schedule.CreateBackupScheduleRequest):
+            request = gsad_backup_schedule.CreateBackupScheduleRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+            if backup_schedule is not None:
+                request.backup_schedule = backup_schedule
+            if backup_schedule_id is not None:
+                request.backup_schedule_id = backup_schedule_id
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.create_backup_schedule]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def get_backup_schedule(
+        self,
+        request: Optional[Union[backup_schedule.GetBackupScheduleRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> backup_schedule.BackupSchedule:
+        r"""Gets backup schedule for the input schedule name.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import spanner_admin_database_v1
+
+            def sample_get_backup_schedule():
+                # Create a client
+                client = spanner_admin_database_v1.DatabaseAdminClient()
+
+                # Initialize request argument(s)
+                request = spanner_admin_database_v1.GetBackupScheduleRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_backup_schedule(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.spanner_admin_database_v1.types.GetBackupScheduleRequest, dict]):
+                The request object. The request for
+                [GetBackupSchedule][google.spanner.admin.database.v1.DatabaseAdmin.GetBackupSchedule].
+            name (str):
+                Required. The name of the schedule to retrieve. Values
+                are of the form
+                ``projects/<project>/instances/<instance>/databases/<database>/backupSchedules/<backup_schedule_id>``.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.spanner_admin_database_v1.types.BackupSchedule:
+                BackupSchedule expresses the
+                automated backup creation specification
+                for a Spanner database. Next ID: 10
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, backup_schedule.GetBackupScheduleRequest):
+            request = backup_schedule.GetBackupScheduleRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.get_backup_schedule]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def update_backup_schedule(
+        self,
+        request: Optional[
+            Union[gsad_backup_schedule.UpdateBackupScheduleRequest, dict]
+        ] = None,
+        *,
+        backup_schedule: Optional[gsad_backup_schedule.BackupSchedule] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> gsad_backup_schedule.BackupSchedule:
+        r"""Updates a backup schedule.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import spanner_admin_database_v1
+
+            def sample_update_backup_schedule():
+                # Create a client
+                client = spanner_admin_database_v1.DatabaseAdminClient()
+
+                # Initialize request argument(s)
+                request = spanner_admin_database_v1.UpdateBackupScheduleRequest(
+                )
+
+                # Make the request
+                response = client.update_backup_schedule(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.spanner_admin_database_v1.types.UpdateBackupScheduleRequest, dict]):
+                The request object. The request for
+                [UpdateBackupScheduleRequest][google.spanner.admin.database.v1.DatabaseAdmin.UpdateBackupSchedule].
+            backup_schedule (google.cloud.spanner_admin_database_v1.types.BackupSchedule):
+                Required. The backup schedule to update.
+                ``backup_schedule.name``, and the fields to be updated
+                as specified by ``update_mask`` are required. Other
+                fields are ignored.
+
+                This corresponds to the ``backup_schedule`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (google.protobuf.field_mask_pb2.FieldMask):
+                Required. A mask specifying which
+                fields in the BackupSchedule resource
+                should be updated. This mask is relative
+                to the BackupSchedule resource, not to
+                the request message. The field mask must
+                always be specified; this prevents any
+                future fields from being erased
+                accidentally.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.spanner_admin_database_v1.types.BackupSchedule:
+                BackupSchedule expresses the
+                automated backup creation specification
+                for a Spanner database. Next ID: 10
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([backup_schedule, update_mask])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gsad_backup_schedule.UpdateBackupScheduleRequest):
+            request = gsad_backup_schedule.UpdateBackupScheduleRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if backup_schedule is not None:
+                request.backup_schedule = backup_schedule
+            if update_mask is not None:
+                request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.update_backup_schedule]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("backup_schedule.name", request.backup_schedule.name),)
+            ),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def delete_backup_schedule(
+        self,
+        request: Optional[
+            Union[backup_schedule.DeleteBackupScheduleRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> None:
+        r"""Deletes a backup schedule.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import spanner_admin_database_v1
+
+            def sample_delete_backup_schedule():
+                # Create a client
+                client = spanner_admin_database_v1.DatabaseAdminClient()
+
+                # Initialize request argument(s)
+                request = spanner_admin_database_v1.DeleteBackupScheduleRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_backup_schedule(request=request)
+
+        Args:
+            request (Union[google.cloud.spanner_admin_database_v1.types.DeleteBackupScheduleRequest, dict]):
+                The request object. The request for
+                [DeleteBackupSchedule][google.spanner.admin.database.v1.DatabaseAdmin.DeleteBackupSchedule].
+            name (str):
+                Required. The name of the schedule to delete. Values are
+                of the form
+                ``projects/<project>/instances/<instance>/databases/<database>/backupSchedules/<backup_schedule_id>``.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, backup_schedule.DeleteBackupScheduleRequest):
+            request = backup_schedule.DeleteBackupScheduleRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.delete_backup_schedule]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+    def list_backup_schedules(
+        self,
+        request: Optional[
+            Union[backup_schedule.ListBackupSchedulesRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListBackupSchedulesPager:
+        r"""Lists all the backup schedules for the database.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import spanner_admin_database_v1
+
+            def sample_list_backup_schedules():
+                # Create a client
+                client = spanner_admin_database_v1.DatabaseAdminClient()
+
+                # Initialize request argument(s)
+                request = spanner_admin_database_v1.ListBackupSchedulesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_backup_schedules(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
+        Args:
+            request (Union[google.cloud.spanner_admin_database_v1.types.ListBackupSchedulesRequest, dict]):
+                The request object. The request for
+                [ListBackupSchedules][google.spanner.admin.database.v1.DatabaseAdmin.ListBackupSchedules].
+            parent (str):
+                Required. Database is the parent
+                resource whose backup schedules should
+                be listed. Values are of the form
+                projects/<project>/instances/<instance>/databases/<database>
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.spanner_admin_database_v1.services.database_admin.pagers.ListBackupSchedulesPager:
+                The response for
+                   [ListBackupSchedules][google.spanner.admin.database.v1.DatabaseAdmin.ListBackupSchedules].
+
+                Iterating over this object will yield results and
+                resolve additional pages automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, backup_schedule.ListBackupSchedulesRequest):
+            request = backup_schedule.ListBackupSchedulesRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.list_backup_schedules]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListBackupSchedulesPager(
             method=rpc,
             request=request,
             response=response,

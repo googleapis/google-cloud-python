@@ -20,6 +20,11 @@
                 "create_backup"
               ]
             },
+            "CreateBackupSchedule": {
+              "methods": [
+                "create_backup_schedule"
+              ]
+            },
             "CreateDatabase": {
               "methods": [
                 "create_database"
@@ -30,6 +35,11 @@
                 "delete_backup"
               ]
             },
+            "DeleteBackupSchedule": {
+              "methods": [
+                "delete_backup_schedule"
+              ]
+            },
             "DropDatabase": {
               "methods": [
                 "drop_database"
@@ -38,6 +48,11 @@
             "GetBackup": {
               "methods": [
                 "get_backup"
+              ]
+            },
+            "GetBackupSchedule": {
+              "methods": [
+                "get_backup_schedule"
               ]
             },
             "GetDatabase": {
@@ -58,6 +73,11 @@
             "ListBackupOperations": {
               "methods": [
                 "list_backup_operations"
+              ]
+            },
+            "ListBackupSchedules": {
+              "methods": [
+                "list_backup_schedules"
               ]
             },
             "ListBackups": {
@@ -98,6 +118,11 @@
             "UpdateBackup": {
               "methods": [
                 "update_backup"
+              ]
+            },
+            "UpdateBackupSchedule": {
+              "methods": [
+                "update_backup_schedule"
               ]
             },
             "UpdateDatabase": {
@@ -125,6 +150,11 @@
                 "create_backup"
               ]
             },
+            "CreateBackupSchedule": {
+              "methods": [
+                "create_backup_schedule"
+              ]
+            },
             "CreateDatabase": {
               "methods": [
                 "create_database"
@@ -135,6 +165,11 @@
                 "delete_backup"
               ]
             },
+            "DeleteBackupSchedule": {
+              "methods": [
+                "delete_backup_schedule"
+              ]
+            },
             "DropDatabase": {
               "methods": [
                 "drop_database"
@@ -143,6 +178,11 @@
             "GetBackup": {
               "methods": [
                 "get_backup"
+              ]
+            },
+            "GetBackupSchedule": {
+              "methods": [
+                "get_backup_schedule"
               ]
             },
             "GetDatabase": {
@@ -163,6 +203,11 @@
             "ListBackupOperations": {
               "methods": [
                 "list_backup_operations"
+              ]
+            },
+            "ListBackupSchedules": {
+              "methods": [
+                "list_backup_schedules"
               ]
             },
             "ListBackups": {
@@ -203,6 +248,11 @@
             "UpdateBackup": {
               "methods": [
                 "update_backup"
+              ]
+            },
+            "UpdateBackupSchedule": {
+              "methods": [
+                "update_backup_schedule"
               ]
             },
             "UpdateDatabase": {
@@ -230,6 +280,11 @@
                 "create_backup"
               ]
             },
+            "CreateBackupSchedule": {
+              "methods": [
+                "create_backup_schedule"
+              ]
+            },
             "CreateDatabase": {
               "methods": [
                 "create_database"
@@ -240,6 +295,11 @@
                 "delete_backup"
               ]
             },
+            "DeleteBackupSchedule": {
+              "methods": [
+                "delete_backup_schedule"
+              ]
+            },
             "DropDatabase": {
               "methods": [
                 "drop_database"
@@ -248,6 +308,11 @@
             "GetBackup": {
               "methods": [
                 "get_backup"
+              ]
+            },
+            "GetBackupSchedule": {
+              "methods": [
+                "get_backup_schedule"
               ]
             },
             "GetDatabase": {
@@ -268,6 +333,11 @@
             "ListBackupOperations": {
               "methods": [
                 "list_backup_operations"
+              ]
+            },
+            "ListBackupSchedules": {
+              "methods": [
+                "list_backup_schedules"
               ]
             },
             "ListBackups": {
@@ -308,6 +378,11 @@
             "UpdateBackup": {
               "methods": [
                 "update_backup"
+              ]
+            },
+            "UpdateBackupSchedule": {
+              "methods": [
+                "update_backup_schedule"
               ]
             },
             "UpdateDatabase": {
