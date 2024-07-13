@@ -26,6 +26,10 @@ from google.cloud.bigquery_migration_v2.types import (
     migration_metrics,
     translation_config,
 )
+from google.cloud.bigquery_migration_v2.types import (
+    translation_details as gcbm_translation_details,
+)
+from google.cloud.bigquery_migration_v2.types import translation_usability
 
 __protobuf__ = proto.module(
     package="google.cloud.bigquery.migration.v2",
@@ -33,6 +37,8 @@ __protobuf__ = proto.module(
         "MigrationWorkflow",
         "MigrationTask",
         "MigrationSubtask",
+        "MigrationTaskResult",
+        "TranslationTaskResult",
     },
 )
 
@@ -43,8 +49,8 @@ class MigrationWorkflow(proto.Message):
 
     Attributes:
         name (str):
-            Output only. Immutable. The unique identifier for the
-            migration workflow. The ID is server-generated.
+            Output only. Immutable. Identifier. The unique identifier
+            for the migration workflow. The ID is server-generated.
 
             Example: ``projects/123/locations/us/workflows/345``
         display_name (str):
@@ -127,12 +133,21 @@ class MigrationTask(proto.Message):
     r"""A single task for a migration which has details about the
     configuration of the task.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         translation_config_details (google.cloud.bigquery_migration_v2.types.TranslationConfigDetails):
-            Task configuration for Batch SQL Translation.
+            Task configuration for CW Batch/Offline SQL
+            Translation.
+
+            This field is a member of `oneof`_ ``task_details``.
+        translation_details (google.cloud.bigquery_migration_v2.types.TranslationDetails):
+            Task details for unified SQL Translation.
 
             This field is a member of `oneof`_ ``task_details``.
         id (str):
@@ -147,7 +162,8 @@ class MigrationTask(proto.Message):
             Translation_Snowflake2BQ, Translation_Netezza2BQ,
             Translation_AzureSynapse2BQ, Translation_Vertica2BQ,
             Translation_SQLServer2BQ, Translation_Presto2BQ,
-            Translation_MySQL2BQ, Translation_Postgresql2BQ.
+            Translation_MySQL2BQ, Translation_Postgresql2BQ,
+            Translation_SQLite2BQ, Translation_Greenplum2BQ.
         state (google.cloud.bigquery_migration_v2.types.MigrationTask.State):
             Output only. The current state of the task.
         processing_error (google.rpc.error_details_pb2.ErrorInfo):
@@ -157,6 +173,27 @@ class MigrationTask(proto.Message):
             Time when the task was created.
         last_update_time (google.protobuf.timestamp_pb2.Timestamp):
             Time when the task was last updated.
+        resource_error_details (MutableSequence[google.cloud.bigquery_migration_v2.types.ResourceErrorDetail]):
+            Output only. Provides details to errors and
+            issues encountered while processing the task.
+            Presence of error details does not mean that the
+            task failed.
+        resource_error_count (int):
+            The number or resources with errors. Note: This is not the
+            total number of errors as each resource can have more than
+            one error. This is used to indicate truncation by having a
+            ``resource_error_count`` that is higher than the size of
+            ``resource_error_details``.
+        metrics (MutableSequence[google.cloud.bigquery_migration_v2.types.TimeSeries]):
+            The metrics for the task.
+        task_result (google.cloud.bigquery_migration_v2.types.MigrationTaskResult):
+            Output only. The result of the task.
+        total_processing_error_count (int):
+            Count of all the processing errors in this
+            task and its subtasks.
+        total_resource_error_count (int):
+            Count of all the resource errors in this task
+            and its subtasks.
     """
 
     class State(proto.Enum):
@@ -196,6 +233,12 @@ class MigrationTask(proto.Message):
             message=translation_config.TranslationConfigDetails,
         )
     )
+    translation_details: gcbm_translation_details.TranslationDetails = proto.Field(
+        proto.MESSAGE,
+        number=16,
+        oneof="task_details",
+        message=gcbm_translation_details.TranslationDetails,
+    )
     id: str = proto.Field(
         proto.STRING,
         number=1,
@@ -223,6 +266,35 @@ class MigrationTask(proto.Message):
         proto.MESSAGE,
         number=7,
         message=timestamp_pb2.Timestamp,
+    )
+    resource_error_details: MutableSequence[
+        migration_error_details.ResourceErrorDetail
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=17,
+        message=migration_error_details.ResourceErrorDetail,
+    )
+    resource_error_count: int = proto.Field(
+        proto.INT32,
+        number=18,
+    )
+    metrics: MutableSequence[migration_metrics.TimeSeries] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=19,
+        message=migration_metrics.TimeSeries,
+    )
+    task_result: "MigrationTaskResult" = proto.Field(
+        proto.MESSAGE,
+        number=20,
+        message="MigrationTaskResult",
+    )
+    total_processing_error_count: int = proto.Field(
+        proto.INT32,
+        number=21,
+    )
+    total_resource_error_count: int = proto.Field(
+        proto.INT32,
+        number=22,
     )
 
 
@@ -354,6 +426,53 @@ class MigrationSubtask(proto.Message):
         proto.MESSAGE,
         number=11,
         message=migration_metrics.TimeSeries,
+    )
+
+
+class MigrationTaskResult(proto.Message):
+    r"""The migration task result.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        translation_task_result (google.cloud.bigquery_migration_v2.types.TranslationTaskResult):
+            Details specific to translation task types.
+
+            This field is a member of `oneof`_ ``details``.
+    """
+
+    translation_task_result: "TranslationTaskResult" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="details",
+        message="TranslationTaskResult",
+    )
+
+
+class TranslationTaskResult(proto.Message):
+    r"""Translation specific result details from the migration task.
+
+    Attributes:
+        translated_literals (MutableSequence[google.cloud.bigquery_migration_v2.types.Literal]):
+            The list of the translated literals.
+        report_log_messages (MutableSequence[google.cloud.bigquery_migration_v2.types.GcsReportLogMessage]):
+            The records from the aggregate CSV report for
+            a migration workflow.
+    """
+
+    translated_literals: MutableSequence[
+        gcbm_translation_details.Literal
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=gcbm_translation_details.Literal,
+    )
+    report_log_messages: MutableSequence[
+        translation_usability.GcsReportLogMessage
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message=translation_usability.GcsReportLogMessage,
     )
 
 

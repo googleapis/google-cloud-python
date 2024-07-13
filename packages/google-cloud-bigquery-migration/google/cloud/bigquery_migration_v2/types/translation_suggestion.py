@@ -19,11 +19,10 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
-
 __protobuf__ = proto.module(
-    package='google.cloud.bigquery.migration.v2',
+    package="google.cloud.bigquery.migration.v2",
     manifest={
-        'TranslationReportRecord',
+        "TranslationReportRecord",
     },
 )
 
@@ -46,6 +45,7 @@ class TranslationReportRecord(proto.Message):
         message (str):
             Detailed message of the record.
     """
+
     class Severity(proto.Enum):
         r"""The severity type of the record.
 

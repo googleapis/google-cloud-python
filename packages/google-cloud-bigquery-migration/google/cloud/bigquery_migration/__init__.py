@@ -27,7 +27,9 @@ from google.cloud.bigquery_migration_v2.services.migration_service.client import
 from google.cloud.bigquery_migration_v2.types.migration_entities import (
     MigrationSubtask,
     MigrationTask,
+    MigrationTaskResult,
     MigrationWorkflow,
+    TranslationTaskResult,
 )
 from google.cloud.bigquery_migration_v2.types.migration_error_details import (
     ErrorDetail,
@@ -54,7 +56,9 @@ from google.cloud.bigquery_migration_v2.types.migration_service import (
 from google.cloud.bigquery_migration_v2.types.translation_config import (
     AzureSynapseDialect,
     BigQueryDialect,
+    DB2Dialect,
     Dialect,
+    GreenplumDialect,
     HiveQLDialect,
     MySQLDialect,
     NameMappingKey,
@@ -69,10 +73,25 @@ from google.cloud.bigquery_migration_v2.types.translation_config import (
     SnowflakeDialect,
     SourceEnv,
     SparkSQLDialect,
+    SQLiteDialect,
     SQLServerDialect,
     TeradataDialect,
     TranslationConfigDetails,
     VerticaDialect,
+)
+from google.cloud.bigquery_migration_v2.types.translation_details import (
+    Literal,
+    SourceEnvironment,
+    SourceSpec,
+    SourceTargetMapping,
+    TargetSpec,
+    TranslationDetails,
+)
+from google.cloud.bigquery_migration_v2.types.translation_suggestion import (
+    TranslationReportRecord,
+)
+from google.cloud.bigquery_migration_v2.types.translation_usability import (
+    GcsReportLogMessage,
 )
 
 __all__ = (
@@ -80,7 +99,9 @@ __all__ = (
     "MigrationServiceAsyncClient",
     "MigrationSubtask",
     "MigrationTask",
+    "MigrationTaskResult",
     "MigrationWorkflow",
+    "TranslationTaskResult",
     "ErrorDetail",
     "ErrorLocation",
     "ResourceErrorDetail",
@@ -99,7 +120,9 @@ __all__ = (
     "StartMigrationWorkflowRequest",
     "AzureSynapseDialect",
     "BigQueryDialect",
+    "DB2Dialect",
     "Dialect",
+    "GreenplumDialect",
     "HiveQLDialect",
     "MySQLDialect",
     "NameMappingKey",
@@ -114,8 +137,17 @@ __all__ = (
     "SnowflakeDialect",
     "SourceEnv",
     "SparkSQLDialect",
+    "SQLiteDialect",
     "SQLServerDialect",
     "TeradataDialect",
     "TranslationConfigDetails",
     "VerticaDialect",
+    "Literal",
+    "SourceEnvironment",
+    "SourceSpec",
+    "SourceTargetMapping",
+    "TargetSpec",
+    "TranslationDetails",
+    "TranslationReportRecord",
+    "GcsReportLogMessage",
 )

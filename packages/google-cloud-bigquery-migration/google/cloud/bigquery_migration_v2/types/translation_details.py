@@ -19,16 +19,15 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
-
 __protobuf__ = proto.module(
-    package='google.cloud.bigquery.migration.v2',
+    package="google.cloud.bigquery.migration.v2",
     manifest={
-        'TranslationDetails',
-        'SourceTargetMapping',
-        'SourceSpec',
-        'TargetSpec',
-        'Literal',
-        'SourceEnvironment',
+        "TranslationDetails",
+        "SourceTargetMapping",
+        "SourceSpec",
+        "TargetSpec",
+        "Literal",
+        "SourceEnvironment",
     },
 )
 
@@ -59,19 +58,19 @@ class TranslationDetails(proto.Message):
             the set of available target types.
     """
 
-    source_target_mapping: MutableSequence['SourceTargetMapping'] = proto.RepeatedField(
+    source_target_mapping: MutableSequence["SourceTargetMapping"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
-        message='SourceTargetMapping',
+        message="SourceTargetMapping",
     )
     target_base_uri: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    source_environment: 'SourceEnvironment' = proto.Field(
+    source_environment: "SourceEnvironment" = proto.Field(
         proto.MESSAGE,
         number=3,
-        message='SourceEnvironment',
+        message="SourceEnvironment",
     )
     target_return_literals: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
@@ -93,15 +92,15 @@ class SourceTargetMapping(proto.Message):
             The target SQL or the path for it.
     """
 
-    source_spec: 'SourceSpec' = proto.Field(
+    source_spec: "SourceSpec" = proto.Field(
         proto.MESSAGE,
         number=1,
-        message='SourceSpec',
+        message="SourceSpec",
     )
-    target_spec: 'TargetSpec' = proto.Field(
+    target_spec: "TargetSpec" = proto.Field(
         proto.MESSAGE,
         number=2,
-        message='TargetSpec',
+        message="TargetSpec",
     )
 
 
@@ -133,13 +132,13 @@ class SourceSpec(proto.Message):
     base_uri: str = proto.Field(
         proto.STRING,
         number=1,
-        oneof='source',
+        oneof="source",
     )
-    literal: 'Literal' = proto.Field(
+    literal: "Literal" = proto.Field(
         proto.MESSAGE,
         number=2,
-        oneof='source',
-        message='Literal',
+        oneof="source",
+        message="Literal",
     )
     encoding: str = proto.Field(
         proto.STRING,
@@ -190,12 +189,12 @@ class Literal(proto.Message):
     literal_string: str = proto.Field(
         proto.STRING,
         number=2,
-        oneof='literal_data',
+        oneof="literal_data",
     )
     literal_bytes: bytes = proto.Field(
         proto.BYTES,
         number=3,
-        oneof='literal_data',
+        oneof="literal_data",
     )
     relative_path: str = proto.Field(
         proto.STRING,

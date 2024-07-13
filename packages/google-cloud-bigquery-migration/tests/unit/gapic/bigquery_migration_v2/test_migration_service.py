@@ -24,6 +24,8 @@ except ImportError:  # pragma: NO COVER
 
 import math
 
+from google.api import distribution_pb2  # type: ignore
+from google.api import metric_pb2  # type: ignore
 from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
 from google.api_core import api_core_version, client_options
 from google.api_core import exceptions as core_exceptions
@@ -31,6 +33,7 @@ import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.oauth2 import service_account
+from google.protobuf import any_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import error_details_pb2  # type: ignore
@@ -52,6 +55,8 @@ from google.cloud.bigquery_migration_v2.types import (
     migration_metrics,
     migration_service,
     translation_config,
+    translation_details,
+    translation_usability,
 )
 
 

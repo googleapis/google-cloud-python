@@ -38,6 +38,9 @@ __protobuf__ = proto.module(
         "PostgresqlDialect",
         "PrestoDialect",
         "MySQLDialect",
+        "DB2Dialect",
+        "SQLiteDialect",
+        "GreenplumDialect",
         "ObjectNameMappingList",
         "ObjectNameMapping",
         "NameMappingKey",
@@ -81,6 +84,13 @@ class TranslationConfigDetails(proto.Message):
         request_source (str):
             The indicator to show translation request
             initiator.
+        target_types (MutableSequence[str]):
+            The types of output to generate, e.g. sql,
+            metadata etc. If not specified, a default set of
+            targets will be generated. Some additional
+            target types may be slower to generate. See the
+            documentation for the set of available target
+            types.
     """
 
     gcs_source_path: str = proto.Field(
@@ -117,6 +127,10 @@ class TranslationConfigDetails(proto.Message):
     request_source: str = proto.Field(
         proto.STRING,
         number=8,
+    )
+    target_types: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=9,
     )
 
 
@@ -185,6 +199,18 @@ class Dialect(proto.Message):
             This field is a member of `oneof`_ ``dialect_value``.
         mysql_dialect (google.cloud.bigquery_migration_v2.types.MySQLDialect):
             The MySQL dialect
+
+            This field is a member of `oneof`_ ``dialect_value``.
+        db2_dialect (google.cloud.bigquery_migration_v2.types.DB2Dialect):
+            DB2 dialect
+
+            This field is a member of `oneof`_ ``dialect_value``.
+        sqlite_dialect (google.cloud.bigquery_migration_v2.types.SQLiteDialect):
+            SQLite dialect
+
+            This field is a member of `oneof`_ ``dialect_value``.
+        greenplum_dialect (google.cloud.bigquery_migration_v2.types.GreenplumDialect):
+            Greenplum dialect
 
             This field is a member of `oneof`_ ``dialect_value``.
     """
@@ -273,6 +299,24 @@ class Dialect(proto.Message):
         oneof="dialect_value",
         message="MySQLDialect",
     )
+    db2_dialect: "DB2Dialect" = proto.Field(
+        proto.MESSAGE,
+        number=15,
+        oneof="dialect_value",
+        message="DB2Dialect",
+    )
+    sqlite_dialect: "SQLiteDialect" = proto.Field(
+        proto.MESSAGE,
+        number=16,
+        oneof="dialect_value",
+        message="SQLiteDialect",
+    )
+    greenplum_dialect: "GreenplumDialect" = proto.Field(
+        proto.MESSAGE,
+        number=17,
+        oneof="dialect_value",
+        message="GreenplumDialect",
+    )
 
 
 class BigQueryDialect(proto.Message):
@@ -356,6 +400,18 @@ class PrestoDialect(proto.Message):
 
 class MySQLDialect(proto.Message):
     r"""The dialect definition for MySQL."""
+
+
+class DB2Dialect(proto.Message):
+    r"""The dialect definition for DB2."""
+
+
+class SQLiteDialect(proto.Message):
+    r"""The dialect definition for SQLite."""
+
+
+class GreenplumDialect(proto.Message):
+    r"""The dialect definition for Greenplum."""
 
 
 class ObjectNameMappingList(proto.Message):
@@ -524,6 +580,14 @@ class SourceEnv(proto.Message):
             The schema search path. When SQL objects are
             missing schema name, translation engine will
             search through this list to find the value.
+        metadata_store_dataset (str):
+            Optional. Expects a valid BigQuery dataset ID that exists,
+            e.g., project-123.metadata_store_123. If specified,
+            translation will search and read the required schema
+            information from a metadata store in this dataset. If
+            metadata store doesn't exist, translation will parse the
+            metadata file and upload the schema info to a temp table in
+            the dataset to speed up future translation jobs.
     """
 
     default_database: str = proto.Field(
@@ -533,6 +597,10 @@ class SourceEnv(proto.Message):
     schema_search_path: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=2,
+    )
+    metadata_store_dataset: str = proto.Field(
+        proto.STRING,
+        number=3,
     )
 
 
