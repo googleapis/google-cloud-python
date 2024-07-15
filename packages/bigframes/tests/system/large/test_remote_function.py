@@ -22,13 +22,14 @@ import tempfile
 import textwrap
 
 import google.api_core.exceptions
-from google.cloud import bigquery, storage
+from google.cloud import bigquery, functions_v2, storage
 import pandas
 import pytest
 import test_utils.prefixer
 
 import bigframes
-from bigframes.functions.remote_function import get_cloud_function_name
+import bigframes.functions.remote_function as bigframes_rf
+import bigframes.pandas as bpd
 import bigframes.series
 from tests.system.utils import (
     assert_pandas_df_equal,
@@ -590,7 +591,11 @@ def test_remote_function_restore_with_bigframes_series(
         add_one_uniq, add_one_uniq_dir = make_uniq_udf(add_one)
 
         # Expected cloud function name for the unique udf
-        add_one_uniq_cf_name, _ = get_cloud_function_name(add_one_uniq)
+        package_requirements = bigframes_rf._get_updated_package_requirements()
+        add_one_uniq_hash = bigframes_rf._get_hash(add_one_uniq, package_requirements)
+        add_one_uniq_cf_name = bigframes_rf.get_cloud_function_name(
+            add_one_uniq_hash, session.session_id
+        )
 
         # There should be no cloud function yet for the unique udf
         cloud_functions = list(
@@ -1860,3 +1865,142 @@ def test_remote_function_gcf_memory_unsupported(session, memory_mib):
         @session.remote_function(reuse=False, cloud_function_memory_mib=memory_mib)
         def square(x: int) -> int:
             return x * x
+
+
+@pytest.mark.flaky(retries=2, delay=120)
+def test_remote_function_unnamed_removed_w_session_cleanup():
+    # create a clean session
+    session = bigframes.connect()
+
+    # create an unnamed remote function in the session
+    @session.remote_function(reuse=False)
+    def foo(x: int) -> int:
+        return x + 1
+
+    # ensure that remote function artifacts are created
+    assert foo.bigframes_remote_function is not None
+    session.bqclient.get_routine(foo.bigframes_remote_function) is not None
+    assert foo.bigframes_cloud_function is not None
+    session.cloudfunctionsclient.get_function(
+        name=foo.bigframes_cloud_function
+    ) is not None
+
+    # explicitly close the session
+    session.close()
+
+    # ensure that the bq remote function is deleted
+    with pytest.raises(google.cloud.exceptions.NotFound):
+        session.bqclient.get_routine(foo.bigframes_remote_function)
+
+    # the deletion of cloud function happens in a non-blocking way, ensure that
+    # it either exists in a being-deleted state, or is already deleted
+    try:
+        gcf = session.cloudfunctionsclient.get_function(
+            name=foo.bigframes_cloud_function
+        )
+        assert gcf.state is functions_v2.Function.State.DELETING
+    except google.cloud.exceptions.NotFound:
+        pass
+
+
+@pytest.mark.flaky(retries=2, delay=120)
+def test_remote_function_named_perists_w_session_cleanup():
+    try:
+        # create a clean session
+        session = bigframes.connect()
+
+        # create a name for the remote function
+        name = test_utils.prefixer.Prefixer("bigframes", "").create_prefix()
+
+        # create an unnamed remote function in the session
+        @session.remote_function(name=name)
+        def foo(x: int) -> int:
+            return x + 1
+
+        # ensure that remote function artifacts are created
+        assert foo.bigframes_remote_function is not None
+        session.bqclient.get_routine(foo.bigframes_remote_function) is not None
+        assert foo.bigframes_cloud_function is not None
+        session.cloudfunctionsclient.get_function(
+            name=foo.bigframes_cloud_function
+        ) is not None
+
+        # explicitly close the session
+        session.close()
+
+        # ensure that the bq remote function still exists
+        session.bqclient.get_routine(foo.bigframes_remote_function) is not None
+
+        # the deletion of cloud function happens in a non-blocking way, ensure
+        # that it was not deleted and still exists in active state
+        gcf = session.cloudfunctionsclient.get_function(
+            name=foo.bigframes_cloud_function
+        )
+        assert gcf.state is functions_v2.Function.State.ACTIVE
+    finally:
+        # clean up the gcp assets created for the remote function
+        cleanup_remote_function_assets(
+            session.bqclient, session.cloudfunctionsclient, foo
+        )
+
+
+@pytest.mark.flaky(retries=2, delay=120)
+def test_remote_function_clean_up_by_session_id():
+    # Use a brand new session to avoid conflict with other tests
+    session = bigframes.Session()
+    session_id = session.session_id
+    try:
+        # we will create remote functions, one with explicit name and another
+        # without it, and later confirm that the former is deleted when the session
+        # is cleaned up by session id, but the latter remains
+        ## unnamed
+        @session.remote_function(reuse=False)
+        def foo_unnamed(x: int) -> int:
+            return x + 1
+
+        ## named
+        rf_name = test_utils.prefixer.Prefixer("bigframes", "").create_prefix()
+
+        @session.remote_function(reuse=False, name=rf_name)
+        def foo_named(x: int) -> int:
+            return x + 2
+
+        # check that BQ remote functiosn were created with corresponding cloud
+        # functions
+        for foo in [foo_unnamed, foo_named]:
+            assert foo.bigframes_remote_function is not None
+            session.bqclient.get_routine(foo.bigframes_remote_function) is not None
+            assert foo.bigframes_cloud_function is not None
+            session.cloudfunctionsclient.get_function(
+                name=foo.bigframes_cloud_function
+            ) is not None
+
+        # clean up using explicit session id
+        bpd.clean_up_by_session_id(
+            session_id, location=session._location, project=session._project
+        )
+
+        # ensure that the unnamed bq remote function is deleted along with its
+        # corresponding cloud function
+        with pytest.raises(google.cloud.exceptions.NotFound):
+            session.bqclient.get_routine(foo_unnamed.bigframes_remote_function)
+        try:
+            gcf = session.cloudfunctionsclient.get_function(
+                name=foo_unnamed.bigframes_cloud_function
+            )
+            assert gcf.state is functions_v2.Function.State.DELETING
+        except google.cloud.exceptions.NotFound:
+            pass
+
+        # ensure that the named bq remote function still exists along with its
+        # corresponding cloud function
+        session.bqclient.get_routine(foo_named.bigframes_remote_function) is not None
+        gcf = session.cloudfunctionsclient.get_function(
+            name=foo_named.bigframes_cloud_function
+        )
+        assert gcf.state is functions_v2.Function.State.ACTIVE
+    finally:
+        # clean up the gcp assets created for the remote function
+        cleanup_remote_function_assets(
+            session.bqclient, session.cloudfunctionsclient, foo_named
+        )

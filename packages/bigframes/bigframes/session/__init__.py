@@ -95,8 +95,7 @@ import bigframes.dataframe
 import bigframes.dtypes
 import bigframes.exceptions
 import bigframes.formatting_helpers as formatting_helpers
-from bigframes.functions.remote_function import read_gbq_function as bigframes_rgf
-from bigframes.functions.remote_function import remote_function as bigframes_rf
+import bigframes.functions.remote_function as bigframes_rf
 import bigframes.session._io.bigquery as bf_io_bigquery
 import bigframes.session._io.bigquery.read_gbq_table as bf_read_gbq_table
 import bigframes.session.clients
@@ -306,6 +305,8 @@ class Session(
             else bigframes.enums.DefaultIndexKind.NULL
         )
 
+        self._remote_function_session = bigframes_rf._RemoteFunctionSession()
+
     @property
     def bqclient(self):
         return self._clients_provider.bqclient
@@ -383,7 +384,7 @@ class Session(
         # Stable hash needed to use in expression tree
         return hash(str(self._anonymous_dataset))
 
-    def close(self):
+    def _clean_up_tables(self):
         """Delete tables that were created with this session's session_id."""
         client = self.bqclient
         project_id = self._anonymous_dataset.project
@@ -392,6 +393,15 @@ class Session(
         for table_id in self._table_ids:
             full_id = ".".join([project_id, dataset_id, table_id])
             client.delete_table(full_id, not_found_ok=True)
+
+    def close(self):
+        """Delete resources that were created with this session's session_id.
+        This includes BigQuery tables, remote functions and cloud functions
+        serving the remote functions"""
+        self._clean_up_tables()
+        self._remote_function_session.clean_up(
+            self.bqclient, self.cloudfunctionsclient, self.session_id
+        )
 
     def read_gbq(
         self,
@@ -1613,7 +1623,13 @@ class Session(
                 Explicit name of the persisted BigQuery remote function. Use it with
                 caution, because two users working in the same project and dataset
                 could overwrite each other's remote functions if they use the same
-                persistent name.
+                persistent name. When an explicit name is provided, any session
+                specific clean up (``bigframes.session.Session.close``/
+                ``bigframes.pandas.close_session``/
+                ``bigframes.pandas.reset_session``/
+                ``bigframes.pandas.clean_up_by_session_id``) does not clean up
+                the function, and leaves it for the user to manage the function
+                and the associated cloud function directly.
             packages (str[], Optional):
                 Explicit name of the external package dependencies. Each dependency
                 is added to the `requirements.txt` as is, and can be of the form
@@ -1689,7 +1705,7 @@ class Session(
 
             `bigframes_remote_function` - The bigquery remote function capable of calling into `bigframes_cloud_function`.
         """
-        return bigframes_rf(
+        return self._remote_function_session.remote_function(
             input_types,
             output_type,
             session=self,
@@ -1769,7 +1785,7 @@ class Session(
             not including the `bigframes_cloud_function` property.
         """
 
-        return bigframes_rgf(
+        return bigframes_rf.read_gbq_function(
             function_name=function_name,
             session=self,
         )

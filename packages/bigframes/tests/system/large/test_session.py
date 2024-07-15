@@ -19,6 +19,7 @@ import pytest
 
 import bigframes
 import bigframes.pandas as bpd
+import bigframes.session._io.bigquery
 
 
 @pytest.mark.parametrize(
@@ -93,8 +94,7 @@ def test_clean_up_by_session_id():
     session_id = session.session_id
 
     # we will create two tables and confirm that they are deleted
-    # when the session is closed by id
-
+    # when the session is cleaned up by id
     bqclient = session.bqclient
     dataset = session._anonymous_dataset
     expiration = (
@@ -110,9 +110,7 @@ def test_clean_up_by_session_id():
         max_results=bigframes.session._io.bigquery._LIST_TABLES_LIMIT,
         page_size=bigframes.session._io.bigquery._LIST_TABLES_LIMIT,
     )
-    assert any(
-        [(session.session_id in table.full_table_id) for table in list(tables_before)]
-    )
+    assert any([(session.session_id in table.full_table_id) for table in tables_before])
 
     bpd.clean_up_by_session_id(
         session_id, location=session._location, project=session._project
@@ -125,5 +123,5 @@ def test_clean_up_by_session_id():
         page_size=bigframes.session._io.bigquery._LIST_TABLES_LIMIT,
     )
     assert not any(
-        [(session.session_id in table.full_table_id) for table in list(tables_after)]
+        [(session.session_id in table.full_table_id) for table in tables_after]
     )
